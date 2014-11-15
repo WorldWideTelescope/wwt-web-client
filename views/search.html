@@ -1,0 +1,74 @@
+﻿<div data-ng-switch-when="Search" ng-controller="ThumbnailController" ng-init="initSearch()">
+	<div style="margin:-4px 0 1px;">
+		<div style="padding:4px 100px 0 4px;" class="iblock input-group">
+			<input type="search" id="txtSearch" ng-model="q" ng-keypress="searchKeyPress()" placeholder="{{getFromEn('Object Search')}}" style="width:200px" />
+			<span class="fa fa-search form-control-feedback rel" style="left:-31px"></span>
+				
+		</div>
+		<!--<div class="checkbox" style="display: inline-block">
+			<label data-ng-class="chkPlotResults ? 'checked' : ''">
+				<input type="checkbox" ng-model="chkPlotResults" />
+				{{getFromEn('Plot Results')}}
+			</label>
+		</div>
+		<a class="btn">{{getFromEn('VO Search')}}</a>-->
+
+		<div style="padding:4px 0 0 4px;display: inline-block">
+			<div class="select">
+				<select ng-model="SearchType">
+					<option value="J2000">{{getFromEn('J2000')}}</option>
+					<!--<%--
+						<option>{{getFromEn('Alt/Az')}}</option>--%>
+						<option value="Galactic">{{getFromEn('Galactic')}}</option>
+						<option value="Ecliptic">{{getFromEn('Ecliptic')}}</option>-->
+				</select>
+
+			</div>
+			&nbsp;
+			<label>
+				{{getFromEn('RA')}}
+				<input type="number" style="width:100px" ng-model="RA" />
+			</label>
+
+			<label>
+				{{getFromEn('Dec')}}
+				<input type="number" style="width:100px" ng-model="Dec" />
+			</label>
+			<a class="btn" ng-click="gotoCoord()">{{getFromEn('Go')}}</a>
+
+		</div>
+	</div>
+	<div class="search-results">
+		<div style="display: inline-block;vertical-align:top;" ng-repeat="item in searchResultSet">
+			<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
+				<ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
+				
+				<a ng-click="clickThumb(item)" title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+					<i 
+					   class="fa fa-image"
+					   ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
+					<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+					<label>{{item.get_name()}}</label>
+				</a>
+				<div ng-if="!item.get_isFolder()" class="dropdown" ng-mouseenter="moveMenu($index,item)" id="menuContainer{{$index}}">
+					<span bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
+						  data-placement="bottom" tabindex="0"
+						  data-content-template="views/popovers/property-panel.html"
+						  data-container="body">&nbsp;</span>
+					<a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
+						<img ng-src="{{resLocation}}/images/context-menu-arrow.png" class="menu" />
+					</a>
+				</div>
+			</span>
+		</div>
+	</div>
+	<label class="wwt-pager" ng-show="searchResults.length > 0">
+		<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
+			<i class="fa fa-play reverse"></i>
+		</a>
+		{{(currentPage + 1)}} of {{pageCount}}
+		<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
+			<i class="fa fa-play"></i>
+		</a>
+	</label>
+</div>

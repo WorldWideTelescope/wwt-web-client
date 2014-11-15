@@ -1,0 +1,24 @@
+﻿<div ng-controller="ThumbnailController" ng-init="initSearch()" data-scroll-buffer="3">
+
+	<div style="width:88%;position:fixed;top:4px;left:4px" class="input-group iblock">
+		<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" placeholder="{{getFromEn('Object Search')}}" style="width:94%;height:25px" />
+		<span class="fa fa-search form-control-feedback rel" style="left:-22px"></span>
+	</div>
+
+	<div class="search-results" ng-if="searchResultSet.length">
+		<div class="iblock tn" style="vertical-align:top;" ng-repeat="item in searchResultSet" ng-if="scrollDepth > $index">
+			<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
+				<!--<ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>-->
+
+				<a ng-click="clickThumb(item)" title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+					<i 
+					   class="fa fa-image"
+					   ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
+					<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+					<label>{{item.get_name()}}</label>
+				</a>
+
+			</span>
+		</div>
+	</div>
+</div>

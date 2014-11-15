@@ -1,0 +1,21 @@
+﻿<div class="modal fade" id="openModal" tabindex="-1" role="dialog" aria-labelledby="openModalLabel" aria-hidden="true" ng-controller="OpenItemController">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-body">
+                
+                <h4>{{getFromEn('Open')}} {{openType}}</h4>
+                <p>Enter the Url for the {{openType}} you want to open in WorldWide Telescope</p>
+                <div class="form-group">
+                    <!--<label for="txtOpenItem">Enter {{openType}} url</label>-->
+                    <input type="url" class="form-control" ng-model="openItemUrl" id="txtOpenItem" placeholder="Enter {{openType}} url">
+                </div>
+
+            </div>
+            <div class="modal-footer" style="border: none">
+                <a class="btn" style="width:80px" ng-click="openItem(openType)">{{getFromEn('Open')}}</a>
+                <a class="btn" data-dismiss="modal" style="width:80px">{{getFromEn('Close')}}</a>
+            </div>
+        </div>
+    </div>
+</div>

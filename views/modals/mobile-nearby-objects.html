@@ -1,0 +1,24 @@
+﻿<div class="modal" id="nboModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content thumbnails" data-ng-controller="ThumbnailController" data-scroll-buffer="3" ng-init="initNearbyObjects()">
+			<div ng-repeat="item in placesInCone track by $index" class="iblock tn" ng-if="scrollDepth > $index">
+				<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap" title="{{scrollDepth}}, {{$index}}">
+
+					<a 
+						ng-click="clickThumb(item)" 
+						ng-mouseenter="hoverThumb(item)" 
+						ng-mouseleave="clearAnnotations()" 
+						title="{{item.get_name()}}" 
+						ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+						<i 
+						   class="fa fa-image"
+						   ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
+						<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+						<label>{{item.get_name()}}</label>
+					</a>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<a data-toggle="modal" data-target="#nboModal" id="nboModalLink">&nbsp;</a>
