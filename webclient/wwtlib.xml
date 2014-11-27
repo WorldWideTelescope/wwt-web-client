@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>wwtlib</name>
+    </assembly>
+    <members>
+        <member name="F:wwtlib.Folder.communityIdField">
+            <remarks/>
+            
+        </member>
+        <member name="P:wwtlib.Folder.Name">
+            <remarks/>
+        </member>
+        <member name="P:wwtlib.Folder.Group">
+            <remarks/>
+        </member>
+        <member name="P:wwtlib.Folder.RefreshType">
+            <remarks/>
+        </member>
+        <member name="P:wwtlib.Folder.Browseable">
+            <remarks/>
+        </member>
+        <member name="P:wwtlib.Folder.Searchable">
+            <remarks/>
+        </member>
+        <member name="P:wwtlib.Folder.Type">
+            <remarks/>
+        </member>
+        <member name="P:wwtlib.Folder.SubType">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.Explorer">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.Tour">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.Search">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.Constellation">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.View">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.GoTo">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.Community">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.Context">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.VoTable">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderGroup.ImageStack">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderRefreshType.Interval">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderRefreshType.ConditionalGet">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderRefreshType.ViewChange">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderType.Earth">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderType.Planet">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderType.Sky">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.FolderType.Panorama">
+            <remarks/>
+        </member>
+        <member name="F:wwtlib.Place.AngularSize">
+            <summary>
+            Angular Size in Arc Seconds
+            </summary>
+        </member>
+    </members>
+</doc>

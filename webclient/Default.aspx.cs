@@ -13,6 +13,7 @@ public partial class Default : System.Web.UI.Page
 	public string ResourcesVersion = ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string BodyClass;
+	public string SDKLocation = "http://www.worldwidetelescope.org/scripts/wwtsdk.aspx";
 	public enum Clients
 	{
 		Html5 = 0,
@@ -39,6 +40,10 @@ public partial class Default : System.Web.UI.Page
 				Debug = false;
 				DebugChrome = true;
 				DebugQs = "";
+			}
+			if (Request.QueryString["debug"] == "local")
+			{
+				SDKLocation = "wwtlib.debug.js";
 			}
 		}
 		if (Request.QueryString["ads"] != null)

@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{886C426F-732F-4649-95AC-CE0395E07285}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>wwtlib</RootNamespace>
+    <AssemblyName>wwtlib</AssemblyName>
+    <ScriptTemplate>Properties\Script.template</ScriptTemplate>
+    <CodeAnalysisRuleSet>Properties\FxCop.ruleset</CodeAnalysisRuleSet>
+    <GenerateScript>True</GenerateScript>
+    <GenerateResources>True</GenerateResources>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;CODE_ANALYSIS;SCRIPTSHARP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0028, 1591, 1684</NoWarn>
+    <DocumentationFile>bin\Debug\wwtlib.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\webclient\</OutputPath>
+    <DefineConstants>CODE_ANALYSIS;SCRIPTSHARP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0028, 1591, 1684</NoWarn>
+    <DocumentationFile>bin\Release\wwtlib.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AstroCalc\AAAberration.cs" />
+    <Compile Include="AstroCalc\AAAngularSeparation.cs" />
+    <Compile Include="AstroCalc\AACoordinateTransformation.cs" />
+    <Compile Include="AstroCalc\AADate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AstroCalc\AADynamicalTime.cs" />
+    <Compile Include="AstroCalc\AAEarth.cs" />
+    <Compile Include="AstroCalc\AAEclipticalElements.cs" />
+    <Compile Include="AstroCalc\AAElementsPlanetaryOrbit.cs" />
+    <Compile Include="AstroCalc\AAElliptical.cs" />
+    <Compile Include="AstroCalc\AAEquationOfTime.cs" />
+    <Compile Include="AstroCalc\AAFK5.cs" />
+    <Compile Include="AstroCalc\AAGalileanMoons.cs" />
+    <Compile Include="AstroCalc\AAGlobe.cs" />
+    <Compile Include="AstroCalc\AAIlluminatedFraction.cs" />
+    <Compile Include="AstroCalc\AAInterpolate.cs" />
+    <Compile Include="AstroCalc\AAJupiter.cs" />
+    <Compile Include="AstroCalc\AAKepler.cs" />
+    <Compile Include="AstroCalc\AAMars.cs" />
+    <Compile Include="AstroCalc\AAMercury.cs" />
+    <Compile Include="AstroCalc\AAMoon.cs" />
+    <Compile Include="AstroCalc\AAMoonIlluminatedFraction.cs" />
+    <Compile Include="AstroCalc\AAMoonNodes.cs" />
+    <Compile Include="AstroCalc\AAMoonPerigeeApogee.cs" />
+    <Compile Include="AstroCalc\AAMoonPhases.cs" />
+    <Compile Include="AstroCalc\AANeptune.cs" />
+    <Compile Include="AstroCalc\AANutation.cs" />
+    <Compile Include="AstroCalc\AAParallax.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AstroCalc\AAPhysicalJupiter.cs" />
+    <Compile Include="AstroCalc\AAPhysicalMars.cs" />
+    <Compile Include="AstroCalc\AAPhysicalSun.cs" />
+    <Compile Include="AstroCalc\AAPluto.cs" />
+    <Compile Include="AstroCalc\AAPrecession.cs" />
+    <Compile Include="AstroCalc\AARiseTransitSet.cs" />
+    <Compile Include="AstroCalc\AASaturn.cs" />
+    <Compile Include="AstroCalc\AASaturnRings.cs" />
+    <Compile Include="AstroCalc\AASidereal.cs" />
+    <Compile Include="AstroCalc\AAStellarMagnitudes.cs" />
+    <Compile Include="AstroCalc\AASun.cs" />
+    <Compile Include="AstroCalc\AAUranus.cs" />
+    <Compile Include="AstroCalc\AAVenus.cs" />
+    <Compile Include="AstroCalc\AstroCalc.cs" />
+    <Compile Include="Graphics\GlBuffers.cs" />
+    <Compile Include="Graphics\Primatives3d.cs" />
+    <Compile Include="Graphics\Shaders.cs" />
+    <Compile Include="Graphics\Tessellator.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Grids.cs" />
+    <Compile Include="Layers\GreatCircleRouteLayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\ImageSetLayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\Layer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\LayerManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\LayerUI.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\Orbit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\ReferenceFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\SpreadSheetLayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\Table.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layers\TimeSeriesLayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planets.cs" />
+    <Compile Include="PlotTile.cs" />
+    <Compile Include="RenderContext.cs" />
+    <Compile Include="RenderTrianlge.cs" />
+    <Compile Include="ScriptInterface.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SkyImageTile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SkyText.cs" />
+    <Compile Include="SpaceTimeController.cs" />
+    <Compile Include="Star.cs" />
+    <Compile Include="TangentTile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tile.cs" />
+    <Compile Include="TileCache.cs" />
+    <Compile Include="ToastTile.cs" />
+    <Compile Include="Tour.cs" />
+    <Compile Include="Tours\ISettings.cs" />
+    <Compile Include="Tours\Overlay.cs" />
+    <Compile Include="Tours\TextObject.cs" />
+    <Compile Include="Tours\TourDocument.cs" />
+    <Compile Include="Tours\TourPlayer.cs" />
+    <Compile Include="Tours\TourStop.cs" />
+    <Compile Include="Triangle.cs" />
+    <Compile Include="UiTools.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="VizLayer.cs" />
+    <Compile Include="WebFile.cs" />
+    <Compile Include="WebGL.cs" />
+    <Compile Include="WheelEvent.cs" />
+    <Compile Include="Wtml.cs" />
+    <Compile Include="WWTControl.cs" />
+    <Compile Include="XDomainRequest.cs" />
+    <Compile Include="XMLHttpRequest2.cs" />
+    <None Include="packages.config" />
+    <None Include="Properties\FxCop.ruleset" />
+    <None Include="Properties\Script.template" />
+    <Compile Include="Annotation.cs" />
+    <Compile Include="BlendState.cs" />
+    <Compile Include="CameraParameters.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="Constellations.cs" />
+    <Compile Include="Coordinates.cs" />
+    <Compile Include="Double3D.cs" />
+    <Compile Include="EquirectangularTile.cs" />
+    <Compile Include="Folder.cs" />
+    <Compile Include="FolderBrowser.cs" />
+    <Compile Include="FolderUp.cs" />
+    <Compile Include="IFolder.cs" />
+    <Compile Include="IImageSet.cs" />
+    <Compile Include="IIThumbnail.cs" />
+    <Compile Include="Imageset.cs" />
+    <Compile Include="IPlace.cs" />
+    <Compile Include="IUIController.cs" />
+    <Compile Include="IViewMover.cs" />
+    <Compile Include="MainView.cs" />
+    <Compile Include="MercatorTile.cs" />
+    <Compile Include="MouseEvent.cs" />
+    <Compile Include="Place.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Script.Web">
+      <HintPath>..\packages\ScriptSharp.Lib.HTML.0.7.5.0\lib\Script.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\ScriptSharp.0.7.5.1\tools\ScriptSharp.targets" Condition="Exists('..\packages\ScriptSharp.0.7.5.1\tools\ScriptSharp.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
