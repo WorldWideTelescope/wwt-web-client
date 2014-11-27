@@ -37,39 +37,44 @@
 						imgSet;
 					if (fgi) {
 						isId++;
-						fgi.projection = fgi.projection.charAt(0).toLowerCase() + fgi.projection.substr(1);
-						imgSet = wwtlib.Imageset.create(fgi.name,//name
-							fgi.url,//url
-							fgi.dataSetType || 2,//datasettype -default to sky
-							fgi.bandPass,
-							wwtlib.ProjectionType[fgi.projection],
+						
+						imgSet = wwtlib.Imageset.create(
+							fgi.n,//name
+							fgi.u,//url
+							fgi.dt || 2,//datasettype -default to sky
+							fgi.bp,//bandPass
+							fgi.pr,//projection
 							isId,//imagesetid
-							parseFloat(fgi.baseLevel),
-							parseFloat(fgi.levels),
+							fgi.bl,//baseLevel
+							fgi.lv,//levels
 							null,//tilesize
-							parseFloat(fgi.baseTileDegrees),
+							fgi.bd,//baseTileDegrees
 							'',//extension
-							fgi.bottomsUp === 'true',
-							fgi.quadTreeTileMap,
-							parseFloat(fgi.centerX),
-							parseFloat(fgi.centerY),
-							parseFloat(fgi.rotation),
+							fgi.bu,//bottomsUp
+							fgi.q,//quadTreeTileMap,
+							fgi.cX,//centerX
+							fgi.cY,//centerY
+							fgi.r,//rotation
 							true,//sparse
-							fgi.thumbnailUrl,
-							fgi.defaultSet==='true',
+							fgi.tu,//thumbnailUrl,
+							fgi.ds,//defaultSet,
 							false,//elevationModel
-							parseFloat(fgi.widthFactor),
-							parseFloat(fgi.offsetX),
-							parseFloat(fgi.offsetY),
-							fgi.creditsText,
-							fgi.creditsUrl,'','',fgi.meanRadius||0,null);
+							fgi.wf,//widthFactor,
+							fgi.oX,//offsetX
+							fgi.oY,//offsetY
+							fgi.ct,//creditsText
+							fgi.cu,//creditsUrl
+							'', '',
+							0,//meanRadius
+							null);
 					}
-					var pl = wwtlib.Place.create(place.n,
+					var pl = wwtlib.Place.create(
+						place.n,//name
 						place.d,//dec
 						place.r,//ra
 						place.c,//classification
 						item.name,//constellation
-						fgi ? fgi.dataSetType : 2,//type
+						fgi ? fgi.dt : 2,//type
 						place.z//zoomfactor
 						);
 					if (imgSet) {
@@ -83,9 +88,7 @@
 							}
 						});
 					}
-					if (fgi && fgi.creditsUrl) {
-						util.log(pl);
-					}
+					
 					pl.guid = i + "." + j;
 					//re-place js data with place obj
 					item.places[j] = pl;

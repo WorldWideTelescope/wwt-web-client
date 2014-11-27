@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 
 	// Project configuration.
 	grunt.initConfig({
-		deployLoc: '../../wwtmvc5/WWTMVC5/webclient/',
+		deployLoc: '../../../wwtmvc5/WWTMVC5/webclient/',
 		// Metadata.
 		pkg: grunt.file.readJSON('package.json'),
 		banner: '/**\n' +
@@ -117,7 +117,12 @@ module.exports = function(grunt) {
 			webclient: {
 				src: '<%= concat.webclient.dest %>',
 				dest: '../wwtwebclient.min.js'
+			},
+			searchData: {
+				src: '../searchdataraw.js',
+				dest:'../searchdata.min.js'
 			}
+
 		},
 
 		less: {
@@ -261,7 +266,7 @@ module.exports = function(grunt) {
   require('time-grunt')(grunt);
 
   // JS distribution task.
-  grunt.registerTask('dist-js', ['concat', 'uglify:webclient']);
+  grunt.registerTask('dist-js', ['concat', 'uglify:webclient','uglify:searchData']);
 
   // CSS distribution task.
   grunt.registerTask('less-compile', ['less:compileCore']);

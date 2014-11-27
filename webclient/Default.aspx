@@ -64,8 +64,8 @@
 	<script src="<%= ResourcesLocation%>/controllers/AdsController.js?v=<%= ResourcesVersion%>"></script>
 	<script src="<%= ResourcesLocation%>/controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
 	<script src="<%= ResourcesLocation%>/controllers/ShareController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/Scripts/controls/move.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/Scripts/controls/util.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controls/move.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controls/util.js?v=<%= ResourcesVersion%>"></script>
 	<% }
 	   else
 	   { %>
@@ -347,7 +347,7 @@
 	<div style="margin:-4px 0 1px;">
 		<div style="padding:4px 100px 0 4px;" class="iblock input-group">
 			<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" placeholder="{{getFromEn('Object Search')}}" style="width:200px" />
-			<span class="fa fa-search form-control-feedback rel" style="left:-22px"></span>
+			<span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;"></span>
 				
 		</div>
 		<!--<div class="checkbox" style="display: inline-block">

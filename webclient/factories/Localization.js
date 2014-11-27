@@ -13,7 +13,7 @@
 		lpacks/*,
 		unlocalized = {}*/;
 	function getString(id, s) {
-		return locArray[id] ? locArray[id]/*.split('\t')[1]*/ : s ? s : '';
+		return locArray && locArray[id] ? locArray[id] : s ? s : '';
 	}
 	/*
 	setInterval(function () {
