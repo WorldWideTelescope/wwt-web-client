@@ -1,0 +1,37 @@
+﻿<div ng-show="activePanel == 'Guided Tours'" style="padding-left:4px" ng-controller="ToursController">
+    <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+
+    <div style="display: inline-block;vertical-align:top;" ng-repeat="item in tourList">
+        <a ng-if="$index==currentPage * pageSize" id="popTrigger"
+           data-title="{{tour.get_name()}}"
+           bs-popover="popover" data-placement="bottom-left"
+           data-content-template="views/popovers/tour-info.html"
+           data-template="views/popovers/tour-template.html"
+           data-trigger="hover" data-animation="am-fade"
+           data-delay="200">
+            &nbsp;
+        </a>
+
+        <span class="tour-thumb" ng-if="item.get_thumbnailUrl().length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
+            <a ng-click="clickThumb(item)" ng-mouseenter="tourPreview($event, item)"
+               title="{{item.get_name()}}"
+               ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+                <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+                <label>{{item.get_name()}}</label>
+            </a>
+
+        </span>
+        <span ng-if="item.get_thumbnailUrl().length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
+            <img ng-src="{{item.get_thumbnailUrl()}}" style="position:absolute;top:-9999px" />
+        </span>
+    </div>
+    <label class="wwt-pager">
+        <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="currentPage = currentPage == 0 ? currentPage : currentPage - 1">
+            <i class="fa fa-play reverse"></i>
+        </a>
+        {{(currentPage+1)}} of {{pageCount}}
+        <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="currentPage = currentPage == pageCount - 1 ? currentPage : currentPage+1">
+            <i class="fa fa-play"></i>
+        </a>
+    </label>
+</div>

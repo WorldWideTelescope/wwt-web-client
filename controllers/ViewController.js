@@ -1,0 +1,125 @@
+﻿wwt.controllers.controller('ViewController',
+	['$scope',
+	'AppState',
+	'$timeout','Util',
+	function ($scope, appState,$timeout, util) {
+		var stc = $scope.spaceTimeController = wwtlib.SpaceTimeController;
+		$scope.galaxyModeChange = function () {
+			if ($scope.galaxyMode && $scope.viewFromLocation) {
+				$scope.viewFromLocation = false;
+				$scope.setViewFromLocation();
+			}
+			wwt.wc.settings.set_galacticMode($scope.galaxyMode);
+			
+		};
+		wwtlib.WWTControl.useUserLocation();
+		$scope.locationName = $scope.getFromEn('My Location');//getFromEn('Microsoft Research Building 99')
+		$scope.now = new Date();
+
+		function timeDateTimerTick() {
+			if ($scope.activePanel === $scope.getFromEn('View') || util.isMobile) {
+				$timeout(function() {
+					//var offset = stc.$1 === undefined ? stc._offset : stc.$1;
+					//var now = $scope.now = new Date(new Date().valueOf() + offset);
+					var now = $scope.now = stc.get_now();
+					$scope.year = now.getFullYear();
+					$scope.month = (now.getMonth() + 1) % 12;
+					$scope.date = now.getDate();
+					$scope.hours = now.getHours();
+					$scope.minutes = now.getMinutes();
+					$scope.seconds = now.getSeconds();
+				});
+			}
+		};
+
+		
+
+		$scope.fastBack_Click = function() {
+			var tr = stc.get_timeRate();
+			if (tr < -2 && tr >= -1000000000) {
+				stc.set_timeRate(tr * 10);
+			} else {
+				stc.set_timeRate(-10);
+			}
+			stc.set_syncToClock(true);
+			updateSpeed();
+		};
+
+		$scope.back_Click = function() {
+			var tr = stc.get_timeRate();
+			if (tr <= -10) {
+				stc.set_timeRate(tr / 10);
+				stc.set_syncToClock(true);
+			} else {
+				stc.set_timeRate(-2);
+				stc.set_syncToClock(true);
+			}
+			if (stc.get_timeRate() == -1) {
+				stc.set_timeRate(-2);
+			}
+			updateSpeed();
+		};
+
+		$scope.pause_Click = function() {
+			stc.set_syncToClock(!stc.set_syncToClock);
+			updateSpeed();
+		};
+
+		$scope.play_Click = function () {
+			var tr = stc.get_timeRate();
+			if (tr >= 10) {
+				tr /= 10;
+			} else {
+				tr = 1;
+			}
+			stc.set_timeRate(tr);
+			stc.set_syncToClock(true);
+			updateSpeed();
+
+		};
+
+		$scope.fastForward_Click = function() {
+			var tr = stc.get_timeRate();
+			if (tr > 0 && tr <= 1000000000) {
+				stc.set_timeRate(tr * 10);
+			} else {
+				stc.set_timeRate(10);
+			}
+			stc.set_syncToClock(true);
+			updateSpeed();
+		};
+
+		function updateSpeed() {
+			var tr = stc.get_timeRate();
+			if (tr == -2)tr = -1;
+			if (tr == 1){
+				$scope.TimeMode = $scope.getFromEn("Real Time");
+			} else if (stc.TimeRate == -2.0){
+				$scope.TimeMode = $scope.getFromEn("Reverse Time");
+			} else {
+				$scope.TimeMode = $scope.getFromEn("X ") + tr;
+			} if (!stc.get_syncToClock()) {
+				$scope.TimeMode = $scope.TimeMode + $scope.getFromEn(" : Paused");
+			}   
+		}
+
+		$scope.timeNow_Click = function() {
+			stc.set_syncToClock(true);
+			stc.syncTime();
+			stc.set_timeRate(1);
+			updateSpeed();
+		};
+
+		$scope.setViewFromLocation = function() {
+			if ($scope.galaxyMode && $scope.viewFromLocation) {
+				$scope.galaxyMode = false;
+				$scope.galaxyModeChange();
+			}
+			$rootScope.ctl.settings.set_localHorizonMode($scope.viewFromLocation);
+		};
+		setInterval(timeDateTimerTick, 300);
+		updateSpeed();
+
+
+	}
+]);

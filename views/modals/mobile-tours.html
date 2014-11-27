@@ -1,0 +1,24 @@
+﻿
+<div ng-controller="ToursController">
+	<div ng-show="landscapeMessage">
+		{{getFromEn('For best viewing orient your device to landscape mode.')}}
+	</div>
+	<div ng-show="!landscapeMessage">
+		<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+		<div style="display: inline-block;vertical-align:top;" ng-repeat="item in tourList">
+
+
+			<span class="tour-thumb" ng-if="item.get_thumbnailUrl().length > 15">
+				<a ng-click="clickThumb(item)" title="{{item.get_name()}}"
+				   ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+					<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+					<label>{{item.get_name()}}</label>
+				</a>
+
+			</span>
+			<span ng-if="item.get_thumbnailUrl().length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
+				<img ng-src="{{item.get_thumbnailUrl()}}" style="position:absolute;top:-9999px" />
+			</span>
+		</div>
+	</div>
+</div>
