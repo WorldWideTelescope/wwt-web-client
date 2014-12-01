@@ -86,6 +86,7 @@
     <Compile Include="Graphics\Tessellator.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Grids.cs" />
+    <Compile Include="ImageSetHelper.cs" />
     <Compile Include="Layers\GreatCircleRouteLayer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +136,7 @@
     <Compile Include="TileCache.cs" />
     <Compile Include="ToastTile.cs" />
     <Compile Include="Tour.cs" />
+    <Compile Include="TourPlace.cs" />
     <Compile Include="Tours\ISettings.cs" />
     <Compile Include="Tours\Overlay.cs" />
     <Compile Include="Tours\TextObject.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="Triangle.cs" />
     <Compile Include="UiTools.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="ViewRederer.cs" />
     <Compile Include="VizLayer.cs" />
     <Compile Include="WebFile.cs" />
     <Compile Include="WebGL.cs" />
