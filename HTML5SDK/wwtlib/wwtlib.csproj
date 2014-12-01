@@ -182,6 +182,8 @@
     <Compile Include="Place.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Class1.cs" />
+    <None Include="Properties\wwtlib.ruleset" />
+    <None Include="Properties\wwtlib.script" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Script.Web">

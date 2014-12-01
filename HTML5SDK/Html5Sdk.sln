@@ -5,11 +5,6 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wwtlib", "wwtlib\wwtlib.csproj", "{886C426F-732F-4649-95AC-CE0395E07285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyJob", "CopyJob\CopyJob.csproj", "{754AAD66-E316-47D7-8515-CC27879DD412}"
-	ProjectSection(ProjectDependencies) = postProject
-		{886C426F-732F-4649-95AC-CE0395E07285} = {886C426F-732F-4649-95AC-CE0395E07285}
-	EndProjectSection
-EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "webclient", "http://localhost:11542", "{1263385D-84CA-4FC6-B659-5CD4FD2DA8C5}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
@@ -41,10 +36,6 @@ Global
 		{886C426F-732F-4649-95AC-CE0395E07285}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{886C426F-732F-4649-95AC-CE0395E07285}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{886C426F-732F-4649-95AC-CE0395E07285}.Release|Any CPU.Build.0 = Release|Any CPU
-		{754AAD66-E316-47D7-8515-CC27879DD412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{754AAD66-E316-47D7-8515-CC27879DD412}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{754AAD66-E316-47D7-8515-CC27879DD412}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{754AAD66-E316-47D7-8515-CC27879DD412}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1263385D-84CA-4FC6-B659-5CD4FD2DA8C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1263385D-84CA-4FC6-B659-5CD4FD2DA8C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1263385D-84CA-4FC6-B659-5CD4FD2DA8C5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
