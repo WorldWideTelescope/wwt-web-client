@@ -319,8 +319,6 @@
     <Content Include="views\tree-node.html" />
     <Content Include="webclient.sln" />
     <Content Include="WURFL AGPL License.txt" />
-    <Content Include="Introspector\Introspector.pdf" />
-    <Content Include="Introspector\Introspector.ashx" />
     <Content Include="App_Readme\WURFL-v1.5.2.1.chm" />
     <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
     <Content Include="App_Data\wurfl-latest.zip" />
