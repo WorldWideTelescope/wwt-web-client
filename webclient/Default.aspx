@@ -12,7 +12,7 @@
 	   { %>
 	<link href=<%= ResourcesLocation%>/css/webclient.css?v=<%= ResourcesVersion%> rel="stylesheet" />
 	<link href=<%= ResourcesLocation%>/css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
-	<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' rel="stylesheet"/>
+	<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel="stylesheet"/>
 	<link href=<%= ResourcesLocation%>/ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
 	<style>
 		html, body.fs-player, iframe {
@@ -26,7 +26,7 @@
 			background: url(<%= ResourcesLocation %>/Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
 		}
 	</style>
-	<script type="text/javascript" src="<%=SDKLocation %>"<%= DebugQs%>"></script>
+	<script type="text/javascript" src="<%=SDKLocation + DebugQs%>"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
 	<script src="<%= ResourcesLocation%>/ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
 	<% if (Debug || DebugChrome)

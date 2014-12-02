@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Web;
 using WURFL;
+using Wurfl.Aspnet.Extensions.Request;
 
 public partial class Default : System.Web.UI.Page
 {
@@ -26,7 +27,7 @@ public partial class Default : System.Web.UI.Page
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		var device = WURFLManagerBuilder.Instance.GetDeviceForRequest(Request.UserAgent);
-
+		
 		bool isMobile = device.GetCapability("is_smartphone") == "true";
 
 		BodyClass = string.Format("fs-player wwt-webclient-wrapper {0}", isMobile ? "mobile" : "desktop");
@@ -43,7 +44,7 @@ public partial class Default : System.Web.UI.Page
 			}
 			if (Request.QueryString["debug"] == "local")
 			{
-				SDKLocation = "wwtlib.debug.js";
+				SDKLocation = "/sdk/wwtsdk.aspx";
 			}
 		}
 		if (Request.QueryString["ads"] != null)

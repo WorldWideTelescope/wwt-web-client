@@ -1,0 +1,13 @@
+<configuration>
+  <configSections>
+    <section name="wurfl" 
+             type="WURFL.Aspnet.Extensions.Config.WURFLConfigurationSection, Wurfl.Aspnet.Extensions, Version=1.5.1.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9" />
+  </configSections>
+
+  <!-- Note about WURFL config
+       You can use the root operator (~) to refer to a virtual path. -->
+
+  <wurfl mode="Performance">
+    <mainFile path="~/App_Data/wurfl-latest.zip" />
+  </wurfl>
+</configuration>

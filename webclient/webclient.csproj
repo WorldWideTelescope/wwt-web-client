@@ -1,0 +1,440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5E0C35F8-A189-45A3-A11D-483C0526D52F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>webclient</RootNamespace>
+    <AssemblyName>webclient</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Wurfl, Version=1.5.2.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.2.1\lib\Wurfl.dll</HintPath>
+    </Reference>
+    <Reference Include="Wurfl.1.5.2.1.Fakes">
+      <HintPath>FakesAssemblies\Wurfl.1.5.2.1.Fakes.dll</HintPath>
+    </Reference>
+    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.5.2.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.2.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Wurfl.Aspnet.Extensions.1.5.2.1.Fakes">
+      <HintPath>FakesAssemblies\Wurfl.Aspnet.Extensions.1.5.2.1.Fakes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.js" />
+    <Content Include="bootstrap\.gitattributes" />
+    <Content Include="bootstrap\.gitignore" />
+    <Content Include="bootstrap\Gruntfile.js" />
+    <Content Include="bootstrap\grunt\.jshintrc" />
+    <Content Include="bootstrap\grunt\configBridge.json" />
+    <Content Include="bootstrap\grunt\sauce_browsers.yml" />
+    <Content Include="bootstrap\js\.jscsrc" />
+    <Content Include="bootstrap\js\.jshintrc" />
+    <Content Include="bootstrap\js\tests\unit\.jshintrc" />
+    <Content Include="bootstrap\less\.csscomb.json" />
+    <Content Include="bootstrap\less\.csslintrc" />
+    <Content Include="bootstrap\less\alerts.less" />
+    <Content Include="bootstrap\less\badges.less" />
+    <Content Include="bootstrap\less\breadcrumbs.less" />
+    <Content Include="bootstrap\less\button-groups.less" />
+    <Content Include="bootstrap\less\buttons.less" />
+    <Content Include="bootstrap\less\carousel.less" />
+    <Content Include="bootstrap\less\close.less" />
+    <Content Include="bootstrap\less\code.less" />
+    <Content Include="bootstrap\less\component-animations.less" />
+    <Content Include="bootstrap\less\dropdowns.less" />
+    <Content Include="bootstrap\less\forms.less" />
+    <Content Include="bootstrap\less\glyphicons.less" />
+    <Content Include="bootstrap\less\grid.less" />
+    <Content Include="bootstrap\less\input-groups.less" />
+    <Content Include="bootstrap\less\jumbotron.less" />
+    <Content Include="bootstrap\less\labels.less" />
+    <Content Include="bootstrap\less\list-group.less" />
+    <Content Include="bootstrap\less\media.less" />
+    <Content Include="bootstrap\less\mixins.less" />
+    <Content Include="bootstrap\less\mixins\alerts.less" />
+    <Content Include="bootstrap\less\mixins\background-variant.less" />
+    <Content Include="bootstrap\less\mixins\border-radius.less" />
+    <Content Include="bootstrap\less\mixins\buttons.less" />
+    <Content Include="bootstrap\less\mixins\center-block.less" />
+    <Content Include="bootstrap\less\mixins\clearfix.less" />
+    <Content Include="bootstrap\less\mixins\forms.less" />
+    <Content Include="bootstrap\less\mixins\gradients.less" />
+    <Content Include="bootstrap\less\mixins\grid-framework.less" />
+    <Content Include="bootstrap\less\mixins\grid.less" />
+    <Content Include="bootstrap\less\mixins\hide-text.less" />
+    <Content Include="bootstrap\less\mixins\image.less" />
+    <Content Include="bootstrap\less\mixins\labels.less" />
+    <Content Include="bootstrap\less\mixins\list-group.less" />
+    <Content Include="bootstrap\less\mixins\nav-divider.less" />
+    <Content Include="bootstrap\less\mixins\nav-vertical-align.less" />
+    <Content Include="bootstrap\less\mixins\opacity.less" />
+    <Content Include="bootstrap\less\mixins\pagination.less" />
+    <Content Include="bootstrap\less\mixins\panels.less" />
+    <Content Include="bootstrap\less\mixins\progress-bar.less" />
+    <Content Include="bootstrap\less\mixins\reset-filter.less" />
+    <Content Include="bootstrap\less\mixins\resize.less" />
+    <Content Include="bootstrap\less\mixins\responsive-visibility.less" />
+    <Content Include="bootstrap\less\mixins\size.less" />
+    <Content Include="bootstrap\less\mixins\tab-focus.less" />
+    <Content Include="bootstrap\less\mixins\table-row.less" />
+    <Content Include="bootstrap\less\mixins\text-emphasis.less" />
+    <Content Include="bootstrap\less\mixins\text-overflow.less" />
+    <Content Include="bootstrap\less\mixins\vendor-prefixes.less" />
+    <Content Include="bootstrap\less\modals.less" />
+    <Content Include="bootstrap\less\navbar.less" />
+    <Content Include="bootstrap\less\navs.less" />
+    <Content Include="bootstrap\less\normalize.less" />
+    <Content Include="bootstrap\less\pager.less" />
+    <Content Include="bootstrap\less\pagination.less" />
+    <Content Include="bootstrap\less\panels.less" />
+    <Content Include="bootstrap\less\popovers.less" />
+    <Content Include="bootstrap\less\print.less" />
+    <Content Include="bootstrap\less\progress-bars.less" />
+    <Content Include="bootstrap\less\responsive-embed.less" />
+    <Content Include="bootstrap\less\responsive-utilities.less" />
+    <Content Include="bootstrap\less\scaffolding.less" />
+    <Content Include="bootstrap\less\tables.less" />
+    <Content Include="bootstrap\less\theme.less" />
+    <Content Include="bootstrap\less\thumbnails.less" />
+    <Content Include="bootstrap\less\tooltip.less" />
+    <Content Include="bootstrap\less\type.less" />
+    <Content Include="bootstrap\less\utilities.less" />
+    <Content Include="bootstrap\less\wells.less" />
+    <Content Include="bootstrap\.editorconfig" />
+    <Content Include="bootstrap\.travis.yml" />
+    <Content Include="bootstrap\bower.json" />
+    <Content Include="bootstrap\CNAME" />
+    <Content Include="bootstrap\composer.json" />
+    <Content Include="bootstrap\CONTRIBUTING.md" />
+    <Content Include="bootstrap\LICENSE" />
+    <Content Include="bootstrap\package.json" />
+    <Content Include="bootstrap\README.md" />
+    <Content Include="bootstrap\_config.yml" />
+    <Content Include="clientbin\WWTSL.xap" />
+    <Content Include="controllers\AdsController.js" />
+    <Content Include="controllers\IntroController.js" />
+    <Content Include="controllers\LayerManagerController.js" />
+    <Content Include="controllers\MainController.js" />
+    <Content Include="controllers\MobileNavController.js" />
+    <Content Include="controllers\modals\OpenItemController.js" />
+    <Content Include="controllers\popovers\ObservingTimeController.js" />
+    <Content Include="controllers\SettingsController.js" />
+    <Content Include="controllers\ShareController.js" />
+    <Content Include="controllers\ThumbnailController.js" />
+    <Content Include="controllers\ToursController.js" />
+    <Content Include="controllers\ViewController.js" />
+    <Content Include="controls\move.js" />
+    <Content Include="controls\util.js" />
+    <Content Include="COPYING.txt" />
+    <Content Include="css\angular-motion.css" />
+    <Content Include="css\webclient.css" />
+    <Content Include="css\webclient.min.css" />
+    <Content Include="dataproxy\Places.js" />
+    <Content Include="dataproxy\SearchData.js" />
+    <Content Include="dataproxy\Tours.js" />
+    <Content Include="Default.aspx" />
+    <Content Include="directives\Scroll.js" />
+    <Content Include="earth.jpg" />
+    <Content Include="ext\angular-animate.js" />
+    <Content Include="ext\angular-cookies.js" />
+    <Content Include="ext\angular-intro.js" />
+    <Content Include="ext\angular-route.js" />
+    <Content Include="ext\angular-strap.js" />
+    <Content Include="ext\angular-strap.min.js" />
+    <Content Include="ext\angular-strap.tpl.js" />
+    <Content Include="ext\angular-strap.tpl.min.js" />
+    <Content Include="ext\angular.js" />
+    <Content Include="ext\bootstrap.js" />
+    <Content Include="ext\bootstrap.min.js" />
+    <Content Include="ext\intro.js" />
+    <Content Include="ext\intro.min.js" />
+    <Content Include="ext\introjs-rtl.css" />
+    <Content Include="ext\introjs-rtl.min.css" />
+    <Content Include="ext\introjs.css" />
+    <Content Include="ext\introjs.min.css" />
+    <Content Include="factories\AppState.js" />
+    <Content Include="factories\FinderScope.js" />
+    <Content Include="factories\HashManager.js" />
+    <Content Include="factories\Localization.js" />
+    <Content Include="factories\SearchUtil.js" />
+    <Content Include="factories\Skyball.js" />
+    <Content Include="factories\UILibrary.js" />
+    <Content Include="factories\Util.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="favicon.png" />
+    <Content Include="fblogin.js" />
+    <Content Include="gettours_webclient.xml" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\bing-search-button.png" />
+    <Content Include="Images\button_next_disabled.png" />
+    <Content Include="Images\button_next_hover.png" />
+    <Content Include="Images\button_next_normal.png" />
+    <Content Include="Images\button_next_pressed.png" />
+    <Content Include="Images\button_next_top_disabled.png" />
+    <Content Include="Images\button_next_top_hover.png" />
+    <Content Include="Images\button_next_top_normal.png" />
+    <Content Include="Images\button_next_top_pressed.png" />
+    <Content Include="Images\button_pause.png" />
+    <Content Include="Images\button_pause_disabled.png" />
+    <Content Include="Images\button_pause_hover.png" />
+    <Content Include="Images\button_pause_normal.png" />
+    <Content Include="Images\button_pause_pressed.png" />
+    <Content Include="Images\button_play.png" />
+    <Content Include="Images\button_play_disabled.png" />
+    <Content Include="Images\button_play_hover.png" />
+    <Content Include="Images\button_play_hover_left.png" />
+    <Content Include="Images\button_play_normal.png" />
+    <Content Include="Images\button_play_normal_left.png" />
+    <Content Include="Images\button_play_pressed.png" />
+    <Content Include="Images\button_play_pressed_left.png" />
+    <Content Include="Images\button_previous_disabled.png" />
+    <Content Include="Images\button_previous_hover.png" />
+    <Content Include="Images\button_previous_normal.png" />
+    <Content Include="Images\button_previous_pressed.png" />
+    <Content Include="Images\button_previous_top_disabled.png" />
+    <Content Include="Images\button_previous_top_hover.png" />
+    <Content Include="Images\button_previous_top_normal.png" />
+    <Content Include="Images\button_previous_top_pressed.png" />
+    <Content Include="Images\callisto.jpg" />
+    <Content Include="Images\context-menu-arrow.png" />
+    <Content Include="Images\dragInsertMarker.png" />
+    <Content Include="Images\earth.jpg" />
+    <Content Include="Images\europa.jpg" />
+    <Content Include="Images\finder-scope.png" />
+    <Content Include="Images\ganymede.jpg" />
+    <Content Include="Images\io.jpg" />
+    <Content Include="Images\jupiter.jpg" />
+    <Content Include="Images\layersButton.png" />
+    <Content Include="Images\layersButtonHover.png" />
+    <Content Include="Images\mars.jpg" />
+    <Content Include="Images\mercury.jpg" />
+    <Content Include="Images\moon.jpg" />
+    <Content Include="Images\neptune.jpg" />
+    <Content Include="Images\pluto.jpg" />
+    <Content Include="Images\saturn.png" />
+    <Content Include="Images\SaturnRings.png" />
+    <Content Include="Images\SaturnRingsShadow.png" />
+    <Content Include="Images\StarProfile.png" />
+    <Content Include="Images\sun.jpg" />
+    <Content Include="Images\sunCorona.png" />
+    <Content Include="Images\thumbBackground.png" />
+    <Content Include="Images\thumbBackgroundHover.png" />
+    <Content Include="Images\thumbBackgroundWide.png" />
+    <Content Include="Images\thumbBackgroundWideHover.png" />
+    <Content Include="Images\uranus.jpg" />
+    <Content Include="Images\venus.jpg" />
+    <Content Include="Images\wwtlogo.png" />
+    <Content Include="login.aspx" />
+    <Content Include="sdk\mscorlib.debug.js" />
+    <Content Include="sdk\mscorlib.dll" />
+    <Content Include="sdk\mscorlib.js" />
+    <Content Include="sdk\mscorlib.xml" />
+    <Content Include="sdk\Script.Web.dll" />
+    <Content Include="sdk\Script.Web.xml" />
+    <Content Include="sdk\wwtsdk.aspx" />
+    <Content Include="sdk\wwtlib.debug.js" />
+    <Content Include="sdk\wwtlib.dll" />
+    <Content Include="sdk\wwtlib.js" />
+    <Content Include="sdk\wwtlib.xml" />
+    <Content Include="searchdata.min.js" />
+    <Content Include="searchdataraw.js" />
+    <Content Include="simbad.js" />
+    <Content Include="sunCorona.png" />
+    <Content Include="views\layer-manager.html" />
+    <Content Include="views\modals\explore-collections.html" />
+    <Content Include="views\modals\finder-scope.html" />
+    <Content Include="views\modals\intro.html" />
+    <Content Include="views\modals\loading.html" />
+    <Content Include="views\modals\mobile-explore.html" />
+    <Content Include="views\modals\mobile-layer-manager.html" />
+    <Content Include="views\modals\mobile-nearby-objects.html" />
+    <Content Include="views\modals\mobile-search.html" />
+    <Content Include="views\modals\mobile-settings.html" />
+    <Content Include="views\modals\mobile-tours.html" />
+    <Content Include="views\modals\mobile-view.html" />
+    <Content Include="views\modals\nearby-objects-mobile.html" />
+    <Content Include="views\modals\open-item.html" />
+    <Content Include="views\popovers\observing-time.html" />
+    <Content Include="views\popovers\property-panel.html" />
+    <Content Include="views\popovers\shareplace.html" />
+    <Content Include="views\popovers\thumbnail-template.html" />
+    <Content Include="views\popovers\tour-info.html" />
+    <Content Include="views\popovers\tour-template.html" />
+    <Content Include="views\research-menu.html" />
+    <Content Include="views\search.html" />
+    <Content Include="views\thumbnail.html" />
+    <Content Include="views\tours.html" />
+    <Content Include="views\tree-node.html" />
+    <Content Include="webclient.sln" />
+    <Content Include="WURFL AGPL License.txt" />
+    <Content Include="Introspector\Introspector.pdf" />
+    <Content Include="Introspector\Introspector.ashx" />
+    <Content Include="App_Readme\WURFL-v1.5.2.1.chm" />
+    <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
+    <Content Include="App_Data\wurfl-latest.zip" />
+    <Content Include="packages.config" />
+    <Content Include="css\bootstrap.less" />
+    <Content Include="css\variables.less" />
+    <Content Include="css\webclient.css.map" />
+    <Content Include="css\webclient.less" />
+    <Content Include="ext\angular-animate.min.js.map" />
+    <Content Include="ext\angular-cookies.min.js.map" />
+    <Content Include="ext\angular-route.min.js.map" />
+    <Content Include="ext\angular-strap.min.js.map" />
+    <Content Include="ext\angular.min.js.map" />
+    <Content Include="WWTSL.xap" />
+    <Content Include="wwtwebclient.js" />
+    <Content Include="wwtwebclient.min.js" />
+    <Fakes Include="Fakes\Wurfl.fakes" />
+    <Fakes Include="Fakes\Wurfl.Aspnet.Extensions.fakes" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="webclient.sln.DotSettings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bootstrap\grunt\bs-commonjs-generator.js" />
+    <Content Include="bootstrap\grunt\bs-lessdoc-parser.js" />
+    <Content Include="bootstrap\grunt\bs-raw-files-generator.js" />
+    <Content Include="bootstrap\js\affix.js" />
+    <Content Include="bootstrap\js\alert.js" />
+    <Content Include="bootstrap\js\button.js" />
+    <Content Include="bootstrap\js\carousel.js" />
+    <Content Include="bootstrap\js\collapse.js" />
+    <Content Include="bootstrap\js\dropdown.js" />
+    <Content Include="bootstrap\js\modal.js" />
+    <Content Include="bootstrap\js\popover.js" />
+    <Content Include="bootstrap\js\scrollspy.js" />
+    <Content Include="bootstrap\js\tab.js" />
+    <Content Include="bootstrap\js\tests\index.html" />
+    <Content Include="bootstrap\js\tests\unit\affix.js" />
+    <Content Include="bootstrap\js\tests\unit\alert.js" />
+    <Content Include="bootstrap\js\tests\unit\button.js" />
+    <Content Include="bootstrap\js\tests\unit\carousel.js" />
+    <Content Include="bootstrap\js\tests\unit\collapse.js" />
+    <Content Include="bootstrap\js\tests\unit\dropdown.js" />
+    <Content Include="bootstrap\js\tests\unit\modal.js" />
+    <Content Include="bootstrap\js\tests\unit\phantom.js" />
+    <Content Include="bootstrap\js\tests\unit\popover.js" />
+    <Content Include="bootstrap\js\tests\unit\scrollspy.js" />
+    <Content Include="bootstrap\js\tests\unit\tab.js" />
+    <Content Include="bootstrap\js\tests\unit\tooltip.js" />
+    <Content Include="bootstrap\js\tests\vendor\jquery.min.js" />
+    <Content Include="bootstrap\js\tests\vendor\qunit.css" />
+    <Content Include="bootstrap\js\tests\vendor\qunit.js" />
+    <Content Include="bootstrap\js\tests\visual\affix.html" />
+    <Content Include="bootstrap\js\tests\visual\alert.html" />
+    <Content Include="bootstrap\js\tests\visual\button.html" />
+    <Content Include="bootstrap\js\tests\visual\carousel.html" />
+    <Content Include="bootstrap\js\tests\visual\collapse.html" />
+    <Content Include="bootstrap\js\tests\visual\dropdown.html" />
+    <Content Include="bootstrap\js\tests\visual\modal.html" />
+    <Content Include="bootstrap\js\tests\visual\popover.html" />
+    <Content Include="bootstrap\js\tests\visual\scrollspy.html" />
+    <Content Include="bootstrap\js\tests\visual\tab.html" />
+    <Content Include="bootstrap\js\tests\visual\tooltip.html" />
+    <Content Include="bootstrap\js\tooltip.js" />
+    <Content Include="bootstrap\js\transition.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>26993</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:26993/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:26993/?debug=local</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
