@@ -76,12 +76,6 @@
     <Content Include="bootstrap\.gitattributes" />
     <Content Include="bootstrap\.gitignore" />
     <Content Include="bootstrap\Gruntfile.js" />
-    <Content Include="bootstrap\grunt\.jshintrc" />
-    <Content Include="bootstrap\grunt\configBridge.json" />
-    <Content Include="bootstrap\grunt\sauce_browsers.yml" />
-    <Content Include="bootstrap\js\.jscsrc" />
-    <Content Include="bootstrap\js\.jshintrc" />
-    <Content Include="bootstrap\js\tests\unit\.jshintrc" />
     <Content Include="bootstrap\less\.csscomb.json" />
     <Content Include="bootstrap\less\.csslintrc" />
     <Content Include="bootstrap\less\alerts.less" />
@@ -153,15 +147,7 @@
     <Content Include="bootstrap\less\utilities.less" />
     <Content Include="bootstrap\less\wells.less" />
     <Content Include="bootstrap\.editorconfig" />
-    <Content Include="bootstrap\.travis.yml" />
-    <Content Include="bootstrap\bower.json" />
-    <Content Include="bootstrap\CNAME" />
-    <Content Include="bootstrap\composer.json" />
-    <Content Include="bootstrap\CONTRIBUTING.md" />
-    <Content Include="bootstrap\LICENSE" />
     <Content Include="bootstrap\package.json" />
-    <Content Include="bootstrap\README.md" />
-    <Content Include="bootstrap\_config.yml" />
     <Content Include="clientbin\WWTSL.xap" />
     <Content Include="controllers\AdsController.js" />
     <Content Include="controllers\IntroController.js" />
@@ -179,6 +165,12 @@
     <Content Include="controls\util.js" />
     <Content Include="COPYING.txt" />
     <Content Include="css\angular-motion.css" />
+    <Content Include="css\bootstrap.css">
+      <DependentUpon>bootstrap.less</DependentUpon>
+    </Content>
+    <Content Include="css\bootstrap.min.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
     <Content Include="css\webclient.css" />
     <Content Include="css\webclient.min.css" />
     <Content Include="dataproxy\Places.js" />
@@ -290,7 +282,6 @@
     <Content Include="sdk\wwtlib.xml" />
     <Content Include="searchdata.min.js" />
     <Content Include="searchdataraw.js" />
-    <Content Include="simbad.js" />
     <Content Include="sunCorona.png" />
     <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\explore-collections.html" />
@@ -337,6 +328,9 @@
     <Content Include="wwtwebclient.min.js" />
     <Fakes Include="Fakes\Wurfl.fakes" />
     <Fakes Include="Fakes\Wurfl.Aspnet.Extensions.fakes" />
+    <Content Include="css\bootstrap.css.map">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -344,50 +338,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <Content Include="webclient.sln.DotSettings" />
+    <Content Include="Wise.wtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bootstrap\grunt\bs-commonjs-generator.js" />
-    <Content Include="bootstrap\grunt\bs-lessdoc-parser.js" />
-    <Content Include="bootstrap\grunt\bs-raw-files-generator.js" />
-    <Content Include="bootstrap\js\affix.js" />
-    <Content Include="bootstrap\js\alert.js" />
-    <Content Include="bootstrap\js\button.js" />
-    <Content Include="bootstrap\js\carousel.js" />
-    <Content Include="bootstrap\js\collapse.js" />
-    <Content Include="bootstrap\js\dropdown.js" />
-    <Content Include="bootstrap\js\modal.js" />
-    <Content Include="bootstrap\js\popover.js" />
-    <Content Include="bootstrap\js\scrollspy.js" />
-    <Content Include="bootstrap\js\tab.js" />
-    <Content Include="bootstrap\js\tests\index.html" />
-    <Content Include="bootstrap\js\tests\unit\affix.js" />
-    <Content Include="bootstrap\js\tests\unit\alert.js" />
-    <Content Include="bootstrap\js\tests\unit\button.js" />
-    <Content Include="bootstrap\js\tests\unit\carousel.js" />
-    <Content Include="bootstrap\js\tests\unit\collapse.js" />
-    <Content Include="bootstrap\js\tests\unit\dropdown.js" />
-    <Content Include="bootstrap\js\tests\unit\modal.js" />
-    <Content Include="bootstrap\js\tests\unit\phantom.js" />
-    <Content Include="bootstrap\js\tests\unit\popover.js" />
-    <Content Include="bootstrap\js\tests\unit\scrollspy.js" />
-    <Content Include="bootstrap\js\tests\unit\tab.js" />
-    <Content Include="bootstrap\js\tests\unit\tooltip.js" />
-    <Content Include="bootstrap\js\tests\vendor\jquery.min.js" />
-    <Content Include="bootstrap\js\tests\vendor\qunit.css" />
-    <Content Include="bootstrap\js\tests\vendor\qunit.js" />
-    <Content Include="bootstrap\js\tests\visual\affix.html" />
-    <Content Include="bootstrap\js\tests\visual\alert.html" />
-    <Content Include="bootstrap\js\tests\visual\button.html" />
-    <Content Include="bootstrap\js\tests\visual\carousel.html" />
-    <Content Include="bootstrap\js\tests\visual\collapse.html" />
-    <Content Include="bootstrap\js\tests\visual\dropdown.html" />
-    <Content Include="bootstrap\js\tests\visual\modal.html" />
-    <Content Include="bootstrap\js\tests\visual\popover.html" />
-    <Content Include="bootstrap\js\tests\visual\scrollspy.html" />
-    <Content Include="bootstrap\js\tests\visual\tab.html" />
-    <Content Include="bootstrap\js\tests\visual\tooltip.html" />
-    <Content Include="bootstrap\js\tooltip.js" />
-    <Content Include="bootstrap\js\transition.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

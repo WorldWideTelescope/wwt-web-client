@@ -1,18 +1,13 @@
 /*!
 
- * [formerly] Bootstrap's Gruntfile
- * http://getbootstrap.com
- * Copyright 2013-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- 
- *****Nov 12, 2014 NOTE******
- 
-Please Note that this file has been heavily pruned/hacked to perform wwt webclient 
-less -> css compilation and js minification. test, docs, jekyl, fonts - 
-essentially anything but watching and minifying our js and less files has 
-been removed. This project uses the precompiled dist version of bootstrap's js lib.
+Gruntfile to perform wwt webclient pre-deploy tasks.
+We compile webclient.less with bootstrap.less and 
+concat/minify all scripts together here.
 
-We compile webclient.less with bootstrap.less
+Bootstrap upgrade note: 
+To upgrade bootstrap, copy the 4-color gradient out of the 
+mixins/gradients.less into the latest version.
+webclient.less depends on that file.
 
  */
 
@@ -26,25 +21,6 @@ module.exports = function(grunt) {
 		return string.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
 	};
 
-	var fs = require('fs');
-	var path = require('path');
-	//var npmShrinkwrap = require('npm-shrinkwrap');
-	var BsLessdocParser = require('./grunt/bs-lessdoc-parser.js');
-	/*var getLessVarsData = function () {
-	var filePath = path.join(__dirname, 'less/variables.less');
-	var fileContent = fs.readFileSync(filePath, { encoding: 'utf8' });
-	var parser = new BsLessdocParser(fileContent);
-	return { sections: parser.parseFile() };
-  };
-  var generateRawFiles = require('./grunt/bs-raw-files-generator.js');
-  var generateCommonJSModule = require('./grunt/bs-commonjs-generator.js');*/
-	var configBridge = grunt.file.readJSON('./grunt/configBridge.json', { encoding: 'utf8' });
-
-	Object.keys(configBridge.paths).forEach(function(key) {
-		configBridge.paths[key].forEach(function(val, i, arr) {
-			arr[i] = path.join('./docs/assets', val);
-		});
-	}); /**/
 
 	// Project configuration.
 	grunt.initConfig({
@@ -56,8 +32,7 @@ module.exports = function(grunt) {
 			'* Copyright 2014 Microsoft Research\n' +
 			'* Developed by Jonathan Fay and Ron Gilchrist\n' +
 			'**/\n',
-		//jqueryCheck: configBridge.config.jqueryCheck.join('\n'),
-		//jqueryVersionCheck: configBridge.config.jqueryVersionCheck.join('\n'),
+		
 
 		// Task configuration.
 		clean: {
@@ -142,7 +117,16 @@ module.exports = function(grunt) {
 
 		autoprefixer: {
 			options: {
-				browsers: configBridge.config.autoprefixerBrowsers
+				browsers: [
+				  "Android 2.3",
+				  "Android >= 4",
+				  "Chrome >= 20",
+				  "Firefox >= 24",
+				  "Explorer >= 10",
+				  "iOS >= 6",
+				  "Opera >= 12",
+				  "Safari >= 6"
+				]
 			},
 			core: {
 				options: {
@@ -233,7 +217,7 @@ module.exports = function(grunt) {
 						expand: true
 					}, {
 						cwd: '../',
-						src: ['*.jpg', '*.png', '*.asax', '*.cs', '*.aspx', '*.ico', '*.js', '*.xap', '*.xml', '*.config'],
+						src: ['*.jpg', '*.png', '*.asax', '*.cs', '*.aspx', '*.ico', '*.js', '*.xap', '*.xml', '*.wtml'],
 						dest: '<%= deployLoc %>',
 						expand: true
 					}
@@ -245,7 +229,7 @@ module.exports = function(grunt) {
 	watch: {
 		scripts: {
 			files: '../**/*.js', 
-			tasks: ['concat', 'uglify']
+			tasks: ['concat', 'uglify:webclient']
 		},
 		less: {
 			files: '../css/*.less',
@@ -266,7 +250,10 @@ module.exports = function(grunt) {
   require('time-grunt')(grunt);
 
   // JS distribution task.
-  grunt.registerTask('dist-js', ['concat', 'uglify:webclient','uglify:searchData']);
+  grunt.registerTask('dist-js', ['concat', 'uglify:webclient']);
+
+  // Minify the generated search data
+  grunt.registerTask('dist-searchdata', ['uglify:searchData']);
 
   // CSS distribution task.
   grunt.registerTask('less-compile', ['less:compileCore']);

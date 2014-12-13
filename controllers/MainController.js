@@ -531,8 +531,8 @@
 			} catch (er) {
 				show = false;
 			}
-			return show;
-		}
+			return show; 
+		}  
 
 		
 		$scope.hideIntroModalChange = function(hideIntroModal) {
@@ -568,6 +568,7 @@
 			if (imageSet) {
 				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
+			
 			if (!item.isSurvey) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);

@@ -23,11 +23,11 @@
 				<p>{{getFromEn('Set')}}:      <span>{{scopePlace.riseSet.bNeverSets? getFromEn('Never Sets') : formatDecimalHours(scopePlace.riseSet.set, false, false, true)}}</span></p>
 			</div>
 			<h5 style="margin-bottom:5px;margin-top:-5px">{{getFromEn('Image Credit')}}:</h5>
-			<p style="max-height:35px;overflow:hidden">{{getCreditsText(scopePlace)}}</p>
-			<p><a href="{{getCreditsUrl(scopePlace)}}" target="_blank">{{getCreditsUrl(scopePlace)}}</a></p>
+			<p style="max-height:35px;overflow:hidden" title="{{getCreditsText(scopePlace)}}"><a href="{{getCreditsUrl(scopePlace)}}" target="_blank">{{getCreditsText(scopePlace)}}</a></p>
+			
 			<div class="buttons">
 				
-				<div ng-if="!scopePlace.isSurvey && !scopePlace.isExploreTab" class="dropup" style="display: inline-block">
+				<div class="dropup" style="display: inline-block">
 					
 					<a class="btn" data-toggle="dropdown" role="button">
 						{{getFromEn('Research')}}
@@ -68,7 +68,7 @@
 				</div>
 				<a ng-if="!scopePlace.isSurvey && !scopePlace.isExploreTab" class="btn" ng-click="showObject(scopePlace)">{{getFromEn('Show Object')}}</a>
 				<a class="btn" href="http://www.bing.com/search?q={{scopePlace.get_name().split(' ').join('+')}}" target="bing">
-					<img ng-src="{{resLocation}}/Images/bing-search-button.png" style="margin-top: -2px" />
+					<img ng-src="Images/bing-search-button.png" style="margin-top: -2px" />
 					<i class="fa fa-search"></i>
 				</a>
 			</div>

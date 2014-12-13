@@ -34,6 +34,6 @@ $(window).on('load', function() {
 	wwt.resize();
 	//load search data after everything else
 	var scr = document.createElement('script');
-	scr.setAttribute("src", $('body').data('res-location') + '/searchdata.min.js');
+	scr.setAttribute("src", 'searchdata.min.js');
 	document.getElementsByTagName("head")[0].appendChild(scr);
 });

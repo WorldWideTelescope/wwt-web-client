@@ -79,7 +79,7 @@
 										name: $scope.getFromEn('Constellation Pictures'),
 										//children: picturesFilter,
 										action: 'showConstellationPictures',
-										checked: false,
+										checked: false
 									}), new treeNode({
 										name: $scope.getFromEn('Constellation Figures'),
 										//children: figuresFilter,
