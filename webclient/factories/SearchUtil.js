@@ -1,6 +1,6 @@
 ﻿wwt.app.factory('SearchUtil', [
-	'SearchData', '$q', '$timeout','Util',
-	function (searchDataService, $q, $timeout,util) {
+	'SearchData', '$q', 'Util',
+	function (searchDataService, $q, util) {
 	
 	var api = {
 		runSearch: runSearch,
@@ -11,7 +11,7 @@
 		var deferred = $q.defer();
 
 		searchDataService.getIndex().then(function (d) {
-			var searchData = d;
+			var searchData = wwt.searchDataIndexed;
 			var foundPlaces = [];
 			if (q.length < 2) {
 				foundPlaces = searchData[q];
@@ -38,12 +38,21 @@
 
 				});
 			}
-			deferred.resolve(foundPlaces);
+			deferred.resolve(foundPlaces.sort(sortByImagery));
 		});
 
 		return deferred.promise;
 	}
-	function getPlaceById(id) {
+
+	var sortByImagery = function(p1, p2) {
+		return p2.get_constellation() == 'SolarSystem' && p1.get_constellation() != 'SolarSystem' ? 1 :
+			p1.get_constellation() == 'SolarSystem' && p2.get_constellation() != 'SolarSystem' ? -1 :
+			p2.get_studyImageset() && !p1.get_studyImageset() ? 1 :
+			p1.get_studyImageset() && !p2.get_studyImageset() ? -1 :
+			p1.get_name() - p2.get_name();
+	}
+
+		function getPlaceById(id) {
 		var deferred = $q.defer();
 
 		searchDataService.getData().then(function (d) {
@@ -59,7 +68,7 @@
 		var deferred = $q.defer();
 
 		searchDataService.getData().then(function(d) {
-			var searchData = d;
+			var searchData = wwt.searchData;
 			if (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem') {
 				//if (wwt.wc.getRA() != oldRa || wwt.wc.getDec() != oldDec || wwt.wc.get_fov() != oldZoom) {
 
@@ -86,17 +95,18 @@
 
 				var results = [];
 				$.each(searchPlaces, function(i, place) {
-					if (place.name != 'Earth') {
+					if (place.get_name() != 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
 							if (dist.length() > placeDist.length()) {
 								results.push(place);
 							}
 						} catch (er) {
+							util.log(er, place);
 						}
 					}
 				});
-				deferred.resolve(results);
+				deferred.resolve(results.sort(sortByImagery));
 
 			} else {
 				deferred.resolve([]);

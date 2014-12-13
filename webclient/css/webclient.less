@@ -241,13 +241,24 @@ body.wwt-webclient-wrapper.mobile{
 	}
 
 	a {
-		color: @wc-text-color;
+		color: @wc-text-color; 
 	}
 
 		a:hover, a:focus, a:active {
 			color: white;
 			text-decoration: none;
 		}
+		.dropdown-menu > li > a, .dropdown-menu > li > a{
+			color: @wc-text-color;
+			border-radius:2px;
+		}
+		.dropdown-menu > li > a {
+		  &:hover,
+		  &:focus {
+			border:solid 1px fade(#fdfeff,40%);
+		  }
+		}
+		
 
 	span.bc a {
 		font-size: 12px;
@@ -1058,7 +1069,7 @@ body.wwt-webclient-wrapper.mobile{
 		&:hover, &:focus {
 			.boxhilite();
 		}
-	}
+	} 
 
 	.nearby-objects a.yellow-arrow, search-results a.yellow-arrow {
 		position: relative;
@@ -1104,6 +1115,7 @@ body.wwt-webclient-wrapper.mobile{
 		opacity: .8;
 		position:relative;
 		background-color:transparent;
+		margin-bottom:0; 
 		i.fa{
 			position:absolute;
 			top:2px;

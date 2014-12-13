@@ -83,7 +83,7 @@
 
         root = wwt.wc.createFolder();
         //var domain = util.isStaging ? 'http://wwt.thewebkid.com' : 'http://www.worldwidetelescope.org';
-        var toursUrl = $rootScope.resLocation + '/gettours_webclient.xml';
+        var toursUrl = 'gettours_webclient.xml';
         root.loadFromUrl(toursUrl, function () {
             //root.refresh();
             deferred.resolve(root.get_children());

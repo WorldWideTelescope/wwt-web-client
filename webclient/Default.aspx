@@ -10,10 +10,10 @@
 	<meta name="ROBOTS" content="INDEX, FOLLOW">
 	<% if (Client == Clients.Html5 || Client == Clients.Mobile)
 	   { %>
-	<link href=<%= ResourcesLocation%>/css/webclient.css?v=<%= ResourcesVersion%> rel="stylesheet" />
-	<link href=<%= ResourcesLocation%>/css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
+	<link href=css/webclient.css?v=<%= ResourcesVersion%> rel="stylesheet" />
+	<link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
 	<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel="stylesheet"/>
-	<link href=<%= ResourcesLocation%>/ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
+	<link href=ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
 	<style>
 		html, body.fs-player, iframe {
 			height: 100%;
@@ -23,53 +23,53 @@
 			overflow: hidden;
 		}
 		.finder-scope {
-			background: url(<%= ResourcesLocation %>/Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
+			background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
 		}
 	</style>
 	<script type="text/javascript" src="<%=SDKLocation + DebugQs%>"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
-	<script src="<%= ResourcesLocation%>/ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
+	<script src="ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
 	<% if (Debug || DebugChrome)
 	   { %>
-	<script src="<%= ResourcesLocation%>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/intro.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/app.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/Util.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/ViewController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/ThumbnailController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/ToursController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/SettingsController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/popovers/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/AdsController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controllers/ShareController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controls/move.js?v=<%= ResourcesVersion%>"></script>
-	<script src="<%= ResourcesLocation%>/controls/util.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/intro.js?v=<%= ResourcesVersion%>"></script>
+	<script src="ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
+	<script src="app.js?v=<%= ResourcesVersion%>"></script>
+	<script src="directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/appstate.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/localization.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/Util.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
+	<script src="factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
+	<script src="dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
+	<script src="dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
+	<script src="dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/ViewController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/ThumbnailController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/ToursController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/SettingsController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/popovers/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/AdsController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controllers/ShareController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controls/move.js?v=<%= ResourcesVersion%>"></script>
+	<script src="controls/util.js?v=<%= ResourcesVersion%>"></script>
 	<% }
 	   else
 	   { %>
-	<script src="<%= ResourcesLocation%>/wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
+	<script src="wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
 	<% } %>
 
 	<% }
@@ -109,7 +109,7 @@
   
 </head>
 <%--<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation %>" data-version="<%= ResourcesVersion %>">--%>
-	<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation %>" data-version="1">
+	<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="" data-version="1">
 	<% if (Client == Clients.Html5 || Client == Clients.Mobile)
 	   { %>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
@@ -242,7 +242,7 @@
 		</div>
 	</div>
 	<div ng-class="isLoading ?  'mobile-loading' : 'hide'">
-		<img src='<%=ResourcesLocation %>/Images/wwtlogo.png' class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
+		<img src='Images/wwtlogo.png' class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
 		<h3 style="position:relative;top:-2px">
 			<small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
 			World<span style="color:#6ba9e6">Wide Telescope</span>
@@ -347,7 +347,7 @@
 	<div style="margin:-4px 0 1px;">
 		<div style="padding:4px 100px 0 4px;" class="iblock input-group">
 			<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" placeholder="{{getFromEn('Object Search')}}" style="width:200px" />
-			<span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;"></span>
+			<span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;top:3px"></span>
 				
 		</div>
 		<!--<div class="checkbox" style="display: inline-block">
@@ -400,7 +400,7 @@
 						  data-content-template="views/popovers/property-panel.html"
 						  data-container="body">&nbsp;</span>
 					<a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
-						<img src='<%=ResourcesLocation %>/Images/context-menu-arrow.png' class="menu" />
+						<img src='Images/context-menu-arrow.png' class="menu" />
 					</a>
 				</div>
 			</span>
@@ -791,7 +791,7 @@
 					<div ng-if="!item.get_isFolder()" class="dropup" ng-mouseenter="moveNboMenu($index,item)" id="nboMenuContainer{{$index}}">
 					
 						<a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
-							<img src="<%=ResourcesLocation %>/Images/context-menu-arrow.png" class="menu" />
+							<img src="Images/context-menu-arrow.png" class="menu" />
 						</a>
 					</div>
 				</span>
@@ -843,7 +843,7 @@
 		<div class="modal-content">
 			
 			<div class="modal-body">
-				<img src='<%=ResourcesLocation %>/Images/wwtlogo.png' style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
+				<img src='Images/wwtlogo.png' style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
 				<h1 style="position:relative;top:-2px">
 					<small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
 					World<span style="color:#6ba9e6">Wide Telescope</span>

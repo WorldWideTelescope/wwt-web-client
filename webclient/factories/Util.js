@@ -19,8 +19,8 @@
 		nav: nav,
 		log: log,
 		resetCamera: resetCamera,
-		toggleFullScreen: toggleFullScreen
-		
+		toggleFullScreen: toggleFullScreen,
+		getImageSetType: getImageSetType
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -258,7 +258,20 @@
 		}
 	};
 
+	var imageSetTypes = [];
+	function getImageSetType(sType) {
+		if (!imageSetTypes.length) {
+			$.each(wwtlib.ImageSetType, function(k, v) {
+				if (!isNaN(v)) {
+					imageSetTypes[v] = k.toLowerCase();
+				}
+			});
+		}
+		return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
+		
+	}
 
+	
 
 	return api;
 
