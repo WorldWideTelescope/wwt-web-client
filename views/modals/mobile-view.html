@@ -1,29 +1,31 @@
 ﻿<div data-ng-controller="ViewController" style="padding:1px 5px">
 	<button aria-hidden="true" class="close pull-right" type="button" ng-click="$hide()" style="margin-right:10px;">×</button>
-	<h5 style="margin:5px 0;">{{getFromEn('View')}}</h5>
+	<h5 style="margin:5px 0;" localize="View"></h5>
 	
 	<fieldset style="width:75%;padding:5px">
 		<div>
-			<label>{{getFromEn('Name')}}:</label> <label>{{locationName}}</label>
+			<label localize="Name">Name:</label> <label>{{locationName}}</label>
 		</div>
 		<div>
-			<div class="pull-right"><label>{{getFromEn('Alt')}}:</label> <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label></div>
-			<label>{{getFromEn('Lat')}}:</label> <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
+			<div class="pull-right">
+				<label localize="Alt">Alt:</label> <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
+			</div>
+			<label localize="Lat">Lat:</label> <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
 		</div>
 		<div class="clearfix">
-			<label>{{getFromEn('Lng')}}:</label> <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
+			<label localize="Lng">Lng:</label> <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
 		</div>
 		<div class="checkbox">
 			<label data-ng-class="viewFromLocation ? 'checked' : ''">
 				<input type="checkbox" ng-model="viewFromLocation" ng-change="setViewFromLocation()" />
-				{{getFromEn('View From This Location')}}
+				<span localize="View From This Location"></span>
 			</label>
 		</div>
 	</fieldset>
 	
 	<fieldset style="padding: 8px 5px 2px;width:75%" >
 		<a class="btn" bs-popover="popover"
-		   title="{{getFromEn('Observing Time')}}"
+		   localize="Observing Time" localize-only="title"
 		   data-content-template="views/popovers/observing-time.html"
 		   ng-controller="ObservingTimeController"
 		   data-animation="am-flip-x"
@@ -53,7 +55,7 @@
 
 			</a>
 			&nbsp;
-			<a class="btn" ng-click="timeNow_Click()" id="btnTimeNow">Now</a>
+			<a class="btn" ng-click="timeNow_Click()" id="btnTimeNow" localize="Now"></a>
 		</div>
 
 	</fieldset>
@@ -61,7 +63,7 @@
 		<div class="checkbox">
 			<label data-ng-class="galaxyMode ? 'checked' : ''">
 				<input type="checkbox" ng-model="galaxyMode" ng-change="galaxyModeChange()" />
-				{{getFromEn('Galactic Plane Mode')}}
+				<span localize="Galactic Plane Mode"></span>
 			</label>
 		</div>
 	</p>

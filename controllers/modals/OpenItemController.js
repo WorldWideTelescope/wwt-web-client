@@ -4,26 +4,83 @@
 	'AppState',
 	'Places',
 	'Util',
-	function ($rootScope,$scope, appState, places, util) {
+	'Astrometry',
+	function ($rootScope, $scope, appState, places, util, astrometry) {
+
 		$scope.openItem = function (itemType) {
 			if (itemType === 'collection') {
 				places.openCollection($scope.openItemUrl).then(function (folder) {
 					util.log('initExplorer broadcast', folder);
 					$rootScope.newFolder = folder;
 					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+					$('#openModal').modal('hide');
 				});
-			}else if (itemType === 'tour') {
+			} else if (itemType === 'tour') {
 				$scope.playTour($scope.openItemUrl);
+				$('#openModal').modal('hide');
 			} else {
-				places.importImage($scope.openItemUrl).then(function(folder) {
-					util.log('initExplorer broadcast', folder);
-					$rootScope.newFolder = folder;
-					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+				//var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
+				//$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
+				places.importImage($scope.openItemUrl).then(function (folder) {
+					//var imported = folder.get_children()[0];
+					if (folder) {
+						util.log('initExplorer broadcast', folder);
+						$rootScope.newFolder = folder;
+						$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+						$('#openModal').modal('hide');
+					} else {
+						$scope.importState = 'notAVMTagged';
+						$scope.imageFail = true;
+					}
 				});
 			}
-			util.log(itemType,$scope.openItemUrl);
-			$('#openModal').modal('hide');
+			
 		}
+		$scope.astrometryStatusText = '';
+		$scope.astroCallback = function(data) {
+			if ($scope.astrometryStatusText.indexOf(data.message) == 0) {
+				$scope.astrometryStatusText += ' .';
+			} else {
+				$scope.astrometryStatusText = data.message;
+			}
+			if (data.calibration) {
+				/*calibration.ra = result.ra; // in degrees devide 15 for hours
+				calibration.dec = result.dec; // in degrees
+				calibration.rotation = result.orientation;
+				calibration.scale = result.pixscale;
+				calibration.parity = result.parity;
+				calibration.radius = result.radius;*/
+				$scope.importState = 'astrometrySuccess';
+				var qs = '&ra=' + data.calibration.ra +
+					'&dec=' + data.calibration.dec +
+					'&scale=' + (data.calibration.scale / 3600) +
+					'&rotation=' + data.calibration.rotation;
+				if (data.calibration.parity !== 1) {
+					qs += '&reverseparity=true';
+				}
+
+				places.importImage($scope.openItemUrl, qs).then(function (folder) {
+							
+					$rootScope.newFolder = folder;
+					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+					$scope.imageFail = false;
+					$scope.importState = '';
+					$('#openModal').modal('hide');
+					return;
+				});
+			}
+			if (data.status.toLowerCase().indexOf('fail') != -1) {
+				$scope.importState = 'astrometryFail';
+					
+			}
+		}
+
+		$scope.solveAstrometry = function () {
+			$scope.importState = 'astrometryProgress';
+			astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
+		}
+		//util.log(itemType,$scope.openItemUrl);
+			
 	}
 ]);
 

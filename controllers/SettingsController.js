@@ -5,7 +5,8 @@
 	'$timeout',
 	'$cookies',
 	'Util',
-	function ($scope, rs, appState, $timeout, $cookies, util) {
+	'$q',
+	function ($scope, rs, appState, $timeout, $cookies, util,$q) {
 		//var settings = $scope.settings = wwt.wc.settings;
 		$scope.defaults = {
 			autoHideTabs: false,
@@ -15,21 +16,22 @@
 			crosshairs:true
 		};
 
-		//TODO: make event driven
-		$timeout(function() {
+		$q.all([$scope.getFromEn('HTML5'), $scope.getFromEn('Silverlight')]).then(function(arrayLabels) {
 			$scope.availableClients = [
 				{
 					code: 'HTML5',
-					label: $scope.getFromEn('HTML5')
+					label: arrayLabels[0]
 				}, {
 					code: 'SL',
-					label: $scope.getFromEn('Silverlight')
+					label: arrayLabels[1]
 				} /*,{
 				code: 'WWT',
 				label: $scope.getFromEn('WorldWide Telescope Windows Client')
 			}*/
 			];
-		}, 5);
+		});
+
+		
 		
 
 		var redirTimer;

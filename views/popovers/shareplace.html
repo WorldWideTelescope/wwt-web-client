@@ -1,5 +1,5 @@
 ﻿<div data-ng-controller="ShareController" ng-init="init()">
-	<h4 style="margin-top:-5px">{{getFromEn('Share')}}</h4>
+	<h4 style="margin-top:-5px" localize="Share"></h4>
 	<h5>{{trackingObj.get_name()}}</h5>
 	<div>
 		<p>
@@ -11,21 +11,20 @@
 					<i class="fa fa-copy" bs-tooltip="'Copy to clipboard'"></i>
 				</span>-->
 			</div>
-			({{getFromEn('Copy the above link to your clipboard')}})
-		</p>
+			<span localize="Copy the above link to your clipboard">(Copy the above link to your clipboard)</span>
 
 		<p>
 			<div class="checkbox">
 				<label data-ng-class="includeViewport ? 'checked' : ''">
 					<input type="checkbox" ng-model="includeViewport" data-ng-change="includeViewportChange()" />
-					{{getFromEn('Include current viewport (coordinates / zoom level)')}}
+					<span localize="Include current viewport (coordinates / zoom level)"></span>
 
 				</label>
 			</div>
 		</p>
 	</div>
 	<p>
-		<button type="button" class="btn pull-right" ng-click="hide()" id="btnCloseShare" style="width:80px">{{getFromEn('Close')}}</button>
+		<button type="button" class="btn pull-right" ng-click="hide()" id="btnCloseShare" style="width:80px" localize="Close"></button>
 	</p>
 	<div class="clearfix"></div>
 </div>

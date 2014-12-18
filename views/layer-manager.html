@@ -1,31 +1,29 @@
 ﻿<div class="layer-manager" ng-controller="LayerManagerController" ng-hide="layerManagerHidden">
-    <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">×</button>
-    <h5>
-        {{getFromEn('Layers')}}
-    </h5>
-    <div class="tree" ng-class="tree.collapsed?'collapsed':''">
-        <div class="checkbox">
-            <i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
-            <label data-ng-class="tree.checked ? 'checked' : ''">
-                <input type="checkbox" ng-model="tree.checked" data-ng-change="nodeChange(tree)" />
-                {{tree.name}}
+	<button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">×</button>
+	<h5 localize="Layers"></h5>
+	<div class="tree" ng-class="tree.collapsed?'collapsed':''">
+		<div class="checkbox">
+			<i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
+			<label data-ng-class="tree.checked ? 'checked' : ''">
+				<input type="checkbox" ng-model="tree.checked" data-ng-change="nodeChange(tree)" />
+				<span localize="{{tree.name}}"></span>
 
-            </label>
-        </div>
-        <div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in tree.children">
-            <ng-include src="'views/tree-node.html'"></ng-include>
-            <div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-                <ng-include src="'views/tree-node.html'"></ng-include>
-                <div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-                    <ng-include src="'views/tree-node.html'"></ng-include>
-                    <div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-                        <ng-include src="'views/tree-node.html'"></ng-include>
-                        <div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-                            <ng-include src="'views/tree-node.html'"></ng-include>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+			</label>
+		</div>
+		<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in tree.children">
+			<ng-include src="'views/tree-node.html'"></ng-include>
+			<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
+				<ng-include src="'views/tree-node.html'"></ng-include>
+				<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
+					<ng-include src="'views/tree-node.html'"></ng-include>
+					<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
+						<ng-include src="'views/tree-node.html'"></ng-include>
+						<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
+							<ng-include src="'views/tree-node.html'"></ng-include>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

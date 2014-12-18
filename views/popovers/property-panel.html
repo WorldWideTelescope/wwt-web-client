@@ -2,26 +2,32 @@
 	<a class="thumbnail pull-left">
 		<img ng-src="{{propertyItem.get_thumbnailUrl()||propertyItem.imageSet.get_thumbnailUrl()}}" />
 	</a>
-	<h4>{{getFromEn('Classification')}}: <span>{{getClassificationText(propertyItem.get_classification())}}</span></h4>
-	<h4 ng-if="!propertyItem.isSurvey">{{getFromEn('Constellation')}}: <span>{{constellations.fullNames[propertyItem.get_constellation()]}}</span></h4>
-	<h4>{{getFromEn('Names:')}} <span>{{propertyItem.get_names()?propertyItem.get_names().join(', '): propertyItem.get_name()}}</span></h4>
+	<h4><strong localize="Classification"></strong>: <span>{{getClassificationText(propertyItem.get_classification())}}</span></h4>
+	<h4 ng-if="!propertyItem.isSurvey"><strong localize="Constellation"></strong>: <span>{{constellations.fullNames[propertyItem.get_constellation()]}}</span></h4>
+	<h4><strong localize="Names"></strong>: <span>{{propertyItem.get_names()?propertyItem.get_names().join(', '): propertyItem.get_name()}}</span></h4>
 	<hr />
 	<div style="width:48%;display:inline-block" ng-if="!propertyItem.isSurvey">
-		<p>{{getFromEn('RA')}}: <span>{{formatHms(propertyItem.get_RA(), true)}}</span></p>
-		<p>{{getFromEn('Dec')}}: <span>{{formatHms(propertyItem.get_dec(), false, true, true)}}</span></p>
-		<p>{{getFromEn('Alt')}}: <span>{{formatHms(propertyItem.altAz.get_alt(), false, false, true)}}</span></p>
-		<p>{{getFromEn('Az')}}: <span>{{formatHms(propertyItem.altAz.get_az(), false, false, true)}}</span></p>
+		<p><label localize="RA"></label>: <span>{{formatHms(propertyItem.get_RA(), true)}}</span></p>
+		<p><label localize="Dec"></label>: <span>{{formatHms(propertyItem.get_dec(), false, true, true)}}</span></p>
+		<p><label localize="Alt"></label>: <span>{{formatHms(propertyItem.altAz.get_alt(), false, false, true)}}</span></p>
+		<p><label localize="Az"></label>: <span>{{formatHms(propertyItem.altAz.get_az(), false, false, true)}}</span></p>
 	</div>
-	<div style="width:48%;display:inline-block;margin-left:7px">
-		<p>{{getFromEn('Distance')}}: <span>{{propertyItem.get_distance() == 0 ? getFromEn('n/a') : UITools.formatDistance(propertyItem.get_distance())}}</span></p>
-		<p>{{getFromEn('Mag')}}: <span>{{propertyItem.get_magnitude() == 0 ?  getFromEn('n/a') : propertyItem.get_magnitude().toFixed(2)}}</span></p>
-		<p>{{getFromEn('Rise')}}: <span>{{propertyItem.riseSet ? propertyItem.riseSet.bNeverRises ? getFromEn('Never Rises') : formatDecimalHours(propertyItem.riseSet.rise, false, false, true) : getFromEn('n/a')}}</span></p>
-		<p>{{getFromEn('Transit')}}:  <span>{{propertyItem.riseSet ? formatDecimalHours(propertyItem.riseSet.transit, false, false, true) : getFromEn('n/a')}}</span></p>
-		<p>{{getFromEn('Set')}}: <span>{{propertyItem.riseSet ? propertyItem.riseSet.bNeverSets? getFromEn('Never Sets') : formatDecimalHours(propertyItem.riseSet.set, false, false, true) : getFromEn('n/a')}}</span></p>
+	<div style="width:48%;display:inline-block;margin-left:7px;">
+		<!--<p><label localize="Distance"></label>: <span>{{propertyItem.get_distance() == 0 ? loc.na : UITools.formatDistance(propertyItem.get_distance())}}</span></p>
+		<p><label localize="Mag"></label>: <span>{{propertyItem.get_magnitude() == 0 ?  loc.na : propertyItem.get_magnitude().toFixed(2)}}</span></p>-->
+		<p>
+			<label localize="Rise"></label>: <span>
+				{{propertyItem.riseSet ? propertyItem.riseSet.bNeverRises ? loc.neverRises : formatDecimalHours(propertyItem.riseSet.rise, false, false, true) : loc.na}}
+			</span>
+		</p>
+		<p><label localize="Transit"></label>:  <span>{{propertyItem.riseSet ? formatDecimalHours(propertyItem.riseSet.transit, false, false, true) : loc.na }}</span></p>
+		<p><label localize="Set"></label>: <span>{{propertyItem.riseSet ? propertyItem.riseSet.bNeverSets? loc.neverSets : formatDecimalHours(propertyItem.riseSet.set, false, false, true) : loc.na}}</span></p>
 	</div>
 	<div style="margin-bottom:8px;">
-		<h5 style="margin-bottom:5px;">{{getFromEn('Image Credit')}}:</h5>
-		<p style="max-height:35px;overflow:hidden"><a href="{{getCreditsUrl(propertyItem)}}" target="_blank" title="{{getCreditsText(propertyItem)}}">{{getCreditsText(propertyItem)}}</a></p>
+		<h5 style="margin-bottom:5px;" localize="Image Credit">Image Credit:</h5>
+		<p style="max-height:35px;overflow:hidden">
+			<a href="{{getCreditsUrl(propertyItem)}}" target="_blank" title="{{getCreditsText(propertyItem)}}">{{getCreditsText(propertyItem)}}</a>
+		</p>
 		
 	</div>
 	<div style="height:30px;">
@@ -29,44 +35,14 @@
 
 			<div ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="dropup" style="display: inline-block">
 				<a class="btn" data-toggle="dropdown" role="button">
-					{{getFromEn('Research')}}
+					<span localize="Research"></span>
 					<i class="fa fa-caret-down" style="font-size:12px"></i>
 				</a>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="javascript:void(0)" title="{{propertyItem.get_name()}}">{{getFromEn('Name:')}} {{propertyItem.get_name()}}</a></li>
-					<li class="dropdown-submenu">
-						<a href="javascript:void(0)">{{getFromEn('Information')}}</a>
-						<ul class="dropdown-menu" style="height:180px">
-							<li><a href="http://www.bing.com/search?q={{propertyItem.get_name().split(' ').join('+')}}" target="bing">{{getFromEn('Look up on Bing')}}</a></li>
-							<li><a href="http://simbad.u-strasbg.fr/simbad/sim-id?Ident={{propertyItem.get_name().split(' ').join('+')}}" target="simbad">{{getFromEn('Look up on SIMBAD')}}</a></li>
-							<li><a href="http://seds.org/~spider/ngc/ngc.cgi?{{propertyItem.get_name()}}" target="seds">{{getFromEn('Look up on SEDS')}}</a></li>
-							<li><a href="http://en.wikipedia.org/wiki/{{propertyItem.get_name().split(' ').join('_')}}" target="wiki">{{getFromEn('Look up on Wikipedia')}}</a></li>
-							<li><a href="http://adsabs.harvard.edu/cgi-bin/abs_connect?db_key=AST&sim_query=YES&object={{propertyItem.get_name().split(' ').split(';')[0]}}" target="wiki">{{getFromEn('Look up publication on ADS')}}</a></li>
-							<li><a href="http://ned.ipac.caltech.edu/cgi-bin/nph-imgdata?objname={{propertyItem.get_name()}}" target="ned">{{getFromEn('Look up on NED')}}</a></li>
-							<li><a href="http://cas.sdss.org/dr7/en/tools/quicklook/quickobj.asp?id={{propertyItem.get_name()}}" target="sdss">{{getFromEn('Look up on SDSS')}}</a></li>
-							<li class="clearfix"></li>
-						</ul>
-					</li>
-					<li class="dropdown-submenu">
-						<a href="javascript:void(0)">{{getFromEn('Imagery')}}</a>
-						<ul class="dropdown-menu" style="height:67px;">
-							<li>
-								<a href="javascript:void(0)">{{getFromEn('Get DSS Image')}}</a>
-							</li>
-							<li>
-								<a href="javascript:void(0)">{{getFromEn('Get SDSS Image')}}</a>
-							</li>
-						</ul>
-					</li>
-					<li role="presentation" class="divider"></li>
-					<li><a href="javascript:void(0)" ng-click="setBackgroundImage(propertyItem)">{{getFromEn('Set as Background Imagery')}}</a></li>
-					<li><a href="javascript:void(0)" ng-click="setForegroundImage(propertyItem)">{{getFromEn('Set as Foreground Imagery')}}</a></li>
-					<!--<li role="presentation" class="divider"></li>
-					<li><a href="javascript:void(0)">{{getFromEn('Copy Shortcut')}}</a></li>-->
-				</ul>
+				<ng-include src="'views/research-menu.html'"></ng-include>
+				
 			</div>
-			<a ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="btn">{{getFromEn('Show Object')}}</a>
-			<a class="btn close-btn pull-right" ng-click="$hide()">{{getFromEn('Close')}}</a>
+			<a ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="btn" localize="Show Object"></a>
+			<a class="btn close-btn pull-right" ng-click="$hide()" localize="Close"></a>
 		</div>
 	</div>
 </div>

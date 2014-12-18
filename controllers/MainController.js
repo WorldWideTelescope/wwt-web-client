@@ -454,7 +454,7 @@
 		//#endregion
 
 		//#region localization
-		var languagePromise;
+		
 		$scope.selectedLanguage = 'EN';
 		$scope.setLanguageCode = function(code) {
 			appState.set('language', code);
@@ -464,14 +464,14 @@
 					$scope.languageCode = code;
 				}
 			}, 200);
-			languagePromise = loc.setLanguage(code);
+			$rootScope.languagePromise = loc.setLanguage(code);
 		};
 		
 		//appState.set('language', 'EN');
 		$scope.setLanguageCode(appState.get('language') || 'EN');
 		$scope.locString = function(id) {
 			var deferred = $q.defer();
-			languagePromise.then(function () {
+			$rootScope.languagePromise.then(function () {
 				localized[id] = loc.getString(id);
 				deferred.resolve(localized[id]);
 			});
@@ -479,7 +479,12 @@
 		};
 		
 		var localized = [];
+		var locCalls = 0;
 		$scope.getFromEn = function (englishString) {
+			locCalls++;
+			if (locCalls % 100 == 0) {
+				util.log('loc calls: ' + locCalls);
+			}
 			var key = englishString + $scope.selectedLanguage;
 			if ($scope.selectedLanguage == 'EN') {
 				localized[key] = englishString;
@@ -489,30 +494,37 @@
 			}
 
 			var deferred = $q.defer();
-			languagePromise.then(function () {
-				localized[key] = loc.getFromEn(englishString);
+			$rootScope.languagePromise.then(function () {
+				//var key = englishString + $scope.selectedLanguage;
+				if ($scope.selectedLanguage == 'EN') {
+					localized[key] = englishString;
+				}
+				else  {
+					localized[key] = loc.getFromEn(englishString);
+				}
 				deferred.resolve(localized[key]);
-				});
+			});
 			return deferred.promise;
+			//return null;
 		};
 		loc.getAvailableLanguages().then(function (result) {
-
 			$scope.availableLanguages = result;
 		});
-		$scope.locString(478).then(function (result) {
+
+		//static localizable strings that should be calculated once to prevent endless looping
+		$rootScope.loc = {
+			na: '',
+			neverRises: ''
+		};
+
+		
+		$rootScope.languagePromise.then(function (result) {
+			$rootScope.na = loc.getFromEn('n/a');
+			$rootScope.neverRises = loc.getFromEn('Never Rises');
 			$scope.hideIntroModal = appState.get('hideIntroModal');
-			/*var introTips = result.split('\\n\\n');
-			$scope.tipsIntro = introTips[0];
-			$scope.tips = introTips[1].replace(/\\n/g, '').split('%').slice(1);//replace(/\%/g, '').replace(/●/g, '').split('\\n');
-			if ($scope.tips.length < 5) {
-				$scope.tips = introTips[1].replace(/\\n/g, '').split('●').slice(1);
-			}*/
-			//$scope.tips.slice(1);
 			if (!$scope.hideIntroModal && !$scope.loadingUrlPlace) {
 				setTimeout(showTips,1200);
 			}
-			
-			
 		});
 		//#endregion
 
@@ -733,5 +745,16 @@
 		}
 		$scope.isLoading = true;
 		var time = new Date();
+		$scope.fovClass = function () {
+			return $scope.lookAt == 'Planet' || $scope.lookAt == 'Panorama' || $scope.lookAt == 'Earth' ? 'hide' :
+				$scope.lookAt == 'SolarSystem' ? 'solar-system-mode fov-panel' :
+				'fov-panel';
+		}
+		$scope.contextPanelClass = function () {
+			return $scope.lookAt == 'Planet' || $scope.lookAt == 'Panorama' || $scope.lookAt == 'Earth' ? 'context-panel compressed' : 'context-panel';
+		}
+		$scope.contextPagerRight = function() {
+			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
+		}
 	}
 ]);

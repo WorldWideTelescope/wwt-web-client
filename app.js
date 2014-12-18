@@ -3,6 +3,7 @@
 var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
+		'ngTouch',
 		'ngAnimate',
 		'ngRoute',
 		'wwtControllers',
@@ -18,13 +19,13 @@ var wwt = {
 		$('body.desktop #WWTCanvas')
 			.height($(window).height())
 			.width($(window).width());
-		if ($('body.desktop.length')) {
+		//if ($('body.desktop.length')) {
 			
-			$('body.desktop div.context-panel .controls, body.desktop div.context-panel .thumbnails')
-				.width($('div.context-panel').width() - ($('body.desktop .fov-panel').width() + 1));
-			$('body.desktop .layer-manager .tree').css('height', $(window).height() - (166 + $('body.desktop .context-panel').height()));
+		//	/*$('body.desktop div.context-panel .controls, body.desktop div.context-panel .thumbnails')
+		//		.width($('div.context-panel').width() - ($('body.desktop .fov-panel').width() + 1));*/
+		//	//$('body.desktop .layer-manager .tree').css('height', $(window).height() - (166 + $('body.desktop .context-panel').height()));
 			
-		}
+		//}
 	}
 };
 

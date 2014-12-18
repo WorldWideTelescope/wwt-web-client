@@ -20,7 +20,8 @@
 			$.each(folders, function(i, item) {
 				item.guid = item.get_name();
 			});
-			deferred.resolve(transformData(folders));
+			transformData(folders);
+			deferred.resolve(root.get_children());
 		});
 		return deferred.promise;
 	}
@@ -129,7 +130,7 @@
 		});
 		return deferred.promise;
 	}
-	function importImage(url) {
+	function importImage(url, manualData) {
 		var deferred = $q.defer();
 		if (!openCollectionsFolder) {
 			openCollectionsFolder = wwt.wc.createFolder();
@@ -140,21 +141,28 @@
 		
 		collection.set_name("Imported image");
 		//collection.url = url;
-		openCollectionsFolder.addChildFolder(collection);
+		
 		var encodedUrl = url.indexOf('%2F%2F') != -1 ? url : encodeURIComponent(url);
+		if (manualData) {
+			encodedUrl += manualData;
+		}
 		collection.loadFromUrl('http://www.worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodedUrl, function () {
 			//collection.get_children();
 			//collection.url = url;
-			openCollectionsFolder.addChildFolder(collection);
-			getChildren(collection).then(function(children) {
-				if (collection.get_name() == '') {
-					deferred.resolve(collection.get_children());
-				} else {
-					deferred.resolve(collection);
-				}
-			});
-			
-			
+			if (collection.get_children()[0].get_RA() != 0 || collection.get_children()[0].get_dec() != 0) {
+				openCollectionsFolder.addChildFolder(collection);
+				getChildren(collection).then(function(children) {
+					if (collection.get_name() == '') {
+						deferred.resolve(collection.get_children());
+					} else {
+						deferred.resolve(collection);
+					}
+				});
+			} else {
+				deferred.resolve(false);
+			}
+
+
 		});
 		/*wwt.wc.add_collectionLoaded(function(data) {
 			console.log(data);

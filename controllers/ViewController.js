@@ -1,8 +1,8 @@
 ﻿wwt.controllers.controller('ViewController',
 	['$scope',
 	'AppState',
-	'$timeout','Util',
-	function ($scope, appState,$timeout, util) {
+	'$timeout','Util','$rootScope',
+	function ($scope, appState,$timeout, util,$rootScope) {
 		var stc = $scope.spaceTimeController = wwtlib.SpaceTimeController;
 		$scope.galaxyModeChange = function () {
 			if ($scope.galaxyMode && $scope.viewFromLocation) {
@@ -15,9 +15,22 @@
 		wwtlib.WWTControl.useUserLocation();
 		$scope.locationName = $scope.getFromEn('My Location');//getFromEn('Microsoft Research Building 99')
 		$scope.now = new Date();
+		$scope.loc = {
+			view:'View',
+			realTime: 'Real Time',
+			reverseTime: 'Reverse Time',
+
+			paused:'Paused'
+		};
+		$rootScope.languagePromise.then(function() {
+			$scope.loc.view = $scope.getFromEn('View');
+			$scope.loc.realTime = $scope.getFromEn('Real Time');
+			$scope.loc.reverseTime = $scope.getFromEn('Reverse Time');
+			$scope.loc.paused = $scope.getFromEn('Paused');
+		});
 
 		function timeDateTimerTick() {
-			if ($scope.activePanel === $scope.getFromEn('View') || util.isMobile) {
+			if ($scope.activePanel === $scope.loc.view || util.isMobile) {
 				$timeout(function() {
 					//var offset = stc.$1 === undefined ? stc._offset : stc.$1;
 					//var now = $scope.now = new Date(new Date().valueOf() + offset);
@@ -93,13 +106,13 @@
 			var tr = stc.get_timeRate();
 			if (tr == -2)tr = -1;
 			if (tr == 1){
-				$scope.TimeMode = $scope.getFromEn("Real Time");
+				$scope.TimeMode = $scope.loc.realTime;
 			} else if (stc.TimeRate == -2.0){
-				$scope.TimeMode = $scope.getFromEn("Reverse Time");
+				$scope.TimeMode = $scope.loc.reverseime;
 			} else {
-				$scope.TimeMode = $scope.getFromEn("X ") + tr;
+				$scope.TimeMode = "X " + tr;
 			} if (!stc.get_syncToClock()) {
-				$scope.TimeMode = $scope.TimeMode + $scope.getFromEn(" : Paused");
+				$scope.TimeMode = $scope.TimeMode + " : " + $scope.loc.paused;
 			}   
 		}
 
