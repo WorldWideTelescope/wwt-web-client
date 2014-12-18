@@ -31,45 +31,48 @@
 	<script src="ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
 	<% if (Debug || DebugChrome)
 	   { %>
-	<script src="ext/angular.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/intro.js?v=<%= ResourcesVersion%>"></script>
-	<script src="ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
-	<script src="app.js?v=<%= ResourcesVersion%>"></script>
-	<script src="directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/appstate.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/localization.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/Util.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
-	<script src="factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
-	<script src="dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
-	<script src="dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
-	<script src="dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/ViewController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/ThumbnailController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/ToursController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/SettingsController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/popovers/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/AdsController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controllers/ShareController.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controls/move.js?v=<%= ResourcesVersion%>"></script>
-	<script src="controls/util.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-touch.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/intro.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/app.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/Util.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/dataproxy/Astrometry.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/ViewController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/ThumbnailController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/ToursController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/SettingsController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/popovers/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/AdsController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controllers/ShareController.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controls/move.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/controls/util.js?v=<%= ResourcesVersion%>"></script>
 	<% }
 	   else
 	   { %>
-	<script src="wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
+	<script src="<%= ResourcesLocation%>/wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
 	<% } %>
 
 	<% }
@@ -109,7 +112,7 @@
   
 </head>
 <%--<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation %>" data-version="<%= ResourcesVersion %>">--%>
-	<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="" data-version="1">
+	<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1">
 	<% if (Client == Clients.Html5 || Client == Clients.Mobile)
 	   { %>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
@@ -121,28 +124,29 @@
 	
 	<a class="btn" data-bs-popover="popover" tabindex="0"
 		style="position:absolute;top:4px;left:4px;z-index: 1041" 
-		title="{{getFromEn('Share this place')}}"
+		localize="Share this place"
+		localize-only="title"
 		data-content-template="views/popovers/shareplace.html"
 		data-ng-class="searchModal ? 'hide':''"
 		data-placement="bottom-left"
 		data-ng-hide="trackingObj && trackingObj.get_name && !tourPlaying && lookAt != 'Earth' && lookAt != 'Planet' && lookAt != 'Panorama'"
 		>
 		<i class="fa fa-share-alt"></i>
-		{{getFromEn('Share')}}
+		<span localize="Share"></span>
 	</a>
 
 	<div ng-show="trackingObj && trackingObj.get_name && !tourPlaying && lookAt != 'Earth' && lookAt != 'Planet' && lookAt != 'Panorama'" style="position:absolute;top:3px;left:3px;">
-		<div title="{{trackingObj.get_name()}}" class="small"><strong>{{getFromEn('Tracking')}}</strong> <br/>{{trackingObj.get_name()}}</div>
+		<div title="{{trackingObj.get_name()}}" class="small"><strong localize="Tracking"></strong> <br/>{{trackingObj.get_name()}}</div>
 		<br />
 		<a class="btn" data-bs-popover="popover" tabindex="0"
-			style="" 
-			title="{{getFromEn('Share this place')}}"
+			localize="Share this place"
+			localize-only="title"
 			data-content-template="views/popovers/shareplace.html"
 			data-container="body"
 			data-placement="bottom-left"
 			>
 			<i class="fa fa-share-alt"></i>
-			{{getFromEn('Share')}}
+			<span localize="Share"></span>
 		</a>
 	</div>
 	<ng-include src="'views/modals/mobile-explore.html'" onload="initFinder()"></ng-include>
@@ -158,8 +162,9 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
-						<a href="javascript:void(0)" title="{{getFromEn('Look At')}}" class="dropdown-toggle" data-toggle="dropdown">
-							{{getFromEn('Look At')}} <span class="small">({{lookAt}})</span><i class="fa fa-angle-down"></i>
+						<a href="javascript:void(0)" localize="Look At" localize-only="title" class="dropdown-toggle" data-toggle="dropdown">
+							<span localize="Look At"></span> 
+							<span class="small">({{lookAt}})</span><i class="fa fa-angle-down"></i>
 						</a>
 						<ul class="dropdown-menu" >
 							<li ng-repeat="type in lookTypes" ng-click="hideMenu()">
@@ -170,13 +175,14 @@
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a href="javascript:void(0)" title="{{getFromEn('Imagery')}}" class="dropdown-toggle" data-toggle="dropdown">
-							{{getFromEn('Imagery')}} <span class="small">({{backgroundImagery.get_name()}})</span><i class="fa fa-angle-down"></i>
+						<a href="javascript:void(0)" localize="Imagery" localize-only="title" class="dropdown-toggle" data-toggle="dropdown">
+							<span localize="Imagery"></span> 
+							<span class="small">({{backgroundImagery.get_name()}})</span><i class="fa fa-angle-down"></i>
 						</a>
 						<ul class="dropdown-menu" >
 							<li ng-repeat="s in surveys" ng-click="hideMenu()">
 								<a href="javascript:void(0)" ng-click="setSurveyBg(s.name);">
-									{{s.name}}                        
+									{{::s.name}}                        
 								</a>
 							</li>
 						</ul>
@@ -188,86 +194,72 @@
 					
 					<li style="padding-left:12px;">
 						<a class="btn" ng-repeat="m in modalButtons" ng-click="showModal(m)">
-							<i class="fa {{m.icon}}"></i>
-							{{getFromEn(m.text)}}
-						</a>
-						
-					</li>
-					<li>
-						<hr class="clearfix"/>
-					</li>
-					<li>
-						<a ng-click="resetCamera()">
-							{{getFromEn('Reset Camera')}}
+							<i class="fa {{::m.icon}}"></i>
+							{{::m.text}}
 						</a>
 					</li>
 					<li>
 						<hr class="clearfix"/>
 					</li>
 					<li>
-						<a ng-click="gotoPage('/')" target="_blank">{{getFromEn('WorldWide Telescope Home')}}</a>
+						<a ng-click="resetCamera()" localize="Reset Camera"></a>
 					</li>
 					<li>
-						<a ng-click="gotoPage('/Learn')" target="_blank">{{getFromEn('Getting Started (Help)')}}</a>
+						<hr class="clearfix"/>
 					</li>
 					<li>
-						<a ng-click="gotoPage('/Terms')" target="_blank">{{getFromEn('WorldWide Telescope Terms of Use')}}</a>
+						<a ng-click="gotoPage('/')" target="_blank" localize="WorldWide Telescope Home"></a>
 					</li>
 					<li>
-						<a ng-click="gotoPage('/About')">{{getFromEn('About WorldWide Telescope')}}</a>
+						<a ng-click="gotoPage('/Learn')" target="_blank" localize="Getting Started (Help)"></a>
 					</li>
 					<li>
-						<a ng-click="gotoPage('/Support/IssuesAndBugs')">{{getFromEn('Product Support')}}</a>
+						<a ng-click="gotoPage('/Terms')" target="_blank" localize="WorldWide Telescope Terms of Use"></a>
 					</li>
-					<%--<li class="dropdown" ng-repeat="tab in nav">
-						<a ng-if="!tab.menu" href="javascript:void(0)" ng-click="tabClick(tab)" title="{{getFromEn(tab.label)}}">
-							{{getFromEn(tab.label)}} 
-						</a>
-						<a ng-if="tab.menu" class="dropdown-toggle" data-toggle="dropdown">
-							{{getFromEn(tab.label)}} <i class="fa fa-angle-down" ng-if="tab.menu"></i>
-						</a>
-						<ul ng-if="tab.menu" class="dropdown-menu">
-							<li ng-repeat="(item, action) in tab.menu" ng-click="hideMenu()" ng-class="item.indexOf('sep') == 0 ? 'divider' : ''">
-								<a href="javascript:void(0)" ng-click="menuAction(action)" ng-if="item.indexOf('sep') != 0">
-									{{getFromEn(item)}}
-								</a>
-							</li>
-						</ul>
-
-					</li>--%>
-
+					<li>
+						<a ng-click="gotoPage('/About')" localize="About WorldWide Telescope"></a>
+					</li>
+					<li>
+						<a ng-click="gotoPage('/Support/IssuesAndBugs')" localize="Product Support"></a>
+					</li>
 				</ul>
 
 			</div>
 		</div>
 	</div>
 	<div ng-class="isLoading ?  'mobile-loading' : 'hide'">
-		<img src='Images/wwtlogo.png' class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
+		<img src='<%= ResourcesLocation%>/Images/wwtlogo.png' 
+			class="pull-left" 
+			localize="Microsoft WorldWide Telescope Logo"
+			localize-only="alt"
+		 />
 		<h3 style="position:relative;top:-2px">
 			<small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
 			World<span style="color:#6ba9e6">Wide Telescope</span>
 		</h3>
-		<h4>{{getFromEn('Welcome to the WorldWide Telescope Web Client')}}</h4>
+		<h4 localize="Welcome to the WorldWide Telescope Web Client"></h4>
 		<p>
 			<i class="fa fa-spin fa-spinner"></i>
-			{{getFromEn('WorldWide Telescope is loading. Please wait.')}}
+			<span localize="WorldWide Telescope is loading. Please wait."></span>
 			
 		</p>
-		<p class="small">({{getFromEn('Please ensure you have a strong connection to the internet for the best experience.')}})</p>
+		<p class="small" localize="Please ensure you have a strong connection to the internet for the best experience.">
+			(Please ensure you have a strong connection to the internet for the best experience.)
+		</p>
 	</div>
 	<ng-include src="'views/modals/mobile-nearby-objects.html'"></ng-include>
 	<div class="context-panel">
 		<div class="nearby-objects" ng-if="nbo.length && lookAt == 'Sky'" ng-show="!tourPlaying">
 			<a ng-click="showNbo()" title="{{nbo[0].get_name()}}" class="thumbnail">
 				<img ng-src="{{nbo[0].get_thumbnailUrl()}}" alt="Thumbnail of {{nbo[0].get_name()}}" />
-				<label>{{getFromEn('Nearby')}}</label>
+				<label localize="Nearby"></label>
 			</a>
 			<div class="nbo-count">{{nboCount}}</div>
 		</div>
 	
 		
 		<div class="control" ng-show="lookAt == 'Sky' && trackingObj && !tourPlaying && trackingObj.get_backgroundImageset() != null || trackingObj.get_studyImageset() != null" style="position:absolute;bottom:12px;left:130px;">
-			<label>{{getFromEn('Image Crossfade')}}</label>
+			<label localize="Image Crossfade"></label>
 			<div class="cross-fader">
 				<a class="btn">&nbsp;</a>
 			</div>
@@ -275,7 +267,7 @@
 		</div>
 		<div class="fov-panel mobile" ng-show="lookAt=='Sky' && !tourPlaying">
 			<div class="left">
-				<p>{{getFromEn('N')}}</p>
+				<p localize="N"></p>
 				<div class="sphere mobile" id="skyball">
 					<div class="v-ellipse"></div>
 					<div class="h-ellipse"></div>
@@ -299,13 +291,13 @@
 	<div id="ribbon">
 		<a class="btn pull-right" href="/Download/" target="wwt">
 			<i class="fa fa-download"></i>
-			{{getFromEn('Install Windows Client')}}
+			<span localize="Install Windows Client"></span>
 		</a>
 		<ul class="wwt-tabs">
 			<li data-ng-repeat="tab in ribbon.tabs" data-ng-class="activePanel == tab.label ? 'active' : ''">
 				<div class="outer">
 					<a href="javascript:void(0)">
-						<span class="label" data-ng-click="tabClick(tab)" id="{{tab.button}}">{{getFromEn(tab.label)}}</span>
+						<span class="label" data-ng-click="tabClick(tab)" id="{{tab.button}}" localize="{{tab.label}}"></span>
 						<div class="menu" data-ng-click="menuClick(tab.menu)" id="tabMenu{{$index}}" data-target="#menu{{$index}}">
 							<i class="fa fa-caret-down"></i>
 						</div>
@@ -316,346 +308,390 @@
 	
 	</div>
 
-	<div class="{{topExpanded ? 'top-panel top-expanded' : 'top-panel'}}" id="topPanel">
+	<div class="{{topExpanded && activePanel == 'Explore' ? 'top-panel top-expanded' : 'top-panel'}}" id="topPanel" ng-switch="activePanel">
 		
-	<div 
-		ng-show="activePanel == 'Explore' && !loadingUrlPlace" 
-		class="{{expanded?'explore-panel rel expanded':'explore-panel rel'}}" 
-		ng-controller="ThumbnailController" 
-		ng-init="initExploreView()"
-		>
-		<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
-		<div style="display: inline-block;vertical-align:top;" ng-repeat="item in exploreList" id="exploreList">
-			<ng-include src="'views/thumbnail.html'" onload="initFinder()"></ng-include>
-		</div>
-		<label class="wwt-pager">
-			<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
-				<i class="fa fa-play reverse"></i>
-			</a>
-			{{(currentPage+1)}} {{getFromEn('of')}} {{pageCount}}
-			<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
-				<i class="fa fa-play"></i>
-			</a>
-		</label>
-		<a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
-			<i class="fa fa-caret-down" style="position:relative;top:-5px;" ng-if="!expanded"></i>
-			<i class="fa fa-caret-up" style="position:relative;top:-5px;" ng-if="expanded"></i>
-		</a>
-	</div>
-	<ng-include src="'views/tours.html'"></ng-include>
-	<div data-ng-show="activePanel == 'Search'" ng-controller="ThumbnailController" ng-init="initSearch()">
-	<div style="margin:-4px 0 1px;">
-		<div style="padding:4px 100px 0 4px;" class="iblock input-group">
-			<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" placeholder="{{getFromEn('Object Search')}}" style="width:200px" />
-			<span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;top:3px"></span>
-				
-		</div>
-		<!--<div class="checkbox" style="display: inline-block">
-			<label data-ng-class="chkPlotResults ? 'checked' : ''">
-				<input type="checkbox" ng-model="chkPlotResults" />
-				{{getFromEn('Plot Results')}}
-			</label>
-		</div>
-		<a class="btn">{{getFromEn('VO Search')}}</a>-->
-
-		<div style="padding:4px 0 0 4px;display: inline-block">
-			<div class="select">
-				<select ng-model="SearchType">
-					<option value="J2000">{{getFromEn('J2000')}}</option>
-					<!--<%--
-						<option>{{getFromEn('Alt/Az')}}</option>--%>
-						<option value="Galactic">{{getFromEn('Galactic')}}</option>
-						<option value="Ecliptic">{{getFromEn('Ecliptic')}}</option>-->
-				</select>
-
+		<div 
+			ng-show="!loadingUrlPlace" 
+			ng-switch-when="Explore"
+			class="{{expanded?'explore-panel rel expanded':'explore-panel rel'}}" 
+			ng-controller="ThumbnailController" 
+			ng-init="initExploreView()"
+			>
+			<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+			<div style="display: inline-block;vertical-align:top;" ng-repeat="item in exploreList" id="exploreList">
+				<ng-include src="'views/thumbnail.html'" onload="initFinder()"></ng-include>
 			</div>
-			&nbsp;
-			<label>
-				{{getFromEn('RA')}}
-				<input type="number" style="width:100px" ng-model="RA" />
-			</label>
-
-			<label>
-				{{getFromEn('Dec')}}
-				<input type="number" style="width:100px" ng-model="Dec" />
-			</label>
-			<a class="btn" ng-click="gotoCoord()">{{getFromEn('Go')}}</a>
-
-		</div>
-	</div>
-	<div class="search-results">
-		<div style="display: inline-block;vertical-align:top;" ng-repeat="item in searchResultSet">
-			<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
-				<ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
-				
-				<a ng-click="clickThumb(item)" title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-					<i class="fa fa-image" 
-					   ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
-					<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
-					<label>{{item.get_name()}}</label>
+			<label class="wwt-pager">
+				<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
+					<i class="fa fa-play reverse"></i>
 				</a>
-				<div ng-if="!item.get_isFolder()" class="dropdown" ng-mouseenter="moveMenu($index,item)" id="menuContainer{{$index}}">
-					<span bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
-						  data-placement="bottom{{$index==0?'-left':''}}" tabindex="0"
-						  data-content-template="views/popovers/property-panel.html"
-						  data-container="body">&nbsp;</span>
-					<a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
-						<img src='Images/context-menu-arrow.png' class="menu" />
+				{{(currentPage+1)}} <span localize="of"></span> {{pageCount}}
+				<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
+					<i class="fa fa-play"></i>
+				</a>
+			</label>
+			<a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
+				<i class="fa fa-caret-down" style="position:relative;top:-5px;" ng-if="!expanded"></i>
+				<i class="fa fa-caret-up" style="position:relative;top:-5px;" ng-if="expanded"></i>
+			</a>
+		</div>
+		<div ng-switch-when="Guided Tours" style="padding-left:4px" ng-controller="ToursController">
+			<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+
+			<div style="display: inline-block;vertical-align:top;" ng-repeat="item in tourList">
+				<a ng-if="$index==currentPage * pageSize" id="popTrigger"
+				   data-title="{{tour.get_name()}}"
+				   bs-popover="popover" data-placement="bottom-left"
+				   data-content-template="views/popovers/tour-info.html"
+				   data-template="views/popovers/tour-template.html"
+				   data-trigger="hover" data-animation="am-fade"
+				   data-delay="200">
+					&nbsp;
+				</a>
+
+				<span class="tour-thumb" ng-if="item.get_thumbnailUrl().length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
+					<a ng-click="clickThumb(item)" ng-mouseenter="tourPreview($event, item)"
+					   title="{{item.get_name()}}"
+					   ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+						<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+						<label>{{item.get_name()}}</label>
+					</a>
+
+				</span>
+				<span ng-if="item.get_thumbnailUrl().length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
+					<img ng-src="{{item.get_thumbnailUrl()}}" style="position:absolute;top:-9999px" />
+				</span>
+			</div>
+			<label class="wwt-pager">
+				<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="currentPage = currentPage == 0 ? currentPage : currentPage - 1">
+					<i class="fa fa-play reverse"></i>
+				</a>
+				{{(currentPage+1)}} <span localize="of"></span> {{pageCount}}
+				<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="currentPage = currentPage == pageCount - 1 ? currentPage : currentPage+1">
+					<i class="fa fa-play"></i>
+				</a>
+			</label>
+		</div>
+		<div ng-switch-when="Search" ng-controller="ThumbnailController" ng-init="initSearch()">
+			<div style="margin:-4px 0 1px;">
+				<div style="padding:4px 100px 0 4px;" class="iblock input-group">
+					<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:200px" />
+					<span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;top:3px"></span>
+				
+				</div>
+				
+
+				<div style="padding:4px 0 0 4px;display: inline-block">
+					<div class="select">
+						<select ng-model="SearchType">
+							<option value="J2000" localize="J2000"></option>
+							<%--<!--
+								<option localize="Alt/Az"></option>
+								<option localize="Galactic"></option>
+								<option localize="Ecliptic"></option>-->--%>
+						</select>
+
+					</div>
+					&nbsp;
+					<label>
+						<span localize="RA"></span>
+						<input type="number" style="width:100px" ng-model="RA" />
+					</label>
+
+					<label>
+						<span localize="Dec"></span>
+						<input type="number" style="width:100px" ng-model="Dec" />
+					</label>
+					<a class="btn" ng-click="gotoCoord()" localize="Go"></a>
+
+				</div>
+			</div>
+			<div class="search-results">
+				<div style="display: inline-block;vertical-align:top;" ng-repeat="item in searchResultSet">
+					<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
+						<ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
+				
+						<a ng-click="clickThumb(item)" title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+							<i class="fa fa-image" 
+							   ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
+							<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+							<label>{{item.get_name()}}</label>
+						</a>
+						<div ng-if="!item.get_isFolder()" class="dropdown" ng-mouseenter="moveMenu($index,item)" id="menuContainer{{$index}}">
+							<span bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
+								  data-placement="bottom{{$index==0?'-left':''}}" tabindex="0"
+								  data-content-template="views/popovers/property-panel.html"
+								  data-container="body">&nbsp;</span>
+							<a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
+								<img src='<%= ResourcesLocation%>/Images/context-menu-arrow.png' class="menu" />
+							</a>
+						</div>
+					</span>
+				</div>
+			</div>
+			<label class="wwt-pager" ng-show="searchResults.length > 0">
+				<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
+					<i class="fa fa-play reverse"></i>
+				</a>
+				{{(currentPage + 1)}} of {{pageCount}}
+				<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
+					<i class="fa fa-play"></i>
+				</a>
+			</label>
+		</div>
+		<div ng-switch-when="View" data-ng-controller="ViewController">
+			<div class="layer-manager-toggle">
+				<label localize="Use Layer Manager to Control User Settings"></label>
+				<a href="javascript:void(0)" 
+					class="layer-manager-icon" 
+					localize="Show/Hide Layer Manager"
+					localize-only="title"
+					ng-click="toggleLayerManager()">
+					&nbsp;
+				</a>
+			</div>
+			<fieldset>
+				<div>
+					<%-- Text intentionally left in elements so localization directive will keep the colon
+						and no need to wrap an additional span inside. Directive will replace with regexp. --%>
+					<label localize="Name">Name:</label>
+					<label>{{locationName}}</label>
+				</div>
+				<div>
+					<div class="pull-right">
+						<label localize="Alt">Alt:</label>
+						<label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
+					</div>
+					<label localize="Lat">Lat:</label> 
+					<label>{{formatHms(ctl.settings.get_locationLat())}}</label>
+				</div>
+				<div class="clearfix">
+					<label localize="Lng">Lng:</label> 
+					<label>{{formatHms(ctl.settings.get_locationLng())}}</label>
+				</div>
+				<div class="checkbox">
+					<label data-ng-class="viewFromLocation ? 'checked' : ''">
+						<input type="checkbox" ng-model="viewFromLocation" ng-change="setViewFromLocation()" />
+						<span localize="View From This Location"></span>
+					</label>
+				</div>
+			</fieldset>
+			<fieldset>
+				<a class="btn" bs-popover
+				   localize="Observing Time"
+				   localize-only="title"
+				   data-content-template="views/popovers/observing-time.html"
+				   ng-controller="ObservingTimeController"
+				   data-animation="am-flip-x"
+				   data-placement="bottom-right">
+					{{now | date:'yyyy/MM/dd HH:mm:ss'}} &nbsp; <i class="fa fa-caret-down"></i>
+				</a>
+				<div><label>{{TimeMode}}</label></div>
+				<div class="time-buttons">
+					<a class="btn" ng-click="fastBack_Click()">
+						<i class="fa fa-fast-backward"></i>
+
+					</a>
+					<a class="btn" ng-click="back_Click()">
+						<i class="fa fa-backward"></i>
+
+					</a>
+					<a class="btn" ng-click="pause_Click()">
+
+						<i class="fa fa-pause"></i>
+					</a>
+					<a class="btn" ng-click="play_Click()">
+
+						<i class="fa fa-play"></i>
+					</a>
+					<a class="btn" ng-click="fastForward_Click()" id="btnFastFwd">
+						<i class="fa fa-fast-forward"></i>
+
+					</a>
+					&nbsp;
+					<a class="btn" ng-click="timeNow_Click()" id="btnTimeNow">Now</a>
+				</div>
+
+			</fieldset>
+			<fieldset>
+				<div class="checkbox">
+					<label data-ng-class="galaxyMode ? 'checked' : ''">
+						<input type="checkbox" ng-model="galaxyMode" ng-change="galaxyModeChange()" />
+						<span data-localize="Galactic Plane Mode">Galactic Plane Mode</span>
+					</label>
+				</div>
+			</fieldset>
+		</div>
+		<div ng-switch-when="Settings" ng-controller="SettingsController">
+			<fieldset>
+				<div class="iblock">
+					<div class="checkbox">
+						<label data-ng-class="crosshairs ? 'checked' : ''">
+							<input type="checkbox" ng-model="crosshairs" data-ng-change="saveSettings()" />
+							<span localize="Reticle/Crosshairs"></span>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label data-ng-class="autoHideTabs ? 'checked' : ''">
+							<input type="checkbox" ng-model="autoHideTabs" data-ng-change="saveSettings()" />
+							<span localize="Auto Hide Tabs"></span>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label data-ng-class="autoHideContext ? 'checked' : ''">
+							<input type="checkbox" ng-model="autoHideContext" data-ng-change="saveSettings()" />
+							<span localize="Auto Hide Context"></span>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label data-ng-class="smoothPanning ? 'checked' : ''">
+							<input type="checkbox" ng-model="smoothPanning" data-ng-change="saveSettings()" />
+							<span localize="Smooth Panning"></span>
+						</label>
+					</div>
+				</div>
+
+			</fieldset>
+
+			<fieldset style="padding-bottom: 16px;">
+
+				<label localize="Preferred Client"></label><br />
+				<select ng-change="setClientPref()" ng-model="preferredClient" ng-options="c.code as c.label for c in availableClients"></select>
+				<div class="checkbox">
+					<label data-ng-class="WebGl ? 'checked' : ''">
+						<input type="checkbox" ng-model="WebGl" data-ng-change="setWebGl()" />
+						<span localize="Use WebGL (if available)"></span>
+					</label>
+				</div>
+				<div ng-if="redirecting">
+					<span localize="Redirecting to Silverlight Client in"></span>
+					{{redirectingSeconds}}
+					<span localize="seconds"></span>
+					
+					<a class="btn" ng-click="cancelRedir()">
+						<i class="fa fa-stop"></i>
+						<span localize="Stop"></span>
 					</a>
 				</div>
-			</span>
+			</fieldset>
+			<fieldset style="padding-bottom: 16px;">
+				<label localize="Select Your Language"></label><br />
+				<select ng-change="setLanguageCode(selectedLanguage)" ng-model="selectedLanguage" ng-options="l.code as l.label for l in availableLanguages"></select>
+			</fieldset>
 		</div>
-	</div>
-	<label class="wwt-pager" ng-show="searchResults.length > 0">
-		<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
-			<i class="fa fa-play reverse"></i>
-		</a>
-		{{(currentPage + 1)}} of {{pageCount}}
-		<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
-			<i class="fa fa-play"></i>
-		</a>
-	</label>
-</div>
-	<div data-ng-show="activePanel == 'View'" data-ng-controller="ViewController">
-	
-	<div class="layer-manager-toggle">
-		<label>{{getFromEn('Use Layer Manager to Control User Settings')}}</label>
-		<a href="javascript:void(0)" class="layer-manager-icon" title="{{getFromEn('Show/Hide Layer Manager')}}" ng-click="toggleLayerManager()">
-			&nbsp;
-		</a>
-	</div>
-	<fieldset>
-
-		<div>
-			<label>{{getFromEn('Name')}}:</label> <label>{{locationName}}</label>
-		</div>
-		<div>
-			<div class="pull-right"><label>{{getFromEn('Alt')}}:</label> <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label></div>
-			<label>{{getFromEn('Lat')}}:</label> <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
-		</div>
-		<div class="clearfix">
-			<label>{{getFromEn('Lng')}}:</label> <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
-		</div>
-		<div class="checkbox">
-			<label data-ng-class="viewFromLocation ? 'checked' : ''">
-				<input type="checkbox" ng-model="viewFromLocation" ng-change="setViewFromLocation()" />
-				{{getFromEn('View From This Location')}}
-			</label>
-		</div>
-	</fieldset>
-	<fieldset>
-		<a class="btn" bs-popover
-		   title="{{getFromEn('Observing Time')}}"
-		   data-content-template="views/popovers/observing-time.html"
-		   ng-controller="ObservingTimeController"
-		   data-animation="am-flip-x"
-		   data-placement="bottom-right">
-			{{now | date:'yyyy/MM/dd HH:mm:ss'}} &nbsp; <i class="fa fa-caret-down"></i>
-		</a>
-		<div><label>{{TimeMode}}</label></div>
-		<div class="time-buttons">
-			<a class="btn" ng-click="fastBack_Click()">
-				<i class="fa fa-fast-backward"></i>
-
-			</a>
-			<a class="btn" ng-click="back_Click()">
-				<i class="fa fa-backward"></i>
-
-			</a>
-			<a class="btn" ng-click="pause_Click()">
-
-				<i class="fa fa-pause"></i>
-			</a>
-			<a class="btn" ng-click="play_Click()">
-
-				<i class="fa fa-play"></i>
-			</a>
-			<a class="btn" ng-click="fastForward_Click()" id="btnFastFwd">
-				<i class="fa fa-fast-forward"></i>
-
-			</a>
-			&nbsp;
-			<a class="btn" ng-click="timeNow_Click()" id="btnTimeNow">Now</a>
-		</div>
-
-	</fieldset>
-	<fieldset>
-		<div class="checkbox">
-			<label data-ng-class="galaxyMode ? 'checked' : ''">
-				<input type="checkbox" ng-model="galaxyMode" ng-change="galaxyModeChange()" />
-				{{getFromEn('Galactic Plane Mode')}}
-			</label>
-		</div>
-	</fieldset>
-</div>
-	<div data-ng-show="activePanel == 'Settings'" ng-controller="SettingsController">
-	<fieldset>
-		<div class="iblock">
-			<div class="checkbox">
-				<label data-ng-class="crosshairs ? 'checked' : ''">
-					<input type="checkbox" ng-model="crosshairs" data-ng-change="saveSettings()" />
-					{{getFromEn('Reticle/Crosshairs')}}
-				</label>
-			</div>
-			<div class="checkbox">
-				<label data-ng-class="autoHideTabs ? 'checked' : ''">
-					<input type="checkbox" ng-model="autoHideTabs" data-ng-change="saveSettings()" />
-					{{getFromEn('Auto Hide Tabs')}}
-				</label>
-			</div>
-			<div class="checkbox">
-				<label data-ng-class="autoHideContext ? 'checked' : ''">
-					<input type="checkbox" ng-model="autoHideContext" data-ng-change="saveSettings()" />
-					{{getFromEn('Auto Hide Context')}}
-				</label>
-			</div>
-			<div class="checkbox">
-				<label data-ng-class="smoothPanning ? 'checked' : ''">
-					<input type="checkbox" ng-model="smoothPanning" data-ng-change="saveSettings()" />
-					{{getFromEn('Smooth Panning')}}
-				</label>
-			</div>
-		</div>
-
-	</fieldset>
-
-	<fieldset style="padding-bottom: 16px;">
-
-		<label>{{getFromEn('Preferred Client')}}</label><br />
-		<select ng-change="setClientPref()" ng-model="preferredClient" ng-options="c.code as c.label for c in availableClients"></select>
-		<div class="checkbox">
-			<label data-ng-class="WebGl ? 'checked' : ''">
-				<input type="checkbox" ng-model="WebGl" data-ng-change="setWebGl()" />
-				{{getFromEn('Use WebGL (if available)')}}
-			</label>
-		</div>
-		<div ng-if="redirecting">
-			{{getFromEn('Redirecting to Silverlight Client in')}} {{redirectingSeconds}} {{getFromEn('seconds')}}
-			<a class="btn" ng-click="cancelRedir()">
-				<i class="fa fa-stop"></i>
-				{{getFromEn('Stop')}}
-			</a>
-		</div>
-	</fieldset>
-	<fieldset style="padding-bottom: 16px;">
-		<label>{{getFromEn('Select Your Language')}}</label><br />
-		<select ng-change="setLanguageCode(selectedLanguage)" ng-model="selectedLanguage" ng-options="l.code as l.label for l in availableLanguages"></select>
-	</fieldset>
-</div>
-	<% if (ADS)
-	   {%>  
-	<div ng-init="initAds()"
-		 data-ng-show="activePanel == 'ADS'"
-		ng-controller="ADSController" 
-		>
-		<fieldset class="radio-buttons" style="padding-bottom:3px;">
-			<div class="iblock">
-				<h5>{{getFromEn('Heatmap Options - Objects')}}</h5>
+		<% if (ADS)
+		   {%>  
+		<div ng-init="initAds()"
+			ng-switch-when="ADS"
+			ng-controller="ADSController" 
+			>
+			<fieldset class="radio-buttons" style="padding-bottom:3px;">
 				<div class="iblock">
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'All' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="All" ng-change="adsChange()" />
-							{{getFromEn('All')}}
-						</label>
-					</div>
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Star' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Star" ng-change="adsChange()" />
-							{{getFromEn('Stars')}}
-						</label>
-					</div>
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Galaxy' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Galaxy" ng-change="adsChange()" />
-							{{getFromEn('Galaxies')}}
-						</label>
-					</div>
-				</div>
-				<div class="iblock">
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'HII regions' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="HII regions" ng-change="adsChange()" />
-							{{getFromEn('HII regions')}}
-						</label>
-					</div>
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Nebula' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Nebula" ng-change="adsChange()" />
-							{{getFromEn('Nebulae')}}
-						</label>
-					</div>
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Other' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Other" ng-change="adsChange()" />
-							{{getFromEn('Other')}}
-						</label>
-					</div>
-				</div>
-
-			</div>
-			<div class="iblock rel">
-				
-				<h5  style="margin-left:24px;">{{getFromEn('Bands')}}</h5>
-				<div class="iblock" style="margin-left:12px;padding-left:12px;border-left:solid 1px #728f9a">
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Radio' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Radio" ng-change="adsChange()" />
-							{{getFromEn('Radio')}}
-						</label>
-					</div>
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Infrared' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Infrared" ng-change="adsChange()" />
-							{{getFromEn('Infrared')}}
-						</label>
-					</div><div class="checkbox">
-						<label data-ng-class="fgImagery == 'year' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="year" ng-change="adsChange()" />
-							{{getFromEn('Year (use slider)')}}
-						</label>
-					</div>
-					
-				</div>
-				<div class="iblock" style="vertical-align: top">
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'X-ray' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="X-ray" ng-change="adsChange()" />
-							{{getFromEn('X-ray')}}
-						</label>
-					</div>
-					<div class="checkbox">
-						<label data-ng-class="fgImagery == 'Ultraviolet' ? 'checked' : ''">
-							<input type="radio" name="fgImagery" ng-model="fgImagery" value="Ultraviolet" ng-change="adsChange()" />
-							{{getFromEn('Ultraviolet')}}
-						</label>
-					</div>
-					<div class="control" style="width:200px">
-						<div class="year-slider">
-							<a class="btn" style="left:55px">&nbsp;</a>
+					<h5 localize="Heatmap Options - Objects"></h5>
+					<div class="iblock">
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'All' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="All" ng-change="adsChange()" />
+								<span localize="All"></span>
+							</label>
 						</div>
-						&nbsp;&nbsp;{{year}}
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Star' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Star" ng-change="adsChange()" />
+								<span localize="Stars"></span>
+							</label>
+						</div>
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Galaxy' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Galaxy" ng-change="adsChange()" />
+								<span localize="Galaxies"></span>
+							</label>
+						</div>
 					</div>
-					
+					<div class="iblock">
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'HII regions' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="HII regions" ng-change="adsChange()" />
+								<span localize="HII regions"></span>
+							</label>
+						</div>
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Nebula' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Nebula" ng-change="adsChange()" />
+								<span localize="Nebulae"></span>
+								
+							</label>
+						</div>
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Other' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Other" ng-change="adsChange()" />
+								<span localize="Other"></span>
+							</label>
+						</div>
+					</div>
+
 				</div>
-			</div>
-		</fieldset>
+				<div class="iblock rel">
+				
+					<h5  style="margin-left:24px;" localize="Bands"></h5>
+					<div class="iblock" style="margin-left:12px;padding-left:12px;border-left:solid 1px #728f9a">
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Radio' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Radio" ng-change="adsChange()" />
+								<span localize="Radio"></span>
+							</label>
+						</div>
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Infrared' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Infrared" ng-change="adsChange()" />
+								<span localize="Infrared"></span>
+							</label>
+						</div><div class="checkbox">
+							<label data-ng-class="fgImagery == 'year' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="year" ng-change="adsChange()" />
+								<span localize="Year (use slider)"></span>
+							</label>
+						</div>
+					
+					</div>
+					<div class="iblock" style="vertical-align: top">
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'X-ray' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="X-ray" ng-change="adsChange()" />
+								<span localize="X-ray"></span>
+							</label>
+						</div>
+						<div class="checkbox">
+							<label data-ng-class="fgImagery == 'Ultraviolet' ? 'checked' : ''">
+								<input type="radio" name="fgImagery" ng-model="fgImagery" value="Ultraviolet" ng-change="adsChange()" />
+								<span localize="Ultraviolet"></span>
+							</label>
+						</div>
+						<div class="control" style="width:200px">
+							<div class="year-slider">
+								<a class="btn" style="left:55px">&nbsp;</a>
+							</div>
+							&nbsp;&nbsp;{{year}}
+						</div>
+					
+					</div>
+				</div>
+			</fieldset>
 		
 			
 		
+		</div>
+		   <%  } %>    
 	</div>
-	   <%  } %>    
-	</div>
-	<div class="layer-manager desktop" ng-controller="LayerManagerController" ng-hide="layerManagerHidden" ng-init="initLayerManager()">
+	<div class="layer-manager desktop" ng-controller="LayerManagerController" style="display:{{layerManagerHidden ? 'none' : 'block'}}" ng-init="initLayerManager()">
 		<button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">×</button>
-		<h5>
-			{{getFromEn('Layers')}}
-		</h5>
-		<div class="tree" ng-class="tree.collapsed?'collapsed':''">
+		<h5 localize="Layers"></h5>
+		<div class="tree" ng-class="tree.collapsed?'collapsed':''" style="height:{{layerManagerHeight()}}px">
 			<div class="checkbox">
 				<i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
 				<label data-ng-class="tree.checked ? 'checked' : ''">
 					<input type="checkbox" ng-model="tree.checked" data-ng-change="nodeChange(tree)" />
-					{{tree.name}}
+					<span localize="{{tree.name}}"></span>
 
 				</label>
 			</div>
@@ -678,14 +714,15 @@
 	</div>
 	
 	
-	<div ng-class="lookAt == 'Planet' || lookAt == 'Panorama' || lookAt == 'Earth' ? 'context-panel compressed' : 'context-panel'">
-		<div ng-class="lookAt == 'Planet' || lookAt == 'Panorama' || lookAt == 'Earth' ? 'hide' : lookAt == 'SolarSystem' ? 'solar-system-mode fov-panel' : 'fov-panel'">
+	<div ng-class="contextPanelClass()">
+		<div ng-class="fovClass()">
 			<a 
 				class="btn" tabindex="0" 
 				data-bs-popover="popover"
 				ng-if="!showTrackingString()"
 				style="position:absolute; top:6px;left:-33px;z-index:3" 
-				title="{{getFromEn('Share this view')}}"
+				localize="Share this view"
+				localize-only="title"
 				data-content-template="views/popovers/shareplace.html"
 				data-container="body"
 				data-placement="top-right"
@@ -693,29 +730,29 @@
 				<i class="fa fa-share-alt"></i>
 			</a>
 			<div class="left" ng-if="lookAt != 'SolarSystem'">
-				<p>{{getFromEn('N')}}</p>
+				<p localize="N"></p>
 				<div class="sphere" id="skyball">
 					<div class="v-ellipse"></div>
 					<div class="h-ellipse"></div>
 					<div class="x-axis"></div>
 					<div class="y-axis"></div>
 				</div>
-				<p>{{getFromEn('RA')}}: {{formatHms(ctl.getRA(), true)}}</p>
-				<p>{{getFromEn('Dec')}}: {{formatHms(ctl.getDec(), false, true)}}</p>
+				<p><span localize="RA"></span>: {{formatHms(ctl.getRA(), true)}}</p>
+				<p><span localize="Dec"></span>: {{formatHms(ctl.getDec(), false, true)}}</p>
 			</div>
 			<div class="left" ng-if="lookAt == 'SolarSystem'">
 				<div class="control">
-					<label>{{getFromEn('Planet Size')}}</label>
+					<label localize="Planet Size"></label>
 					<div class="planetary-scale">
 						<a class="btn"></a>
 					</div>
 				
 				</div>
-				<label class="pull-right">{{getFromEn('Large')}}</label>
-				<label class="pull-left">{{getFromEn('Actual')}}</label>
+				<label class="pull-right" localize="Large"></label>
+				<label class="pull-left" localize="Actual"></label>
 				<div class="location">
-					<p>{{getFromEn('Lat')}}: {{formatHms(coords.get_lat(), false, false)}}</p>
-					<p>{{getFromEn('Lng')}}: {{formatHms(coords.get_lng(), false, false)}}</p>
+					<p><span localize="Lat"></span>: {{formatHms(coords.get_lat(), false, false)}}</p>
+					<p><span localize="Lng"></span>: {{formatHms(coords.get_lng(), false, false)}}</p>
 				</div>
 			</div>
 			<div class="right">
@@ -729,26 +766,27 @@
 				<div class="bar"></div>
 			</div>
 		</div>
-		<div class="controls">
+		<div class="controls" style="width:{{bottomControlsWidth()}}px">
 			<div class="layer-manager-toggle iblock" id="btnToggleLayerMgr">
 		
 				<a href="javascript:void(0)" 
 					class="layer-manager-icon" 
-					title="{{getFromEn('Show/Hide Layer Manager')}}" 
+					localize="Show/Hide Layer Manager"
+					localize-only="title" 
 					ng-click="toggleLayerManager()">
 					&nbsp;
 				</a>
 			</div>
 			<div class="control">
-				<label>{{getFromEn('Look At')}}</label>
+				<label localize="Look At"></label>
 				<select id="lstLookAt"
-						ng-init="lookAt = getFromEn('Sky')"
+						ng-init="lookAt = 'Sky'"
 						ng-model="lookAt"
 						ng-change="lookAtDropdownChanged()"
 						ng-options="type for type in lookTypes"></select>
 			</div>
 			<div class="control">
-				<label>{{getFromEn('Imagery')}}</label>
+				<label localize="Imagery"></label>
 				<select id="lstImagery"
 					ng-init="backgroundImagery.name = 'Digitized Sky Survey (Color)'"
 					ng-model="backgroundImagery"
@@ -758,15 +796,16 @@
 				</select>
 			</div>
 			<%--<div class="control" ng-click="setSurveyProperties()">
-				<label>{{getFromEn('Info')}}</label>
+				<label localize="Info"></label>
 				<a class="btn"
 				   bs-popover
-				   title="{{getFromEn('Information')}}"
-				   data-content-template="views/popovers/property-panel.html"
+				localize="Information" localize-only="title
+				   
+				   data-content-template="views/popovers/property-panel.html"l
 				   data-placement="top"><i class="fa fa-info-circle"></i></a>
 			</div>--%>
 			<div ng-show="showCrossfader()" class="control" style="padding-right:10px">
-				<label>{{getFromEn('Image Crossfade')}}</label>
+				<label localize="Image Crossfade"></label>
 				<div class="cross-fader">
 					<a class="btn">&nbsp;</a>
 				</div>
@@ -774,12 +813,12 @@
 			</div>
 		
 		</div>
-		<div class="thumbnails nearby-objects rel" data-ng-controller="ThumbnailController" ng-init="initNearbyObjects()">
+		<div class="thumbnails nearby-objects rel" data-ng-controller="ThumbnailController" ng-init="initNearbyObjects()"  style="width:{{bottomControlsWidth()}}px">
 			<div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in nearbyPlaces" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
 				<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
 					<ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
 					<span bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
-							  data-placement="top{{$index==0?'-left':''}}" tabindex="0"
+							  data-placement="top{{$index == 0 ? '-left' : ''}}" tabindex="0"
 							  data-content-template="views/popovers/property-panel.html"
 							  data-container="body">&nbsp;</span>
 					<a ng-click="clickThumb(item)" ng-mouseenter="hoverThumb(item)" ng-mouseleave="clearAnnotations()" title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
@@ -791,7 +830,7 @@
 					<div ng-if="!item.get_isFolder()" class="dropup" ng-mouseenter="moveNboMenu($index,item)" id="nboMenuContainer{{$index}}">
 					
 						<a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
-							<img src="Images/context-menu-arrow.png" class="menu" />
+							<img src="<%= ResourcesLocation%>/Images/context-menu-arrow.png" class="menu" />
 						</a>
 					</div>
 				</span>
@@ -802,7 +841,8 @@
 					ng-if="(lookAt == 'Planet' || lookAt == 'Panorama' || lookAt == 'Earth' ) && !trackingObj"
 					data-bs-popover="popover" tabindex="0"
 					style="position:absolute; top:0;right:-204px" 
-					title="{{getFromEn('Share this view')}}"
+					localize="Share this view"
+					localize-only="title"
 					data-content-template="views/popovers/shareplace.html"
 					data-container="body"
 					data-placement="top-right"
@@ -810,11 +850,12 @@
 					<i class="fa fa-share-alt"></i>
 				</a>
 				<div class="iblock tracking rel" ng-if="showTrackingString()" style="vertical-align: top;">
-					<div>{{getFromEn('Tracking')}}</div>
+					<div localize="Tracking"></div>
 					<div title="{{trackingObj.get_name()}}">{{trackingObj.get_name()}}</div>
 					<a class="btn" data-bs-popover="popover" tabindex="0"
 						style="position:absolute; top:0;left:-40px" 
-						title="{{getFromEn('Share this place')}}"
+						localize="Share this place"
+						localize-only="title"
 						data-content-template="views/popovers/shareplace.html"
 						data-container="body"
 						data-placement="top-right"
@@ -822,15 +863,14 @@
 						<i class="fa fa-share-alt"></i>
 					</a>
 				</div>
-				<div class="iblock rel" style="vertical-align: top;right:{{ !trackingObj ? 50 : 0 }}px" ng-if="lookAt != 'Planet' && lookAt != 'Panorama' && pageCount > 1">
+				<div class="iblock rel" style="vertical-align: top;right:{{contextPagerRight()}}px" ng-if="lookAt != 'Planet' && lookAt != 'Panorama' && pageCount > 1">
 					<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
 						<i class="fa fa-play reverse"></i>
 					</a>
-					{{(currentPage+1)}} {{getFromEn('of')}} {{pageCount}}
+					{{(currentPage+1)}} <span localize="of"></span> {{pageCount}}
 					<a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
 						<i class="fa fa-play"></i>
 					</a>
-
 				</div>
 			</label>
 		</div>
@@ -843,14 +883,18 @@
 		<div class="modal-content">
 			
 			<div class="modal-body">
-				<img src='Images/wwtlogo.png' style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
+				<img src='<%= ResourcesLocation%>/Images/wwtlogo.png' 
+					style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" 
+					class="pull-left" 
+					localize="Microsoft WorldWide Telescope Logo"
+					localize-only="alt" />
 				<h1 style="position:relative;top:-2px">
 					<small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
 					World<span style="color:#6ba9e6">Wide Telescope</span>
 				</h1>
 				<p>
 					<i class="fa fa-spin fa-spinner"></i>
-					{{getFromEn('Content Loading. Please Wait...')}}
+					<span localize="Content Loading. Please Wait..."></span>
 				</p>
 				
 				

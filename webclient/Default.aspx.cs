@@ -10,7 +10,9 @@ public partial class Default : System.Web.UI.Page
 	public bool Debug = false;
 	public bool DebugChrome = false;
 	public bool ADS = false;
-	public string ResourcesLocation = ConfigurationManager.AppSettings["ResourcesLocation"];
+	// This enables the webclient to load in both the worldwidetelescope.org site
+	// with js/css/imagery on the cdn and in standalone mode without a cdn
+	public string ResourcesLocation;
 	public string ResourcesVersion = ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string BodyClass;
@@ -28,6 +30,7 @@ public partial class Default : System.Web.UI.Page
 	{
 		var device = WURFLManagerBuilder.Instance.GetDeviceForRequest(Request.UserAgent);
 		
+		ResourcesLocation = ConfigurationManager.AppSettings["WebClientResourcesLocation"] ?? ConfigurationManager.AppSettings["ResourcesLocation"] + "/webclient";
 		bool isMobile = device.GetCapability("is_smartphone") == "true";
 
 		BodyClass = string.Format("fs-player wwt-webclient-wrapper {0}", isMobile ? "mobile" : "desktop");

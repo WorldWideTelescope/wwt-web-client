@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 			webclient: {
 				src: [
 					'../ext/angular.js',
+					'../ext/angular-touch.js',
 					'../ext/angular-route.js',
 					'../ext/angular-animate.js',
 					'../ext/angular-cookies.js',
@@ -54,6 +55,7 @@ module.exports = function(grunt) {
 					'../ext/angular-intro.js',
 					'../app.js',
 					'../directives/Scroll.js',
+					'../directives/Localize.js',
 					'../factories/appstate.js',
 					'../factories/localization.js',
 					'../factories/FinderScope.js',
@@ -65,6 +67,7 @@ module.exports = function(grunt) {
 					'../dataproxy/Places.js',
 					'../dataproxy/Tours.js',
 					'../dataproxy/SearchData.js',
+					'../dataproxy/Astrometry.js',
 					'../controllers/MainController.js',
 					'../controllers/ViewController.js',
 					'../controllers/ThumbnailController.js',

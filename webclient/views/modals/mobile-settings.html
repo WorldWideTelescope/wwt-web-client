@@ -1,13 +1,13 @@
 ﻿<div ng-controller="SettingsController" style="padding:5px 5px 16px 8px">
 	<button aria-hidden="true" class="close pull-right" type="button" ng-click="$hide()" style="margin-right:10px;">×</button>
-	<h5 style="margin:5px 0;">{{getFromEn('Settings')}}</h5>
+	<h5 style="margin:5px 0;" localize="Settings"></h5>
 	<fieldset style="width:75%">
 
 		<p>
 			<div class="checkbox">
 				<label data-ng-class="crosshairs ? 'checked' : ''">
 					<input type="checkbox" ng-model="crosshairs" data-ng-change="saveSettings()" />
-					{{getFromEn('Reticle/Crosshairs')}}
+					<span localize="Reticle/Crosshairs"></span>
 				</label>
 			</div>
 		</p>
@@ -15,7 +15,7 @@
 			<div class="checkbox">
 				<label data-ng-class="smoothPanning ? 'checked' : ''">
 					<input type="checkbox" ng-model="smoothPanning" data-ng-change="saveSettings()" />
-					{{getFromEn('Smooth Panning')}}
+					<span localize="Smooth Panning"></span>
 				</label>
 			</div>
 		</p>
@@ -23,14 +23,14 @@
 
 		<p>
 
-			<label>{{getFromEn('Select Your Language')}}</label><br />
+			<label localize="Select Your Language"></label><br />
 			<select ng-change="setLanguageCode(selectedLanguage)" ng-model="selectedLanguage" ng-options="l.code as l.label for l in availableLanguages"></select>
 		</p>
 		<p>
 			<div class="checkbox">
 				<label data-ng-class="WebGl ? 'checked' : ''">
 					<input type="checkbox" ng-model="WebGl" data-ng-change="setWebGl()" />
-					{{getFromEn('Use WebGL (if available)')}}
+					<span localize="Use WebGL (if available)"></span>
 				</label>
 			</div>
 		</p>

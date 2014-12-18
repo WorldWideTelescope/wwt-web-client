@@ -1,7 +1,7 @@
 ﻿<div ng-controller="ThumbnailController" ng-init="initSearch()" data-scroll-buffer="3">
 
 	<div style="width:88%;position:fixed;top:4px;left:4px" class="input-group iblock">
-		<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" placeholder="{{getFromEn('Object Search')}}" style="width:94%;height:25px" />
+		<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:94%;height:25px" />
 		<span class="fa fa-search form-control-feedback rel" style="left:-22px"></span>
 	</div>
 

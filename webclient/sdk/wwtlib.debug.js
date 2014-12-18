@@ -36648,7 +36648,7 @@ wwtlib.Folder.prototype = {
         if (String.isNullOrEmpty(this._urlField)) {
             this._childList.clear();
             if (this.parent != null) {
-                var folderUp = new wwtlib._folderUp();
+                var folderUp = new wwtlib.FolderUp();
                 folderUp.parent = this.parent;
                 this._childList.add(folderUp);
             }
@@ -37129,7 +37129,7 @@ wwtlib.FolderBrowser.prototype = {
                 }));
                 return;
             }
-            if (Type.canCast(this._items[index], wwtlib._folderUp)) {
+            if (Type.canCast(this._items[index], wwtlib.FolderUp)) {
                 var folderUp = this._items[index];
                 if (folderUp.parent != null) {
                     this._startIndex = 0;
@@ -37487,9 +37487,9 @@ wwtlib.FolderBrowser.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// wwtlib._folderUp
+// wwtlib.FolderUp
 
-wwtlib._folderUp = function wwtlib__folderUp() {
+wwtlib.FolderUp = function wwtlib_FolderUp() {
     /// <field name="parent" type="wwtlib.Folder">
     /// </field>
     /// <field name="_thumbnail" type="Object" domElement="true">
@@ -37498,9 +37498,9 @@ wwtlib._folderUp = function wwtlib__folderUp() {
     /// </field>
     this._bounds = new wwtlib.Rectangle();
 }
-wwtlib._folderUp.prototype = {
+wwtlib.FolderUp.prototype = {
     
-    get_name: function wwtlib__folderUp$get_name() {
+    get_name: function wwtlib_FolderUp$get_name() {
         /// <value type="String"></value>
         return 'Up Level';
     },
@@ -37508,62 +37508,62 @@ wwtlib._folderUp.prototype = {
     parent: null,
     _thumbnail: null,
     
-    get_thumbnail: function wwtlib__folderUp$get_thumbnail() {
+    get_thumbnail: function wwtlib_FolderUp$get_thumbnail() {
         /// <value type="Object" domElement="true"></value>
         return this._thumbnail;
     },
-    set_thumbnail: function wwtlib__folderUp$set_thumbnail(value) {
+    set_thumbnail: function wwtlib_FolderUp$set_thumbnail(value) {
         /// <value type="Object" domElement="true"></value>
         this._thumbnail = value;
         return value;
     },
     
-    get_thumbnailUrl: function wwtlib__folderUp$get_thumbnailUrl() {
+    get_thumbnailUrl: function wwtlib_FolderUp$get_thumbnailUrl() {
         /// <value type="String"></value>
         return 'http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?Name=folderup';
     },
-    set_thumbnailUrl: function wwtlib__folderUp$set_thumbnailUrl(value) {
+    set_thumbnailUrl: function wwtlib_FolderUp$set_thumbnailUrl(value) {
         /// <value type="String"></value>
         return;
         return value;
     },
     
-    get_bounds: function wwtlib__folderUp$get_bounds() {
+    get_bounds: function wwtlib_FolderUp$get_bounds() {
         /// <value type="wwtlib.Rectangle"></value>
         return this._bounds;
     },
-    set_bounds: function wwtlib__folderUp$set_bounds(value) {
+    set_bounds: function wwtlib_FolderUp$set_bounds(value) {
         /// <value type="wwtlib.Rectangle"></value>
         this._bounds = value;
         return value;
     },
     
-    get_isImage: function wwtlib__folderUp$get_isImage() {
+    get_isImage: function wwtlib_FolderUp$get_isImage() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_isTour: function wwtlib__folderUp$get_isTour() {
+    get_isTour: function wwtlib_FolderUp$get_isTour() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_isFolder: function wwtlib__folderUp$get_isFolder() {
+    get_isFolder: function wwtlib_FolderUp$get_isFolder() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_isCloudCommunityItem: function wwtlib__folderUp$get_isCloudCommunityItem() {
+    get_isCloudCommunityItem: function wwtlib_FolderUp$get_isCloudCommunityItem() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_readOnly: function wwtlib__folderUp$get_readOnly() {
+    get_readOnly: function wwtlib_FolderUp$get_readOnly() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_children: function wwtlib__folderUp$get_children() {
+    get_children: function wwtlib_FolderUp$get_children() {
         /// <value type="Array"></value>
         if (this.parent == null) {
             return [];
@@ -40255,7 +40255,7 @@ wwtlib.ConvexHull.registerClass('wwtlib.ConvexHull');
 wwtlib.EquirectangularTile.registerClass('wwtlib.EquirectangularTile', wwtlib.Tile);
 wwtlib.Folder.registerClass('wwtlib.Folder', null, wwtlib.IThumbnail);
 wwtlib.FolderBrowser.registerClass('wwtlib.FolderBrowser');
-wwtlib._folderUp.registerClass('wwtlib._folderUp', null, wwtlib.IThumbnail);
+wwtlib.FolderUp.registerClass('wwtlib.FolderUp', null, wwtlib.IThumbnail);
 wwtlib.Imageset.registerClass('wwtlib.Imageset', null, wwtlib.IThumbnail);
 wwtlib.ViewMoverKenBurnsStyle.registerClass('wwtlib.ViewMoverKenBurnsStyle', null, wwtlib.IViewMover);
 wwtlib._viewMoverSlew.registerClass('wwtlib._viewMoverSlew', null, wwtlib.IViewMover);

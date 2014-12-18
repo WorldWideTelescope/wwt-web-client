@@ -173,10 +173,12 @@
     </Content>
     <Content Include="css\webclient.css" />
     <Content Include="css\webclient.min.css" />
+    <Content Include="dataproxy\Astrometry.js" />
     <Content Include="dataproxy\Places.js" />
     <Content Include="dataproxy\SearchData.js" />
     <Content Include="dataproxy\Tours.js" />
     <Content Include="Default.aspx" />
+    <Content Include="directives\Localize.js" />
     <Content Include="directives\Scroll.js" />
     <Content Include="earth.jpg" />
     <Content Include="ext\angular-animate.js" />
@@ -284,7 +286,6 @@
     <Content Include="searchdataraw.js" />
     <Content Include="sunCorona.png" />
     <Content Include="views\layer-manager.html" />
-    <Content Include="views\modals\explore-collections.html" />
     <Content Include="views\modals\finder-scope.html" />
     <Content Include="views\modals\intro.html" />
     <Content Include="views\modals\loading.html" />
@@ -295,18 +296,14 @@
     <Content Include="views\modals\mobile-settings.html" />
     <Content Include="views\modals\mobile-tours.html" />
     <Content Include="views\modals\mobile-view.html" />
-    <Content Include="views\modals\nearby-objects-mobile.html" />
     <Content Include="views\modals\open-item.html" />
     <Content Include="views\popovers\observing-time.html" />
     <Content Include="views\popovers\property-panel.html" />
     <Content Include="views\popovers\shareplace.html" />
-    <Content Include="views\popovers\thumbnail-template.html" />
     <Content Include="views\popovers\tour-info.html" />
     <Content Include="views\popovers\tour-template.html" />
     <Content Include="views\research-menu.html" />
-    <Content Include="views\search.html" />
     <Content Include="views\thumbnail.html" />
-    <Content Include="views\tours.html" />
     <Content Include="views\tree-node.html" />
     <Content Include="webclient.sln" />
     <Content Include="WURFL AGPL License.txt" />

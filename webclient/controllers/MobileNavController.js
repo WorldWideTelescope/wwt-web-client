@@ -3,7 +3,8 @@
 	'$scope',
 	'Util',
 	'$modal',
-	function ($rootScope, $scope, util, $modal) {
+	'Localization',
+	function ($rootScope, $scope, util, $modal,loc) {
 
 		
 
@@ -16,60 +17,62 @@
 			}
 		}
 
-		$scope.modalButtons = [
-			{
-				text: 'Explore',
-				icon: 'fa-binoculars',
-				modal: '#explorerModal'
-			},
-			{
-				text: 'Tours',
-				icon: 'fa-play',
-				modal: $modal({
-					contentTemplate: 'views/modals/mobile-tours.html',
-					show: false,
-					scope: $scope
-				})
-			},
-			{
-				text: 'Search',
-				icon: 'fa-search',
-				modal: $modal({
-					contentTemplate: 'views/modals/mobile-search.html',
-					show: false,
-					scope: $scope,
-					prefixEvent:'searchModal'
-				})
-			},
-			{
-				text: 'View',
-				icon: 'fa-eye',
-				modal: $modal({
-					contentTemplate: 'views/modals/mobile-view.html',
-					show: false,
-					scope: $scope
-				})
-			},
-			{
-				text: 'Settings',
-				icon: 'fa-gears',
-				modal: $modal({
-					contentTemplate: 'views/modals/mobile-settings.html',
-					show: false,
-					scope: $scope
-				})
-			},
-			{
-				text: 'Layers',
-				icon: 'fa-align-left',
-				modal: $modal({
-					contentTemplate: 'views/modals/mobile-layer-manager.html',
-					show: false,
-					scope: $scope
-				})
-			}
+		$rootScope.languagePromise.then(function() {
 
-		];
+			$scope.modalButtons = [
+				{
+					text: loc.getFromEn('Explore'),
+					icon: 'fa-binoculars',
+					modal: '#explorerModal'
+				},
+				{
+					text: loc.getFromEn('Tours'),
+					icon: 'fa-play',
+					modal: $modal({
+						contentTemplate: 'views/modals/mobile-tours.html',
+						show: false,
+						scope: $scope
+					})
+				},
+				{
+					text: loc.getFromEn('Search'),
+					icon: 'fa-search',
+					modal: $modal({
+						contentTemplate: 'views/modals/mobile-search.html',
+						show: false,
+						scope: $scope,
+						prefixEvent: 'searchModal'
+					})
+				},
+				{
+					text: loc.getFromEn('View'),
+					icon: 'fa-eye',
+					modal: $modal({
+						contentTemplate: 'views/modals/mobile-view.html',
+						show: false,
+						scope: $scope
+					})
+				},
+				{
+					text: loc.getFromEn('Settings'),
+					icon: 'fa-gears',
+					modal: $modal({
+						contentTemplate: 'views/modals/mobile-settings.html',
+						show: false,
+						scope: $scope
+					})
+				},
+				{
+					text: loc.getFromEn('Layers'),
+					icon: 'fa-align-left',
+					modal: $modal({
+						contentTemplate: 'views/modals/mobile-layer-manager.html',
+						show: false,
+						scope: $scope
+					})
+				}
+			];
+		});
 
 		$scope.gotoPage = function(url) {
 			$scope.hideMenu();

@@ -1,7 +1,7 @@
 ﻿
 <div ng-controller="ToursController">
-	<div ng-show="landscapeMessage">
-		{{getFromEn('For best viewing orient your device to landscape mode.')}}
+	<div ng-show="landscapeMessage" localize="For best viewing orient your device to landscape mode.">
+		
 	</div>
 	<div ng-show="!landscapeMessage">
 		<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />

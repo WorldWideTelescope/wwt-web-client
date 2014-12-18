@@ -7337,6 +7337,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #2682a9;
   border-color: #62779d;
 }
+.wwt-webclient-wrapper #lstImagery {
+  width: 180px;
+}
 .wwt-webclient-wrapper .btn,
 .wwt-webclient-wrapper .introjs-button {
   font-size: 12px;

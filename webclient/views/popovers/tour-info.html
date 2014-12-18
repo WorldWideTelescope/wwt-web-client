@@ -7,7 +7,7 @@
         <span class="label" style="margin-left: 20px">{{tour.get_name()}}</span>
         <div style="display: inline-block" class="pull-right">
             <span class="small">
-                Rating:
+				<span localize="Rating"></span>:
                 <div class="rating-container" bs-tooltip="tooltip" title="Average Rating: {{tour.averageRating.toFixed(1)}}" data-container="body">
                     <div class="gray-stars">
                         <i class="fa fa-star text-muted"></i>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </span>
-            <span class="small">Run length: {{secondsToTime(tour.lengthInSecs).h}}:{{secondsToTime(tour.lengthInSecs).m}}:{{secondsToTime(tour.lengthInSecs).s}}</span>
+	        <span class="small"><span localize="Run Length"></span>: {{secondsToTime(tour.lengthInSecs).h}}:{{secondsToTime(tour.lengthInSecs).m}}:{{secondsToTime(tour.lengthInSecs).s}}</span>
         </div>
     </h3>
     <div style="margin:5px 0">
@@ -36,7 +36,7 @@
         <h5>{{tour.organizationName}}</h5>
         <p>{{tour.description}}</p>
         <div ng-if="relatedTours">
-            <h4>Related Tours</h4>
+            <h4 localize="Related Tours"></h4>
             <hr />
             <div style="display: inline-block;vertical-align:top;" ng-repeat="item in relatedTours">
                 <a ng-click="clickThumb(item)"
@@ -49,5 +49,5 @@
             </div>
         </div>
     </div>
-    <div><a class="btn close-btn pull-right" ng-click="$hide()" style="margin:5px 0">{{getFromEn('Close')}}</a></div>
+    <div><a class="btn close-btn pull-right" ng-click="$hide()" style="margin:5px 0" localize="Close"></a></div>
 </div>

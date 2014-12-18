@@ -147,7 +147,7 @@
 					if (openCollection) {
 						if (newCollectionUrl) {
 							var i = 0;
-							while (result[i].url && result[i].url != newCollectionUrl) i++;
+							while (result[i].url && result[i].url.indexOf(newCollectionUrl) == -1) i++;
 
 							$scope.clickThumb(result[i]);
 							newCollectionUrl = null;
@@ -229,7 +229,7 @@
 
 
 		var pagedList;
-		var calcPageSize = function (list, widOffset) {
+		var calcPageSize = function (list) {
 			if (list) {
 				pagedList = list;
 			} else {
@@ -239,8 +239,8 @@
 				var tnWid = 116;
 				var winWid = $(window).width();
 				
-				if (widOffset) {
-					winWid = winWid - widOffset;
+				if (nearby && ($scope.lookAt == 'Sky' || $scope.lookAt == 'SolarSystem')) {
+					winWid = winWid - 216; //angular.element('body.desktop .fov-panel').width();
 				}
 				$scope.pageSize = util.isMobile?9999:Math.floor(winWid / tnWid);
 
@@ -254,9 +254,11 @@
 			
 		};
 
-		$(window).on('resize', function() {
+		$(window).on('resize', function () {
 			$scope.currentPage = 0;
-			calcPageSize();
+			var offset = nearby ? angular.element('body.desktop .fov-panel').width() : 0;
+			calcPageSize(null, offset);
+			util.log('calc',offset);
 		});
 
 		$scope.moveMenu = function (i) {
@@ -341,7 +343,7 @@
 				if (util.isMobile) {
 					$scope.setNBO($scope.placesInCone);
 				}
-				calcPageSize($scope.placesInCone, 217);
+				calcPageSize($scope.placesInCone);
 			});
 		}
 

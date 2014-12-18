@@ -1,84 +1,60 @@
 ﻿<div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!--<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="spectrumModalLabel">Electromagnetic Spectrum</h4>
-            </div>-->
-            <div class="modal-body">
-                <img ng-src="Images/wwtlogo.png" style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" class="pull-left" alt="{{getFromEn('Microsoft WorldWide Telescope')}} Logo" />
-                <h1 style="position:relative;top:-2px">
-                    <small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
-                    World<span style="color:#6ba9e6">Wide Telescope</span>
-                </h1>
-                <h3>{{getFromEn('Welcome to the WorldWide Telescope Web Client')}}</h3>
-                <!--<p><em>Please note that this is a private beta preview of development progress of the new HTML5 control which will be released soon! Some features are not functional in this preview.</em></p>
-                    <p>-->
-                <p>
-                    {{tipsIntro}}
-                </p>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!--<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="spectrumModalLabel">Electromagnetic Spectrum</h4>
+			</div>-->
+			<div class="modal-body">
+				<img ng-src="Images/wwtlogo.png" 
+					 style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" 
+					 class="pull-left"
+					 localize="Microsoft WorldWide Telescope Logo"
+					 localize-only="alt" />
+				<h1 style="position:relative;top:-2px">
+					<small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
+					World<span style="color:#6ba9e6">Wide Telescope</span>
+				</h1>
+				<h3 localize="Welcome to the WorldWide Telescope Web Client"></h3>
+				<!--<p><em>Please note that this is a private beta preview of development progress of the new HTML5 control which will be released soon! Some features are not functional in this preview.</em></p>
+					<p>-->
+				<p>
+					{{tipsIntro}}
+				</p>
 
-                <ul>
-                    <li>Move around the sky by clicking and dragging the Field of View.</li>
-                    <li>Zoom in/out by scrolling the mouse wheel, pressing -/+ or Page Up/Page Down.</li>
-                    <li>Drag with center mouse button or hold Ctrl while dragging to rotate and tilt view.</li>
-                    <li>Click an object’s thumbnail to pan to the object. Double-clicking the object’s thumbnail jumps you to the object.</li>
-                    <li>Page through multiple thumbnail panes with the scroll wheel</li>
-                    <li>Right-click an object to display the contextual Finder Scope for more information.</li>
-                    <li>Menu Tabs have two parts: click the tab’s top to open a pane, click the tab’s bottom to open submenus with additional functionality.</li>
-                </ul>
-                <br/>&nbsp;
-                <p>To return to this screen, click the Explore menu and choose Show Welcome Tips.</p>
-                <!--<h4>Latest updates</h4>
-                    <ul>
-                        <li>Ben has added a new tours xml that represent the tours we are capable of running in the web client. The web client uses this xml file.</li>
-                        <li>Toggle between silverlight and html5 clients with dropdown. Override setting by adding /webclient?client=html5 or /webclient?client=silverlight</li>
-                        <li>Time panel is operational (astrometry is implemented!)</li>
-                        <li>Overall perf tune up, bugs, etc.</li>
-                        <li>Search tab wired up - I have commented out the plot results and VO search for now.</li>
-                        <li>Finder Scope fully operational</li>
-                        <li>Nearby objects wired up in bottom panel</li>
-                        <li>Tour flyout UI flicker improved with fade in effect.</li>
-                        <li>Reset zoom and coords when changing Look At dropdown</li>
-                        <li>Constellation label and thumbnail now bound to current viewport</li>
-                        <li>Fixed look at / imagery binding issues</li>
-                        <li>Fixed numerous bugs with settings and view panels</li>
-                        <li>Layer Manager Lite UI. Tree state is preserved, but only Figures and Boundaries are functional. Need backend API for filters, pictures, names, and all grid settings.</li>
-                        <li>Property panels from explorer menus wired. Fixed the survey info popup.</li>
-                        <li>Tiered menus (Explore > Open..., thumbs on explorer view, and info button). </li>
-                        <li>Galactic Plane Mode</li>
-                        <li>Added Time/Location HTML/CSS + time popup</li>
-                        <li>Thumbnails partially opaque</li>
-                        <li>Autohide tabs/context wired (buggy for now)</li>
-                        <li>RA/Dec/Fov wired to context panel. I poll the api every 333ms for this value</li>
-                        <li>Tours Implemented</li>
-                        <li>Constellation thumb viewport, labels (placeholder UI - non-functional)</li>
-                        <li>Context sphere (placeholder - drawn with css/html)</li>
-                        <li>Related objects placeholders</li>
-                        <li>Finder scope drag behavior, graphic, and contextmenu wireup</li>
+				<ul>
+					<li localize="Move around the sky by clicking and dragging the Field of View."></li>
+					<li localize="Zoom in/out by scrolling the mouse wheel, pressing -/+ or Page Up/Page Down."></li>
+					<li localize="Drag with center mouse button or hold Ctrl while dragging to rotate and tilt view."></li>
+					<!--<li localize="Click an object’s thumbnail to pan to the object. Double-clicking the object’s thumbnail jumps you to the object."></li>
+					<li localize="Page through multiple thumbnail panes with the scroll wheel."></li>-->
+					<li localize="Right-click an object to display the contextual Finder Scope for more information."></li>
+					<li localize="Menu Tabs have two parts: click the tab’s top to open a pane, click the tab’s bottom to open submenus with additional functionality."></li>
+				</ul>
+				<br/>&nbsp;
+				<p localize="To return to this screen, click the Explore menu and choose Show Welcome Tips."></p>
+				
+				<div ng-if="loadingTour">
+					<p>&nbsp;</p>
+					<p localize="Loading tour..."></p>
+					<div class="progress progress-striped active">
+						<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
 
-                    </ul>-->
-                <div ng-if="loadingTour">
-                    <p>&nbsp;</p>
-                    <p>Loading tour...</p>
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="border: none">
-                <div class="checkbox pull-left">
-                    <label data-ng-class="hideIntroModal ? 'checked' : ''">
-                        <input type="checkbox" ng-model="hideIntroModal" ng-change="hideIntroModalChange(hideIntroModal)" />
-                        {{getFromEn('Do not show me this dialog again')}}
-                    </label>
-                </div>
-                <a class="btn" ng-click="tourFeatures()">Tour WWT Features</a>
-                <button type="button" class="btn" data-dismiss="modal" id="btnCloseIntro" style="width:80px">{{getFromEn('Close')}}</button>
-            </div>
-        </div>
-    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" style="border: none">
+				<div class="checkbox pull-left">
+					<label data-ng-class="hideIntroModal ? 'checked' : ''">
+						<input type="checkbox" ng-model="hideIntroModal" ng-change="hideIntroModalChange(hideIntroModal)" />
+						<span localize="Do not show me this dialog again"></span>
+					</label>
+				</div>
+				<a class="btn" ng-click="tourFeatures()">Tour WWT Features</a>
+				<button type="button" class="btn" data-dismiss="modal" id="btnCloseIntro" style="width:80px" localize="Close"></button>
+			</div>
+		</div>
+	</div>
 </div>
 <a href="javascript:void(0)" data-toggle="modal" data-target="#introModal" id="introModalLink">&nbsp;</a>
