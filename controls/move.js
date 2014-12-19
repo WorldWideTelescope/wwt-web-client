@@ -108,12 +108,12 @@
 		if (onstart) {
 			onstart.call(moveObj);
 		}
-		el.trigger('dragstart');
+		//el.trigger('dragstart');
 	};
 
 	var motionHandler = function (evt) {
 		evt.stopPropagation();
-		evt.preventDefault();
+		//evt.preventDefault();
 		var newCoord = getCoord(evt);
 
 		moveObj.moveDist = {
@@ -142,7 +142,7 @@
 		el.css(moveObj.css);
 			
 		if (onmove) {
-			el.trigger('dragmove');
+			//el.trigger('dragmove');
 			onmove.call(moveObj);
 		}
 		
@@ -153,7 +153,7 @@
 		isMoving = false;
 		$(document).off('mouseup touchend MSPointerUp', unbind);
 		$(document).off('mousemove touchmove MSPointerMove', motionHandler);
-		el.trigger('dragmovecomplete');
+		//el.trigger('dragmovecomplete');
 		moveEnd(evt);
 	};
 

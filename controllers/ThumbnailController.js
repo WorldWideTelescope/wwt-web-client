@@ -305,34 +305,22 @@
 			}
 		}
 
-
+		var lastUpdate = new Date();
 		$scope.initNearbyObjects = function() {
 			nearby = true;
 			$scope.placesInCone = [];
 			$scope.scrollDepth = 40;
-			setInterval(dirtyViewPort, 300);
+			$rootScope.$on('viewportchange', function (event, viewport) {
+				if (!viewport.isDirty || new Date().valueOf() - lastUpdate.valueOf() > 2000) {
+					findNearbyObjects();
+					lastUpdate = new Date();
+				}
+			});
+			
 			$scope.$watch('lookAt', findNearbyObjects);
 			
 		};
-		var isDirty = false, isMoving = false, oldRa, oldDec, oldZoom, lastUpdate = new Date();
-		var dirtyViewPort = function () {
-		   
-			isMoving = wwt.wc.getRA() != oldRa || wwt.wc.getDec() != oldDec || wwt.wc.get_fov() != oldZoom;
-			oldRa = wwt.wc.getRA();
-			oldDec = wwt.wc.getDec();
-			oldZoom = wwt.wc.get_fov();
-			// check dirty viewport or update every couple seconds while moving
-			if ((!isMoving && isDirty) || (isMoving && new Date().valueOf() - lastUpdate.valueOf() > 2000)) {
-				findNearbyObjects();
-				lastUpdate = new Date();
-				isDirty = false, isMoving = false;
-			} else {
-				isDirty = isMoving;
-			}
-			
-		}
 		
-
 		function findNearbyObjects() {
 			searchUtil.findNearbyObjects({
 				lookAt: $scope.lookAt,

@@ -20,7 +20,8 @@
 		log: log,
 		resetCamera: resetCamera,
 		toggleFullScreen: toggleFullScreen,
-		getImageSetType: getImageSetType
+		getImageSetType: getImageSetType,
+		trackViewportChanges: trackViewportChanges
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -271,6 +272,38 @@
 		
 	}
 
+	var dirtyInterval;
+	function trackViewportChanges() {
+		viewport = {
+			isDirty: false,
+			init: true,
+			RA: wwt.wc.getRA(),
+			Dec: wwt.wc.getDec(),
+			Fov: wwt.wc.get_fov()
+		};
+		$rootScope.$broadcast('viewportchange', viewport);
+		viewport.init = false;
+		dirtyInterval = setInterval(dirtyViewport, 250);
+	}
+
+	var viewport = {
+		isDirty: false,
+		RA: 0,
+		Dec: 0,
+		Fov: 60
+	};
+	
+	var dirtyViewport = function () {
+		var wasDirty = viewport.isDirty;
+		viewport.isDirty = wwt.wc.getRA() != viewport.RA || wwt.wc.getDec() != viewport.Dec || wwt.wc.get_fov() != viewport.Fov;
+		viewport.RA = wwt.wc.getRA();
+		viewport.Dec = wwt.wc.getDec();
+		viewport.Fov = wwt.wc.get_fov();
+		if (viewport.isDirty || wasDirty) {
+			$rootScope.viewport = viewport;
+			$rootScope.$broadcast('viewportchange', viewport);
+		}
+	}
 	
 
 	return api;
