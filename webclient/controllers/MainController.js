@@ -265,15 +265,12 @@
 
 			$scope.UITools = wwtlib.UiTools;
 			$scope.Planets = wwtlib.Planets;
-			
 
+			$rootScope.$on('viewportchange', viewportChange);
+			util.trackViewportChanges();
+			skyball.init();
 			
-			setInterval(function () {
-				$timeout(function () {
-					$scope.coords = wwtlib.Coordinates.fromRaDec(ctl.getRA(), ctl.getDec());
-					skyball.draw();
-				});
-			}, 200);
+			
 
 			$(window).on('keydown', function (e) {
 				if (e.which === 187) {
@@ -283,8 +280,106 @@
 				}
 			});
 			
-		}; 
+		};
+
 		
+		var viewportChange = function(event,viewport) {
+			if (viewport.isDirty || viewport.init) {
+				$rootScope.viewport = viewport;
+				$scope.coords = wwtlib.Coordinates.fromRaDec(viewport.RA, viewport.Dec);
+				$scope.formatted = {
+					RA: util.formatHms(viewport.RA, true),
+					Dec: util.formatHms(viewport.Dec, false, true),
+					Lat: util.formatHms($scope.coords.get_lat(), false, false),
+					Lng: util.formatHms($scope.coords.get_lng(), false, false),
+					Zoom: util.formatHms(viewport.Fov),
+					Constellation: $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation])
+				}
+			}
+			if ((viewport.isDirty || viewport.finderMove) && checkVisibleFinderScope()) {
+				var found = finderScope.scopeMove();
+				if (found) {
+					$timeout(function() {
+						$scope.scopePlace = found; 
+						$scope.drawCircleOverPlace($scope.scopePlace);
+					});
+					
+				}
+			}
+		}
+
+		var checkVisibleFinderScope = function() {
+			if ($('.finder-scope:visible').length) {
+				finderActive = true;
+			} else if (finderActive) {
+				finderActive = false;
+				clearInterval(finderTimer);
+			}
+			return finderActive;
+		}
+
+		$scope.$on('showFinderScope', function () {
+			$scope.showFinderScope();
+		});
+
+		var finderTimer, finderActive = false,finderMoved = true;
+		$scope.showFinderScope = function (event) {
+			if ($scope.lookAt == 'Sky') {
+				var finder = $('.finder-scope');
+				finder.toggle(!finder.prop('hidden')).css({
+					top: event ? event.pageY - 88 : 180,
+					left: event ? event.pageX - 301 : 250
+				});
+				if (finder.prop('hidden')) {
+					finder.prop('hidden', false);
+					finder.fadeIn(function() {
+						if (!finder.prop('movebound')) {
+							var finderScopeMove = new wwt.Move({
+								el: finder,
+								target: finder.find('.moveable'),
+								onmove: function () {
+									finderMoved = true;
+
+								}
+							});
+						}
+						finder.prop('movebound', true);
+					});
+				}
+				finderScope.init();
+				if (event) {
+					event.preventDefault();
+				}
+				finderTimer = setInterval(pollFinder, 400);
+				viewportChange(null, { finderMove: true });
+			}
+		};
+
+		var pollFinder = function() {
+			if (checkVisibleFinderScope()) {
+				if (finderMoved) {
+					viewportChange(null, { finderMove: true });
+					finderMoved = false;
+				}
+			}
+		}
+
+		$scope.initFinder = function () {
+			searchDataService.getData().then(function () {
+
+				var finder = $('.finder-scope').prop('hidden', true).fadeOut();
+				finder.find('.close, .close-btn').on('click', function () {
+					finder.fadeOut(function () { finder.prop('hidden', true); });
+				});
+				
+
+				$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
+				$scope.showObject = function (place) {
+					$rootScope.singleton.gotoTarget(place);
+					$('.finder-scope').hide();
+				}
+			});
+		};
 
 		$scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
 			return util.formatHms(angle, isHmsFormat, signed, spaced);
@@ -483,7 +578,7 @@
 		$scope.getFromEn = function (englishString) {
 			locCalls++;
 			if (locCalls % 100 == 0) {
-				util.log('loc calls: ' + locCalls);
+				//util.log('loc calls: ' + locCalls);
 			}
 			var key = englishString + $scope.selectedLanguage;
 			if ($scope.selectedLanguage == 'EN') {
@@ -627,58 +722,9 @@
 			ctl.clearAnnotations();
 		};
 
-		var fsTimer;
+		
 
-		$scope.$on('showFinderScope', function() {
-			$scope.showFinderScope();
-		});
-		$scope.showFinderScope = function(event) {
-			if ($scope.lookAt == 'Sky') {
-				var finder = $('.finder-scope');
-				finder.toggle(!finder.prop('hidden')).css({
-					top: event ? event.pageY - 88 : 180,
-					left: event ? event.pageX - 301 : 250
-				});
-				if (finder.prop('hidden')) {
-					finder.prop('hidden', false);
-					finder.fadeIn();
-				}
-				finderScope.init();
-				if (event) {
-					event.preventDefault();
-				}
-				fsTimer = setInterval(pollFS, 400);
-			}
-		};
-		var pollFS = function () {
-			if ($('.finder-scope:visible').length) {
-				$scope.scopePlace = finderScope.scopeMove();
-						
-				$scope.drawCircleOverPlace($scope.scopePlace);
-			} else {
-				clearInterval(fsTimer);
-				wwt.wc.clearAnnotations();
-			}
-		};
-
-		$scope.initFinder = function () {
-			searchDataService.getData().then(function() {
-
-				var finder = $('.finder-scope').prop('hidden', true).fadeOut();
-				finder.find('.close, .close-btn').on('click', function() {
-					finder.fadeOut(function() { finder.prop('hidden', true); });
-				});
-				var finderScopeMove = new wwt.Move({
-					el: finder,
-					target: finder.find('.moveable')
-				});
-				$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
-				$scope.showObject = function(place) {
-					$rootScope.singleton.gotoTarget(place);
-					$('.finder-scope').hide();
-				}
-			});
-		};
+		
 		var initContext = function () {
 			var isAds = util.getQSParam('ads') != null;
 			var bar = $('.cross-fader a.btn').css('left',isAds?50:100);

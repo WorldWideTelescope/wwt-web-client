@@ -8,6 +8,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best telescopes in the world." />
 	<meta name="ROBOTS" content="INDEX, FOLLOW">
+	<meta property="og:url" content="http://worldwidetelescope.org/webclient" /> 
+	<meta property="og:title" content="WorldWide Telescope Web Client" />
+	<meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." /> 
+	<meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
 	<% if (Client == Clients.Html5 || Client == Clients.Mobile)
 	   { %>
 	<link href=css/webclient.css?v=<%= ResourcesVersion%> rel="stylesheet" />
@@ -115,6 +119,23 @@
 	<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1">
 	<% if (Client == Clients.Html5 || Client == Clients.Mobile)
 	   { %>
+		<%--<script>
+			window.fbAsyncInit = function () {
+				FB.init({
+					appId: '1001649533184139',
+					xfbml: true,
+					version: 'v2.2'
+				});
+			};
+
+			(function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) { return; }
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/en_US/sdk.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>--%>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
 	<div id="WorldWideTelescopeControlHost">
 		<div id="WWTCanvas"></div>
@@ -149,8 +170,8 @@
 			<span localize="Share"></span>
 		</a>
 	</div>
-	<ng-include src="'views/modals/mobile-explore.html'" onload="initFinder()"></ng-include>
-	<%--<ng-include src="'views/modals/mobile-tours.html'" onload="initFinder()"></ng-include>--%>
+	<ng-include src="'views/modals/mobile-explore.html'"></ng-include>
+	
 	<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
 		<div class="container">
 			<div class="navbar-header">
@@ -319,7 +340,7 @@
 			>
 			<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
 			<div style="display: inline-block;vertical-align:top;" ng-repeat="item in exploreList" id="exploreList">
-				<ng-include src="'views/thumbnail.html'" onload="initFinder()"></ng-include>
+				<ng-include src="'views/thumbnail.html'"></ng-include>
 			</div>
 			<label class="wwt-pager">
 				<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
@@ -737,8 +758,8 @@
 					<div class="x-axis"></div>
 					<div class="y-axis"></div>
 				</div>
-				<p><span localize="RA"></span>: {{formatHms(ctl.getRA(), true)}}</p>
-				<p><span localize="Dec"></span>: {{formatHms(ctl.getDec(), false, true)}}</p>
+				<p><span localize="RA"></span>: {{formatted.RA}}</p>
+				<p><span localize="Dec"></span>: {{formatted.Dec}}</p>
 			</div>
 			<div class="left" ng-if="lookAt == 'SolarSystem'">
 				<div class="control">
@@ -751,14 +772,14 @@
 				<label class="pull-right" localize="Large"></label>
 				<label class="pull-left" localize="Actual"></label>
 				<div class="location">
-					<p><span localize="Lat"></span>: {{formatHms(coords.get_lat(), false, false)}}</p>
-					<p><span localize="Lng"></span>: {{formatHms(coords.get_lng(), false, false)}}</p>
+					<p><span localize="Lat"></span>: {{formatted.Lat}}</p>
+					<p><span localize="Lng"></span>: {{formatted.Lng}}</p>
 				</div>
 			</div>
 			<div class="right">
 				<p style="position: relative;top:3px;">
-					{{getFromEn(constellations.fullNames[singleton.constellation])}}
-					<span class="pull-right">{{formatHms(ctl.get_fov())}}</span>
+					{{formatted.Constellation}}
+					<span class="pull-right">{{formatted.Zoom}}</span>
 				</p>
 				<div class="constellation-viewport" ng-click="gotoConstellation(singleton.constellation)">
 					<img ng-src="{{constellations.constellationCentroids[singleton.constellation].get_thumbnailUrl()}}" />

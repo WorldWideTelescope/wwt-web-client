@@ -35880,7 +35880,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		log: log,
 		resetCamera: resetCamera,
 		toggleFullScreen: toggleFullScreen,
-		getImageSetType: getImageSetType
+		getImageSetType: getImageSetType,
+		trackViewportChanges: trackViewportChanges
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -36131,6 +36132,38 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		
 	}
 
+	var dirtyInterval;
+	function trackViewportChanges() {
+		viewport = {
+			isDirty: false,
+			init: true,
+			RA: wwt.wc.getRA(),
+			Dec: wwt.wc.getDec(),
+			Fov: wwt.wc.get_fov()
+		};
+		$rootScope.$broadcast('viewportchange', viewport);
+		viewport.init = false;
+		dirtyInterval = setInterval(dirtyViewport, 250);
+	}
+
+	var viewport = {
+		isDirty: false,
+		RA: 0,
+		Dec: 0,
+		Fov: 60
+	};
+	
+	var dirtyViewport = function () {
+		var wasDirty = viewport.isDirty;
+		viewport.isDirty = wwt.wc.getRA() != viewport.RA || wwt.wc.getDec() != viewport.Dec || wwt.wc.get_fov() != viewport.Fov;
+		viewport.RA = wwt.wc.getRA();
+		viewport.Dec = wwt.wc.getDec();
+		viewport.Fov = wwt.wc.get_fov();
+		if (viewport.isDirty || wasDirty) {
+			$rootScope.viewport = viewport;
+			$rootScope.$broadcast('viewportchange', viewport);
+		}
+	}
 	
 
 	return api;
@@ -36180,8 +36213,8 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 
 
 wwt.app.factory('SearchUtil', [
-	'SearchData', '$q', 'Util',
-	function (searchDataService, $q, util) {
+	'SearchData', '$q', 'Util', '$rootScope',
+	function (searchDataService, $q, util,$rootScope) {
 	
 	var api = {
 		runSearch: runSearch,
@@ -36251,11 +36284,10 @@ wwt.app.factory('SearchUtil', [
 		searchDataService.getData().then(function(d) {
 			var searchData = wwt.searchData;
 			if (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem') {
-				//if (wwt.wc.getRA() != oldRa || wwt.wc.getDec() != oldDec || wwt.wc.get_fov() != oldZoom) {
-
+				
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
-				var center = wwtlib.Coordinates.raDecTo3d(wwt.wc.getRA(), wwt.wc.getDec());
+				var center = wwtlib.Coordinates.raDecTo3d($rootScope.viewport.RA, $rootScope.viewport.Dec);
 				var dist = wwtlib.Vector3d.subtractVectors(corner, center);
 
 				var constellation = args.singleton.constellation;
@@ -36298,15 +36330,28 @@ wwt.app.factory('SearchUtil', [
 
 	return api;
 }]);
-wwt.app.factory('Skyball', function () {
+wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 	var api = {
-		draw: draw
+		init: init
 	};
-	var canvas,ctx;
-	function draw() {
-		if (canvas == undefined) {
+	var canvas, ctx;
+	//var renderLog = [];
+	//var avgs = [];
+	//var getAvg = function () {
+	//	var sum = 0;
+	//	$.each(renderLog, function() {
+	//		sum += this;
+	//	});
+	//	avgs.push(sum / renderLog.length);
+	//	renderLog = [];
+	//}
+
+	function draw(event, viewport) {
+		if (!viewport.isDirty){ return;}
+		//var d1 = new Date();
+		/*if (canvas == undefined) {
 			init();
-		}
+		}*/
 		ctx.clearRect(0, 0, 100, 100);
 		var sphereSize = $('#skyball').height();
 		var radius = sphereSize / 2;
@@ -36354,10 +36399,20 @@ wwt.app.factory('Skyball', function () {
 		ctx.fillStyle = (z / 4) > 0 ? 'rgba(255,255,0,.9)' : 'rgba(255,255,0,.5)';
 		ctx.fill();
 		ctx.stroke();
-
+		//var renderTime = new Date().valueOf() - d1.valueOf();
+		//renderLog.push(renderTime);
+		//if (renderLog.length == 50) {
+		//	getAvg();
+		//	console.log('skyball avg: ', avgs);
+		//}
+		
 	};
 
 	function init() {
+		if (!$('#skyball').length) {
+			setTimeout(init, 300);
+			return;
+		}
 		var mobile = $('#skyball').hasClass('mobile');
 		canvas = $('<canvas></canvas>')
 		.css({
@@ -36369,7 +36424,9 @@ wwt.app.factory('Skyball', function () {
 		});
 		$('#skyball').append(canvas);
 		ctx = canvas.get(0).getContext('2d');
+		$rootScope.$on('viewportchange', draw);
 
+		draw(null,{isDirty:true});
 	}
 
 	function point(x, y) {
@@ -36378,7 +36435,7 @@ wwt.app.factory('Skyball', function () {
 
 	
 	return api;
-});
+}]);
 
 
 wwt.app.factory('HashManager', [
@@ -37565,15 +37622,12 @@ wwt.controllers.controller('MainController',
 
 			$scope.UITools = wwtlib.UiTools;
 			$scope.Planets = wwtlib.Planets;
-			
 
+			$rootScope.$on('viewportchange', viewportChange);
+			util.trackViewportChanges();
+			skyball.init();
 			
-			setInterval(function () {
-				$timeout(function () {
-					$scope.coords = wwtlib.Coordinates.fromRaDec(ctl.getRA(), ctl.getDec());
-					skyball.draw();
-				});
-			}, 200);
+			
 
 			$(window).on('keydown', function (e) {
 				if (e.which === 187) {
@@ -37583,8 +37637,106 @@ wwt.controllers.controller('MainController',
 				}
 			});
 			
-		}; 
+		};
+
 		
+		var viewportChange = function(event,viewport) {
+			if (viewport.isDirty || viewport.init) {
+				$rootScope.viewport = viewport;
+				$scope.coords = wwtlib.Coordinates.fromRaDec(viewport.RA, viewport.Dec);
+				$scope.formatted = {
+					RA: util.formatHms(viewport.RA, true),
+					Dec: util.formatHms(viewport.Dec, false, true),
+					Lat: util.formatHms($scope.coords.get_lat(), false, false),
+					Lng: util.formatHms($scope.coords.get_lng(), false, false),
+					Zoom: util.formatHms(viewport.Fov),
+					Constellation: $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation])
+				}
+			}
+			if ((viewport.isDirty || viewport.finderMove) && checkVisibleFinderScope()) {
+				var found = finderScope.scopeMove();
+				if (found) {
+					$timeout(function() {
+						$scope.scopePlace = found; 
+						$scope.drawCircleOverPlace($scope.scopePlace);
+					});
+					
+				}
+			}
+		}
+
+		var checkVisibleFinderScope = function() {
+			if ($('.finder-scope:visible').length) {
+				finderActive = true;
+			} else if (finderActive) {
+				finderActive = false;
+				clearInterval(finderTimer);
+			}
+			return finderActive;
+		}
+
+		$scope.$on('showFinderScope', function () {
+			$scope.showFinderScope();
+		});
+
+		var finderTimer, finderActive = false,finderMoved = true;
+		$scope.showFinderScope = function (event) {
+			if ($scope.lookAt == 'Sky') {
+				var finder = $('.finder-scope');
+				finder.toggle(!finder.prop('hidden')).css({
+					top: event ? event.pageY - 88 : 180,
+					left: event ? event.pageX - 301 : 250
+				});
+				if (finder.prop('hidden')) {
+					finder.prop('hidden', false);
+					finder.fadeIn(function() {
+						if (!finder.prop('movebound')) {
+							var finderScopeMove = new wwt.Move({
+								el: finder,
+								target: finder.find('.moveable'),
+								onmove: function () {
+									finderMoved = true;
+
+								}
+							});
+						}
+						finder.prop('movebound', true);
+					});
+				}
+				finderScope.init();
+				if (event) {
+					event.preventDefault();
+				}
+				finderTimer = setInterval(pollFinder, 400);
+				viewportChange(null, { finderMove: true });
+			}
+		};
+
+		var pollFinder = function() {
+			if (checkVisibleFinderScope()) {
+				if (finderMoved) {
+					viewportChange(null, { finderMove: true });
+					finderMoved = false;
+				}
+			}
+		}
+
+		$scope.initFinder = function () {
+			searchDataService.getData().then(function () {
+
+				var finder = $('.finder-scope').prop('hidden', true).fadeOut();
+				finder.find('.close, .close-btn').on('click', function () {
+					finder.fadeOut(function () { finder.prop('hidden', true); });
+				});
+				
+
+				$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
+				$scope.showObject = function (place) {
+					$rootScope.singleton.gotoTarget(place);
+					$('.finder-scope').hide();
+				}
+			});
+		};
 
 		$scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
 			return util.formatHms(angle, isHmsFormat, signed, spaced);
@@ -37783,7 +37935,7 @@ wwt.controllers.controller('MainController',
 		$scope.getFromEn = function (englishString) {
 			locCalls++;
 			if (locCalls % 100 == 0) {
-				util.log('loc calls: ' + locCalls);
+				//util.log('loc calls: ' + locCalls);
 			}
 			var key = englishString + $scope.selectedLanguage;
 			if ($scope.selectedLanguage == 'EN') {
@@ -37927,58 +38079,9 @@ wwt.controllers.controller('MainController',
 			ctl.clearAnnotations();
 		};
 
-		var fsTimer;
+		
 
-		$scope.$on('showFinderScope', function() {
-			$scope.showFinderScope();
-		});
-		$scope.showFinderScope = function(event) {
-			if ($scope.lookAt == 'Sky') {
-				var finder = $('.finder-scope');
-				finder.toggle(!finder.prop('hidden')).css({
-					top: event ? event.pageY - 88 : 180,
-					left: event ? event.pageX - 301 : 250
-				});
-				if (finder.prop('hidden')) {
-					finder.prop('hidden', false);
-					finder.fadeIn();
-				}
-				finderScope.init();
-				if (event) {
-					event.preventDefault();
-				}
-				fsTimer = setInterval(pollFS, 400);
-			}
-		};
-		var pollFS = function () {
-			if ($('.finder-scope:visible').length) {
-				$scope.scopePlace = finderScope.scopeMove();
-						
-				$scope.drawCircleOverPlace($scope.scopePlace);
-			} else {
-				clearInterval(fsTimer);
-				wwt.wc.clearAnnotations();
-			}
-		};
-
-		$scope.initFinder = function () {
-			searchDataService.getData().then(function() {
-
-				var finder = $('.finder-scope').prop('hidden', true).fadeOut();
-				finder.find('.close, .close-btn').on('click', function() {
-					finder.fadeOut(function() { finder.prop('hidden', true); });
-				});
-				var finderScopeMove = new wwt.Move({
-					el: finder,
-					target: finder.find('.moveable')
-				});
-				$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
-				$scope.showObject = function(place) {
-					$rootScope.singleton.gotoTarget(place);
-					$('.finder-scope').hide();
-				}
-			});
-		};
+		
 		var initContext = function () {
 			var isAds = util.getQSParam('ads') != null;
 			var bar = $('.cross-fader a.btn').css('left',isAds?50:100);
@@ -38504,34 +38607,22 @@ wwt.controllers.controller('ThumbnailController',
 			}
 		}
 
-
+		var lastUpdate = new Date();
 		$scope.initNearbyObjects = function() {
 			nearby = true;
 			$scope.placesInCone = [];
 			$scope.scrollDepth = 40;
-			setInterval(dirtyViewPort, 300);
+			$rootScope.$on('viewportchange', function (event, viewport) {
+				if (!viewport.isDirty || new Date().valueOf() - lastUpdate.valueOf() > 2000) {
+					findNearbyObjects();
+					lastUpdate = new Date();
+				}
+			});
+			
 			$scope.$watch('lookAt', findNearbyObjects);
 			
 		};
-		var isDirty = false, isMoving = false, oldRa, oldDec, oldZoom, lastUpdate = new Date();
-		var dirtyViewPort = function () {
-		   
-			isMoving = wwt.wc.getRA() != oldRa || wwt.wc.getDec() != oldDec || wwt.wc.get_fov() != oldZoom;
-			oldRa = wwt.wc.getRA();
-			oldDec = wwt.wc.getDec();
-			oldZoom = wwt.wc.get_fov();
-			// check dirty viewport or update every couple seconds while moving
-			if ((!isMoving && isDirty) || (isMoving && new Date().valueOf() - lastUpdate.valueOf() > 2000)) {
-				findNearbyObjects();
-				lastUpdate = new Date();
-				isDirty = false, isMoving = false;
-			} else {
-				isDirty = isMoving;
-			}
-			
-		}
 		
-
 		function findNearbyObjects() {
 			searchUtil.findNearbyObjects({
 				lookAt: $scope.lookAt,
@@ -39791,16 +39882,15 @@ wwt.controllers.controller('ShareController',
 	'Util',
 	'$timeout',
 	'HashManager',
-	function ($scope, $rootScope, util, $timeout, hashManager) {
+	function($scope, $rootScope, util, $timeout, hashManager) {
 
 		$scope.includeViewport = true;
 
-		$scope.init = function () {
+		$scope.init = function() {
 			$scope.shareUrlReadOnly = $scope.shareUrl;
-			if ($scope.lookAt != 'Sky'){
+			if ($scope.lookAt != 'Sky') {
 				$scope.shareUrlReadOnly = hashManager.setHashVal('lookAt', $scope.lookAt, true);
-			}
-			else if ($scope.lookAt === 'Earth') {
+			} else if ($scope.lookAt === 'Earth') {
 				$scope.shareUrlReadOnly = $scope.shareUrl = hashManager.removeHashVal('place', true);
 			}
 			if ($scope.backgroundImagery && $scope.backgroundImagery.get_name() != 'Digitized Sky Survey (Color)') {
@@ -39817,25 +39907,45 @@ wwt.controllers.controller('ShareController',
 			selectUrl(999);
 		};
 
+		$rootScope.$on('viewportchange', $scope.init);
+
 		$scope.includeViewportChange = function() {
 			if ($scope.includeViewport) {
-				hashManager.setHashVal('ra', $rootScope.ctl.getRA().toFixed(5), true);
-				hashManager.setHashVal('dec', $rootScope.ctl.getDec().toFixed(5), true);
-				$scope.shareUrlReadOnly = $scope.shareUrl = hashManager.setHashVal('fov', $rootScope.ctl.get_fov().toFixed(5), true);
+				hashManager.setHashVal('ra', $rootScope.viewport.RA.toFixed(5), true);
+				hashManager.setHashVal('dec', $rootScope.viewport.Dec.toFixed(5), true);
+				$scope.shareUrlReadOnly = $scope.shareUrl = hashManager.setHashVal('fov', $rootScope.viewport.Fov.toFixed(5), true);
 			} else {
 				hashManager.removeHashVal('ra', true);
 				hashManager.removeHashVal('dec', true);
 				$scope.shareUrlReadOnly = $scope.shareUrl = hashManager.removeHashVal('fov', true);
 			}
+			$('meta[property="og:url"]').attr('content', $scope.shareUrlReadOnly);
+			$('meta[property="og:title"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_name() + ' - WorldWide Telescope' : $scope.getFromEn('WorldWide Telescope Web Client'));
+			$('meta[property="og:image"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_thumbnailUrl() : location.host + '/webclient/Images/wwtlogo.png');
 			selectUrl(222);
 		};
 
-		var selectUrl = function (delay) {
-			setTimeout(function () {
+		var selectUrl = function(delay) {
+			setTimeout(function() {
 				$('#shareUrl')[0].focus();
 				$('#shareUrl')[0].select();
 			}, delay);
 		}
+
+		$scope.shareFB = function() {
+			FB.ui({
+				method: 'share_open_graph',
+				action_type: 'og.likes',
+				action_properties: JSON.stringify({
+					object: $scope.shareUrlReadOnly,
+					scrape: true
+				})
+			},
+				function(response){
+					util.log(arguments);
+				}
+			);
+		};
 
 		$scope.hide = function() {
 			$scope.$parent.$hide();
@@ -40039,12 +40149,12 @@ wwt.Move = function (createArgs) {
 		if (onstart) {
 			onstart.call(moveObj);
 		}
-		el.trigger('dragstart');
+		//el.trigger('dragstart');
 	};
 
 	var motionHandler = function (evt) {
 		evt.stopPropagation();
-		evt.preventDefault();
+		//evt.preventDefault();
 		var newCoord = getCoord(evt);
 
 		moveObj.moveDist = {
@@ -40073,7 +40183,7 @@ wwt.Move = function (createArgs) {
 		el.css(moveObj.css);
 			
 		if (onmove) {
-			el.trigger('dragmove');
+			//el.trigger('dragmove');
 			onmove.call(moveObj);
 		}
 		
@@ -40084,7 +40194,7 @@ wwt.Move = function (createArgs) {
 		isMoving = false;
 		$(document).off('mouseup touchend MSPointerUp', unbind);
 		$(document).off('mousemove touchmove MSPointerMove', motionHandler);
-		el.trigger('dragmovecomplete');
+		//el.trigger('dragmovecomplete');
 		moveEnd(evt);
 	};
 

@@ -832,7 +832,7 @@
 </ImageSet>
 </ForegroundImageSet>
 </Place>
-<Place Name="Milky Way" RA="24" Dec="0" ZoomLevel="838.8608" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg" Constellation="">
+<!--<Place Name="Milky Way" RA="24" Dec="0" ZoomLevel="838.8608" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg" Constellation="">
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Milky Way" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-016L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="360" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="209.7152">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
@@ -840,7 +840,7 @@
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
-</Place>
+</Place>-->
 <Place Name="Lambda Orionis" RA="5.58563266666667" Dec="83.78449" ZoomLevel="-48.9167056440503" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-015.jpg" Constellation="">
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Lambda Orionis" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-015L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-20" Projection="Tan" FileType=".png" CenterY="83.78449" CenterX="83.78449" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="-12.2291764110126">

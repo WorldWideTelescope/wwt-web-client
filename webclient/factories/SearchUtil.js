@@ -1,6 +1,6 @@
 ﻿wwt.app.factory('SearchUtil', [
-	'SearchData', '$q', 'Util',
-	function (searchDataService, $q, util) {
+	'SearchData', '$q', 'Util', '$rootScope',
+	function (searchDataService, $q, util,$rootScope) {
 	
 	var api = {
 		runSearch: runSearch,
@@ -70,11 +70,10 @@
 		searchDataService.getData().then(function(d) {
 			var searchData = wwt.searchData;
 			if (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem') {
-				//if (wwt.wc.getRA() != oldRa || wwt.wc.getDec() != oldDec || wwt.wc.get_fov() != oldZoom) {
-
+				
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
-				var center = wwtlib.Coordinates.raDecTo3d(wwt.wc.getRA(), wwt.wc.getDec());
+				var center = wwtlib.Coordinates.raDecTo3d($rootScope.viewport.RA, $rootScope.viewport.Dec);
 				var dist = wwtlib.Vector3d.subtractVectors(corner, center);
 
 				var constellation = args.singleton.constellation;
