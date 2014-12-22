@@ -21,7 +21,8 @@
 		resetCamera: resetCamera,
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
-		trackViewportChanges: trackViewportChanges
+		trackViewportChanges: trackViewportChanges,
+		parseHms:parseHms
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -77,6 +78,28 @@
 			+ int2(seconds) + 's' :
 			([signed && angle > 0 ? '+' + int2(angle) : int2(angle), int2(minutes), int2(seconds)]).join(join);
 	};
+
+	function parseHms(input) {
+		var parts;
+		function convertHmstoDec(hours, minutes, seconds) {
+			var dec = parseInt(hours) + parseInt(minutes) / 60 + parseInt(seconds) / (60 * 60);
+			return dec;
+		}
+		if (input.indexOf(':') != -1) {
+			parts = input.split(':');
+		}
+		else if (input.indexOf('h') != -1) {
+			parts = input.replace(/h/, ',').replace(/m/, ',').replace(/s/, '').split(',');
+		}
+		if (parts) {
+			return convertHmstoDec(parts[0], parts[1], parts[2]);
+		} else {
+			return parseFloat(input);
+		}
+	}
+	
+
+	
 
 	function getAstroDetails(place) {
 		var coords = wwtlib.Coordinates.fromRaDec(place.get_RA(), place.get_dec());
