@@ -416,12 +416,12 @@
 					&nbsp;
 					<label>
 						<span localize="RA"></span>
-						<input type="number" style="width:100px" ng-model="RA" />
+						<input type="text" style="width:100px" ng-model="goto.RA" />
 					</label>
 
 					<label>
 						<span localize="Dec"></span>
-						<input type="number" style="width:100px" ng-model="Dec" />
+						<input type="text" style="width:100px" ng-model="goto.Dec" />
 					</label>
 					<a class="btn" ng-click="gotoCoord()" localize="Go"></a>
 
@@ -578,12 +578,16 @@
 
 				<label localize="Preferred Client"></label><br />
 				<select ng-change="setClientPref()" ng-model="preferredClient" ng-options="c.code as c.label for c in availableClients"></select>
+				
+				<% if (Debug)
+				{ %> 
 				<div class="checkbox">
 					<label data-ng-class="WebGl ? 'checked' : ''">
 						<input type="checkbox" ng-model="WebGl" data-ng-change="setWebGl()" />
 						<span localize="Use WebGL (if available)"></span>
 					</label>
 				</div>
+				<%  } %>
 				<div ng-if="redirecting">
 					<span localize="Redirecting to Silverlight Client in"></span>
 					{{redirectingSeconds}}

@@ -337,12 +337,13 @@
 
 		
 		$scope.gotoCoord = function () {
-			var tempPlace = wwtlib.Place.create('tmp', $scope.Dec, $scope.RA, null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
+			var tempPlace = wwtlib.Place.create('tmp', util.parseHms($scope.goto.Dec), util.parseHms($scope.goto.RA), null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
 			$rootScope.singleton.gotoTarget(tempPlace, false, false, true);
 		};
 
 		
 		$scope.initSearch = function () {
+			$scope.goto = {RA:'',Dec:''};
 			if (util.isMobile) {
 				$scope.scrollDepth = 40;
 			}

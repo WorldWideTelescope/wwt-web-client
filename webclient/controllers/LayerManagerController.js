@@ -4,7 +4,7 @@
 	'$timeout',
 	'Util',
 	function($scope, appState, $timeout,util) {
-		var version = 4;
+		var version = 5;
 
 		function treeNode(args) {
 			this.name = args.name;
@@ -217,6 +217,10 @@
 								name: $scope.getFromEn('Planetary Orbits'),
 								checked: true,
 								action: 'solarSystemOrbits'
+							}), new treeNode({
+								name: $scope.getFromEn('Lighting and Shadows'),
+								checked: true,
+								action: 'solarSystemLighting'
 							})/*, new treeNode({
 								name: $scope.getFromEn('Moon & Satellite Orbits'),
 								checked: false,
@@ -225,10 +229,6 @@
 								name: $scope.getFromEn('Asteroids (IAU MPC)'),
 								checked: false,
 								action: 'solarSystemMinorPlanets'
-							}), new treeNode({
-								name: $scope.getFromEn('Lighting and Shadows'),
-								checked: true,
-								action: 'solarSystemLighting'
 							}) /*, new treeNode({
 							name: $scope.getFromEn('Multi-Res Solar System Bodies'),
 							checked: true,

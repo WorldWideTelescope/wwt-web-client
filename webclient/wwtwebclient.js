@@ -35881,7 +35881,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		resetCamera: resetCamera,
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
-		trackViewportChanges: trackViewportChanges
+		trackViewportChanges: trackViewportChanges,
+		parseHms:parseHms
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -35937,6 +35938,28 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			+ int2(seconds) + 's' :
 			([signed && angle > 0 ? '+' + int2(angle) : int2(angle), int2(minutes), int2(seconds)]).join(join);
 	};
+
+	function parseHms(input) {
+		var parts;
+		function convertHmstoDec(hours, minutes, seconds) {
+			var dec = parseInt(hours) + parseInt(minutes) / 60 + parseInt(seconds) / (60 * 60);
+			return dec;
+		}
+		if (input.indexOf(':') != -1) {
+			parts = input.split(':');
+		}
+		else if (input.indexOf('h') != -1) {
+			parts = input.replace(/h/, ',').replace(/m/, ',').replace(/s/, '').split(',');
+		}
+		if (parts) {
+			return convertHmstoDec(parts[0], parts[1], parts[2]);
+		} else {
+			return parseFloat(input);
+		}
+	}
+	
+
+	
 
 	function getAstroDetails(place) {
 		var coords = wwtlib.Coordinates.fromRaDec(place.get_RA(), place.get_dec());
@@ -36308,7 +36331,7 @@ wwt.app.factory('SearchUtil', [
 
 				var results = [];
 				$.each(searchPlaces, function(i, place) {
-					if (place.get_name() != 'Earth') {
+					if (place && place.get_name() != 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
 							if (dist.length() > placeDist.length()) {
@@ -37586,8 +37609,7 @@ wwt.controllers.controller('MainController',
 					label:'Search',
 					button: 'rbnSearch',
 					menu: {
-						'Simbad Search': [simbadSearch],
-						'VO Cone Search / Registry Lookup':[voConeSearch]
+						'Search Now':[function() { $timeout(function() { $scope.activePanel = 'Search'; }); }]
 					}
 				},{
 					label:'View',
@@ -37639,7 +37661,34 @@ wwt.controllers.controller('MainController',
 			
 		};
 
-		
+		var initContext = function () {
+			var isAds = util.getQSParam('ads') != null;
+			var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
+
+			var xf = new wwt.Move({
+				el: bar,
+				bounds: {
+					x: [isAds ? -50 : -100, isAds ? 50 : 0],
+					y: [0, 0]
+				},
+				onstart: function () {
+					bar.addClass('moving');
+				},
+				onmove: function () {
+					ctl.setForegroundOpacity(this.css.left);
+				},
+				oncomplete: function () {
+					bar.removeClass('moving');
+				}
+			});
+
+			wwt.resize();
+
+		};
+		//#endregion 
+
+
+		//#region viewport/finderscope
 		var viewportChange = function(event,viewport) {
 			if (viewport.isDirty || viewport.init) {
 				$rootScope.viewport = viewport;
@@ -37650,7 +37699,7 @@ wwt.controllers.controller('MainController',
 					Lat: util.formatHms($scope.coords.get_lat(), false, false),
 					Lng: util.formatHms($scope.coords.get_lng(), false, false),
 					Zoom: util.formatHms(viewport.Fov),
-					Constellation: $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation])
+					Constellation: $scope.constellations.fullNames ? $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation]) : '&nbsp;'
 				}
 			}
 			if ((viewport.isDirty || viewport.finderMove) && checkVisibleFinderScope()) {
@@ -37738,18 +37787,14 @@ wwt.controllers.controller('MainController',
 			});
 		};
 
-		$scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
-			return util.formatHms(angle, isHmsFormat, signed, spaced);
-		};
-		$scope.formatDecimalHours = function (dayFraction, spaced) {
-			var split = wwtlib.UiTools.formatDecimalHours(dayFraction).split(':');
-			if (parseInt(split[0]) < 10) split[0] = '0' + split[0];
-			if (parseInt(split[1]) < 10) split[1] = '0' + split[1];
-			return split.join(' : ');
-			//return util.formatDecimalHours(dayFraction, spaced == undefined ? true : spaced);test
-		}
+
+		
 		//#endregion
 
+		
+		
+
+		//#region set fb/bg...
 		var solarSystemInit = false;
 		$scope.setSurveyBg = function (imageryName) {
 
@@ -37802,11 +37847,59 @@ wwt.controllers.controller('MainController',
 			$scope.propertyItem.isSurvey = true;
 		};
 
+		$scope.setActiveItem = function (item) {
+			$scope.activeItem = item;
+			if (item.guid) {
+				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
+
+			}
+			if (item.get_studyImageset) {
+				$scope.activeItem.imageSet = item.get_studyImageset();
+			}
+		};
+
+		$scope.setForegroundImage = function (item) {
+			if (item.guid) {
+				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
+			}
+			if (util.isMobile) {
+				$('#explorerModal').modal('hide');
+				$('#nboModal').modal('hide');
+			}
+			var imageSet = util.getImageset(item);
+			if (imageSet) {
+				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
+			}
+
+			if (!item.isSurvey) {
+				$('.finder-scope').hide();
+				//$('.cross-fader').parent().toggle(imageSet!=null);
+				$rootScope.singleton.gotoTarget(item, false, false, true);
+				$scope.setTrackingObj(item);
+				return;
+			}
+
+			//$('.cross-fader').parent().show();
+
+		};
+		$scope.setBackgroundImage = function (item) {
+			var imageSet = util.getImageset(item);
+			if (imageSet) {
+				wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(imageSet);
+			}
+			if (!item.isSurvey) {
+				$rootScope.singleton.gotoTarget(item, false, false, true);
+			}
+		};
+		//#endregion
+
+		
+		//#region menu actions
 		$scope.menuClick = function (menu) {
 			$scope.keepMenu = true;
 			var m = $('#topMenu');
 			m.html('');
-			$.each(menu, function(menuItem, action) {
+			$.each(menu, function (menuItem, action) {
 				var item;
 				if (menuItem.indexOf('sep') === 0) {
 					item = $('<li class="divider" role="presentation"></li>');
@@ -37817,7 +37910,7 @@ wwt.controllers.controller('MainController',
 						item.addClass('dropdown-submenu').find('a').attr('tab-index', -1);
 						var sub = $('<ul class=dropdown-menu></ul>');
 						item.append(sub);
-						$.each(action, function(subItemLabel, subItemAction) {
+						$.each(action, function (subItemLabel, subItemAction) {
 							var subItem = $('<li><a href="javascript:void(0)"></a></li>');
 							subItem.find('a').on('click', function () {
 								subItemAction[0](subItemAction[1]);
@@ -37825,9 +37918,9 @@ wwt.controllers.controller('MainController',
 							sub.append(subItem);
 						});
 					} else {
-						item.find('a').on('click', function() {
-								action[0](action[1]);
-							}).data('action', action);
+						item.find('a').on('click', function () {
+							action[0](action[1]);
+						}).data('action', action);
 					}
 				}
 				m.append(item);
@@ -37835,14 +37928,15 @@ wwt.controllers.controller('MainController',
 			var caret = $('#tabMenu' + this.$index);
 			m.css({
 				top: caret.offset().top + caret.height(),
-				left:caret.offset().left
+				left: caret.offset().left
 			}).show();
-			setTimeout(function() {
+			setTimeout(function () {
 				$(document).on('click', hideMenu);
 				$scope.keepMenu = false;
 			}, 123);
 
 		};
+
 		var hideMenu = function () {
 			if ($scope.keepMenu) {
 				return;
@@ -37855,8 +37949,6 @@ wwt.controllers.controller('MainController',
 			$scope.activePanel = tab.label;
 			appState.set('activePanel', tab.label);
 		};
-
-		//#region menu actions
 		$scope.openItem = function (type) {
 			$scope.openType = type;
 			if (type === 'collection') {
@@ -37980,6 +38072,19 @@ wwt.controllers.controller('MainController',
 		});
 		//#endregion
 
+		//#region view helpers
+
+		$scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
+			return util.formatHms(angle, isHmsFormat, signed, spaced);
+		};
+		$scope.formatDecimalHours = function (dayFraction, spaced) {
+			var split = wwtlib.UiTools.formatDecimalHours(dayFraction).split(':');
+			if (parseInt(split[0]) < 10) split[0] = '0' + split[0];
+			if (parseInt(split[1]) < 10) split[1] = '0' + split[1];
+			return split.join(' : ');
+			//return util.formatDecimalHours(dayFraction, spaced == undefined ? true : spaced);test
+		}
+
 		$rootScope.showTrackingString = function() {
 			return ($scope.trackingObj && $(window).width() > 1159);
 		}
@@ -38003,56 +38108,14 @@ wwt.controllers.controller('MainController',
 			appState.set('hideIntroModal', hideIntroModal);
 		};
 
-		$scope.setActiveItem = function(item) {
-			$scope.activeItem = item;
-			if (item.guid) {
-				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
-
-			}
-			if (item.get_studyImageset) {
-				$scope.activeItem.imageSet = item.get_studyImageset();
-			}
-		};
-
+		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
 			$scope.propertyItem = item;
 			$scope.propertyItem.isExploreTab = isExploreTab;
 		};
 
-		$scope.setForegroundImage = function (item) {
-			if (item.guid) {
-				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
-			}
-			if (util.isMobile) {
-				$('#explorerModal').modal('hide');
-				$('#nboModal').modal('hide');
-			}
-			var imageSet = util.getImageset(item);
-			if (imageSet) {
-				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
-			}
-			
-			if (!item.isSurvey) {
-				$('.finder-scope').hide();
-				//$('.cross-fader').parent().toggle(imageSet!=null);
-				$rootScope.singleton.gotoTarget(item, false, false, true);
-				$scope.setTrackingObj(item);
-				return;
-			}
-
-			//$('.cross-fader').parent().show();
-			
-		};
-		$scope.setBackgroundImage = function(item) {
-			var imageSet = util.getImageset(item);
-			if (imageSet) {
-				wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(imageSet);
-			}
-			if (!item.isSurvey) {
-				$rootScope.singleton.gotoTarget(item, false, false, true);
-			}
-		};
+		
 
 		$scope.showProperties = function () {
 			$('.popover-content .close-btn').click();
@@ -38079,34 +38142,6 @@ wwt.controllers.controller('MainController',
 			ctl.clearAnnotations();
 		};
 
-		
-
-		
-		var initContext = function () {
-			var isAds = util.getQSParam('ads') != null;
-			var bar = $('.cross-fader a.btn').css('left',isAds?50:100);
-			
-			var xf = new wwt.Move({
-				el: bar,
-				bounds: {
-					x: [isAds?-50:-100, isAds?50:0],
-					y: [0, 0]
-				},
-				onstart: function () {
-					bar.addClass('moving');
-				},
-				onmove: function () {
-					ctl.setForegroundOpacity(this.css.left);
-				},
-				oncomplete: function () {
-					bar.removeClass('moving');
-				}
-			}); 
-			
-			wwt.resize();
-			
-		};
-	   
 		
 		
 
@@ -38639,12 +38674,13 @@ wwt.controllers.controller('ThumbnailController',
 
 		
 		$scope.gotoCoord = function () {
-			var tempPlace = wwtlib.Place.create('tmp', $scope.Dec, $scope.RA, null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
+			var tempPlace = wwtlib.Place.create('tmp', util.parseHms($scope.goto.Dec), util.parseHms($scope.goto.RA), null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
 			$rootScope.singleton.gotoTarget(tempPlace, false, false, true);
 		};
 
 		
 		$scope.initSearch = function () {
+			$scope.goto = {RA:'',Dec:''};
 			if (util.isMobile) {
 				$scope.scrollDepth = 40;
 			}
@@ -39615,7 +39651,7 @@ wwt.controllers.controller('LayerManagerController',
 	'$timeout',
 	'Util',
 	function($scope, appState, $timeout,util) {
-		var version = 4;
+		var version = 5;
 
 		function treeNode(args) {
 			this.name = args.name;
@@ -39828,6 +39864,10 @@ wwt.controllers.controller('LayerManagerController',
 								name: $scope.getFromEn('Planetary Orbits'),
 								checked: true,
 								action: 'solarSystemOrbits'
+							}), new treeNode({
+								name: $scope.getFromEn('Lighting and Shadows'),
+								checked: true,
+								action: 'solarSystemLighting'
 							})/*, new treeNode({
 								name: $scope.getFromEn('Moon & Satellite Orbits'),
 								checked: false,
@@ -39836,10 +39876,6 @@ wwt.controllers.controller('LayerManagerController',
 								name: $scope.getFromEn('Asteroids (IAU MPC)'),
 								checked: false,
 								action: 'solarSystemMinorPlanets'
-							}), new treeNode({
-								name: $scope.getFromEn('Lighting and Shadows'),
-								checked: true,
-								action: 'solarSystemLighting'
 							}) /*, new treeNode({
 							name: $scope.getFromEn('Multi-Res Solar System Bodies'),
 							checked: true,
@@ -39932,20 +39968,20 @@ wwt.controllers.controller('ShareController',
 			}, delay);
 		}
 
-		$scope.shareFB = function() {
-			FB.ui({
-				method: 'share_open_graph',
-				action_type: 'og.likes',
-				action_properties: JSON.stringify({
-					object: $scope.shareUrlReadOnly,
-					scrape: true
-				})
-			},
-				function(response){
-					util.log(arguments);
-				}
-			);
-		};
+		//$scope.shareFB = function() {
+		//	FB.ui({
+		//		method: 'share_open_graph',
+		//		action_type: 'og.likes',
+		//		action_properties: JSON.stringify({
+		//			object: $scope.shareUrlReadOnly,
+		//			scrape: true
+		//		})
+		//	},
+		//		function(response){
+		//			util.log(arguments);
+		//		}
+		//	);
+		//};
 
 		$scope.hide = function() {
 			$scope.$parent.$hide();

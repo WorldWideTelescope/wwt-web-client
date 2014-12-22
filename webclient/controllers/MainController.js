@@ -229,8 +229,7 @@
 					label:'Search',
 					button: 'rbnSearch',
 					menu: {
-						'Simbad Search': [simbadSearch],
-						'VO Cone Search / Registry Lookup':[voConeSearch]
+						'Search Now':[function() { $timeout(function() { $scope.activePanel = 'Search'; }); }]
 					}
 				},{
 					label:'View',
@@ -282,7 +281,34 @@
 			
 		};
 
-		
+		var initContext = function () {
+			var isAds = util.getQSParam('ads') != null;
+			var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
+
+			var xf = new wwt.Move({
+				el: bar,
+				bounds: {
+					x: [isAds ? -50 : -100, isAds ? 50 : 0],
+					y: [0, 0]
+				},
+				onstart: function () {
+					bar.addClass('moving');
+				},
+				onmove: function () {
+					ctl.setForegroundOpacity(this.css.left);
+				},
+				oncomplete: function () {
+					bar.removeClass('moving');
+				}
+			});
+
+			wwt.resize();
+
+		};
+		//#endregion 
+
+
+		//#region viewport/finderscope
 		var viewportChange = function(event,viewport) {
 			if (viewport.isDirty || viewport.init) {
 				$rootScope.viewport = viewport;
@@ -293,7 +319,7 @@
 					Lat: util.formatHms($scope.coords.get_lat(), false, false),
 					Lng: util.formatHms($scope.coords.get_lng(), false, false),
 					Zoom: util.formatHms(viewport.Fov),
-					Constellation: $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation])
+					Constellation: $scope.constellations.fullNames ? $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation]) : '&nbsp;'
 				}
 			}
 			if ((viewport.isDirty || viewport.finderMove) && checkVisibleFinderScope()) {
@@ -381,18 +407,14 @@
 			});
 		};
 
-		$scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
-			return util.formatHms(angle, isHmsFormat, signed, spaced);
-		};
-		$scope.formatDecimalHours = function (dayFraction, spaced) {
-			var split = wwtlib.UiTools.formatDecimalHours(dayFraction).split(':');
-			if (parseInt(split[0]) < 10) split[0] = '0' + split[0];
-			if (parseInt(split[1]) < 10) split[1] = '0' + split[1];
-			return split.join(' : ');
-			//return util.formatDecimalHours(dayFraction, spaced == undefined ? true : spaced);test
-		}
+
+		
 		//#endregion
 
+		
+		
+
+		//#region set fb/bg...
 		var solarSystemInit = false;
 		$scope.setSurveyBg = function (imageryName) {
 
@@ -445,11 +467,59 @@
 			$scope.propertyItem.isSurvey = true;
 		};
 
+		$scope.setActiveItem = function (item) {
+			$scope.activeItem = item;
+			if (item.guid) {
+				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
+
+			}
+			if (item.get_studyImageset) {
+				$scope.activeItem.imageSet = item.get_studyImageset();
+			}
+		};
+
+		$scope.setForegroundImage = function (item) {
+			if (item.guid) {
+				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
+			}
+			if (util.isMobile) {
+				$('#explorerModal').modal('hide');
+				$('#nboModal').modal('hide');
+			}
+			var imageSet = util.getImageset(item);
+			if (imageSet) {
+				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
+			}
+
+			if (!item.isSurvey) {
+				$('.finder-scope').hide();
+				//$('.cross-fader').parent().toggle(imageSet!=null);
+				$rootScope.singleton.gotoTarget(item, false, false, true);
+				$scope.setTrackingObj(item);
+				return;
+			}
+
+			//$('.cross-fader').parent().show();
+
+		};
+		$scope.setBackgroundImage = function (item) {
+			var imageSet = util.getImageset(item);
+			if (imageSet) {
+				wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(imageSet);
+			}
+			if (!item.isSurvey) {
+				$rootScope.singleton.gotoTarget(item, false, false, true);
+			}
+		};
+		//#endregion
+
+		
+		//#region menu actions
 		$scope.menuClick = function (menu) {
 			$scope.keepMenu = true;
 			var m = $('#topMenu');
 			m.html('');
-			$.each(menu, function(menuItem, action) {
+			$.each(menu, function (menuItem, action) {
 				var item;
 				if (menuItem.indexOf('sep') === 0) {
 					item = $('<li class="divider" role="presentation"></li>');
@@ -460,7 +530,7 @@
 						item.addClass('dropdown-submenu').find('a').attr('tab-index', -1);
 						var sub = $('<ul class=dropdown-menu></ul>');
 						item.append(sub);
-						$.each(action, function(subItemLabel, subItemAction) {
+						$.each(action, function (subItemLabel, subItemAction) {
 							var subItem = $('<li><a href="javascript:void(0)"></a></li>');
 							subItem.find('a').on('click', function () {
 								subItemAction[0](subItemAction[1]);
@@ -468,9 +538,9 @@
 							sub.append(subItem);
 						});
 					} else {
-						item.find('a').on('click', function() {
-								action[0](action[1]);
-							}).data('action', action);
+						item.find('a').on('click', function () {
+							action[0](action[1]);
+						}).data('action', action);
 					}
 				}
 				m.append(item);
@@ -478,14 +548,15 @@
 			var caret = $('#tabMenu' + this.$index);
 			m.css({
 				top: caret.offset().top + caret.height(),
-				left:caret.offset().left
+				left: caret.offset().left
 			}).show();
-			setTimeout(function() {
+			setTimeout(function () {
 				$(document).on('click', hideMenu);
 				$scope.keepMenu = false;
 			}, 123);
 
 		};
+
 		var hideMenu = function () {
 			if ($scope.keepMenu) {
 				return;
@@ -498,8 +569,6 @@
 			$scope.activePanel = tab.label;
 			appState.set('activePanel', tab.label);
 		};
-
-		//#region menu actions
 		$scope.openItem = function (type) {
 			$scope.openType = type;
 			if (type === 'collection') {
@@ -623,6 +692,19 @@
 		});
 		//#endregion
 
+		//#region view helpers
+
+		$scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
+			return util.formatHms(angle, isHmsFormat, signed, spaced);
+		};
+		$scope.formatDecimalHours = function (dayFraction, spaced) {
+			var split = wwtlib.UiTools.formatDecimalHours(dayFraction).split(':');
+			if (parseInt(split[0]) < 10) split[0] = '0' + split[0];
+			if (parseInt(split[1]) < 10) split[1] = '0' + split[1];
+			return split.join(' : ');
+			//return util.formatDecimalHours(dayFraction, spaced == undefined ? true : spaced);test
+		}
+
 		$rootScope.showTrackingString = function() {
 			return ($scope.trackingObj && $(window).width() > 1159);
 		}
@@ -646,56 +728,14 @@
 			appState.set('hideIntroModal', hideIntroModal);
 		};
 
-		$scope.setActiveItem = function(item) {
-			$scope.activeItem = item;
-			if (item.guid) {
-				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
-
-			}
-			if (item.get_studyImageset) {
-				$scope.activeItem.imageSet = item.get_studyImageset();
-			}
-		};
-
+		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
 			$scope.propertyItem = item;
 			$scope.propertyItem.isExploreTab = isExploreTab;
 		};
 
-		$scope.setForegroundImage = function (item) {
-			if (item.guid) {
-				$scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
-			}
-			if (util.isMobile) {
-				$('#explorerModal').modal('hide');
-				$('#nboModal').modal('hide');
-			}
-			var imageSet = util.getImageset(item);
-			if (imageSet) {
-				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
-			}
-			
-			if (!item.isSurvey) {
-				$('.finder-scope').hide();
-				//$('.cross-fader').parent().toggle(imageSet!=null);
-				$rootScope.singleton.gotoTarget(item, false, false, true);
-				$scope.setTrackingObj(item);
-				return;
-			}
-
-			//$('.cross-fader').parent().show();
-			
-		};
-		$scope.setBackgroundImage = function(item) {
-			var imageSet = util.getImageset(item);
-			if (imageSet) {
-				wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(imageSet);
-			}
-			if (!item.isSurvey) {
-				$rootScope.singleton.gotoTarget(item, false, false, true);
-			}
-		};
+		
 
 		$scope.showProperties = function () {
 			$('.popover-content .close-btn').click();
@@ -722,34 +762,6 @@
 			ctl.clearAnnotations();
 		};
 
-		
-
-		
-		var initContext = function () {
-			var isAds = util.getQSParam('ads') != null;
-			var bar = $('.cross-fader a.btn').css('left',isAds?50:100);
-			
-			var xf = new wwt.Move({
-				el: bar,
-				bounds: {
-					x: [isAds?-50:-100, isAds?50:0],
-					y: [0, 0]
-				},
-				onstart: function () {
-					bar.addClass('moving');
-				},
-				onmove: function () {
-					ctl.setForegroundOpacity(this.css.left);
-				},
-				oncomplete: function () {
-					bar.removeClass('moving');
-				}
-			}); 
-			
-			wwt.resize();
-			
-		};
-	   
 		
 		
 

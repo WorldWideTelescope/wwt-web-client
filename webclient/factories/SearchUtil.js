@@ -94,7 +94,7 @@
 
 				var results = [];
 				$.each(searchPlaces, function(i, place) {
-					if (place.get_name() != 'Earth') {
+					if (place && place.get_name() != 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
 							if (dist.length() > placeDist.length()) {
