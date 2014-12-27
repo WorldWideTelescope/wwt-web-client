@@ -18080,6 +18080,10 @@ wwtlib.ScriptInterface = function wwtlib_ScriptInterface() {
     /// </field>
     /// <field name="__tourReady" type="System.EventHandler`1">
     /// </field>
+    /// <field name="__tourPaused" type="System.EventHandler`1">
+    /// </field>
+    /// <field name="__tourResumed" type="System.EventHandler`1">
+    /// </field>
     /// <field name="__tourEnded" type="System.EventHandler`1">
     /// </field>
     /// <field name="__slideChanged" type="System.EventHandler`1">
@@ -18194,6 +18198,28 @@ wwtlib.ScriptInterface.prototype = {
     
     __tourReady: null,
     
+    add_tourPaused: function wwtlib_ScriptInterface$add_tourPaused(value) {
+        /// <param name="value" type="Function" />
+        this.__tourPaused = ss.Delegate.combine(this.__tourPaused, value);
+    },
+    remove_tourPaused: function wwtlib_ScriptInterface$remove_tourPaused(value) {
+        /// <param name="value" type="Function" />
+        this.__tourPaused = ss.Delegate.remove(this.__tourPaused, value);
+    },
+    
+    __tourPaused: null,
+    
+    add_tourResumed: function wwtlib_ScriptInterface$add_tourResumed(value) {
+        /// <param name="value" type="Function" />
+        this.__tourResumed = ss.Delegate.combine(this.__tourResumed, value);
+    },
+    remove_tourResumed: function wwtlib_ScriptInterface$remove_tourResumed(value) {
+        /// <param name="value" type="Function" />
+        this.__tourResumed = ss.Delegate.remove(this.__tourResumed, value);
+    },
+    
+    __tourResumed: null,
+    
     add_tourEnded: function wwtlib_ScriptInterface$add_tourEnded(value) {
         /// <param name="value" type="Function" />
         this.__tourEnded = ss.Delegate.combine(this.__tourEnded, value);
@@ -18219,6 +18245,18 @@ wwtlib.ScriptInterface.prototype = {
     _fireTourReady: function wwtlib_ScriptInterface$_fireTourReady() {
         if (this.__tourReady != null) {
             this.__tourReady(this, new ss.EventArgs());
+        }
+    },
+    
+    _fireTourPaused: function wwtlib_ScriptInterface$_fireTourPaused() {
+        if (this.__tourPaused != null) {
+            this.__tourPaused(this, new ss.EventArgs());
+        }
+    },
+    
+    _fireTourResume: function wwtlib_ScriptInterface$_fireTourResume() {
+        if (this.__tourResumed != null) {
+            this.__tourResumed(this, new ss.EventArgs());
         }
     },
     
@@ -26113,6 +26151,7 @@ wwtlib.TourPlayer.prototype = {
             }
         }
         wwtlib.WWTControl.singleton._hideUI(wwtlib.TourPlayer.noRestoreUIOnStop);
+        wwtlib.WWTControl.scriptInterface._fireTourEnded();
     },
     
     updateSlideStates: function wwtlib_TourPlayer$updateSlideStates() {
@@ -26311,9 +26350,11 @@ wwtlib.TourPlayer.prototype = {
         if (wwtlib.TourPlayer._playing) {
             this.stop(wwtlib.TourPlayer._switchedToFullScreen);
             wwtlib.WWTControl.singleton._freezeView();
+            wwtlib.WWTControl.scriptInterface._fireTourPaused();
         }
         else {
             this.play();
+            wwtlib.WWTControl.scriptInterface._fireTourResume();
         }
     },
     
@@ -36648,7 +36689,7 @@ wwtlib.Folder.prototype = {
         if (String.isNullOrEmpty(this._urlField)) {
             this._childList.clear();
             if (this.parent != null) {
-                var folderUp = new wwtlib.FolderUp();
+                var folderUp = new wwtlib._folderUp();
                 folderUp.parent = this.parent;
                 this._childList.add(folderUp);
             }
@@ -37129,7 +37170,7 @@ wwtlib.FolderBrowser.prototype = {
                 }));
                 return;
             }
-            if (Type.canCast(this._items[index], wwtlib.FolderUp)) {
+            if (Type.canCast(this._items[index], wwtlib._folderUp)) {
                 var folderUp = this._items[index];
                 if (folderUp.parent != null) {
                     this._startIndex = 0;
@@ -37487,9 +37528,9 @@ wwtlib.FolderBrowser.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// wwtlib.FolderUp
+// wwtlib._folderUp
 
-wwtlib.FolderUp = function wwtlib_FolderUp() {
+wwtlib._folderUp = function wwtlib__folderUp() {
     /// <field name="parent" type="wwtlib.Folder">
     /// </field>
     /// <field name="_thumbnail" type="Object" domElement="true">
@@ -37498,9 +37539,9 @@ wwtlib.FolderUp = function wwtlib_FolderUp() {
     /// </field>
     this._bounds = new wwtlib.Rectangle();
 }
-wwtlib.FolderUp.prototype = {
+wwtlib._folderUp.prototype = {
     
-    get_name: function wwtlib_FolderUp$get_name() {
+    get_name: function wwtlib__folderUp$get_name() {
         /// <value type="String"></value>
         return 'Up Level';
     },
@@ -37508,62 +37549,62 @@ wwtlib.FolderUp.prototype = {
     parent: null,
     _thumbnail: null,
     
-    get_thumbnail: function wwtlib_FolderUp$get_thumbnail() {
+    get_thumbnail: function wwtlib__folderUp$get_thumbnail() {
         /// <value type="Object" domElement="true"></value>
         return this._thumbnail;
     },
-    set_thumbnail: function wwtlib_FolderUp$set_thumbnail(value) {
+    set_thumbnail: function wwtlib__folderUp$set_thumbnail(value) {
         /// <value type="Object" domElement="true"></value>
         this._thumbnail = value;
         return value;
     },
     
-    get_thumbnailUrl: function wwtlib_FolderUp$get_thumbnailUrl() {
+    get_thumbnailUrl: function wwtlib__folderUp$get_thumbnailUrl() {
         /// <value type="String"></value>
         return 'http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?Name=folderup';
     },
-    set_thumbnailUrl: function wwtlib_FolderUp$set_thumbnailUrl(value) {
+    set_thumbnailUrl: function wwtlib__folderUp$set_thumbnailUrl(value) {
         /// <value type="String"></value>
         return;
         return value;
     },
     
-    get_bounds: function wwtlib_FolderUp$get_bounds() {
+    get_bounds: function wwtlib__folderUp$get_bounds() {
         /// <value type="wwtlib.Rectangle"></value>
         return this._bounds;
     },
-    set_bounds: function wwtlib_FolderUp$set_bounds(value) {
+    set_bounds: function wwtlib__folderUp$set_bounds(value) {
         /// <value type="wwtlib.Rectangle"></value>
         this._bounds = value;
         return value;
     },
     
-    get_isImage: function wwtlib_FolderUp$get_isImage() {
+    get_isImage: function wwtlib__folderUp$get_isImage() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_isTour: function wwtlib_FolderUp$get_isTour() {
+    get_isTour: function wwtlib__folderUp$get_isTour() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_isFolder: function wwtlib_FolderUp$get_isFolder() {
+    get_isFolder: function wwtlib__folderUp$get_isFolder() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_isCloudCommunityItem: function wwtlib_FolderUp$get_isCloudCommunityItem() {
+    get_isCloudCommunityItem: function wwtlib__folderUp$get_isCloudCommunityItem() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_readOnly: function wwtlib_FolderUp$get_readOnly() {
+    get_readOnly: function wwtlib__folderUp$get_readOnly() {
         /// <value type="Boolean"></value>
         return false;
     },
     
-    get_children: function wwtlib_FolderUp$get_children() {
+    get_children: function wwtlib__folderUp$get_children() {
         /// <value type="Array"></value>
         if (this.parent == null) {
             return [];
@@ -40255,7 +40296,7 @@ wwtlib.ConvexHull.registerClass('wwtlib.ConvexHull');
 wwtlib.EquirectangularTile.registerClass('wwtlib.EquirectangularTile', wwtlib.Tile);
 wwtlib.Folder.registerClass('wwtlib.Folder', null, wwtlib.IThumbnail);
 wwtlib.FolderBrowser.registerClass('wwtlib.FolderBrowser');
-wwtlib.FolderUp.registerClass('wwtlib.FolderUp', null, wwtlib.IThumbnail);
+wwtlib._folderUp.registerClass('wwtlib._folderUp', null, wwtlib.IThumbnail);
 wwtlib.Imageset.registerClass('wwtlib.Imageset', null, wwtlib.IThumbnail);
 wwtlib.ViewMoverKenBurnsStyle.registerClass('wwtlib.ViewMoverKenBurnsStyle', null, wwtlib.IViewMover);
 wwtlib._viewMoverSlew.registerClass('wwtlib._viewMoverSlew', null, wwtlib.IViewMover);

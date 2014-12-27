@@ -40,20 +40,38 @@ namespace wwtlib
         public event EventHandler<AnnotationClickEventArgs> AnnotationClicked;
         
         public event EventHandler<EventArgs> ImageryLoaded;
-       
-        public event EventHandler<EventArgs> TourReady;
+
+		public event EventHandler<EventArgs> TourReady;
+
+		public event EventHandler<EventArgs> TourPaused;
+
+		public event EventHandler<EventArgs> TourResumed;
 
         public event EventHandler<EventArgs> TourEnded;
 
         public event EventHandler<SlideChangedEventArgs> SlideChanged;
-       
-        internal void FireTourReady()
-        {
-            if (TourReady != null)
-            {
-                TourReady.Invoke(this, new EventArgs());
-            }
-        }
+
+		internal void FireTourReady()
+		{
+			if (TourReady != null)
+			{
+				TourReady.Invoke(this, new EventArgs());
+			}
+		}
+		internal void FireTourPaused()
+		{
+			if (TourPaused != null)
+			{
+				TourPaused.Invoke(this, new EventArgs());
+			}
+		}
+		internal void FireTourResume()
+		{
+			if (TourResumed != null)
+			{
+				TourResumed.Invoke(this, new EventArgs());
+			}
+		}
 
         internal void FireTourEnded()
         {

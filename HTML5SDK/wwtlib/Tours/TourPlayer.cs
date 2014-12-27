@@ -629,7 +629,7 @@ namespace wwtlib
             }
 
             WWTControl.Singleton.HideUI(NoRestoreUIOnStop);
-
+			WWTControl.scriptInterface.FireTourEnded();
         }
 
         public void UpdateSlideStates()
@@ -870,10 +870,12 @@ namespace wwtlib
             {
                 Stop(switchedToFullScreen);
                 WWTControl.Singleton.FreezeView();
+				WWTControl.scriptInterface.FireTourPaused();
             }
             else
             {
                 Play();
+				WWTControl.scriptInterface.FireTourResume();
             }
         }
 
