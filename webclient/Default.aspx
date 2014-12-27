@@ -708,10 +708,10 @@
 		</div>
 		   <%  } %>    
 	</div>
-	<div class="layer-manager desktop" ng-controller="LayerManagerController" style="display:{{layerManagerHidden ? 'none' : 'block'}}" ng-init="initLayerManager()">
+	<div class="layer-manager desktop" ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block'}" ng-init="initLayerManager()">
 		<button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">×</button>
 		<h5 localize="Layers"></h5>
-		<div class="tree" ng-class="tree.collapsed?'collapsed':''" style="height:{{layerManagerHeight()}}px">
+		<div class="tree" ng-class="tree.collapsed?'collapsed':''" ng-style="{height:  layerManagerHeight() + 'px' }">
 			<div class="checkbox">
 				<i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
 				<label data-ng-class="tree.checked ? 'checked' : ''">
@@ -791,7 +791,7 @@
 				<div class="bar"></div>
 			</div>
 		</div>
-		<div class="controls" style="width:{{bottomControlsWidth()}}px">
+		<div class="controls" ng-style="{ width: bottomControlsWidth() + 'px'}">
 			<div class="layer-manager-toggle iblock" id="btnToggleLayerMgr">
 		
 				<a href="javascript:void(0)" 
@@ -838,7 +838,7 @@
 			</div>
 		
 		</div>
-		<div class="thumbnails nearby-objects rel" data-ng-controller="ThumbnailController" ng-init="initNearbyObjects()"  style="width:{{bottomControlsWidth()}}px">
+		<div class="thumbnails nearby-objects rel" data-ng-controller="ThumbnailController" ng-init="initNearbyObjects()"  ng-style="{width: bottomControlsWidth()}">
 			<div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in nearbyPlaces" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
 				<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
 					<ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
@@ -888,7 +888,7 @@
 						<i class="fa fa-share-alt"></i>
 					</a>
 				</div>
-				<div class="iblock rel" style="vertical-align: top;right:{{contextPagerRight()}}px" ng-if="lookAt != 'Planet' && lookAt != 'Panorama' && pageCount > 1">
+				<div class="iblock rel vtop" ng-style="{right:contextPagerRight() + 'px'}" ng-if="lookAt != 'Planet' && lookAt != 'Panorama' && pageCount > 1">
 					<a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
 						<i class="fa fa-play reverse"></i>
 					</a>

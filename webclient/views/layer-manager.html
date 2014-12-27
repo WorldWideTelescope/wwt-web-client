@@ -6,7 +6,7 @@
 			<i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
 			<label data-ng-class="tree.checked ? 'checked' : ''">
 				<input type="checkbox" ng-model="tree.checked" data-ng-change="nodeChange(tree)" />
-				<span localize="{{tree.name}}"></span>
+				<span data-localize="{{tree.name}}"></span>
 
 			</label>
 		</div>

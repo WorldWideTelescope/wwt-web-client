@@ -29187,8 +29187,10 @@ wwtlib.WWTControl._getLocation = function wwtlib_WWTControl$_getLocation(pos) {
 wwtlib.WWTControl._getLocationError = function wwtlib_WWTControl$_getLocationError(pos) {
     /// <param name="pos" type="position">
     /// </param>
-    var lat = pos.coords.latitude;
-    var lng = pos.coords.longitude;
+    if (pos != null && pos.coords != null) {
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+    }
 }
 wwtlib.WWTControl._createCanvasElement = function wwtlib_WWTControl$_createCanvasElement(DivId) {
     /// <param name="DivId" type="String">

@@ -69,7 +69,7 @@
 
 		searchDataService.getData().then(function(d) {
 			var searchData = wwt.searchData;
-			if (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem') {
+			if ($rootScope.viewport && (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem')) {
 				
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
@@ -94,7 +94,7 @@
 
 				var results = [];
 				$.each(searchPlaces, function(i, place) {
-					if (place && place.get_name() != 'Earth') {
+					if (place && place.get_name() !== 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
 							if (dist.length() > placeDist.length()) {

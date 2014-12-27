@@ -1909,8 +1909,12 @@ namespace wwtlib
         }
         private static void GetLocationError (Position pos)
         {
-            double lat = pos.Coords.Latitude;
-            double lng = pos.Coords.Longitude;
+	        if (pos != null && pos.Coords != null)
+	        {
+		        double lat = pos.Coords.Latitude;
+		        double lng = pos.Coords.Longitude;
+
+	        }
         }
         private static CanvasElement CreateCanvasElement(string DivId)
         {

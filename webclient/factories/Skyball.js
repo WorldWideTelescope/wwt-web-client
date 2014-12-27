@@ -15,7 +15,7 @@
 	//}
 
 	function draw(event, viewport) {
-		if (!viewport.isDirty){ return;}
+		if (!viewport.isDirty && !viewport.init){ return;}
 		//var d1 = new Date();
 		/*if (canvas == undefined) {
 			init();

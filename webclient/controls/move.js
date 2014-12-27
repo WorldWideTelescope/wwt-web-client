@@ -33,11 +33,16 @@
 			var pointerMoveName = window.PointerEvent ? 'pointermove' : 'MSPointerMove';
 			document.body.addEventListener(pointerDownName, function (event) {
 				
-				if (event.target != target[0] || isMoving) {
+				if ((event.target !== target[0] && !$(target).has(event.target).length) || isMoving) {
 					return;
 				}
-				document.body.setPointerCapture(event.pointerId);
-				
+
+				if (document.body.setPointerCapture) {
+					document.body.setPointerCapture(event.pointerId);
+				}
+				else if (document.body.msSetPointerCapture) {
+					document.body.msSetPointerCapture(event.pointerId);
+				}
 				event.preventDefault();
 				event.stopPropagation();
 				if (event.pointerId) {
@@ -46,14 +51,14 @@
 				
 				moveInit(event);
 
-				
+				document.body.addEventListener(pointerUpName, unbind, false);
+				document.body.addEventListener(pointerMoveName, function (evt) {
+					if (pointerId && evt.pointerId === pointerId) {
+						motionHandler(evt);
+					} 
+				}, false);
 			}, false);
-			document.body.addEventListener(pointerUpName, unbind, false);
-			document.body.addEventListener(pointerMoveName, function (evt) {
-				if (pointerId && evt.pointerId == pointerId) {
-					motionHandler(evt);
-				} 
-			}, false);
+			
 		}else {
 			target.on('mousedown touchstart', function(event) {
 				event.preventDefault();

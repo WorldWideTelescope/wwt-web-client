@@ -190,14 +190,14 @@
 			}
 			else if (item.isPanorama) {
 				$scope.setLookAt('Panorama', item.get_name());
-			} else if (util.getIsPlanet(item) && $scope.lookAt != 'SolarSystem') {
-				 $scope.setLookAt('Planet', item.get_name());
-			} else if (item.isPlanet && $scope.lookAt != 'SolarSystem') {
-				$scope.setLookAt('Planet', '');
 			} else if (item.isEarth) {
 				$scope.setLookAt('Earth', item.get_name());
-			}
-			if (Type.canCast(item, wwtlib.Place) && !item.isSurvey) {
+			} else if (util.getIsPlanet(item) && $scope.lookAt !== 'SolarSystem') {
+				 $scope.setLookAt('Planet', item.get_name());
+			} else if (item.isPlanet && $scope.lookAt !== 'SolarSystem') {
+				$scope.setLookAt('Planet', '');
+			} 
+			if ((Type.canCast(item, wwtlib.Place)||item.isEarth) && !item.isSurvey) {
 				$scope.setForegroundImage(item);
 				
 			}
@@ -258,7 +258,7 @@
 			$scope.currentPage = 0;
 			var offset = nearby ? angular.element('body.desktop .fov-panel').width() : 0;
 			calcPageSize(null, offset);
-			util.log('calc',offset);
+			//util.log('calc',offset);
 		});
 
 		$scope.moveMenu = function (i) {
@@ -311,7 +311,7 @@
 			$scope.placesInCone = [];
 			$scope.scrollDepth = 40;
 			$rootScope.$on('viewportchange', function (event, viewport) {
-				if (!viewport.isDirty || new Date().valueOf() - lastUpdate.valueOf() > 2000) {
+				if ((!viewport.isDirty && !viewport.init) || new Date().valueOf() - lastUpdate.valueOf() > 2000) {
 					findNearbyObjects();
 					lastUpdate = new Date();
 				}

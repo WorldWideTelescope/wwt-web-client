@@ -6491,6 +6491,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 			.boxGradient();
 		}*/
 }
+.wwt-webclient-wrapper .vtop {
+  vertical-align: top;
+}
 .wwt-webclient-wrapper #WorldWideTelescopeControlHost,
 .wwt-webclient-wrapper #WWTCanvas,
 .wwt-webclient-wrapper canvas {

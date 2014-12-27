@@ -35585,6 +35585,11 @@ wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', 
 
 		function replaceText(useEn) {
 			try {
+				// possible binding expression needs to be eval-ed
+				if (attrs.localize === '') {
+					setTimeout(function () { replaceText(useEn) }, 200);
+					return;
+				}
 				var el = $(element);
 				var exp = new RegExp(attrs.localize, 'g');
 				var localized = useEn ? attrs.localize : loc.getFromEn(attrs.localize);
@@ -36164,9 +36169,24 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			Dec: wwt.wc.getDec(),
 			Fov: wwt.wc.get_fov()
 		};
+
 		$rootScope.$broadcast('viewportchange', viewport);
-		viewport.init = false;
-		dirtyInterval = setInterval(dirtyViewport, 250);
+
+		$rootScope.languagePromise.then(function() {
+			viewport = {
+				isDirty: false,
+				init: true,
+				RA: wwt.wc.getRA(),
+				Dec: wwt.wc.getDec(),
+				Fov: wwt.wc.get_fov()
+			};
+
+			$rootScope.$broadcast('viewportchange', viewport);
+			viewport.init = false;
+
+
+			dirtyInterval = setInterval(dirtyViewport, 250);
+		});
 	}
 
 	var viewport = {
@@ -36225,12 +36245,10 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 	$rootScope.bottomControlsWidth = function() {
 		return (angular.element('div.context-panel').width() - angular.element('body.desktop .fov-panel').width()) + 1;
 	}
-	$rootScope.layerManagerHeight = function () {
+	$rootScope.layerManagerHeight = function() {
 		return $(window).height() - (166 + $('body.desktop .context-panel').height());
-	}
+	};
 	
-	
-
 	return true;
 }]);
 
@@ -36306,7 +36324,7 @@ wwt.app.factory('SearchUtil', [
 
 		searchDataService.getData().then(function(d) {
 			var searchData = wwt.searchData;
-			if (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem') {
+			if ($rootScope.viewport && (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem')) {
 				
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
@@ -36331,7 +36349,7 @@ wwt.app.factory('SearchUtil', [
 
 				var results = [];
 				$.each(searchPlaces, function(i, place) {
-					if (place && place.get_name() != 'Earth') {
+					if (place && place.get_name() !== 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
 							if (dist.length() > placeDist.length()) {
@@ -36370,7 +36388,7 @@ wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 	//}
 
 	function draw(event, viewport) {
-		if (!viewport.isDirty){ return;}
+		if (!viewport.isDirty && !viewport.init){ return;}
 		//var d1 = new Date();
 		/*if (canvas == undefined) {
 			init();
@@ -37423,7 +37441,7 @@ wwt.controllers.controller('MainController',
 				if ($('#lstLookAt').length) {
 					$scope.lookAt = $('#lstLookAt option:selected').text();
 				}
-				if ($scope.lookAt == '') {
+				if ($scope.lookAt === '') {
 					$scope.lookAt = 'Sky';
 				}
 				var collection = $scope.imagery[$.inArray($scope.lookAt, $scope.lookTypes)];
@@ -37431,6 +37449,10 @@ wwt.controllers.controller('MainController',
 					collection.splice(0, 0, '');
 				$scope.surveys = collection;
 				var foundName = false;
+				// HACK ALERT (Mars was hardcoded from Visible Imagery)
+				if (imageryName === 'Mars') {
+					imageryName = 'Visible Imagery';
+				}
 				if (imageryName) {
 					$.each(collection, function () {
 						
@@ -37476,11 +37498,13 @@ wwt.controllers.controller('MainController',
 				$.each(imageSets, function () {
 					var typeIndex = this.get_dataSetType();
 					this.name = this.get_name() === 'Visible Imagery' ? 'Mars' : this.get_name();
-					if (typeIndex == 2) {
+					if (typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1) {//hipparcos is broken :(
 						$scope.surveys.push(this);
 					}
 					try {
-						$scope.imagery[typeIndex].push(this);
+						if (!(typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1)) {//hipparcos is broken :(
+							$scope.imagery[typeIndex].push(this);
+						}
 					} catch (er) {
 						util.log(typeIndex,this);
 					}
@@ -37698,8 +37722,11 @@ wwt.controllers.controller('MainController',
 					Dec: util.formatHms(viewport.Dec, false, true),
 					Lat: util.formatHms($scope.coords.get_lat(), false, false),
 					Lng: util.formatHms($scope.coords.get_lng(), false, false),
-					Zoom: util.formatHms(viewport.Fov),
-					Constellation: $scope.constellations.fullNames ? $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation]) : '&nbsp;'
+					Zoom: util.formatHms(viewport.Fov)
+				}
+				trackConstellation();
+				if (viewport.init) {
+					$timeout(trackConstellation, 1200);
 				}
 			}
 			if ((viewport.isDirty || viewport.finderMove) && checkVisibleFinderScope()) {
@@ -37712,6 +37739,10 @@ wwt.controllers.controller('MainController',
 					
 				}
 			}
+		}
+
+		var trackConstellation = function() {
+			$scope.formatted.Constellation = $scope.constellations.fullNames ? $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation]) : '...';
 		}
 
 		var checkVisibleFinderScope = function() {
@@ -37730,7 +37761,7 @@ wwt.controllers.controller('MainController',
 
 		var finderTimer, finderActive = false,finderMoved = true;
 		$scope.showFinderScope = function (event) {
-			if ($scope.lookAt == 'Sky') {
+			if ($scope.lookAt === 'Sky') {
 				var finder = $('.finder-scope');
 				finder.toggle(!finder.prop('hidden')).css({
 					top: event ? event.pageY - 88 : 180,
@@ -37867,19 +37898,21 @@ wwt.controllers.controller('MainController',
 				$('#nboModal').modal('hide');
 			}
 			var imageSet = util.getImageset(item);
-			if (imageSet) {
+			if (imageSet && !item.isEarth) {
 				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
 			$scope.setTrackingObj(item);
 
-			if (!item.isSurvey) {
+			if (!item.isSurvey && Type.canCast(item, wwtlib.Place)) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);
-				$rootScope.singleton.gotoTarget(item, false, false, true);
+				$rootScope.singleton.gotoTarget(item, util.getIsPlanet(item), false, true);
 
 				return;
-			} else {
+			} else if (!item.isEarth) {
 				ctl.setForegroundImageByName(imageSet.get_name());
+			} else {
+				$rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
 			}
 
 			//$('.cross-fader').parent().show();
@@ -37888,7 +37921,7 @@ wwt.controllers.controller('MainController',
 		$scope.setBackgroundImage = function (item) {
 			var imageSet = util.getImageset(item);
 			if (imageSet) {
-				wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(imageSet);
+				$rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
 			}
 			if (!item.isSurvey) {
 				$rootScope.singleton.gotoTarget(item, false, false, true);
@@ -38531,14 +38564,14 @@ wwt.controllers.controller('ThumbnailController',
 			}
 			else if (item.isPanorama) {
 				$scope.setLookAt('Panorama', item.get_name());
-			} else if (util.getIsPlanet(item) && $scope.lookAt != 'SolarSystem') {
-				 $scope.setLookAt('Planet', item.get_name());
-			} else if (item.isPlanet && $scope.lookAt != 'SolarSystem') {
-				$scope.setLookAt('Planet', '');
 			} else if (item.isEarth) {
 				$scope.setLookAt('Earth', item.get_name());
-			}
-			if (Type.canCast(item, wwtlib.Place) && !item.isSurvey) {
+			} else if (util.getIsPlanet(item) && $scope.lookAt !== 'SolarSystem') {
+				 $scope.setLookAt('Planet', item.get_name());
+			} else if (item.isPlanet && $scope.lookAt !== 'SolarSystem') {
+				$scope.setLookAt('Planet', '');
+			} 
+			if ((Type.canCast(item, wwtlib.Place)||item.isEarth) && !item.isSurvey) {
 				$scope.setForegroundImage(item);
 				
 			}
@@ -38599,7 +38632,7 @@ wwt.controllers.controller('ThumbnailController',
 			$scope.currentPage = 0;
 			var offset = nearby ? angular.element('body.desktop .fov-panel').width() : 0;
 			calcPageSize(null, offset);
-			util.log('calc',offset);
+			//util.log('calc',offset);
 		});
 
 		$scope.moveMenu = function (i) {
@@ -38652,7 +38685,7 @@ wwt.controllers.controller('ThumbnailController',
 			$scope.placesInCone = [];
 			$scope.scrollDepth = 40;
 			$rootScope.$on('viewportchange', function (event, viewport) {
-				if (!viewport.isDirty || new Date().valueOf() - lastUpdate.valueOf() > 2000) {
+				if ((!viewport.isDirty && !viewport.init) || new Date().valueOf() - lastUpdate.valueOf() > 2000) {
 					findNearbyObjects();
 					lastUpdate = new Date();
 				}
@@ -40113,11 +40146,16 @@ wwt.Move = function (createArgs) {
 			var pointerMoveName = window.PointerEvent ? 'pointermove' : 'MSPointerMove';
 			document.body.addEventListener(pointerDownName, function (event) {
 				
-				if (event.target != target[0] || isMoving) {
+				if ((event.target !== target[0] && !$(target).has(event.target).length) || isMoving) {
 					return;
 				}
-				document.body.setPointerCapture(event.pointerId);
-				
+
+				if (document.body.setPointerCapture) {
+					document.body.setPointerCapture(event.pointerId);
+				}
+				else if (document.body.msSetPointerCapture) {
+					document.body.msSetPointerCapture(event.pointerId);
+				}
 				event.preventDefault();
 				event.stopPropagation();
 				if (event.pointerId) {
@@ -40126,14 +40164,14 @@ wwt.Move = function (createArgs) {
 				
 				moveInit(event);
 
-				
+				document.body.addEventListener(pointerUpName, unbind, false);
+				document.body.addEventListener(pointerMoveName, function (evt) {
+					if (pointerId && evt.pointerId === pointerId) {
+						motionHandler(evt);
+					} 
+				}, false);
 			}, false);
-			document.body.addEventListener(pointerUpName, unbind, false);
-			document.body.addEventListener(pointerMoveName, function (evt) {
-				if (pointerId && evt.pointerId == pointerId) {
-					motionHandler(evt);
-				} 
-			}, false);
+			
 		}else {
 			target.on('mousedown touchstart', function(event) {
 				event.preventDefault();
