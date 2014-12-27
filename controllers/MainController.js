@@ -43,7 +43,7 @@
 				if ($('#lstLookAt').length) {
 					$scope.lookAt = $('#lstLookAt option:selected').text();
 				}
-				if ($scope.lookAt == '') {
+				if ($scope.lookAt === '') {
 					$scope.lookAt = 'Sky';
 				}
 				var collection = $scope.imagery[$.inArray($scope.lookAt, $scope.lookTypes)];
@@ -51,6 +51,10 @@
 					collection.splice(0, 0, '');
 				$scope.surveys = collection;
 				var foundName = false;
+				// HACK ALERT (Mars was hardcoded from Visible Imagery)
+				if (imageryName === 'Mars') {
+					imageryName = 'Visible Imagery';
+				}
 				if (imageryName) {
 					$.each(collection, function () {
 						
@@ -96,11 +100,13 @@
 				$.each(imageSets, function () {
 					var typeIndex = this.get_dataSetType();
 					this.name = this.get_name() === 'Visible Imagery' ? 'Mars' : this.get_name();
-					if (typeIndex == 2) {
+					if (typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1) {//hipparcos is broken :(
 						$scope.surveys.push(this);
 					}
 					try {
-						$scope.imagery[typeIndex].push(this);
+						if (!(typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1)) {//hipparcos is broken :(
+							$scope.imagery[typeIndex].push(this);
+						}
 					} catch (er) {
 						util.log(typeIndex,this);
 					}
@@ -318,8 +324,11 @@
 					Dec: util.formatHms(viewport.Dec, false, true),
 					Lat: util.formatHms($scope.coords.get_lat(), false, false),
 					Lng: util.formatHms($scope.coords.get_lng(), false, false),
-					Zoom: util.formatHms(viewport.Fov),
-					Constellation: $scope.constellations.fullNames ? $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation]) : '&nbsp;'
+					Zoom: util.formatHms(viewport.Fov)
+				}
+				trackConstellation();
+				if (viewport.init) {
+					$timeout(trackConstellation, 1200);
 				}
 			}
 			if ((viewport.isDirty || viewport.finderMove) && checkVisibleFinderScope()) {
@@ -332,6 +341,10 @@
 					
 				}
 			}
+		}
+
+		var trackConstellation = function() {
+			$scope.formatted.Constellation = $scope.constellations.fullNames ? $scope.getFromEn($scope.constellations.fullNames[$rootScope.singleton.constellation]) : '...';
 		}
 
 		var checkVisibleFinderScope = function() {
@@ -350,7 +363,7 @@
 
 		var finderTimer, finderActive = false,finderMoved = true;
 		$scope.showFinderScope = function (event) {
-			if ($scope.lookAt == 'Sky') {
+			if ($scope.lookAt === 'Sky') {
 				var finder = $('.finder-scope');
 				finder.toggle(!finder.prop('hidden')).css({
 					top: event ? event.pageY - 88 : 180,
@@ -487,19 +500,21 @@
 				$('#nboModal').modal('hide');
 			}
 			var imageSet = util.getImageset(item);
-			if (imageSet) {
+			if (imageSet && !item.isEarth) {
 				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
 			$scope.setTrackingObj(item);
 
-			if (!item.isSurvey) {
+			if (!item.isSurvey && Type.canCast(item, wwtlib.Place)) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);
-				$rootScope.singleton.gotoTarget(item, false, false, true);
+				$rootScope.singleton.gotoTarget(item, util.getIsPlanet(item), false, true);
 
 				return;
-			} else {
+			} else if (!item.isEarth) {
 				ctl.setForegroundImageByName(imageSet.get_name());
+			} else {
+				$rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
 			}
 
 			//$('.cross-fader').parent().show();
@@ -508,7 +523,7 @@
 		$scope.setBackgroundImage = function (item) {
 			var imageSet = util.getImageset(item);
 			if (imageSet) {
-				wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(imageSet);
+				$rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
 			}
 			if (!item.isSurvey) {
 				$rootScope.singleton.gotoTarget(item, false, false, true);

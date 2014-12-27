@@ -29,12 +29,10 @@
 	$rootScope.bottomControlsWidth = function() {
 		return (angular.element('div.context-panel').width() - angular.element('body.desktop .fov-panel').width()) + 1;
 	}
-	$rootScope.layerManagerHeight = function () {
+	$rootScope.layerManagerHeight = function() {
 		return $(window).height() - (166 + $('body.desktop .context-panel').height());
-	}
+	};
 	
-	
-
 	return true;
 }]);
 

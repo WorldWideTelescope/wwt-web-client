@@ -12,6 +12,11 @@
 
 		function replaceText(useEn) {
 			try {
+				// possible binding expression needs to be eval-ed
+				if (attrs.localize === '') {
+					setTimeout(function () { replaceText(useEn) }, 200);
+					return;
+				}
 				var el = $(element);
 				var exp = new RegExp(attrs.localize, 'g');
 				var localized = useEn ? attrs.localize : loc.getFromEn(attrs.localize);

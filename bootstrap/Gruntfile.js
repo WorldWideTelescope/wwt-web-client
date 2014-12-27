@@ -232,11 +232,11 @@ module.exports = function(grunt) {
 	watch: {
 		scripts: {
 			files: '../**/*.js', 
-			tasks: ['concat', 'uglify:webclient']
+			tasks: ['concat', 'uglify:webclient', 'copy:webclient']
 		},
 		less: {
 			files: '../css/*.less',
-			tasks: 'less'
+			tasks: ['less', 'copy:webclient']
 		}
 	},
 

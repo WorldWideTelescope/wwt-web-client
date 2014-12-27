@@ -304,9 +304,24 @@
 			Dec: wwt.wc.getDec(),
 			Fov: wwt.wc.get_fov()
 		};
+
 		$rootScope.$broadcast('viewportchange', viewport);
-		viewport.init = false;
-		dirtyInterval = setInterval(dirtyViewport, 250);
+
+		$rootScope.languagePromise.then(function() {
+			viewport = {
+				isDirty: false,
+				init: true,
+				RA: wwt.wc.getRA(),
+				Dec: wwt.wc.getDec(),
+				Fov: wwt.wc.get_fov()
+			};
+
+			$rootScope.$broadcast('viewportchange', viewport);
+			viewport.init = false;
+
+
+			dirtyInterval = setInterval(dirtyViewport, 250);
+		});
 	}
 
 	var viewport = {
