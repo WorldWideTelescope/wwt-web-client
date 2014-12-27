@@ -5,7 +5,6 @@
 	'Util',
 	function($scope, appState, $timeout,util) {
 		var version = 5;
-
 		function treeNode(args) {
 			this.name = args.name;
 			this.checked = args.checked === undefined ? true : args.checked;

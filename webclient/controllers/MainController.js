@@ -490,13 +490,16 @@
 			if (imageSet) {
 				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
+			$scope.setTrackingObj(item);
 
 			if (!item.isSurvey) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);
 				$rootScope.singleton.gotoTarget(item, false, false, true);
-				$scope.setTrackingObj(item);
+
 				return;
+			} else {
+				ctl.setForegroundImageByName(imageSet.get_name());
 			}
 
 			//$('.cross-fader').parent().show();
@@ -713,7 +716,7 @@
 		$rootScope.showCrossfader = function () {
 			var show = false;
 			try {
-				if ($scope.lookAt == 'Sky' && $scope.trackingObj && ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null)) {
+				if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
 					if ($(window).width() > 800 || util.isMobile) {
 						show = true;
 					}

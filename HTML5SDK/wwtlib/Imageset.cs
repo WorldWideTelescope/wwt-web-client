@@ -474,7 +474,7 @@ namespace wwtlib
 
                     if (credits != null)
                     {
-                        creditText = credits.InnerText;
+                        creditText = Util.GetInnerText(credits);
                     }
 
                     string creditsUrl = "";
@@ -483,7 +483,7 @@ namespace wwtlib
 
                     if (credits != null)
                     {
-                        creditsUrl = credits.InnerText;
+                        creditsUrl = Util.GetInnerText(credits);
                     }
 
                     double meanRadius = 0;

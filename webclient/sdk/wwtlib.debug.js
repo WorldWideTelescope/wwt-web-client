@@ -37864,12 +37864,12 @@ wwtlib.Imageset.fromXMLNode = function wwtlib_Imageset$fromXMLNode(node) {
             var creditText = '';
             var credits = wwtlib._util.selectSingleNode(node, 'Credits');
             if (credits != null) {
-                creditText = credits.text;
+                creditText = wwtlib._util.getInnerText(credits);
             }
             var creditsUrl = '';
             credits = wwtlib._util.selectSingleNode(node, 'CreditsUrl');
             if (credits != null) {
-                creditsUrl = credits.text;
+                creditsUrl = wwtlib._util.getInnerText(credits);
             }
             var meanRadius = 0;
             if (node.attributes.getNamedItem('MeanRadius') != null) {

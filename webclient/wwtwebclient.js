@@ -37870,13 +37870,16 @@ wwt.controllers.controller('MainController',
 			if (imageSet) {
 				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
+			$scope.setTrackingObj(item);
 
 			if (!item.isSurvey) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);
 				$rootScope.singleton.gotoTarget(item, false, false, true);
-				$scope.setTrackingObj(item);
+
 				return;
+			} else {
+				ctl.setForegroundImageByName(imageSet.get_name());
 			}
 
 			//$('.cross-fader').parent().show();
@@ -37958,29 +37961,30 @@ wwt.controllers.controller('MainController',
 		};
 
 		$scope.playTour = function(url) {
-			var settings = appState.get('settings');
+			
 
 			$('.finder-scope').hide();
 			wwtlib.WWTControl.singleton.playTour(url);
 			wwt.tourPlaying = $rootScope.tourPlaying = true;
-			wwt.wc.add_tourEnded(function () {
-				wwt.tourPlaying = $rootScope.tourPlaying = false;
-
-				$rootScope.landscapeMessage = false;
-				if (!settings.autoHideContext) {
-					$('.context-panel').fadeIn(800);
-				}
-				if (!settings.autoHideTabs) {
-					$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
-				}
-				ctl.clearAnnotations();
-			});
+			wwt.wc.add_tourEnded(tourChangeHandler);
+			//wwt.wc.add_tourPaused(tourChangeHandler);
 			$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 		}
 
-		
-		var simbadSearch = function () { };
-		var voConeSearch = function () { };
+		function tourChangeHandler() {
+			var settings = appState.get('settings');
+			wwt.tourPlaying = $rootScope.tourPlaying = false;
+
+			$rootScope.landscapeMessage = false;
+			if (!settings.autoHideContext) {
+				$('.context-panel').fadeIn(800);
+			}
+			if (!settings.autoHideTabs) {
+				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
+			}
+			ctl.clearAnnotations();
+		}
+
 		var shareModal = $modal({
 			contentTemplate: 'views/popovers/shareplace.html',
 			show: false,
@@ -38092,7 +38096,7 @@ wwt.controllers.controller('MainController',
 		$rootScope.showCrossfader = function () {
 			var show = false;
 			try {
-				if ($scope.lookAt == 'Sky' && $scope.trackingObj && ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null)) {
+				if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
 					if ($(window).width() > 800 || util.isMobile) {
 						show = true;
 					}
@@ -39652,7 +39656,6 @@ wwt.controllers.controller('LayerManagerController',
 	'Util',
 	function($scope, appState, $timeout,util) {
 		var version = 5;
-
 		function treeNode(args) {
 			this.name = args.name;
 			this.checked = args.checked === undefined ? true : args.checked;
