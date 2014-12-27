@@ -463,7 +463,7 @@
 							bar.addClass('moving');
 						},
 						onmove: function () {
-							ctl.settings.set_solarSystemScale(this.css.left * 1.5);
+							ctl.settings.set_solarSystemScale(Math.max(this.css.left * 1.5, 1));
 						},
 						oncomplete: function () {
 							bar.removeClass('moving');
