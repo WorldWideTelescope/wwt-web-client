@@ -578,29 +578,30 @@
 		};
 
 		$scope.playTour = function(url) {
-			var settings = appState.get('settings');
+			
 
 			$('.finder-scope').hide();
 			wwtlib.WWTControl.singleton.playTour(url);
 			wwt.tourPlaying = $rootScope.tourPlaying = true;
-			wwt.wc.add_tourEnded(function () {
-				wwt.tourPlaying = $rootScope.tourPlaying = false;
-
-				$rootScope.landscapeMessage = false;
-				if (!settings.autoHideContext) {
-					$('.context-panel').fadeIn(800);
-				}
-				if (!settings.autoHideTabs) {
-					$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
-				}
-				ctl.clearAnnotations();
-			});
+			wwt.wc.add_tourEnded(tourChangeHandler);
+			//wwt.wc.add_tourPaused(tourChangeHandler);
 			$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 		}
 
-		
-		var simbadSearch = function () { };
-		var voConeSearch = function () { };
+		function tourChangeHandler() {
+			var settings = appState.get('settings');
+			wwt.tourPlaying = $rootScope.tourPlaying = false;
+
+			$rootScope.landscapeMessage = false;
+			if (!settings.autoHideContext) {
+				$('.context-panel').fadeIn(800);
+			}
+			if (!settings.autoHideTabs) {
+				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
+			}
+			ctl.clearAnnotations();
+		}
+
 		var shareModal = $modal({
 			contentTemplate: 'views/popovers/shareplace.html',
 			show: false,
