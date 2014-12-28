@@ -7,8 +7,8 @@ using System.Html;
 
 namespace wwtlib
 {
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     [ScriptName("XMLHttpRequest")] 
     public sealed class XMLHttpRequest2 : Element
 
@@ -16,22 +16,22 @@ namespace wwtlib
         public XMLHttpRequest2(){}
 
         [ScriptName("onreadystatechange")]
-        [IntrinsicProperty]
+        [ScriptField]
         public Action OnReadyStateChange { get { return null; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public ReadyState ReadyState { get { return ReadyState.Loaded; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public string ResponseText { get { return null; } }
         [ScriptName("responseXML")]
-        [IntrinsicProperty]
+        [ScriptField]
         public XmlDocument ResponseXml { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int Status { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public string StatusText { get { return null; } }
-        [IntrinsicProperty] 
+        [ScriptField] 
         public object Response { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public string ResponseType { get { return null; } set { } }
         public void Abort() { }
         public string GetAllResponseHeaders() { return null; }

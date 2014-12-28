@@ -173,14 +173,14 @@ namespace wwtlib
             }
             set
             {
-                if (Settings.Global.LocationLat != value.Lat)
+                if (Settings.GlobalSettings.LocationLat != value.Lat)
                 {
-                    Settings.Global.LocationLat = value.Lat;
+                    Settings.GlobalSettings.LocationLat = value.Lat;
                 }
 
-                if (Settings.Global.LocationLng != value.Lng)
+                if (Settings.GlobalSettings.LocationLng != value.Lng)
                 {
-                    Settings.Global.LocationLng = value.Lng;
+                    Settings.GlobalSettings.LocationLng = value.Lng;
                 }
                 location = value;
             }

@@ -3,15 +3,15 @@ using System.Runtime.CompilerServices;
 
 namespace System.Html
 {
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
 
     public sealed class WheelEvent 
     {
         internal WheelEvent()
         {
         }
-        [IntrinsicProperty]
+        [ScriptField]
         public double WheelDelta
         {
             get
@@ -19,7 +19,7 @@ namespace System.Html
                 return 0;
             }
         }
-        [IntrinsicProperty]
+        [ScriptField]
         public double detail
         {
             get
@@ -29,15 +29,15 @@ namespace System.Html
         }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public sealed class ChromeNode
     {
         internal ChromeNode()
         {
 
         }
-        [IntrinsicProperty]
+        [ScriptField]
         public string TextContent
         {
             get
@@ -47,8 +47,8 @@ namespace System.Html
         }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public sealed class PointerEvent 
     {
         internal PointerEvent()
@@ -56,7 +56,7 @@ namespace System.Html
 
         }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public int PointerId
         {
             get

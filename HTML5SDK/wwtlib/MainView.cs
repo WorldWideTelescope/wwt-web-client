@@ -10,7 +10,7 @@ using System.Net;
 using System.Serialization;
 namespace wwtlib
 {
-    [GlobalMethods]
+    
     internal static class MainView
     {
         

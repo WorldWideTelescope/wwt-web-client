@@ -730,13 +730,13 @@ namespace wwtlib
             {
                 if (text.IndexOf("{$DATE}") > -1)
                 {
-                    string date = SpaceTimeController.Now.Format("yyyy/MM/dd");
+                    string date = String.Format("{0:yyyy/MM/dd}",SpaceTimeController.Now);
                     text = text.Replace("{$DATE}", date);
                 }
 
                 if (text.IndexOf("{$TIME}") > -1)
                 {
-                    string time = SpaceTimeController.Now.Format("HH:mm:ss");
+                    string time =  String.Format("{0:HH:mm:ss}", SpaceTimeController.Now);
                     text = text.Replace("{$TIME}", time);
                 }
 

@@ -36,6 +36,43 @@
             <param name="handler">The handler to be invoked in response to the event.</param>
             <param name="useCapture">Whether the handler wants to initiate capturing the event.</param>
         </member>
+        <member name="M:System.Html.Data.Files.FileReader.AddEventListener(System.String,System.Html.ElementEventListener,System.Boolean)">
+            <summary>
+            Adds a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="listener">The listener to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the listener wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:System.Html.Data.Files.FileReader.AddEventListener(System.String,System.Html.IElementEventHandler,System.Boolean)">
+            <summary>
+                Adds a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="handler">The handler to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the handler wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:System.Html.Data.Files.FileReader.RemoveEventListener(System.String,System.Html.ElementEventListener,System.Boolean)">
+            <summary>
+            Removes a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="listener">The listener to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the listener wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:System.Html.Data.Files.FileReader.RemoveEventListener(System.String,System.Html.IElementEventHandler,System.Boolean)">
+            <summary>
+            Removes a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="handler">The handler to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the handler wants to initiate capturing the event.</param>
+        </member>
+        <member name="P:System.Html.Data.Files.FileReader.ReadyState">
+            <summary>
+            Indicates the state of the FileReader. This will be one of the State constants. Read only.
+            </summary>
+        </member>
         <member name="P:System.Html.Plugin.Description">
             <summary>
             A human readable description of the plugin.
@@ -193,6 +230,49 @@
             <param name="eventName">The name of the event such as 'load'.</param>
             <param name="listener">The listener to be invoked in response to the event.</param>
             <param name="useCapture">Whether the listener wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:System.Html.Document.CreateAttribute(System.String)">
+            <summary>
+            Creates an Attr of the given name. Note that the Attr instance can then be set on an 
+            Element using the setAttributeNode method. To create an attribute with a qualified name 
+            and namespace URI, use the CreateAttributeNS method.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+            <returns>A new Attr object with the nodeName attribute set to name, and localName, prefix, 
+            and namespaceURI set to null. The value of the attribute is the empty string.</returns>
+        </member>
+        <member name="M:System.Html.Document.CreateAttributeNS(System.String,System.String)">
+            <summary>
+            Creates an attribute of the given qualified name and namespace URI.
+            </summary>
+            <param name="namespaceURI">The namespace URI of the attribute to create.</param>
+            <param name="qualifiedName">The qualified name of the attribute to instantiate.</param>
+            <returns>A new Attr object with the given namespace and qualified name.</returns>
+        </member>
+        <member name="M:System.Html.Document.CreateElement(System.String)">
+            <summary>
+            Creates an element of the type specified. 
+            To create an element with a qualified name and namespace URI, use the CreateElementNS method.
+            </summary>
+            <param name="tagName">The name of the element type to instantiate.</param>
+            <returns>A new Element object with the nodeName attribute set to tagName, and localName, 
+            prefix, and namespaceURI set to null.</returns>
+        </member>
+        <member name="M:System.Html.Document.CreateElementNS(System.String,System.String)">
+            <summary>
+            Creates an element of the given qualified name and namespace URI. 
+            </summary>
+            <param name="namespaceURI">The namespace URI of the element to create.</param>
+            <param name="qualifiedName">The qualified name of the element type to instantiate.</param>
+            <returns>A new Element object with the given namespace and qualified name.</returns>
+        </member>
+        <member name="M:System.Html.Document.GetElementsByTagNameNS(System.String,System.String)">
+            <summary>
+            Returns a NodeList of all the Elements with a given local name and namespace URI in the order in which they are encountered in a preorder traversal of the Document tree.
+            </summary>
+            <param name="namespaceURI">The namespace URI of the elements to match on. The special value "*" matches all namespaces.</param>
+            <param name="localName">The local name of the elements to match on. The special value "*" matches all local names.</param>
+            <returns>A new NodeList object containing all the matched Elements.</returns>
         </member>
         <member name="M:System.Html.Document.RemoveEventListener(System.String,System.Html.ElementEventListener)">
             <summary>
@@ -831,6 +911,78 @@
             <param name="eventName">The name of the event such as 'load'.</param>
             <param name="listener">The listener to be invoked in response to the event.</param>
             <param name="useCapture">Whether the listener wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:System.Html.Window.Alert(System.String)">
+            <summary>
+            Displays a message box containing the specified message text.
+            </summary>
+            <param name="message">The text of the message.</param>
+        </member>
+        <member name="M:System.Html.Window.Alert(System.Boolean)">
+            <summary>
+            Displays a message box containing the specified value converted
+            into a string.
+            </summary>
+            <param name="b">The boolean to display.</param>
+        </member>
+        <member name="M:System.Html.Window.Alert(System.Date)">
+            <summary>
+            Displays a message box containing the specified value converted
+            into a string.
+            </summary>
+            <param name="d">The date to display.</param>
+        </member>
+        <member name="M:System.Html.Window.Alert(System.Number)">
+            <summary>
+            Displays a message box containing the specified value converted
+            into a string.
+            </summary>
+            <param name="n">The number to display.</param>
+        </member>
+        <member name="M:System.Html.Window.Alert(System.Object)">
+            <summary>
+            Displays a message box containing the specified value converted
+            into a string.
+            </summary>
+            <param name="o">The object to display.</param>
+        </member>
+        <member name="M:System.Html.Window.Base64ToBinary(System.String)">
+            <summary>
+            Decodes a string of data which has been encoded using base-64 encoding.
+            For use with Unicode or UTF-8 strings.
+            </summary>
+            <param name="base64EncodedData">Base64 encoded string</param>
+            <returns>String of Binary data</returns>
+        </member>
+        <member name="M:System.Html.Window.BinaryToBase64(System.String)">
+            <summary>
+            Creates a base-64 encoded ASCII string from a "string" of binary data.
+            Please note that this is not suitable for raw Unicode strings!
+            </summary>
+            <param name="stringToEncode">String of binary data</param>
+            <returns>Base64 string</returns>
+        </member>
+        <member name="M:System.Html.Window.Confirm(System.String)">
+            <summary>
+            Prompts the user with a yes/no question.
+            </summary>
+            <param name="message">The text of the question.</param>
+            <returns>true if the user chooses yes; false otherwise.</returns>
+        </member>
+        <member name="M:System.Html.Window.Prompt(System.String)">
+            <summary>
+            Prompts the user to enter a value.
+            </summary>
+            <param name="message">The text of the prompt.</param>
+            <returns>The value entered by the user.</returns>
+        </member>
+        <member name="M:System.Html.Window.Prompt(System.String,System.String)">
+            <summary>
+            Prompts the user to enter a value.
+            </summary>
+            <param name="message">The text of the prompt.</param>
+            <param name="defaultValue">The default value for the prompt.</param>
+            <returns>The value entered by the user.</returns>
         </member>
         <member name="M:System.Html.Window.RemoveEventListener(System.String,System.Html.ElementEventListener)">
             <summary>

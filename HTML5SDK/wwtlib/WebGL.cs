@@ -4,8 +4,8 @@ using System.Html.Media.Graphics;
 
 namespace System.Html
 {
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     // [ScriptName("globalCompositeOperation")]
     public class GL
     {
@@ -314,7 +314,7 @@ namespace System.Html
         {
         }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public CanvasElement canvas
         {
             get
@@ -322,10 +322,10 @@ namespace System.Html
                 return null;
             }
         }
-        [IntrinsicProperty]
+        [ScriptField]
         public WebGLContextAttributes contextAttributes { get { return null; } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public int error { get { return 0; } }
 
         public void activeTexture(int texture) { return; }
@@ -505,86 +505,86 @@ namespace System.Html
         public void viewport(int x, int y, int width, int height) { return; }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLContextAttributes
     {
         public WebGLContextAttributes()
         { }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool alpha { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool antialias { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool depth { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool premultipliedAlpha { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool stencil { get { return false; } set { } }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLProgram : WebGLObject
     {
         public WebGLProgram() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLObject
     {
         public WebGLObject() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLShader : WebGLObject
     {
         public WebGLShader() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLBuffer : WebGLObject
     {
         public WebGLBuffer() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLFramebuffer : WebGLObject
     {
         public WebGLFramebuffer() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLRenderbuffer : WebGLObject
     {
         public WebGLRenderbuffer() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLTexture : WebGLObject
     {
         public WebGLTexture() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLArray
     {
         public WebGLArray() { }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public WebGLArrayBuffer buffer { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int byteLength { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int byteOffset { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int length { get { return 0; } }
 
         public WebGLArray slice(int start, int end)
@@ -593,69 +593,69 @@ namespace System.Html
         }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLArrayBuffer
     {
         public WebGLArrayBuffer() { }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public int byteLength { get { return 0; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int size { get { return 0; } set { } }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLActiveInfo
     {
         public WebGLActiveInfo() { }
-        [IntrinsicProperty]
+        [ScriptField]
         public String name { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int size { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int type { get { return 0; } }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLObjectArray
     {
         public WebGLObjectArray() { }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public int length { get { return 0; } }
 
         public WebGLObject get(int index) { return null; }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLUniformLocation
     {
         public WebGLUniformLocation() { }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public sealed class VideoElement : MediaElement
     {
         public VideoElement() { }
-        [IntrinsicProperty]
+        [ScriptField]
         public String height { get { return null; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public String poster { get { return null; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int videoHeight { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public int videoWidth { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public String width { get { return null; } set { } }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLFloatArray : WebGLArray
     {
         public static int BYTES_PER_ELEMENT;
@@ -676,8 +676,8 @@ namespace System.Html
     }
 
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class WebGLIntArray : WebGLArray
     {
         public static int BYTES_PER_ELEMENT;
@@ -693,8 +693,8 @@ namespace System.Html
     }
 
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class MediaElement : Element
     {
         public static short HAVE_CURRENT_DATA;
@@ -708,49 +708,49 @@ namespace System.Html
         public static short NETWORK_NO_SOURCE;
 
         public MediaElement() { }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool autoplay { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public TimeRanges buffered { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool controls { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public String currentSrc { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public float currentTime { get { return 0; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public float defaultPlaybackRate { get { return 0; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public float duration { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool ended { get { return false; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public MediaError error { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool loop { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool muted { get { return false; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public short networkStateget { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool paused { get { return false; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public float playbackRate { get { return 0; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public TimeRanges playedget { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public String preload { get { return null; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public short readyState { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public TimeRanges seekable { get { return null; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public bool seeking { get { return false; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public String src { get { return null; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public float startTime { get { return 0; } set { } }
-        [IntrinsicProperty]
+        [ScriptField]
         public float volume { get { return 0; } set { } }
 
 
@@ -759,61 +759,61 @@ namespace System.Html
         public void pause() { }
         public void play() { }
     }
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class TimeRanges
     {
         public TimeRanges() { }
-        [IntrinsicProperty]
+        [ScriptField]
         public int length { get { return 0; } }
 
         public float end(int index) { return 0; }
         public float start(int index) { return 0; }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class MediaError
     {
-        [IntrinsicProperty]
+        [ScriptField]
         public static short MEDIA_ERR_ABORTED { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public static short MEDIA_ERR_DECODE { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public static short MEDIA_ERR_NETWORK { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         public static short MEDIA_ERR_SRC_NOT_SUPPORTED { get { return 0; } }
 
         public MediaError() { }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public short code { get { return 0; } }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class CrossDomainImage
     {
-        [IntrinsicProperty]
+        [ScriptField]
         public string crossOrigin { get { return null; } set { } }
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class Float32Array
     {
         public Float32Array(object data) { }
-        [IntrinsicProperty]
+        [ScriptField]
         public int length { get { return 0; } }
 
     } 
     
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class Uint16Array
     {
         public Uint16Array(object data) { }
-        [IntrinsicProperty]
+        [ScriptField]
         public int length { get { return 0; } }
     }
 }

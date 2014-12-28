@@ -52,52 +52,52 @@ namespace wwtlib
                 if (km < 10)
                 {
                     double m = (int)(km * 1000);
-                    return m.Format("N1") + " m";
+	                return String.Format("{0} m", m);
                 }
                 else
                 {
                     km = (int)km;
-                    return km.Format("N1") + " km";
+                    return String.Format("{0} km",km);
                 }
             }
             else if (distance < (10))
             {
                 //Units in u
                 double au = ((int)(distance * 10)) / 10.0;
-                return au.Format("N1") + " au";
+                return String.Format("{0} au",au);
             }
             else if (distance < (AuPerLightYear / 10.0))
             {
                 //Units in u
                 double au = (int)(distance);
-                return au.Format("N1") + " au";
+                return String.Format("{0} au",au);
             }
             else if (distance < (AuPerLightYear * 10))
             {
                 // Units in lightyears
                 double ly = ((int)((distance * 10) / AuPerLightYear)) / 10.0;
-                return ly.Format("N1") + " ly";
+                return String.Format("{0} ly",ly);
             }
             else if (distance < (AuPerLightYear * 1000000))
             {
                 // Units in lightyears
                 double ly = ((int)((distance) / AuPerLightYear));
-                return ly.Format("N1") + " ly";
+                return String.Format("{0} ly",ly);
             }
             else if (distance < (AuPerParsec * 10000000))
             {
                 double mpc = ((int)((distance * 10) / (AuPerParsec * 1000000.0))) / 10.0;
-                return mpc.Format("N1") + " Mpc";
+                return String.Format("{0} Mpc", mpc);
             }
             else if (distance < (AuPerParsec * 1000000000))
             {
                 double mpc = ((int)((distance) / (AuPerParsec * 1000000.0)));
-                return mpc.Format("N1") + " Mpc";
+                return String.Format("{0} Mpc",mpc);
             }
             else
             {
                 double mpc = ((int)((distance * 10) / (AuPerParsec * 1000000000.0))) / 10.0;
-                return mpc.Format("N1") + " Gpc";
+                return String.Format("{0} Gpc",mpc);
             }
         }
         public static string FormatDecimalHours(double dayFraction)

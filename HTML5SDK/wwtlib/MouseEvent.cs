@@ -3,52 +3,53 @@ using System.Runtime.CompilerServices;
 
 namespace System.Html
 {
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public sealed class MouseEvent
     {
         internal MouseEvent() {}
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int OffsetX { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int OffsetY { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int PageX { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int PageY { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int stylePaddingLeft { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int stylePaddingTop { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int styleBorderLeft { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int styleBorderTop { get { return 0; } set { } }
 
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public sealed class MouseCanvasElement
     {
         internal MouseCanvasElement() { }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public MouseCanvasElement offsetParent { get { return (MouseCanvasElement)this; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int offsetLeft { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+		[ScriptField]
         public int offsetTop { get { return 0; } set { } }
+		
 
     }
 }

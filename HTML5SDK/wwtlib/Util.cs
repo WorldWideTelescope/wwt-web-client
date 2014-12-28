@@ -95,7 +95,7 @@ namespace wwtlib
 
             try
             {
-                node = parent.SelectSingleNode(name);
+                node = parent.QuerySelector(name);
             }
             catch
             {
@@ -335,32 +335,32 @@ namespace wwtlib
 
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     [ScriptName("navigator")]
     public static class Navigator
     {
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("appVersion")]
         public static string AppVersion { get { return ""; } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("geolocation")]
         public static GeoLocation Geolocation { get { return null; } }
 
 
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("userAgent")]
         public static string UserAgent { get { return null; } }
 
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public delegate void GeoEventHandler(Position pos);
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     [ScriptName("geolocation")]
     public class GeoLocation
     {
@@ -377,29 +377,29 @@ namespace wwtlib
     }
 
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     [ScriptName("position")]
     public class Position
     {
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("coords")]
         public GeoCoordinates Coords { get { return null; } }
 
     }
 
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     [ScriptName("coordinates")]
     public class GeoCoordinates
     {
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("latitude")]
         public double Latitude { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("longitude")]
         public double Longitude { get { return 0; } }
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("altitude")]
         public double Altitude { get { return 0; } }
     }

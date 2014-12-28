@@ -22,7 +22,7 @@ namespace wwtlib
             }
         }
 
-        static public Settings Global
+        static public Settings GlobalSettings
         {
             get
             {

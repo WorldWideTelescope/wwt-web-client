@@ -120,7 +120,8 @@ namespace wwtlib
 
         public XmlDocument GetXml()
         {
-            return XmlDocumentParser.Parse(_data);
+	        XmlDocumentParser xParser = new XmlDocumentParser();
+            return xParser.ParseFromString(_data, "xml");
         }
     }
 }

@@ -5,30 +5,30 @@ using System.Xml;
 
 namespace wwtlib
 {
-    [IgnoreNamespace]
-    [Imported]
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     [ScriptName("XDomainRequest")]
     public sealed class XDomainRequest
     {
         public XDomainRequest() { }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public Action OnError { set { } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public Action OnTimeout { set { } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public Action OnProgress { set { } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("onload")]
         public Action OnLoad { set{ } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         public int Timeout { get { return 0; } set { } }
 
-        [IntrinsicProperty]
+        [ScriptField]
         [ScriptName("responseText")]
         public string ResponseText { get { return ""; } set { } }
 

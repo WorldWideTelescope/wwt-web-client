@@ -592,7 +592,7 @@ namespace wwtlib
             }
 
             //TileCache.PurgeLRU();
-            Window.SetTimeout(delegate() { Render(); }, 0);
+            Script.SetTimeout(delegate() { Render(); }, 0);
         }
 
         private void DrawSkyOverlays()
@@ -1119,7 +1119,7 @@ namespace wwtlib
                 }
             }
 
-            if (!Settings.Global.SmoothPan)
+            if (!Settings.GlobalSettings.SmoothPan)
             {
                 RenderContext.ViewCamera = RenderContext.TargetCamera.Copy();
             }
@@ -1142,7 +1142,7 @@ namespace wwtlib
                 RenderContext.TargetCamera.Zoom = 360;
             }
 
-            if (!Settings.Global.SmoothPan)
+            if (!Settings.GlobalSettings.SmoothPan)
             {
                 RenderContext.ViewCamera = RenderContext.TargetCamera.Copy();
             }
@@ -1377,6 +1377,7 @@ namespace wwtlib
         {
             PointerEvent pe = (PointerEvent)(object)e;
             int index = 0;
+            //Canvas..SetPointerCapture(pe.PointerId);
             if (pointerIds[0] == 0 )
             {
                 pointerIds[0] = pe.PointerId;
@@ -1903,18 +1904,18 @@ namespace wwtlib
 
         private static void GetLocation (Position pos)
         {
-            Settings.Global.LocationLat = pos.Coords.Latitude;
-            Settings.Global.LocationLng = pos.Coords.Longitude;
-            Settings.Global.LocationAltitude = pos.Coords.Altitude;
+            Settings.GlobalSettings.LocationLat = pos.Coords.Latitude;
+            Settings.GlobalSettings.LocationLng = pos.Coords.Longitude;
+            Settings.GlobalSettings.LocationAltitude = pos.Coords.Altitude;
         }
         private static void GetLocationError (Position pos)
         {
-	        if (pos != null && pos.Coords != null)
-	        {
-		        double lat = pos.Coords.Latitude;
-		        double lng = pos.Coords.Longitude;
+            if (pos != null && pos.Coords != null)
+            {
+                double lat = pos.Coords.Latitude;
+                double lng = pos.Coords.Longitude;
 
-	        }
+            }
         }
         private static CanvasElement CreateCanvasElement(string DivId)
         {

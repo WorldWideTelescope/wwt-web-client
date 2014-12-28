@@ -280,16 +280,16 @@ namespace wwtlib
             {
                 if (constToDraw != ls.Name)
                 {
-                    col = Settings.Global.ConstellationBoundryColor;
+                    col = Settings.GlobalSettings.ConstellationBoundryColor;
                 }
                 else
                 {
-                    col = Settings.Global.ConstellationSelectionColor;
+                    col = Settings.GlobalSettings.ConstellationSelectionColor;
                 }
             }
             else
             {
-                col = Settings.Global.ConstellationFigureColor;
+                col = Settings.GlobalSettings.ConstellationFigureColor;
             }
 
             constellationVertexBuffers[ls.Name].DrawLines(renderContext, opacity, Colors.Red);
@@ -322,16 +322,16 @@ namespace wwtlib
             {
                 if (constToDraw != ls.Name)
                 {
-                    col = Settings.Global.ConstellationBoundryColor;
+                    col = Settings.GlobalSettings.ConstellationBoundryColor;
                 }
                 else
                 {
-                    col = Settings.Global.ConstellationSelectionColor;
+                    col = Settings.GlobalSettings.ConstellationSelectionColor;
                 }
             }
             else
             {
-                col = Settings.Global.ConstellationFigureColor;
+                col = Settings.GlobalSettings.ConstellationFigureColor;
             }
 
             if (renderContext.gl == null)
