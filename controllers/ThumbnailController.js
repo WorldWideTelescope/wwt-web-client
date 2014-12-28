@@ -197,10 +197,10 @@
 			} else if (item.isPlanet && $scope.lookAt !== 'SolarSystem') {
 				$scope.setLookAt('Planet', '');
 			} 
-			if ((Type.canCast(item, wwtlib.Place)||item.isEarth) && !item.isSurvey) {
+			if ((ss.canCast(item, wwtlib.Place)||item.isEarth) && !item.isSurvey) {
 				$scope.setForegroundImage(item);
 				
-			}
+			} 
 			
 		};
 

@@ -505,7 +505,7 @@
 			}
 			$scope.setTrackingObj(item);
 
-			if (!item.isSurvey && Type.canCast(item, wwtlib.Place)) {
+			if (!item.isSurvey && ss.canCast(item, wwtlib.Place)) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);
 				$rootScope.singleton.gotoTarget(item, util.getIsPlanet(item), false, true);

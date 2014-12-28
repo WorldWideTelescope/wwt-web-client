@@ -30,7 +30,8 @@
 			background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
 		}
 	</style>
-	<script type="text/javascript" src="<%=SDKLocation + DebugQs%>"></script>
+	<%--<script data-main="sdk/sdkwrapper" src="sdk/require.js"></script>--%>
+	<script type="text/javascript" src="wwtlib<%=Debug?"":".min" %>.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
 	<script src="ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
 	<% if (Debug || DebugChrome)

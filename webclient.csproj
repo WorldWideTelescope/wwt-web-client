@@ -277,6 +277,9 @@
     <Content Include="sdk\mscorlib.xml" />
     <Content Include="sdk\Script.Web.dll" />
     <Content Include="sdk\Script.Web.xml" />
+    <Content Include="sdk\sdkwrapper.js" />
+    <Content Include="sdk\ss.js" />
+    <Content Include="sdk\ss.min.js" />
     <Content Include="sdk\wwtsdk.aspx" />
     <Content Include="sdk\wwtlib.debug.js" />
     <Content Include="sdk\wwtlib.dll" />
@@ -320,6 +323,8 @@
     <Content Include="ext\angular-route.min.js.map" />
     <Content Include="ext\angular-strap.min.js.map" />
     <Content Include="ext\angular.min.js.map" />
+    <Content Include="wwtlib.js" />
+    <Content Include="wwtlib.min.js" />
     <Content Include="WWTSL.xap" />
     <Content Include="wwtwebclient.js" />
     <Content Include="wwtwebclient.min.js" />
