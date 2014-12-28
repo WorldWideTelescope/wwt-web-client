@@ -3,9 +3,7 @@
  * Copyright (c) 2012, Nikhil Kothari, and the Script# Project.
  * More information at http://scriptsharp.com
  */
-
-
-(function(global) {
+window.ss = (function(global) {
   function _ss() {
 
 // Various Helpers/Utilities
@@ -1506,4 +1504,5 @@ function module(name, implementation, exports) {
   }
 
   global.define ? global.define('ss', [], _ss) : _export();
+  return _ss();
 })(this);

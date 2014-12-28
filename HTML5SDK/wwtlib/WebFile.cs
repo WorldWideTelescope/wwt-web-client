@@ -121,7 +121,7 @@ namespace wwtlib
         public XmlDocument GetXml()
         {
 	        XmlDocumentParser xParser = new XmlDocumentParser();
-            return xParser.ParseFromString(_data, "xml");
+            return xParser.ParseFromString(_data, "text/xml");
         }
     }
 }

@@ -186,11 +186,11 @@
 	function getImageset(place) {
 		if (!place) {
 			return null;
-		} else if (Type.canCast(place, wwtlib.Imageset)) {
+		} else if (ss.canCast(place, wwtlib.Imageset)) {
 			return place;
-		} else if (place.get_backgroundImageset && Type.canCast(place.get_backgroundImageset(), wwtlib.Imageset)) {
+		} else if (place.get_backgroundImageset && ss.canCast(place.get_backgroundImageset(), wwtlib.Imageset)) {
 			return place.get_backgroundImageset();
-		} else if (place.get_studyImageset && Type.canCast(place.get_studyImageset(), wwtlib.Imageset)) {
+		} else if (place.get_studyImageset && ss.canCast(place.get_studyImageset(), wwtlib.Imageset)) {
 			return place.get_studyImageset();
 		} else {
 			return null;

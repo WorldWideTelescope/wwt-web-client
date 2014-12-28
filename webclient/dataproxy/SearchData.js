@@ -90,7 +90,7 @@
 
 					if (item.name === 'SolarSystem') {
 						$.each(pl, function(k, member) {
-							if (Type.canCast(member, wwtlib.CameraParameters)) {
+							if (ss.canCast(member, wwtlib.CameraParameters)) {
 								member.target = wwtlib.SolarSystemObjects.undefined;
 							}
 						});

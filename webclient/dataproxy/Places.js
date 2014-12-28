@@ -167,9 +167,9 @@
 		/*wwt.wc.add_collectionLoaded(function(data) {
 			console.log(data);
 			$.each(data, function(k, fld) {
-				if (Type.canCast(fld, wwtlib.Folder)) {
+				if (ss.canCast(fld, wwtlib.Folder)) {
 					$.each(fld, function(ky, wf) {
-						if (Type.canCast(wf, wwtlib.WebFile)) {
+						if (ss.canCast(wf, wwtlib.WebFile)) {
 							console.log(wf);
 						}
 					});

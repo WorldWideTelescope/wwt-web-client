@@ -84,6 +84,13 @@ module.exports = function(grunt) {
 					'../controls/util.js'
 				],
 				dest: '../wwtwebclient.js'
+			},
+			sdk: {
+				src: [
+					'../sdk/ss.js',
+					'../sdk/wwtlib.js'
+				],
+				dest: '../wwtlib.js'
 			}
 		},
 		
@@ -99,6 +106,10 @@ module.exports = function(grunt) {
 			searchData: {
 				src: '../searchdataraw.js',
 				dest:'../searchdata.min.js'
+			},
+			sdk: {
+				src: '<%= concat.sdk.dest %>',
+				dest:'../wwtlib.min.js'
 			}
 
 		},
@@ -214,6 +225,16 @@ module.exports = function(grunt) {
 						dest: '<%= deployLoc %>images/',
 						expand: true
 					}, {
+						cwd: '../sdk/',
+						src: '*.js',
+						dest: '<%= deployLoc %>sdk/',
+						expand: true
+					}, {
+						cwd: '../sdk/',
+						src: '*.aspx',
+						dest: '<%= deployLoc %>sdk/',
+						expand: true
+					}, {
 						cwd: '../views/',
 						src: '**/*',
 						dest: '<%= deployLoc %>views/',
@@ -252,8 +273,11 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
   require('time-grunt')(grunt);
 
-  // JS distribution task.
-  grunt.registerTask('dist-js', ['concat', 'uglify:webclient']);
+	// JS distribution task.
+  grunt.registerTask('dist-js', ['concat:webclient', 'uglify:webclient']);
+
+	// SDK distribution task.
+  grunt.registerTask('sdk', ['concat:sdk', 'uglify:sdk']);
 
   // Minify the generated search data
   grunt.registerTask('dist-searchdata', ['uglify:searchData']);

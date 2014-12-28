@@ -36051,11 +36051,11 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 	function getImageset(place) {
 		if (!place) {
 			return null;
-		} else if (Type.canCast(place, wwtlib.Imageset)) {
+		} else if (ss.canCast(place, wwtlib.Imageset)) {
 			return place;
-		} else if (place.get_backgroundImageset && Type.canCast(place.get_backgroundImageset(), wwtlib.Imageset)) {
+		} else if (place.get_backgroundImageset && ss.canCast(place.get_backgroundImageset(), wwtlib.Imageset)) {
 			return place.get_backgroundImageset();
-		} else if (place.get_studyImageset && Type.canCast(place.get_studyImageset(), wwtlib.Imageset)) {
+		} else if (place.get_studyImageset && ss.canCast(place.get_studyImageset(), wwtlib.Imageset)) {
 			return place.get_studyImageset();
 		} else {
 			return null;
@@ -36246,9 +36246,9 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 		return (angular.element('div.context-panel').width() - angular.element('body.desktop .fov-panel').width()) + 1;
 	}
 	$rootScope.layerManagerHeight = function() {
-		return $(window).height() - (166 + $('body.desktop .context-panel').height());
+		return $(window).height() - (168 + $('body.desktop .context-panel').height());
 	};
-	
+	 
 	return true;
 }]);
 
@@ -36790,9 +36790,9 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		/*wwt.wc.add_collectionLoaded(function(data) {
 			console.log(data);
 			$.each(data, function(k, fld) {
-				if (Type.canCast(fld, wwtlib.Folder)) {
+				if (ss.canCast(fld, wwtlib.Folder)) {
 					$.each(fld, function(ky, wf) {
-						if (Type.canCast(wf, wwtlib.WebFile)) {
+						if (ss.canCast(wf, wwtlib.WebFile)) {
 							console.log(wf);
 						}
 					});
@@ -37059,7 +37059,7 @@ wwt.app.factory('SearchData', [
 
 					if (item.name === 'SolarSystem') {
 						$.each(pl, function(k, member) {
-							if (Type.canCast(member, wwtlib.CameraParameters)) {
+							if (ss.canCast(member, wwtlib.CameraParameters)) {
 								member.target = wwtlib.SolarSystemObjects.undefined;
 							}
 						});
@@ -37903,7 +37903,7 @@ wwt.controllers.controller('MainController',
 			}
 			$scope.setTrackingObj(item);
 
-			if (!item.isSurvey && Type.canCast(item, wwtlib.Place)) {
+			if (!item.isSurvey && ss.canCast(item, wwtlib.Place)) {
 				$('.finder-scope').hide();
 				//$('.cross-fader').parent().toggle(imageSet!=null);
 				$rootScope.singleton.gotoTarget(item, util.getIsPlanet(item), false, true);
@@ -38571,10 +38571,10 @@ wwt.controllers.controller('ThumbnailController',
 			} else if (item.isPlanet && $scope.lookAt !== 'SolarSystem') {
 				$scope.setLookAt('Planet', '');
 			} 
-			if ((Type.canCast(item, wwtlib.Place)||item.isEarth) && !item.isSurvey) {
+			if ((ss.canCast(item, wwtlib.Place)||item.isEarth) && !item.isSurvey) {
 				$scope.setForegroundImage(item);
 				
-			}
+			} 
 			
 		};
 
@@ -38789,7 +38789,7 @@ wwt.controllers.controller('ToursController',
 			}
 			
 			
-			if (Type.canCast(item, wwtlib.Tour)) {
+			if (ss.canCast(item, wwtlib.Tour)) {
 				$scope.playTour(item.get_tourUrl());
 				if (util.isMobile) {
 					$rootScope.landscapeMessage = true;

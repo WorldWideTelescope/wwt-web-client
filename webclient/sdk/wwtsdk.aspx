@@ -10,7 +10,6 @@
     {
         sslib = "ss.js";
         mscorlib = "mscorlib.debug.js";
-        
         wwtlib = "wwtlib.debug.js";
     }
 
