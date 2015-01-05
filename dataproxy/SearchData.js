@@ -106,8 +106,10 @@
 			});
 			var end = new Date();
 			util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-
-			deferredInit.resolve(data);
+		    importWtml('Wise.wtml').then(function() {
+		        deferredInit.resolve(data);
+		    });
+			
 			
 		} else {
 			setTimeout(init, 333);
@@ -143,79 +145,81 @@
 	}
 
 	function importWtml(wtmlPath) {
-		initPromise.then(function() {
-			$.ajax({
-				url: wtmlPath
-			}).done(function() {
-				var wtml = $($.parseXML(arguments[0]));
-				wtml.find('Place').each(function(i, place) {
-					place = $(place);
-					var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
-					if (ra !== 0 || dec !== 0) {
-						constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec); 
+	    var deferred = $q.defer();
+		
+		$.ajax({
+			url: wtmlPath
+		}).done(function() {
+			var wtml = $($.parseXML(arguments[0]));
+			wtml.find('Place').each(function(i, place) {
+				place = $(place);
+				var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
+				if (ra !== 0 || dec !== 0) {
+					constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec); 
 						
-						var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
-						var wwtPlace = wwtlib.Place.create(
-							place.attr('Name'),
-							dec,
-							ra,
-							place.attr('DataSetType'),
-							constellation,
-							fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
-							parseFloat(place.find('ZoomLevel')) //zoomfactor
+					var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
+					var wwtPlace = wwtlib.Place.create(
+						place.attr('Name'),
+						dec,
+						ra,
+						place.attr('DataSetType'),
+						constellation,
+						fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
+						parseFloat(place.find('ZoomLevel')) //zoomfactor
+					);
+					if (fgi != null) {
+						isId++;
+						wwtPlace.set_studyImageset(wwtlib.Imageset.create(
+								fgi.attr('Name'),
+								fgi.attr('Url'),
+								util.getImageSetType(fgi.attr('DataSetType')),
+								fgi.attr('BandPass'),
+								wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
+								isId, //imagesetid
+								parseInt(fgi.attr('BaseTileLevel')),
+								parseInt(fgi.attr('TileLevels')),
+								null, //tilesize
+								parseFloat(fgi.attr('BaseDegreesPerTile')),
+								fgi.attr('FileType'),
+								fgi.attr('BottomsUp') === 'True',
+								'', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
+								parseFloat(fgi.attr('CenterX')),
+								parseFloat(fgi.attr('CenterY')),
+								parseFloat(fgi.attr('Rotation')),
+								true, //sparse
+								fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
+								false, //defaultSet,
+								false, //elevationModel
+								parseFloat(fgi.attr('WidthFactor')), //widthFactor,
+								parseFloat(fgi.attr('OffsetX')),
+								parseFloat(fgi.attr('OffsetY')),
+								fgi.find('Credits').text(),
+								fgi.find('CreditsUrl').text(),
+								'', '',
+								0, //meanRadius
+								null)
 						);
-						if (fgi != null) {
-							isId++;
-							wwtPlace.set_studyImageset(wwtlib.Imageset.create(
-									fgi.attr('Name'),
-									fgi.attr('Url'),
-									util.getImageSetType(fgi.attr('DataSetType')),
-									fgi.attr('BandPass'),
-									wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-									isId, //imagesetid
-									parseInt(fgi.attr('BaseTileLevel')),
-									parseInt(fgi.attr('TileLevels')),
-									null, //tilesize
-									parseFloat(fgi.attr('BaseDegreesPerTile')),
-									fgi.attr('FileType'),
-									fgi.attr('BottomsUp') === 'True',
-									'', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
-									parseFloat(fgi.attr('CenterX')),
-									parseFloat(fgi.attr('CenterY')),
-									parseFloat(fgi.attr('Rotation')),
-									true, //sparse
-									fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
-									false, //defaultSet,
-									false, //elevationModel
-									parseFloat(fgi.attr('WidthFactor')), //widthFactor,
-									parseFloat(fgi.attr('OffsetX')),
-									parseFloat(fgi.attr('OffsetY')),
-									fgi.find('Credits').text(),
-									fgi.find('CreditsUrl').text(),
-									'', '',
-									0, //meanRadius
-									null)
-							);
-						}
-
-						indexPlaceNames(wwtPlace);
-						var cIndex = constellations.indexOf(constellation);
-						var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
-						wwtPlace.guid = cIndex + '.' +
-							constellationPlaces.length;
-						constellationPlaces.push(wwtPlace);
 					}
 
+					indexPlaceNames(wwtPlace);
+					var cIndex = constellations.indexOf(constellation);
+					var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
+					wwtPlace.guid = cIndex + '.' +
+						constellationPlaces.length;
+					constellationPlaces.push(wwtPlace);
+				}
 
-				});
-				util.log(data);
+
 			});
+			deferred.resolve(true);
 		});
+		
+	    return deferred.promise;
 	}
 
 	
 
 	initPromise = init();
-	importWtml('Wise.wtml');
+	//importWtml('Wise.wtml');
 	return api;
 }]);
