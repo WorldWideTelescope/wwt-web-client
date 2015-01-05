@@ -22,7 +22,7 @@
  * <div doc-module-components="ngTouch"></div>
  *
  */
-
+     
 // define ngTouch module
 /* global -ngTouch */
 var ngTouch = angular.module('ngTouch', []);

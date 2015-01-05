@@ -26064,7 +26064,7 @@ var styleDirective = valueFn({
  * <div doc-module-components="ngTouch"></div>
  *
  */
-
+     
 // define ngTouch module
 /* global -ngTouch */
 var ngTouch = angular.module('ngTouch', []);
@@ -35510,7 +35510,7 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
 var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
-		'ngTouch',
+		//'ngTouch',
 		'ngAnimate',
 		'ngRoute',
 		'wwtControllers',
@@ -35614,6 +35614,31 @@ wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', 
 		}
 
 	};
+}]);
+wwt.app.directive('ngContextMenu', ['$parse', function ($parse) {
+
+    return {
+        restrict: 'A',
+        scope: { method: '&ngContextMenu' },
+        link: function (scope, element,attrs) {
+            var handler = scope.method();
+            var item = attrs.item;
+            var index = attrs.index;
+           
+            element.bind('contextmenu', function (event) {
+                event.preventDefault();
+                if (item) {
+                    $('#menuContainer' + index).append($('#researchMenu'));
+                    handler(JSON.parse(item), parseInt(index));
+                } else {
+                    handler(event);
+                }
+                
+            });
+        }
+    };
+   
+   
 }]);
 wwt.app.factory('AppState', function() {
 	var api = {
@@ -36378,14 +36403,14 @@ wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 	var canvas, ctx;
 	//var renderLog = [];
 	//var avgs = [];
-	//var getAvg = function () {
+	//var getAvg = function () { 
 	//	var sum = 0;
 	//	$.each(renderLog, function() {
-	//		sum += this;
+	//		sum += this; 
 	//	});
 	//	avgs.push(sum / renderLog.length);
 	//	renderLog = [];
-	//}
+	//} 
 
 	function draw(event, viewport) {
 		if (!viewport.isDirty && !viewport.init){ return;}
@@ -37075,8 +37100,10 @@ wwt.app.factory('SearchData', [
 			});
 			var end = new Date();
 			util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-
-			deferredInit.resolve(data);
+		    importWtml('Wise.wtml').then(function() {
+		        deferredInit.resolve(data);
+		    });
+			
 			
 		} else {
 			setTimeout(init, 333);
@@ -37112,80 +37139,82 @@ wwt.app.factory('SearchData', [
 	}
 
 	function importWtml(wtmlPath) {
-		initPromise.then(function() {
-			$.ajax({
-				url: wtmlPath
-			}).done(function() {
-				var wtml = $($.parseXML(arguments[0]));
-				wtml.find('Place').each(function(i, place) {
-					place = $(place);
-					var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
-					if (ra !== 0 || dec !== 0) {
-						constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec); 
+	    var deferred = $q.defer();
+		
+		$.ajax({
+			url: wtmlPath
+		}).done(function() {
+			var wtml = $($.parseXML(arguments[0]));
+			wtml.find('Place').each(function(i, place) {
+				place = $(place);
+				var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
+				if (ra !== 0 || dec !== 0) {
+					constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec); 
 						
-						var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
-						var wwtPlace = wwtlib.Place.create(
-							place.attr('Name'),
-							dec,
-							ra,
-							place.attr('DataSetType'),
-							constellation,
-							fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
-							parseFloat(place.find('ZoomLevel')) //zoomfactor
+					var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
+					var wwtPlace = wwtlib.Place.create(
+						place.attr('Name'),
+						dec,
+						ra,
+						place.attr('DataSetType'),
+						constellation,
+						fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
+						parseFloat(place.find('ZoomLevel')) //zoomfactor
+					);
+					if (fgi != null) {
+						isId++;
+						wwtPlace.set_studyImageset(wwtlib.Imageset.create(
+								fgi.attr('Name'),
+								fgi.attr('Url'),
+								util.getImageSetType(fgi.attr('DataSetType')),
+								fgi.attr('BandPass'),
+								wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
+								isId, //imagesetid
+								parseInt(fgi.attr('BaseTileLevel')),
+								parseInt(fgi.attr('TileLevels')),
+								null, //tilesize
+								parseFloat(fgi.attr('BaseDegreesPerTile')),
+								fgi.attr('FileType'),
+								fgi.attr('BottomsUp') === 'True',
+								'', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
+								parseFloat(fgi.attr('CenterX')),
+								parseFloat(fgi.attr('CenterY')),
+								parseFloat(fgi.attr('Rotation')),
+								true, //sparse
+								fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
+								false, //defaultSet,
+								false, //elevationModel
+								parseFloat(fgi.attr('WidthFactor')), //widthFactor,
+								parseFloat(fgi.attr('OffsetX')),
+								parseFloat(fgi.attr('OffsetY')),
+								fgi.find('Credits').text(),
+								fgi.find('CreditsUrl').text(),
+								'', '',
+								0, //meanRadius
+								null)
 						);
-						if (fgi != null) {
-							isId++;
-							wwtPlace.set_studyImageset(wwtlib.Imageset.create(
-									fgi.attr('Name'),
-									fgi.attr('Url'),
-									util.getImageSetType(fgi.attr('DataSetType')),
-									fgi.attr('BandPass'),
-									wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-									isId, //imagesetid
-									parseInt(fgi.attr('BaseTileLevel')),
-									parseInt(fgi.attr('TileLevels')),
-									null, //tilesize
-									parseFloat(fgi.attr('BaseDegreesPerTile')),
-									fgi.attr('FileType'),
-									fgi.attr('BottomsUp') === 'True',
-									'', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
-									parseFloat(fgi.attr('CenterX')),
-									parseFloat(fgi.attr('CenterY')),
-									parseFloat(fgi.attr('Rotation')),
-									true, //sparse
-									fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
-									false, //defaultSet,
-									false, //elevationModel
-									parseFloat(fgi.attr('WidthFactor')), //widthFactor,
-									parseFloat(fgi.attr('OffsetX')),
-									parseFloat(fgi.attr('OffsetY')),
-									fgi.find('Credits').text(),
-									fgi.find('CreditsUrl').text(),
-									'', '',
-									0, //meanRadius
-									null)
-							);
-						}
-
-						indexPlaceNames(wwtPlace);
-						var cIndex = constellations.indexOf(constellation);
-						var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
-						wwtPlace.guid = cIndex + '.' +
-							constellationPlaces.length;
-						constellationPlaces.push(wwtPlace);
 					}
 
+					indexPlaceNames(wwtPlace);
+					var cIndex = constellations.indexOf(constellation);
+					var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
+					wwtPlace.guid = cIndex + '.' +
+						constellationPlaces.length;
+					constellationPlaces.push(wwtPlace);
+				}
 
-				});
-				util.log(data);
+
 			});
+			deferred.resolve(true);
 		});
+		
+	    return deferred.promise;
 	}
 
 	
 
 	initPromise = init();
-	importWtml('Wise.wtml');
+	//importWtml('Wise.wtml');
 	return api;
 }]);
 wwt.app.factory('Astrometry', [
@@ -37489,8 +37518,15 @@ wwt.controllers.controller('MainController',
 		//#region initialization
 		var initCanvas = function() {
 			ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
-			
-			wwt.wc = ctl;
+			if (window.Type && Type.canCast) {
+			    if (window.ss) {
+			        window.ss.canCast = Type.canCast;
+			    } else {
+			        window.ss = { canCast: Type.canCast };
+			    
+			    }
+		    }
+		    wwt.wc = ctl;
 			wwt.resize();
 			ctl.add_ready(function() {
 				var imageSets = wwtlib.WWTControl.imageSets;
@@ -37810,7 +37846,7 @@ wwt.controllers.controller('MainController',
 				});
 				
 
-				$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
+				//$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
 				$scope.showObject = function (place) {
 					$rootScope.singleton.gotoTarget(place);
 					$('.finder-scope').hide();
@@ -37818,12 +37854,7 @@ wwt.controllers.controller('MainController',
 			});
 		};
 
-
-		
 		//#endregion
-
-		
-		
 
 		//#region set fb/bg...
 		var solarSystemInit = false;

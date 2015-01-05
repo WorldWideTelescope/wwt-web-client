@@ -178,6 +178,7 @@
     <Content Include="dataproxy\SearchData.js" />
     <Content Include="dataproxy\Tours.js" />
     <Content Include="Default.aspx" />
+    <Content Include="directives\ContextMenu.js" />
     <Content Include="directives\Localize.js" />
     <Content Include="directives\Scroll.js" />
     <Content Include="earth.jpg" />
@@ -189,6 +190,7 @@
     <Content Include="ext\angular-strap.min.js" />
     <Content Include="ext\angular-strap.tpl.js" />
     <Content Include="ext\angular-strap.tpl.min.js" />
+    <Content Include="ext\angular-touch.js" />
     <Content Include="ext\angular.js" />
     <Content Include="ext\bootstrap.js" />
     <Content Include="ext\bootstrap.min.js" />
@@ -271,20 +273,18 @@
     <Content Include="Images\venus.jpg" />
     <Content Include="Images\wwtlogo.png" />
     <Content Include="login.aspx" />
-    <Content Include="sdk\mscorlib.debug.js" />
     <Content Include="sdk\mscorlib.dll" />
-    <Content Include="sdk\mscorlib.js" />
     <Content Include="sdk\mscorlib.xml" />
     <Content Include="sdk\Script.Web.dll" />
     <Content Include="sdk\Script.Web.xml" />
-    <Content Include="sdk\sdkwrapper.js" />
     <Content Include="sdk\ss.js" />
     <Content Include="sdk\ss.min.js" />
     <Content Include="sdk\wwtsdk.aspx" />
-    <Content Include="sdk\wwtlib.debug.js" />
     <Content Include="sdk\wwtlib.dll" />
     <Content Include="sdk\wwtlib.js" />
     <Content Include="sdk\wwtlib.xml" />
+    <Content Include="sdk\wwtsdk.js" />
+    <Content Include="sdk\wwtsdk.min.js" />
     <Content Include="searchdata.min.js" />
     <Content Include="searchdataraw.js" />
     <Content Include="sunCorona.png" />
@@ -323,8 +323,8 @@
     <Content Include="ext\angular-route.min.js.map" />
     <Content Include="ext\angular-strap.min.js.map" />
     <Content Include="ext\angular.min.js.map" />
-    <Content Include="wwtlib.js" />
-    <Content Include="wwtlib.min.js" />
+    <Content Include="wwtsdk.js" />
+    <Content Include="wwtsdk.min.js" />
     <Content Include="WWTSL.xap" />
     <Content Include="wwtwebclient.js" />
     <Content Include="wwtwebclient.min.js" />
@@ -333,6 +333,7 @@
     <Content Include="css\bootstrap.css.map">
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
+    <Content Include="ext\angular-touch.min.js.map" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

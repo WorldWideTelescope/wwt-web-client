@@ -5,14 +5,14 @@
 	var canvas, ctx;
 	//var renderLog = [];
 	//var avgs = [];
-	//var getAvg = function () {
+	//var getAvg = function () { 
 	//	var sum = 0;
 	//	$.each(renderLog, function() {
-	//		sum += this;
+	//		sum += this; 
 	//	});
 	//	avgs.push(sum / renderLog.length);
 	//	renderLog = [];
-	//}
+	//} 
 
 	function draw(event, viewport) {
 		if (!viewport.isDirty && !viewport.init){ return;}

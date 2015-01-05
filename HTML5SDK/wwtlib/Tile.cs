@@ -179,11 +179,20 @@ namespace wwtlib
 
                 texture.AddEventListener("error", delegate(ElementEvent e)
                 {
-                    Downloading = false;
-                    ReadyToRender = false;
-                    errored = true;
-                    RequestPending = false;
-                    TileCache.RemoveFromQueue(this.Key, true);
+                    if (!texture.HasAttribute("proxyattempt"))
+                    {
+                        texture.Src = Util.GetProxiedUrl(URL);
+                        texture.SetAttribute("proxyattempt", true);
+                    }
+                    else
+                    {
+                        Downloading = false;
+                        ReadyToRender = false;
+                        errored = true;
+                        RequestPending = false;
+                        TileCache.RemoveFromQueue(this.Key, true);
+                    }
+                    
                 }, false);
 
                 xdomimg.crossOrigin = "anonymous";

@@ -8,7 +8,10 @@
  * Copyright (c) 2012, Nikhil Kothari, and the Script# Project.
  * More information at http://scriptsharp.com
  */
-window.ss = (function(global) {
+
+"use strict";
+
+(function(global) {
   function _ss() {
 
 // Various Helpers/Utilities
@@ -1509,10 +1512,7 @@ function module(name, implementation, exports) {
   }
 
   global.define ? global.define('ss', [], _ss) : _export();
-  return _ss();
 })(this);
-
-
 
 window.wwtlib = (function() {
   var $global = this;
@@ -8343,9 +8343,15 @@ window.wwtlib = (function() {
           $this.makeTexture();
         }, false);
         this.imageElement.addEventListener('error', function(e) {
-          $this._downloading = false;
-          $this._ready = false;
-          $this._errored = true;
+          if ($this.imageElement.hasAttribute('proxyattempt')) {
+            $this.imageElement.src = Util.getProxiedUrl($this.URL);
+            $this.imageElement.setAttribute('proxyattempt', true);
+          }
+          else {
+            $this._downloading = false;
+            $this._ready = false;
+            $this._errored = true;
+          }
         }, false);
         xdomimg.crossOrigin = 'anonymous';
         this.imageElement.src = this.URL;
@@ -18905,6 +18911,7 @@ window.wwtlib = (function() {
     onPointerDown: function(e) {
       var pe = e;
       var index = 0;
+      var evt = arguments[0], cnv = arguments[0].target; if (cnv.setPointerCapture) {cnv.setPointerCapture(evt.pointerId);} else if (cnv.msSetPointerCapture) { cnv.msSetPointerCapture(evt.pointerId); };
       if (!this._pointerIds[0]) {
         this._pointerIds[0] = pe.pointerId;
         index = 0;
@@ -30331,6 +30338,5 @@ window.wwtlib = (function() {
   ToastTile.backSlashIndexBuffer = new Array(64);
   ToastTile.rootIndexBuffer = new Array(4);
 
-  window.wwtlib = $exports;
   return $exports;
 })();

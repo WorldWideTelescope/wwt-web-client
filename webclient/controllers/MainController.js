@@ -91,8 +91,15 @@
 		//#region initialization
 		var initCanvas = function() {
 			ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
-			
-			wwt.wc = ctl;
+			if (window.Type && Type.canCast) {
+			    if (window.ss) {
+			        window.ss.canCast = Type.canCast;
+			    } else {
+			        window.ss = { canCast: Type.canCast };
+			    
+			    }
+		    }
+		    wwt.wc = ctl;
 			wwt.resize();
 			ctl.add_ready(function() {
 				var imageSets = wwtlib.WWTControl.imageSets;
@@ -412,7 +419,7 @@
 				});
 				
 
-				$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
+				//$('#WWTCanvas').on('contextmenu', $scope.showFinderScope);
 				$scope.showObject = function (place) {
 					$rootScope.singleton.gotoTarget(place);
 					$('.finder-scope').hide();
@@ -420,12 +427,7 @@
 			});
 		};
 
-
-		
 		//#endregion
-
-		
-		
 
 		//#region set fb/bg...
 		var solarSystemInit = false;

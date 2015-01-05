@@ -1378,6 +1378,9 @@ namespace wwtlib
             PointerEvent pe = (PointerEvent)(object)e;
             int index = 0;
             //Canvas..SetPointerCapture(pe.PointerId);
+
+
+            Script.Literal("var evt = arguments[0], cnv = arguments[0].target; if (cnv.setPointerCapture) {cnv.setPointerCapture(evt.pointerId);} else if (cnv.msSetPointerCapture) { cnv.msSetPointerCapture(evt.pointerId); }");
             if (pointerIds[0] == 0 )
             {
                 pointerIds[0] = pe.PointerId;

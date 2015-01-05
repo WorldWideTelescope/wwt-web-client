@@ -45,17 +45,17 @@ public partial class Default : System.Web.UI.Page
 				DebugChrome = true;
 				DebugQs = "";
 			}
-			/*if (Request.QueryString["debug"] == "local")
-			{
-				SDKLocation = "sdk/wwtsdk.aspx";
-			}*/
 			if (Request.QueryString["debug"] == "local")
 			{
-				SDKLocation = "wwtlib.js";
+				SDKLocation = "sdk/wwtsdk.aspx" + DebugQs;
 			}
+			/*if (Request.QueryString["debug"] == "local")
+			{
+				SDKLocation = "wwtsdk.js";
+			}*/
 			if (Request.QueryString["debug"] == "localmin")
 			{
-				SDKLocation = "wwtlib.min.js";
+				SDKLocation = "wwtsdk.min.js" + DebugQs;
 			}
 		}
 		if (Request.QueryString["ads"] != null)

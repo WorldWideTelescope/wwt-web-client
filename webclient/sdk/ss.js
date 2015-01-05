@@ -1,8 +1,3 @@
-/*! Script# Runtime
- * Designed and licensed for use and distribution with Script#-generated scripts.
- * Copyright (c) 2012, Nikhil Kothari, and the Script# Project.
- * More information at http://scriptsharp.com
- */
 window.ss = (function(global) {
   function _ss() {
 

@@ -41,9 +41,17 @@ namespace wwtlib
 
                 ImageElement.AddEventListener("error", delegate(ElementEvent e)
                 {
-                    Downloading = false;
-                    Ready = false;
-                    Errored = true;
+                    if (!ImageElement.HasAttribute("proxyattempt"))
+                    {
+                        ImageElement.Src = Util.GetProxiedUrl(URL);
+                        ImageElement.SetAttribute("proxyattempt", true);
+                    }
+                    else
+                    {
+                        Downloading = false;
+                        Ready = false;
+                        Errored = true;
+                    }
                 }, false);
 
                 xdomimg.crossOrigin = "anonymous";

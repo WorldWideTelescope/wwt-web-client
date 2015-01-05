@@ -795,7 +795,7 @@ namespace System.Html
     public class CrossDomainImage
     {
         [ScriptField]
-        public string crossOrigin { get { return null; } set { } }
+        public string crossOrigin { get { return "anonymous"; } set { } }
     }
 
     [ScriptIgnoreNamespace]
