@@ -92,6 +92,30 @@ module.exports = function(grunt) {
                     '../sdk/wwtlib.js'
                 ],
                 dest: '../sdk/wwtsdk.js'
+            },
+            oldsdk: {
+                src: [
+                    '../sdk/old/mscorlib.debug.js',
+                    '../sdk/old/wwtlib.debug.js'
+                ],
+                dest: '../sdk/old/wwtlib_full.js'
+            }
+        },
+        //remove the AMD dependancy from scriptsharp output
+        replace: {
+            wwtlib: {
+                src: ['../sdk/wwtlib.js'],         
+                dest: '../sdk/wwtlib.js',          
+                replacements: [{
+                    from: '"use strict";',                   
+                    to: ''
+                }, {
+                    from: "define('wwtlib', ['ss'], function(ss) {",      
+                    to: 'window.wwtlib = function(){'
+                }, {
+                    from: 'return $exports;\n});',
+                    to: 'return $exports;\n}();'
+                }]
             }
         },
         
@@ -111,6 +135,10 @@ module.exports = function(grunt) {
             sdk: {
                 src: '<%= concat.sdk.dest %>',
                 dest:'../sdk/wwtsdk.min.js'
+            },
+            oldsdk: {
+                src: '<%= concat.oldsdk.dest %>',
+                dest: '../sdk/old/wwtlib_full.min.js'
             }
 
         },
@@ -252,10 +280,23 @@ module.exports = function(grunt) {
 
 
     watch: {
-        scripts: {
-            files: '../**/*.js', 
-            tasks: ['concat', 'uglify:webclient', 'copy:webclient']
+        sdk: {
+            files: '../sdk/wwtlib.js', 
+            tasks: ['replace:wwtlib', 'concat:sdk', 'uglify:sdk']
         },
+
+        // call out only the directories to watch prevents
+        // watch from watching recursive node_modules folders e.g.: '../**/*.js'
+        scripts: {
+            files: ['../controllers/*.js', 
+                '../controls/*.js',
+                '../directives/*.js',
+                '../dataproxy/*.js',
+                '../factories/*.js',
+                '../app.js'],
+            tasks: ['concat:webclient', 'uglify:webclient', 'copy:webclient']
+        },
+        
         less: {
             files: '../css/*.less',
             tasks: ['less', 'copy:webclient']
@@ -267,18 +308,23 @@ module.exports = function(grunt) {
         command: 'npm update'
       }
     }
+      
   });
 
 
   // These plugins provide necessary tasks.
   require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
   require('time-grunt')(grunt);
+  grunt.loadNpmTasks('grunt-text-replace');
+  
 
     // JS distribution task.
   grunt.registerTask('dist-js', ['concat:webclient', 'uglify:webclient']);
 
-    // SDK distribution task.
-  grunt.registerTask('sdk', ['concat:sdk', 'uglify:sdk']);
+    // Older SDK distribution task (scriptsharp v0.74). 
+  grunt.registerTask('oldsdk', ['concat:oldsdk', 'uglify:oldsdk']);
+    // SDK distribution task. (scriptsharp v0.8).
+  grunt.registerTask('sdk', ['replace:wwtlib', 'concat:sdk', 'uglify:sdk']);
 
   // Minify the generated search data
   grunt.registerTask('dist-searchdata', ['uglify:searchData']);

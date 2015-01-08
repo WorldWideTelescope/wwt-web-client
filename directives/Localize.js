@@ -5,7 +5,7 @@
 				$rootScope.languagePromise.then(function() {
 					replaceText(false);
 				});
-			//}
+			//} 
 		} else {
 			replaceText(true);
 		}
