@@ -3,7 +3,7 @@
 var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
-		//'ngTouch',
+		//'ngTouch', 
 		'ngAnimate',
 		'ngRoute',
 		'wwtControllers',

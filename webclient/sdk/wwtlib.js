@@ -1,4 +1,6 @@
-window.wwtlib = (function() {
+
+
+window.wwtlib = function(){
   var $global = this;
 
   // DAY_OF_WEEK
@@ -28829,4 +28831,4 @@ window.wwtlib = (function() {
   ToastTile.rootIndexBuffer = new Array(4);
 
   return $exports;
-})();
+}();

@@ -35510,7 +35510,7 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
 var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
-		//'ngTouch',
+		//'ngTouch', 
 		'ngAnimate',
 		'ngRoute',
 		'wwtControllers',
@@ -35578,7 +35578,7 @@ wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', 
 				$rootScope.languagePromise.then(function() {
 					replaceText(false);
 				});
-			//}
+			//} 
 		} else {
 			replaceText(true);
 		}

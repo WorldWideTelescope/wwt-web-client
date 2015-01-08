@@ -3,7 +3,15 @@
 * Copyright 2014 Microsoft Research
 * Developed by Jonathan Fay and Ron Gilchrist
 **/
-window.ss = (function(global) {
+/*! Script# Runtime
+ * Designed and licensed for use and distribution with Script#-generated scripts.
+ * Copyright (c) 2012, Nikhil Kothari, and the Script# Project.
+ * More information at http://scriptsharp.com
+ */
+
+"use strict";
+
+(function(global) {
   function _ss() {
 
 // Various Helpers/Utilities
@@ -1504,10 +1512,11 @@ function module(name, implementation, exports) {
   }
 
   global.define ? global.define('ss', [], _ss) : _export();
-  return _ss();
 })(this);
 
-window.wwtlib = (function() {
+
+
+window.wwtlib = function(){
   var $global = this;
 
   // DAY_OF_WEEK
@@ -30338,4 +30347,4 @@ window.wwtlib = (function() {
   ToastTile.rootIndexBuffer = new Array(4);
 
   return $exports;
-})();
+}();
