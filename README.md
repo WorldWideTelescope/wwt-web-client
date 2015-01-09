@@ -7,7 +7,7 @@ This repository contains the HTML5 SDK which is the rendering engine for the web
 * Grunt
 
 ## Getting Started
-* Install NodeJs. Then navigate to the bootstrap directory in a command prompt and type npm install. If you encounter an error (I always do on a clean machine), you will need to go to `%USERPROFILE%\AppData\Roaming\` and create the npm directory. You may also need to add `;%USERPROFILE%\AppData\Roaming\npm` to the Path (system environment variables)
+* Install NodeJs. Then navigate to the webclient\bootstrap directory in a command prompt and type `npm install`. If you encounter an error (I always do on a clean machine), you will need to go to `%USERPROFILE%\AppData\Roaming\` and create the npm directory. You may also need to add `;%USERPROFILE%\AppData\Roaming\npm` to the Path (system environment variables)
 * Install the grunt client. Once you have installed the node_modules for the project, type 'npm install grunt-cli' from the webclient\bootstrap directory (in a command prompt).
 * Edit webclient\bootstrap\gruntfile.js and remove `'copy:webclient'` whereever you see it. This task copies the webclient to the worldwidetelescope web site codebase and will clutter your filesystem if you are not developing on the worldwidetelescope.org web site.
 * Run 'grunt watch' from the same command prompt.
