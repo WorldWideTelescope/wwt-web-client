@@ -32,6 +32,7 @@
 	$rootScope.layerManagerHeight = function() {
 		return $(window).height() - (168 + $('body.desktop .context-panel').height());
 	};
+	
 	 
 	return true;
 }]);

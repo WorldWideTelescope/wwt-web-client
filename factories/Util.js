@@ -22,7 +22,8 @@
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
-		parseHms:parseHms
+		parseHms: parseHms
+		
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -213,14 +214,7 @@
 			return '';
 		}
 	}
-	/*var client = getQSParam('client');
-	api.isMobile = client && client.toLowerCase().indexOf('m') === 0;
-	var winW = $(window).width();
-	var winH = $(window).height();
-	var minDimension = Math.min(winW, winH);
-	if (api.isMobile && minDimension > 500) {
-		redirectClient('html5');
-	}*/
+	
 	var accelDevice = false;
 	window.ondevicemotion = function(event) {
 		if (event.acceleration &&
@@ -295,7 +289,13 @@
 		
 	}
 
-	var dirtyInterval;
+	var dirtyInterval,
+        viewport = {
+		isDirty: false,
+		RA: 0,
+		Dec: 0,
+		Fov: 60
+	};
 	function trackViewportChanges() {
 		viewport = {
 			isDirty: false,
@@ -324,16 +324,11 @@
 		});
 	}
 
-	var viewport = {
-		isDirty: false,
-		RA: 0,
-		Dec: 0,
-		Fov: 60
-	};
+	
 	
 	var dirtyViewport = function () {
 		var wasDirty = viewport.isDirty;
-		viewport.isDirty = wwt.wc.getRA() != viewport.RA || wwt.wc.getDec() != viewport.Dec || wwt.wc.get_fov() != viewport.Fov;
+		viewport.isDirty = wwt.wc.getRA() !== viewport.RA || wwt.wc.getDec() !== viewport.Dec || wwt.wc.get_fov() !== viewport.Fov;
 		viewport.RA = wwt.wc.getRA();
 		viewport.Dec = wwt.wc.getDec();
 		viewport.Fov = wwt.wc.get_fov();
@@ -343,7 +338,7 @@
 		}
 	}
 	
-
+	
 	return api;
 
 }]);

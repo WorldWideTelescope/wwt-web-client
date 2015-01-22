@@ -60,6 +60,7 @@ module.exports = function(grunt) {
                     '../factories/appstate.js',
                     '../factories/localization.js',
                     '../factories/FinderScope.js',
+                    '../factories/ThumbList.js',
                     '../factories/Util.js',
                     '../factories/UILibrary.js',
                     '../factories/SearchUtil.js',
@@ -69,18 +70,20 @@ module.exports = function(grunt) {
                     '../dataproxy/Tours.js',
                     '../dataproxy/SearchData.js',
                     '../dataproxy/Astrometry.js',
+                    '../controllers/ContextPanelController.js',
                     '../controllers/MainController.js',
-                    '../controllers/ViewController.js',
-                    '../controllers/ThumbnailController.js',
-                    '../controllers/ToursController.js',
-                    '../controllers/SettingsController.js',
                     '../controllers/IntroController.js',
-                    '../controllers/AdsController.js',
                     '../controllers/MobileNavController.js',
-                    '../controllers/popovers/ObservingTimeController.js',
                     '../controllers/LayerManagerController.js',
-                    '../controllers/ShareController.js',
+                    '../controllers/tabs/AdsController.js',
+                    '../controllers/tabs/ExploreController.js',
+                    '../controllers/tabs/SearchController.js',
+                    '../controllers/tabs/SettingsController.js',
+                    '../controllers/tabs/ViewController.js',
+                    '../controllers/tabs/ToursController.js',
+                    '../controllers/modals/ShareController.js',
                     '../controllers/modals/OpenItemController.js',
+                    '../controllers/modals/ObservingTimeController.js',
                     '../controls/move.js',
                     '../controls/util.js'
                 ],
@@ -288,7 +291,9 @@ module.exports = function(grunt) {
         // call out only the directories to watch prevents
         // watch from watching recursive node_modules folders e.g.: '../**/*.js'
         scripts: {
-            files: ['../controllers/*.js', 
+            files: [
+                '../controllers/**/*.js',
+                '../controllers/*.js',
                 '../controls/*.js',
                 '../directives/*.js',
                 '../dataproxy/*.js',
@@ -296,26 +301,30 @@ module.exports = function(grunt) {
                 '../app.js'],
             tasks: ['concat:webclient', 'uglify:webclient', 'copy:webclient']
         },
-        
+        html: {
+            files: [
+                '../views/**/*.html',
+                '../Default.aspx'
+            ],
+            tasks: ['copy:webclient']
+        },
         less: {
             files: '../css/*.less',
             tasks: ['less', 'copy:webclient']
         }
     },
-
     exec: {
       npmUpdate: {
         command: 'npm update'
       }
-    }
-      
+    } 
   });
 
 
   // These plugins provide necessary tasks.
   require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
   require('time-grunt')(grunt);
-  grunt.loadNpmTasks('grunt-text-replace');
+  
   
 
     // JS distribution task.

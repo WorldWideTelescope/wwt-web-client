@@ -11,7 +11,7 @@
 
 		$scope.init = function() {
 			$scope.shareUrlReadOnly = $scope.shareUrl;
-			if ($scope.lookAt != 'Sky') {
+			if ($scope.lookAt !== 'Sky') {
 				$scope.shareUrlReadOnly = hashManager.setHashVal('lookAt', $scope.lookAt, true);
 			} else if ($scope.lookAt === 'Earth') {
 				$scope.shareUrlReadOnly = $scope.shareUrl = hashManager.removeHashVal('place', true);

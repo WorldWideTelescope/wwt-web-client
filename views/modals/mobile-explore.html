@@ -1,8 +1,7 @@
 ﻿<div class="modal fade" id="explorerModal" tabindex="-1" role="dialog"  aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div ng-controller="ThumbnailController"
-				 ng-init="initExploreView()">
+			<div ng-controller="ExploreController">
 				<span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
 				<div style="display: inline-block;vertical-align:top;" ng-repeat="item in exploreList" id="exploreList">
 					<ng-include src="'views/thumbnail.html'"></ng-include>

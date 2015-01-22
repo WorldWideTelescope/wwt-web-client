@@ -1,6 +1,6 @@
 ﻿<div class="modal" id="nboModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
-		<div class="modal-content thumbnails" data-ng-controller="ThumbnailController" data-scroll-buffer="3" ng-init="initNearbyObjects()">
+		<div class="modal-content thumbnails" data-ng-controller="ContextPanelController" data-scroll-buffer="3" ng-init="initNearbyObjects()">
 			<div ng-repeat="item in placesInCone track by $index" class="iblock tn" ng-if="scrollDepth > $index">
 				<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap" title="{{scrollDepth}}, {{$index}}">
 

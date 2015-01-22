@@ -1,16 +1,14 @@
-﻿
-
-var wwt = {
+﻿var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
-		//'ngTouch', 
-		'ngAnimate',
+		'ngTouch',  
+		'ngAnimate', 
 		'ngRoute',
 		'wwtControllers',
 		'ngCookies',
 		'angular-intro'
 	]),
-	controllers: angular.module('wwtControllers', []),
+	controllers: angular.module('wwtControllers', []), 
 	triggerResize: function () { },
 	resize: function () {
 		$('body.mobile #WWTCanvas')
