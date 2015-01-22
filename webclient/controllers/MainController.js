@@ -242,7 +242,7 @@
 					label:'Search',
 					button: 'rbnSearch',
 					menu: {
-						'Search Now':[function() { $timeout(function() { $scope.activePanel = 'Search'; }); }]
+						'Search Now':[function() { $timeout(function() { changePanel('Search'); }); }]
 					}
 				},{
 					label:'View',
@@ -294,7 +294,13 @@
 			
 		};
 
-		var initContext = function () {
+        var changePanel = function(panel) {
+            $('body').append($('#researchMenu'));
+            $scope.expandTop(false);
+            $scope.activePanel = panel;
+        }
+
+	    var initContext = function () {
 			var isAds = util.getQSParam('ads') != null;
 			var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
 
@@ -585,6 +591,7 @@
 			$(document).off('click', hideMenu);
 		};
 		$scope.tabClick = function (tab) {
+		    $('body').append($('#researchMenu'));
 			$scope.expandTop(false); 
 			$scope.activePanel = tab.label;
 			appState.set('activePanel', tab.label);
@@ -598,8 +605,6 @@
 		};
 
 		$scope.playTour = function(url) {
-			
-
 			$('.finder-scope').hide();
 			wwtlib.WWTControl.singleton.playTour(url);
 			wwt.tourPlaying = $rootScope.tourPlaying = true;
@@ -787,8 +792,9 @@
 		
 
 		$scope.topExpanded = false;
-		$scope.expandTop = function(flag) {
-			$scope.topExpanded = flag;
+		$scope.expandTop = function(flag, panel) {
+		    $scope.topExpanded = flag;
+		    $scope.expandedPanel = panel;
 		}
 
 		

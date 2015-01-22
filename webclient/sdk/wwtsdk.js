@@ -20634,7 +20634,7 @@ window.wwtlib = function(){
       else {
         col = Settings.get_globalSettings().get_constellationFigureColor();
       }
-      this._constellationVertexBuffers[ls.get_name()].drawLines(renderContext, opacity, Colors.get_red());
+      this._constellationVertexBuffers[ls.get_name()].drawLines(renderContext, opacity, Color.load(col));
     },
     _drawSingleConstellationOld: function(renderContext, ls) {
       var reverse = false;

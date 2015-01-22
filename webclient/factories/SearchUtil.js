@@ -1,6 +1,9 @@
 ﻿wwt.app.factory('SearchUtil', [
-	'SearchData', '$q', 'Util', '$rootScope',
-	function (searchDataService, $q, util,$rootScope) {
+	'SearchData',
+    '$q',
+    'Util',
+    '$rootScope',
+	function (searchDataService, $q, util, $rootScope) {
 	
 	var api = {
 		runSearch: runSearch,
@@ -45,14 +48,14 @@
 	}
 
 	var sortByImagery = function(p1, p2) {
-		return p2.get_constellation() == 'SolarSystem' && p1.get_constellation() != 'SolarSystem' ? 1 :
-			p1.get_constellation() == 'SolarSystem' && p2.get_constellation() != 'SolarSystem' ? -1 :
+		return p2.get_constellation() === 'SolarSystem' && p1.get_constellation() !== 'SolarSystem' ? 1 :
+			p1.get_constellation() === 'SolarSystem' && p2.get_constellation() !== 'SolarSystem' ? -1 :
 			p2.get_studyImageset() && !p1.get_studyImageset() ? 1 :
 			p1.get_studyImageset() && !p2.get_studyImageset() ? -1 :
 			p1.get_name() - p2.get_name();
 	}
 
-		function getPlaceById(id) {
+	function getPlaceById(id) {
 		var deferred = $q.defer();
 
 		searchDataService.getData().then(function (d) {

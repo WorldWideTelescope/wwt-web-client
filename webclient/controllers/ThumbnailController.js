@@ -1,4 +1,9 @@
-﻿wwt.controllers.controller('ThumbnailController',
+﻿/**
+1/22/2015
+This file is no longer used in the webclient. Keeping around to track regressions for a month or two.
+**/
+
+wwt.controllers.controller('ThumbnailController',
 	['$scope',
 		'$rootScope',
 	'AppState',
@@ -151,7 +156,7 @@
 
 							$scope.clickThumb(result[i]);
 							newCollectionUrl = null;
-						} else {
+						} else if (result.length) { 
 							$scope.clickThumb(result[0]);
 						}
 					}

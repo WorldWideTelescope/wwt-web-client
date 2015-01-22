@@ -12,6 +12,7 @@
     <meta property="og:title" content="WorldWide Telescope Web Client" />
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." /> 
     <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
+    <link rel="icon" href="favicon.ico"/>
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
     <link href=css/webclient.css?v=<%= ResourcesVersion%> rel="stylesheet" />
@@ -33,53 +34,56 @@
     <%--<script data-main="sdk/sdkwrapper" src="sdk/require.js"></script>
     <script type="text/javascript" src="<%=Debug?"":".min" %>.js"></script>--%>
     <script type="text/javascript" src="<%=SDKLocation %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
     <script src="ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
     <% if (Debug || DebugChrome)
        { %>
-    <script src="<%= ResourcesLocation%>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-touch.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/intro.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/app.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/Util.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/dataproxy/Astrometry.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/ViewController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/ThumbnailController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/ToursController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/SettingsController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/popovers/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/AdsController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controllers/ShareController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-touch.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/intro.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/app.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/dataproxy/Astrometry.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/ThumbList.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/Util.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/ContextPanelController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/modals/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/modals/ShareController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/AdsController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/ExploreController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/SearchController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/SettingsController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/ToursController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/ViewController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation%>/controls/move.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation%>/controls/util.js?v=<%= ResourcesVersion%>"></script>
     <% }
        else
        { %>
-    <script src="<%= ResourcesLocation%>/wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
     <% } %>
 
     <% }
@@ -114,7 +118,6 @@
         }
     </script> 
     <% } %>
-    <link rel="icon" type="image/png" href="favicon.png"/>
     
   
 </head>
@@ -140,6 +143,7 @@
             }(document, 'script', 'facebook-jssdk'));
         </script>--%>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
+<ng-include src="'views/research-menu.html'"></ng-include>
     <div id="WorldWideTelescopeControlHost">
         <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile?"": "showFinderScope"%>"></div>
     </div>
@@ -332,17 +336,15 @@
     
     </div>
 
-    <div class="{{topExpanded && activePanel == 'Explore' ? 'top-panel top-expanded' : 'top-panel'}}" id="topPanel" ng-switch="activePanel">
-        
+    <div class="{{topExpanded && activePanel.toLowerCase() == expandedPanel ? 'top-panel top-expanded' : 'top-panel'}}" id="topPanel" ng-switch="activePanel">
         <div 
             ng-show="!loadingUrlPlace" 
             ng-switch-when="Explore"
-            class="{{expanded?'explore-panel rel expanded':'explore-panel rel'}}" 
-            ng-controller="ThumbnailController" 
-            ng-init="initExploreView()"
+            class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}" 
+            ng-controller="ExploreController" 
             >
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
-            <div style="display: inline-block;vertical-align:top;" ng-repeat="item in exploreList" id="exploreList">
+            <div style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" id="exploreList">
                 <ng-include src="'views/thumbnail.html'"></ng-include>
             </div>
             <label class="wwt-pager">
@@ -396,15 +398,12 @@
                 </a>
             </label>
         </div>
-        <div ng-switch-when="Search" ng-controller="ThumbnailController" ng-init="initSearch()">
+        <div ng-switch-when="Search" ng-controller="SearchController" class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}">
             <div style="margin:-4px 0 1px;">
                 <div style="padding:4px 100px 0 4px;" class="iblock input-group">
                     <input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:200px" />
                     <span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;top:3px"></span>
-                
                 </div>
-                
-
                 <div style="padding:4px 0 0 4px;display: inline-block">
                     <div class="select">
                         <select ng-model="SearchType">
@@ -414,7 +413,6 @@
                                 <option localize="Galactic"></option>
                                 <option localize="Ecliptic"></option>-->--%>
                         </select>
-
                     </div>
                     &nbsp;
                     <label>
@@ -427,41 +425,26 @@
                         <input type="text" style="width:100px" ng-model="goto.Dec" />
                     </label>
                     <a class="btn" ng-click="gotoCoord()" localize="Go"></a>
-
                 </div>
             </div>
-            <div class="search-results">
-                <div style="display: inline-block;vertical-align:top;" ng-repeat="item in searchResultSet">
-                    <span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
-                        <ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
-                <%-- ng-context-menu="showMenu" item="{{item}}" index="{{$index}}" --%>
-                        <a ng-click="clickThumb(item)"  title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-                            <i class="fa fa-image" 
-                               ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
-                            <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
-                            <label>{{item.get_name()}}</label>
-                        </a>
-                        <div ng-if="!item.get_isFolder()" class="dropdown" ng-mouseenter="moveMenu($index,item)" id="menuContainer{{$index}}">
-                            <span bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
-                                  data-placement="bottom{{$index==0?'-left':''}}" tabindex="0"
-                                  data-content-template="views/popovers/property-panel.html"
-                                  data-container="body">&nbsp;</span>
-                            <a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
-                                <img src='<%= ResourcesLocation%>/Images/context-menu-arrow.png' class="menu" />
-                            </a>
-                        </div>
-                    </span>
+            <div class="search-results" style="margin-top: 2px;">
+                <div style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage">
+                    <ng-include src="'views/thumbnail.html'"></ng-include>
                 </div>
             </div>
-            <label class="wwt-pager" ng-show="searchResults.length > 0">
+            <label class="wwt-pager" ng-show="collection.length > 0">
                 <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
                     <i class="fa fa-play reverse"></i>
                 </a>
-                {{(currentPage + 1)}} of {{pageCount}}
+                {{(currentPage + 1)}} <span localize="of"></span> {{ pageCount }}
                 <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
                     <i class="fa fa-play"></i>
                 </a>
             </label>
+            <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()" style="bottom:-4px">
+                <i class="fa fa-caret-down" style="position:relative;top:-5px;" ng-if="!expanded"></i>
+                <i class="fa fa-caret-up" style="position:relative;top:-5px;" ng-if="expanded"></i>
+            </a>
         </div>
         <div ng-switch-when="View" data-ng-controller="ViewController">
             <div class="layer-manager-toggle">
@@ -841,28 +824,9 @@
             </div>
         
         </div>
-        <div class="thumbnails nearby-objects rel" data-ng-controller="ThumbnailController" ng-init="initNearbyObjects()"  ng-style="{width: bottomControlsWidth()}">
-            <div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in nearbyPlaces" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
-                <span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
-                    <ng-include src="'views/research-menu.html'" ng-if="$index == 0"></ng-include>
-                    <span bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
-                              data-placement="top{{$index == 0 ? '-left' : ''}}" tabindex="0"
-                              data-content-template="views/popovers/property-panel.html"
-                              data-container="body">&nbsp;</span>
-                    <a ng-click="clickThumb(item)" ng-mouseenter="hoverThumb(item)" ng-mouseleave="clearAnnotations()" title="{{item.get_name()}}" ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-                        <i class="fa fa-image" 
-                           ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
-                        <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
-                        <label>{{item.get_name()}}</label>
-                    </a>
-                    <div ng-if="!item.get_isFolder()" class="dropup" ng-mouseenter="moveNboMenu($index,item)" id="nboMenuContainer{{$index}}">
-                    
-                        <a data-toggle="dropdown" role="button" ng-click="showMenu(item,$index)" class="yellow-arrow">
-                            <img src="<%= ResourcesLocation%>/Images/context-menu-arrow.png" class="menu" />
-                        </a>
-                    </div>
-                </span>
-            
+        <div class="thumbnails nearby-objects rel" data-ng-controller="ContextPanelController" ng-style="{width: bottomControlsWidth()}">
+            <div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
+                <ng-include src="'views/thumbnail.html'"></ng-include>
             </div>
             <label class="wwt-pager">
                 <a class="btn" 
@@ -916,7 +880,7 @@
                     class="pull-left" 
                     localize="Microsoft WorldWide Telescope Logo"
                     localize-only="alt" />
-                <h1 style="position:relative;top:-2px">
+                <h1 style="position:relative;top:-2px"> 
                     <small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
                     World<span style="color:#6ba9e6">Wide Telescope</span>
                 </h1>

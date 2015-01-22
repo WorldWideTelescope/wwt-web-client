@@ -68,7 +68,7 @@
 				util.log(item, er);
 			}
 		});
-		return items;
+		return items; 
 	};
 
 	var init = function () {
