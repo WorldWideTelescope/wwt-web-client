@@ -143,7 +143,7 @@
             }(document, 'script', 'facebook-jssdk'));
         </script>--%>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
-<ng-include src="'views/research-menu.html'"></ng-include>
+
     <div id="WorldWideTelescopeControlHost">
         <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile?"": "showFinderScope"%>"></div>
     </div>
@@ -308,6 +308,7 @@
     <% } %>
     <%if (Client == Clients.Html5)
    { %>
+    <ng-include src="'views/research-menu.html'"></ng-include>
     <ng-include src="'views/modals/finder-scope.html'" onload="initFinder()"></ng-include>
     
     

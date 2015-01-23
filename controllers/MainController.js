@@ -760,16 +760,12 @@
 			$scope.propertyItem = item;
 			$scope.propertyItem.isExploreTab = isExploreTab;
 		};
-
-		
-
+        
 		$scope.showProperties = function () {
 			$('.popover-content .close-btn').click();
-			$('#researchMenu').parent().parent().find('.thumb-popover').click();
+			$('.dropdown.open #researchMenu, .dropup.open #researchMenu').closest('.thumbwrap').find('.thumb-popover').click();
 		};
 
-		
-		
 		$scope.setTrackingObj = function(item) {
 			$scope.trackingObj = item;
 			if ($scope.trackingObj === null) {
@@ -788,16 +784,12 @@
 			ctl.clearAnnotations();
 		};
 
-		
-		
-
 		$scope.topExpanded = false;
 		$scope.expandTop = function(flag, panel) {
 		    $scope.topExpanded = flag;
 		    $scope.expandedPanel = panel;
 		}
 
-		
 		$scope.tourFeatures = function () {
 			$scope.loadingTour = true;
 			setTimeout(function() {$('#introStartButton').click();}, 3);
