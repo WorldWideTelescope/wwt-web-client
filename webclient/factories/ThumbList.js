@@ -24,17 +24,20 @@
         };
         scope.goFwd = function () {
             goFwd(scope);
-        };
+        }; 
         scope.showMenu = function (i) {
             var item = scope.collectionPage[i];
             $('.popover-content .close-btn').click();
             if (!item.get_isFolder()) {
-
-                $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i).append($('#researchMenu'));
+                var menuContainer = $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i);
+                if (util.isMobile) {
+                    menuContainer = $('#' + name + 'Container #menuContainer' + i);
+                }
+                menuContainer.append($('#researchMenu'));
                 setTimeout(function () {
                     $('.popover-content .close-btn').click();
-                    $('#menuContainer' + i).find('#researchMenu').addClass('open');
-                    $('#menuContainer' + i).find('.yellow-arrow').click();
+                    menuContainer.find('#researchMenu').addClass('open');
+                    menuContainer.find('.yellow-arrow').click();
                     $timeout(function () {
                         $('.dropdown-backdrop').off('contextmenu');
                         $('.dropdown-backdrop').on('contextmenu', function (event) {
@@ -53,8 +56,8 @@
             scope.expandTop(scope.expanded,name);
             calcPageSize(scope, name === 'context');
         };
-        scope.dropdownClass = name === 'context' ? 'dropup' : 'dropdown';
-        scope.popupPosition = name === 'context' ? 'top' : 'bottom';
+        scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup' : 'dropdown';
+        scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
     }
 
     function clickThumb(item, scope, outParams, callback) {

@@ -85,7 +85,7 @@ namespace wwtlib
 
                 CanvasContext2D ctx = renderContext.Device;
                 ctx.Save();
-            
+                
                 ctx.StrokeStyle = color.ToString();
                 ctx.LineWidth = 2;
                 ctx.Alpha = .25;

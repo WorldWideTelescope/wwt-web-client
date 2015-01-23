@@ -1,24 +1,18 @@
 ﻿wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
-
     return {
         restrict: 'A',
         scope: { method: '&ngContextMenu' },
-        link: function (scope, element,attrs) {
+        link: function (scope, element){
             var handler = scope.method();
-            //var item = attrs.item;
-            var index = attrs.index;
-           
             element.bind('contextmenu', function (event) {
                 event.preventDefault();
+                var index = event.delegateTarget.getAttribute('index');
                 if (index) {
                     handler(parseInt(index));
-                } else {
+                } else if  (handler) {
                     handler(event);
                 }
-                
             });
         }
     };
-   
-   
 }]);

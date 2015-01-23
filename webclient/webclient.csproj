@@ -56,16 +56,16 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.5.2.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+    <Reference Include="Wurfl, Version=1.5.3.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.2.1\lib\Wurfl.dll</HintPath>
+      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.3\lib\Wurfl.dll</HintPath>
     </Reference>
     <Reference Include="Wurfl.1.5.2.1.Fakes">
       <HintPath>FakesAssemblies\Wurfl.1.5.2.1.Fakes.dll</HintPath>
     </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.5.2.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.5.3.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.2.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.3\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Wurfl.Aspnet.Extensions.1.5.2.1.Fakes">
       <HintPath>FakesAssemblies\Wurfl.Aspnet.Extensions.1.5.2.1.Fakes.dll</HintPath>
@@ -313,11 +313,6 @@
     <Content Include="views\thumbnail.html" />
     <Content Include="views\tree-node.html" />
     <Content Include="webclient.sln" />
-    <Content Include="WURFL AGPL License.txt" />
-    <Content Include="App_Readme\WURFL-v1.5.2.1.chm" />
-    <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
-    <Content Include="App_Data\wurfl-latest.zip" />
-    <Content Include="packages.config" />
     <Content Include="css\bootstrap.less" />
     <Content Include="css\variables.less" />
     <Content Include="css\webclient.css.map" />
@@ -327,6 +322,7 @@
     <Content Include="ext\angular-route.min.js.map" />
     <Content Include="ext\angular-strap.min.js.map" />
     <Content Include="ext\angular.min.js.map" />
+    <Content Include="WURFL AGPL License.txt" />
     <Content Include="wwtsdk.js" />
     <Content Include="wwtsdk.min.js" />
     <Content Include="WWTSL.xap" />
@@ -338,6 +334,10 @@
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
     <Content Include="ext\angular-touch.min.js.map" />
+    <Content Include="App_Readme\WURFL-v1.5.3.chm" />
+    <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
+    <Content Include="App_Data\wurfl-latest.zip" />
+    <Content Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

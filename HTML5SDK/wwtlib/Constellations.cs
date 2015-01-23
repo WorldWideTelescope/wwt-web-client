@@ -275,7 +275,7 @@ namespace wwtlib
                 }
             }
 
-            string col;
+            string col = "red";
             if (boundry)
             {
                 if (constToDraw != ls.Name)
@@ -292,7 +292,7 @@ namespace wwtlib
                 col = Settings.GlobalSettings.ConstellationFigureColor;
             }
 
-            constellationVertexBuffers[ls.Name].DrawLines(renderContext, opacity, Colors.Red);
+            constellationVertexBuffers[ls.Name].DrawLines(renderContext, opacity, Color.Load(col));
 
         }
 

@@ -36301,28 +36301,22 @@ wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', 
 	};
 }]);
 wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
-
     return {
         restrict: 'A',
         scope: { method: '&ngContextMenu' },
-        link: function (scope, element,attrs) {
+        link: function (scope, element){
             var handler = scope.method();
-            //var item = attrs.item;
-            var index = attrs.index;
-           
             element.bind('contextmenu', function (event) {
                 event.preventDefault();
+                var index = event.delegateTarget.getAttribute('index');
                 if (index) {
                     handler(parseInt(index));
-                } else {
+                } else if  (handler) {
                     handler(event);
                 }
-                
             });
         }
     };
-   
-   
 }]);
 wwt.app.factory('AppState', function() {
 	var api = {
@@ -36598,17 +36592,20 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         };
         scope.goFwd = function () {
             goFwd(scope);
-        };
+        }; 
         scope.showMenu = function (i) {
             var item = scope.collectionPage[i];
             $('.popover-content .close-btn').click();
             if (!item.get_isFolder()) {
-
-                $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i).append($('#researchMenu'));
+                var menuContainer = $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i);
+                if (util.isMobile) {
+                    menuContainer = $('#' + name + 'Container #menuContainer' + i);
+                }
+                menuContainer.append($('#researchMenu'));
                 setTimeout(function () {
                     $('.popover-content .close-btn').click();
-                    $('#menuContainer' + i).find('#researchMenu').addClass('open');
-                    $('#menuContainer' + i).find('.yellow-arrow').click();
+                    menuContainer.find('#researchMenu').addClass('open');
+                    menuContainer.find('.yellow-arrow').click();
                     $timeout(function () {
                         $('.dropdown-backdrop').off('contextmenu');
                         $('.dropdown-backdrop').on('contextmenu', function (event) {
@@ -36627,8 +36624,8 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
             scope.expandTop(scope.expanded,name);
             calcPageSize(scope, name === 'context');
         };
-        scope.dropdownClass = name === 'context' ? 'dropup' : 'dropdown';
-        scope.popupPosition = name === 'context' ? 'top' : 'bottom';
+        scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup' : 'dropdown';
+        scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
     }
 
     function clickThumb(item, scope, outParams, callback) {
@@ -39142,16 +39139,12 @@ wwt.controllers.controller('MainController',
 			$scope.propertyItem = item;
 			$scope.propertyItem.isExploreTab = isExploreTab;
 		};
-
-		
-
+        
 		$scope.showProperties = function () {
 			$('.popover-content .close-btn').click();
-			$('#researchMenu').parent().parent().find('.thumb-popover').click();
+			$('.dropdown.open #researchMenu, .dropup.open #researchMenu').closest('.thumbwrap').find('.thumb-popover').click();
 		};
 
-		
-		
 		$scope.setTrackingObj = function(item) {
 			$scope.trackingObj = item;
 			if ($scope.trackingObj === null) {
@@ -39170,16 +39163,12 @@ wwt.controllers.controller('MainController',
 			ctl.clearAnnotations();
 		};
 
-		
-		
-
 		$scope.topExpanded = false;
 		$scope.expandTop = function(flag, panel) {
 		    $scope.topExpanded = flag;
 		    $scope.expandedPanel = panel;
 		}
 
-		
 		$scope.tourFeatures = function () {
 			$scope.loadingTour = true;
 			setTimeout(function() {$('#introStartButton').click();}, 3);
