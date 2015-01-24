@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.3.7
+ * @license AngularJS v1.3.10
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -22,7 +22,7 @@
  * <div doc-module-components="ngTouch"></div>
  *
  */
-     
+
 // define ngTouch module
 /* global -ngTouch */
 var ngTouch = angular.module('ngTouch', []);
