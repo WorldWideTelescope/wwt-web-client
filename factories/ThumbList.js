@@ -9,7 +9,7 @@
     };
 
     var scopes = {};
-
+     
     function init(scope, name) {
         scope.pageCount = 1;
         scope.pageSize = 1;
