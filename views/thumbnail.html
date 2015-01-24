@@ -1,15 +1,14 @@
 ﻿<div ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
-
     <div ng-click="clickThumb(item)"
         ng-context-menu="showMenu"
         index="{{$index}}"
         title="{{item.get_name()}}"
         ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-        <div ng-if="!item.get_isFolder() && popupPosition == 'top' && item.get_name() != 'Up Level'"
+        <div ng-if="!item.get_isFolder() && item.get_name() != 'Up Level'"
              id="menuContainer{{$index}}"
              class="{{!isMobile ? dropdownClass : 'dropup  menu-container'}}">
             <div bs-popover="popover" class="thumb-popover"
-                 data-placement="top{{$index == 0 ? '-left' : ''}}" tabindex="0"
+                 data-placement="{{popupPosition}}{{$index == 0 ? '-left' : ''}}" tabindex="0"
                  data-content-template="views/popovers/property-panel.html"
                  data-container="body">&nbsp;</div>
             <a data-toggle="dropdown" role="button" class="drop-toggle">&nbsp;</a>
@@ -18,8 +17,5 @@
            ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
         <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}"/>
         <label>{{item.get_name()}}</label>
-
-        
     </div>
-
 </div>
