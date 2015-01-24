@@ -150,20 +150,19 @@
 <% if (Client == Clients.Mobile)
    { %>
     
-    <a class="btn" data-bs-popover="popover" tabindex="0"
-        style="position:absolute;top:4px;left:4px;z-index: 1041" 
+    <a  data-bs-popover="popover" tabindex="0"
         localize="Share this place"
         localize-only="title"
         data-content-template="views/popovers/shareplace.html"
-        data-ng-class="searchModal ? 'hide':''"
+        data-ng-class="searchModal ? 'hide':'btn share-button'"
         data-placement="bottom-left"
-        data-ng-hide="trackingObj && trackingObj.get_name && !tourPlaying && lookAt != 'Earth' && lookAt != 'Planet' && lookAt != 'Panorama'"
+        data-ng-hide="showMobileTracking()"
         >
         <i class="fa fa-share-alt"></i>
         <span localize="Share"></span>
     </a>
 
-    <div ng-show="trackingObj && trackingObj.get_name && !tourPlaying && lookAt != 'Earth' && lookAt != 'Planet' && lookAt != 'Panorama'" style="position:absolute;top:3px;left:3px;">
+    <div ng-show="showMobileTracking()" class="tracking-container">
         <div title="{{trackingObj.get_name()}}" class="small"><strong localize="Tracking"></strong> <br/>{{trackingObj.get_name()}}</div>
         <br />
         <a class="btn" data-bs-popover="popover" tabindex="0"
@@ -220,7 +219,7 @@
                         <hr/>
                     </li>
                     
-                    <li style="padding-left:12px;">
+                    <li class="modal-buttons">
                         <a class="btn" ng-repeat="m in modalButtons" ng-click="showModal(m)">
                             <i class="fa {{::m.icon}}"></i>
                             {{::m.text}}
@@ -261,9 +260,9 @@
             localize="Microsoft WorldWide Telescope Logo"
             localize-only="alt"
          />
-        <h3 style="position:relative;top:-2px">
-            <small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
-            World<span style="color:#6ba9e6">Wide Telescope</span>
+        <h3>
+            <small class="text-white">Microsoft<sup>&reg;</sup> Research</small><br />
+            World<span class="brand-blue">Wide Telescope</span>
         </h3>
         <h4 localize="Welcome to the WorldWide Telescope Web Client"></h4>
         <p>
@@ -286,7 +285,7 @@
         </div>
     
         
-        <div class="control" ng-show="lookAt == 'Sky' && trackingObj && !tourPlaying && trackingObj.get_backgroundImageset() != null || trackingObj.get_studyImageset() != null" style="position:absolute;bottom:12px;left:130px;">
+        <div class="control x-fader-mobile" ng-show="displayXFader()">
             <label localize="Image Crossfade"></label>
             <div class="cross-fader">
                 <a class="btn">&nbsp;</a>
@@ -345,7 +344,7 @@
             ng-controller="ExploreController" 
             >
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
-            <div style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" id="exploreList">
+            <div class="ribbon-thumbs" ng-repeat="item in collectionPage" id="exploreList">
                 <ng-include src="'views/thumbnail.html'"></ng-include>
             </div>
             <label class="wwt-pager">
@@ -358,14 +357,14 @@
                 </a>
             </label>
             <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
-                <i class="fa fa-caret-down" style="position:relative;top:-5px;" ng-if="!expanded"></i>
-                <i class="fa fa-caret-up" style="position:relative;top:-5px;" ng-if="expanded"></i>
+                <i class="fa fa-caret-down" ng-if="!expanded"></i>
+                <i class="fa fa-caret-up" ng-if="expanded"></i>
             </a>
         </div>
-        <div ng-switch-when="Guided Tours" style="padding-left:4px" ng-controller="ToursController">
+        <div ng-switch-when="Guided Tours" id="toursPanel" ng-controller="ToursController">
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
 
-            <div style="display: inline-block;vertical-align:top;" ng-repeat="item in tourList">
+            <div class="ribbon-thumbs" ng-repeat="item in tourList">
                 <a ng-if="$index==currentPage * pageSize" id="popTrigger"
                    data-title="{{tour.get_name()}}"
                    bs-popover="popover" data-placement="bottom-left"
@@ -393,13 +392,13 @@
                 <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="currentPage = currentPage == 0 ? currentPage : currentPage - 1">
                     <i class="fa fa-play reverse"></i>
                 </a>
-                {{(currentPage+1)}} <span localize="of"></span> {{pageCount}}
-                <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="currentPage = currentPage == pageCount - 1 ? currentPage : currentPage+1">
+                {{(currentPage + 1)}} <span localize="of"></span> {{pageCount}}
+                <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="currentPage = currentPage == pageCount - 1 ? currentPage : currentPage + 1">
                     <i class="fa fa-play"></i>
                 </a>
             </label>
         </div>
-        <div ng-switch-when="Search" ng-controller="SearchController" class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}">
+        <div ng-switch-when="Search" ng-controller="SearchController" id="searchPanel" class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}">
             <div style="margin:-4px 0 1px;">
                 <div style="padding:4px 100px 0 4px;" class="iblock input-group">
                     <input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:200px" />
@@ -429,7 +428,7 @@
                 </div>
             </div>
             <div class="search-results" style="margin-top: 2px;">
-                <div style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage">
+                <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
                     <ng-include src="'views/thumbnail.html'"></ng-include>
                 </div>
             </div>
@@ -442,9 +441,9 @@
                     <i class="fa fa-play"></i>
                 </a>
             </label>
-            <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()" style="bottom:-4px">
-                <i class="fa fa-caret-down" style="position:relative;top:-5px;" ng-if="!expanded"></i>
-                <i class="fa fa-caret-up" style="position:relative;top:-5px;" ng-if="expanded"></i>
+            <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
+                <i class="fa fa-caret-down" ng-if="!expanded"></i>
+                <i class="fa fa-caret-up" ng-if="expanded"></i>
             </a>
         </div>
         <div ng-switch-when="View" data-ng-controller="ViewController">

@@ -1,0 +1,1 @@
+﻿path=%PATH%;%APPDATA%\npm

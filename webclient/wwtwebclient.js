@@ -36318,6 +36318,7 @@ wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
         }
     };
 }]);
+
 wwt.app.factory('AppState', function() {
 	var api = {
 		set: setKey,
@@ -36595,6 +36596,7 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         }; 
         scope.showMenu = function (i) {
             var item = scope.collectionPage[i];
+            item.contextMenuEvent = true;
             $('.popover-content .close-btn').click();
             if (!item.get_isFolder()) {
                 var menuContainer = $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i);
@@ -36604,8 +36606,13 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
                 menuContainer.append($('#researchMenu'));
                 setTimeout(function () {
                     $('.popover-content .close-btn').click();
-                    menuContainer.find('#researchMenu').addClass('open');
-                    menuContainer.find('.yellow-arrow').click();
+                    menuContainer.find('#researchMenu')
+                        .addClass('open')
+                        .off('click')
+                        .on('click', function (event) {
+                            event.stopPropagation();
+                        });
+                    menuContainer.find('.drop-toggle').click();
                     $timeout(function () {
                         $('.dropdown-backdrop').off('contextmenu');
                         $('.dropdown-backdrop').on('contextmenu', function (event) {
@@ -36613,6 +36620,7 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
                             event.preventDefault();
                         });
                         scope.setMenuContextItem(item, true);
+                        item.contextMenuEvent = false;
                     }, 10);
 
                 }, 10);
@@ -36624,11 +36632,14 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
             scope.expandTop(scope.expanded,name);
             calcPageSize(scope, name === 'context');
         };
-        scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup' : 'dropdown';
+        scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup menu-container' : 'dropdown menu-container';
         scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
     }
 
     function clickThumb(item, scope, outParams, callback) {
+        if (item.contextMenuEvent) {
+            return outParams;
+        }
         if (!outParams) {
             outParams = {}; 
         }
@@ -36640,8 +36651,8 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
             outParams.depth--;
             outParams.breadCrumb.pop();
             scope.breadCrumb = outParams.breadCrumb;
-            cache.pop();
-            scope.collection = cache[cache.length - 1];
+            outParams.cache.pop();
+            scope.collection = outParams.cache[outParams.cache.length - 1];
             calcPageSize(scope, false);
             return outParams;
         }
@@ -36727,7 +36738,7 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         scope.pageSize = util.isMobile ? 99999 : Math.floor(winWid / tnWid);
 
         if (scope.expanded) {
-            scope.pageSize *= 4;
+            scope.pageSize *= 5;
         }
         var listLength = list ? list.length : 2;
         $timeout(function () {
@@ -39151,8 +39162,23 @@ wwt.controllers.controller('MainController',
 				hashManager.removeHashVal('place', true);
 			}
 		};
+	    $scope.showMobileTracking = function() {
+	        return $scope.trackingObj &&
+	            $scope.trackingObj.get_name &&
+	            !$scope.tourPlaying &&
+	            $scope.lookAt !== 'Earth' &&
+	            $scope.lookAt !== 'Planet' &&
+	            $scope.lookAt !== 'Panorama';
+	    };
 
-		$scope.gotoConstellation= function(c) {
+	    $scope.displayXFader = function () {
+	        return $scope.lookAt === 'Sky' &&
+	            $scope.trackingObj &&
+                !$scope.tourPlaying &&
+                ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null);
+	    }
+
+	    $scope.gotoConstellation = function(c) {
 			$rootScope.singleton.gotoTarget(wwtlib.Constellations.constellationCentroids[c], false, false, true);
 		}
 
@@ -39202,12 +39228,12 @@ wwt.controllers.controller('MainController',
 		$scope.isLoading = true;
 		var time = new Date();
 		$scope.fovClass = function () {
-			return $scope.lookAt == 'Planet' || $scope.lookAt == 'Panorama' || $scope.lookAt == 'Earth' ? 'hide' :
-				$scope.lookAt == 'SolarSystem' ? 'solar-system-mode fov-panel' :
+			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'hide' :
+				$scope.lookAt === 'SolarSystem' ? 'solar-system-mode fov-panel' :
 				'fov-panel';
 		}
 		$scope.contextPanelClass = function () {
-			return $scope.lookAt == 'Planet' || $scope.lookAt == 'Panorama' || $scope.lookAt == 'Earth' ? 'context-panel compressed' : 'context-panel';
+			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
