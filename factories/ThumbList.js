@@ -27,6 +27,7 @@
         }; 
         scope.showMenu = function (i) {
             var item = scope.collectionPage[i];
+            item.contextMenuEvent = true;
             $('.popover-content .close-btn').click();
             if (!item.get_isFolder()) {
                 var menuContainer = $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i);
@@ -36,8 +37,13 @@
                 menuContainer.append($('#researchMenu'));
                 setTimeout(function () {
                     $('.popover-content .close-btn').click();
-                    menuContainer.find('#researchMenu').addClass('open');
-                    menuContainer.find('.yellow-arrow').click();
+                    menuContainer.find('#researchMenu')
+                        .addClass('open')
+                        .off('click')
+                        .on('click', function (event) {
+                            event.stopPropagation();
+                        });
+                    menuContainer.find('.drop-toggle').click();
                     $timeout(function () {
                         $('.dropdown-backdrop').off('contextmenu');
                         $('.dropdown-backdrop').on('contextmenu', function (event) {
@@ -45,6 +51,7 @@
                             event.preventDefault();
                         });
                         scope.setMenuContextItem(item, true);
+                        item.contextMenuEvent = false;
                     }, 10);
 
                 }, 10);
@@ -56,11 +63,14 @@
             scope.expandTop(scope.expanded,name);
             calcPageSize(scope, name === 'context');
         };
-        scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup' : 'dropdown';
+        scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup menu-container' : 'dropdown menu-container';
         scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
     }
 
     function clickThumb(item, scope, outParams, callback) {
+        if (item.contextMenuEvent) {
+            return outParams;
+        }
         if (!outParams) {
             outParams = {}; 
         }
@@ -72,8 +82,8 @@
             outParams.depth--;
             outParams.breadCrumb.pop();
             scope.breadCrumb = outParams.breadCrumb;
-            cache.pop();
-            scope.collection = cache[cache.length - 1];
+            outParams.cache.pop();
+            scope.collection = outParams.cache[outParams.cache.length - 1];
             calcPageSize(scope, false);
             return outParams;
         }
@@ -159,7 +169,7 @@
         scope.pageSize = util.isMobile ? 99999 : Math.floor(winWid / tnWid);
 
         if (scope.expanded) {
-            scope.pageSize *= 4;
+            scope.pageSize *= 5;
         }
         var listLength = list ? list.length : 2;
         $timeout(function () {

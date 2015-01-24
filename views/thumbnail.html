@@ -1,26 +1,32 @@
-﻿<span ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
-    <span ng-if="popupPosition == 'top'" bs-popover="popover" class="thumb-popover" style="height:0;width:100%;display:block"
-          data-placement="top{{$index == 0 ? '-left' : ''}}" tabindex="0"
-          data-content-template="views/popovers/property-panel.html"
-          data-container="body">&nbsp;</span>
-    <a ng-click="clickThumb(item)"
-        ng-context-menu="showMenu"
-        index="{{$index}}"
-        title="{{item.get_name()}}"
-        ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+﻿<div ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
+
+    <div ng-click="clickThumb(item)"
+       ng-context-menu="showMenu"
+       index="{{$index}}"
+       title="{{item.get_name()}}"
+       ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+        <div ng-if="!item.get_isFolder() && popupPosition == 'top'"
+             id="menuContainer{{$index}}"
+             class="{{!isMobile ? dropdownClass : 'dropup  menu-container'}}">
+            <div bs-popover="popover" class="thumb-popover"
+                 data-placement="top{{$index == 0 ? '-left' : ''}}" tabindex="0"
+                 data-content-template="views/popovers/property-panel.html"
+                 data-container="body">&nbsp;</div>
+            <a data-toggle="dropdown" role="button" class="drop-toggle">&nbsp;</a>
+        </div>
         <i class="fa fa-image"
            ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
-        <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+        <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}"/>
         <label>{{item.get_name()}}</label>
-    </a>
-    <div ng-if="!item.get_isFolder()" class="{{!isMobile ? dropdownClass : 'dropdown'}}" id="menuContainer{{$index}}">
-        <span ng-if="popupPosition != 'top'" bs-popover="popover" class="thumb-popover"
-              data-placement="bottom{{$index == 0 || (isMobile && $index % 3 == 0) ? '-left' : $index == collectionPage.length - 1 || (isMobile && $index % 3 == 2) ? '-right' : ''}}"
-              tabindex="0" style="height: 0; width: 100%; display: block"
-              data-content-template="views/popovers/property-panel.html"
-              data-container="body">&nbsp;</span>
-        <a data-toggle="dropdown" role="button" class="yellow-arrow" style="visibility: hidden; height: 0.1px; position: relative; top: -3px;">
-            <img src='Images/context-menu-arrow.png' class="menu" />
-        </a>
+
+        <div ng-if="!item.get_isFolder() && popupPosition != 'top'" class="{{!isMobile ? dropdownClass : 'dropdown  menu-container'}}" id="menuContainer{{$index}}">
+            <div ng-if="popupPosition != 'top'" bs-popover="popover" class="thumb-popover"
+                 data-placement="bottom{{$index == 0 || (isMobile && $index % 3 == 0) ? '-left' : $index == collectionPage.length - 1 || (isMobile && $index % 3 == 2) ? '-right' : ''}}"
+                 tabindex="0"
+                 data-content-template="views/popovers/property-panel.html"
+                 data-container="body">&nbsp;</div>
+            <a data-toggle="dropdown" role="button" class="drop-toggle">&nbsp;</a>
+        </div>
     </div>
-</span>
+
+</div>

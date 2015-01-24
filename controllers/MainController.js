@@ -772,8 +772,23 @@
 				hashManager.removeHashVal('place', true);
 			}
 		};
+	    $scope.showMobileTracking = function() {
+	        return $scope.trackingObj &&
+	            $scope.trackingObj.get_name &&
+	            !$scope.tourPlaying &&
+	            $scope.lookAt !== 'Earth' &&
+	            $scope.lookAt !== 'Planet' &&
+	            $scope.lookAt !== 'Panorama';
+	    };
 
-		$scope.gotoConstellation= function(c) {
+	    $scope.displayXFader = function () {
+	        return $scope.lookAt === 'Sky' &&
+	            $scope.trackingObj &&
+                !$scope.tourPlaying &&
+                ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null);
+	    }
+
+	    $scope.gotoConstellation = function(c) {
 			$rootScope.singleton.gotoTarget(wwtlib.Constellations.constellationCentroids[c], false, false, true);
 		}
 
@@ -823,12 +838,12 @@
 		$scope.isLoading = true;
 		var time = new Date();
 		$scope.fovClass = function () {
-			return $scope.lookAt == 'Planet' || $scope.lookAt == 'Panorama' || $scope.lookAt == 'Earth' ? 'hide' :
-				$scope.lookAt == 'SolarSystem' ? 'solar-system-mode fov-panel' :
+			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'hide' :
+				$scope.lookAt === 'SolarSystem' ? 'solar-system-mode fov-panel' :
 				'fov-panel';
 		}
 		$scope.contextPanelClass = function () {
-			return $scope.lookAt == 'Planet' || $scope.lookAt == 'Panorama' || $scope.lookAt == 'Earth' ? 'context-panel compressed' : 'context-panel';
+			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
