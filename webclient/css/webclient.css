@@ -7083,6 +7083,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   display: inline-block;
   vertical-align: top;
 }
+.wwt-webclient-wrapper div.top-panel .explore-thumbs {
+  margin-top: 6px;
+}
 .wwt-webclient-wrapper div.top-panel a.btn.tn-expander {
   position: absolute;
   margin-bottom: -13px;

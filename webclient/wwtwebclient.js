@@ -36598,7 +36598,7 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
             var item = scope.collectionPage[i];
             item.contextMenuEvent = true;
             $('.popover-content .close-btn').click();
-            if (!item.get_isFolder()) {
+            if (!item.get_isFolder() && item.get_name() !== 'Up Level') {
                 var menuContainer = $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i);
                 if (util.isMobile) {
                     menuContainer = $('#' + name + 'Container #menuContainer' + i);
