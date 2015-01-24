@@ -18,7 +18,6 @@
         scope.preventClickBubble = function (event) {
             event.stopImmediatePropagation();
         };
-
         scope.goBack = function () {
             goBack(scope);
         };
