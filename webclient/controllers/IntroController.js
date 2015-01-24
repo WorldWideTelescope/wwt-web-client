@@ -85,9 +85,9 @@
 				intro: loc('Choose from different image collections, such as this one on “Hubble Studies.”'),
 				position: 'bottom',
 				before: function () {
-					$($('#topPanel a.thumbnail')[5]).addClass('hover');
+					$($('#topPanel .thumbnail')[5]).addClass('hover');
 					setTimeout(function () {
-						$($('#topPanel a.thumbnail')[5]).click();
+						$($('#topPanel .thumbnail')[5]).click();
 					}, 1);
 				},
 				enableMs:2000
@@ -103,9 +103,9 @@
 				intro: loc('Choose an item, such as the “Sombrero Galaxy.”  This moves the view to that location and overlays a foreground image from the Hubble Space Telescope on top of the all-sky background.'),
 				position: 'bottom',
 				before: function () {
-					$($('#topPanel a.thumbnail')[12]).addClass('hover');
+					$($('#topPanel .thumbnail')[12]).addClass('hover');
 					setTimeout(function() {
-						$($('#topPanel a.thumbnail')[12]).click();
+						$($('#topPanel .thumbnail')[12]).click();
 					}, 800);
 				},
 				enableMs: 8000
@@ -121,14 +121,14 @@
 				intro: 'Guided tours are grouped by category',
 				position: 'bottom',
 				before: function () {
-					$($('#topPanel a.thumbnail')[2]).addClass('hover');
+					$($('#topPanel .thumbnail')[2]).addClass('hover');
 				}
 			}, {
 				element: $('#topPanel')[0],
 				intro: loc('You can play a tour by clicking on the thumbnail.   Note, that most tours have music and narration so turn on your speakers! Please wait until this feature tour is complete before clicking a guided tour.'),
 				position: 'bottom',
 				before: function () {
-					$($('#topPanel a.thumbnail')[2]).removeClass('hover').click();
+					$($('#topPanel .thumbnail')[2]).removeClass('hover').click();
 				}
 			}, {
 				element: $('#rbnSearch').parent().parent()[0],
@@ -158,7 +158,7 @@
 						$('#txtSearch').trigger(e);
 					}, 2500);
 					setTimeout(function () {
-						$($('#topPanel a.thumbnail')[2]).addClass('hover').click();
+						$($('#topPanel .thumbnail')[2]).addClass('hover').click();
 					}, 3500);
 				},
 				enableMs: 8000
@@ -340,7 +340,7 @@
 				intro: loc('You can click on any thumbnail to move the main view to that location.'),
 				position: 'top',
 				before: function () {
-					$($('.context-panel a.thumbnail')[4]).addClass('hover').click();
+					$($('.context-panel .thumbnail')[4]).addClass('hover').click();
 				}
 			}, {
 				element: $('.layer-manager')[0],

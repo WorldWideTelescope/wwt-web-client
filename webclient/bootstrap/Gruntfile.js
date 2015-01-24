@@ -109,10 +109,7 @@ module.exports = function(grunt) {
             wwtlib: {
                 src: ['../sdk/wwtlib.js'],         
                 dest: '../sdk/wwtlib.js',          
-                replacements: [{
-                    from: '"use strict";',                   
-                    to: ''
-                }, {
+                replacements: [ {
                     from: "define('wwtlib', ['ss'], function(ss) {",      
                     to: 'window.wwtlib = function(){'
                 }, {
