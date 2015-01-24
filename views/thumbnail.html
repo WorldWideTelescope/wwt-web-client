@@ -1,11 +1,11 @@
 ﻿<div ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
 
     <div ng-click="clickThumb(item)"
-       ng-context-menu="showMenu"
-       index="{{$index}}"
-       title="{{item.get_name()}}"
-       ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-        <div ng-if="!item.get_isFolder() && popupPosition == 'top'"
+        ng-context-menu="showMenu"
+        index="{{$index}}"
+        title="{{item.get_name()}}"
+        ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
+        <div ng-if="!item.get_isFolder() && popupPosition == 'top' && item.get_name() != 'Up Level'"
              id="menuContainer{{$index}}"
              class="{{!isMobile ? dropdownClass : 'dropup  menu-container'}}">
             <div bs-popover="popover" class="thumb-popover"
@@ -19,14 +19,7 @@
         <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}"/>
         <label>{{item.get_name()}}</label>
 
-        <div ng-if="!item.get_isFolder() && popupPosition != 'top'" class="{{!isMobile ? dropdownClass : 'dropdown  menu-container'}}" id="menuContainer{{$index}}">
-            <div ng-if="popupPosition != 'top'" bs-popover="popover" class="thumb-popover"
-                 data-placement="bottom{{$index == 0 || (isMobile && $index % 3 == 0) ? '-left' : $index == collectionPage.length - 1 || (isMobile && $index % 3 == 2) ? '-right' : ''}}"
-                 tabindex="0"
-                 data-content-template="views/popovers/property-panel.html"
-                 data-container="body">&nbsp;</div>
-            <a data-toggle="dropdown" role="button" class="drop-toggle">&nbsp;</a>
-        </div>
+        
     </div>
 
 </div>

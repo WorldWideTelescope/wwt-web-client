@@ -344,8 +344,11 @@
             ng-controller="ExploreController" 
             >
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
-            <div class="ribbon-thumbs" ng-repeat="item in collectionPage" id="exploreList">
-                <ng-include src="'views/thumbnail.html'"></ng-include>
+            <div class="explore-thumbs">
+                <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
+                    <ng-include src="'views/thumbnail.html'"></ng-include>
+                </div>
+
             </div>
             <label class="wwt-pager">
                 <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
