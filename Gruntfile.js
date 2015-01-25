@@ -1,12 +1,12 @@
 /**!
-Gruntfile to perform wwt webclient pre-deploy tasks.
-We compile webclient.less with bootstrap.less and 
-concat/minify all scripts together here.
+Gruntfile to perform wwt webclient less compilation,
+script concatenation/minification, and component updates
+(using grunt bower:install)
 
-Bootstrap upgrade note: 
-To upgrade bootstrap, copy the 4-color gradient out of the 
-mixins/gradients.less into the latest version.
-webclient.less depends on that file.
+Once you have run npm install and npm update
+and bower is installed (npm install -g bower)
+run grunt watch
+
 **/
 
 module.exports = function(grunt) {
@@ -149,7 +149,7 @@ module.exports = function(grunt) {
                     sourceMapURL: 'webclient.css.map',
                     sourceMapFilename: 'css/webclient.css.map'
                 },
-                src: 'css/bootstrap.less',
+                src: 'css/webclient.less',
                 dest: 'css/webclient.css'
             }
         },
@@ -182,6 +182,17 @@ module.exports = function(grunt) {
             minifyCore: {
                 src: 'css/webclient.css',
                 dest: 'css/webclient.min.css'
+            }
+        },
+        csscomb: {
+            options: {
+                config: 'bootstrap/less/.csscomb.json'
+            },
+            dist: {
+                expand: true,
+                cwd: 'css/',
+                src: ['*.css', '!*.min.css'],
+                dest: 'css/'
             }
         },
         copy: {
@@ -219,22 +230,27 @@ module.exports = function(grunt) {
                         dest: 'ext/',
                         expand: true,
                         flatten: true,
-                        src: 'bower_components/angular-animate/angular-animate.js',
+                        src: 'bower_components/angular-animate/angular-animate.js'
                     },{
                         dest: 'ext/',
                         expand: true,
                         flatten: true,
-                        src: 'bower_components/angular-cookies/angular-cookies.js',
+                        src: 'bower_components/angular-cookies/angular-cookies.js'
                     }, {
                         dest: 'ext/',
                         expand: true,
                         flatten: true,
-                        src: 'bower_components/angular-strap/dist/angular-strap.js',
+                        src: 'bower_components/angular-strap/dist/angular-strap.js'
                     }, {
                         dest: 'ext/',
                         expand: true,
                         flatten: true,
                         src: 'bower_components/angular-strap/dist/angular-strap.tpl.js'
+                    }, {
+                        cwd: 'bower_components/bootstrap/less/',
+                        src: '**/*',
+                        dest: 'bootstrap/less/',
+                        expand: true
                     }
                 ]
             },
@@ -343,6 +359,16 @@ module.exports = function(grunt) {
                     'app.js'],
                 tasks: ['dist-js', 'deploy']
             },
+            vendor: { // will be triggered by 'bower install' when it finds updates
+                files: [
+                    'bower_components/jquery/dist/jquery.js',
+                    'bower_components/bootstrap/dist/js/bootstrap.js',
+                    'bower_components/angular/angular.js',
+                    'bower_components/angular-strap/dist/angular-strap.js'
+                ],
+                tasks: ['vendor']
+            },
+
             html: {
                 files: [
                     'views/**/*.html',
@@ -355,11 +381,18 @@ module.exports = function(grunt) {
                 tasks: ['dist-css', 'deploy']
             }
         },
-        exec: {
-            npmUpdate: {
-                command: 'npm update'
+        bower: {
+            install: {
+                options: {
+                    targetDir:'bower_components',
+                    install: true,
+                    verbose: true,
+                    cleanTargetDir: false,
+                    cleanBowerDir: false,
+                    bowerOptions: {}
+                }
             }
-        } 
+        }
     });
 
 
@@ -375,10 +408,11 @@ module.exports = function(grunt) {
     // Minify the generated search data (rare - internal only)
     grunt.registerTask('dist-searchdata', ['uglify:searchData']);
 
-    // CSS 
-    grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', 'cssmin:minifyCore']);
+    // CSS  (csscomb seems like too much, so commented out for now)
+    grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', /*'csscomb:dist',*/'cssmin:minifyCore']);
 
-    grunt.registerTask('vendor', ['copy:vendor']);
+    // Vendor JS libs
+    grunt.registerTask('vendor', ['copy:vendor','dist-js','dist-css','deploy']);
 
     // Deploy to wwt web site (internal only)
     grunt.registerTask('deploy', ['copy:webclient']);
