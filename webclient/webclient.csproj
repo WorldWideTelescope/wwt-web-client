@@ -73,9 +73,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.js" />
-    <Content Include="bootstrap\.gitattributes" />
-    <Content Include="bootstrap\.gitignore" />
-    <Content Include="bootstrap\Gruntfile.js" />
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
+    <Content Include="ext\jquery.js" />
+    <Content Include="Gruntfile.js" />
     <Content Include="bootstrap\less\.csscomb.json" />
     <Content Include="bootstrap\less\.csslintrc" />
     <Content Include="bootstrap\less\alerts.less" />
@@ -146,8 +147,7 @@
     <Content Include="bootstrap\less\type.less" />
     <Content Include="bootstrap\less\utilities.less" />
     <Content Include="bootstrap\less\wells.less" />
-    <Content Include="bootstrap\.editorconfig" />
-    <Content Include="bootstrap\package.json" />
+    <Content Include=".editorconfig" />
     <Content Include="clientbin\WWTSL.xap" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\IntroController.js" />
@@ -161,7 +161,6 @@
     <Content Include="controllers\tabs\SearchController.js" />
     <Content Include="controllers\tabs\SettingsController.js" />
     <Content Include="controllers\modals\ShareController.js" />
-    <Content Include="controllers\ThumbnailController.js" />
     <Content Include="controllers\tabs\ToursController.js" />
     <Content Include="controllers\tabs\ViewController.js" />
     <Content Include="controls\move.js" />
@@ -196,7 +195,6 @@
     <Content Include="ext\angular-touch.js" />
     <Content Include="ext\angular.js" />
     <Content Include="ext\bootstrap.js" />
-    <Content Include="ext\bootstrap.min.js" />
     <Content Include="ext\intro.js" />
     <Content Include="ext\intro.min.js" />
     <Content Include="ext\introjs-rtl.css" />
@@ -277,6 +275,7 @@
     <Content Include="Images\venus.jpg" />
     <Content Include="Images\wwtlogo.png" />
     <Content Include="login.aspx" />
+    <Content Include="package.json" />
     <Content Include="sdk\mscorlib.dll" />
     <Content Include="sdk\mscorlib.xml" />
     <Content Include="sdk\Script.Web.dll" />
@@ -338,7 +337,8 @@
     <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
     <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="packages.config" />
-    <Content Include="bootstrap\ensurenpm.cmd" />
+    <Content Include="ensurenpm.cmd" />
+    <Content Include="bower.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

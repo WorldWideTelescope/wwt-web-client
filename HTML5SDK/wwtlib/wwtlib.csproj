@@ -30,6 +30,8 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
     <DocumentationFile>bin\Release\wwtlib.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
