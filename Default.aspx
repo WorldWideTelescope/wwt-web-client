@@ -15,7 +15,7 @@
     <link rel="icon" href="favicon.ico"/>
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
-    <link href=css/webclient.css?v=<%= ResourcesVersion%> rel="stylesheet" />
+    <link href=css/webclient.min.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel="stylesheet"/>
     <link href=ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
@@ -31,13 +31,13 @@
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
         }
     </style>
-    <%--<script data-main="sdk/sdkwrapper" src="sdk/require.js"></script>
-    <script type="text/javascript" src="<%=Debug?"":".min" %>.js"></script>--%>
+    
     <script type="text/javascript" src="<%=SDKLocation %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
-    <script src="ext/bootstrap<%= Debug ? "" : ".min"%>.js"></script>
+    
     <% if (Debug || DebugChrome)
        { %>
+    <script src="<%= ResourcesLocation %>/ext/jquery.js?v=<%= ResourcesVersion%>""></script>
+    <script src="<%= ResourcesLocation %>/ext/bootstrap.js?v=<%= ResourcesVersion%>""></script>
     <script src="<%= ResourcesLocation %>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/ext/angular-touch.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>

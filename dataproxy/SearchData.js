@@ -8,7 +8,7 @@
 		var data,
 			searchIndex = {},
 			initPromise,
-		constellations = [];
+		    constellations = [];
 
 		function getData() {
 			var deferred = $q.defer();
@@ -122,7 +122,7 @@
 			var firstChar = s.charAt(0).toLowerCase();
 			if (firstChar === "'") firstChar = s.charAt(1).toLowerCase();
 			if (searchIndex[firstChar]) {
-				if (searchIndex[firstChar][searchIndex[firstChar].length - 1] != place) {
+				if (searchIndex[firstChar][searchIndex[firstChar].length - 1] !== place) {
 					searchIndex[firstChar].push(place);
 					wwt.searchDataIndexed = searchIndex;
 				}

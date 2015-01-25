@@ -7,14 +7,12 @@
         goFwd: goFwd,
         goBack: goBack
     };
-
-    var scopes = {};
-     
+  
     function init(scope, name) {
-        scope.pageCount = 1;
+        scope.pageCount = 1; 
         scope.pageSize = 1;
         scope.currentPage = 0;
-        scopes[name] = scope;
+        
         scope.preventClickBubble = function (event) {
             event.stopImmediatePropagation();
         };
@@ -33,7 +31,7 @@
                 if (util.isMobile) {
                     menuContainer = $('#' + name + 'Container #menuContainer' + i);
                 }
-                menuContainer.append($('#researchMenu'));
+                menuContainer.append($('#researchMenu')); 
                 setTimeout(function () {
                     $('.popover-content .close-btn').click();
                     menuContainer.find('#researchMenu')
