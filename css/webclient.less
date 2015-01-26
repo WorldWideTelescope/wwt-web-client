@@ -704,8 +704,37 @@ body.wwt-webclient-wrapper.mobile{
                 top:-5px;
             }
 		}
-        #searchPanel a.btn.tn-expander{
-            bottom:-4px;
+        #searchPanel {
+            a.btn.tn-expander{
+                bottom:-4px;
+            }
+            .search-controls{
+                margin:-4px 0 1px;
+                .input-group{
+                    padding:4px 100px 0 4px;
+                    .fa-search{
+                        left:-32px;
+                        display:inline-block;
+                        overflow:hidden;
+                        height:16px;
+                        top:3px;
+                        .rel();
+                    }
+                    input#txtSearch{
+                        width:200px;
+                    }
+                }
+                .control-group{
+                    padding:4px 0 0 4px;
+                    display: inline-block;
+                    input[type=text]{
+                        width:100px;
+                    }
+                }
+            }
+            .search-results{
+                margin-top:6px;
+            }
         }
         #toursPanel{
             padding-left:4px;
@@ -746,6 +775,9 @@ body.wwt-webclient-wrapper.mobile{
 				}
 		}
 	}
+    fieldset.bottom-padded{
+        padding-bottom: 16px;
+    }
 
 	.layer-manager-toggle {
 		.iblock();
@@ -973,6 +1005,7 @@ body.wwt-webclient-wrapper.mobile{
 	}
 
 	fieldset.radio-buttons {
+        padding-bottom:3px;
 		h5 {
 			margin: 0 0 4px 0;
 		}

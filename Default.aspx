@@ -19,7 +19,7 @@
     <link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel="stylesheet"/>
     <link href=ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
-    <style>
+    <style> 
         html, body.fs-player, iframe {
             height: 100%;
             width: 100%;
@@ -388,7 +388,7 @@
 
                 </span>
                 <span ng-if="item.get_thumbnailUrl().length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
-                    <img ng-src="{{item.get_thumbnailUrl()}}" style="position:absolute;top:-9999px" />
+                    <img ng-src="{{item.get_thumbnailUrl()}}" class="offscreen" />
                 </span>
             </div>
             <label class="wwt-pager">
@@ -402,12 +402,12 @@
             </label>
         </div>
         <div ng-switch-when="Search" ng-controller="SearchController" id="searchPanel" class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}">
-            <div style="margin:-4px 0 1px;">
-                <div style="padding:4px 100px 0 4px;" class="iblock input-group">
-                    <input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:200px" />
-                    <span class="fa fa-search form-control-feedback rel" style="left:-32px;display:inline-block;overflow:hidden;height:16px;top:3px"></span>
+            <div class="search-controls">
+                <div class="iblock input-group">
+                    <input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" />
+                    <span class="fa fa-search form-control-feedback"></span>
                 </div>
-                <div style="padding:4px 0 0 4px;display: inline-block">
+                <div class="control-group">
                     <div class="select">
                         <select ng-model="SearchType">
                             <option value="J2000" localize="J2000"></option>
@@ -420,17 +420,17 @@
                     &nbsp;
                     <label>
                         <span localize="RA"></span>
-                        <input type="text" style="width:100px" ng-model="goto.RA" />
+                        <input type="text" ng-model="goto.RA" />
                     </label>
 
                     <label>
                         <span localize="Dec"></span>
-                        <input type="text" style="width:100px" ng-model="goto.Dec" />
+                        <input type="text" ng-model="goto.Dec" />
                     </label>
                     <a class="btn" ng-click="gotoCoord()" localize="Go"></a>
                 </div>
             </div>
-            <div class="search-results" style="margin-top: 2px;">
+            <div class="search-results">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
                     <ng-include src="'views/thumbnail.html'"></ng-include>
                 </div>
@@ -563,7 +563,7 @@
 
             </fieldset>
 
-            <fieldset style="padding-bottom: 16px;">
+            <fieldset class="bottom-padded">
 
                 <label localize="Preferred Client"></label><br />
                 <select ng-change="setClientPref()" ng-model="preferredClient" ng-options="c.code as c.label for c in availableClients"></select>
@@ -588,7 +588,7 @@
                     </a>
                 </div>
             </fieldset>
-            <fieldset style="padding-bottom: 16px;">
+            <fieldset class="bottom-padded">
                 <label localize="Select Your Language"></label><br />
                 <select ng-change="setLanguageCode(selectedLanguage)" ng-model="selectedLanguage" ng-options="l.code as l.label for l in availableLanguages"></select>
             </fieldset>
@@ -599,7 +599,7 @@
             ng-switch-when="ADS"
             ng-controller="ADSController" 
             >
-            <fieldset class="radio-buttons" style="padding-bottom:3px;">
+            <fieldset class="radio-buttons">
                 <div class="iblock">
                     <h5 localize="Heatmap Options - Objects"></h5>
                     <div class="iblock">

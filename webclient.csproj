@@ -331,6 +331,7 @@
     <Content Include="bower.json" />
     <Content Include="bootstrap\less\variables.less" />
     <Content Include="bootstrap\less\bootstrap.less" />
+    <Content Include="adsass.wtml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
