@@ -60,9 +60,9 @@
                 name: 'Galaxy_512'
             }
         ];
-        $scope.initAds = function() {
+        $scope.initAds = function () {
             wwt.wc.add_collectionLoaded(defaultLayers);
-            //wwt.wc.loadImageCollection('/webclient/adsass.wtml');
+            wwt.wc.loadImageCollection('adsass.wtml');
             var bar = $('.year-slider a.btn');
             var ys = new wwt.Move({
                 el: bar,
@@ -125,7 +125,7 @@
             wwt.wc.setForegroundImageByName(layer);
 
             $('#facet-list a').each(function (i, o) {
-                if ($(o).attr('href') == layer) {
+                if ($(o).attr('href') === layer) {
                     o.click();
                     $('#foreground-lbl').text($(o).text());
                     return;
@@ -146,8 +146,6 @@
                 
             },1300);
         }
-
         
-
     }
 ]);

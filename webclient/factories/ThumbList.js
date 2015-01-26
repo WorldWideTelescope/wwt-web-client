@@ -42,11 +42,13 @@
                         });
                     menuContainer.find('.drop-toggle').click();
                     $timeout(function () {
-                        $('.dropdown-backdrop').off('contextmenu');
-                        $('.dropdown-backdrop').on('contextmenu', function (event) {
-                            $(this).click();
-                            event.preventDefault();
-                        });
+                        if (!util.isMobile) {
+                            $('.dropdown-backdrop').off('contextmenu');
+                            $('.dropdown-backdrop').on('contextmenu', function(event) {
+                                $(this).click();
+                                event.preventDefault();
+                            });
+                        }
                         scope.setMenuContextItem(item, true);
                         item.contextMenuEvent = false;
                     }, 10);
@@ -55,10 +57,11 @@
             }
         };
         scope.expandThumbnails = function (flag) {
+            $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             scope.expanded = flag != undefined ? flag : !scope.expanded;
             scope.expandTop(scope.expanded,name);
-            calcPageSize(scope, name === 'context');
+            calcPageSize(scope, name === 'context'); 
         };
         scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup menu-container' : 'dropdown menu-container';
         scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
@@ -75,6 +78,7 @@
         scope.setActiveItem(item);
         wwt.wc.clearAnnotations();
         if (item.get_name() === 'Up Level') {
+            $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             outParams.depth--;
             outParams.breadCrumb.pop();
@@ -86,6 +90,7 @@
         }
 
         if (item.get_isFolder()) {
+            $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             outParams.depth++;
             outParams.breadCrumb.push(item.get_name());

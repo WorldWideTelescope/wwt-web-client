@@ -48176,11 +48176,13 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
                         });
                     menuContainer.find('.drop-toggle').click();
                     $timeout(function () {
-                        $('.dropdown-backdrop').off('contextmenu');
-                        $('.dropdown-backdrop').on('contextmenu', function (event) {
-                            $(this).click();
-                            event.preventDefault();
-                        });
+                        if (!util.isMobile) {
+                            $('.dropdown-backdrop').off('contextmenu');
+                            $('.dropdown-backdrop').on('contextmenu', function(event) {
+                                $(this).click();
+                                event.preventDefault();
+                            });
+                        }
                         scope.setMenuContextItem(item, true);
                         item.contextMenuEvent = false;
                     }, 10);
@@ -48189,10 +48191,11 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
             }
         };
         scope.expandThumbnails = function (flag) {
+            $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             scope.expanded = flag != undefined ? flag : !scope.expanded;
             scope.expandTop(scope.expanded,name);
-            calcPageSize(scope, name === 'context');
+            calcPageSize(scope, name === 'context'); 
         };
         scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup menu-container' : 'dropdown menu-container';
         scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
@@ -48209,6 +48212,7 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         scope.setActiveItem(item);
         wwt.wc.clearAnnotations();
         if (item.get_name() === 'Up Level') {
+            $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             outParams.depth--;
             outParams.breadCrumb.pop();
@@ -48220,6 +48224,7 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         }
 
         if (item.get_isFolder()) {
+            $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             outParams.depth++;
             outParams.breadCrumb.push(item.get_name());
@@ -51610,9 +51615,9 @@ wwt.controllers.controller('ADSController',
                 name: 'Galaxy_512'
             }
         ];
-        $scope.initAds = function() {
+        $scope.initAds = function () {
             wwt.wc.add_collectionLoaded(defaultLayers);
-            //wwt.wc.loadImageCollection('/webclient/adsass.wtml');
+            wwt.wc.loadImageCollection('adsass.wtml');
             var bar = $('.year-slider a.btn');
             var ys = new wwt.Move({
                 el: bar,
@@ -51675,7 +51680,7 @@ wwt.controllers.controller('ADSController',
             wwt.wc.setForegroundImageByName(layer);
 
             $('#facet-list a').each(function (i, o) {
-                if ($(o).attr('href') == layer) {
+                if ($(o).attr('href') === layer) {
                     o.click();
                     $('#foreground-lbl').text($(o).text());
                     return;
@@ -51696,9 +51701,7 @@ wwt.controllers.controller('ADSController',
                 
             },1300);
         }
-
         
-
     }
 ]);
 wwt.controllers.controller('ExploreController',
