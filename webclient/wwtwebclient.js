@@ -50224,13 +50224,13 @@ wwt.controllers.controller('MainController',
 					label: 'ADS',
 					button: 'rbnADS',
 					menu: {
-						'ADS Home Page': function() {
-							window.open('http://www.adsass.org/');
-						}
+						'ADS Home Page': [function() {
+							window.open('http://www.adsass.org/wwt');
+						}]
 					}
 				});
 			}
-			$scope.activePanel = util.getQSParam('ads') ? "ADS" : 'Explore';
+			$scope.activePanel = util.getQSParam('ads') ? 'ADS' : 'Explore';
 
 			$scope.UITools = wwtlib.UiTools;
 			$scope.Planets = wwtlib.Planets;
@@ -50692,25 +50692,26 @@ wwt.controllers.controller('MainController',
 			return ($scope.trackingObj && $(window).width() > 1159);
 		}
 
-		$rootScope.showCrossfader = function () {
-			var show = false;
-			try {
-				if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
-					if ($(window).width() > 800 || util.isMobile) {
-						show = true;
-					}
-				}
-			} catch (er) {
-				show = false;
-			}
-			return show; 
-		}  
-
+	    $rootScope.showCrossfader = function() {
+	        var show = false;
+	        if ($scope.activePanel === 'ADS') {
+	            return true;
+	        }
+	        try {
+	            if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
+	                if ($(window).width() > 800 || util.isMobile) {
+	                    show = true;
+	                }
+	            }
+	        } catch (er) {
+	            show = false;
+	        }
+	        return show;
+	    };
 		
 		$scope.hideIntroModalChange = function(hideIntroModal) {
 			appState.set('hideIntroModal', hideIntroModal);
 		};
-
 		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
@@ -50739,10 +50740,11 @@ wwt.controllers.controller('MainController',
 	    };
 
 	    $scope.displayXFader = function () {
-	        return $scope.lookAt === 'Sky' &&
+	        return (
+                $scope.lookAt === 'Sky' &&
 	            $scope.trackingObj &&
                 !$scope.tourPlaying &&
-                ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null);
+                ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null));
 	    }
 
 	    $scope.gotoConstellation = function(c) {
@@ -51695,11 +51697,11 @@ wwt.controllers.controller('ADSController',
                 $scope.fgImagery = 'All';
                 $scope.bgImagery = 'WISE All Sky (Infrared)';
                 $scope.bgChange();
-                $('.cross-fader').parent().show();
+                
                 $scope.setSurveyBg('WISE All Sky (Infrared)');
                 
                 
-            },1300);
+            }, 1300);
         }
         
     }

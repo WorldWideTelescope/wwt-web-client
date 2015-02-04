@@ -140,11 +140,11 @@
                 $scope.fgImagery = 'All';
                 $scope.bgImagery = 'WISE All Sky (Infrared)';
                 $scope.bgChange();
-                $('.cross-fader').parent().show();
+                
                 $scope.setSurveyBg('WISE All Sky (Infrared)');
                 
                 
-            },1300);
+            }, 1300);
         }
         
     }
