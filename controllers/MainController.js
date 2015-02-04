@@ -1,4 +1,14 @@
-﻿wwt.controllers.controller('MainController',
+﻿/*
+This controller is the hub of the web client - with all the shared functionality
+that needs to live at the top of the scope chain residing here.
+
+UIManager was created to add some functions to the rootScope that could be removed
+from the main controller to reduce its weight. 
+
+This file is too large and needs to be componentized a bit more. This is an ongoing
+cleanup process.
+*/
+wwt.controllers.controller('MainController',
 	['$scope',
 	'$rootScope',
 	'UILibrary',
@@ -57,8 +67,7 @@
 				}
 				if (imageryName) {
 					$.each(collection, function () {
-						
-						if (this != '' && this.get_name() && (this.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(this.get_name()) === 0)) {
+						if (this !== '' && this.get_name() && (this.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(this.get_name()) === 0)) {
 							$scope.backgroundImagery = this;
 							foundName = true;
 						}
@@ -90,7 +99,11 @@
 
 		//#region initialization
 		var initCanvas = function() {
-			ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
+		    ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
+
+		    // The .8 release of scriptsharp changed the location of the canCast function
+		    // This logic exists to ensure backwards compatibility when testing an older version
+            // of the framework.
 			if (window.Type && Type.canCast) {
 			    if (window.ss) {
 			        window.ss.canCast = Type.canCast;
@@ -267,13 +280,13 @@
 					label: 'ADS',
 					button: 'rbnADS',
 					menu: {
-						'ADS Home Page': function() {
-							window.open('http://www.adsass.org/');
-						}
+						'ADS Home Page': [function() {
+							window.open('http://www.adsass.org/wwt');
+						}]
 					}
 				});
 			}
-			$scope.activePanel = util.getQSParam('ads') ? "ADS" : 'Explore';
+			$scope.activePanel = util.getQSParam('ads') ? 'ADS' : 'Explore';
 
 			$scope.UITools = wwtlib.UiTools;
 			$scope.Planets = wwtlib.Planets;
@@ -735,25 +748,26 @@
 			return ($scope.trackingObj && $(window).width() > 1159);
 		}
 
-		$rootScope.showCrossfader = function () {
-			var show = false;
-			try {
-				if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
-					if ($(window).width() > 800 || util.isMobile) {
-						show = true;
-					}
-				}
-			} catch (er) {
-				show = false;
-			}
-			return show; 
-		}  
-
+	    $rootScope.showCrossfader = function() {
+	        var show = false;
+	        if ($scope.activePanel === 'ADS') {
+	            return true;
+	        }
+	        try {
+	            if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
+	                if ($(window).width() > 800 || util.isMobile) {
+	                    show = true;
+	                }
+	            }
+	        } catch (er) {
+	            show = false;
+	        }
+	        return show;
+	    };
 		
 		$scope.hideIntroModalChange = function(hideIntroModal) {
 			appState.set('hideIntroModal', hideIntroModal);
 		};
-
 		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
@@ -782,10 +796,11 @@
 	    };
 
 	    $scope.displayXFader = function () {
-	        return $scope.lookAt === 'Sky' &&
+	        return (
+                $scope.lookAt === 'Sky' &&
 	            $scope.trackingObj &&
                 !$scope.tourPlaying &&
-                ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null);
+                ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null));
 	    }
 
 	    $scope.gotoConstellation = function(c) {
