@@ -2,6 +2,7 @@
 * WorldWide Telescope Web Client
 * Copyright 2014-2015 Microsoft Research
 * Developed by Jonathan Fay and Ron Gilchrist
+* Licensed under MIT (http://opensource.org/licenses/MIT)
 **/
 /*!
  * jQuery JavaScript Library v2.1.3
@@ -48132,7 +48133,13 @@ wwt.app.factory('FinderScope',
         return api;
     }
     ]);
-wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function ($rootScope, util, places, $timeout) {
+// Includes shared functions for ExploreController, SearchController, and 
+// ContextPanelController - handles thumbnail click, right-click, and paging 
+// behavior
+
+// ToursController does not use this factory
+
+wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', function ($rootScope, util, places, $timeout) {
     var api = {
         init:init,
         clickThumb: clickThumb,
@@ -48141,7 +48148,9 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         goFwd: goFwd,
         goBack: goBack
     };
-  
+    
+    // Each controller calls init and passes in the controller
+    // scope
     function init(scope, name) {
         scope.pageCount = 1; 
         scope.pageSize = 1;
@@ -48190,6 +48199,8 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
                 }, 10);
             }
         };
+
+        // toggles the expanded thumbnail view to show 1 or 5 rows of thumbs
         scope.expandThumbnails = function (flag) {
             $('body').append($('#researchMenu'));
             scope.currentPage = 0;
@@ -48269,12 +48280,12 @@ wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function 
         if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
             scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
             if (item.isSurvey) {
-                scope.setSurveyBg(item.get_name());
+                scope.setSurveyBg(item.get_name(), item);
             } else {
                 scope.setForegroundImage(item);
-            }
+            } 
             if (scope.$hide) {
-                scope.$hide();
+                scope.$hide(); 
                 $rootScope.searchModal = false;
             }
             return outParams;
@@ -49955,6 +49966,16 @@ wwt.controllers.controller('ContextPanelController',
 	}]);
 
 
+/*
+This controller is the hub of the web client - with all the shared functionality
+that needs to live at the top of the scope chain residing here.
+
+UIManager was created to add some functions to the rootScope that could be removed
+from the main controller to reduce its weight. 
+
+This file is too large and needs to be componentized a bit more. This is an ongoing
+cleanup process.
+*/
 wwt.controllers.controller('MainController',
 	['$scope',
 	'$rootScope',
@@ -50014,8 +50035,7 @@ wwt.controllers.controller('MainController',
 				}
 				if (imageryName) {
 					$.each(collection, function () {
-						
-						if (this != '' && this.get_name() && (this.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(this.get_name()) === 0)) {
+						if (this !== '' && this.get_name() && (this.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(this.get_name()) === 0)) {
 							$scope.backgroundImagery = this;
 							foundName = true;
 						}
@@ -50047,7 +50067,11 @@ wwt.controllers.controller('MainController',
 
 		//#region initialization
 		var initCanvas = function() {
-			ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
+		    ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
+
+		    // The .8 release of scriptsharp changed the location of the canCast function
+		    // This logic exists to ensure backwards compatibility when testing an older version
+            // of the framework.
 			if (window.Type && Type.canCast) {
 			    if (window.ss) {
 			        window.ss.canCast = Type.canCast;
@@ -50394,7 +50418,7 @@ wwt.controllers.controller('MainController',
 
 		//#region set fb/bg...
 		var solarSystemInit = false;
-		$scope.setSurveyBg = function (imageryName) {
+		$scope.setSurveyBg = function (imageryName, imageSet) {
 
 			if (imageryName) {
 				if (imageryName === 'Mars') {
@@ -50410,6 +50434,9 @@ wwt.controllers.controller('MainController',
 				if (!foundName) {
 					$scope.backgroundImagery = '';
 					ctl.setBackgroundImageByName(imageryName);
+					if (imageSet) {
+					    $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
+					}
 					return;
 				} 
 			}
