@@ -27,6 +27,7 @@ module.exports = function(grunt) {
             '* WorldWide Telescope Web Client\n' +
             '* Copyright 2014-2015 Microsoft Research\n' +
             '* Developed by Jonathan Fay and Ron Gilchrist\n' +
+            '* Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
             '**/\n',
 
         // Task configuration.

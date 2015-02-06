@@ -450,7 +450,7 @@ wwt.controllers.controller('MainController',
 
 		//#region set fb/bg...
 		var solarSystemInit = false;
-		$scope.setSurveyBg = function (imageryName) {
+		$scope.setSurveyBg = function (imageryName, imageSet) {
 
 			if (imageryName) {
 				if (imageryName === 'Mars') {
@@ -466,6 +466,9 @@ wwt.controllers.controller('MainController',
 				if (!foundName) {
 					$scope.backgroundImagery = '';
 					ctl.setBackgroundImageByName(imageryName);
+					if (imageSet) {
+					    $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
+					}
 					return;
 				} 
 			}

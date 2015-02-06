@@ -1,4 +1,10 @@
-﻿wwt.app.factory('ThumbList', ['$rootScope','Util','Places','$timeout', function ($rootScope, util, places, $timeout) {
+﻿// Includes shared functions for ExploreController, SearchController, and 
+// ContextPanelController - handles thumbnail click, right-click, and paging 
+// behavior
+
+// ToursController does not use this factory
+
+wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', function ($rootScope, util, places, $timeout) {
     var api = {
         init:init,
         clickThumb: clickThumb,
@@ -7,7 +13,9 @@
         goFwd: goFwd,
         goBack: goBack
     };
-  
+    
+    // Each controller calls init and passes in the controller
+    // scope
     function init(scope, name) {
         scope.pageCount = 1; 
         scope.pageSize = 1;
@@ -56,6 +64,8 @@
                 }, 10);
             }
         };
+
+        // toggles the expanded thumbnail view to show 1 or 5 rows of thumbs
         scope.expandThumbnails = function (flag) {
             $('body').append($('#researchMenu'));
             scope.currentPage = 0;
@@ -135,12 +145,12 @@
         if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
             scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
             if (item.isSurvey) {
-                scope.setSurveyBg(item.get_name());
+                scope.setSurveyBg(item.get_name(), item);
             } else {
                 scope.setForegroundImage(item);
-            }
+            } 
             if (scope.$hide) {
-                scope.$hide();
+                scope.$hide(); 
                 $rootScope.searchModal = false;
             }
             return outParams;
