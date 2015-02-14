@@ -322,6 +322,11 @@ module.exports = function(grunt) {
                         dest: '<%= pkg.deployLoc %>/html5sdk/<%=pkg.sdkversion%>/',
                         expand: true
                     }, {
+                        cwd: 'sdk/',
+                        src: 'wwtsdk*.js',
+                        dest: '<%= pkg.deployLoc %>/webclient/sdk/',
+                        expand: true
+                    }, {
                         cwd: 'views/',
                         src: '**/*',
                         dest: '<%= pkg.deployLoc %>/webclient/views/',
