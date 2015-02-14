@@ -34,7 +34,7 @@
      
     <script src="sdk/wwtsdk<%= Debug ? "" : ".min" %>.js"></script>
     
-    <% if (Debug || DebugChrome)
+    <% if (Debug || DebugChrome) 
        { %>
     <script src="<%= ResourcesLocation %>/ext/jquery.js?v=<%= ResourcesVersion%>""></script>
     <script src="<%= ResourcesLocation %>/ext/bootstrap.js?v=<%= ResourcesVersion%>""></script>
@@ -125,7 +125,9 @@
     <body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
-        <%--<script>
+        <%--
+            //testing FB sharing dynamically
+            <script>
             window.fbAsyncInit = function () {
                 FB.init({
                     appId: '1001649533184139',
