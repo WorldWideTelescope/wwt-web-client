@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        deployLoc: '../../wwtmvc5/WWTMVC5/webclient/',
+        
         pkg: grunt.file.readJSON('package.json'),
         banner: '/**\n' +
             '* WorldWide Telescope Web Client\n' +
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 
         // Task configuration.
         clean: {
-            deployLoc: '<%=deployLoc%>'
+            deployLoc: '<%=pkg.deployLoc%>/webclient/'
         },
         concat: {
             options: {
@@ -259,82 +259,82 @@ module.exports = function(grunt) {
                     {
                         cwd: 'App_Data/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>App_Data/',
+                        dest: '<%= pkg.deployLoc %>/webclient/App_Data/',
                         expand: true
                     }, {
                         cwd: 'Bin/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>Bin/',
+                        dest: '<%= pkg.deployLoc %>/webclient/Bin/',
                         expand: true
                     }, {
                         cwd: 'clientbin/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>clientbin/',
+                        dest: '<%= pkg.deployLoc %>/webclient/clientbin/',
                         expand: true
                     }, {
                         cwd: 'controllers/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>controllers/',
+                        dest: '<%= pkg.deployLoc %>/webclient/controllers/',
                         expand: true
                     }, {
                         cwd: 'controls/',
                         src: '**',
-                        dest: '<%= deployLoc %>controls/',
+                        dest: '<%= pkg.deployLoc %>/webclient/controls/',
                         expand: true
                     }, {
                         cwd: 'css/',
                         src: '*.css',
-                        dest: '<%= deployLoc %>css/',
+                        dest: '<%= pkg.deployLoc %>/webclient/css/',
                         expand: true
                     }, {
                         cwd: 'css/',
                         src: '*.map',
-                        dest: '<%= deployLoc %>css/',
+                        dest: '<%= pkg.deployLoc %>/webclient/css/',
                         expand: true
                     }, {
                         cwd: 'dataproxy/',
                         src: '**',
-                        dest: '<%= deployLoc %>dataproxy/',
+                        dest: '<%= pkg.deployLoc %>/webclient/dataproxy/',
                         expand: true
                     }, {
                         cwd: 'directives/',
                         src: '**',
-                        dest: '<%= deployLoc %>directives/',
+                        dest: '<%= pkg.deployLoc %>/webclient/directives/',
                         expand: true
                     }, {
                         cwd: 'ext/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>ext/',
+                        dest: '<%= pkg.deployLoc %>/webclient/ext/',
                         expand: true
                     }, {
                         cwd: 'factories/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>factories/',
+                        dest: '<%= pkg.deployLoc %>/webclient/factories/',
                         expand: true
                     }, {
                         cwd: 'images/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>images/',
+                        dest: '<%= pkg.deployLoc %>/webclient/images/',
                         expand: true
                     }, {
                         cwd: 'sdk/',
-                        src: '*.js',
-                        dest: '<%= deployLoc %>sdk/',
-                        expand: true
-                    }, {
-                        cwd: 'sdk/',
-                        src: '*.aspx',
-                        dest: '<%= deployLoc %>sdk/',
+                        src: 'wwtsdk*.js',
+                        dest: '<%= pkg.deployLoc %>/html5sdk/<%=pkg.sdkversion%>/',
                         expand: true
                     }, {
                         cwd: 'views/',
                         src: '**/*',
-                        dest: '<%= deployLoc %>views/',
+                        dest: '<%= pkg.deployLoc %>/webclient/views/',
                         expand: true
                     }, {
                         cwd: '',
                         src: ['*.jpg', '*.png', '*.asax', '*.cs', '*.aspx', '*.ico', '*.js', '*.xap', '*.xml', '*.wtml'],
-                        dest: '<%= deployLoc %>',
+                        dest: '<%= pkg.deployLoc %>/webclient/',
+                        expand: true
+                    }, {
+                        cwd: '',
+                        src: ['*.md'],//keep 2 copies of the readme - one for git page and one for inside IDE
+                        dest: '../',
                         expand: true
                     }
                 ]

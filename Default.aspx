@@ -22,17 +22,17 @@
     <style> 
         html, body.fs-player, iframe {
             height: 100%;
-            width: 100%;
+            width: 100%;   
             margin: 0;
             padding: 0;
             overflow: hidden;
-        }
+        } 
         .finder-scope {
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
         }
     </style>
-    
-    <script type="text/javascript" src="<%=SDKLocation %>"></script>
+     
+    <script src="sdk/wwtsdk<%= Debug ? "" : ".min" %>.js"></script>
     
     <% if (Debug || DebugChrome)
        { %>

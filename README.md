@@ -3,13 +3,16 @@ This repository contains the HTML5 SDK which is the rendering engine for the web
 
 ## Prerequisites
 * Visual Studio 2013 ([Free Community Edition](http://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx))
-* [NodeJs](http://nodejs.org/download/)
+* [NodeJs](http://nodejs.org/download/) - Only needed if you want to compile the sdk into javascript or run the minified web client js code. 
 
 ## Included Projects
-There are two solutions in the repository. The standalone webclient sln file is located in the webclient directory. The html5sdk contains a sln which loads both the html5sdk AND the webclient. Opening the html5sdk sln enables you to compile the c# files into javascript, then run the webclient locally using the modified js output. 
+There are two solutions in the repository. The standalone webclient sln includes only the webclient implementation of the Html5sdk. The Html5sdk contains a sln which loads both the html5sdk AND the webclient. Opening the html5sdk sln enables you to compile the c# files into javascript, then run the webclient locally using the modified js output. 
 
 ## Getting Started
 * Decide which .sln you want to run (see above) and open in Visual Studio 2013 or higher.
+* Right-click webclient\default.aspx and point to View In Browser
+
+## To Enable grunt (LESS compilation, HTML5SDK Compilation, and JS Minification)
 * In a command prompt, navigate to the webclient root and type `npm install` to install grunt's dependencies. If you encounter any errors (I always do on a clean machine), ensure `%USERPROFILE%\AppData\Roaming\npm` exists (create it if not) and your system path includes `;%USERPROFILE%\AppData\Roaming\npm`. You can run the ensurenpm.cmd to solve this.
 * Once you have installed the node_modules (via `npm install` above), install the grunt client. type `npm install -g grunt-cli` from the same command prompt.
 * Edit webclient\bootstrap\gruntfile.js and remove `'copy:webclient'` in the bottom task. Leave an empty string. This task copies the webclient to the worldwidetelescope web site codebase and will clutter your filesystem if you are not developing on the worldwidetelescope.org web site. However if you want to reuse this command to deploy to your own site, edit the `deployLoc` variable.
@@ -21,7 +24,7 @@ There are two solutions in the repository. The standalone webclient sln file is 
 
 Once you have completed the above you are set to make your own modifications to the code and your LESS and JS will be compiled/uglified. You can view the webclient by right-clicking webclient\default.aspx > view in browser.
 
-To make changes to the html5sdk, simply compile the htnl5sdk project while the grunt watch thread is active. Grunt will take the js output and create the wwtsdk.js file. To use this file instead of the production file, add `?debug=local` to the query string.
+To make changes to the HTML5 SDK, simply compile the html5sdk project (named wwtlib) while the grunt watch thread is active. Grunt will take the js output and create the wwtsdk.js file. To use this file instead of the production file, add `?debug=local` to the query string.
 
 ## Web client dependencies - further reading
 ### AngularJS

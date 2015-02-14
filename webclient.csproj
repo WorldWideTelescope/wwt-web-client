@@ -165,7 +165,6 @@
     <Content Include="controllers\tabs\ViewController.js" />
     <Content Include="controls\move.js" />
     <Content Include="controls\util.js" />
-    <Content Include="COPYING.txt" />
     <Content Include="css\angular-motion.css" />
     <Content Include="css\webclient.css" />
     <Content Include="css\webclient.min.css" />
@@ -305,7 +304,6 @@
     <Content Include="views\research-menu.html" />
     <Content Include="views\thumbnail.html" />
     <Content Include="views\tree-node.html" />
-    <Content Include="webclient.sln" />
     <Content Include="css\variables.less" />
     <Content Include="css\webclient.css.map" />
     <Content Include="css\webclient.less" />
@@ -336,6 +334,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="README.md" />
+    <Content Include="sdk\wwtlib.scripts" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
