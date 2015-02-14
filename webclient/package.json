@@ -23,7 +23,7 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/MSRConnections/OpenWWT-Web/LICENSE"
+    "url": "https://github.com/MSRConnections/OpenWWT-Web/blob/master/LICENSE"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
