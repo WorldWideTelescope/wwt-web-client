@@ -2,11 +2,16 @@
   "name": "webclient",
   "description": "WorldWide Telescope Web Client.",
   "version": "5.2.4",
+  "sdkversion": "1.0.0",
   "keywords": [
     "WorldWide Telescope",
+    "WWT",
+    "OpenWWT",
     "client",
-    "web"
+    "web",
+    "HTML5 SDK"
   ],
+  "deployLoc": "../../wwtmvc5/WWTMVC5",
   "homepage": "http://worldwidetelescope.org",
   "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
   "repository": {
@@ -18,7 +23,7 @@
   },
   "license": {
     "type": "MIT",
-    "url": "http://opensource.org/licenses/MIT"
+    "url": "https://github.com/MSRConnections/OpenWWT-Web/LICENSE"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
