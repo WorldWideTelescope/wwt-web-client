@@ -35,31 +35,6 @@
 			wwt.resize();
 		}
 
-		//var filterNode = new treeNode({
-		//    name: $scope.getFromEn('Filter'),
-		//    children: constellations,
-		//    collapsed:true
-		//});
-		//var picturesFilter = wwt.clone(filterNode);
-		//picturesFilter.action = 'constellationArtFilter';
-		//var boundriesFilter = wwt.clone(filterNode);
-		//boundriesFilter.action = 'constellationBoundariesFilter';
-		//var figuresFilter = wwt.clone(filterNode);
-		//figuresFilter.action = 'constellationFiguresFilter';
-
-		//function setParentRef(parentNode) {
-		//    $.each(parentNode.children, function(i,item) {
-		//        item.parentRef = parentNode;
-		//    });
-		//}
-
-		//setParentRef(picturesFilter);
-		//setParentRef(boundriesFilter);
-		//setParentRef(figuresFilter);
-
-		//console.log(filterNode);
-
-
 		var initTree = function() {
 			return new treeNode({
 				v: version,
@@ -248,8 +223,6 @@
 		var invokeSetting = function(node) {
 			if (node.action) {
 				try {
-					//var bool = node.checked ? 'true' : 'false';
-					//eval('wwt.wc.settings.set_' + node.action + '(' + bool + ')');
 					wwt.wc.settings['set_' + node.action](node.checked);
 				} catch (er) {
 					util.log(er, node.action);

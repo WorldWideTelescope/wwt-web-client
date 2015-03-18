@@ -17,6 +17,7 @@ public partial class Default : System.Web.UI.Page
 	public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string BodyClass;
 	public string SDKLocation = "http://www.worldwidetelescope.org/scripts/wwtsdk.aspx";
+
 	public enum Clients
 	{
 		Html5 = 0,
@@ -103,7 +104,6 @@ public partial class Default : System.Web.UI.Page
 				Client = Clients.WWT;
 				cookie.Value = "WWT";
 			}
-
 
 			HttpContext.Current.Response.Cookies.Add(cookie);
 

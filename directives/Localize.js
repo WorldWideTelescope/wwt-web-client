@@ -1,6 +1,6 @@
 ﻿wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', function (loc, $rootScope,appState,util) {
 	return function ($scope, element, attrs) {
-		if (appState.get('language') != 'EN') {
+		if (appState.get('language') !== 'EN') {
 			//if ($rootScope.languagePromise) {
 				$rootScope.languagePromise.then(function() {
 					replaceText(false);

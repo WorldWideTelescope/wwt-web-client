@@ -30,9 +30,12 @@
         .finder-scope {
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
         }
-    </style>
+    </style> 
      
-    <script src="sdk/wwtsdk<%= Debug ? "" : ".min" %>.js"></script>
+    <%--<script src="sdk/old/wwtsdk_old.debug.js"></script>
+    <script src="sdk/wwtsdk.js"></script>
+    <script src="sdk/wwtsdk<%= Debug ? "" : ".min" %>.js"></script>--%>
+    <script src="sdk/wwtsdk.js"></script>
     
     <% if (Debug || DebugChrome) 
        { %>
@@ -78,8 +81,8 @@
     <script src="<%= ResourcesLocation %>/controllers/tabs/SettingsController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ToursController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ViewController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controls/move.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation%>/controls/util.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controls/move.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controls/util.js?v=<%= ResourcesVersion%>"></script>
     <% }
        else
        { %>
