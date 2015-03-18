@@ -307,7 +307,8 @@ namespace wwtlib
                 {
                     if (layer.Name == "Layer")
                     {
-                        Layer newLayer = Layer.FromXml(layer, true);
+                        
+                        Layer newLayer = new Layer().FromXml(layer,true);//.Layer.FromXml(layer, true);
                         if (newLayer != null)
                         {
                             string fileName = string.Format("{0}.txt", newLayer.ID.ToString());

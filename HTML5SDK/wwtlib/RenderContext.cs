@@ -290,6 +290,10 @@ namespace wwtlib
                     maxY = (int)Math.Pow(2, level);
                     break;
             }
+            if (maxY == Double.PositiveInfinity)
+            {
+                maxY = 1;
+            }
             return maxY;
         }
 
@@ -306,7 +310,7 @@ namespace wwtlib
                     maxX = (int)Math.Pow(2, level) * (int)(layer.BaseTileDegrees / 360.0);
                     break;
                 case ProjectionType.Equirectangular:
-                    maxX = (int)Math.Pow(2, level) * (int)(layer.BaseTileDegrees / 90.0);
+                    //maxX = (int)Math.Pow(2, level) * (int)(layer.BaseTileDegrees / 90.0);
                     maxX = (int)Math.Pow(2, level) * (int)(360 / layer.BaseTileDegrees);
 
                     break;
@@ -328,7 +332,7 @@ namespace wwtlib
                     maxX = (int)Math.Pow(2, level) * 2;
                     break;
             }
-
+            
 
             return maxX;
         }

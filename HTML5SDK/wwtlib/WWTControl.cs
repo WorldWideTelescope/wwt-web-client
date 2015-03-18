@@ -250,7 +250,7 @@ namespace wwtlib
                         double radius = Planets.GetAdjustedPlanetRadius((int)SolarSystemTrack);
                         double distance = RenderContext.SolarSystemCameraDistance;
                         double camAngle = RenderContext.FovLocal;
-                        double distrad = distance / (radius * Math.Tan(.5 * camAngle));
+                        //double distrad = distance / (radius * Math.Tan(.5 * camAngle));
                         
                     }
 
@@ -483,15 +483,7 @@ namespace wwtlib
 
                 }
 
-                //if (RenderContext.Space)
-                //{
-                //    AstroRaDec sun = AstroCalc.GetPlanet(SpaceTimeController.JNow, 0, SpaceTimeController.Location.Lat, SpaceTimeController.Location.Lng, SpaceTimeController.Location.Alt);
-
-                //    Document.Title = "Sun" + SpaceTimeController.JNow + "," + sun.RA + "," + sun.Dec;
-
-                //    SpaceTimeController.TimeRate = 2;
-
-                //}
+                
   
                 if (RenderType == ImageSetType.Sky)
                 {
@@ -511,15 +503,6 @@ namespace wwtlib
                 }
                 
 
-
-
-                //if (showDataLayers)
-                //{
-                //    foreach (VizLayer layer in Layers)
-                //    {
-                //        layer.Draw(RenderContext);
-                //    }
-                //}
 
 
                 if (Settings.Current.ShowCrosshairs)
@@ -553,8 +536,8 @@ namespace wwtlib
                     }
                 }
             }
-            int tilesInView = Tile.TilesInView;
-            int itlesTouched = Tile.TilesTouched;
+            //int tilesInView = Tile.TilesInView;
+            //int itlesTouched = Tile.TilesTouched;
 
             frameCount++;
 
@@ -570,20 +553,7 @@ namespace wwtlib
             int ms = now-lastUpdate;
             if (ms > 1000)
             {
-                double fps = (frameCount / ms) * 1000;
-                double tps = ((double)RenderTriangle.TrianglesRendered / ms) * 100;
-                double cullRatio = (int)((double)RenderTriangle.TrianglesCulled / ((double)RenderTriangle.TrianglesCulled + (double)RenderTriangle.TrianglesRendered) * 100);
-                //Document.Title = "openThreads :" + TileCache.openThreads;
-               // Document.Title = "openThreads :" + TileCache.openThreads;
-
-                // Document.Title = "fps:" + fps;
-                //Document.Title = "RtR:" + TileCache.GetReadyToRenderTileCount();          
-
-               //  Document.Title = "tiv:" + tilesInView;
-               // Document.Title = "ttps:" + tps;
-               // Document.Title = "Cull Ratio:" + cullRatio;
-
-               // Document.Title = "Alt:" + RenderContext.targetAltitude;
+                
                 lastUpdate = now;
                 frameCount = 0;
                 RenderTriangle.TrianglesRendered = 0;
@@ -592,7 +562,7 @@ namespace wwtlib
             }
 
             //TileCache.PurgeLRU();
-            Script.SetTimeout(delegate() { Render(); }, 0);
+            Script.SetTimeout(delegate() { Render(); }, 20);
         }
 
         private void DrawSkyOverlays()

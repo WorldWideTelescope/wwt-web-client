@@ -33,7 +33,7 @@ namespace wwtlib
             return null;
         }
 
-        private float opacity = 1.0f;
+        protected float opacity = 1.0f;
         
         public virtual float Opacity
         {
@@ -85,6 +85,7 @@ namespace wwtlib
         }
         private Date endTime = Date.Parse("01/01/1900");
 
+        
         
         public Date EndTime
         {
@@ -217,7 +218,7 @@ namespace wwtlib
             return name;
         }
 
-        private string referenceFrame;
+        protected string referenceFrame;
 
         public string ReferenceFrame
         {
@@ -364,7 +365,7 @@ namespace wwtlib
             return "";
         }
 
-        private Color color = Colors.White;
+        protected Color color = Colors.White;
 
         public virtual Color Color
         {
@@ -465,7 +466,7 @@ namespace wwtlib
 
         }
 
-        internal static Layer FromXml(XmlNode layerNode, bool someFlag)
+        public Layer FromXml(XmlNode layerNode, bool someFlag)
         {
             string layerClassName = layerNode.Attributes.GetNamedItem("Type").Value.ToString();
 
@@ -474,11 +475,9 @@ namespace wwtlib
             {
                 return null;
             }
-
  
             Layer newLayer = null;
 
-            
             switch (overLayType)
             {
                 case "SpreadSheetLayer":
@@ -490,11 +489,17 @@ namespace wwtlib
                 default:
                     return null;
             }
+
+            //Force inheritance.
+            // TODO: Understand why this breaks in SS .8
+            Script.Literal("for(var method in this){\n /*if (({}).toString.call(this[method]).match(/\\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){\n*/ newLayer[method] = this[method];/*\n}*/\n}");
+            
             newLayer.InitFromXml(layerNode);
+            
             return newLayer;
         }
 
-        private void InitFromXml(XmlNode node)
+        public void InitFromXml(XmlNode node)
         {
             ID = Guid.FromString(node.Attributes.GetNamedItem("Id").Value);
             Name = node.Attributes.GetNamedItem("Name").Value;

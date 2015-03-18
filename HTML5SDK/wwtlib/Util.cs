@@ -93,12 +93,12 @@ namespace wwtlib
             //XmlNode
             XmlNode node = null;
 
-            try
-            {
-                node = parent.QuerySelector(name);
-            }
-            catch
-            {
+            //try
+            //{
+            //    node = parent.QuerySelector(name);
+            //}
+            //catch
+            //{
                 foreach (XmlNode child in parent.ChildNodes)
                 {
                     if (child.Name == name)
@@ -107,7 +107,7 @@ namespace wwtlib
                         break;
                     }
                 }
-            }
+            //}
 
             return node;
         }

@@ -115,7 +115,6 @@ namespace wwtlib
         }
 
 
-
         public override void InitializeFromXml(XmlNode node)
         {
             TimeSeries = bool.Parse(node.Attributes.GetNamedItem("TimeSeries").Value);
