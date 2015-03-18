@@ -1,7 +1,7 @@
 /**
 * WorldWide Telescope Web Client
-* Copyright 2014 Microsoft Research
-* Developed by Jonathan Fay and Ron Gilchrist
+* Copyright 2014-2015 Microsoft Research
+* Licensed under MIT (https://github.com/MSRConnections/OpenWWT-Web/blob/master/LICENSE)
 **/
 /*! Script# Runtime
  * Designed and licensed for use and distribution with Script#-generated scripts.
@@ -1514,7 +1514,7 @@ function module(name, implementation, exports) {
   global.define ? global.define('ss', [], _ss) : _export();
 })(this);
 
-
+"use strict";
 
 window.wwtlib = function(){
   var $global = this;
@@ -8944,37 +8944,17 @@ window.wwtlib = function(){
     this.id = Guid.newGuid();
     this.loadedFromTour = false;
     this.tourDocument = null;
-    this._opacity = 1;
+    this.opacity = 1;
     this.opened = false;
     this._startTime = ss.date('01/01/2100');
     this._endTime = ss.date('01/01/1900');
     this._fadeSpan = 0;
     this._fadeType = 4;
     this.version = 0;
-    this._color = Colors.get_white();
+    this.color = Colors.get_white();
     this._enabled = true;
     this.astronomical = false;
   }
-  Layer._fromXml = function(layerNode, someFlag) {
-    var layerClassName = layerNode.attributes.getNamedItem('Type').nodeValue;
-    var overLayType = ss.replaceString(layerClassName, 'TerraViewer.', '');
-    if (overLayType == null) {
-      return null;
-    }
-    var newLayer = null;
-    switch (overLayType) {
-      case 'SpreadSheetLayer':
-        newLayer = new SpreadSheetLayer();
-        break;
-      case 'GreatCirlceRouteLayer':
-        newLayer = new GreatCirlceRouteLayer();
-        break;
-      default:
-        return null;
-    }
-    newLayer._initFromXml(layerNode);
-    return newLayer;
-  };
   var Layer$ = {
     getPrimaryUI: function() {
       return null;
@@ -8986,12 +8966,12 @@ window.wwtlib = function(){
       return null;
     },
     get_opacity: function() {
-      return this._opacity;
+      return this.opacity;
     },
     set_opacity: function(value) {
-      if (this._opacity !== value) {
+      if (this.opacity !== value) {
         this.version++;
-        this._opacity = value;
+        this.opacity = value;
       }
       return value;
     },
@@ -9098,21 +9078,21 @@ window.wwtlib = function(){
       return this._name;
     },
     get_referenceFrame: function() {
-      return this._referenceFrame;
+      return this.referenceFrame;
     },
     set_referenceFrame: function(value) {
-      this._referenceFrame = value;
+      this.referenceFrame = value;
       return value;
     },
     getProps: function() {
       return '';
     },
     get_color: function() {
-      return this._color;
+      return this.color;
     },
     set_color: function(value) {
-      if (this._color !== value) {
-        this._color = value;
+      if (this.color !== value) {
+        this.color = value;
         this.version++;
         this.cleanUp();
       }
@@ -9149,12 +9129,37 @@ window.wwtlib = function(){
     },
     initializeFromXml: function(node) {
     },
-    _initFromXml: function(node) {
+    fromXml: function(layerNode, someFlag) {
+      var layerClassName = layerNode.attributes.getNamedItem('Type').nodeValue;
+      var overLayType = ss.replaceString(layerClassName, 'TerraViewer.', '');
+      if (overLayType == null) {
+        return null;
+      }
+      var newLayer = null;
+      switch (overLayType) {
+        case 'SpreadSheetLayer':
+          newLayer = new SpreadSheetLayer();
+          break;
+        case 'GreatCirlceRouteLayer':
+          newLayer = new GreatCirlceRouteLayer();
+          break;
+        default:
+          return null;
+      }
+      for(var method in this){
+ /*if (({}).toString.call(this[method]).match(/\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){
+*/ newLayer[method] = this[method];/*
+}*/
+};
+      newLayer.initFromXml(layerNode);
+      return newLayer;
+    },
+    initFromXml: function(node) {
       this.id = Guid.fromString(node.attributes.getNamedItem('Id').nodeValue);
       this.set_name(node.attributes.getNamedItem('Name').nodeValue);
-      this._referenceFrame = node.attributes.getNamedItem('ReferenceFrame').nodeValue;
-      this._color = Color.load(node.attributes.getNamedItem('Color').nodeValue);
-      this._opacity = parseFloat(node.attributes.getNamedItem('Opacity').nodeValue);
+      this.referenceFrame = node.attributes.getNamedItem('ReferenceFrame').nodeValue;
+      this.color = Color.load(node.attributes.getNamedItem('Color').nodeValue);
+      this.opacity = parseFloat(node.attributes.getNamedItem('Opacity').nodeValue);
       if (node.attributes.getNamedItem('StartTime') != null) {
         this.set_startTime(new Date(node.attributes.getNamedItem('StartTime').nodeValue));
       }
@@ -11459,6 +11464,9 @@ window.wwtlib = function(){
         maxY = Math.pow(2, level);
         break;
     }
+    if (maxY === Number.POSITIVE_INFINITY) {
+      maxY = 1;
+    }
     return maxY;
   };
   RenderContext._getTilesXForLevel = function(layer, level) {
@@ -11472,7 +11480,6 @@ window.wwtlib = function(){
         maxX = Math.pow(2, level) * ss.truncate((layer.get_baseTileDegrees() / 360));
         break;
       case 1:
-        maxX = Math.pow(2, level) * ss.truncate((layer.get_baseTileDegrees() / 90));
         maxX = Math.pow(2, level) * ss.truncate((360 / layer.get_baseTileDegrees()));
         break;
       case 5:
@@ -15364,7 +15371,7 @@ window.wwtlib = function(){
         while ($enum3.moveNext()) {
           var layer = $enum3.current;
           if (layer.nodeName === 'Layer') {
-            var newLayer = Layer._fromXml(layer, true);
+            var newLayer = new Layer().fromXml(layer, true);
             if (newLayer != null) {
               var fileName = ss.format('{0}.txt', newLayer.id.toString());
               if (ss.keyExists(LayerManager.get_layerList(), newLayer.id)) {
@@ -17826,17 +17833,12 @@ window.wwtlib = function(){
   };
   Util.selectSingleNode = function(parent, name) {
     var node = null;
-    try {
-      node = parent.querySelector(name);
-    }
-    catch ($e1) {
-      var $enum2 = ss.enumerate(parent.childNodes);
-      while ($enum2.moveNext()) {
-        var child = $enum2.current;
-        if (child.nodeName === name) {
-          node = child;
-          break;
-        }
+    var $enum1 = ss.enumerate(parent.childNodes);
+    while ($enum1.moveNext()) {
+      var child = $enum1.current;
+      if (child.nodeName === name) {
+        node = child;
+        break;
       }
     }
     return node;
@@ -18482,7 +18484,6 @@ window.wwtlib = function(){
           var radius = Planets.getAdjustedPlanetRadius(this._solarSystemTrack);
           var distance = this.renderContext.get_solarSystemCameraDistance();
           var camAngle = this.renderContext.get_fovLocal();
-          var distrad = distance / (radius * Math.tan(0.5 * camAngle));
         }
         if (this._trackingObject == null) {
         }
@@ -18586,8 +18587,6 @@ window.wwtlib = function(){
           }
         }
       }
-      var tilesInView = Tile.tilesInView;
-      var itlesTouched = Tile.tilesTouched;
       this._frameCount++;
       TileCache.decimateQueue();
       TileCache.processQueue(this.renderContext);
@@ -18595,9 +18594,6 @@ window.wwtlib = function(){
       var now = ss.now();
       var ms = now - this._lastUpdate;
       if (ms > 1000) {
-        var fps = (this._frameCount / ms) * 1000;
-        var tps = (RenderTriangle.trianglesRendered / ms) * 100;
-        var cullRatio = ss.truncate((RenderTriangle.trianglesCulled / (RenderTriangle.trianglesCulled + RenderTriangle.trianglesRendered) * 100));
         this._lastUpdate = now;
         this._frameCount = 0;
         RenderTriangle.trianglesRendered = 0;
@@ -18605,7 +18601,7 @@ window.wwtlib = function(){
       }
       setTimeout(function() {
         $this.render();
-      }, 0);
+      }, 20);
     },
     _drawSkyOverlays: function() {
       if (Settings.get_active().get_showConstellationPictures()) {
@@ -20622,7 +20618,7 @@ window.wwtlib = function(){
           linelist.addLine(currentPoint, temp);
         }
       }
-      var col;
+      var col = 'red';
       if (this._boundry) {
         if (Constellations._constToDraw !== ls.get_name()) {
           col = Settings.get_globalSettings().get_constellationBoundryColor();

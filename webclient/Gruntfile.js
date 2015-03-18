@@ -341,7 +341,7 @@ module.exports = function(grunt) {
                         src: ['*.md'],//keep 2 copies of the readme - one for git page and one for inside IDE
                         dest: '../',
                         expand: true
-                    }
+                    }//cdn.worldwidetelescope.org/html5sdk/x.x.x/wwtsdk[.min].js
                 ]
             }
         },

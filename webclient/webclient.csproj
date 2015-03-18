@@ -271,6 +271,7 @@
     <Content Include="package.json" />
     <Content Include="sdk\mscorlib.dll" />
     <Content Include="sdk\mscorlib.xml" />
+    <Content Include="sdk\old\wwtsdk_old.debug.js" />
     <Content Include="sdk\Script.Web.dll" />
     <Content Include="sdk\Script.Web.xml" />
     <Content Include="sdk\ss.js" />
@@ -321,8 +322,6 @@
     <Fakes Include="Fakes\Wurfl.fakes" />
     <Fakes Include="Fakes\Wurfl.Aspnet.Extensions.fakes" />
     <Content Include="ext\angular-touch.min.js.map" />
-    <Content Include="App_Readme\WURFL-v1.5.3.chm" />
-    <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
     <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="packages.config" />
     <Content Include="ensurenpm.cmd" />
@@ -336,6 +335,9 @@
     </None>
     <Content Include="README.md" />
     <Content Include="sdk\wwtlib.scripts" />
+    <Content Include="sdk\wwtsdk.min.js.map">
+      <DependentUpon>wwtsdk.min.js</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -343,7 +345,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <Content Include="webclient.sln.DotSettings" />
-    <Content Include="Wise.wtml" />
+    <Content Include="Wise.wtml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />

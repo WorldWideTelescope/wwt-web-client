@@ -9,36 +9,32 @@
 				sessionId = null,
 				submissionId = null,
 				jobId = null,
-				calibration = null,
-				jobStatus = null,
-				errorData = null;
-				debug = debugFlag;
+                debug = debugFlag,
 				login();
 			}
 		};
 
-		var statusTypes = {
-			connecting: 'Connecting',
-			connected: 'Connect Success',
-			connectFail: 'Connection Failed',
-			uploading: 'Uploading Image',
-			uploadSuccess: 'Upload Success',
-			uploadFail: 'Upload Failed',
-			statusCheck: 'Checking Status',
-			statusCheckFail: 'Status Check Failed',
-			jobFound: 'Job Found',
-			jobStatusCheck: 'Checking Job Status',
-			jobFail: 'Could Not Resolve Image',
-			jobStatus: 'Solving Image',
-			jobSuccess: 'Job Succeeded',
-			calibrationFail: 'Calibration Results Failed'
-		}
-
+    var statusTypes = {
+        connecting: 'Connecting',
+        connected: 'Connect Success',
+        connectFail: 'Connection Failed',
+        uploading: 'Uploading Image',
+        uploadSuccess: 'Upload Success',
+        uploadFail: 'Upload Failed',
+        statusCheck: 'Checking Status',
+        statusCheckFail: 'Status Check Failed',
+        jobFound: 'Job Found',
+        jobStatusCheck: 'Checking Job Status',
+        jobFail: 'Could Not Resolve Image',
+        jobStatus: 'Solving Image',
+        jobSuccess: 'Job Succeeded',
+        calibrationFail: 'Calibration Results Failed'
+    };
 		var uploadUrl, // "http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
 			statusCallback,
 			sessionId = null,
 			submissionId = null,
-			jobId = null,
+			jobId = null, 
 			calibration = null,
 			jobStatus = null,
 			errorData = null,
