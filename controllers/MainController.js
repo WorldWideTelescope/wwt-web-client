@@ -314,8 +314,10 @@ wwt.controllers.controller('MainController',
         }
 
 	    var initContext = function () {
-			var isAds = util.getQSParam('ads') != null;
-			var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
+	        var isAds = util.getQSParam('ads') != null;
+	        
+	        
+	        var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
 
 			var xf = new wwt.Move({
 				el: bar,
@@ -335,7 +337,9 @@ wwt.controllers.controller('MainController',
 			});
 
 			wwt.resize();
-
+            if (util.getQSParam('tourUrl')) {
+	            $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
+	        }
 		};
 		//#endregion 
 

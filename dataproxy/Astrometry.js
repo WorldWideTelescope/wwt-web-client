@@ -15,7 +15,7 @@
 		};
 
     var statusTypes = {
-        connecting: 'Connecting',
+        connecting: 'Connecting', 
         connected: 'Connect Success',
         connectFail: 'Connection Failed',
         uploading: 'Uploading Image',
@@ -46,12 +46,12 @@
 		function login() {
 			showStatus(statusTypes.connecting);
 			var loginData = {};
-			loginData.apikey = "ukrhxcwceyorvepj"; // this may change we should put it in the web.config
+			loginData.apikey = "mxzoqrhqsvkwtybb"; // this may change we should put it in the web.config
 
 			var loginJson = encodeURIComponent(JSON.stringify(loginData));
 
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/login",
+				url: "http://nova.astrometry.net/api/login",
 				type: "POST",
 				data: "request-json=" + loginJson,
 				dataType: "json",

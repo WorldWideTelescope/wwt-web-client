@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeFile="Default.aspx.cs" Inherits="Default" %>
+﻿<%@ Page Language="C#" CodeFile="Default.aspx.cs" Inherits="wwtwebclient" %>
 
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,7 @@
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." /> 
     <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
     <link rel="icon" href="favicon.ico"/>
-    <% if (Client == Clients.Html5 || Client == Clients.Mobile)
+    <% if (Client == wwtwebclient.Clients.Html5 || Client == wwtwebclient.Clients.Mobile)
        { %>
     <link href=css/webclient.min.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
@@ -90,7 +90,7 @@
     <% } %>
 
     <% }
-       else if (Client == Clients.Silverlight)
+       else if (Client == wwtwebclient.Clients.Silverlight)
        { %>
     
     
@@ -126,7 +126,7 @@
 </head>
 <%--<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation %>" data-version="<%= ResourcesVersion %>">--%>
     <body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1">
-    <% if (Client == Clients.Html5 || Client == Clients.Mobile)
+    <% if (Client == wwtwebclient.Clients.Html5 || Client == wwtwebclient.Clients.Mobile)
        { %>
         <%--
             //testing FB sharing dynamically
@@ -147,12 +147,12 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         </script>--%>
-<div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
+<div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == wwtwebclient.Clients.Mobile?"mobile":"desktop" %>">
 
     <div id="WorldWideTelescopeControlHost">
-        <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile?"": "showFinderScope"%>"></div>
+        <div id="WWTCanvas" ng-context-menu="<%=Client == wwtwebclient.Clients.Mobile?"": "showFinderScope"%>"></div>
     </div>
-<% if (Client == Clients.Mobile)
+<% if (Client == wwtwebclient.Clients.Mobile)
    { %>
     
     <a  data-bs-popover="popover" tabindex="0"
@@ -310,7 +310,7 @@
         </div>
     </div>
     <% } %>
-    <%if (Client == Clients.Html5)
+    <%if (Client == wwtwebclient.Clients.Html5)
    { %>
     <ng-include src="'views/research-menu.html'"></ng-include>
     <ng-include src="'views/modals/finder-scope.html'" onload="initFinder()"></ng-include>
@@ -919,7 +919,7 @@
     <%  } %> 
 </div>
     <% }
-       else if (Client == Clients.Silverlight)
+       else if (Client == wwtwebclient.Clients.Silverlight)
        { %>
 
     <div id="silverlightControlHost">
