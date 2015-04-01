@@ -3,9 +3,8 @@ using System.Configuration;
 using System.Globalization;
 using System.Web;
 using WURFL;
-using Wurfl.Aspnet.Extensions.Request;
 
-public partial class Default : System.Web.UI.Page
+public partial class wwtwebclient : System.Web.UI.Page
 {
 	public bool Debug = false;
 	public bool DebugChrome = false;
@@ -17,7 +16,7 @@ public partial class Default : System.Web.UI.Page
 	public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string BodyClass;
 	public string SDKLocation = "http://www.worldwidetelescope.org/scripts/wwtsdk.aspx";
-
+     
 	public enum Clients
 	{
 		Html5 = 0,

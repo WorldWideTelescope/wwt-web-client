@@ -49278,7 +49278,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 						root.addChildFolder(openCollectionsFolder);
 						deferred.resolve(root.get_children());
 					});
-				} else if (location.href.indexOf('?image=') != -1) {
+				} else if (location.href.indexOf('?image=') !== -1) {
 					importImage(location.href.split('?image=')[1]).then(function(data) {
 						deferred.resolve(root.get_children());
 					});
@@ -49771,7 +49771,7 @@ wwt.app.factory('Astrometry', [
 		};
 
     var statusTypes = {
-        connecting: 'Connecting',
+        connecting: 'Connecting', 
         connected: 'Connect Success',
         connectFail: 'Connection Failed',
         uploading: 'Uploading Image',
@@ -49802,12 +49802,12 @@ wwt.app.factory('Astrometry', [
 		function login() {
 			showStatus(statusTypes.connecting);
 			var loginData = {};
-			loginData.apikey = "ukrhxcwceyorvepj"; // this may change we should put it in the web.config
+			loginData.apikey = "mxzoqrhqsvkwtybb"; // this may change we should put it in the web.config
 
 			var loginJson = encodeURIComponent(JSON.stringify(loginData));
 
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/login",
+				url: "http://nova.astrometry.net/api/login",
 				type: "POST",
 				data: "request-json=" + loginJson,
 				dataType: "json",
@@ -50360,8 +50360,10 @@ wwt.controllers.controller('MainController',
         }
 
 	    var initContext = function () {
-			var isAds = util.getQSParam('ads') != null;
-			var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
+	        var isAds = util.getQSParam('ads') != null;
+	        
+	        
+	        var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
 
 			var xf = new wwt.Move({
 				el: bar,
@@ -50381,7 +50383,9 @@ wwt.controllers.controller('MainController',
 			});
 
 			wwt.resize();
-
+            if (util.getQSParam('tourUrl')) {
+	            $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
+	        }
 		};
 		//#endregion 
 

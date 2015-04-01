@@ -93,7 +93,7 @@
 						root.addChildFolder(openCollectionsFolder);
 						deferred.resolve(root.get_children());
 					});
-				} else if (location.href.indexOf('?image=') != -1) {
+				} else if (location.href.indexOf('?image=') !== -1) {
 					importImage(location.href.split('?image=')[1]).then(function(data) {
 						deferred.resolve(root.get_children());
 					});
