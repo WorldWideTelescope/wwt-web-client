@@ -260,7 +260,14 @@
 		}
 	}
 
-	function nav(url) {
+    var isStandalone = function() {
+        return $('body').data('standalone-mode') == true;
+    }
+
+    function nav(url) {
+        if (isStandalone() && url.indexOf('http') !== 0) {
+            url = 'http://worldwidetelescope.org' + url;
+        }
 		window.open(url);
 	}
 	function resetCamera() {

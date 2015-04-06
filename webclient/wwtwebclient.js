@@ -47973,7 +47973,7 @@ wwt.app.factory('AppState', function() {
 		get: getKey,
 		getAll:getAll
 	};
-	
+
 	var data;
 
 	function setKey(key, val) {
@@ -48688,7 +48688,14 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		}
 	}
 
-	function nav(url) {
+    var isStandalone = function() {
+        return $('body').data('standalone-mode') == true;
+    }
+
+    function nav(url) {
+        if (isStandalone() && url.indexOf('http') !== 0) {
+            url = 'http://worldwidetelescope.org' + url;
+        }
 		window.open(url);
 	}
 	function resetCamera() {
@@ -49829,7 +49836,6 @@ wwt.app.factory('Astrometry', [
 			var uploadData = {
 				url: uploadUrl,
 				session: sessionId
-
 			};
 
 			var uploadJson = encodeURIComponent(JSON.stringify(uploadData));
@@ -49848,7 +49854,7 @@ wwt.app.factory('Astrometry', [
 			}).fail(function (xhr, ajaxOptions, error) {
 				errorData = error;
 				showStatus(statusTypes.uploadFail);
-			});
+			}); 
 		}
 
 		function checkStatus() {
@@ -50295,7 +50301,7 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
-						'Tour Home Page': [util.nav, '/Interact']
+					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours']
 					}
 				},{
 					label:'Search',
