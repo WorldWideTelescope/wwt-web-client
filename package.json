@@ -11,7 +11,7 @@
     "web",
     "HTML5 SDK"
   ],
-  "deployLoc": "../../wwtazure/WWTMVC5",
+  "deployLoc": "../../wwtazure/wwtmvc5",
   "homepage": "http://worldwidetelescope.org",
   "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
   "repository": {

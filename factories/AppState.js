@@ -4,7 +4,7 @@
 		get: getKey,
 		getAll:getAll
 	};
-	
+
 	var data;
 
 	function setKey(key, val) {

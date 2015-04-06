@@ -1,5 +1,120 @@
-﻿<%@ Page Language="C#" CodeFile="Default.aspx.cs" Inherits="wwtwebclient" %>
+﻿<%@ Page Language="C#" %>
+<%@ Import Namespace="System.Globalization" %>
+<%@ Import Namespace="WURFL" %>
+<script runat="server">
+    public bool Debug = false;
+    public bool DebugChrome = false;
+    public bool ADS = false;
+    // This enables the webclient to load in both the worldwidetelescope.org site
+    // with js/css/imagery on the cdn and in standalone mode without a cdn
+    public string ResourcesLocation;
+    public string ResourcesVersion = ConfigurationManager.AppSettings["ResourcesVersion"];
+    public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
+    public string BodyClass;
+    public string SDKLocation = "http://www.worldwidetelescope.org/scripts/wwtsdk.aspx";
 
+    public enum Clients
+    {
+        Html5 = 0,
+        Silverlight = 1,
+        WWT = 2,
+        Mobile = 3
+    };
+    public Clients Client = Clients.Html5;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        var device = WURFLManagerBuilder.Instance.GetDeviceForRequest(Request.UserAgent);
+
+        ResourcesLocation = ConfigurationManager.AppSettings["WebClientResourcesLocation"] ?? ConfigurationManager.AppSettings["ResourcesLocation"] + "/webclient";
+        bool isMobile = device.GetCapability("is_smartphone") == "true";
+
+        BodyClass = string.Format("fs-player wwt-webclient-wrapper {0}", isMobile ? "mobile" : "desktop");
+
+        if (Request.QueryString["debug"] != null)
+        {
+            DebugQs = "?debug=true&v=" + ResourcesVersion;
+            Debug = true;
+            if (Request.QueryString["debug"] == "chrome")
+            {
+                Debug = false;
+                DebugChrome = true;
+                DebugQs = "";
+            }
+            else if (Request.QueryString["debug"] == "local")
+            {
+                SDKLocation = "sdk/wwtsdk.aspx" + DebugQs;
+            }
+            else if (Request.QueryString["debug"] == "localmin")
+            {
+                SDKLocation = "wwtsdk.min.js" + DebugQs;
+            }
+            else
+            {
+                SDKLocation += "?debug=true";
+            }
+        }
+        if (Request.QueryString["ads"] != null)
+        {
+            ADS = true;
+        }
+        if (Request.Cookies["preferredClient"] != null)
+        {
+            switch (Request.Cookies["preferredClient"].Value)
+            {
+                case "SL":
+                    Client = Clients.Silverlight;
+                    break;
+                case "WWT":
+                    Client = Clients.WWT;
+                    break;
+                case "Mobile":
+                    Client = Clients.Mobile;
+                    break;
+                default:
+                    Client = Clients.Html5;
+                    break;
+            }
+        }
+        if (Request.QueryString["client"] != null)
+        {
+            HttpCookie cookie = Request.Cookies["preferredClient"] ?? new HttpCookie("preferredClient");
+            char c = Request.QueryString["client"].ToString(CultureInfo.InvariantCulture).ToLower().ToCharArray()[0];
+            if (c == 'h')
+            {
+                Client = Clients.Html5;
+                cookie.Value = "HTML5";
+            }
+            else if (c == 's')
+            {
+                Client = Clients.Silverlight;
+                cookie.Value = "SL";
+            }
+            else if (c == 'm')
+            {
+                Client = Clients.Mobile;
+                cookie.Value = "Mobile";
+            }
+            else if (c == 'w')
+            {
+                Client = Clients.WWT;
+                cookie.Value = "WWT";
+            }
+
+            HttpContext.Current.Response.Cookies.Add(cookie);
+
+        }
+
+        if (Client == Clients.Html5 && isMobile)
+        {
+            Response.Redirect(string.Format("/webclient/?client=mobile{0}", Debug ? "&debug=true" : ""));
+        }
+        else if (Client == Clients.Mobile && !isMobile)
+        {
+            Response.Redirect(string.Format("/webclient/?client=html5{0}", Debug ? "&debug=true" : ""));
+        }
+    }
+</script>
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -13,7 +128,7 @@
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." /> 
     <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
     <link rel="icon" href="favicon.ico"/>
-    <% if (Client == wwtwebclient.Clients.Html5 || Client == wwtwebclient.Clients.Mobile)
+    <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
     <link href=css/webclient.min.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
@@ -90,7 +205,7 @@
     <% } %>
 
     <% }
-       else if (Client == wwtwebclient.Clients.Silverlight)
+       else if (Client == Clients.Silverlight)
        { %>
     
     
@@ -125,8 +240,8 @@
   
 </head>
 <%--<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation %>" data-version="<%= ResourcesVersion %>">--%>
-    <body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1">
-    <% if (Client == wwtwebclient.Clients.Html5 || Client == wwtwebclient.Clients.Mobile)
+    <body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1" data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
+    <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
         <%--
             //testing FB sharing dynamically
@@ -147,12 +262,12 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         </script>--%>
-<div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == wwtwebclient.Clients.Mobile?"mobile":"desktop" %>">
+<div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
 
     <div id="WorldWideTelescopeControlHost">
-        <div id="WWTCanvas" ng-context-menu="<%=Client == wwtwebclient.Clients.Mobile?"": "showFinderScope"%>"></div>
+        <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile?"": "showFinderScope"%>"></div>
     </div>
-<% if (Client == wwtwebclient.Clients.Mobile)
+<% if (Client == Clients.Mobile)
    { %>
     
     <a  data-bs-popover="popover" tabindex="0"
@@ -310,7 +425,7 @@
         </div>
     </div>
     <% } %>
-    <%if (Client == wwtwebclient.Clients.Html5)
+    <%if (Client == Clients.Html5)
    { %>
     <ng-include src="'views/research-menu.html'"></ng-include>
     <ng-include src="'views/modals/finder-scope.html'" onload="initFinder()"></ng-include>
@@ -422,7 +537,7 @@
                                 <option localize="Ecliptic"></option>-->--%>
                         </select>
                     </div>
-                    &nbsp;
+                    &nbsp;  
                     <label>
                         <span localize="RA"></span>
                         <input type="text" ng-model="goto.RA" />
@@ -919,7 +1034,7 @@
     <%  } %> 
 </div>
     <% }
-       else if (Client == wwtwebclient.Clients.Silverlight)
+       else if (Client == Clients.Silverlight)
        { %>
 
     <div id="silverlightControlHost">

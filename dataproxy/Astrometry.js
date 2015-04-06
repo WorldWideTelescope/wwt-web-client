@@ -73,7 +73,6 @@
 			var uploadData = {
 				url: uploadUrl,
 				session: sessionId
-
 			};
 
 			var uploadJson = encodeURIComponent(JSON.stringify(uploadData));
@@ -92,7 +91,7 @@
 			}).fail(function (xhr, ajaxOptions, error) {
 				errorData = error;
 				showStatus(statusTypes.uploadFail);
-			});
+			}); 
 		}
 
 		function checkStatus() {

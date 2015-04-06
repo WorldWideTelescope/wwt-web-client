@@ -249,7 +249,7 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
-						'Tour Home Page': [util.nav, '/Interact']
+					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours']
 					}
 				},{
 					label:'Search',
