@@ -25,14 +25,12 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         banner: '/**\n' +
             '* WorldWide Telescope Web Client\n' +
-            '* Copyright 2014-2015 Microsoft Research\n' +
+            '* Copyright 2014-2015 OpenWWT\n' +
             '* Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
             '**/\n',
 
         // Task configuration.
-        clean: {
-            deployLoc: '<%=pkg.deployLoc%>/webclient/'
-        },
+        
         concat: {
             options: {
                 banner: '<%= banner %>'
@@ -253,102 +251,12 @@ module.exports = function(grunt) {
                         expand: true
                     }
                 ]
-            },
-            webclient: {
-                files: [
-                    {
-                        cwd: 'App_Data/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/App_Data/',
-                        expand: true
-                    }, {
-                        cwd: 'Bin/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/Bin/',
-                        expand: true
-                    }, {
-                        cwd: 'clientbin/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/clientbin/',
-                        expand: true
-                    }, {
-                        cwd: 'controllers/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/controllers/',
-                        expand: true
-                    }, {
-                        cwd: 'controls/',
-                        src: '**',
-                        dest: '<%= pkg.deployLoc %>/webclient/controls/',
-                        expand: true
-                    }, {
-                        cwd: 'css/',
-                        src: '*.css',
-                        dest: '<%= pkg.deployLoc %>/webclient/css/',
-                        expand: true
-                    }, {
-                        cwd: 'css/',
-                        src: '*.map',
-                        dest: '<%= pkg.deployLoc %>/webclient/css/',
-                        expand: true
-                    }, {
-                        cwd: 'dataproxy/',
-                        src: '**',
-                        dest: '<%= pkg.deployLoc %>/webclient/dataproxy/',
-                        expand: true
-                    }, {
-                        cwd: 'directives/',
-                        src: '**',
-                        dest: '<%= pkg.deployLoc %>/webclient/directives/',
-                        expand: true
-                    }, {
-                        cwd: 'ext/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/ext/',
-                        expand: true
-                    }, {
-                        cwd: 'factories/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/factories/',
-                        expand: true
-                    }, {
-                        cwd: 'images/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/images/',
-                        expand: true
-                    }, {
-                        cwd: 'sdk/',
-                        src: 'wwtsdk*.js',
-                        dest: '<%= pkg.deployLoc %>/html5sdk/<%=pkg.sdkversion%>/',
-                        expand: true
-                    }, {
-                        cwd: 'sdk/',
-                        src: 'wwtsdk*.js',
-                        dest: '<%= pkg.deployLoc %>/webclient/sdk/',
-                        expand: true
-                    }, {
-                        cwd: 'views/',
-                        src: '**/*',
-                        dest: '<%= pkg.deployLoc %>/webclient/views/',
-                        expand: true
-                    }, {
-                        cwd: '',
-                        src: ['*.jpg', '*.png', '*.asax', '*.cs', '*.aspx', '*.ico', '*.js', '*.xap', '*.xml', '*.wtml'],
-                        dest: '<%= pkg.deployLoc %>/webclient/',
-                        expand: true
-                    }, {
-                        cwd: '',
-                        src: ['*.md'],//keep 2 copies of the readme - one for git page and one for inside IDE
-                        dest: '../',
-                        expand: true
-                    }//cdn.worldwidetelescope.org/html5sdk/x.x.x/wwtsdk[.min].js
-                ]
             }
         },
         watch: {
             sdk: {
                 files: 'sdk/wwtlib.js', 
-                tasks: ['sdk', 'deploy']
+                tasks: ['sdk']
             },
 
             // call out only the directories to watch prevents
@@ -362,7 +270,7 @@ module.exports = function(grunt) {
                     'dataproxy/*.js',
                     'factories/*.js',
                     'app.js'],
-                tasks: ['dist-js', 'deploy']
+                tasks: ['dist-js']
             },
             vendor: { // will be triggered by 'bower install' when it finds updates
                 files: [
@@ -374,16 +282,10 @@ module.exports = function(grunt) {
                 tasks: ['vendor']
             },
 
-            html: {
-                files: [
-                    'views/**/*.html',
-                    'Default.aspx'
-                ],
-                tasks: ['deploy']
-            },
+            
             less: {
                 files: 'css/*.less',
-                tasks: ['dist-css', 'deploy']
+                tasks: ['dist-css']
             }
         },
         bower: {
@@ -417,11 +319,7 @@ module.exports = function(grunt) {
     grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', /*'csscomb:dist',*/'cssmin:minifyCore']);
 
     // Vendor JS libs
-    grunt.registerTask('vendor', ['copy:vendor','dist-js','dist-css','deploy']);
+    grunt.registerTask('vendor', ['copy:vendor','dist-js','dist-css']);
 
-    // Deploy to wwt web site (internal only)
-    grunt.registerTask('deploy', ['copy:webclient']);
-
-    // uncomment out the below task and comment out the above task to run locally
-    //grunt.registerTask('deploy', []);
+    
 };

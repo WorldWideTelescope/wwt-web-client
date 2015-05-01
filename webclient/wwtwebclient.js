@@ -1,6 +1,6 @@
 /**
 * WorldWide Telescope Web Client
-* Copyright 2014-2015 Microsoft Research
+* Copyright 2014-2015 OpenWWT
 * Licensed under MIT (https://github.com/MSRConnections/OpenWWT-Web/blob/master/LICENSE)
 **/
 /*!
@@ -49973,7 +49973,6 @@ wwt.controllers.controller('ContextPanelController',
 	'ThumbList',
 	function ($scope, $rootScope, $timeout, util, searchUtil, thumbList) {
 	    
-
 	    var lastUpdate = new Date();
 
 	    var init = function () {
@@ -52220,7 +52219,7 @@ wwt.controllers.controller('ViewController',
 			
 		};
 		wwtlib.WWTControl.useUserLocation();
-		$scope.locationName = $scope.getFromEn('My Location');//getFromEn('Microsoft Research Building 99')
+		$scope.locationName = $scope.getFromEn('My Location');
 		$scope.now = new Date();
 		$scope.loc = {
 			view:'View',

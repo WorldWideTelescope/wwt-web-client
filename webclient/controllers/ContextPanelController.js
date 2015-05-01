@@ -7,7 +7,6 @@
 	'ThumbList',
 	function ($scope, $rootScope, $timeout, util, searchUtil, thumbList) {
 	    
-
 	    var lastUpdate = new Date();
 
 	    var init = function () {

@@ -1,7 +1,5 @@
-# OpenWWT-Web Client (WorldWide Telescope)
+# OpenWWT-Web - WorldWide Telescope
 This repository contains the HTML5 SDK which is the rendering engine for the web client and the embeddable web control. It also contains the full web client code. This repository does not contain all the server-side endpoints needed to render tiles, constellation lines, etc. Some samples will be included in the future.
-
-Note:  We are not actively accepting commits just yet.   There is currently no developer support.  Please stay tuned!
 
 ## Prerequisites
 * Visual Studio 2013 ([Free Community Edition](http://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx))

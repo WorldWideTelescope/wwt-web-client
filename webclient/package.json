@@ -3,16 +3,16 @@
   "description": "WorldWide Telescope Web Client.",
   "version": "5.2.4",
   "sdkversion": "1.0.0",
-  "keywords": [
-    "WorldWide Telescope",
-    "WWT",
-    "OpenWWT",
-    "client",
-    "web",
-    "HTML5 SDK"
-  ],
-  "deployLoc": "../../wwtazure/wwtmvc5",
-  "homepage": "http://worldwidetelescope.org",
+    "keywords": [
+        "WorldWide Telescope",
+        "WWT",
+        "OpenWWT",
+        "client",
+        "web",
+        "HTML5 SDK"
+    ],
+  
+  "homepage": "http://openwwt.org",
   "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
   "repository": {
     "type": "git",

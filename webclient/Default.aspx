@@ -126,13 +126,15 @@
     <meta property="og:url" content="http://worldwidetelescope.org/webclient" /> 
     <meta property="og:title" content="WorldWide Telescope Web Client" />
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." /> 
-    <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
+    <meta property="og:image" content="http://openwwt.org/webclient/Images/wwtlogo.png" /> 
     <link rel="icon" href="favicon.ico"/>
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
+    <%-- Console complains about unquoted css, but need this to get resourcesversion in the path - 
+        otherwise webforms will error with quotes --%>
     <link href=css/webclient.min.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
-    <link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel="stylesheet"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link href=ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
     <style> 
         html, body.fs-player, iframe {
@@ -147,15 +149,13 @@
         }
     </style> 
      
-    <%--<script src="sdk/old/wwtsdk_old.debug.js"></script>
-    <script src="sdk/wwtsdk.js"></script>
-    <script src="sdk/wwtsdk<%= Debug ? "" : ".min" %>.js"></script>--%>
+    
     <script src="sdk/wwtsdk.js"></script>
     
     <% if (Debug || DebugChrome) 
        { %>
-    <script src="<%= ResourcesLocation %>/ext/jquery.js?v=<%= ResourcesVersion%>""></script>
-    <script src="<%= ResourcesLocation %>/ext/bootstrap.js?v=<%= ResourcesVersion%>""></script>
+    <script src="<%= ResourcesLocation %>/ext/jquery.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/ext/bootstrap.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/ext/angular-touch.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
@@ -239,33 +239,13 @@
     
   
 </head>
-<%--<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation %>" data-version="<%= ResourcesVersion %>">--%>
-    <body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1" data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
+<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1" data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
-        <%--
-            //testing FB sharing dynamically
-            <script>
-            window.fbAsyncInit = function () {
-                FB.init({
-                    appId: '1001649533184139',
-                    xfbml: true,
-                    version: 'v2.2'
-                });
-            };
-
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) { return; }
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>--%>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
 
     <div id="WorldWideTelescopeControlHost">
-        <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile?"": "showFinderScope"%>"></div>
+        <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile? "" : "showFinderScope"%>"></div>
     </div>
 <% if (Client == Clients.Mobile)
    { %>
@@ -377,11 +357,11 @@
     <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
         <img src='<%= ResourcesLocation%>/Images/wwtlogo.png' 
             class="pull-left" 
-            localize="Microsoft WorldWide Telescope Logo"
+            localize="WorldWide Telescope Logo"
             localize-only="alt"
          />
         <h3>
-            <small class="text-white">Microsoft<sup>&reg;</sup> Research</small><br />
+            
             World<span class="brand-blue">Wide Telescope</span>
         </h3>
         <h4 localize="Welcome to the WorldWide Telescope Web Client"></h4>
@@ -1001,10 +981,9 @@
                 <img src='<%= ResourcesLocation%>/Images/wwtlogo.png' 
                     style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;" 
                     class="pull-left" 
-                    localize="Microsoft WorldWide Telescope Logo"
+                    localize="WorldWide Telescope Logo"
                     localize-only="alt" />
                 <h1 style="position:relative;top:-2px"> 
-                    <small style="color:white">Microsoft<sup>&reg;</sup> Research</small><br />
                     World<span style="color:#6ba9e6">Wide Telescope</span>
                 </h1>
                 <p>
