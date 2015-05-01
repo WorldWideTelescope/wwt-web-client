@@ -15,7 +15,6 @@ There are two solutions in the repository. The standalone webclient sln includes
 ## To Enable grunt (LESS compilation, HTML5SDK Compilation, and JS Minification)
 * In a command prompt, navigate to the webclient root and type `npm install` to install grunt's dependencies. If you encounter any errors (I always do on a clean machine), ensure `%USERPROFILE%\AppData\Roaming\npm` exists (create it if not) and your system path includes `;%USERPROFILE%\AppData\Roaming\npm`. You can run the ensurenpm.cmd to solve this.
 * Once you have installed the node_modules (via `npm install` above), install the grunt client. type `npm install -g grunt-cli` from the same command prompt.
-* Edit webclient\gruntfile.js and remove `'copy:webclient'` in the bottom task. Leave an empty string. This task copies the webclient to the worldwidetelescope web site codebase and will clutter your filesystem if you are not developing on the worldwidetelescope.org web site. However if you want to reuse this command to deploy to your own site, edit the `deployLoc` variable.
 * If you do not have bower installed, run `npm install -g bower`
 * Run `npm install` to install dependencies
 * Run `grunt watch` from the same command prompt. 

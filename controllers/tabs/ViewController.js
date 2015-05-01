@@ -13,7 +13,7 @@
 			
 		};
 		wwtlib.WWTControl.useUserLocation();
-		$scope.locationName = $scope.getFromEn('My Location');//getFromEn('Microsoft Research Building 99')
+		$scope.locationName = $scope.getFromEn('My Location');
 		$scope.now = new Date();
 		$scope.loc = {
 			view:'View',
