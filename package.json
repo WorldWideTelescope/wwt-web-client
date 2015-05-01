@@ -1,8 +1,7 @@
 {
-  "name": "webclient",
-  "description": "WorldWide Telescope Web Client.",
-  "version": "5.2.4",
-  "sdkversion": "1.0.0",
+    "name": "webclient",
+    "description": "WorldWide Telescope Web Client.",
+    "version": "5.2.4",
     "keywords": [
         "WorldWide Telescope",
         "WWT",
@@ -11,44 +10,43 @@
         "web",
         "HTML5 SDK"
     ],
-  
-  "homepage": "http://openwwt.org",
-  "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MSRConnections/OpenWWT-Web.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MSRConnections/OpenWWT-Web/Issues"
-  },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/MSRConnections/OpenWWT-Web/blob/master/LICENSE"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-autoprefixer": "~1.0.1",
-    "grunt-banner": "~0.2.3",
-    "grunt-bower-task": "^0.4.0",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-concat": "~0.5.0",
-    "grunt-contrib-connect": "~0.9.0",
-    "grunt-contrib-copy": "~0.7.0",
-    "grunt-contrib-cssmin": "~0.10.0",
-    "grunt-contrib-less": "~0.12.0",
-    "grunt-contrib-uglify": "~0.6.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-csscomb": "~3.0.0",
-    "grunt-exec": "~0.4.6",
-    "grunt-text-replace": "^0.4.0",
-    "load-grunt-tasks": "~1.0.0",
-    "npm-shrinkwrap": "~5.1.0",
-    "time-grunt": "~1.0.0"
-  },
-  "engines": {
-    "node": "~0.10.1"
-  },
-  "buildConfig": {
-    "uglify": true
-  }
+    "homepage": "http://openwwt.org",
+    "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MSRConnections/OpenWWT-WebClient.git"
+    },
+    "bugs": {
+        "url": "https://github.com/MSRConnections/OpenWWT-WebClient/Issues"
+    },
+    "license": {
+        "type": "MIT",
+        "url": "https://github.com/MSRConnections/OpenWWT-WebClient/blob/master/license.md"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-autoprefixer": "~1.0.1",
+        "grunt-banner": "~0.2.3",
+        "grunt-bower-task": "^0.4.0",
+        "grunt-contrib-clean": "~0.6.0",
+        "grunt-contrib-concat": "~0.5.0",
+        "grunt-contrib-connect": "~0.9.0",
+        "grunt-contrib-copy": "~0.7.0",
+        "grunt-contrib-cssmin": "~0.10.0",
+        "grunt-contrib-less": "~0.12.0",
+        "grunt-contrib-uglify": "~0.6.0",
+        "grunt-contrib-watch": "~0.6.1",
+        "grunt-csscomb": "~3.0.0",
+        "grunt-exec": "~0.4.6",
+        "grunt-text-replace": "^0.4.0",
+        "load-grunt-tasks": "~1.0.0",
+        "npm-shrinkwrap": "~5.1.0",
+        "time-grunt": "~1.0.0"
+    },
+    "engines": {
+        "node": "~0.10.1"
+    },
+    "buildConfig": {
+        "uglify": true
+    }
 }
