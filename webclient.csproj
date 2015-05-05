@@ -56,16 +56,16 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.5.3.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.3\lib\Wurfl.dll</HintPath>
+    <Reference Include="Wurfl, Version=1.6.0.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\WURFL_Official_API.1.6.0.1\lib\Wurfl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Wurfl.1.5.2.1.Fakes">
       <HintPath>FakesAssemblies\Wurfl.1.5.2.1.Fakes.dll</HintPath>
     </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.5.3.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.5.3\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.6.0.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\WURFL_Official_API.1.6.0.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Wurfl.Aspnet.Extensions.1.5.2.1.Fakes">
       <HintPath>FakesAssemblies\Wurfl.Aspnet.Extensions.1.5.2.1.Fakes.dll</HintPath>
@@ -75,6 +75,7 @@
     <Content Include="app.js" />
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
+    <Content Include="COPYING.txt" />
     <Content Include="ext\jquery.js" />
     <Content Include="Gruntfile.js" />
     <Content Include="bootstrap\less\.csscomb.json" />
@@ -322,13 +323,13 @@
     <Fakes Include="Fakes\Wurfl.fakes" />
     <Fakes Include="Fakes\Wurfl.Aspnet.Extensions.fakes" />
     <Content Include="ext\angular-touch.min.js.map" />
-    <Content Include="App_Data\wurfl-latest.zip" />
-    <Content Include="packages.config" />
     <Content Include="ensurenpm.cmd" />
     <Content Include="bower.json" />
     <Content Include="bootstrap\less\variables.less" />
     <Content Include="bootstrap\less\bootstrap.less" />
     <Content Include="adsass.wtml" />
+    <Content Include="App_Data\wurfl-latest.zip" />
+    <Content Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

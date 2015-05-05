@@ -10,7 +10,6 @@
 				$scope.setViewFromLocation();
 			}
 			wwt.wc.settings.set_galacticMode($scope.galaxyMode);
-			
 		};
 		wwtlib.WWTControl.useUserLocation();
 		$scope.locationName = $scope.getFromEn('My Location');
@@ -19,7 +18,6 @@
 			view:'View',
 			realTime: 'Real Time',
 			reverseTime: 'Reverse Time',
-
 			paused:'Paused'
 		};
 		$rootScope.languagePromise.then(function() {
