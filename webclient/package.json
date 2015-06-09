@@ -5,23 +5,22 @@
     "keywords": [
         "WorldWide Telescope",
         "WWT",
-        "OpenWWT",
         "client",
         "web",
         "HTML5 SDK"
     ],
-    "homepage": "http://openwwt.org",
+    "homepage": "http://WorldWideTelescope.org",
     "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
     "repository": {
         "type": "git",
-        "url": "https://github.com/MSRConnections/OpenWWT-WebClient.git"
+        "url": "https://github.com/WorldWideTelescope/wwt-web-client.git"
     },
     "bugs": {
-        "url": "https://github.com/MSRConnections/OpenWWT-WebClient/Issues"
+        "url": "https://github.com/WorldWideTelescope/wwt-web-client/Issues"
     },
     "license": {
         "type": "MIT",
-        "url": "https://github.com/MSRConnections/OpenWWT-WebClient/blob/master/license.md"
+        "url": "https://github.com/WorldWideTelescope/wwt-web-client/blob/master/LICENSE.md"
     },
     "devDependencies": {
         "grunt": "~0.4.5",

@@ -1,7 +1,7 @@
 /**
 * WorldWide Telescope Web Client
-* Copyright 2014-2015 OpenWWT
-* Licensed under MIT (https://github.com/MSRConnections/OpenWWT-WebClient/blob/master/license.md)
+* Copyright 2014-2015 WorldWide Telescope
+* Licensed under MIT (https://github.com/WorldWideTelescope/wwt-web-client/blob/master/LICENSE.md)
 **/
 /*!
  * jQuery JavaScript Library v2.1.4

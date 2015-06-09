@@ -1,7 +1,7 @@
 /**
 * WorldWide Telescope Web Client
 * Copyright 2014-2015 Microsoft Research
-* Licensed under MIT (https://github.com/MSRConnections/OpenWWT-Web/blob/master/LICENSE)
+* Licensed under MIT (https://github.com/WorldWideTelescope/wwt-web-client/blob/master/LICENSE.md)
 **/
 /*! Script# Runtime
  * Designed and licensed for use and distribution with Script#-generated scripts.

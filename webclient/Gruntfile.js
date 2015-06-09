@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         banner: '/**\n' +
             '* WorldWide Telescope Web Client\n' +
-            '* Copyright 2014-2015 OpenWWT\n' +
+            '* Copyright 2014-2015 WorldWide Telescope\n' +
             '* Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
             '**/\n',
 
