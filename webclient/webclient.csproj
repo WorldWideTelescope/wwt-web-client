@@ -75,7 +75,6 @@
     <Content Include="app.js" />
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
-    <Content Include="COPYING.txt" />
     <Content Include="ext\jquery.js" />
     <Content Include="Gruntfile.js" />
     <Content Include="bootstrap\less\.csscomb.json" />
@@ -328,7 +327,6 @@
     <Content Include="bootstrap\less\variables.less" />
     <Content Include="bootstrap\less\bootstrap.less" />
     <Content Include="adsass.wtml" />
-    <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

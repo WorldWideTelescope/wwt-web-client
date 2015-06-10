@@ -126,7 +126,7 @@
     <meta property="og:url" content="http://worldwidetelescope.org/webclient" /> 
     <meta property="og:title" content="WorldWide Telescope Web Client" />
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." /> 
-    <meta property="og:image" content="http://openwwt.org/webclient/Images/wwtlogo.png" /> 
+    <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
     <link rel="icon" href="favicon.ico"/>
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>

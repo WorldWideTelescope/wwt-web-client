@@ -1,2 +1,2 @@
-# OpenWWT-Web - Server
+# WWT-Web - Server
 This directory contains the endpoints used in the WWT Web server. More documentation to follow...
