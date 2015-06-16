@@ -201,6 +201,7 @@ ModelManifest.xml
 *.sublime-workspace
 nbproject
 Thumbs.db
+COPYING.txt
 
 # Komodo
 .komodotools
@@ -213,3 +214,7 @@ validation-status.json
 # Folders to ignore
 bower_components
 node_modules
+App_Data
+Content
+App_Readme
+Introspector

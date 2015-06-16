@@ -151,18 +151,18 @@
      
     
     <script src="sdk/wwtsdk.js"></script>
-    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-touch.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-route.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-cookies.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-animate.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.tpl.min.js"></script>
     <% if (Debug || DebugChrome) 
        { %>
-    <script src="<%= ResourcesLocation %>/ext/jquery.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/bootstrap.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-touch.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-route.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-cookies.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-animate.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-strap.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-strap.tpl.js?v=<%= ResourcesVersion%>"></script>
+
     <script src="<%= ResourcesLocation %>/ext/intro.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/app.js?v=<%= ResourcesVersion%>"></script>
