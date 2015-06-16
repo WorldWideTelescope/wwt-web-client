@@ -13,6 +13,7 @@
 			localStorage.setItem('appState', JSON.stringify(data));
 		}
 	}
+
 	function getKey(k) {
 
 		return data[k];
@@ -21,7 +22,6 @@
 	function getAll() { return data; }
 
 	var init = function () {
-		
 		var storedData = localStorage ? localStorage.getItem('appState') : {};
 		data = storedData && localStorage ? JSON.parse(storedData) : {};
 	};

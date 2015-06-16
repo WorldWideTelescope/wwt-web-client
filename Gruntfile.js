@@ -37,15 +37,6 @@ module.exports = function(grunt) {
             },
             webclient: {
                 src: [
-                    'ext/jquery.js',
-                    'ext/bootstrap.js',
-                    'ext/angular.js',
-                    'ext/angular-touch.js',
-                    'ext/angular-route.js',
-                    'ext/angular-animate.js',
-                    'ext/angular-cookies.js',
-                    'ext/angular-strap.js',
-                    'ext/angular-strap.tpl.js',
                     'ext/intro.js',
                     'ext/angular-intro.js',
                     'app.js',
@@ -193,66 +184,7 @@ module.exports = function(grunt) {
                 dest: 'css/'
             }
         },
-        copy: {
-            vendor: {
-                files: [
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/jquery/dist/jquery.js',
-                        dest: 'ext/'
-                    }, {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/bootstrap/dist/js/bootstrap.js'
-                    }, {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular/angular.js'
-                    },
-                    {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular-touch/angular-touch.js'
-                    },
-                    {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular-route/angular-route.js'
-                    },
-                    {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular-animate/angular-animate.js'
-                    },{
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular-cookies/angular-cookies.js'
-                    }, {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular-strap/dist/angular-strap.js'
-                    }, {
-                        dest: 'ext/',
-                        expand: true,
-                        flatten: true,
-                        src: 'bower_components/angular-strap/dist/angular-strap.tpl.js'
-                    }, {
-                        cwd: 'bower_components/bootstrap/less/',
-                        src: '**/*',
-                        dest: 'bootstrap/less/',
-                        expand: true
-                    }
-                ]
-            }
-        },
+        
         watch: {
             sdk: {
                 files: 'sdk/wwtlib.js', 
@@ -272,32 +204,12 @@ module.exports = function(grunt) {
                     'app.js'],
                 tasks: ['dist-js']
             },
-            vendor: { // will be triggered by 'bower install' when it finds updates
-                files: [
-                    'bower_components/jquery/dist/jquery.js',
-                    'bower_components/bootstrap/dist/js/bootstrap.js',
-                    'bower_components/angular/angular.js',
-                    'bower_components/angular-strap/dist/angular-strap.js'
-                ],
-                tasks: ['vendor']
-            },
+            
 
             
             less: {
                 files: 'css/*.less',
                 tasks: ['dist-css']
-            }
-        },
-        bower: {
-            install: {
-                options: {
-                    targetDir:'bower_components',
-                    install: true,
-                    verbose: true,
-                    cleanTargetDir: false,
-                    cleanBowerDir: false,
-                    bowerOptions: {}
-                }
             }
         }
     });
@@ -318,8 +230,4 @@ module.exports = function(grunt) {
     // CSS  (csscomb seems like too much, so commented out for now)
     grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', /*'csscomb:dist',*/'cssmin:minifyCore']);
 
-    // Vendor JS libs
-    grunt.registerTask('vendor', ['copy:vendor','dist-js','dist-css']);
-
-    
 };
