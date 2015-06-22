@@ -1220,10 +1220,14 @@ wwt.app.factory('AppState', function() {
 	var data;
 
 	function setKey(key, val) {
-		data[key] = val; 
-		if (localStorage) {
-			localStorage.setItem('appState', JSON.stringify(data));
-		}
+	    try {
+	        data[key] = val;
+	        if (localStorage) {
+	            localStorage.setItem('appState', JSON.stringify(data));
+	        }
+	    } catch (er) {
+            console.log('Error using localstorage. Is it turned off?')
+	    }
 	}
 
 	function getKey(k) {
@@ -1886,19 +1890,19 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		}
 	}
 	
-	var accelDevice = false;
-	window.ondevicemotion = function(event) {
-		if (event.acceleration &&
-			event.acceleration.x != null) {
-			log('devicemotionevent', event);
-			accelDevice = true;
-			if (!api.isMobile && minDimension < 500) {
+	var accelDevice = false; 
+	//window.ondevicemotion = function(event) {
+	//	if (event.acceleration &&
+	//		event.acceleration.x != null) {
+	//		log('devicemotionevent', event);
+	//		accelDevice = true;
+	//		if (!api.isMobile && minDimension < 500) {
 
-				redirectClient('mobile');
-			}
-			window.ondevicemotion = null;
-		}
-	}
+	//			redirectClient('mobile');
+	//		}
+	//		window.ondevicemotion = null;
+	//	}
+	//}
 	function redirectClient(val) {
 		return;
 		var qs = location.search.substr(1);
@@ -3923,8 +3927,11 @@ wwt.controllers.controller('MainController',
 			wwtlib.WWTControl.singleton.playTour(url);
 			wwt.tourPlaying = $rootScope.tourPlaying = true;
 			wwt.wc.add_tourEnded(tourChangeHandler);
-			//wwt.wc.add_tourPaused(tourChangeHandler);
-			$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
+		    //wwt.wc.add_tourPaused(tourChangeHandler);
+		    setTimeout(function() {
+		        $('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
+		    }, 200);
+			
 		}
 
 		function tourChangeHandler() {
@@ -4159,7 +4166,11 @@ wwt.controllers.controller('MainController',
 				'fov-panel';
 		}
 		$scope.contextPanelClass = function () {
-			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
+		    var cls = $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
+		    if ($rootScope.tourPlaying) {
+		        cls += ' hide';
+		    }
+		    return cls;
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;

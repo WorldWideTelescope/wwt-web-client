@@ -629,8 +629,11 @@ wwt.controllers.controller('MainController',
 			wwtlib.WWTControl.singleton.playTour(url);
 			wwt.tourPlaying = $rootScope.tourPlaying = true;
 			wwt.wc.add_tourEnded(tourChangeHandler);
-			//wwt.wc.add_tourPaused(tourChangeHandler);
-			$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
+		    //wwt.wc.add_tourPaused(tourChangeHandler);
+		    setTimeout(function() {
+		        $('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
+		    }, 200);
+			
 		}
 
 		function tourChangeHandler() {
@@ -865,7 +868,11 @@ wwt.controllers.controller('MainController',
 				'fov-panel';
 		}
 		$scope.contextPanelClass = function () {
-			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
+		    var cls = $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
+		    if ($rootScope.tourPlaying) {
+		        cls += ' hide';
+		    }
+		    return cls;
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;

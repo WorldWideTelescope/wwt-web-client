@@ -8,10 +8,14 @@
 	var data;
 
 	function setKey(key, val) {
-		data[key] = val; 
-		if (localStorage) {
-			localStorage.setItem('appState', JSON.stringify(data));
-		}
+	    try {
+	        data[key] = val;
+	        if (localStorage) {
+	            localStorage.setItem('appState', JSON.stringify(data));
+	        }
+	    } catch (er) {
+            console.log('Error using localstorage. Is it turned off?')
+	    }
 	}
 
 	function getKey(k) {

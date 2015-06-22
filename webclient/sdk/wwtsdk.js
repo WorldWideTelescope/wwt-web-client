@@ -1,6 +1,6 @@
 /**
 * WorldWide Telescope Web Client
-* Copyright 2014-2015 Microsoft Research
+* Copyright 2014-2015 WorldWide Telescope
 * Licensed under MIT (https://github.com/WorldWideTelescope/wwt-web-client/blob/master/LICENSE.md)
 **/
 /*! Script# Runtime
@@ -17813,6 +17813,9 @@ window.wwtlib = function(){
     return '';
   };
   Util.getProxiedUrl = function(url) {
+    if (ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) {
+      return url.split('worldwidetelescope.org')[1];
+    }
     if (ss.startsWith(url.toLowerCase(), 'http')) {
       return 'http://www.worldwidetelescope.org/webserviceproxy.aspx?targeturl=' + encodeURIComponent(url);
     }

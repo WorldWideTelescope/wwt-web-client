@@ -54,15 +54,16 @@ namespace wwtlib
 
         public static string GetProxiedUrl(string url)
         {
-            
-            //return "http://www.worldwidetelescope.org/wwtweb/webserviceproxy.aspx?x=1&targeturl=" + url.EncodeUriComponent();
+            if (url.ToLowerCase().StartsWith("http://worldwidetelescope.org") ||
+                url.ToLowerCase().StartsWith("http://www.worldwidetelescope.org"))
+            {
+                return url.Split("worldwidetelescope.org")[1];
+            }
 
             if (url.ToLowerCase().StartsWith("http"))
             {
                 return "http://www.worldwidetelescope.org/webserviceproxy.aspx?targeturl=" + url.EncodeUriComponent();
             }
-          
-
             return url;
         }
         // Parse timespan into int with milliseconds
