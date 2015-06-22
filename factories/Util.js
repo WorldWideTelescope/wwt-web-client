@@ -215,19 +215,19 @@
 		}
 	}
 	
-	var accelDevice = false;
-	window.ondevicemotion = function(event) {
-		if (event.acceleration &&
-			event.acceleration.x != null) {
-			log('devicemotionevent', event);
-			accelDevice = true;
-			if (!api.isMobile && minDimension < 500) {
+	var accelDevice = false; 
+	//window.ondevicemotion = function(event) {
+	//	if (event.acceleration &&
+	//		event.acceleration.x != null) {
+	//		log('devicemotionevent', event);
+	//		accelDevice = true;
+	//		if (!api.isMobile && minDimension < 500) {
 
-				redirectClient('mobile');
-			}
-			window.ondevicemotion = null;
-		}
-	}
+	//			redirectClient('mobile');
+	//		}
+	//		window.ondevicemotion = null;
+	//	}
+	//}
 	function redirectClient(val) {
 		return;
 		var qs = location.search.substr(1);
