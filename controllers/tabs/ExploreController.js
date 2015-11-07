@@ -53,11 +53,13 @@
 	                cache = [result];
 	                calcPageSize();
 	                $.each(result, function (i, item) {
-	                    if (item.get_name() === 'Open Collections') {
+	                    if (item.get_name() === 'Open Collections'||item.get_name() === 'New VAMP Feeds') {
 	                        result.splice(0, 0, item);
 	                        result.pop();
-	                        openCollection = true;
-	                        $scope.clickThumb(item);
+	                        if (item.get_name() === 'Open Collections') {
+	                            openCollection = true;
+	                            $scope.clickThumb(item);
+	                        }
 	                    }
 	                });
 

@@ -251,13 +251,20 @@ wwt.controllers.controller('MainController',
 					menu: {
 					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours']
 					}
-				},{
-					label:'Search',
-					button: 'rbnSearch',
-					menu: {
-						'Search Now':[function() { $timeout(function() { changePanel('Search'); }); }]
-					}
-				},{
+				}, {
+				    label: 'Search',
+				    button: 'rbnSearch',
+				    menu: {
+				        'Search Now': [function () { $timeout(function () { changePanel('Search'); }); }]
+				    }
+				},
+                {
+                    label: 'Communities',
+                    button: 'rbnCommunities',
+                    menu: {
+                        'Search Communities': [util.nav, '/Community']
+                    }
+                }, {
 					label:'View',
 					button:'rbnView',
 					menu: {
@@ -637,7 +644,7 @@ wwt.controllers.controller('MainController',
 		}
 
 		function tourChangeHandler() {
-			var settings = appState.get('settings');
+			var settings = appState.get('settings') || {};
 			wwt.tourPlaying = $rootScope.tourPlaying = false;
 
 			$rootScope.landscapeMessage = false;
@@ -849,7 +856,7 @@ wwt.controllers.controller('MainController',
 			$scope.nboCount = nbo.length;
 			if ($scope.isLoading) {
 				$scope.isLoading = false;
-				util.log(new Date().valueOf() - time.valueOf());
+				//util.log(new Date().valueOf() - time.valueOf());
 			}
 			
 		}
@@ -861,7 +868,7 @@ wwt.controllers.controller('MainController',
 			$scope.hideMenu();
 		}
 		$scope.isLoading = true;
-		var time = new Date();
+		//var time = new Date();
 		$scope.fovClass = function () {
 			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'hide' :
 				$scope.lookAt === 'SolarSystem' ? 'solar-system-mode fov-panel' :

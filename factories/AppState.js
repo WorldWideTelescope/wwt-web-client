@@ -14,7 +14,7 @@
 	            localStorage.setItem('appState', JSON.stringify(data));
 	        }
 	    } catch (er) {
-            console.log('Error using localstorage. Is it turned off?')
+	        console.log('Error using localstorage. Is it turned off?');
 	    }
 	}
 

@@ -11,13 +11,13 @@
 			<span class="tour-thumb" ng-if="item.get_thumbnailUrl().length > 15">
 				<a ng-click="clickThumb(item)" title="{{item.get_name()}}"
 				   ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-					<img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+					<img ng-src="{{item.thumb || item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
 					<label>{{item.get_name()}}</label>
 				</a>
 
 			</span>
 			<span ng-if="item.get_thumbnailUrl().length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
-				<img ng-src="{{item.get_thumbnailUrl()}}" style="position:absolute;top:-9999px" />
+                <img ng-src="{{item.thumb || item.get_thumbnailUrl()}}" style="position:absolute;top:-9999px" />
 			</span>
 		</div>
 	</div>

@@ -106,7 +106,17 @@
 			});
 			var end = new Date();
 			util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-		    importWtml('Wise.wtml').then(function() {
+			importWtml('Wise.wtml').then(function () {
+			    console.log('wise loaded');
+			    importWtml('Hubble.wtml').then(function () {
+			        console.log('hubble loaded');
+			        importWtml('ESO.wtml').then(function () {
+			            console.log('eso loaded');
+			            importWtml('Chandra.wtml').then(function () {
+			                console.log('chandra loaded'); 
+			            });
+			        });
+			    });
 		        deferredInit.resolve(data);
 		    });
 			
@@ -127,7 +137,11 @@
 					wwt.searchDataIndexed = searchIndex;
 				}
 			} else {
-				wwt.searchDataIndexed[firstChar] = searchIndex[firstChar] = [place];
+			    try {
+			        wwt.searchDataIndexed[firstChar] = searchIndex[firstChar] = [place];
+			    } catch (er) {
+			        console.error(er);
+			    }
 			}
 		}
 
@@ -220,6 +234,6 @@
 	
 
 	initPromise = init();
-	//importWtml('Wise.wtml');
+	
 	return api;
 }]);

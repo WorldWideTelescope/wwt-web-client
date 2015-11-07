@@ -98,14 +98,19 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
             calcPageSize(scope, false);
             return outParams;
         }
-
+        if (item.get_url && item.get_url() && item.get_url().indexOf('?wwtfull') !== -1) {
+            window.open(item.get_url());
+            return outParams;
+        }
         if (item.get_isFolder()) {
+            $('#folderLoadingModal').modal('show');
             $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             outParams.depth++;
             outParams.breadCrumb.push(item.get_name());
             scope.breadCrumb = outParams.breadCrumb;
             places.getChildren(item).then(function (result) {
+                $('#folderLoadingModal').modal('hide');
                 if ($.isArray(result[0])) {
                     result = result[0];
                 }
@@ -167,6 +172,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         if ((ss.canCast(item, wwtlib.Place) || item.isEarth) && !item.isSurvey) {
             scope.setForegroundImage(item);
         }
+        if (ss.canCast(item, wwtlib.Tour)) {
+            scope.playTour(item.get_tourUrl());
+        }
         return outParams;  
     };
 
@@ -195,15 +203,18 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         scope.currentPage = scope.currentPage === 0 ? scope.currentPage : scope.currentPage - 1;
         return spliceOnePage(scope);
     };
+
     function goFwd(scope) {
         $('body').append($('#researchMenu'));
         scope.currentPage = scope.currentPage === scope.pageCount - 1 ? scope.currentPage : scope.currentPage + 1;
         return spliceOnePage(scope);
     };
+
     function spliceOnePage(scope) {
         var start = scope.currentPage * scope.pageSize;
         scope.collectionPage = scope.collection.slice(start, start + scope.pageSize);
     };
+
     return api;
 
 }]);
