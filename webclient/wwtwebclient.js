@@ -4814,9 +4814,10 @@ wwt.controllers.controller('LayerManagerController',
 			this.children = args.children || [];
 			this.action = args.action;
 			this.collapsed = args.collapsed || false;
+		    this.disabled = false;
 			if (args.v) this.v = args.v;
 		}
-
+         
 		var constellations = [];
 		$scope.initLayerManager = function() {
 			if (!wwtlib.Constellations.abbreviations) {
@@ -4834,7 +4835,7 @@ wwt.controllers.controller('LayerManagerController',
 
 				appState.set('layerManager', $scope.tree);
 			}
-			$timeout(function() { initTreeNode(0, $scope.tree.children[0]); });
+			$timeout(function() { initTreeNode(0, $scope.tree); });
 			wwt.resize();
 		}
 
@@ -4969,24 +4970,12 @@ wwt.controllers.controller('LayerManagerController',
 						name: $scope.getFromEn('3d Solar System'),
 						checked: true,
 						action: 'showSolarSystem',
-						children: [/*
-							new treeNode({
-								name: $scope.getFromEn('Cosmic Microwave Background'),
-								checked: false,
-								action: 'solarSystemCMB'
-							}), new treeNode({
-								name: $scope.getFromEn('Cosmos (SDSS Galaxies)'),
-								checked: true,
-								action: 'solarSystemCosmos'
-							}),*/ new treeNode({
+						children: [
+                            new treeNode({
 								name: $scope.getFromEn('Milky Way (Dr. R. Hurt)'),
 								checked: true,
 								action: 'solarSystemMilkyWay'
-							})/*, new treeNode({
-								name: $scope.getFromEn('Stars (Hipparcos, ESA)'),
-								checked: true,
-								action: 'solarSystemStars'
-							})*/, new treeNode({
+							}), new treeNode({
 								name: $scope.getFromEn('Planets (NASA, ETAL)'),
 								checked: true,
 								action: 'solarSystemPlanets'
@@ -4998,19 +4987,7 @@ wwt.controllers.controller('LayerManagerController',
 								name: $scope.getFromEn('Lighting and Shadows'),
 								checked: true,
 								action: 'solarSystemLighting'
-							})/*, new treeNode({
-								name: $scope.getFromEn('Moon & Satellite Orbits'),
-								checked: false,
-								action: 'solarSystemMinorOrbits'
-							}), new treeNode({
-								name: $scope.getFromEn('Asteroids (IAU MPC)'),
-								checked: false,
-								action: 'solarSystemMinorPlanets'
-							}) /*, new treeNode({
-							name: $scope.getFromEn('Multi-Res Solar System Bodies'),
-							checked: true,
-							action: 'solarSystemMultiRes'
-						})*/
+							})
 						]
 					})
 				]
@@ -5023,15 +5000,40 @@ wwt.controllers.controller('LayerManagerController',
 			invokeSetting(node);
 		};
 
-		var invokeSetting = function(node) {
-			if (node.action) {
-				try {
-					wwt.wc.settings['set_' + node.action](node.checked);
-				} catch (er) {
-					util.log(er, node.action);
-				}
-			}
+		//var invokeSetting = function(node) {
+		//	if (node.action) {
+		//		try {
+		//			wwt.wc.settings['set_' + node.action](node.checked);
+		//		} catch (er) {
+		//			util.log(er, node.action);
+		//		}
+		//	}
+		//}
+
+		var invokeSetting = function (node) {
+		    if (!node.disabled && node.action &&
+              wwt.wc.settings['set_' + node.action]) {
+		        var settingFlag = node.checked && !node.disabled;
+		        wwt.wc.settings['set_' + node.action](settingFlag);
+		    }
+		    setChildState(node);
+		};
+
+
+	    // enable/disable all child settings based on parent
+		var setChildState = function (node) {
+		    if (node.children) {
+		        $.each(node.children, function (i, child) {
+		            child.disabled = !node.checked || node.disabled;
+		            if (child.action && wwt.wc.settings['set_' + child.action]) {
+		                var settingFlag = child.checked && !child.disabled;
+		                wwt.wc.settings['set_' + child.action](settingFlag);
+		            }
+		            setChildState(child);
+		        });
+		    }
 		}
+
 
 		function initTreeNode(i, node) {
 			$.each(node.children, initTreeNode);

@@ -1015,6 +1015,22 @@ body.wwt-webclient-wrapper.mobile{
 			content: "\f00c"; 
 		}
         
+         label.disabledChild{
+            cursor:default;
+        }
+        label.disabledChild:before{
+            color:@text-muted; 
+            background-image:none;
+            box-shadow:none;
+            border: solid 1px #566783;
+        }
+        label.disabledChild:hover::before {
+            color:@text-muted; 
+            box-shadow:none;
+            border: solid 1px #566783;
+        }
+
+
 		input[type=checkbox], input[type=radio] {
 			position: absolute;
 			clip: rect(0,0,0,0);

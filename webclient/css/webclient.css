@@ -7691,6 +7691,22 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper div.checkbox label.checked::before {
   content: "\f00c";
 }
+.wwt-webclient-wrapper div.checkbox label.disabledChild {
+  cursor: default;
+}
+.wwt-webclient-wrapper div.checkbox label.disabledChild:before {
+  color: #777777;
+  background-image: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: solid 1px #566783;
+}
+.wwt-webclient-wrapper div.checkbox label.disabledChild:hover::before {
+  color: #777777;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: solid 1px #566783;
+}
 .wwt-webclient-wrapper div.checkbox input[type=checkbox],
 .wwt-webclient-wrapper div.checkbox input[type=radio] {
   position: absolute;
