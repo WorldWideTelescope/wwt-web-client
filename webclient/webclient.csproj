@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,10 +70,14 @@
     <Content Include="app.js" />
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
+    <Content Include="controllers\LoginController.js" />
+    <Content Include="controllers\tabs\AdsController.js" />
+    <Content Include="controllers\tabs\CommunityController.js" />
+    <Content Include="dataproxy\Community.js" />
+    <Content Include="dataproxy\Places.js" />
     <Content Include="Gruntfile.js" />
     <Content Include=".editorconfig" />
     <Content Include="clientbin\WWTSL.xap" />
-    <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\IntroController.js" />
     <Content Include="controllers\LayerManagerController.js" />
     <Content Include="controllers\MainController.js" />
@@ -92,7 +97,6 @@
     <Content Include="css\webclient.css" />
     <Content Include="css\webclient.min.css" />
     <Content Include="dataproxy\Astrometry.js" />
-    <Content Include="dataproxy\Places.js" />
     <Content Include="dataproxy\SearchData.js" />
     <Content Include="dataproxy\Tours.js" />
     <Content Include="Default.aspx" />
@@ -292,7 +296,6 @@
     <Content Include="css\variables.less" />
     <Content Include="css\webclient.css.map" />
     <Content Include="css\webclient.less" />
-    <Content Include="WURFL AGPL License.txt" />
     <Content Include="wwtsdk.js" />
     <Content Include="wwtsdk.min.js" />
     <Content Include="WWTSL.xap" />
@@ -301,6 +304,8 @@
     <Content Include="ensurenpm.cmd" />
     <Content Include="adsass.wtml" />
     <Content Include="packages.config" />
+    <Content Include="Hubble.wtml" />
+    <Content Include="ESO.wtml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -322,7 +327,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">

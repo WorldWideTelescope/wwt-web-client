@@ -452,6 +452,14 @@ namespace wwtlib
 
             newPlace.name = place.Attributes.GetNamedItem("Name").Value;
 
+            if (place.Attributes.GetNamedItem("MSRComponentId") != null && place.Attributes.GetNamedItem("Permission") != null)
+            {
+                //communities item
+                newPlace.Url = place.Attributes.GetNamedItem("Url").Value;
+                newPlace.ThumbnailUrl = place.Attributes.GetNamedItem("Thumbnail").Value;
+                return newPlace;
+            }
+
             if (place.Attributes.GetNamedItem("DataSetType") != null)
             {
                 switch (place.Attributes.GetNamedItem("DataSetType").Value.ToLowerCase())

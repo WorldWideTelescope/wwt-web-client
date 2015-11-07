@@ -194,7 +194,10 @@ namespace wwtlib
             {
                temp.Keywords = child.Attributes.GetNamedItem("Keywords").Value;
             }
-
+            if (child.Attributes.GetNamedItem("ThumbnailUrl") != null)
+            {
+                temp.ThumbnailUrl = child.Attributes.GetNamedItem("ThumbnailUrl").Value;
+            }
 
             return temp;
 

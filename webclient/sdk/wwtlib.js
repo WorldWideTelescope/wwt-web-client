@@ -13084,6 +13084,9 @@ window.wwtlib = function(){
     if (child.attributes.getNamedItem('Keywords') != null) {
       temp.keywords = child.attributes.getNamedItem('Keywords').nodeValue;
     }
+    if (child.attributes.getNamedItem('ThumbnailUrl') != null) {
+      temp.set_thumbnailUrl(child.attributes.getNamedItem('ThumbnailUrl').nodeValue);
+    }
     return temp;
   };
   var Tour$ = {
@@ -16297,8 +16300,11 @@ window.wwtlib = function(){
     return '';
   };
   Util.getProxiedUrl = function(url) {
-    if (ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) {
+    if ((ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) && url.toLowerCase().indexOf('worldwidetelescope.org/wwtweb/') === -1) {
       return url.split('worldwidetelescope.org')[1];
+    }
+    if ((ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net') || ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net')) && url.toLowerCase().indexOf('wwtstaging.azurewebsites.net/wwtweb/') === -1) {
+      return url.split('wwtstaging.azurewebsites.net')[1];
     }
     if (ss.startsWith(url.toLowerCase(), 'http')) {
       return 'http://www.worldwidetelescope.org/webserviceproxy.aspx?targeturl=' + encodeURIComponent(url);
@@ -16316,6 +16322,9 @@ window.wwtlib = function(){
     return val;
   };
   Util.getTourComponent = function(url, name) {
+    if (url.indexOf('worldwidetelescope.org') !== -1 || url.indexOf('wwtstaging.azurewebsites') !== -1) {
+      return url;
+    }
     return 'http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=' + encodeURIComponent(url) + '&filename=' + name;
   };
   Util.selectSingleNode = function(parent, name) {
@@ -23317,6 +23326,11 @@ window.wwtlib = function(){
   Place._fromXml = function(place) {
     var newPlace = new Place();
     newPlace._name = place.attributes.getNamedItem('Name').nodeValue;
+    if (place.attributes.getNamedItem('MSRComponentId') != null && place.attributes.getNamedItem('Permission') != null) {
+      newPlace.set_url(place.attributes.getNamedItem('Url').nodeValue);
+      newPlace.set_thumbnailUrl(place.attributes.getNamedItem('Thumbnail').nodeValue);
+      return newPlace;
+    }
     if (place.attributes.getNamedItem('DataSetType') != null) {
       switch (place.attributes.getNamedItem('DataSetType').nodeValue.toLowerCase()) {
         case 'earth':

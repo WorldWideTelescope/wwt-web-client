@@ -126,7 +126,9 @@ namespace wwtlib
                 OrgName = root.Attributes.GetNamedItem("OrganizationName").Value;
             }
 
-            organizationUrl = root.Attributes.GetNamedItem("OrganizationUrl").Value.ToString();
+            
+
+            organizationUrl = root.Attributes.GetNamedItem("OrganizationUrl").Value;
  
             switch (root.Attributes.GetNamedItem("UserLevel").Value)
             {
@@ -562,6 +564,7 @@ namespace wwtlib
                 TourDirty = true;
             }
         }
+        
         ImageElement authorImage;
 
         public ImageElement AuthorImage

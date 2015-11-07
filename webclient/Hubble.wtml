@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Folder Name="Hubble" Group="Explorer">
+<Place Name="bok globules" RA="0.8843684" Dec="56.644759" ZoomLevel="0.227628884616806" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo0613a.jpg" Constellation="">
+ <ForegroundImageSet>
+ <ImageSet DataSetType="Sky" Name="bok globules" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-opo0613aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="56.644759" CenterX="13.265526" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0569072211542016">
+<Credits></Credits>
+<CreditsUrl></CreditsUrl>
+<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo0613a.jpg</ThumbnailUrl>
+</ImageSet>
+</ForegroundImageSet>
+</Place>
+<Place Name="Crab Nebula" RA="5.57570228666667" Dec="22.0152411" ZoomLevel="0.452823765447475" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic0515a.jpg" Constellation="">
+ <ForegroundImageSet>
+ <ImageSet DataSetType="Sky" Name="Crab Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic0515aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="22.0152411" CenterX="83.6355343" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.113205941361869">
+<Credits></Credits>
+<CreditsUrl></CreditsUrl>
+<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic0515a.jpg</ThumbnailUrl>
+</ImageSet>
+</ForegroundImageSet>
+</Place>
+<Place Name="N66" RA="0.985313766666667" Dec="-72.1746583" ZoomLevel="0.227701737219686" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic0514a.jpg" Constellation="">
+ <ForegroundImageSet>
+ <ImageSet DataSetType="Sky" Name="N66" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic0514aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-72.1746583" CenterX="14.7797065" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0569254343049216">
+<Credits></Credits>
+<CreditsUrl></CreditsUrl>
+<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic0514a.jpg</ThumbnailUrl>
+</ImageSet>
+</ForegroundImageSet>
+</Place>
+<Place Name="Eagle Nebula" RA="18.31406348" Dec="-13.8310432" ZoomLevel="0.2257208328192" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo9544a.jpg" Constellation="">
+ <ForegroundImageSet>
+ <ImageSet DataSetType="Sky" Name="Eagle Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-opo9544aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="42.3" Projection="Tan" FileType=".png" CenterY="-13.8310432" CenterX="274.7109522" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0564302082048">
+<Credits></Credits>
+<CreditsUrl></CreditsUrl>
+<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo9544a.jpg</ThumbnailUrl>
+</ImageSet>
+</ForegroundImageSet>
+</Place>
+<Place Name="Sagittarius" RA="10.7510055733333" Dec="-59.6847142" ZoomLevel="0.0950631422131274" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo0928a.jpg" Constellation="">
+ <ForegroundImageSet>
+ <ImageSet DataSetType="Sky" Name="Sagittarius" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-opo0928aL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-59.6847142" CenterX="161.2650836" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0237657855532818">
+<Credits></Credits>
+<CreditsUrl></CreditsUrl>
+<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo0928a.jpg</ThumbnailUrl>
+</ImageSet>
+</ForegroundImageSet>
+</Place>
+</Folder>

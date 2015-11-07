@@ -30,6 +30,8 @@
                 var kids = folder.get_children();
                 $.each(kids, function (j, tour) {
                     if (tour.get_isTour()) {
+                        tour.authorThumb = '//cdn.worldwidetelescope.org/Community/AuthorThumbnail/' + tour.id;
+                        tour.thumb = '//cdn.worldwidetelescope.org/Community/TourThumbnail/' + tour.get_thumbnailUrl().split('GUID=')[1];
                         tourHash[tour.id.toLowerCase()] = tour;
                     }
                 });
@@ -54,22 +56,15 @@
         $.each(items, function (i, item) {
             try {
                 item.name = item.get_name();
-                item.thumb = item.get_thumbnailUrl();
-                //console.log(item.thumb);
                 item.isFolder = item.get_isFolder();
-                /*item.isImage = item.get_isImage();
-                if (typeof item.get_type == 'function') {
-                    item.isPlanet = item.get_type() === 1;
-                    item.isFolder = item.get_type() === 0;
-                    item.isFGImage = item.get_type() === 2 && typeof item.get_camParams == 'function';
+                if (!item.isFolder && item.name !== 'Up Level') {
+                    item.authorThumb = '//cdn.worldwidetelescope.org/Community/AuthorThumbnail/' + item.id;
+                    item.thumb = '//cdn.worldwidetelescope.org/Community/TourThumbnail/' + item.get_thumbnailUrl().split('GUID=')[1];
+                    //item.tourUrl = '//cdn.worldwidetelescope.org/File/Download/' + item.id + '/' + item.get_name() + '/wtt';
+                    item.tourUrl = '//wwtstaging.azurewebsites.net/community/gettour/' + item.id + '/' + item.get_name();
+                } else { 
+                    item.thumb = item.get_thumbnailUrl();
                 }
-                if (typeof item.get_dataSetType == 'function') {
-                    item.isEarth = item.get_dataSetType() === 0;
-                    item.isPanorama = item.get_dataSetType() === 3;
-                    item.isSurvey = item.get_dataSetType() === 2;
-                }
-
-                */
 
             } catch (er) {
                 util.log(item, er);
@@ -82,8 +77,7 @@
         var deferred = $q.defer();
 
         root = wwt.wc.createFolder();
-        //var domain = util.isStaging ? 'http://wwt.thewebkid.com' : 'http://www.worldwidetelescope.org';
-        var toursUrl = 'gettours_webclient.xml';
+        var toursUrl = 'https://wwtweb.blob.core.windows.net/tours/webclienttours.wtml';
         root.loadFromUrl(toursUrl, function () {
             //root.refresh();
             deferred.resolve(root.get_children());

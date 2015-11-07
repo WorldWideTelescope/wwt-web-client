@@ -194,7 +194,9 @@ body.wwt-webclient-wrapper.mobile{
 	-ms-user-select: none;
 	user-select: none;
 	color: @text-color;
-	
+	.modal-backdrop{
+        opacity:.01;
+	}
 	#WorldWideTelescopeControlHost, #WWTCanvas,  canvas {
 		margin: 0;
 		height: 100%; 
@@ -273,7 +275,22 @@ body.wwt-webclient-wrapper.mobile{
 		-ms-touch-action: none;
 	}
 
+    .popContainer{
+        width:470px;
+        margin:0;
+        padding:0;
+        background:none;
+        border:none;
+        box-shadow:none;
+    }
+
 	.popover {
+        /*width:470px;
+        overflow:hidden;
+        
+        .modal-header,.modal-footer{
+            display:none;
+        }*/
 		.popover-title {
 			display: none;
 		}
@@ -872,7 +889,7 @@ body.wwt-webclient-wrapper.mobile{
 	.tour-pop {
 		padding: 0;
 		width: 470px;
-
+        margin-top:3px;
 		.tour-info {
 			margin: 0;
 			padding: 2px;
@@ -896,7 +913,7 @@ body.wwt-webclient-wrapper.mobile{
 					.small {
 						font-size: 12px;
 						display: block;
-
+                        color:@text-color;
 						.rating-container {
 							display: inline-block;
 							position: relative;
@@ -975,36 +992,36 @@ body.wwt-webclient-wrapper.mobile{
 			}
 		}
 
-			label:before {
-				font-family: FontAwesome;
-				content: "\00a0";
-				font-size: 13px;
-				color: @text-color;
-				text-align: center;
-				line-height: 15px;
-				height: 15px;
-				width: 15px;
-				//overflow: hidden;
-				top: 2px;
-				position: relative;
-				.boxGradient();
-			}
+		label:before {
+			font-family: FontAwesome;
+			content: "\00a0";
+			font-size: 13px;
+			color: @text-color;
+			text-align: center;
+			line-height: 15px;
+			height: 15px;
+			width: 15px;
+			//overflow: hidden;
+			top: 2px;
+			position: relative;
+			.boxGradient();
+		}
 
-			label:hover::before {
-				.boxhilite();
-			}
+		label:hover::before {
+			.boxhilite();
+		}
 
-			label.checked::before {
-				content: "\f00c"; 
-			}
-
+		label.checked::before {
+			content: "\f00c"; 
+		}
+        
 		input[type=checkbox], input[type=radio] {
 			position: absolute;
 			clip: rect(0,0,0,0);
 		}
 	}
 
-	fieldset.radio-buttons {
+    fieldset.radio-buttons {
         padding-bottom:3px;
 		h5 {
 			margin: 0 0 4px 0;

@@ -18,7 +18,10 @@
 		initPromise.then(function (folders) {
 			rootFolders = folders;
 			$.each(folders, function(i, item) {
-				item.guid = item.get_name();
+			    item.guid = item.get_name();
+			    if (item.get_thumbnailUrl) {
+			        fixThumb(item);
+			    }
 			});
 			transformData(folders);
 			deferred.resolve(root.get_children());
@@ -26,13 +29,22 @@
 		return deferred.promise;
 	}
 
-	function getChildren(obj) {
+        var fixThumb = function(item) {
+            item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+			        .replace("www.worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+                    .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/");
+        }
+
+	    function getChildren(obj) {
 		var deferred = $q.defer();
 		
 		obj.childLoadCallback(function () {
 			var children = obj.get_children();
 			$.each(children, function (i, item) {
-				item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
+			    item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
+			    if (item.get_thumbnailUrl) {
+			        fixThumb(item);
+			    }
 			});
 			deferred.resolve(transformData(children));
 		});
@@ -91,14 +103,17 @@
 						collection.get_children();
 						openCollectionsFolder.addChildFolder(collection);
 						root.addChildFolder(openCollectionsFolder);
+					    addVampFeeds();
 						deferred.resolve(root.get_children());
 					});
 				} else if (location.href.indexOf('?image=') !== -1) {
+				    addVampFeeds();
 					importImage(location.href.split('?image=')[1]).then(function(data) {
 						deferred.resolve(root.get_children());
 					});
 
-				}else{
+				} else {
+				    addVampFeeds();
 					deferred.resolve(root.get_children());
 				}
 			});
@@ -110,26 +125,36 @@
 	};
 
 	function openCollection(url) {
-		var deferred = $q.defer();
-		if (!openCollectionsFolder) {
-			openCollectionsFolder = wwt.wc.createFolder();
-			openCollectionsFolder.set_name('Open Collections');
-			openCollectionsFolder.guid = 'f0';
-			root.addChildFolder(openCollectionsFolder);
-		}
-		var collection = wwt.wc.createFolder();
-		collection.loadFromUrl(url, function () {
-			//collection.get_children();
-			collection.url = url;
-			openCollectionsFolder.addChildFolder(collection);
-			if (collection.get_name() == '') {
-				deferred.resolve(collection.get_children());
-			} else {
-				deferred.resolve(collection);
-			}
-		});
-		return deferred.promise;
+	    var deferred = $q.defer();
+	    if (!openCollectionsFolder) {
+	        openCollectionsFolder = wwt.wc.createFolder();
+	        openCollectionsFolder.set_name('Open Collections');
+	        openCollectionsFolder.guid = 'f0';
+	        root.addChildFolder(openCollectionsFolder);
+	    }
+	    var collection = wwt.wc.createFolder();
+	    collection.loadFromUrl(url, function () {
+	        //collection.get_children();
+	        collection.url = url;
+	        openCollectionsFolder.addChildFolder(collection);
+	        if (collection.get_name() == '') {
+	            deferred.resolve(collection.get_children());
+	        } else {
+	            deferred.resolve(collection);
+	        }
+	    });
+	    return deferred.promise;
 	}
+
+	function addVampFeeds() {
+	    var vampFolder = wwt.wc.createFolder();
+	    vampFolder.set_name('New VAMP Feeds');
+	    vampFolder.guid = '0v0';
+	    vampFolder.set_url('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
+	    root.addChildFolder(vampFolder);
+	    
+	}
+
 	function importImage(url, manualData) {
 		var deferred = $q.defer();
 		if (!openCollectionsFolder) {

@@ -1083,6 +1083,29 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
         }
     };
 }]);
+/** 
+* Copyright 2014, 2015  Microsoft Research
+*
+* Permission is hereby granted, free of charge, to any person
+* obtaining a copy of this software and associated documentation
+* files (the "Software"), to deal in the Software without
+* restriction, including without limitation the rights to use, copy,
+* modify, merge, publish, distribute, sublicense, and/or sell copies
+* of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+* 
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+* 
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+* BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+* ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+* CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+**/
 var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
@@ -1226,7 +1249,7 @@ wwt.app.factory('AppState', function() {
 	            localStorage.setItem('appState', JSON.stringify(data));
 	        }
 	    } catch (er) {
-            console.log('Error using localstorage. Is it turned off?')
+	        console.log('Error using localstorage. Is it turned off?');
 	    }
 	}
 
@@ -1562,14 +1585,19 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
             calcPageSize(scope, false);
             return outParams;
         }
-
+        if (item.get_url && item.get_url() && item.get_url().indexOf('?wwtfull') !== -1) {
+            window.open(item.get_url());
+            return outParams;
+        }
         if (item.get_isFolder()) {
+            $('#folderLoadingModal').modal('show');
             $('body').append($('#researchMenu'));
             scope.currentPage = 0;
             outParams.depth++;
             outParams.breadCrumb.push(item.get_name());
             scope.breadCrumb = outParams.breadCrumb;
             places.getChildren(item).then(function (result) {
+                $('#folderLoadingModal').modal('hide');
                 if ($.isArray(result[0])) {
                     result = result[0];
                 }
@@ -1631,6 +1659,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         if ((ss.canCast(item, wwtlib.Place) || item.isEarth) && !item.isSurvey) {
             scope.setForegroundImage(item);
         }
+        if (ss.canCast(item, wwtlib.Tour)) {
+            scope.playTour(item.get_tourUrl());
+        }
         return outParams;  
     };
 
@@ -1659,15 +1690,18 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         scope.currentPage = scope.currentPage === 0 ? scope.currentPage : scope.currentPage - 1;
         return spliceOnePage(scope);
     };
+
     function goFwd(scope) {
         $('body').append($('#researchMenu'));
         scope.currentPage = scope.currentPage === scope.pageCount - 1 ? scope.currentPage : scope.currentPage + 1;
         return spliceOnePage(scope);
     };
+
     function spliceOnePage(scope) {
         var start = scope.currentPage * scope.pageSize;
         scope.collectionPage = scope.collection.slice(start, start + scope.pageSize);
     };
+
     return api;
 
 }]);
@@ -2033,7 +2067,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 	$rootScope.toggleLayerManager = function () {
 		$rootScope.layerManagerHidden = !$rootScope.layerManagerHidden;
 		appState.set('layerManagerHidden', $rootScope.layerManagerHidden);
-	}
+	} 
 
 	$rootScope.getCreditsText = function (place) {
 		return util.getCreditsText(place); 
@@ -2457,7 +2491,10 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		initPromise.then(function (folders) {
 			rootFolders = folders;
 			$.each(folders, function(i, item) {
-				item.guid = item.get_name();
+			    item.guid = item.get_name();
+			    if (item.get_thumbnailUrl) {
+			        fixThumb(item);
+			    }
 			});
 			transformData(folders);
 			deferred.resolve(root.get_children());
@@ -2465,13 +2502,22 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		return deferred.promise;
 	}
 
-	function getChildren(obj) {
+        var fixThumb = function(item) {
+            item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+			        .replace("www.worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+                    .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/");
+        }
+
+	    function getChildren(obj) {
 		var deferred = $q.defer();
 		
 		obj.childLoadCallback(function () {
 			var children = obj.get_children();
 			$.each(children, function (i, item) {
-				item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
+			    item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
+			    if (item.get_thumbnailUrl) {
+			        fixThumb(item);
+			    }
 			});
 			deferred.resolve(transformData(children));
 		});
@@ -2530,14 +2576,17 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 						collection.get_children();
 						openCollectionsFolder.addChildFolder(collection);
 						root.addChildFolder(openCollectionsFolder);
+					    addVampFeeds();
 						deferred.resolve(root.get_children());
 					});
 				} else if (location.href.indexOf('?image=') !== -1) {
+				    addVampFeeds();
 					importImage(location.href.split('?image=')[1]).then(function(data) {
 						deferred.resolve(root.get_children());
 					});
 
-				}else{
+				} else {
+				    addVampFeeds();
 					deferred.resolve(root.get_children());
 				}
 			});
@@ -2549,26 +2598,36 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	};
 
 	function openCollection(url) {
-		var deferred = $q.defer();
-		if (!openCollectionsFolder) {
-			openCollectionsFolder = wwt.wc.createFolder();
-			openCollectionsFolder.set_name('Open Collections');
-			openCollectionsFolder.guid = 'f0';
-			root.addChildFolder(openCollectionsFolder);
-		}
-		var collection = wwt.wc.createFolder();
-		collection.loadFromUrl(url, function () {
-			//collection.get_children();
-			collection.url = url;
-			openCollectionsFolder.addChildFolder(collection);
-			if (collection.get_name() == '') {
-				deferred.resolve(collection.get_children());
-			} else {
-				deferred.resolve(collection);
-			}
-		});
-		return deferred.promise;
+	    var deferred = $q.defer();
+	    if (!openCollectionsFolder) {
+	        openCollectionsFolder = wwt.wc.createFolder();
+	        openCollectionsFolder.set_name('Open Collections');
+	        openCollectionsFolder.guid = 'f0';
+	        root.addChildFolder(openCollectionsFolder);
+	    }
+	    var collection = wwt.wc.createFolder();
+	    collection.loadFromUrl(url, function () {
+	        //collection.get_children();
+	        collection.url = url;
+	        openCollectionsFolder.addChildFolder(collection);
+	        if (collection.get_name() == '') {
+	            deferred.resolve(collection.get_children());
+	        } else {
+	            deferred.resolve(collection);
+	        }
+	    });
+	    return deferred.promise;
 	}
+
+	function addVampFeeds() {
+	    var vampFolder = wwt.wc.createFolder();
+	    vampFolder.set_name('New VAMP Feeds');
+	    vampFolder.guid = '0v0';
+	    vampFolder.set_url('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
+	    root.addChildFolder(vampFolder);
+	    
+	}
+
 	function importImage(url, manualData) {
 		var deferred = $q.defer();
 		if (!openCollectionsFolder) {
@@ -2713,6 +2772,8 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',functi
                 var kids = folder.get_children();
                 $.each(kids, function (j, tour) {
                     if (tour.get_isTour()) {
+                        tour.authorThumb = '//cdn.worldwidetelescope.org/Community/AuthorThumbnail/' + tour.id;
+                        tour.thumb = '//cdn.worldwidetelescope.org/Community/TourThumbnail/' + tour.get_thumbnailUrl().split('GUID=')[1];
                         tourHash[tour.id.toLowerCase()] = tour;
                     }
                 });
@@ -2737,22 +2798,15 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',functi
         $.each(items, function (i, item) {
             try {
                 item.name = item.get_name();
-                item.thumb = item.get_thumbnailUrl();
-                //console.log(item.thumb);
                 item.isFolder = item.get_isFolder();
-                /*item.isImage = item.get_isImage();
-                if (typeof item.get_type == 'function') {
-                    item.isPlanet = item.get_type() === 1;
-                    item.isFolder = item.get_type() === 0;
-                    item.isFGImage = item.get_type() === 2 && typeof item.get_camParams == 'function';
+                if (!item.isFolder && item.name !== 'Up Level') {
+                    item.authorThumb = '//cdn.worldwidetelescope.org/Community/AuthorThumbnail/' + item.id;
+                    item.thumb = '//cdn.worldwidetelescope.org/Community/TourThumbnail/' + item.get_thumbnailUrl().split('GUID=')[1];
+                    //item.tourUrl = '//cdn.worldwidetelescope.org/File/Download/' + item.id + '/' + item.get_name() + '/wtt';
+                    item.tourUrl = '//wwtstaging.azurewebsites.net/community/gettour/' + item.id + '/' + item.get_name();
+                } else { 
+                    item.thumb = item.get_thumbnailUrl();
                 }
-                if (typeof item.get_dataSetType == 'function') {
-                    item.isEarth = item.get_dataSetType() === 0;
-                    item.isPanorama = item.get_dataSetType() === 3;
-                    item.isSurvey = item.get_dataSetType() === 2;
-                }
-
-                */
 
             } catch (er) {
                 util.log(item, er);
@@ -2765,8 +2819,7 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',functi
         var deferred = $q.defer();
 
         root = wwt.wc.createFolder();
-        //var domain = util.isStaging ? 'http://wwt.thewebkid.com' : 'http://www.worldwidetelescope.org';
-        var toursUrl = 'gettours_webclient.xml';
+        var toursUrl = 'https://wwtweb.blob.core.windows.net/tours/webclienttours.wtml';
         root.loadFromUrl(toursUrl, function () {
             //root.refresh();
             deferred.resolve(root.get_children());
@@ -2891,7 +2944,17 @@ wwt.app.factory('SearchData', [
 			});
 			var end = new Date();
 			util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-		    importWtml('Wise.wtml').then(function() {
+			importWtml('Wise.wtml').then(function () {
+			    console.log('wise loaded');
+			    importWtml('Hubble.wtml').then(function () {
+			        console.log('hubble loaded');
+			        importWtml('ESO.wtml').then(function () {
+			            console.log('eso loaded');
+			            importWtml('Chandra.wtml').then(function () {
+			                console.log('chandra loaded'); 
+			            });
+			        });
+			    });
 		        deferredInit.resolve(data);
 		    });
 			
@@ -2912,7 +2975,11 @@ wwt.app.factory('SearchData', [
 					wwt.searchDataIndexed = searchIndex;
 				}
 			} else {
-				wwt.searchDataIndexed[firstChar] = searchIndex[firstChar] = [place];
+			    try {
+			        wwt.searchDataIndexed[firstChar] = searchIndex[firstChar] = [place];
+			    } catch (er) {
+			        console.error(er);
+			    }
 			}
 		}
 
@@ -3005,7 +3072,7 @@ wwt.app.factory('SearchData', [
 	
 
 	initPromise = init();
-	//importWtml('Wise.wtml');
+	
 	return api;
 }]);
 wwt.app.factory('Astrometry', [
@@ -3211,6 +3278,75 @@ wwt.app.factory('Astrometry', [
 
 		return api;
 	}]);
+wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
+	function ($http, $q, $timeout, util) {
+		
+	var api = {
+		getRoot: getRoot,
+		getChildren: getChildren
+		
+	};
+	var root,
+		rootFolders,
+		openCollectionsFolder;
+
+	function getRoot() {
+		var deferred = $q.defer();
+		initPromise.then(function (folders) {
+			rootFolders = folders;
+		    $.each(folders, function(i,item) {
+		        if (item.get_thumbnailUrl) {
+		            item.thumb = item.get_thumbnailUrl().replace("http://wwtstaging.azurewebsites.net/Content/Images/", "https://wwtweb.blob.core.windows.net/images/");
+		        }
+		    });
+			deferred.resolve(folders);
+		});
+		return deferred.promise;
+	}
+
+	function getChildren(obj) {
+		var deferred = $q.defer();
+		
+		obj.childLoadCallback(function () {
+			var children = obj.get_children();
+			$.each(children, function (i, item) {
+				item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
+			});
+			deferred.resolve(transformData(children));
+		});
+		
+		return deferred.promise;
+	}
+
+	
+
+	var init = function () {
+		var deferred = $q.defer();
+
+		function tryInit() {
+			if (!wwt.wc) {
+				setTimeout(tryInit, 333);
+				return;
+			}
+			root = wwt.wc.createFolder();
+		
+			root.loadFromUrl('http://' + location.host + '/Resource/Service/Payload', function () {
+				deferred.resolve(root.get_children());
+			});
+		}
+
+		tryInit();
+		
+		return deferred.promise;
+	};
+
+	
+	var initPromise = init();
+
+	return api;
+}]);
+
+
 wwt.controllers.controller('ContextPanelController',
 	['$scope',
 	'$rootScope',
@@ -3549,13 +3685,20 @@ wwt.controllers.controller('MainController',
 					menu: {
 					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours']
 					}
-				},{
-					label:'Search',
-					button: 'rbnSearch',
-					menu: {
-						'Search Now':[function() { $timeout(function() { changePanel('Search'); }); }]
-					}
-				},{
+				}, {
+				    label: 'Search',
+				    button: 'rbnSearch',
+				    menu: {
+				        'Search Now': [function () { $timeout(function () { changePanel('Search'); }); }]
+				    }
+				},
+                {
+                    label: 'Communities',
+                    button: 'rbnCommunities',
+                    menu: {
+                        'Search Communities': [util.nav, '/Community']
+                    }
+                }, {
 					label:'View',
 					button:'rbnView',
 					menu: {
@@ -3935,7 +4078,7 @@ wwt.controllers.controller('MainController',
 		}
 
 		function tourChangeHandler() {
-			var settings = appState.get('settings');
+			var settings = appState.get('settings') || {};
 			wwt.tourPlaying = $rootScope.tourPlaying = false;
 
 			$rootScope.landscapeMessage = false;
@@ -4147,7 +4290,7 @@ wwt.controllers.controller('MainController',
 			$scope.nboCount = nbo.length;
 			if ($scope.isLoading) {
 				$scope.isLoading = false;
-				util.log(new Date().valueOf() - time.valueOf());
+				//util.log(new Date().valueOf() - time.valueOf());
 			}
 			
 		}
@@ -4159,7 +4302,7 @@ wwt.controllers.controller('MainController',
 			$scope.hideMenu();
 		}
 		$scope.isLoading = true;
-		var time = new Date();
+		//var time = new Date();
 		$scope.fovClass = function () {
 			return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'hide' :
 				$scope.lookAt === 'SolarSystem' ? 'solar-system-mode fov-panel' :
@@ -5102,11 +5245,13 @@ wwt.controllers.controller('ExploreController',
 	                cache = [result];
 	                calcPageSize();
 	                $.each(result, function (i, item) {
-	                    if (item.get_name() === 'Open Collections') {
+	                    if (item.get_name() === 'Open Collections'||item.get_name() === 'New VAMP Feeds') {
 	                        result.splice(0, 0, item);
 	                        result.pop();
-	                        openCollection = true;
-	                        $scope.clickThumb(item);
+	                        if (item.get_name() === 'Open Collections') {
+	                            openCollection = true;
+	                            $scope.clickThumb(item);
+	                        }
 	                    }
 	                });
 
@@ -5599,8 +5744,8 @@ wwt.controllers.controller('ToursController',
 		'$rootScope',
 	'AppState',
 	'Tours',
-	'$timeout','Util',
-	function ($scope, $rootScope, appState, tours, $timeout, util) {
+	'$timeout','Util','$popover',
+	function ($scope, $rootScope, appState, tours, $timeout, util, $popover) {
 		var toursRoot;
 		var depth = 1;
 		var bc = [$scope.getFromEn('Tours')];
@@ -5617,6 +5762,7 @@ wwt.controllers.controller('ToursController',
 		});
 
 		$scope.clickThumb = function (item) {
+            
 			$scope.activeItem = item.get_thumbnailUrl() + item.get_name();
 			if (item.get_name() === 'Up Level') {
 				$scope.currentPage = 0;
@@ -5675,20 +5821,180 @@ wwt.controllers.controller('ToursController',
 			
 		};
 
-		$scope.tourPreview = function (event, item) {
-			if (item.get_isFolder() || item.get_name() === 'Up Level') return;
-			$scope.relatedTours = tours.getToursById(item.relatedTours);
-			$scope.tour = item;
-			
-			var a = $(event.currentTarget);
-			a.parent().append($('#popTrigger'));
-			$('#popTrigger').trigger('mouseenter');
-		};
+	    var popover = null;
+	    var mask = null;
+	    $scope.tourPreview = function (event, item) {
 
-		$(window).on('resize', calcPageSize);
+	        if (item.get_isFolder() || item.get_name() === 'Up Level') return;
+	        $scope.relatedTours = tours.getToursById(item.relatedTours);
+			$rootScope.tour = item;
+	        if (!mask) {
+	            mask = $('<div></div>').css({
+	                height: 70,
+	                width: 120,
+	                top: -999,
+	                left: -999,
+	                opacity: 0,
+                    background:'#fff',
+                    position: 'fixed',
+                    zIndex:2
+                    
+	            }).on('mouseleave',hideMask);
+	            $('body').append(mask);
+	        }
+	        if (popover) {
+		        popover.hide();
+		    }
+		    var options = {
+		        title: item.get_name(),
+		        target: $(event.currentTarget),
+		        id: 'tourpop',
+		        template:'views/popovers/tour-template.html',
+		        contentTemplate: 'views/popovers/tour-info.html',
+		        placement: 'bottom-left',
+		        scope: $scope,
+		        trigger:'manual'
+		    };
+		    
+		    popover = $popover($(event.currentTarget),options);
+		    popover.$promise.then(function () {
+		        popover.show();
+		        var thumb = $(event.currentTarget);
+		        var pos = thumb.offset();
+		        mask.css({
+		            top: pos.top - 2, 
+		            left: pos.left - 2,
+		            opacity: .01
+		        });
+		        var fixImages = function () {//wth?
+		            $('.tour-info .author-image img').each(function () {
+		                if (this.naturalHeight > 0 && $(this).height() === 0) {
+		                    //console.log('fixing',this.naturalHeight, $(this).height());
+		                    $(this).css({
+		                        height: this.naturalHeight,
+		                        width: this.naturalWidth
+		                    });
+		                    //console.log('fixed?', this.naturalHeight, $(this).height());
+		                }
+		                
+		                
+		            });
+		        }
+		        $('.tour-info img').off('load');
+		        $('.tour-info img').on('load', fixImages);
+		        setTimeout(fixImages, 500);
+		        setTimeout(fixImages, 1500);
+		    });
+	    };
+        var hideMask = function() {
+            mask.css({
+                top: -999,
+                left: -999
+            });
+        }
+
+	    //var fixPop = function() {
+        //    $('.popover').removeClass('modal').css('top', '8px').removeAttr('tabindex')
+            
+        //    /*$('.popover').find('.modal-dialog,.modal-content,.modal-body')
+        //        .css({ margin: 0, padding: 0,width:470 })
+        //        .removeClass('modal-dialog modal-content modal-body');*/
+        //    var thumb = $('.popover').parent().find('a').first();
+        //    var pos = thumb.offset();
+        //    $('.modal-backdrop').css({
+        //        height: thumb.height() + 8,
+        //        width: thumb.width() + 12,
+        //        top: pos.top - 2,
+        //        left: pos.left - 2,
+        //        right: '',
+        //        bottom: '',
+        //        opacity: 1
+        //    });
+        //    $('.popover').find('.label').click();
+        //    $('.popover').find('.fa-play-circle').trigger('mouseenter').focus();
+        //    $('.popover').css('height', $('.modal-dialog').height());
+        //    util.log(pos, $('.popover').find('.label').text());
+        //}
+
+	    $(window).on('resize', calcPageSize);
 
 		
 	}
+]);
+wwt.controllers.controller('CommunityController',
+    ['$scope',
+    'Util',
+    '$timeout', 'ThumbList','Community',
+    function ($scope, util, $timeout, thumbList, community) {
+        var depth = 1;
+        var bc;
+        var cache = [];
+        $scope.initCommunityView = function () {
+            thumbList.init($scope, 'communities');
+            
+                community.getRoot().then(function (result) {
+                    $('body').append($('#researchMenu'));
+                    $scope.collection = result;
+
+                    var collectionsString = $scope.getFromEn('Collections');
+                    if (collectionsString.then) {
+                        collectionsString.then(function (s) {
+                            $scope.breadCrumb = bc = [s];
+                        });
+                    } else {
+                        $scope.breadCrumb = bc = [collectionsString];
+                    } 
+
+                    cache = [result];
+                    calcPageSize();
+
+                });
+            
+
+        };
+        var calcPageSize = function () {
+            thumbList.calcPageSize($scope, false);
+        };
+        $scope.clickThumb = function (item, folderCallback) {
+            var outParams = {
+                breadCrumb: bc,
+                depth: depth,
+                cache: cache
+            };
+            var newParams = thumbList.clickThumb(item, $scope, outParams, folderCallback);
+            bc = newParams.breadCrumb;
+            cache = newParams.cache;
+            depth = newParams.depth;
+        };
+
+        $scope.expanded = false;
+
+
+        $scope.breadCrumbClick = function (index) {
+            $scope.collection = cache[index];
+            while (bc.length - 1 > index) {
+                bc.pop();
+                cache.pop();
+            }
+            $scope.currentPage = 0;
+            calcPageSize();
+        };
+
+
+
+        $(window).on('resize', function () {
+            $scope.currentPage = 0;
+            calcPageSize();
+        });
+
+
+        $scope.preventClickBubble = function (event) {
+            event.stopImmediatePropagation();
+        };
+
+        $scope.initCommunityView();
+        
+    }
 ]);
 wwt.controllers.controller('ShareController',
 [
@@ -5878,6 +6184,61 @@ wwt.controllers.controller('ObservingTimeController',
 		};
 	}
 ]);
+wwt.controllers.controller('LoginController',
+    ['$scope',
+    '$rootScope',
+    '$http',
+    'Util',
+    '$cookies',
+    '$timeout',
+    function ($scope, $rootScope, $http, util, $cookies,$timeout) {
+
+    $rootScope.loggedIn = false;
+
+    function init() {
+
+        $rootScope.liveAppId = $('body').data('liveid');
+        if (util.getQSParam('code') != null) {
+            var returnUrl = location.href.split('?')[0];
+            location.href = '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
+                '?returnUrl=' + encodeURIComponent(returnUrl);
+        } else if ($cookies.get('access_token')) {
+           
+            $rootScope.loggedIn = true;
+        }
+    }
+
+    function log(response) {
+        if (response.refresh_token) {
+            $cookies.put('refresh_token', response.refresh_token, { expires: new Date(2050, 1, 1) });
+            $cookies.put('access_token', response.access_token, { expires: new Date(2050, 1, 1) });
+            $timeout(function() {
+                $rootScope.loggedIn = true;
+            });
+        }
+        console.log(response, arguments);
+    }
+
+    $scope.login = function () {
+        var redir = 'http://' + location.host + '/webclient';
+            var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
+                $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
+                encodeURIComponent(redir) + '&display=popup';
+            location.href = wlUrl;
+        return;
+    }
+
+    $scope.logout = function() {
+        var storedData = localStorage.getItem('userSettings');
+        var data = storedData ? JSON.parse(storedData) : {};
+        data['rememberMe'] = false;
+        localStorage.setItem('userSettings', JSON.stringify(data));
+        location.href = '/Logout';
+    }
+
+    init();
+
+}]);
 wwt.Move = function (createArgs) {
 	
 	//#region initialization

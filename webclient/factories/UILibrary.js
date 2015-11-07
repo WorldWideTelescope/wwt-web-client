@@ -5,7 +5,7 @@
 	$rootScope.toggleLayerManager = function () {
 		$rootScope.layerManagerHidden = !$rootScope.layerManagerHidden;
 		appState.set('layerManagerHidden', $rootScope.layerManagerHidden);
-	}
+	} 
 
 	$rootScope.getCreditsText = function (place) {
 		return util.getCreditsText(place); 

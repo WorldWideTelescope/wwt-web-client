@@ -149,16 +149,16 @@
         }
     </style> 
      
-    
+    <script src="//js.live.net/v5.0/wl.js"></script>
     <script src="sdk/wwtsdk.js"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-touch.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-route.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-cookies.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-animate.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-touch.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-route.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-cookies.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-animate.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.tpl.min.js"></script>
     <% if (Debug || DebugChrome) 
        { %>
@@ -170,6 +170,7 @@
     <script src="<%= ResourcesLocation %>/dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/dataproxy/Astrometry.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/dataproxy/Community.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
@@ -196,6 +197,8 @@
     <script src="<%= ResourcesLocation %>/controllers/tabs/SettingsController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ToursController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ViewController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/CommunityController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/LoginController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controls/move.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controls/util.js?v=<%= ResourcesVersion%>"></script>
     <% }
@@ -231,15 +234,19 @@
     <script type="text/javascript">
         function onSilverlightError(sender, args) {
             return;
-
-
         }
     </script> 
     <% } %>
     
   
 </head>
-<body class="<%= BodyClass %>" data-ng-app="wwtApp" data-res-location="<%= ResourcesLocation%>" data-version="1" data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
+<body 
+    class="<%= BodyClass %>" 
+    data-ng-app="wwtApp" 
+    data-res-location="<%= ResourcesLocation%>" 
+    data-version="1" 
+    data-liveId="<%=ConfigurationManager.AppSettings["LiveClientId"]%>"
+    data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
 <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
@@ -417,6 +424,15 @@
     
 
     <div id="ribbon">
+        <span class="pull-right" ng-controller="LoginController">
+        <a class="btn pull-right" ng-click="login()" ng-show="liveAppId && liveAppId.length && !loggedIn">
+            <span localize="Sign In"></span>
+        </a>
+        <a class="btn pull-right" ng-click="logout()" ng-show="liveAppId && liveAppId.length && loggedIn">
+            <span localize="Sign Out"></span>
+        </a>
+
+        </span>
         <a class="btn pull-right" href="/Download/" target="wwt">
             <i class="fa fa-download"></i>
             <span localize="Install Windows Client"></span>
@@ -468,7 +484,7 @@
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
 
             <div class="ribbon-thumbs" ng-repeat="item in tourList">
-                <a ng-if="$index==currentPage * pageSize" id="popTrigger"
+                <%--<a ng-if="$index==currentPage * pageSize" id="popTrigger"
                    data-title="{{tour.get_name()}}"
                    bs-popover="popover" data-placement="bottom-left"
                    data-content-template="views/popovers/tour-info.html"
@@ -476,19 +492,19 @@
                    data-trigger="hover" data-animation="am-fade"
                    data-delay="200">
                     &nbsp;
-                </a>
+                </a>--%>
 
-                <span class="tour-thumb" ng-if="item.get_thumbnailUrl().length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
+                <span class="tour-thumb" id="tourthumb{{$index}}" ng-if="item.thumb.length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
                     <a ng-click="clickThumb(item)" ng-mouseenter="tourPreview($event, item)"
                        title="{{item.get_name()}}"
-                       ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">
-                        <img ng-src="{{item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}" />
+                       ng-class="item.thumb + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'" >
+                        <img ng-src="{{item.thumb}}" alt="Thumbnail of {{item.get_name()}}" />
                         <label>{{item.get_name()}}</label>
                     </a>
 
                 </span>
-                <span ng-if="item.get_thumbnailUrl().length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
-                    <img ng-src="{{item.get_thumbnailUrl()}}" class="offscreen" />
+                <span ng-if="item.thumb.length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
+                    <img ng-src="{{item.thumb}}" class="offscreen" />
                 </span>
             </div>
             <label class="wwt-pager">
@@ -540,6 +556,35 @@
                     <i class="fa fa-play reverse"></i>
                 </a>
                 {{(currentPage + 1)}} <span localize="of"></span> {{ pageCount }}
+                <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
+                    <i class="fa fa-play"></i>
+                </a>
+            </label>
+            <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
+                <i class="fa fa-caret-down" ng-if="!expanded"></i>
+                <i class="fa fa-caret-up" ng-if="expanded"></i>
+            </a>
+        </div>
+        
+        <div 
+            ng-show="!loadingUrlPlace" 
+            ng-switch-when="Communities"
+            id="communityPanel"
+            class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}" 
+            ng-controller="CommunityController" 
+            >
+            <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+            <div class="explore-thumbs">
+                <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
+                    <ng-include src="'views/thumbnail.html'"></ng-include>
+                </div>
+
+            </div>
+            <label class="wwt-pager">
+                <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
+                    <i class="fa fa-play reverse"></i>
+                </a>
+                {{(currentPage+1)}} <span localize="of"></span> {{pageCount}}
                 <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="goFwd()">
                     <i class="fa fa-play"></i>
                 </a>
@@ -994,6 +1039,19 @@
                 
             </div>
             
+        </div>
+    </div>
+</div>
+<div class="modal" id="folderLoadingModal" tabindex="-1" role="dialog" aria-labelledby="folderLoadingLabel" aria-hidden="true" data-backdrop="static" 
+   data-keyboard="false" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>
+                    <i class="fa fa-spin fa-spinner"></i>
+                    <span localize="Loading folder contents. Please Wait..."></span>
+                </h4>
+            </div>
         </div>
     </div>
 </div>
