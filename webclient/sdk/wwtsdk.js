@@ -17848,9 +17848,6 @@ window.wwtlib = function(){
     return val;
   };
   Util.getTourComponent = function(url, name) {
-    if (url.indexOf('worldwidetelescope.org') !== -1 || url.indexOf('wwtstaging.azurewebsites') !== -1) {
-      return url;
-    }
     return 'http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=' + encodeURIComponent(url) + '&filename=' + name;
   };
   Util.selectSingleNode = function(parent, name) {

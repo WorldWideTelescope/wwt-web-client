@@ -26,7 +26,7 @@ wwt.controllers.controller('MainController',
 	'$modal',
 	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal) {
 		var ctl;
-		
+		 
 		//#region LookAt/Imagery 
 		var initialPass = true;
 		$scope.lookTypes = ['Earth', 'Planet', 'Sky', 'Panorama', 'SolarSystem'];
@@ -47,7 +47,7 @@ wwt.controllers.controller('MainController',
 		$scope.lookAtChanged = function (imageryName, dropdownInvoked, noUpdate, keepCamera) {
 			setTimeout(wwt.resize, 120);
 			if (!keepCamera) {
-				util.resetCamera();
+				util.resetCamera(true);
 			}
 			$timeout(function () {
 				if ($('#lstLookAt').length) {
@@ -142,7 +142,7 @@ wwt.controllers.controller('MainController',
 			});
 			ctl.settings.set_showConstellationBoundries(false);
 			
-			util.resetCamera();
+			util.resetCamera(true);
 			$(window).on('resize', wwt.resize);
 			ctl.endInit();
 			$rootScope.singleton = wwtlib.WWTControl.singleton;
@@ -157,65 +157,64 @@ wwt.controllers.controller('MainController',
 			//hashChange(null, hashManager.getHashObject());
 		};
 
-		var hashChange = function(e,obj) {
-			if (obj['place']) {
-				var openPlace = obj['place'];
-				if (!isNaN(parseInt(openPlace.charAt(0)))) {
-					$('#loadingModal').modal('show');
-					searchUtil.getPlaceById(openPlace).then(function(place) {
-						$scope.setForegroundImage(place);
-						if (obj['ra']) {
-							setTimeout(function() {
-								ctl.gotoRaDecZoom(
-									parseFloat(obj['ra']) * 15,
-									parseFloat(obj['dec']),
-									parseFloat(obj['fov']),
-									false
-								);
-								if (obj['cf']) {
-									$('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
-									
-									var ensureProperOpacity = function() {
-										ctl.setForegroundOpacity(parseFloat(obj['cf']));
-									};
-									for (var i = 1; i < 6; i++) {
-										setTimeout(ensureProperOpacity, i*1000);
-									}
+		var hashChange = function (e, obj) {
+		    var goto = function () {
+		        ctl.gotoRaDecZoom(
+					parseFloat(obj['ra']) * 15,
+					parseFloat(obj['dec']),
+					parseFloat(obj['fov']),
+					false
+				);
+		    }
 
-								}
-								
-							}, 3333);
-						}
-						$('#loadingModal').modal('hide');
-						location.hash = '/';
-					});
-				}
-			}
-			if (obj['lookAt']) {
-				$timeout(function() {
-					$scope.setLookAt(obj['lookAt'], obj['imagery']);
-					if (obj['ra'] &&(obj['lookAt'] === 'Earth' || obj.lookAt === 'Planet') ){
-						
-						setTimeout(function () {
-							ctl.gotoRaDecZoom(
-								parseFloat(obj['ra']) * 15,
-								parseFloat(obj['dec']),
-								parseFloat(obj['fov']),
-								false
-							);
+		    if (obj['place']) {
+		        var openPlace = obj['place'];
+		        if (!isNaN(parseInt(openPlace.charAt(0)))) {
+		            $('#loadingModal').modal('show');
+		            searchUtil.getPlaceById(openPlace).then(function (place) {
+		                $scope.setForegroundImage(place);
+		                if (obj['ra']) {
+		                    setTimeout(function () {
+		                        goto();
+		                        if (obj['cf']) {
+		                            $('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
 
-						}, 2220);
-						
-					}
-					location.hash = '/';
-				}, 2000);
-				
-			}
-			else if (obj['imagery']) {
-				$timeout(function () { $scope.setLookAt('Sky', obj['imagery']);}, 2000);
-				location.hash = '/';
-			}
-			
+		                            var ensureProperOpacity = function () {
+		                                ctl.setForegroundOpacity(parseFloat(obj['cf']));
+		                            };
+		                            for (var i = 1; i < 6; i++) {
+		                                setTimeout(ensureProperOpacity, i * 1000);
+		                            }
+		                        }
+
+		                    }, 3333);
+		                }
+		                $('#loadingModal').modal('hide');
+		                
+		            });
+		        }
+		    }
+		    else if (obj['ra'] !== undefined) {
+		        goto();
+		    }
+		    if (obj['lookAt']) {
+		        $timeout(function () {
+		            $scope.setLookAt(obj['lookAt'], obj['imagery']);
+		            if (obj['ra'] && (obj['lookAt'] === 'Earth' || obj.lookAt === 'Planet')) {
+
+		                setTimeout(goto, 2220);
+
+		            }
+		            
+		        }, 2000);
+
+		    }
+		    else if (obj['imagery']) {
+		        $timeout(function () { $scope.setLookAt('Sky', obj['imagery']); }, 2000);
+		        
+		    }
+
+
 		}
 
 		$scope.initUI = function() {

@@ -27,7 +27,7 @@ namespace wwtlib
             return hash;
 
         }
-
+         
         public static double LogN(double num, double b)
         {
             return Math.Log(num) / Math.Log(b);
@@ -93,11 +93,6 @@ namespace wwtlib
 
         public static string GetTourComponent(string url, string name)
         {
-            if (url.IndexOf("worldwidetelescope.org") != -1 || url.IndexOf("wwtstaging.azurewebsites") != -1)
-            {
-                return url;
-            }
-
             return "http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=" + url.EncodeUriComponent() + "&filename=" + name;
         }
 
