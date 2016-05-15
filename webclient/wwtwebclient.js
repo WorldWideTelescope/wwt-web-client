@@ -1254,7 +1254,6 @@ wwt.app.factory('AppState', function() {
 	}
 
 	function getKey(k) {
-
 		return data[k];
 	}
 
@@ -1979,8 +1978,12 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
         }
 		window.open(url);
 	}
-	function resetCamera() {
-		wwt.wc.gotoRaDecZoom(0, 0, 60, true);
+    function resetCamera(leaveHash) {
+        if (!leaveHash) {
+            location.hash = '/';
+        }
+        wwt.wc.gotoRaDecZoom(0, 0, 60, true);
+
 	};
 	function toggleFullScreen () {
 		if (fullscreen) {
@@ -2740,12 +2743,12 @@ get_subType = undefined
 get_dataSetType = 1
 
 */
-wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',function ($rootScope, $http, $q, $timeout, util) {
+wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util', function ($rootScope, $http, $q, $timeout, util) {
     var api = {
         getRoot: getRoot,
         getChildren: getChildren,
         getTourById: getTourById,
-        getToursById:getToursById
+        getToursById: getToursById
     };
     var root;
     var rootFolders;
@@ -2768,12 +2771,10 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',functi
         initPromise.then(function () {
             rootFolders = root.get_children();
             deferred.resolve(transformData(rootFolders));
-            $.each(rootFolders, function (i,folder) {
+            $.each(rootFolders, function (i, folder) {
                 var kids = folder.get_children();
                 $.each(kids, function (j, tour) {
                     if (tour.get_isTour()) {
-                        tour.authorThumb = '//cdn.worldwidetelescope.org/Community/AuthorThumbnail/' + tour.id;
-                        tour.thumb = '//cdn.worldwidetelescope.org/Community/TourThumbnail/' + tour.get_thumbnailUrl().split('GUID=')[1];
                         tourHash[tour.id.toLowerCase()] = tour;
                     }
                 });
@@ -2784,29 +2785,36 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',functi
 
     function getChildren(obj) {
         var deferred = $q.defer();
-        
+
         obj.childLoadCallback(function () {
             deferred.resolve(transformData(obj.get_children()));
-           
-            
+
+
         });
-        
+
         return deferred.promise;
     }
 
-    var transformData = function(items) {
+    var transformData = function (items) {
         $.each(items, function (i, item) {
             try {
                 item.name = item.get_name();
+                item.thumb = item.get_thumbnailUrl();
+                //console.log(item.thumb);
                 item.isFolder = item.get_isFolder();
-                if (!item.isFolder && item.name !== 'Up Level') {
-                    item.authorThumb = '//cdn.worldwidetelescope.org/Community/AuthorThumbnail/' + item.id;
-                    item.thumb = '//cdn.worldwidetelescope.org/Community/TourThumbnail/' + item.get_thumbnailUrl().split('GUID=')[1];
-                    //item.tourUrl = '//cdn.worldwidetelescope.org/File/Download/' + item.id + '/' + item.get_name() + '/wtt';
-                    item.tourUrl = '//wwtstaging.azurewebsites.net/community/gettour/' + item.id + '/' + item.get_name();
-                } else { 
-                    item.thumb = item.get_thumbnailUrl();
+                /*item.isImage = item.get_isImage();
+                if (typeof item.get_type == 'function') {
+                    item.isPlanet = item.get_type() === 1;
+                    item.isFolder = item.get_type() === 0;
+                    item.isFGImage = item.get_type() === 2 && typeof item.get_camParams == 'function';
                 }
+                if (typeof item.get_dataSetType == 'function') {
+                    item.isEarth = item.get_dataSetType() === 0;
+                    item.isPanorama = item.get_dataSetType() === 3;
+                    item.isSurvey = item.get_dataSetType() === 2;
+                }
+
+                */
 
             } catch (er) {
                 util.log(item, er);
@@ -2819,16 +2827,16 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util',functi
         var deferred = $q.defer();
 
         root = wwt.wc.createFolder();
-        var toursUrl = 'https://wwtweb.blob.core.windows.net/tours/webclienttours.wtml';
+        var toursUrl = 'gettours_webclient.xml';
         root.loadFromUrl(toursUrl, function () {
             //root.refresh();
             deferred.resolve(root.get_children());
         });
-        
+
         return deferred.promise;
     };
 
-   
+
 
     var initPromise = init();
     return api;
@@ -3460,7 +3468,7 @@ wwt.controllers.controller('MainController',
 	'$modal',
 	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal) {
 		var ctl;
-		
+		 
 		//#region LookAt/Imagery 
 		var initialPass = true;
 		$scope.lookTypes = ['Earth', 'Planet', 'Sky', 'Panorama', 'SolarSystem'];
@@ -3481,7 +3489,7 @@ wwt.controllers.controller('MainController',
 		$scope.lookAtChanged = function (imageryName, dropdownInvoked, noUpdate, keepCamera) {
 			setTimeout(wwt.resize, 120);
 			if (!keepCamera) {
-				util.resetCamera();
+				util.resetCamera(true);
 			}
 			$timeout(function () {
 				if ($('#lstLookAt').length) {
@@ -3576,7 +3584,7 @@ wwt.controllers.controller('MainController',
 			});
 			ctl.settings.set_showConstellationBoundries(false);
 			
-			util.resetCamera();
+			util.resetCamera(true);
 			$(window).on('resize', wwt.resize);
 			ctl.endInit();
 			$rootScope.singleton = wwtlib.WWTControl.singleton;
@@ -3591,65 +3599,64 @@ wwt.controllers.controller('MainController',
 			//hashChange(null, hashManager.getHashObject());
 		};
 
-		var hashChange = function(e,obj) {
-			if (obj['place']) {
-				var openPlace = obj['place'];
-				if (!isNaN(parseInt(openPlace.charAt(0)))) {
-					$('#loadingModal').modal('show');
-					searchUtil.getPlaceById(openPlace).then(function(place) {
-						$scope.setForegroundImage(place);
-						if (obj['ra']) {
-							setTimeout(function() {
-								ctl.gotoRaDecZoom(
-									parseFloat(obj['ra']) * 15,
-									parseFloat(obj['dec']),
-									parseFloat(obj['fov']),
-									false
-								);
-								if (obj['cf']) {
-									$('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
-									
-									var ensureProperOpacity = function() {
-										ctl.setForegroundOpacity(parseFloat(obj['cf']));
-									};
-									for (var i = 1; i < 6; i++) {
-										setTimeout(ensureProperOpacity, i*1000);
-									}
+		var hashChange = function (e, obj) {
+		    var goto = function () {
+		        ctl.gotoRaDecZoom(
+					parseFloat(obj['ra']) * 15,
+					parseFloat(obj['dec']),
+					parseFloat(obj['fov']),
+					false
+				);
+		    }
 
-								}
-								
-							}, 3333);
-						}
-						$('#loadingModal').modal('hide');
-						location.hash = '/';
-					});
-				}
-			}
-			if (obj['lookAt']) {
-				$timeout(function() {
-					$scope.setLookAt(obj['lookAt'], obj['imagery']);
-					if (obj['ra'] &&(obj['lookAt'] === 'Earth' || obj.lookAt === 'Planet') ){
-						
-						setTimeout(function () {
-							ctl.gotoRaDecZoom(
-								parseFloat(obj['ra']) * 15,
-								parseFloat(obj['dec']),
-								parseFloat(obj['fov']),
-								false
-							);
+		    if (obj['place']) {
+		        var openPlace = obj['place'];
+		        if (!isNaN(parseInt(openPlace.charAt(0)))) {
+		            $('#loadingModal').modal('show');
+		            searchUtil.getPlaceById(openPlace).then(function (place) {
+		                $scope.setForegroundImage(place);
+		                if (obj['ra']) {
+		                    setTimeout(function () {
+		                        goto();
+		                        if (obj['cf']) {
+		                            $('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
 
-						}, 2220);
-						
-					}
-					location.hash = '/';
-				}, 2000);
-				
-			}
-			else if (obj['imagery']) {
-				$timeout(function () { $scope.setLookAt('Sky', obj['imagery']);}, 2000);
-				location.hash = '/';
-			}
-			
+		                            var ensureProperOpacity = function () {
+		                                ctl.setForegroundOpacity(parseFloat(obj['cf']));
+		                            };
+		                            for (var i = 1; i < 6; i++) {
+		                                setTimeout(ensureProperOpacity, i * 1000);
+		                            }
+		                        }
+
+		                    }, 3333);
+		                }
+		                $('#loadingModal').modal('hide');
+		                
+		            });
+		        }
+		    }
+		    else if (obj['ra'] !== undefined) {
+		        goto();
+		    }
+		    if (obj['lookAt']) {
+		        $timeout(function () {
+		            $scope.setLookAt(obj['lookAt'], obj['imagery']);
+		            if (obj['ra'] && (obj['lookAt'] === 'Earth' || obj.lookAt === 'Planet')) {
+
+		                setTimeout(goto, 2220);
+
+		            }
+		            
+		        }, 2000);
+
+		    }
+		    else if (obj['imagery']) {
+		        $timeout(function () { $scope.setLookAt('Sky', obj['imagery']); }, 2000);
+		        
+		    }
+
+
 		}
 
 		$scope.initUI = function() {
@@ -5248,12 +5255,11 @@ wwt.controllers.controller('ExploreController',
 	                calcPageSize();
 	                $.each(result, function (i, item) {
 	                    if (item.get_name() === 'Open Collections'||item.get_name() === 'New VAMP Feeds') {
-	                        result.splice(0, 0, item);
-	                        result.pop();
+	                        result.splice(0, 0, result.splice(i, 1)[0]);
 	                        if (item.get_name() === 'Open Collections') {
 	                            openCollection = true;
 	                            $scope.clickThumb(item);
-	                        }
+	                        } 
 	                    }
 	                });
 
