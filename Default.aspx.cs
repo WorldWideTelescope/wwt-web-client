@@ -15,7 +15,7 @@ public partial class wwtwebclient : System.Web.UI.Page
 	public string ResourcesVersion = ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
 	public string BodyClass;
-	public string SDKLocation = "http://www.worldwidetelescope.org/scripts/wwtsdk.aspx";
+	public string SDKLocation = "http://localhost:26993/scripts/wwtsdk.aspx?debug=true";
      
 	public enum Clients
 	{

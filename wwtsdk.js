@@ -18303,7 +18303,7 @@ window.wwtlib = (function() {
       var canvas = WWTControl._createCanvasElement(DivId);
       var webgltext = 'experimental-webgl';
       var gl = null;
-      webGL = false;
+      webGL = none;
       if (webGL) {
         gl = canvas.getContext(webgltext);
       }

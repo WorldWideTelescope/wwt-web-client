@@ -163,6 +163,8 @@
     <Content Include="Images\europa.jpg" />
     <Content Include="Images\finder-scope.png" />
     <Content Include="Images\ganymede.jpg" />
+    <Content Include="Images\glyphs1.png" />
+    <Content Include="Images\glyphs1.xml" />
     <Content Include="Images\io.jpg" />
     <Content Include="Images\jupiter.jpg" />
     <Content Include="Images\layersButton.png" />
@@ -228,6 +230,8 @@
     <Content Include="css\variables.less" />
     <Content Include="css\webclient.css.map" />
     <Content Include="css\webclient.less" />
+    <Content Include="WebClient\Images\glyphs1.png" />
+    <Content Include="WebClient\Images\glyphs1.xml" />
     <Content Include="wwtsdk.js" />
     <Content Include="wwtsdk.min.js" />
     <Content Include="WWTSL.xap" />
@@ -355,6 +359,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
