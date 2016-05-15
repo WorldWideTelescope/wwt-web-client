@@ -1359,6 +1359,11 @@ namespace wwtlib
             dirty = true;
         }
 
+        public override void InitFromXml(XmlNode node)
+        {
+            base.InitFromXml(node);
+        }
+
     }
 
 

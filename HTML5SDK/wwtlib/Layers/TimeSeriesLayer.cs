@@ -1277,6 +1277,11 @@ namespace wwtlib
         //    }
         //}
 
+        public override void InitFromXml(XmlNode node)
+        {
+            base.InitFromXml(node);
+        }
+
         public override void CleanUp()
         {
 

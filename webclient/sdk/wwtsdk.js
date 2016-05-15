@@ -2390,9 +2390,6 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
-      console.assert(Degrees >= 0);
-      console.assert(Minutes >= 0);
-      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -2489,7 +2486,6 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
-    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -2654,7 +2650,6 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
-      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -3600,7 +3595,6 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
-          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -5057,7 +5051,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -5092,7 +5085,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
-    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -5129,7 +5121,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -5446,7 +5437,6 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
-      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -8476,7 +8466,7 @@ window.wwtlib = function(){
         if (ra < 10) {
           text = '  ' + ra.toString() + ' hr';
         }
-        Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra + 0.005, 0.4, 1), Coordinates.raDecTo3dAu(ra + 0.005, 0.5, 1), text, 30, 6E-05));
+        Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra + 0.005, 0.4, 1), Coordinates.raDecTo3dAu(ra + 0.005, 0.5, 1), text, 45, 0.00018));
       }
       index = 0;
       for (var ra = 0; ra < 24; ra += 3) {
@@ -8487,11 +8477,11 @@ window.wwtlib = function(){
           var text = dec.toString();
           if (dec > 0) {
             text = '  +' + dec.toString();
-            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec - 0.4, 1), Coordinates.raDecTo3dAu(ra, dec - 0.3, 1), text, 30, 6E-05));
+            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec - 0.4, 1), Coordinates.raDecTo3dAu(ra, dec - 0.3, 1), text, 45, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec + 0.4, 1), Coordinates.raDecTo3dAu(ra, dec + 0.5, 1), text, 30, 6E-05));
+            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec + 0.4, 1), Coordinates.raDecTo3dAu(ra, dec + 0.5, 1), text, 45, 0.00018));
           }
           index++;
         }
@@ -8637,7 +8627,7 @@ window.wwtlib = function(){
         if (text.length === 9) {
           text = '   ' + text;
         }
-        Grids._precTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p, b, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p + 0.01, b, 1), mat), text, 80, 9E-05));
+        Grids._precTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p, b, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p + 0.01, b, 1), mat), text, 75, 0.00015));
       }
     }
     return;
@@ -8744,7 +8734,7 @@ window.wwtlib = function(){
           text = '     ' + l.toString();
         }
         var lc = 360 - l;
-        Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(lc / 15 - 6, 0.4, 1), Coordinates.raDecTo3dAu(lc / 15 - 6, 0.5, 1), text, 80, 6E-05));
+        Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(lc / 15 - 6, 0.4, 1), Coordinates.raDecTo3dAu(lc / 15 - 6, 0.5, 1), text, 75, 0.00018));
       }
       index = 0;
       for (var l = 0; l < 360; l += 90) {
@@ -8755,11 +8745,11 @@ window.wwtlib = function(){
           var text = b.toString();
           if (b > 0) {
             text = '  +' + b.toString();
-            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), text, 80, 6E-05));
+            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), text, 75, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), text, 80, 6E-05));
+            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), text, 75, 0.00018));
           }
           index++;
         }
@@ -8837,7 +8827,7 @@ window.wwtlib = function(){
         else if (l < 100) {
           text = '     ' + l.toString();
         }
-        Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.5, 1), mat), text, 80, 6E-05));
+        Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.5, 1), mat), text, 75, 0.00018));
       }
       for (var l = 0; l < 360; l += 90) {
         for (var b = -80; b <= 80; b += 10) {
@@ -8847,11 +8837,11 @@ window.wwtlib = function(){
           var text = b.toString();
           if (b > 0) {
             text = '  +' + b.toString();
-            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), mat), text, 80, 6E-05));
+            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), mat), text, 75, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), mat), text, 80, 6E-05));
+            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), mat), text, 75, 0.00018));
           }
         }
       }
@@ -8923,7 +8913,7 @@ window.wwtlib = function(){
         else if (l < 100) {
           text = '     ' + l.toString();
         }
-        Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, 0.4), Coordinates.galacticTo3dDouble(l, 0.5), text, 80, 6E-05));
+        Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, 0.4), Coordinates.galacticTo3dDouble(l, 0.5), text, 75, 0.00018));
       }
       for (var l = 0; l < 360; l += 90) {
         for (var b = -80; b <= 80; b += 10) {
@@ -8933,11 +8923,11 @@ window.wwtlib = function(){
           var text = b.toString();
           if (b > 0) {
             text = '  +' + b.toString();
-            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b - 0.4), Coordinates.galacticTo3dDouble(l, b - 0.3), text, 80, 6E-05));
+            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b - 0.4), Coordinates.galacticTo3dDouble(l, b - 0.3), text, 75, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b + 0.4), Coordinates.galacticTo3dDouble(l, b + 0.5), text, 80, 6E-05));
+            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b + 0.4), Coordinates.galacticTo3dDouble(l, b + 0.5), text, 75, 0.00018));
           }
         }
       }
@@ -8965,6 +8955,26 @@ window.wwtlib = function(){
     this._enabled = true;
     this.astronomical = false;
   }
+  Layer.fromXml = function(layerNode, someFlag) {
+    var layerClassName = layerNode.attributes.getNamedItem('Type').nodeValue;
+    var overLayType = ss.replaceString(layerClassName, 'TerraViewer.', '');
+    if (overLayType == null) {
+      return null;
+    }
+    var newLayer = null;
+    switch (overLayType) {
+      case 'SpreadSheetLayer':
+        newLayer = new SpreadSheetLayer();
+        break;
+      case 'GreatCirlceRouteLayer':
+        newLayer = new GreatCirlceRouteLayer();
+        break;
+      default:
+        return null;
+    }
+    newLayer.initFromXml(layerNode);
+    return newLayer;
+  };
   var Layer$ = {
     getPrimaryUI: function() {
       return null;
@@ -9138,31 +9148,6 @@ window.wwtlib = function(){
     saveToXml: function(xmlWriter) {
     },
     initializeFromXml: function(node) {
-    },
-    fromXml: function(layerNode, someFlag) {
-      var layerClassName = layerNode.attributes.getNamedItem('Type').nodeValue;
-      var overLayType = ss.replaceString(layerClassName, 'TerraViewer.', '');
-      if (overLayType == null) {
-        return null;
-      }
-      var newLayer = null;
-      switch (overLayType) {
-        case 'SpreadSheetLayer':
-          newLayer = new SpreadSheetLayer();
-          break;
-        case 'GreatCirlceRouteLayer':
-          newLayer = new GreatCirlceRouteLayer();
-          break;
-        default:
-          return null;
-      }
-      for(var method in this){
- /*if (({}).toString.call(this[method]).match(/\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){
-*/ newLayer[method] = this[method];/*
-}*/
-};
-      newLayer.initFromXml(layerNode);
-      return newLayer;
     },
     initFromXml: function(node) {
       this.id = Guid.fromString(node.attributes.getNamedItem('Id').nodeValue);
@@ -9585,7 +9570,13 @@ window.wwtlib = function(){
                 fadeOpacity = ((fadeOut - SpaceTimeController.get_jNow()) / (layer.get_fadeSpan() / 864000000));
               }
               layer.set_astronomical(astronomical);
-              layer.draw(renderContext, opacity * fadeOpacity, cosmos);
+              if (ss.canCast(layer, SpreadSheetLayer)) {
+                var tsl = ss.safeCast(layer, SpreadSheetLayer);
+                tsl.draw(renderContext, opacity * fadeOpacity, cosmos);
+              }
+              else {
+                layer.draw(renderContext, opacity * fadeOpacity, cosmos);
+              }
             }
           }
         }
@@ -11186,6 +11177,7 @@ window.wwtlib = function(){
         }
       }
     }
+    LayerManager._draw(renderContext, 1, false, Planets.getNameFrom3dId(planetID), true, false);
     renderContext.set_world(matOld);
     renderContext.set_worldBase(matOldBase);
     renderContext.set_worldBaseNonRotating(matOldNonRotating);
@@ -13062,19 +13054,30 @@ window.wwtlib = function(){
       while ($enum1.moveNext()) {
         var t3d = $enum1.current;
         var text = t3d.text;
-        var size = Vector2d.create(1000, 100);
-        var factor = 0.6666;
-        t3d.width = size.x * t3d.scale * factor;
-        t3d.height = size.y * t3d.scale * factor;
         var left = 0;
         var top = 0;
         var fntAdjust = this._textObject.fontSize / 128;
+        var factor = 0.6666;
+        var width = 0;
+        var height = 0;
+        for (var i = 0; i < text.length; i++) {
+          var item = this._glyphCache.getGlyphItem(text.substr(i, 1));
+          if (item != null) {
+            width += item.extents.x;
+            height = Math.max(item.extents.y, height);
+          }
+        }
+        var size = Vector2d.create(width, height);
+        t3d.width = size.x * t3d.scale * factor * fntAdjust;
+        t3d.height = size.y * t3d.scale * factor * fntAdjust;
         var charsLeft = text.length;
         for (var i = 0; i < charsLeft; i++) {
           var item = this._glyphCache.getGlyphItem(text.substr(i, 1));
-          var position = Rectangle.create(left * t3d.scale * factor, 0 * t3d.scale * factor, item.extents.x * fntAdjust * t3d.scale * factor, item.extents.y * fntAdjust * t3d.scale * factor);
-          left += (item.extents.x * fntAdjust);
-          t3d.addGlyphPoints(verts, item.size, position, item.uvRect);
+          if (item != null) {
+            var position = Rectangle.create(left * t3d.scale * factor, 0 * t3d.scale * factor, item.extents.x * fntAdjust * t3d.scale * factor, item.extents.y * fntAdjust * t3d.scale * factor);
+            left += (item.extents.x * fntAdjust);
+            t3d.addGlyphPoints(verts, item.size, position, item.uvRect);
+          }
         }
       }
       this._vertCount = verts.length;
@@ -13347,7 +13350,11 @@ window.wwtlib = function(){
           points[i].position = Vector3d._transformCoordinate(points[i].position, this._rtbMat);
         }
       }
-      pointList.push(points);
+      var $enum1 = ss.enumerate(points);
+      while ($enum1.moveNext()) {
+        var pnt = $enum1.current;
+        pointList.push(pnt);
+      }
     }
   };
 
@@ -15384,7 +15391,7 @@ window.wwtlib = function(){
         while ($enum3.moveNext()) {
           var layer = $enum3.current;
           if (layer.nodeName === 'Layer') {
-            var newLayer = new Layer().fromXml(layer, true);
+            var newLayer = Layer.fromXml(layer, true);
             if (newLayer != null) {
               var fileName = ss.format('{0}.txt', newLayer.id.toString());
               if (ss.keyExists(LayerManager.get_layerList(), newLayer.id)) {
@@ -17848,9 +17855,6 @@ window.wwtlib = function(){
     return val;
   };
   Util.getTourComponent = function(url, name) {
-    if (url.indexOf('worldwidetelescope.org') !== -1 || url.indexOf('wwtstaging.azurewebsites') !== -1) {
-      return url;
-    }
     return 'http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=' + encodeURIComponent(url) + '&filename=' + name;
   };
   Util.selectSingleNode = function(parent, name) {
@@ -18335,7 +18339,7 @@ window.wwtlib = function(){
       var canvas = WWTControl._createCanvasElement(DivId);
       var webgltext = 'experimental-webgl';
       var gl = null;
-      webGL = false;
+      webGL = true;
       if (webGL) {
         gl = canvas.getContext(webgltext);
       }
@@ -26250,6 +26254,9 @@ window.wwtlib = function(){
       }
       return true;
     },
+    initFromXml: function(node) {
+      Layer.prototype.initFromXml.call(this, node);
+    },
     cleanUp: function() {
       if (this.lineList != null) {
         this.lineList.clear();
@@ -29709,6 +29716,9 @@ window.wwtlib = function(){
       TimeSeriesLayer.prototype.cleanUp.call(this);
       this._table$2.unlock();
       this.dirty = true;
+    },
+    initFromXml: function(node) {
+      TimeSeriesLayer.prototype.initFromXml.call(this, node);
     }
   };
 

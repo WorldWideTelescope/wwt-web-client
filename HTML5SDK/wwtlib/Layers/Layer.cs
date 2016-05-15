@@ -11,7 +11,7 @@ namespace wwtlib
 
     public enum AltUnits { Meters=1, Feet=2, Inches=3, Miles=4, Kilometers=5, AstronomicalUnits=6, LightYears=7, Parsecs=8, MegaParsecs=9, Custom=10 };
     public enum FadeType { FadeIn=1, FadeOut=2, Both=3, None=4 };
-    public class Layer 
+    public abstract class Layer 
     {
         public virtual LayerUI GetPrimaryUI()
         {
@@ -466,7 +466,7 @@ namespace wwtlib
 
         }
 
-        public Layer FromXml(XmlNode layerNode, bool someFlag)
+        public static Layer FromXml(XmlNode layerNode, bool someFlag)
         {
             string layerClassName = layerNode.Attributes.GetNamedItem("Type").Value.ToString();
 
@@ -492,14 +492,14 @@ namespace wwtlib
 
             //Force inheritance.
             // TODO: Understand why this breaks in SS .8
-            Script.Literal("for(var method in this){\n /*if (({}).toString.call(this[method]).match(/\\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){\n*/ newLayer[method] = this[method];/*\n}*/\n}");
+            //Script.Literal("for(var method in this){\n /*if (({}).toString.call(this[method]).match(/\\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){\n*/ newLayer[method] = this[method];/*\n}*/\n}");
             
             newLayer.InitFromXml(layerNode);
             
             return newLayer;
         }
 
-        public void InitFromXml(XmlNode node)
+        public virtual void InitFromXml(XmlNode node)
         {
             ID = Guid.FromString(node.Attributes.GetNamedItem("Id").Value);
             Name = node.Attributes.GetNamedItem("Name").Value;

@@ -590,7 +590,15 @@ namespace wwtlib
                                 //{
                                 //    layer.Astronomical = true;
                                 //}
-                                layer.Draw(renderContext, opacity * fadeOpacity, cosmos);
+                                if (layer is SpreadSheetLayer)
+                                {
+                                    SpreadSheetLayer tsl = layer as SpreadSheetLayer;
+                                    tsl.Draw(renderContext, opacity * fadeOpacity, cosmos);
+                                }
+                                else
+                                {
+                                    layer.Draw(renderContext, opacity * fadeOpacity, cosmos);
+                                }
                             }
                         }
                     }

@@ -113,7 +113,7 @@ namespace wwtlib
                         text = "  " + ra.ToString() + " hr";
                     }
 
-                    EquTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(ra + 0.005, 0.4, 1), Coordinates.RADecTo3dAu(ra + 0.005, 0.5, 1), text, 30, .00006));
+                    EquTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(ra + 0.005, 0.4, 1), Coordinates.RADecTo3dAu(ra + 0.005, 0.5, 1), text, 45, .00018));
                 }
 
                 index = 0;
@@ -130,12 +130,12 @@ namespace wwtlib
                         if (dec > 0)
                         {
                             text = "  +" + dec.ToString();
-                            EquTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(ra, dec - .4, 1), Coordinates.RADecTo3dAu(ra, dec - .3, 1), text, 30, .00006));
+                            EquTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(ra, dec - .4, 1), Coordinates.RADecTo3dAu(ra, dec - .3, 1), text, 45, .00018));
                         }
                         else
                         {
                             text = "  - " + text.Substr(1);
-                            EquTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(ra, dec + .4, 1), Coordinates.RADecTo3dAu(ra, dec + .5, 1), text, 30, .00006));
+                            EquTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(ra, dec + .4, 1), Coordinates.RADecTo3dAu(ra, dec + .5, 1), text, 45, .00018));
                         }
 
                         index++;
@@ -395,7 +395,7 @@ namespace wwtlib
                         text = "   " + text;
                     }
 
-                    PrecTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(p, b, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(p + .01, b, 1), mat), text, 80, .00009));
+                    PrecTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(p, b, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(p + .01, b, 1), mat), text, 75, .00015));
                 }
             }
             return;
@@ -547,7 +547,7 @@ namespace wwtlib
                         text = "     " + l.ToString();
                     }
                     double lc = 360 - l;
-                    AltAzTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(lc / 15 - 6, .4, 1), Coordinates.RADecTo3dAu(lc / 15 - 6, .5, 1), text, 80, .00006));
+                    AltAzTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(lc / 15 - 6, .4, 1), Coordinates.RADecTo3dAu(lc / 15 - 6, .5, 1), text, 75, .00018));
                 }
 
                 index = 0;
@@ -564,12 +564,12 @@ namespace wwtlib
                         if (b > 0)
                         {
                             text = "  +" + b.ToString();
-                            AltAzTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(l / 15, b - .4, 1), Coordinates.RADecTo3dAu(l / 15, b - .3, 1), text, 80, .00006));
+                            AltAzTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(l / 15, b - .4, 1), Coordinates.RADecTo3dAu(l / 15, b - .3, 1), text, 75, .00018));
                         }
                         else
                         {
                             text = "  - " + text.Substr(1);
-                            AltAzTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(l / 15, b + .4, 1), Coordinates.RADecTo3dAu(l / 15, b + .5, 1), text, 80, .00006));
+                            AltAzTextBatch.Add(new Text3d(Coordinates.RADecTo3dAu(l / 15, b + .4, 1), Coordinates.RADecTo3dAu(l / 15, b + .5, 1), text, 75, .00018));
                         }
                         index++;
                     }
@@ -684,7 +684,7 @@ namespace wwtlib
                     {
                         text = "     " + l.ToString();
                     }
-                    EclipticTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, .4, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, .5, 1), mat), text, 80, .00006));
+                    EclipticTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, .4, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, .5, 1), mat), text, 75, .00018));
                 }
 
                 for (double l = 0; l < 360; l += 90)
@@ -700,12 +700,12 @@ namespace wwtlib
                         if (b > 0)
                         {
                             text = "  +" + b.ToString();
-                            EclipticTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b - .4, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b - .3, 1), mat), text, 80, .00006));
+                            EclipticTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b - .4, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b - .3, 1), mat), text, 75, .00018));
                         }
                         else
                         {
                             text = "  - " + text.Substr(1);
-                            EclipticTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b + .4, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b + .5, 1), mat), text, 80, .00006));
+                            EclipticTextBatch.Add(new Text3d(Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b + .4, 1), mat), Vector3d.TransformCoordinate(Coordinates.RADecTo3dAu(l / 15, b + .5, 1), mat), text, 75, .00018));
                         }
                     }
                 }
@@ -810,7 +810,7 @@ namespace wwtlib
                     {
                         text = "     " + l.ToString();
                     }
-                    GalTextBatch.Add(new Text3d(Coordinates.GalacticTo3dDouble(l, 0.4), Coordinates.GalacticTo3dDouble(l, 0.5), text, 80, .00006));
+                    GalTextBatch.Add(new Text3d(Coordinates.GalacticTo3dDouble(l, 0.4), Coordinates.GalacticTo3dDouble(l, 0.5), text, 75, .00018));
                 }
 
                 for (double l = 0; l < 360; l += 90)
@@ -826,12 +826,12 @@ namespace wwtlib
                         if (b > 0)
                         {
                             text = "  +" + b.ToString();
-                            GalTextBatch.Add(new Text3d(Coordinates.GalacticTo3dDouble(l, b - .4), Coordinates.GalacticTo3dDouble(l, b - .3), text, 80, .00006));
+                            GalTextBatch.Add(new Text3d(Coordinates.GalacticTo3dDouble(l, b - .4), Coordinates.GalacticTo3dDouble(l, b - .3), text, 75, .00018));
                         }
                         else
                         {
                             text = "  - " + text.Substr(1);
-                            GalTextBatch.Add(new Text3d(Coordinates.GalacticTo3dDouble(l, b + .4), Coordinates.GalacticTo3dDouble(l, b + .5), text, 80, .00006));
+                            GalTextBatch.Add(new Text3d(Coordinates.GalacticTo3dDouble(l, b + .4), Coordinates.GalacticTo3dDouble(l, b + .5), text, 75, .00018));
                         }
                     }
                 }
