@@ -19,7 +19,6 @@
 	}
 
 	function getKey(k) {
-
 		return data[k];
 	}
 

@@ -270,8 +270,12 @@
         }
 		window.open(url);
 	}
-	function resetCamera() {
-		wwt.wc.gotoRaDecZoom(0, 0, 60, true);
+    function resetCamera(leaveHash) {
+        if (!leaveHash) {
+            location.hash = '/';
+        }
+        wwt.wc.gotoRaDecZoom(0, 0, 60, true);
+
 	};
 	function toggleFullScreen () {
 		if (fullscreen) {

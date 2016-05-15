@@ -57,12 +57,12 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.6.3.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.6.3.0\lib\Wurfl.dll</HintPath>
+    <Reference Include="Wurfl, Version=1.7.0.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\WURFL_Official_API.1.7.0.0\lib\Wurfl.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.6.3.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\HTML5SDK\packages\WURFL_Official_API.1.6.3.0\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.6.4.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\WURFL_Official_API.1.7.0.0\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -189,61 +189,6 @@
     <Content Include="Images\wwtlogo.png" />
     <Content Include="login.aspx" />
     <Content Include="package.json" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.4.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.js" />
-    <Content Include="sdk\mscorlib.dll" />
-    <Content Include="sdk\mscorlib.xml" />
-    <Content Include="sdk\old\wwtsdk_old.debug.js" />
-    <Content Include="sdk\Script.Web.dll" />
-    <Content Include="sdk\Script.Web.xml" />
-    <Content Include="sdk\ss.js" />
-    <Content Include="sdk\ss.min.js" />
-    <Content Include="sdk\wwtsdk.aspx" />
-    <Content Include="sdk\wwtlib.dll" />
-    <Content Include="sdk\wwtlib.xml" />
-    <Content Include="searchdata.min.js" />
-    <Content Include="searchdataraw.js" />
-    <Content Include="sunCorona.png" />
-    <Content Include="views\layer-manager.html" />
-    <Content Include="views\modals\finder-scope.html" />
-    <Content Include="views\modals\intro.html" />
-    <Content Include="views\modals\loading.html" />
-    <Content Include="views\modals\mobile-explore.html" />
-    <Content Include="views\modals\mobile-layer-manager.html" />
-    <Content Include="views\modals\mobile-nearby-objects.html" />
-    <Content Include="views\modals\mobile-search.html" />
-    <Content Include="views\modals\mobile-settings.html" />
-    <Content Include="views\modals\mobile-tours.html" />
-    <Content Include="views\modals\mobile-view.html" />
-    <Content Include="views\modals\open-item.html" />
-    <Content Include="views\popovers\observing-time.html" />
-    <Content Include="views\popovers\property-panel.html" />
-    <Content Include="views\popovers\shareplace.html" />
-    <Content Include="views\popovers\tour-info.html" />
-    <Content Include="views\popovers\tour-template.html" />
-    <Content Include="views\research-menu.html" />
-    <Content Include="views\thumbnail.html" />
-    <Content Include="views\tree-node.html" />
-    <Content Include="css\variables.less" />
-    <Content Include="css\webclient.css.map" />
-    <Content Include="css\webclient.less" />
-    <Content Include="WebClient\Images\glyphs1.png" />
-    <Content Include="WebClient\Images\glyphs1.xml" />
-    <Content Include="wwtsdk.js" />
-    <Content Include="wwtsdk.min.js" />
-    <Content Include="WWTSL.xap" />
-    <Content Include="wwtwebclient.js" />
-    <Content Include="wwtwebclient.min.js" />
-    <Content Include="ensurenpm.cmd" />
-    <Content Include="adsass.wtml" />
-    <Content Include="packages.config" />
-    <Content Include="Hubble.wtml" />
-    <Content Include="ESO.wtml" />
-    <Content Include="App_Readme\WURFL-v1.6.3.0.chm" />
-    <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
     <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -320,13 +265,63 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-2.2.0.js" />
+    <Content Include="Scripts\jquery-2.2.0.min.js" />
+    <Content Include="sdk\mscorlib.dll" />
+    <Content Include="sdk\mscorlib.xml" />
+    <Content Include="sdk\old\wwtsdk_old.debug.js" />
+    <Content Include="sdk\Script.Web.dll" />
+    <Content Include="sdk\Script.Web.xml" />
+    <Content Include="sdk\ss.js" />
+    <Content Include="sdk\ss.min.js" />
+    <Content Include="sdk\wwtsdk.aspx" />
+    <Content Include="sdk\wwtlib.dll" />
+    <Content Include="sdk\wwtlib.xml" />
+    <Content Include="searchdata.min.js" />
+    <Content Include="searchdataraw.js" />
+    <Content Include="sunCorona.png" />
+    <Content Include="views\layer-manager.html" />
+    <Content Include="views\modals\finder-scope.html" />
+    <Content Include="views\modals\intro.html" />
+    <Content Include="views\modals\loading.html" />
+    <Content Include="views\modals\mobile-explore.html" />
+    <Content Include="views\modals\mobile-layer-manager.html" />
+    <Content Include="views\modals\mobile-nearby-objects.html" />
+    <Content Include="views\modals\mobile-search.html" />
+    <Content Include="views\modals\mobile-settings.html" />
+    <Content Include="views\modals\mobile-tours.html" />
+    <Content Include="views\modals\mobile-view.html" />
+    <Content Include="views\modals\open-item.html" />
+    <Content Include="views\popovers\observing-time.html" />
+    <Content Include="views\popovers\property-panel.html" />
+    <Content Include="views\popovers\shareplace.html" />
+    <Content Include="views\popovers\tour-info.html" />
+    <Content Include="views\popovers\tour-template.html" />
+    <Content Include="views\research-menu.html" />
+    <Content Include="views\thumbnail.html" />
+    <Content Include="views\tree-node.html" />
+    <Content Include="css\variables.less" />
+    <Content Include="css\webclient.css.map" />
+    <Content Include="css\webclient.less" />
+    <Content Include="WWTSL.xap" />
+    <Content Include="wwtwebclient.js" />
+    <Content Include="wwtwebclient.min.js" />
+    <Content Include="ensurenpm.cmd" />
+    <Content Include="adsass.wtml" />
+    <Content Include="packages.config" />
+    <Content Include="Hubble.wtml" />
+    <Content Include="ESO.wtml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="README.md" />
     <Content Include="sdk\wwtlib.scripts" />
-    <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery-2.2.0.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
