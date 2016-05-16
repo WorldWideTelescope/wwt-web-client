@@ -218,3 +218,7 @@ App_Data
 Content
 App_Readme
 Introspector
+
+Wurfl.*.dll
+Wurfl.dll
+wwtlib.dll

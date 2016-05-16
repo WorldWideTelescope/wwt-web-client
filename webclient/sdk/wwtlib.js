@@ -16310,10 +16310,16 @@ window.wwtlib = function(){
     return '';
   };
   Util.getProxiedUrl = function(url) {
-    if ((ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) && url.toLowerCase().indexOf('worldwidetelescope.org/wwtweb/') === -1) {
+    if (ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) {
+      if (url.toLowerCase().indexOf('worldwidetelescope.org/wwtweb/') < 12) {
+        return url;
+      }
       return url.split('worldwidetelescope.org')[1];
     }
-    if ((ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net') || ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net')) && url.toLowerCase().indexOf('wwtstaging.azurewebsites.net/wwtweb/') === -1) {
+    if (ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net') || ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net')) {
+      if (url.toLowerCase().indexOf('wwtstaging.azurewebsites.net/wwtweb/') < 12) {
+        return url;
+      }
       return url.split('wwtstaging.azurewebsites.net')[1];
     }
     if (ss.startsWith(url.toLowerCase(), 'http')) {

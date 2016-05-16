@@ -58,14 +58,22 @@ namespace wwtlib
         {
             
 
-            if ((url.ToLowerCase().StartsWith("http://worldwidetelescope.org") ||
-                url.ToLowerCase().StartsWith("http://www.worldwidetelescope.org")) && url.ToLowerCase().IndexOf("worldwidetelescope.org/wwtweb/") == -1)
+            if (url.ToLowerCase().StartsWith("http://worldwidetelescope.org") ||
+                url.ToLowerCase().StartsWith("http://www.worldwidetelescope.org"))
             {
+                if (url.ToLowerCase().IndexOf("worldwidetelescope.org/wwtweb/") < 12)
+                {
+                    return url;
+                }
                 return url.Split("worldwidetelescope.org")[1];
             }
-            if ((url.ToLowerCase().StartsWith("http://wwtstaging.azurewebsites.net") ||
-                url.ToLowerCase().StartsWith("http://wwtstaging.azurewebsites.net")) && url.ToLowerCase().IndexOf("wwtstaging.azurewebsites.net/wwtweb/") == -1)
+            if (url.ToLowerCase().StartsWith("http://wwtstaging.azurewebsites.net") ||
+                url.ToLowerCase().StartsWith("http://wwtstaging.azurewebsites.net"))
             {
+                if (url.ToLowerCase().IndexOf("wwtstaging.azurewebsites.net/wwtweb/") < 12)
+                {
+                    return url;
+                }
                 return url.Split("wwtstaging.azurewebsites.net")[1];
             }
 
