@@ -57,12 +57,12 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.7.0.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.7.0.0\lib\Wurfl.dll</HintPath>
+    <Reference Include="Wurfl, Version=1.7.1.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\WURFL_Official_API.1.7.1.0\lib\Wurfl.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.6.4.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.7.0.0\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.7.1.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\WURFL_Official_API.1.7.1.0\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -74,6 +74,7 @@
     <Content Include="controllers\LoginController.js" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\tabs\CommunityController.js" />
+    <Content Include="COPYING.txt" />
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
     <Content Include="Gruntfile.js" />
@@ -265,6 +266,11 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Introspector\Introspector.pdf" />
+    <Content Include="Introspector\Introspector.ashx" />
+    <Content Include="App_Readme\WURFL.chm" />
+    <Content Include="App_Readme\wurfl-latest.zip" />
+    <Content Include="App_Readme\WURFL Quick Guide_v1_5.pdf" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -307,6 +313,7 @@
     <Content Include="css\variables.less" />
     <Content Include="css\webclient.css.map" />
     <Content Include="css\webclient.less" />
+    <Content Include="WURFL AGPL License.txt" />
     <Content Include="WWTSL.xap" />
     <Content Include="wwtwebclient.js" />
     <Content Include="wwtwebclient.min.js" />
