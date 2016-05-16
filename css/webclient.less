@@ -466,6 +466,7 @@ body.wwt-webclient-wrapper.mobile{
 		//height: 267px;
 		width: 278px;
 		margin: -3px -8px -8px -8px;
+
 	}
 
 	div.explore-panel {
@@ -473,7 +474,110 @@ body.wwt-webclient-wrapper.mobile{
 		max-height: 97px;
 		height: 97px;
 		//overflow: hidden;
+        table{
+            table-layout:fixed;
+            width:100%;
+            margin:5px 8px;
+            td.play-tour{
+                width:80px;
+                vertical-align:middle;
+                text-align:center;
+                height:112px;
+            }
+            td.tour-stops{
+                width:100%;
+                border: solid 1px #728f9a;
+                .scroller{
+                    padding-left:5px;
+                    max-width: 100%; 
+                    overflow-x: auto;
+                    overflow-y:hidden;
+                    div.stops-container{
+                        position:relative;
+                            top:-26px;
+                        height:84px;
+                        white-space:nowrap;
+                        vertical-align:text-top;
+                        .stop-arrow{
+                            
+                            white-space:nowrap;
+                            vertical-align:text-top;
+                            width:155px;
+                            display:inline-block;
+                        }
+                        div.stop-thumb{
+                            position:relative;
+                            
+                            img{
+                                display:inline-block;
+                                border:none;
+                            }
+                            .duration{
+                                position:absolute;
+                                bottom:-16px;
+                                left:0;
+                            }
+                        } 
+                        .right-arrow{
+                            padding-top:33px;
+                            width:50px;
+                            vertical-align:middle;
+                            display:inline-block;
+                            position: relative;
+    //top: 11px; 
+    left: -3px;
+                            i.fa{
+                               
+                                font-size:20px;vertical-align:middle;
+                            }
+                            i.fa.fa-caret-right{
+                                font-size:47px;
+                                position:relative;
+                                top:1px;                                
+                            }
+                        }
+                    }
+                
+                }
+                
+            }
+        }
+        tour-slides{
+            overflow-x:scroll;
+        }
 	}
+
+    a.btn-play-tour{
+        height:48px;width:48px;
+        border-radius:50%;
+        display:inline-block;
+        font-size: 20px;
+        //padding: 10px 17px;
+        //margin:16px 0 0 8px;
+        box-shadow:inset 0 -2px 6px #324272,
+            inset 0 0 2px rgba(0,0,0,.5), 
+            0 0 3px rgba(0,0,0,.5),
+             0 0 6px  rgba(44,185,201,.7);
+        background-color:rgba(0,0,0,.3);
+        #gradient > .vertical-four-colors(rgba(255,255,255,.3), rgba(155,155,155,.01), 50%, rgba(155,155,155,.01), 75%, rgba(44,185,201,.7));
+        border:solid 1px #000;
+        i.fa{
+            margin:14px 17px;
+        }
+        i.fa.fa-pause{
+            margin:14px 14px;
+        }
+    }
+    a.btn-play-tour:hover {
+        box-shadow:inset 0 -2px 6px lighten(rgba(44,185,201,1),10%),
+            inset 0 0 2px rgba(0,0,0,.3), 
+            0 0 2px rgba(0,0,0,.5),
+             0 0 9px lighten(rgba(44,185,201,1),10%);
+        border:solid 1px #000;
+        background-color:rgba(23,56,156,.5);
+        #gradient > .vertical-four-colors(rgba(255,255,255,.6), rgba(155,155,155,.01), 50%, rgba(155,155,155,.01), 75%, rgba(44,185,201,.7));
+        
+    }
 
 	div.explore-panel.expanded {
 			height: 377px;
