@@ -2402,7 +2402,7 @@ namespace wwtlib
         {
             //todo implement tour close
         }
-        TourDocument tour = null;
+        public TourDocument tour = null;
         public void PlayTour(string url)
         {
             if (uiController is TourPlayer)
@@ -2417,6 +2417,7 @@ namespace wwtlib
                 player.Tour = tour;
                 tour.CurrentTourstopIndex = -1;
                 uiController = player;
+                WWTControl.scriptInterface.FireTourReady();
                 player.Play();
 
             }

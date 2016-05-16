@@ -223,3 +223,6 @@ Wurfl.*.dll
 Wurfl.dll
 wwtlib.dll
 /webclient/WURFL AGPL License.txt
+COPYING.txt
+/webclient/sdk/mscorlib.dll
+/webclient/sdk/Script.Web.dll
