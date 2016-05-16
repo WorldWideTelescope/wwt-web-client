@@ -321,7 +321,7 @@ namespace wwtlib
 
                 foreach (TimeSeriesLineVertexBuffer lineBuffer in lineBuffers)
                 {
-                    LineShaderNormalDates.Use(renderContext, lineBuffer.VertexBuffer, Color.FromArgb(255, 255, 255, 255), zBuffer, (float)JNow, (float)Decay);
+                    LineShaderNormalDates.Use(renderContext, lineBuffer.VertexBuffer, Color.FromArgb(255, 255, 255, 255), zBuffer, (float)JNow, TimeSeries ? (float)Decay : 0);
                     renderContext.gl.drawArrays(GL.LINES, 0, lineBuffer.Count);
                 }
 
@@ -667,7 +667,7 @@ namespace wwtlib
                 InitTriangleBuffer();
                 foreach (TimeSeriesLineVertexBuffer triBuffer in triangleBuffers)
                 {
-                    LineShaderNormalDates.Use(renderContext, triBuffer.VertexBuffer, Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)JNow, (float)Decay);
+                    LineShaderNormalDates.Use(renderContext, triBuffer.VertexBuffer, Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)JNow, TimeSeries ? (float)Decay : 0);
                     renderContext.gl.drawArrays(GL.TRIANGLES, 0, triBuffer.Count);
                 }
             }
@@ -694,7 +694,7 @@ namespace wwtlib
         public bool Sky = false;
         public bool DepthBuffered = true;
         public double Decay = 0;
-
+        public double scale = 1;
         public bool AutoTime = true;
         public double JNow = 0;
         bool dataToDraw = false;
@@ -883,7 +883,7 @@ namespace wwtlib
             {
                 foreach (TimeSeriesPointVertexBuffer pointBuffer in pointBuffers)
                 {
-                    TimeSeriesPointSpriteShader.Use(renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d, Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow), (float)Decay);
+                    TimeSeriesPointSpriteShader.Use(renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d, Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow), (float)Decay, renderContext.CameraPosition, (float)scale);
                     renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
                 }
 

@@ -967,6 +967,15 @@ namespace wwtlib
 
             double jNow =  SpaceTimeController.JNow - SpaceTimeController.UtcToJulian(baseDate);
 
+
+            float adjustedScale = scaleFactor;
+
+            if (flat && astronomical && (markerScale == MarkerScales.World))
+            {
+                adjustedScale = (float)(scaleFactor / (renderContext.ViewCamera.Zoom / 360));
+            }
+
+
             if (triangleList2d != null)
             {
                 triangleList2d.Decay = decay;
@@ -994,6 +1003,7 @@ namespace wwtlib
                 pointList.Sky = this.Astronomical;
                 pointList.TimeSeries = timeSeries;
                 pointList.JNow = jNow;
+                pointList.scale = (markerScale == MarkerScales.World) ? (float)adjustedScale : -(float)adjustedScale;
                 pointList.Draw(renderContext, opacity * Opacity, false);
             }
 
@@ -1276,6 +1286,11 @@ namespace wwtlib
         //        shaderA = new VertexShader(device, code);
         //    }
         //}
+
+        public override void InitFromXml(XmlNode node)
+        {
+            base.InitFromXml(node);
+        }
 
         public override void CleanUp()
         {

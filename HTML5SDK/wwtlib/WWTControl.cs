@@ -1780,7 +1780,7 @@ namespace wwtlib
 
 
                 //todo remove this line to turn WebGL on...
-                webGL = false;
+                webGL = false; 
 
                 if (webGL)
                 {

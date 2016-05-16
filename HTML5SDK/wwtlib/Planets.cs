@@ -1339,6 +1339,8 @@ namespace wwtlib
                 //renderContext.WorldBaseNonRotating = matOldNonRotating2;
             }
 
+            LayerManager.Draw(renderContext, 1.0f, false, GetNameFrom3dId(planetID), true, false);
+
             renderContext.World = matOld;
             renderContext.WorldBase = matOldBase;
             renderContext.WorldBaseNonRotating = matOldNonRotating;

@@ -185,11 +185,14 @@ namespace wwtlib
                     "        }                                                                               \n" +
                     "     if (jNow < aTime.x && decay > 0.0)                                                 \n" +
                     "     {                                                                                  \n" +
-                    "         vColor = vec4(0.0, 0.0, 0.0, 0.0);                                             \n" +
+                    //"         vColor = vec4(0.0, 0.0, 0.0, 0.0);                                             \n" +
+                    "         vColor = vec4(1, 1, 1, 1);                                                    \n" +
                     "     }                                                                                  \n" +
                     "     else                                                                               \n" +
                     "     {                                                                                  \n" +
-                    "        vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);          \n" +
+                    "        vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha * aVertexColor.a);          \n" +
+                    //"         vColor = vec4(1, 1, 1, 1);                                                    \n" +
+
                     "     }                                                                                  \n" +
                     "    }                                                                                   \n" +
                     "                                                                                        \n";
@@ -219,7 +222,7 @@ namespace wwtlib
 
             vertLoc = gl.getAttribLocation(prog, "aVertexPosition");
             colorLoc = gl.getAttribLocation(prog, "aVertexColor");
-            timeLoc = gl.getAttribLocation(prog, "aVertexColor");
+            timeLoc = gl.getAttribLocation(prog, "aTime");
             lineColorLoc = gl.getUniformLocation(prog, "lineColor");
             projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
             mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
@@ -274,7 +277,7 @@ namespace wwtlib
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 36, 0);
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
-                gl.vertexAttribPointer(colorLoc, 2, GL.FLOAT, false, 36, 28);
+                gl.vertexAttribPointer(timeLoc, 2, GL.FLOAT, false, 36, 28);
                 gl.lineWidth(1.0f);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
@@ -303,6 +306,8 @@ namespace wwtlib
         public static WebGLUniformLocation jNowLoc;
         public static WebGLUniformLocation decayLoc;
         public static WebGLUniformLocation lineColorLoc;
+        public static WebGLUniformLocation cameraPosLoc;
+        public static WebGLUniformLocation scaleLoc;
 
         public static bool initialized = false;
         public static void Init(RenderContext renderContext)
@@ -332,12 +337,15 @@ namespace wwtlib
                     "    uniform mat4 uMVMatrix;                                                             \n" +
                     "    uniform mat4 uPMatrix;                                                              \n" +
                     "    uniform float jNow;                                                                 \n" +
+                    "    uniform vec3 cameraPosition;                                                        \n" +
                     "    uniform float decay;                                                                \n" +
+                    "    uniform float scale;                                                                \n" +
                     "                                                                                        \n" +
                     "    varying lowp vec4 vColor;                                                           \n" +
                     "                                                                                        \n" +
                     "    void main(void)                                                                     \n" +
                     "    {                                                                                   \n" +
+                    "        float dist = distance(aVertexPosition, cameraPosition);                                \n" +
                     "        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n" +
                     "        float dAlpha = 1.0;                                                             \n" +
                     "        if ( decay > 0.0)                                                               \n" +
@@ -348,15 +356,17 @@ namespace wwtlib
                     "                  dAlpha = 1.0;                                                         \n" +
                     "             }                                                                          \n" +
                     "        }                                                                               \n" +
-                    "     if (jNow < aTime.x && decay > 0.0)                                                 \n" +
-                    "     {                                                                                  \n" +
-                    "         vColor = vec4(0.0, 0.0, 0.0, 0.0);                                             \n" +
-                    "     }                                                                                  \n" +
-                    "     else                                                                               \n" +
-                    "     {                                                                                  \n" +
-                    "        vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);          \n" +
-                    "     }                                                                                  \n" +
-                    "        gl_PointSize = aPointSize/0.1;                                                  \n" +
+                    "        if (jNow < aTime.x && decay > 0.0)                                              \n" +
+                    "        {                                                                               \n" +
+                    "            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n" +
+                    "        }                                                                               \n" +
+                    "        else                                                                            \n" +
+                    "        {                                                                               \n" +
+                  //  "           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n" +
+                    "           vColor = vec4(1,1,1,1);       \n" +
+
+                    "        }                                                                               \n" +
+                    "        gl_PointSize = max(1.0, (scale * ( aPointSize ) / dist));                     \n" +
                     "    }                                                                                   \n" +
                     "                                                                                        \n";
 
@@ -393,7 +403,8 @@ namespace wwtlib
             jNowLoc = gl.getUniformLocation(prog, "jNow");
             decayLoc = gl.getUniformLocation(prog, "decay");
             lineColorLoc = gl.getUniformLocation(prog, "lineColor");
-
+            cameraPosLoc = gl.getUniformLocation(prog, "cameraPosition");
+            scaleLoc = gl.getUniformLocation(prog, "scale");
             gl.enable(GL.BLEND);
            
             initialized = true;
@@ -401,7 +412,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
-        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay)
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay, Vector3d camera, float scale)
         {
             GL gl = renderContext.gl;
             if (gl != null)
@@ -421,7 +432,8 @@ namespace wwtlib
                 gl.uniform1f(jNowLoc, jNow);
                 gl.uniform1f(decayLoc, decay);
                 gl.uniform4f(lineColorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, 1f);
-
+                gl.uniform3f(cameraPosLoc, (float)camera.X, (float)camera.Y, (float)camera.Z);
+                gl.uniform1f(scaleLoc, scale );
                 if (zBuffer)
                 {
                     gl.enable(GL.DEPTH_TEST);

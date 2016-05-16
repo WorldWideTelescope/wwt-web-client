@@ -27,7 +27,7 @@ namespace wwtlib
             return hash;
 
         }
-         
+
         public static double LogN(double num, double b)
         {
             return Math.Log(num) / Math.Log(b);

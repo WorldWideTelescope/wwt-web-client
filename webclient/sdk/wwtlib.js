@@ -874,9 +874,6 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
-      console.assert(Degrees >= 0);
-      console.assert(Minutes >= 0);
-      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -973,7 +970,6 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
-    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -1138,7 +1134,6 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
-      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -2084,7 +2079,6 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
-          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -3541,7 +3535,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -3576,7 +3569,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
-    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -3613,7 +3605,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -3930,7 +3921,6 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
-      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -5977,7 +5967,7 @@ window.wwtlib = function(){
         var $enum1 = ss.enumerate(this._lineBuffers);
         while ($enum1.moveNext()) {
           var lineBuffer = $enum1.current;
-          LineShaderNormalDates.use(renderContext, lineBuffer.vertexBuffer, Color.fromArgb(255, 255, 255, 255), this._zBuffer, this.jNow, this.decay);
+          LineShaderNormalDates.use(renderContext, lineBuffer.vertexBuffer, Color.fromArgb(255, 255, 255, 255), this._zBuffer, this.jNow, (this.timeSeries) ? this.decay : 0);
           renderContext.gl.drawArrays(1, 0, lineBuffer.count);
         }
       }
@@ -6146,7 +6136,7 @@ window.wwtlib = function(){
         var $enum1 = ss.enumerate(this._triangleBuffers);
         while ($enum1.moveNext()) {
           var triBuffer = $enum1.current;
-          LineShaderNormalDates.use(renderContext, triBuffer.vertexBuffer, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay);
+          LineShaderNormalDates.use(renderContext, triBuffer.vertexBuffer, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, (this.timeSeries) ? this.decay : 0);
           renderContext.gl.drawArrays(4, 0, triBuffer.count);
         }
       }
@@ -6166,6 +6156,7 @@ window.wwtlib = function(){
     this.sky = false;
     this.depthBuffered = true;
     this.decay = 0;
+    this.scale = 1;
     this.autoTime = true;
     this.jNow = 0;
     this._dataToDraw = false;
@@ -6299,7 +6290,7 @@ window.wwtlib = function(){
         var $enum2 = ss.enumerate(this._pointBuffers);
         while ($enum2.moveNext()) {
           var pointBuffer = $enum2.current;
-          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay);
+          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, this.scale);
           renderContext.gl.drawArrays(0, 0, pointBuffer.count);
         }
       }
@@ -6433,7 +6424,7 @@ window.wwtlib = function(){
   LineShaderNormalDates.init = function(renderContext) {
     var gl = renderContext.gl;
     var fragShaderText = '    precision highp float;                                                              \n' + '    uniform vec4 lineColor;                                                             \n' + '    varying lowp vec4 vColor;                                                           \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        gl_FragColor = lineColor * vColor;                                              \n' + '    }                                                                                   \n';
-    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform float decay;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '     if (jNow < aTime.x && decay > 0.0)                                                 \n' + '     {                                                                                  \n' + '         vColor = vec4(0.0, 0.0, 0.0, 0.0);                                             \n' + '     }                                                                                  \n' + '     else                                                                               \n' + '     {                                                                                  \n' + '        vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);          \n' + '     }                                                                                  \n' + '    }                                                                                   \n' + '                                                                                        \n';
+    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform float decay;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '     if (jNow < aTime.x && decay > 0.0)                                                 \n' + '     {                                                                                  \n' + '         vColor = vec4(1, 1, 1, 1);                                                    \n' + '     }                                                                                  \n' + '     else                                                                               \n' + '     {                                                                                  \n' + '        vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha * aVertexColor.a);          \n' + '     }                                                                                  \n' + '    }                                                                                   \n' + '                                                                                        \n';
     LineShaderNormalDates._frag = gl.createShader(35632);
     gl.shaderSource(LineShaderNormalDates._frag, fragShaderText);
     gl.compileShader(LineShaderNormalDates._frag);
@@ -6450,7 +6441,7 @@ window.wwtlib = function(){
     gl.useProgram(LineShaderNormalDates._prog);
     LineShaderNormalDates.vertLoc = gl.getAttribLocation(LineShaderNormalDates._prog, 'aVertexPosition');
     LineShaderNormalDates.colorLoc = gl.getAttribLocation(LineShaderNormalDates._prog, 'aVertexColor');
-    LineShaderNormalDates.timeLoc = gl.getAttribLocation(LineShaderNormalDates._prog, 'aVertexColor');
+    LineShaderNormalDates.timeLoc = gl.getAttribLocation(LineShaderNormalDates._prog, 'aTime');
     LineShaderNormalDates.lineColorLoc = gl.getUniformLocation(LineShaderNormalDates._prog, 'lineColor');
     LineShaderNormalDates.projMatLoc = gl.getUniformLocation(LineShaderNormalDates._prog, 'uPMatrix');
     LineShaderNormalDates.mvMatLoc = gl.getUniformLocation(LineShaderNormalDates._prog, 'uMVMatrix');
@@ -6489,7 +6480,7 @@ window.wwtlib = function(){
       gl.bindBuffer(34963, null);
       gl.vertexAttribPointer(LineShaderNormalDates.vertLoc, 3, 5126, false, 36, 0);
       gl.vertexAttribPointer(LineShaderNormalDates.colorLoc, 4, 5126, false, 36, 12);
-      gl.vertexAttribPointer(LineShaderNormalDates.colorLoc, 2, 5126, false, 36, 28);
+      gl.vertexAttribPointer(LineShaderNormalDates.timeLoc, 2, 5126, false, 36, 28);
       gl.lineWidth(1);
       gl.blendFunc(770, 771);
     }
@@ -6506,7 +6497,7 @@ window.wwtlib = function(){
   TimeSeriesPointSpriteShader.init = function(renderContext) {
     var gl = renderContext.gl;
     var fragShaderText = '    precision mediump float;                                                            \n' + '    uniform vec4 lineColor;                                                             \n' + '    varying lowp vec4 vColor;                                                           \n' + '    uniform sampler2D uSampler;                                                         \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        vec4 texColor;                                                                  \n' + '        texColor = texture2D(uSampler, gl_PointCoord);                                  \n' + '                                                                                        \n' + '                                                                                        \n' + '        gl_FragColor = lineColor * vColor * texColor;                                   \n' + '    }                                                                                   \n';
-    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    attribute float aPointSize;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform float decay;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '     if (jNow < aTime.x && decay > 0.0)                                                 \n' + '     {                                                                                  \n' + '         vColor = vec4(0.0, 0.0, 0.0, 0.0);                                             \n' + '     }                                                                                  \n' + '     else                                                                               \n' + '     {                                                                                  \n' + '        vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);          \n' + '     }                                                                                  \n' + '        gl_PointSize = aPointSize/0.1;                                                  \n' + '    }                                                                                   \n' + '                                                                                        \n';
+    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    attribute float aPointSize;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform vec3 cameraPosition;                                                        \n' + '    uniform float decay;                                                                \n' + '    uniform float scale;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        float dist = distance(aVertexPosition, cameraPosition);                                \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '        if (jNow < aTime.x && decay > 0.0)                                              \n' + '        {                                                                               \n' + '            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n' + '        }                                                                               \n' + '        else                                                                            \n' + '        {                                                                               \n' + '           vColor = vec4(1,1,1,1);       \n' + '        }                                                                               \n' + '        gl_PointSize = max(1.0, (scale * ( aPointSize ) / dist));                     \n' + '    }                                                                                   \n' + '                                                                                        \n';
     TimeSeriesPointSpriteShader._frag = gl.createShader(35632);
     gl.shaderSource(TimeSeriesPointSpriteShader._frag, fragShaderText);
     gl.compileShader(TimeSeriesPointSpriteShader._frag);
@@ -6532,10 +6523,12 @@ window.wwtlib = function(){
     TimeSeriesPointSpriteShader.jNowLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'jNow');
     TimeSeriesPointSpriteShader.decayLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'decay');
     TimeSeriesPointSpriteShader.lineColorLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'lineColor');
+    TimeSeriesPointSpriteShader.cameraPosLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'cameraPosition');
+    TimeSeriesPointSpriteShader.scaleLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'scale');
     gl.enable(3042);
     TimeSeriesPointSpriteShader.initialized = true;
   };
-  TimeSeriesPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, zBuffer, jNow, decay) {
+  TimeSeriesPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, zBuffer, jNow, decay, camera, scale) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TimeSeriesPointSpriteShader.initialized) {
@@ -6549,6 +6542,8 @@ window.wwtlib = function(){
       gl.uniform1f(TimeSeriesPointSpriteShader.jNowLoc, jNow);
       gl.uniform1f(TimeSeriesPointSpriteShader.decayLoc, decay);
       gl.uniform4f(TimeSeriesPointSpriteShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, 1);
+      gl.uniform3f(TimeSeriesPointSpriteShader.cameraPosLoc, camera.x, camera.y, camera.z);
+      gl.uniform1f(TimeSeriesPointSpriteShader.scaleLoc, scale);
       if (zBuffer) {
         gl.enable(2929);
       }
@@ -6960,7 +6955,7 @@ window.wwtlib = function(){
         if (ra < 10) {
           text = '  ' + ra.toString() + ' hr';
         }
-        Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra + 0.005, 0.4, 1), Coordinates.raDecTo3dAu(ra + 0.005, 0.5, 1), text, 30, 6E-05));
+        Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra + 0.005, 0.4, 1), Coordinates.raDecTo3dAu(ra + 0.005, 0.5, 1), text, 45, 0.00018));
       }
       index = 0;
       for (var ra = 0; ra < 24; ra += 3) {
@@ -6971,11 +6966,11 @@ window.wwtlib = function(){
           var text = dec.toString();
           if (dec > 0) {
             text = '  +' + dec.toString();
-            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec - 0.4, 1), Coordinates.raDecTo3dAu(ra, dec - 0.3, 1), text, 30, 6E-05));
+            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec - 0.4, 1), Coordinates.raDecTo3dAu(ra, dec - 0.3, 1), text, 45, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec + 0.4, 1), Coordinates.raDecTo3dAu(ra, dec + 0.5, 1), text, 30, 6E-05));
+            Grids._equTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(ra, dec + 0.4, 1), Coordinates.raDecTo3dAu(ra, dec + 0.5, 1), text, 45, 0.00018));
           }
           index++;
         }
@@ -7121,7 +7116,7 @@ window.wwtlib = function(){
         if (text.length === 9) {
           text = '   ' + text;
         }
-        Grids._precTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p, b, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p + 0.01, b, 1), mat), text, 80, 9E-05));
+        Grids._precTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p, b, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(p + 0.01, b, 1), mat), text, 75, 0.00015));
       }
     }
     return;
@@ -7228,7 +7223,7 @@ window.wwtlib = function(){
           text = '     ' + l.toString();
         }
         var lc = 360 - l;
-        Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(lc / 15 - 6, 0.4, 1), Coordinates.raDecTo3dAu(lc / 15 - 6, 0.5, 1), text, 80, 6E-05));
+        Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(lc / 15 - 6, 0.4, 1), Coordinates.raDecTo3dAu(lc / 15 - 6, 0.5, 1), text, 75, 0.00018));
       }
       index = 0;
       for (var l = 0; l < 360; l += 90) {
@@ -7239,11 +7234,11 @@ window.wwtlib = function(){
           var text = b.toString();
           if (b > 0) {
             text = '  +' + b.toString();
-            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), text, 80, 6E-05));
+            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), text, 75, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), text, 80, 6E-05));
+            Grids._altAzTextBatch.add(new Text3d(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), text, 75, 0.00018));
           }
           index++;
         }
@@ -7321,7 +7316,7 @@ window.wwtlib = function(){
         else if (l < 100) {
           text = '     ' + l.toString();
         }
-        Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.5, 1), mat), text, 80, 6E-05));
+        Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, 0.5, 1), mat), text, 75, 0.00018));
       }
       for (var l = 0; l < 360; l += 90) {
         for (var b = -80; b <= 80; b += 10) {
@@ -7331,11 +7326,11 @@ window.wwtlib = function(){
           var text = b.toString();
           if (b > 0) {
             text = '  +' + b.toString();
-            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), mat), text, 80, 6E-05));
+            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b - 0.3, 1), mat), text, 75, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), mat), text, 80, 6E-05));
+            Grids._eclipticTextBatch.add(new Text3d(Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.4, 1), mat), Vector3d._transformCoordinate(Coordinates.raDecTo3dAu(l / 15, b + 0.5, 1), mat), text, 75, 0.00018));
           }
         }
       }
@@ -7407,7 +7402,7 @@ window.wwtlib = function(){
         else if (l < 100) {
           text = '     ' + l.toString();
         }
-        Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, 0.4), Coordinates.galacticTo3dDouble(l, 0.5), text, 80, 6E-05));
+        Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, 0.4), Coordinates.galacticTo3dDouble(l, 0.5), text, 75, 0.00018));
       }
       for (var l = 0; l < 360; l += 90) {
         for (var b = -80; b <= 80; b += 10) {
@@ -7417,11 +7412,11 @@ window.wwtlib = function(){
           var text = b.toString();
           if (b > 0) {
             text = '  +' + b.toString();
-            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b - 0.4), Coordinates.galacticTo3dDouble(l, b - 0.3), text, 80, 6E-05));
+            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b - 0.4), Coordinates.galacticTo3dDouble(l, b - 0.3), text, 75, 0.00018));
           }
           else {
             text = '  - ' + text.substr(1);
-            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b + 0.4), Coordinates.galacticTo3dDouble(l, b + 0.5), text, 80, 6E-05));
+            Grids._galTextBatch.add(new Text3d(Coordinates.galacticTo3dDouble(l, b + 0.4), Coordinates.galacticTo3dDouble(l, b + 0.5), text, 75, 0.00018));
           }
         }
       }
@@ -7449,6 +7444,26 @@ window.wwtlib = function(){
     this._enabled = true;
     this.astronomical = false;
   }
+  Layer.fromXml = function(layerNode, someFlag) {
+    var layerClassName = layerNode.attributes.getNamedItem('Type').nodeValue;
+    var overLayType = ss.replaceString(layerClassName, 'TerraViewer.', '');
+    if (overLayType == null) {
+      return null;
+    }
+    var newLayer = null;
+    switch (overLayType) {
+      case 'SpreadSheetLayer':
+        newLayer = new SpreadSheetLayer();
+        break;
+      case 'GreatCirlceRouteLayer':
+        newLayer = new GreatCirlceRouteLayer();
+        break;
+      default:
+        return null;
+    }
+    newLayer.initFromXml(layerNode);
+    return newLayer;
+  };
   var Layer$ = {
     getPrimaryUI: function() {
       return null;
@@ -7622,31 +7637,6 @@ window.wwtlib = function(){
     saveToXml: function(xmlWriter) {
     },
     initializeFromXml: function(node) {
-    },
-    fromXml: function(layerNode, someFlag) {
-      var layerClassName = layerNode.attributes.getNamedItem('Type').nodeValue;
-      var overLayType = ss.replaceString(layerClassName, 'TerraViewer.', '');
-      if (overLayType == null) {
-        return null;
-      }
-      var newLayer = null;
-      switch (overLayType) {
-        case 'SpreadSheetLayer':
-          newLayer = new SpreadSheetLayer();
-          break;
-        case 'GreatCirlceRouteLayer':
-          newLayer = new GreatCirlceRouteLayer();
-          break;
-        default:
-          return null;
-      }
-      for(var method in this){
- /*if (({}).toString.call(this[method]).match(/\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){
-*/ newLayer[method] = this[method];/*
-}*/
-};
-      newLayer.initFromXml(layerNode);
-      return newLayer;
     },
     initFromXml: function(node) {
       this.id = Guid.fromString(node.attributes.getNamedItem('Id').nodeValue);
@@ -8069,7 +8059,13 @@ window.wwtlib = function(){
                 fadeOpacity = ((fadeOut - SpaceTimeController.get_jNow()) / (layer.get_fadeSpan() / 864000000));
               }
               layer.set_astronomical(astronomical);
-              layer.draw(renderContext, opacity * fadeOpacity, cosmos);
+              if (ss.canCast(layer, SpreadSheetLayer)) {
+                var tsl = ss.safeCast(layer, SpreadSheetLayer);
+                tsl.draw(renderContext, opacity * fadeOpacity, cosmos);
+              }
+              else {
+                layer.draw(renderContext, opacity * fadeOpacity, cosmos);
+              }
             }
           }
         }
@@ -9670,6 +9666,7 @@ window.wwtlib = function(){
         }
       }
     }
+    LayerManager._draw(renderContext, 1, false, Planets.getNameFrom3dId(planetID), true, false);
     renderContext.set_world(matOld);
     renderContext.set_worldBase(matOldBase);
     renderContext.set_worldBaseNonRotating(matOldNonRotating);
@@ -11546,19 +11543,30 @@ window.wwtlib = function(){
       while ($enum1.moveNext()) {
         var t3d = $enum1.current;
         var text = t3d.text;
-        var size = Vector2d.create(1000, 100);
-        var factor = 0.6666;
-        t3d.width = size.x * t3d.scale * factor;
-        t3d.height = size.y * t3d.scale * factor;
         var left = 0;
         var top = 0;
         var fntAdjust = this._textObject.fontSize / 128;
+        var factor = 0.6666;
+        var width = 0;
+        var height = 0;
+        for (var i = 0; i < text.length; i++) {
+          var item = this._glyphCache.getGlyphItem(text.substr(i, 1));
+          if (item != null) {
+            width += item.extents.x;
+            height = Math.max(item.extents.y, height);
+          }
+        }
+        var size = Vector2d.create(width, height);
+        t3d.width = size.x * t3d.scale * factor * fntAdjust;
+        t3d.height = size.y * t3d.scale * factor * fntAdjust;
         var charsLeft = text.length;
         for (var i = 0; i < charsLeft; i++) {
           var item = this._glyphCache.getGlyphItem(text.substr(i, 1));
-          var position = Rectangle.create(left * t3d.scale * factor, 0 * t3d.scale * factor, item.extents.x * fntAdjust * t3d.scale * factor, item.extents.y * fntAdjust * t3d.scale * factor);
-          left += (item.extents.x * fntAdjust);
-          t3d.addGlyphPoints(verts, item.size, position, item.uvRect);
+          if (item != null) {
+            var position = Rectangle.create(left * t3d.scale * factor, 0 * t3d.scale * factor, item.extents.x * fntAdjust * t3d.scale * factor, item.extents.y * fntAdjust * t3d.scale * factor);
+            left += (item.extents.x * fntAdjust);
+            t3d.addGlyphPoints(verts, item.size, position, item.uvRect);
+          }
         }
       }
       this._vertCount = verts.length;
@@ -11831,7 +11839,11 @@ window.wwtlib = function(){
           points[i].position = Vector3d._transformCoordinate(points[i].position, this._rtbMat);
         }
       }
-      pointList.push(points);
+      var $enum1 = ss.enumerate(points);
+      while ($enum1.moveNext()) {
+        var pnt = $enum1.current;
+        pointList.push(pnt);
+      }
     }
   };
 
@@ -13868,7 +13880,7 @@ window.wwtlib = function(){
         while ($enum3.moveNext()) {
           var layer = $enum3.current;
           if (layer.nodeName === 'Layer') {
-            var newLayer = new Layer().fromXml(layer, true);
+            var newLayer = Layer.fromXml(layer, true);
             if (newLayer != null) {
               var fileName = ss.format('{0}.txt', newLayer.id.toString());
               if (ss.keyExists(LayerManager.get_layerList(), newLayer.id)) {
@@ -16822,7 +16834,7 @@ window.wwtlib = function(){
       var canvas = WWTControl._createCanvasElement(DivId);
       var webgltext = 'experimental-webgl';
       var gl = null;
-      webGL = false;
+      webGL = true;
       if (webGL) {
         gl = canvas.getContext(webgltext);
       }
@@ -24025,6 +24037,1452 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.SpreadSheetLayer
+
+  function SpreadSheetLayer() {
+    this._dataDirty$1 = false;
+    this._barChartBitmask$1 = 0;
+    this._barScaleFactor$1 = 20;
+    this._meanRadius$1 = 6371000;
+    this._table$1 = new Table();
+    this.isLongIndex = false;
+    this.shapeVertexCount = 0;
+    this.lines = false;
+    this.latColumn = -1;
+    this.fixedSize = 1;
+    this.decay = 16;
+    this.timeSeries = false;
+    this._dynamicData$1 = false;
+    this._autoUpdate$1 = false;
+    this._dataSourceUrl$1 = '';
+    this._beginRange$1 = new Date('1/1/2100');
+    this._endRange$1 = new Date('01/01/1800');
+    this.markerDomainValues = {};
+    this.colorDomainValues = {};
+    this._coordinatesType$1 = 0;
+    this.lngColumn = -1;
+    this.geometryColumn = -1;
+    this._xAxisColumn$1 = -1;
+    this._yAxisColumn$1 = -1;
+    this._zAxisColumn$1 = -1;
+    this._xAxisReverse$1 = false;
+    this._yAxisReverse$1 = false;
+    this._zAxisReverse$1 = false;
+    this._altType$1 = 3;
+    this._markerMix$1 = 0;
+    this._raUnits$1 = 0;
+    this._colorMap$1 = 3;
+    this._markerColumn$1 = -1;
+    this._colorMapColumn$1 = -1;
+    this._plotType$1 = 0;
+    this._markerIndex$1 = 0;
+    this._showFarSide$1 = false;
+    this._markerScale$1 = 1;
+    this._altUnit$1 = 1;
+    this._cartesianScale$1 = 1;
+    this._cartesianCustomScale$1 = 1;
+    this.altColumn = -1;
+    this.startDateColumn = -1;
+    this.endDateColumn = -1;
+    this.sizeColumn = -1;
+    this.nameColumn = 0;
+    this._hyperlinkFormat$1 = '';
+    this._hyperlinkColumn$1 = -1;
+    this.scaleFactor = 1;
+    this.pointScaleType = 1;
+    this.positions = [];
+    this.bufferIsFlat = false;
+    this.baseDate = new Date(2010, 0, 1, 12, 0, 0);
+    this.dirty = true;
+    Layer.call(this);
+  }
+  SpreadSheetLayer._getDatafromFeed$1 = function(url) {
+    return '';
+  };
+  SpreadSheetLayer._executeQuery$1 = function(url) {
+    return '';
+  };
+  SpreadSheetLayer.parseDate = function(date) {
+    var dt = ss.now();
+    try {
+      dt = new Date(date);
+    }
+    catch ($e1) {
+      try {
+        return SpreadSheetLayer.execlToDateTime(parseFloat(date));
+      }
+      catch ($e2) {
+      }
+    }
+    return dt;
+  };
+  SpreadSheetLayer.execlToDateTime = function(excelDate) {
+    if (excelDate > 59) {
+      excelDate -= 1;
+    }
+    if (excelDate > 730000) {
+      excelDate = 730000;
+    }
+    var es = new Date(1899, 12, 31);
+    return new Date(es.getDate() + ss.truncate((excelDate * 24 * 60 * 60 * 1000)));
+  };
+  SpreadSheetLayer.get__circleTexture$1 = function() {
+    return SpreadSheetLayer._circleTexture$1;
+  };
+  var SpreadSheetLayer$ = {
+    get_header: function() {
+      return this._table$1.header;
+    },
+    canCopyToClipboard: function() {
+      return true;
+    },
+    copyToClipboard: function() {
+    },
+    dynamicUpdate: function() {
+      var data = SpreadSheetLayer._getDatafromFeed$1(this.get_dataSourceUrl());
+      if (data != null) {
+        this.upadteData(data, false, true, true);
+        this.guessHeaderAssignments();
+        return true;
+      }
+      return false;
+    },
+    upadteData: function(data, purgeOld, purgeAll, hasHeader) {
+      this.loadFromString(ss.safeCast(data, String), true, purgeOld, purgeAll, hasHeader);
+      this.computeDateDomainRange(-1, -1);
+      this._dataDirty$1 = true;
+      return true;
+    },
+    loadData: function(path) {
+      var $this = this;
+
+      this._table$1 = new Table();
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', path);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          $this._table$1.loadFromString(xhr.responseText, false, true, true);
+          $this.computeDateDomainRange(-1, -1);
+          if ($this.get_dynamicData() && $this.get_autoUpdate()) {
+            $this.dynamicUpdate();
+          }
+          $this._dataDirty$1 = true;
+          $this.dirty = true;
+        }
+      };
+      xhr.send();
+    },
+    guessHeaderAssignments: function() {
+      var index = 0;
+      var $enum1 = ss.enumerate(this._table$1.header);
+      while ($enum1.moveNext()) {
+        var headerName = $enum1.current;
+        var name = headerName.toLowerCase();
+        if (name.indexOf('lat') > -1 && this.latColumn === -1) {
+          this.latColumn = index;
+        }
+        if ((name.indexOf('lon') > -1 || name.indexOf('lng') > -1) && this.lngColumn === -1) {
+          this.lngColumn = index;
+        }
+        if (name.indexOf('dec') > -1 && this.latColumn === -1) {
+          this.latColumn = index;
+          this.astronomical = true;
+        }
+        if ((name.indexOf('ra') > -1 || name.indexOf('ascen') > -1) && this.lngColumn === -1) {
+          this.lngColumn = index;
+          this.astronomical = true;
+          this.pointScaleType = 4;
+        }
+        if ((name.indexOf('mag') > -1 || name.indexOf('size') > -1) && this.sizeColumn === -1) {
+          this.sizeColumn = index;
+        }
+        if ((name.indexOf('date') > -1 || name.indexOf('time') > -1 || name.indexOf('dt') > -1 || name.indexOf('tm') > -1)) {
+          if (name.indexOf('end') > -1 && this.endDateColumn === -1) {
+            this.endDateColumn = index;
+          }
+          else if (this.startDateColumn === -1) {
+            this.startDateColumn = index;
+          }
+        }
+        if ((name.indexOf('altitude') > -1 || name.indexOf('alt') > -1) && this.altColumn === -1) {
+          this.altColumn = index;
+          this.set_altType(1);
+          this.set_altUnit(1);
+        }
+        if (name.indexOf('depth') > -1 && this.altColumn === -1) {
+          this.altColumn = index;
+          this.set_altType(0);
+          this.set_altUnit(5);
+        }
+        if (ss.startsWith(name, 'x') && this.get_xAxisColumn() === -1) {
+          this.set_xAxisColumn(index);
+        }
+        if (ss.startsWith(name, 'y') && this.get_yAxisColumn() === -1) {
+          this.set_yAxisColumn(index);
+        }
+        if (ss.startsWith(name, 'z') && this.get_zAxisColumn() === -1) {
+          this.set_zAxisColumn(index);
+        }
+        if (name.indexOf('color') > -1 && this.get_colorMapColumn() === -1) {
+          this.set_colorMapColumn(index);
+        }
+        if ((name.indexOf('geometry') > -1 || name.indexOf('geography') > -1) && this.geometryColumn === -1) {
+          this.geometryColumn = index;
+        }
+        index++;
+      }
+      if (this._table$1.header.length > 0) {
+        this.nameColumn = 0;
+      }
+    },
+    computeDateDomainRange: function(columnStart, columnEnd) {
+      if (columnStart === -1) {
+        columnStart = this.startDateColumn;
+      }
+      if (columnEnd === -1) {
+        columnEnd = this.endDateColumn;
+      }
+      if (columnEnd === -1) {
+        columnEnd = columnStart;
+      }
+      this.set_beginRange(new Date('12/31/2100'));
+      this.set_endRange(new Date('12/31/1890'));
+      var $enum1 = ss.enumerate(this._table$1.rows);
+      while ($enum1.moveNext()) {
+        var row = $enum1.current;
+        try {
+          if (columnStart > -1) {
+            var sucsess = false;
+            var dateTimeStart = new Date('12/31/2100');
+            try {
+              dateTimeStart = new Date(row[columnStart]);
+              if (dateTimeStart < this.get_beginRange()) {
+                this.set_beginRange(dateTimeStart);
+              }
+            }
+            catch ($e2) {
+            }
+            try {
+              var dateTimeEnd = new Date('12/31/1890');
+              if (columnEnd > -1) {
+                dateTimeEnd = new Date(row[columnEnd]);
+                if (sucsess && dateTimeEnd > this.get_endRange()) {
+                  this.set_endRange(dateTimeEnd);
+                }
+              }
+            }
+            catch ($e3) {
+            }
+          }
+        }
+        catch ($e4) {
+        }
+      }
+    },
+    checkState: function() {
+    },
+    getMaxValue: function(column) {
+      var max = 0;
+      this._table$1.lock();
+      var $enum1 = ss.enumerate(this._table$1.rows);
+      while ($enum1.moveNext()) {
+        var row = $enum1.current;
+        try {
+          if (column > -1) {
+            var sucsess = false;
+            try {
+              var val = parseFloat(row[column]);
+              if (sucsess && val > max) {
+                max = val;
+              }
+            }
+            catch ($e2) {
+            }
+          }
+        }
+        catch ($e3) {
+        }
+      }
+      this._table$1.unlock();
+      return max;
+    },
+    getDomainValues: function(column) {
+      var domainValues = [];
+      this._table$1.lock();
+      var $enum1 = ss.enumerate(this._table$1.rows);
+      while ($enum1.moveNext()) {
+        var row = $enum1.current;
+        try {
+          if (column > -1) {
+            if (!(domainValues.indexOf(row[column]) >= 0)) {
+              domainValues.push(row[column]);
+            }
+          }
+        }
+        catch ($e2) {
+        }
+      }
+      domainValues.sort();
+      this._table$1.unlock();
+      return domainValues;
+    },
+    get_barChartBitmask: function() {
+      return this._barChartBitmask$1;
+    },
+    set_barChartBitmask: function(value) {
+      this._barChartBitmask$1 = value;
+      return value;
+    },
+    prepVertexBuffer: function(renderContext, opacity) {
+      this._table$1.lock();
+      if (this.lineList != null) {
+        this.lineList.clear();
+      }
+      if (this.lineList2d != null) {
+        this.lineList2d.clear();
+      }
+      if (this.triangleList != null) {
+        this.triangleList.clear();
+      }
+      if (this.pointList != null) {
+        this.pointList.clear();
+      }
+      if (this.triangleList2d != null) {
+        this.triangleList2d.clear();
+      }
+      if (this.lineList == null) {
+        this.lineList = new LineList();
+      }
+      if (this.pointList == null) {
+        this.pointList = new PointList(renderContext);
+      }
+      this.lineList.timeSeries = this.timeSeries;
+      if (this.lineList2d == null) {
+        this.lineList2d = new LineList();
+        this.lineList2d.set_depthBuffered(false);
+      }
+      this.lineList.timeSeries = this.timeSeries;
+      if (this.triangleList == null) {
+        this.triangleList = new TriangleList();
+      }
+      if (this.triangleList2d == null) {
+        this.triangleList2d = new TriangleList();
+        this.triangleList2d.depthBuffered = false;
+      }
+      this.positions.length = 0;
+      var currentIndex = 0;
+      var colorLocal = this.get_color();
+      var ecliptic = Coordinates.meanObliquityOfEcliptic(SpaceTimeController.get_jNow()) / 180 * Math.PI;
+      var selectDomain = {};
+      var mr = 0;
+      if (!!mr) {
+        this._meanRadius$1 = mr;
+      }
+      var position = new Vector3d();
+      var pointSize = 0.0002;
+      var pointColor = Colors.get_white();
+      var pointStartTime = 0;
+      var pointEndTime = 0;
+      var $enum1 = ss.enumerate(this._table$1.rows);
+      while ($enum1.moveNext()) {
+        var row = $enum1.current;
+        try {
+          var selected = false;
+          if (this.geometryColumn > -1 || (!this.get_coordinatesType() && (this.lngColumn > -1 && this.latColumn > -1)) || ((this.get_coordinatesType() === 1) && (this.get_xAxisColumn() > -1 && this.get_yAxisColumn() > -1))) {
+            var Xcoord = 0;
+            var Ycoord = 0;
+            var Zcoord = 0;
+            var alt = 1;
+            var altitude = 0;
+            var distParces = 0;
+            var factor = this.getScaleFactor(this.get_altUnit(), 1);
+            if (this.altColumn === -1 || this.get_altType() === 3 || this.bufferIsFlat) {
+              alt = 1;
+              if ((this.astronomical & !this.bufferIsFlat) === 1) {
+                alt = 63239.6717 * 100;
+              }
+            }
+            else {
+              if (!this.get_altType()) {
+                factor = -factor;
+              }
+              alt = 0;
+              try {
+                alt = parseFloat(row[this.altColumn]);
+              }
+              catch ($e2) {
+              }
+              if (this.astronomical) {
+                factor = factor / (1000 * 149598000);
+                distParces = (alt * factor) / 206264.806;
+                altitude = (factor * alt);
+                alt = (factor * alt);
+              }
+              else if (this.get_altType() === 2) {
+                altitude = (factor * alt);
+                alt = (factor * alt / this._meanRadius$1);
+              }
+              else {
+                altitude = (factor * alt);
+                alt = 1 + (factor * alt / this._meanRadius$1);
+              }
+            }
+            if (!this.get_coordinatesType() && this.lngColumn > -1 && this.latColumn > -1) {
+              Xcoord = parseFloat(row[this.lngColumn]);
+              Ycoord = parseFloat(row[this.latColumn]);
+              if (this.astronomical) {
+                if (!this.get_raUnits()) {
+                  Xcoord *= 15;
+                }
+                if (this.bufferIsFlat) {
+                }
+              }
+              var offset = 0;
+              var pos = Coordinates.geoTo3dDoubleRad(Ycoord, Xcoord, alt);
+              if (this.astronomical && !this.bufferIsFlat) {
+                pos.rotateX(ecliptic);
+              }
+              position = pos;
+              this.positions.push(position);
+            }
+            else if (this.get_coordinatesType() === 1) {
+              var xyzScale = this.getScaleFactor(this.get_cartesianScale(), this.get_cartesianCustomScale()) / this._meanRadius$1;
+              if (this.get_zAxisColumn() > -1) {
+                Zcoord = parseFloat(row[this.get_zAxisColumn()]);
+              }
+              Xcoord = parseFloat(row[this.get_xAxisColumn()]);
+              Ycoord = parseFloat(row[this.get_yAxisColumn()]);
+              if (this.get_xAxisReverse()) {
+                Xcoord = -Xcoord;
+              }
+              if (this.get_yAxisReverse()) {
+                Ycoord = -Ycoord;
+              }
+              if (this.get_zAxisReverse()) {
+                Zcoord = -Zcoord;
+              }
+              position = Vector3d.create((Xcoord * xyzScale), (Zcoord * xyzScale), (Ycoord * xyzScale));
+              this.positions.push(position);
+            }
+            switch (this.get__colorMap()) {
+              case 0:
+                pointColor = colorLocal;
+                break;
+              case 3:
+                if (this.get_colorMapColumn() > -1) {
+                  pointColor = this._parseColor$1(row[this.get_colorMapColumn()], colorLocal);
+                }
+                else {
+                  pointColor = colorLocal;
+                }
+                break;
+              default:
+                break;
+            }
+            if (this.sizeColumn > -1) {
+              switch (this.pointScaleType) {
+                case 0:
+                  pointSize = parseFloat(row[this.sizeColumn]);
+                  break;
+                case 2:
+                  pointSize = Math.log(parseFloat(row[this.sizeColumn]));
+                  break;
+                case 1:
+                  var size = 0;
+                  try {
+                    pointSize = parseFloat(row[this.altColumn]);
+                  }
+                  catch ($e3) {
+                    pointSize = 0;
+                  }
+                  break;
+                case 4:
+                  var size = 0;
+                  try {
+                    size = parseFloat(row[this.sizeColumn]);
+                    if (!this.bufferIsFlat) {
+                      size = size - 5 * (Util.logN(distParces, 10) - 1);
+                      pointSize = (120000000 / Math.pow(1.6, size));
+                    }
+                    else {
+                      pointSize = (40 / Math.pow(1.6, size));
+                    }
+                  }
+                  catch ($e4) {
+                    pointSize = 0;
+                  }
+                  break;
+                case 3:
+                  pointSize = 1;
+                  break;
+                default:
+                  break;
+              }
+            }
+            else {
+              pointSize = 1;
+            }
+            if (this.get_plotType() === 1) {
+              pointSize = 1;
+            }
+            if ((this.astronomical & !this.bufferIsFlat) === 1) {
+            }
+            if (this.startDateColumn > -1) {
+              var dateTime = new Date(row[this.startDateColumn]);
+              pointStartTime = (SpaceTimeController.utcToJulian(dateTime) - SpaceTimeController.utcToJulian(this.baseDate));
+              if (this.endDateColumn > -1) {
+                dateTime = new Date(row[this.endDateColumn]);
+                pointEndTime = (SpaceTimeController.utcToJulian(dateTime) - SpaceTimeController.utcToJulian(this.baseDate));
+              }
+              else {
+                pointEndTime = pointStartTime;
+              }
+            }
+            this.pointList.addPoint(position, pointColor, new Dates(pointStartTime, pointEndTime), pointSize);
+            if (this.geometryColumn > -1) {
+              this._parseGeometry$1(row[this.geometryColumn], pointColor, pointColor, altitude, new Dates(pointStartTime, pointEndTime));
+            }
+            currentIndex++;
+          }
+        }
+        catch ($e5) {
+        }
+        this.lines = false;
+      }
+      this._table$1.unlock();
+      this._dataDirty$1 = false;
+      this.dirty = false;
+      return false;
+    },
+    _parseGeometry$1: function(gs, lineColor, polyColor, alt, date) {
+      gs = ss.trim(gs).toLowerCase();
+      var index = gs.indexOf('(');
+      if (index < 0) {
+        return;
+      }
+      if (!ss.endsWith(gs, ')')) {
+        return;
+      }
+      var commandPart = ss.trim(gs.substring(0, index));
+      var parens = gs.substr(index);
+      var parts = commandPart.split(' ');
+      var command = null;
+      var mods = null;
+      if (parts.length > 0) {
+        var $enum1 = ss.enumerate(parts);
+        while ($enum1.moveNext()) {
+          var item = $enum1.current;
+          if (ss.emptyString(command)) {
+            command = item;
+          }
+          else if (ss.emptyString(mods)) {
+            mods = item;
+          }
+        }
+      }
+      switch (command) {
+        case 'multipolygon':
+        case 'polygon':
+          this._parsePolygon$1(parens, mods, lineColor, polyColor, alt, date);
+          break;
+        case 'multilinestring':
+          this._parseLineString$1(parens, mods, lineColor, alt, false, date);
+          break;
+        case 'linestring':
+          this._parseLineString$1(parens, mods, lineColor, alt, true, date);
+          break;
+        case 'geometrycollection':
+          parens = parens.substring(1, parens.length - 2);
+          var shapes = UiTools.splitString(parens, ',');
+          var $enum2 = ss.enumerate(shapes);
+          while ($enum2.moveNext()) {
+            var shape = $enum2.current;
+            this._parseGeometry$1(shape, lineColor, polyColor, alt, date);
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    _parsePolygon$1: function(parens, mods, lineColor, polyColor, alt, date) {
+      if (!ss.startsWith(parens, '(') && ss.endsWith(parens, ')')) {
+        return;
+      }
+      parens = parens.substring(1, parens.length - 2);
+      var shapes = UiTools.splitString(parens, ',');
+      var $enum1 = ss.enumerate(shapes);
+      while ($enum1.moveNext()) {
+        var shape = $enum1.current;
+        var lineList = new KmlLineList();
+        lineList.astronomical = this.astronomical;
+        lineList.meanRadius = this._meanRadius$1;
+        lineList.parseWkt(shape, mods, alt, date);
+        if (!alt) {
+          this._addPolygonFlat$1(false, lineList, 1, polyColor, lineColor, true, true, date);
+        }
+        else {
+          this._addPolygon$1(false, lineList, 1, polyColor, lineColor, true, true, date);
+        }
+      }
+    },
+    _parseLineString$1: function(parens, mods, lineColor, alt, single, date) {
+      if (!ss.startsWith(parens, '(') && ss.endsWith(parens, ')')) {
+        return;
+      }
+      if (!single) {
+        parens = parens.substring(1, parens.length - 2);
+      }
+      var shapes = UiTools.splitString(parens, ',');
+      var $enum1 = ss.enumerate(shapes);
+      while ($enum1.moveNext()) {
+        var shape = $enum1.current;
+        var lineList = new KmlLineList();
+        lineList.astronomical = this.astronomical;
+        lineList.meanRadius = this._meanRadius$1;
+        lineList.parseWkt(shape, mods, alt, date);
+        this._addPolygon$1(false, lineList, 1, Colors.get_white(), lineColor, false, false, date);
+      }
+    },
+    _splitShapes$1: function(shapes) {
+      var shapeList = [];
+      var nesting = 0;
+      var current = 0;
+      while (current < shapes.length) {
+        if (shapes.substr(current, 1) === '(') {
+          nesting++;
+        }
+      }
+      return shapeList;
+    },
+    _addPolygon$1: function(sky, geo, lineWidth, polyColor, lineColor, extrude, fill, date) {
+      var vertexList = [];
+      var vertexListGround = [];
+      for (var i = 0; i < geo.pointList.length; i++) {
+        vertexList.push(Coordinates.geoTo3dDoubleRad(geo.pointList[i].lat, geo.pointList[i].lng, 1 + (geo.pointList[i].alt / this._meanRadius$1)));
+        vertexListGround.push(Coordinates.geoTo3dDoubleRad(geo.pointList[i].lat, geo.pointList[i].lng, 1));
+      }
+      for (var i = 0; i < (geo.pointList.length - 1); i++) {
+        if (sky) {
+        }
+        else {
+          if (extrude) {
+            this.triangleList.addQuad(vertexList[i], vertexList[i + 1], vertexListGround[i], vertexListGround[i + 1], polyColor, date);
+          }
+          if (lineWidth > 0) {
+            if (extrude) {
+              this.lineList.addLine(vertexList[i], vertexList[i + 1], lineColor, date);
+            }
+            else {
+              this.lineList2d.addLine(vertexList[i], vertexList[i + 1], lineColor, date);
+            }
+            if (extrude) {
+              this.lineList.addLine(vertexListGround[i], vertexListGround[i + 1], lineColor, date);
+              this.lineList.addLine(vertexList[i], vertexListGround[i], lineColor, date);
+              this.lineList.addLine(vertexList[i + 1], vertexListGround[i + 1], lineColor, date);
+            }
+          }
+        }
+      }
+      if (fill) {
+        var indexes = Tessellator.tesselateSimplePoly(vertexList);
+        for (var i = 0; i < indexes.length; i += 3) {
+          this.triangleList.addTriangle(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], polyColor, date);
+        }
+      }
+    },
+    _addPolygonFlat$1: function(sky, geo, lineWidth, polyColor, lineColor, extrude, fill, date) {
+      var vertexList = [];
+      for (var i = 0; i < geo.pointList.length; i++) {
+        vertexList.push(Coordinates.geoTo3dDoubleRad(geo.pointList[i].lat, geo.pointList[i].lng, 1 + (geo.pointList[i].alt / this._meanRadius$1)));
+      }
+      for (var i = 0; i < (geo.pointList.length - 1); i++) {
+        if (sky) {
+        }
+        else {
+          if (lineWidth > 0) {
+            this.lineList2d.addLine(vertexList[i], vertexList[i + 1], lineColor, date);
+          }
+        }
+      }
+      if (fill) {
+        var indexes = Tessellator.tesselateSimplePoly(vertexList);
+        for (var i = 0; i < indexes.length; i += 3) {
+          this.triangleList2d.addSubdividedTriangles(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], polyColor, date, 2);
+        }
+      }
+    },
+    _parseColor$1: function(colorText, defaultColor) {
+      return Color.load(colorText);
+    },
+    getScaleFactor: function(AltUnit, custom) {
+      var factor = 1;
+      switch (AltUnit) {
+        case 1:
+          factor = 1;
+          break;
+        case 2:
+          factor = 1 * 0.3048;
+          break;
+        case 3:
+          factor = (1 / 12) * 0.3048;
+          break;
+        case 4:
+          factor = 5280 * 0.3048;
+          break;
+        case 5:
+          factor = 1000;
+          break;
+        case 6:
+          factor = 1000 * 149598000;
+          break;
+        case 7:
+          factor = 1000 * 149598000 * 63239.6717;
+          break;
+        case 8:
+          factor = 1000 * 149598000 * 206264.806;
+          break;
+        case 9:
+          factor = 1000 * 149598000 * 206264.806 * 1000000;
+          break;
+        case 10:
+          factor = custom;
+          break;
+        default:
+          break;
+      }
+      return factor;
+    },
+    get__table: function() {
+      return this._table$1;
+    },
+    set__table: function(value) {
+      this._table$1 = value;
+      return value;
+    },
+    loadFromString: function(data, isUpdate, purgeOld, purgeAll, hasHeader) {
+      if (!isUpdate) {
+        this._table$1 = new Table();
+      }
+      this._table$1.lock();
+      this._table$1.loadFromString(data, isUpdate, purgeAll, hasHeader);
+      if (!isUpdate) {
+        this.guessHeaderAssignments();
+      }
+      if (this.astronomical && this.lngColumn > -1) {
+        var max = this.getMaxValue(this.lngColumn);
+        if (max > 24) {
+          this.set_raUnits(1);
+        }
+      }
+      if (purgeOld) {
+        this.purgeByTime();
+      }
+      this._table$1.unlock();
+    },
+    purgeByTime: function() {
+      if (this.startDateColumn < 0) {
+        return;
+      }
+      var columnToUse = this.startDateColumn;
+      if (this.endDateColumn > -1) {
+        columnToUse = this.endDateColumn;
+      }
+      var threasholdTime = SpaceTimeController.get_now();
+      var ts = ss.truncate(this.decay) * 24 * 60 * 60 * 1000;
+      threasholdTime = new Date(threasholdTime.getDate() - ts);
+      var count = this._table$1.rows.length;
+      for (var i = 0; i < count; i++) {
+        try {
+          var row = this._table$1.rows[i];
+          var colDate = new Date(row[columnToUse]);
+          if (colDate < threasholdTime) {
+            this._table$1.rows.splice(i, 1);
+            count--;
+            i--;
+          }
+        }
+        catch ($e1) {
+        }
+      }
+    },
+    cleanUp: function() {
+      this.cleanUpBase();
+      this._table$1.lock();
+      Layer.prototype.cleanUp.call(this);
+      this._table$1.unlock();
+      this.dirty = true;
+    },
+    initFromXml: function(node) {
+      Layer.prototype.initFromXml.call(this, node);
+    },
+    get_dynamicData: function() {
+      return this._dynamicData$1;
+    },
+    set_dynamicData: function(value) {
+      this._dynamicData$1 = value;
+      return value;
+    },
+    get_autoUpdate: function() {
+      return this._autoUpdate$1;
+    },
+    set_autoUpdate: function(value) {
+      this._autoUpdate$1 = value;
+      return value;
+    },
+    get_dataSourceUrl: function() {
+      return this._dataSourceUrl$1;
+    },
+    set_dataSourceUrl: function(value) {
+      this._dataSourceUrl$1 = value;
+      return value;
+    },
+    get_timeSeries: function() {
+      return this.timeSeries;
+    },
+    set_timeSeries: function(value) {
+      if (this.timeSeries !== value) {
+        this.version++;
+        this.timeSeries = value;
+      }
+      return value;
+    },
+    get_beginRange: function() {
+      return this._beginRange$1;
+    },
+    set_beginRange: function(value) {
+      if (!ss.compareDates(this._beginRange$1, value)) {
+        this.version++;
+        this._beginRange$1 = value;
+      }
+      return value;
+    },
+    get_endRange: function() {
+      return this._endRange$1;
+    },
+    set_endRange: function(value) {
+      if (!ss.compareDates(this._endRange$1, value)) {
+        this.version++;
+        this._endRange$1 = value;
+      }
+      return value;
+    },
+    initializeFromXml: function(node) {
+      this.set_timeSeries(ss.boolean(node.attributes.getNamedItem('TimeSeries').nodeValue));
+      this.set_beginRange(new Date(node.attributes.getNamedItem('BeginRange').nodeValue));
+      this.set_endRange(new Date(node.attributes.getNamedItem('EndRange').nodeValue));
+      this.set_decay(parseFloat(node.attributes.getNamedItem('Decay').nodeValue));
+      switch (node.attributes.getNamedItem('CoordinatesType').nodeValue) {
+        case 'Spherical':
+          this.set_coordinatesType(0);
+          break;
+        case 'Rectangular':
+          this.set_coordinatesType(1);
+          break;
+        case 'Orbital':
+          this.set_coordinatesType(2);
+          break;
+        default:
+          break;
+      }
+      if (this.get_coordinatesType() < 0) {
+        this.set_coordinatesType(0);
+      }
+      this.set_latColumn(parseInt(node.attributes.getNamedItem('LatColumn').nodeValue));
+      this.set_lngColumn(parseInt(node.attributes.getNamedItem('LngColumn').nodeValue));
+      if (node.attributes.getNamedItem('GeometryColumn') != null) {
+        this.set_geometryColumn(parseInt(node.attributes.getNamedItem('GeometryColumn').nodeValue));
+      }
+      switch (node.attributes.getNamedItem('AltType').nodeValue) {
+        case 'Depth':
+          this.set_altType(0);
+          break;
+        case 'Altitude':
+          this.set_altType(1);
+          break;
+        case 'Distance':
+          this.set_altType(2);
+          break;
+        case 'SeaLevel':
+          this.set_altType(3);
+          break;
+        case 'Terrain':
+          this.set_altType(4);
+          break;
+        default:
+          break;
+      }
+      this.set_markerMix(0);
+      switch (node.attributes.getNamedItem('ColorMap').nodeValue) {
+        case 'Same_For_All':
+          this.set__colorMap(0);
+          break;
+        case 'Group_by_Values':
+          this.set__colorMap(2);
+          break;
+        case 'Per_Column_Literal':
+          this.set__colorMap(3);
+          break;
+        default:
+          break;
+      }
+      this.set_markerColumn(parseInt(node.attributes.getNamedItem('MarkerColumn').nodeValue));
+      this.set_colorMapColumn(parseInt(node.attributes.getNamedItem('ColorMapColumn').nodeValue));
+      switch (node.attributes.getNamedItem('PlotType').nodeValue) {
+        case 'Gaussian':
+          this.set_plotType(0);
+          break;
+        case 'Point':
+          this.set_plotType(1);
+          break;
+        case 'Circle':
+          this.set_plotType(2);
+          break;
+        case 'PushPin':
+          this.set_plotType(3);
+          break;
+        default:
+          break;
+      }
+      this.set_markerIndex(parseInt(node.attributes.getNamedItem('MarkerIndex').nodeValue));
+      switch (node.attributes.getNamedItem('MarkerScale').nodeValue) {
+        case 'Screen':
+          this.set_markerScale(0);
+          break;
+        case 'World':
+          this.set_markerScale(1);
+          break;
+        default:
+          break;
+      }
+      switch (node.attributes.getNamedItem('AltUnit').nodeValue) {
+        case 'Meters':
+          this.set_altUnit(1);
+          break;
+        case 'Feet':
+          this.set_altUnit(2);
+          break;
+        case 'Inches':
+          this.set_altUnit(3);
+          break;
+        case 'Miles':
+          this.set_altUnit(4);
+          break;
+        case 'Kilometers':
+          this.set_altUnit(5);
+          break;
+        case 'AstronomicalUnits':
+          this.set_altUnit(6);
+          break;
+        case 'LightYears':
+          this.set_altUnit(7);
+          break;
+        case 'Parsecs':
+          this.set_altUnit(8);
+          break;
+        case 'MegaParsecs':
+          this.set_altUnit(9);
+          break;
+        case 'Custom':
+          this.set_altUnit(10);
+          break;
+        default:
+          break;
+      }
+      this.set_altColumn(parseInt(node.attributes.getNamedItem('AltColumn').nodeValue));
+      this.set_startDateColumn(parseInt(node.attributes.getNamedItem('StartDateColumn').nodeValue));
+      this.set_endDateColumn(parseInt(node.attributes.getNamedItem('EndDateColumn').nodeValue));
+      this.set_sizeColumn(parseInt(node.attributes.getNamedItem('SizeColumn').nodeValue));
+      this.set_hyperlinkFormat(node.attributes.getNamedItem('HyperlinkFormat').nodeValue);
+      this.set_hyperlinkColumn(parseInt(node.attributes.getNamedItem('HyperlinkColumn').nodeValue));
+      this.set_scaleFactor(parseFloat(node.attributes.getNamedItem('ScaleFactor').nodeValue));
+      switch (node.attributes.getNamedItem('PointScaleType').nodeValue) {
+        case 'Linear':
+          this.set_pointScaleType(0);
+          break;
+        case 'Power':
+          this.set_pointScaleType(1);
+          break;
+        case 'Log':
+          this.set_pointScaleType(2);
+          break;
+        case 'Constant':
+          this.set_pointScaleType(3);
+          break;
+        case 'StellarMagnitude':
+          this.set_pointScaleType(4);
+          break;
+        default:
+          break;
+      }
+      if (node.attributes.getNamedItem('ShowFarSide') != null) {
+        this.set_showFarSide(ss.boolean(node.attributes.getNamedItem('ShowFarSide').nodeValue));
+      }
+      if (node.attributes.getNamedItem('RaUnits') != null) {
+        switch (node.attributes.getNamedItem('RaUnits').nodeValue) {
+          case 'Hours':
+            this.set_raUnits(0);
+            break;
+          case 'Degrees':
+            this.set_raUnits(1);
+            break;
+        }
+      }
+      if (node.attributes.getNamedItem('HoverTextColumn') != null) {
+        this.set_nameColumn(parseInt(node.attributes.getNamedItem('HoverTextColumn').nodeValue));
+      }
+      if (node.attributes.getNamedItem('XAxisColumn') != null) {
+        this.set_xAxisColumn(parseInt(node.attributes.getNamedItem('XAxisColumn').nodeValue));
+        this.set_xAxisReverse(ss.boolean(node.attributes.getNamedItem('XAxisReverse').nodeValue));
+        this.set_yAxisColumn(parseInt(node.attributes.getNamedItem('YAxisColumn').nodeValue));
+        this.set_yAxisReverse(ss.boolean(node.attributes.getNamedItem('YAxisReverse').nodeValue));
+        this.set_zAxisColumn(parseInt(node.attributes.getNamedItem('ZAxisColumn').nodeValue));
+        this.set_zAxisReverse(ss.boolean(node.attributes.getNamedItem('ZAxisReverse').nodeValue));
+        switch (node.attributes.getNamedItem('CartesianScale').nodeValue) {
+          case 'Meters':
+            this.set_cartesianScale(1);
+            break;
+          case 'Feet':
+            this.set_cartesianScale(2);
+            break;
+          case 'Inches':
+            this.set_cartesianScale(3);
+            break;
+          case 'Miles':
+            this.set_cartesianScale(4);
+            break;
+          case 'Kilometers':
+            this.set_cartesianScale(5);
+            break;
+          case 'AstronomicalUnits':
+            this.set_cartesianScale(6);
+            break;
+          case 'LightYears':
+            this.set_cartesianScale(7);
+            break;
+          case 'Parsecs':
+            this.set_cartesianScale(8);
+            break;
+          case 'MegaParsecs':
+            this.set_cartesianScale(9);
+            break;
+          case 'Custom':
+            this.set_cartesianScale(10);
+            break;
+          default:
+            break;
+        }
+        this.set_cartesianCustomScale(parseFloat(node.attributes.getNamedItem('CartesianCustomScale').nodeValue));
+      }
+      if (node.attributes.getNamedItem('DynamicData') != null) {
+        this.set_dynamicData(ss.boolean(node.attributes.getNamedItem('DynamicData').nodeValue));
+        this.set_autoUpdate(ss.boolean(node.attributes.getNamedItem('AutoUpdate').nodeValue));
+        this.set_dataSourceUrl(node.attributes.getNamedItem('DataSourceUrl').nodeValue);
+      }
+    },
+    get_decay: function() {
+      return this.decay;
+    },
+    set_decay: function(value) {
+      if (this.decay !== value) {
+        this.version++;
+        this.decay = value;
+      }
+      return value;
+    },
+    get_coordinatesType: function() {
+      return this._coordinatesType$1;
+    },
+    set_coordinatesType: function(value) {
+      if (this._coordinatesType$1 !== value) {
+        this.version++;
+        this._coordinatesType$1 = value;
+      }
+      return value;
+    },
+    get_latColumn: function() {
+      return this.latColumn;
+    },
+    set_latColumn: function(value) {
+      if (this.latColumn !== value) {
+        this.version++;
+        this.latColumn = value;
+      }
+      return value;
+    },
+    get_lngColumn: function() {
+      return this.lngColumn;
+    },
+    set_lngColumn: function(value) {
+      if (this.lngColumn !== value) {
+        this.version++;
+        this.lngColumn = value;
+      }
+      return value;
+    },
+    get_geometryColumn: function() {
+      return this.geometryColumn;
+    },
+    set_geometryColumn: function(value) {
+      if (this.geometryColumn !== value) {
+        this.version++;
+        this.geometryColumn = value;
+      }
+      return value;
+    },
+    get_xAxisColumn: function() {
+      return this._xAxisColumn$1;
+    },
+    set_xAxisColumn: function(value) {
+      if (this._xAxisColumn$1 !== value) {
+        this.version++;
+        this._xAxisColumn$1 = value;
+      }
+      return value;
+    },
+    get_yAxisColumn: function() {
+      return this._yAxisColumn$1;
+    },
+    set_yAxisColumn: function(value) {
+      if (this._yAxisColumn$1 !== value) {
+        this.version++;
+        this._yAxisColumn$1 = value;
+      }
+      return value;
+    },
+    get_zAxisColumn: function() {
+      return this._zAxisColumn$1;
+    },
+    set_zAxisColumn: function(value) {
+      if (this._zAxisColumn$1 !== value) {
+        this.version++;
+        this._zAxisColumn$1 = value;
+      }
+      return value;
+    },
+    get_xAxisReverse: function() {
+      return this._xAxisReverse$1;
+    },
+    set_xAxisReverse: function(value) {
+      if (this._xAxisReverse$1 !== value) {
+        this.version++;
+        this._xAxisReverse$1 = value;
+      }
+      return value;
+    },
+    get_yAxisReverse: function() {
+      return this._yAxisReverse$1;
+    },
+    set_yAxisReverse: function(value) {
+      if (this._yAxisReverse$1 !== value) {
+        this.version++;
+        this._yAxisReverse$1 = value;
+      }
+      return value;
+    },
+    get_zAxisReverse: function() {
+      return this._zAxisReverse$1;
+    },
+    set_zAxisReverse: function(value) {
+      if (this._zAxisReverse$1 !== value) {
+        this.version++;
+        this._zAxisReverse$1 = value;
+      }
+      return value;
+    },
+    get_altType: function() {
+      return this._altType$1;
+    },
+    set_altType: function(value) {
+      if (this._altType$1 !== value) {
+        this.version++;
+        this._altType$1 = value;
+      }
+      return value;
+    },
+    get_markerMix: function() {
+      return this._markerMix$1;
+    },
+    set_markerMix: function(value) {
+      if (this._markerMix$1 !== value) {
+        this.version++;
+        this._markerMix$1 = value;
+      }
+      return value;
+    },
+    get_raUnits: function() {
+      return this._raUnits$1;
+    },
+    set_raUnits: function(value) {
+      if (this._raUnits$1 !== value) {
+        this.version++;
+        this._raUnits$1 = value;
+      }
+      return value;
+    },
+    get__colorMap: function() {
+      return this._colorMap$1;
+    },
+    set__colorMap: function(value) {
+      if (this._colorMap$1 !== value) {
+        this.version++;
+        this._colorMap$1 = value;
+      }
+      return value;
+    },
+    get_markerColumn: function() {
+      return this._markerColumn$1;
+    },
+    set_markerColumn: function(value) {
+      if (this._markerColumn$1 !== value) {
+        this.version++;
+        this._markerColumn$1 = value;
+      }
+      return value;
+    },
+    get_colorMapColumn: function() {
+      return this._colorMapColumn$1;
+    },
+    set_colorMapColumn: function(value) {
+      if (this._colorMapColumn$1 !== value) {
+        this.version++;
+        this._colorMapColumn$1 = value;
+      }
+      return value;
+    },
+    get_plotType: function() {
+      return this._plotType$1;
+    },
+    set_plotType: function(value) {
+      if (this._plotType$1 !== value) {
+        this.version++;
+        this._plotType$1 = value;
+      }
+      return value;
+    },
+    get_markerIndex: function() {
+      return this._markerIndex$1;
+    },
+    set_markerIndex: function(value) {
+      if (this._markerIndex$1 !== value) {
+        this.version++;
+        this._markerIndex$1 = value;
+      }
+      return value;
+    },
+    get_showFarSide: function() {
+      return this._showFarSide$1;
+    },
+    set_showFarSide: function(value) {
+      if (this._showFarSide$1 !== value) {
+        this.version++;
+        this._showFarSide$1 = value;
+      }
+      return value;
+    },
+    get_markerScale: function() {
+      return this._markerScale$1;
+    },
+    set_markerScale: function(value) {
+      if (this._markerScale$1 !== value) {
+        this.version++;
+        this._markerScale$1 = value;
+      }
+      return value;
+    },
+    get_altUnit: function() {
+      return this._altUnit$1;
+    },
+    set_altUnit: function(value) {
+      if (this._altUnit$1 !== value) {
+        this.version++;
+        this._altUnit$1 = value;
+      }
+      return value;
+    },
+    get_cartesianScale: function() {
+      return this._cartesianScale$1;
+    },
+    set_cartesianScale: function(value) {
+      if (this._cartesianScale$1 !== value) {
+        this.version++;
+        this._cartesianScale$1 = value;
+      }
+      return value;
+    },
+    get_cartesianCustomScale: function() {
+      return this._cartesianCustomScale$1;
+    },
+    set_cartesianCustomScale: function(value) {
+      if (this._cartesianCustomScale$1 !== value) {
+        this.version++;
+        this._cartesianCustomScale$1 = value;
+      }
+      return value;
+    },
+    get_altColumn: function() {
+      return this.altColumn;
+    },
+    set_altColumn: function(value) {
+      if (this.altColumn !== value) {
+        this.version++;
+        this.altColumn = value;
+      }
+      return value;
+    },
+    get_startDateColumn: function() {
+      return this.startDateColumn;
+    },
+    set_startDateColumn: function(value) {
+      if (this.startDateColumn !== value) {
+        this.version++;
+        this.startDateColumn = value;
+      }
+      return value;
+    },
+    get_endDateColumn: function() {
+      return this.endDateColumn;
+    },
+    set_endDateColumn: function(value) {
+      if (this.endDateColumn !== value) {
+        this.version++;
+        this.endDateColumn = value;
+      }
+      return value;
+    },
+    get_sizeColumn: function() {
+      return this.sizeColumn;
+    },
+    set_sizeColumn: function(value) {
+      if (this.sizeColumn !== value) {
+        this.version++;
+        this.sizeColumn = value;
+      }
+      return value;
+    },
+    get_nameColumn: function() {
+      return this.nameColumn;
+    },
+    set_nameColumn: function(value) {
+      if (this.nameColumn !== value) {
+        this.version++;
+        this.nameColumn = value;
+      }
+      return value;
+    },
+    get_hyperlinkFormat: function() {
+      return this._hyperlinkFormat$1;
+    },
+    set_hyperlinkFormat: function(value) {
+      if (this._hyperlinkFormat$1 !== value) {
+        this.version++;
+        this._hyperlinkFormat$1 = value;
+      }
+      return value;
+    },
+    get_hyperlinkColumn: function() {
+      return this._hyperlinkColumn$1;
+    },
+    set_hyperlinkColumn: function(value) {
+      if (this._hyperlinkColumn$1 !== value) {
+        this.version++;
+        this._hyperlinkColumn$1 = value;
+      }
+      return value;
+    },
+    get_scaleFactor: function() {
+      return this.scaleFactor;
+    },
+    set_scaleFactor: function(value) {
+      if (this.scaleFactor !== value) {
+        this.version++;
+        this.scaleFactor = value;
+      }
+      return value;
+    },
+    get_pointScaleType: function() {
+      return this.pointScaleType;
+    },
+    set_pointScaleType: function(value) {
+      if (this.pointScaleType !== value) {
+        this.version++;
+        this.pointScaleType = value;
+      }
+      return value;
+    },
+    draw: function(renderContext, opacity, flat) {
+      var device = renderContext;
+      if (this.bufferIsFlat !== flat) {
+        this.cleanUp();
+        this.bufferIsFlat = flat;
+      }
+      if (this.dirty) {
+        this.prepVertexBuffer(device, opacity);
+      }
+      var jNow = SpaceTimeController.get_jNow() - SpaceTimeController.utcToJulian(this.baseDate);
+      var adjustedScale = this.scaleFactor;
+      if (flat && this.astronomical && (this._markerScale$1 === 1)) {
+        adjustedScale = (this.scaleFactor / (renderContext.viewCamera.zoom / 360));
+      }
+      if (this.triangleList2d != null) {
+        this.triangleList2d.decay = this.decay;
+        this.triangleList2d.sky = this.get_astronomical();
+        this.triangleList2d.timeSeries = this.timeSeries;
+        this.triangleList2d.jNow = jNow;
+        this.triangleList2d.draw(renderContext, opacity * this.get_opacity(), 1);
+      }
+      if (this.triangleList != null) {
+        this.triangleList.decay = this.decay;
+        this.triangleList.sky = this.get_astronomical();
+        this.triangleList.timeSeries = this.timeSeries;
+        this.triangleList.jNow = jNow;
+        this.triangleList.draw(renderContext, opacity * this.get_opacity(), 1);
+      }
+      if (this.pointList != null) {
+        this.pointList.depthBuffered = false;
+        this.pointList.decay = this.decay;
+        this.pointList.sky = this.get_astronomical();
+        this.pointList.timeSeries = this.timeSeries;
+        this.pointList.jNow = jNow;
+        this.pointList.scale = (this._markerScale$1 === 1) ? adjustedScale : -adjustedScale;
+        this.pointList.draw(renderContext, opacity * this.get_opacity(), false);
+      }
+      if (this.lineList != null) {
+        this.lineList.sky = this.get_astronomical();
+        this.lineList.decay = this.decay;
+        this.lineList.timeSeries = this.timeSeries;
+        this.lineList.jNow = jNow;
+        this.lineList.drawLines(renderContext, opacity * this.get_opacity());
+      }
+      if (this.lineList2d != null) {
+        this.lineList2d.sky = this.get_astronomical();
+        this.lineList2d.decay = this.decay;
+        this.lineList2d.timeSeries = this.timeSeries;
+        this.lineList2d.showFarSide = this.get_showFarSide();
+        this.lineList2d.jNow = jNow;
+        this.lineList2d.drawLines(renderContext, opacity * this.get_opacity());
+      }
+      return true;
+    },
+    cleanUpBase: function() {
+      if (this.lineList != null) {
+        this.lineList.clear();
+      }
+      if (this.lineList2d != null) {
+        this.lineList2d.clear();
+      }
+      if (this.triangleList2d != null) {
+        this.triangleList2d.clear();
+      }
+      if (this.pointList != null) {
+        this.pointList.clear();
+      }
+      if (this.triangleList != null) {
+        this.triangleList.clear();
+      }
+    }
+  };
+
+
   // wwtlib.TimeSeriesLayer
 
   function TimeSeriesLayer() {
@@ -24698,6 +26156,10 @@ window.wwtlib = function(){
         this.prepVertexBuffer(device, opacity);
       }
       var jNow = SpaceTimeController.get_jNow() - SpaceTimeController.utcToJulian(this.baseDate);
+      var adjustedScale = this.scaleFactor;
+      if (flat && this.astronomical && (this._markerScale$1 === 1)) {
+        adjustedScale = (this.scaleFactor / (renderContext.viewCamera.zoom / 360));
+      }
       if (this.triangleList2d != null) {
         this.triangleList2d.decay = this.decay;
         this.triangleList2d.sky = this.get_astronomical();
@@ -24718,6 +26180,7 @@ window.wwtlib = function(){
         this.pointList.sky = this.get_astronomical();
         this.pointList.timeSeries = this.timeSeries;
         this.pointList.jNow = jNow;
+        this.pointList.scale = (this._markerScale$1 === 1) ? adjustedScale : -adjustedScale;
         this.pointList.draw(renderContext, opacity * this.get_opacity(), false);
       }
       if (this.lineList != null) {
@@ -24736,6 +26199,9 @@ window.wwtlib = function(){
         this.lineList2d.drawLines(renderContext, opacity * this.get_opacity());
       }
       return true;
+    },
+    initFromXml: function(node) {
+      Layer.prototype.initFromXml.call(this, node);
     },
     cleanUp: function() {
       if (this.lineList != null) {
@@ -27471,735 +28937,6 @@ window.wwtlib = function(){
   };
 
 
-  // wwtlib.SpreadSheetLayer
-
-  function SpreadSheetLayer() {
-    this._dataDirty$2 = false;
-    this._barChartBitmask$2 = 0;
-    this._barScaleFactor$2 = 20;
-    this._meanRadius$2 = 6371000;
-    this._table$2 = new Table();
-    TimeSeriesLayer.call(this);
-  }
-  SpreadSheetLayer._getDatafromFeed$2 = function(url) {
-    return '';
-  };
-  SpreadSheetLayer._executeQuery$2 = function(url) {
-    return '';
-  };
-  SpreadSheetLayer.parseDate = function(date) {
-    var dt = ss.now();
-    try {
-      dt = new Date(date);
-    }
-    catch ($e1) {
-      try {
-        return SpreadSheetLayer.execlToDateTime(parseFloat(date));
-      }
-      catch ($e2) {
-      }
-    }
-    return dt;
-  };
-  SpreadSheetLayer.execlToDateTime = function(excelDate) {
-    if (excelDate > 59) {
-      excelDate -= 1;
-    }
-    if (excelDate > 730000) {
-      excelDate = 730000;
-    }
-    var es = new Date(1899, 12, 31);
-    return new Date(es.getDate() + ss.truncate((excelDate * 24 * 60 * 60 * 1000)));
-  };
-  var SpreadSheetLayer$ = {
-    get_header: function() {
-      return this._table$2.header;
-    },
-    canCopyToClipboard: function() {
-      return true;
-    },
-    copyToClipboard: function() {
-    },
-    dynamicUpdate: function() {
-      var data = SpreadSheetLayer._getDatafromFeed$2(this.get_dataSourceUrl());
-      if (data != null) {
-        this.upadteData(data, false, true, true);
-        this.guessHeaderAssignments();
-        return true;
-      }
-      return false;
-    },
-    upadteData: function(data, purgeOld, purgeAll, hasHeader) {
-      this.loadFromString(ss.safeCast(data, String), true, purgeOld, purgeAll, hasHeader);
-      this.computeDateDomainRange(-1, -1);
-      this._dataDirty$2 = true;
-      return true;
-    },
-    loadData: function(path) {
-      var $this = this;
-
-      this._table$2 = new Table();
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', path);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          $this._table$2.loadFromString(xhr.responseText, false, true, true);
-          $this.computeDateDomainRange(-1, -1);
-          if ($this.get_dynamicData() && $this.get_autoUpdate()) {
-            $this.dynamicUpdate();
-          }
-          $this._dataDirty$2 = true;
-          $this.dirty = true;
-        }
-      };
-      xhr.send();
-    },
-    guessHeaderAssignments: function() {
-      var index = 0;
-      var $enum1 = ss.enumerate(this._table$2.header);
-      while ($enum1.moveNext()) {
-        var headerName = $enum1.current;
-        var name = headerName.toLowerCase();
-        if (name.indexOf('lat') > -1 && this.latColumn === -1) {
-          this.latColumn = index;
-        }
-        if ((name.indexOf('lon') > -1 || name.indexOf('lng') > -1) && this.lngColumn === -1) {
-          this.lngColumn = index;
-        }
-        if (name.indexOf('dec') > -1 && this.latColumn === -1) {
-          this.latColumn = index;
-          this.astronomical = true;
-        }
-        if ((name.indexOf('ra') > -1 || name.indexOf('ascen') > -1) && this.lngColumn === -1) {
-          this.lngColumn = index;
-          this.astronomical = true;
-          this.pointScaleType = 4;
-        }
-        if ((name.indexOf('mag') > -1 || name.indexOf('size') > -1) && this.sizeColumn === -1) {
-          this.sizeColumn = index;
-        }
-        if ((name.indexOf('date') > -1 || name.indexOf('time') > -1 || name.indexOf('dt') > -1 || name.indexOf('tm') > -1)) {
-          if (name.indexOf('end') > -1 && this.endDateColumn === -1) {
-            this.endDateColumn = index;
-          }
-          else if (this.startDateColumn === -1) {
-            this.startDateColumn = index;
-          }
-        }
-        if ((name.indexOf('altitude') > -1 || name.indexOf('alt') > -1) && this.altColumn === -1) {
-          this.altColumn = index;
-          this.set_altType(1);
-          this.set_altUnit(1);
-        }
-        if (name.indexOf('depth') > -1 && this.altColumn === -1) {
-          this.altColumn = index;
-          this.set_altType(0);
-          this.set_altUnit(5);
-        }
-        if (ss.startsWith(name, 'x') && this.get_xAxisColumn() === -1) {
-          this.set_xAxisColumn(index);
-        }
-        if (ss.startsWith(name, 'y') && this.get_yAxisColumn() === -1) {
-          this.set_yAxisColumn(index);
-        }
-        if (ss.startsWith(name, 'z') && this.get_zAxisColumn() === -1) {
-          this.set_zAxisColumn(index);
-        }
-        if (name.indexOf('color') > -1 && this.get_colorMapColumn() === -1) {
-          this.set_colorMapColumn(index);
-        }
-        if ((name.indexOf('geometry') > -1 || name.indexOf('geography') > -1) && this.geometryColumn === -1) {
-          this.geometryColumn = index;
-        }
-        index++;
-      }
-      if (this._table$2.header.length > 0) {
-        this.nameColumn = 0;
-      }
-    },
-    computeDateDomainRange: function(columnStart, columnEnd) {
-      if (columnStart === -1) {
-        columnStart = this.startDateColumn;
-      }
-      if (columnEnd === -1) {
-        columnEnd = this.endDateColumn;
-      }
-      if (columnEnd === -1) {
-        columnEnd = columnStart;
-      }
-      this.set_beginRange(new Date('12/31/2100'));
-      this.set_endRange(new Date('12/31/1890'));
-      var $enum1 = ss.enumerate(this._table$2.rows);
-      while ($enum1.moveNext()) {
-        var row = $enum1.current;
-        try {
-          if (columnStart > -1) {
-            var sucsess = false;
-            var dateTimeStart = new Date('12/31/2100');
-            try {
-              dateTimeStart = new Date(row[columnStart]);
-              if (dateTimeStart < this.get_beginRange()) {
-                this.set_beginRange(dateTimeStart);
-              }
-            }
-            catch ($e2) {
-            }
-            try {
-              var dateTimeEnd = new Date('12/31/1890');
-              if (columnEnd > -1) {
-                dateTimeEnd = new Date(row[columnEnd]);
-                if (sucsess && dateTimeEnd > this.get_endRange()) {
-                  this.set_endRange(dateTimeEnd);
-                }
-              }
-            }
-            catch ($e3) {
-            }
-          }
-        }
-        catch ($e4) {
-        }
-      }
-    },
-    checkState: function() {
-    },
-    getMaxValue: function(column) {
-      var max = 0;
-      this._table$2.lock();
-      var $enum1 = ss.enumerate(this._table$2.rows);
-      while ($enum1.moveNext()) {
-        var row = $enum1.current;
-        try {
-          if (column > -1) {
-            var sucsess = false;
-            try {
-              var val = parseFloat(row[column]);
-              if (sucsess && val > max) {
-                max = val;
-              }
-            }
-            catch ($e2) {
-            }
-          }
-        }
-        catch ($e3) {
-        }
-      }
-      this._table$2.unlock();
-      return max;
-    },
-    getDomainValues: function(column) {
-      var domainValues = [];
-      this._table$2.lock();
-      var $enum1 = ss.enumerate(this._table$2.rows);
-      while ($enum1.moveNext()) {
-        var row = $enum1.current;
-        try {
-          if (column > -1) {
-            if (!(domainValues.indexOf(row[column]) >= 0)) {
-              domainValues.push(row[column]);
-            }
-          }
-        }
-        catch ($e2) {
-        }
-      }
-      domainValues.sort();
-      this._table$2.unlock();
-      return domainValues;
-    },
-    get_barChartBitmask: function() {
-      return this._barChartBitmask$2;
-    },
-    set_barChartBitmask: function(value) {
-      this._barChartBitmask$2 = value;
-      return value;
-    },
-    prepVertexBuffer: function(renderContext, opacity) {
-      this._table$2.lock();
-      if (this.lineList != null) {
-        this.lineList.clear();
-      }
-      if (this.lineList2d != null) {
-        this.lineList2d.clear();
-      }
-      if (this.triangleList != null) {
-        this.triangleList.clear();
-      }
-      if (this.pointList != null) {
-        this.pointList.clear();
-      }
-      if (this.triangleList2d != null) {
-        this.triangleList2d.clear();
-      }
-      if (this.lineList == null) {
-        this.lineList = new LineList();
-      }
-      if (this.pointList == null) {
-        this.pointList = new PointList(renderContext);
-      }
-      this.lineList.timeSeries = this.timeSeries;
-      if (this.lineList2d == null) {
-        this.lineList2d = new LineList();
-        this.lineList2d.set_depthBuffered(false);
-      }
-      this.lineList.timeSeries = this.timeSeries;
-      if (this.triangleList == null) {
-        this.triangleList = new TriangleList();
-      }
-      if (this.triangleList2d == null) {
-        this.triangleList2d = new TriangleList();
-        this.triangleList2d.depthBuffered = false;
-      }
-      this.positions.length = 0;
-      var currentIndex = 0;
-      var colorLocal = this.get_color();
-      var ecliptic = Coordinates.meanObliquityOfEcliptic(SpaceTimeController.get_jNow()) / 180 * Math.PI;
-      var selectDomain = {};
-      var mr = 0;
-      if (!!mr) {
-        this._meanRadius$2 = mr;
-      }
-      var position = new Vector3d();
-      var pointSize = 0.0002;
-      var pointColor = Colors.get_white();
-      var pointStartTime = 0;
-      var pointEndTime = 0;
-      var $enum1 = ss.enumerate(this._table$2.rows);
-      while ($enum1.moveNext()) {
-        var row = $enum1.current;
-        try {
-          var selected = false;
-          if (this.geometryColumn > -1 || (!this.get_coordinatesType() && (this.lngColumn > -1 && this.latColumn > -1)) || ((this.get_coordinatesType() === 1) && (this.get_xAxisColumn() > -1 && this.get_yAxisColumn() > -1))) {
-            var Xcoord = 0;
-            var Ycoord = 0;
-            var Zcoord = 0;
-            var alt = 1;
-            var altitude = 0;
-            var distParces = 0;
-            var factor = this.getScaleFactor(this.get_altUnit(), 1);
-            if (this.altColumn === -1 || this.get_altType() === 3 || this.bufferIsFlat) {
-              alt = 1;
-              if ((this.astronomical & !this.bufferIsFlat) === 1) {
-                alt = 63239.6717 * 100;
-              }
-            }
-            else {
-              if (!this.get_altType()) {
-                factor = -factor;
-              }
-              alt = 0;
-              try {
-                alt = parseFloat(row[this.altColumn]);
-              }
-              catch ($e2) {
-              }
-              if (this.astronomical) {
-                factor = factor / (1000 * 149598000);
-                distParces = (alt * factor) / 206264.806;
-                altitude = (factor * alt);
-                alt = (factor * alt);
-              }
-              else if (this.get_altType() === 2) {
-                altitude = (factor * alt);
-                alt = (factor * alt / this._meanRadius$2);
-              }
-              else {
-                altitude = (factor * alt);
-                alt = 1 + (factor * alt / this._meanRadius$2);
-              }
-            }
-            if (!this.get_coordinatesType() && this.lngColumn > -1 && this.latColumn > -1) {
-              Xcoord = parseFloat(row[this.lngColumn]);
-              Ycoord = parseFloat(row[this.latColumn]);
-              if (this.astronomical) {
-                if (!this.get_raUnits()) {
-                  Xcoord *= 15;
-                }
-                if (this.bufferIsFlat) {
-                }
-              }
-              var offset = 0;
-              var pos = Coordinates.geoTo3dDoubleRad(Ycoord, Xcoord, alt);
-              if (this.astronomical && !this.bufferIsFlat) {
-                pos.rotateX(ecliptic);
-              }
-              position = pos;
-              this.positions.push(position);
-            }
-            else if (this.get_coordinatesType() === 1) {
-              var xyzScale = this.getScaleFactor(this.get_cartesianScale(), this.get_cartesianCustomScale()) / this._meanRadius$2;
-              if (this.get_zAxisColumn() > -1) {
-                Zcoord = parseFloat(row[this.get_zAxisColumn()]);
-              }
-              Xcoord = parseFloat(row[this.get_xAxisColumn()]);
-              Ycoord = parseFloat(row[this.get_yAxisColumn()]);
-              if (this.get_xAxisReverse()) {
-                Xcoord = -Xcoord;
-              }
-              if (this.get_yAxisReverse()) {
-                Ycoord = -Ycoord;
-              }
-              if (this.get_zAxisReverse()) {
-                Zcoord = -Zcoord;
-              }
-              position = Vector3d.create((Xcoord * xyzScale), (Zcoord * xyzScale), (Ycoord * xyzScale));
-              this.positions.push(position);
-            }
-            switch (this.get__colorMap()) {
-              case 0:
-                pointColor = colorLocal;
-                break;
-              case 3:
-                if (this.get_colorMapColumn() > -1) {
-                  pointColor = this._parseColor$2(row[this.get_colorMapColumn()], colorLocal);
-                }
-                else {
-                  pointColor = colorLocal;
-                }
-                break;
-              default:
-                break;
-            }
-            if (this.sizeColumn > -1) {
-              switch (this.pointScaleType) {
-                case 0:
-                  pointSize = parseFloat(row[this.sizeColumn]);
-                  break;
-                case 2:
-                  pointSize = Math.log(parseFloat(row[this.sizeColumn]));
-                  break;
-                case 1:
-                  var size = 0;
-                  try {
-                    pointSize = parseFloat(row[this.altColumn]);
-                  }
-                  catch ($e3) {
-                    pointSize = 0;
-                  }
-                  break;
-                case 4:
-                  var size = 0;
-                  try {
-                    size = parseFloat(row[this.sizeColumn]);
-                    if (!this.bufferIsFlat) {
-                      size = size - 5 * (Util.logN(distParces, 10) - 1);
-                      pointSize = (120000000 / Math.pow(1.6, size));
-                    }
-                    else {
-                      pointSize = (40 / Math.pow(1.6, size));
-                    }
-                  }
-                  catch ($e4) {
-                    pointSize = 0;
-                  }
-                  break;
-                case 3:
-                  pointSize = 1;
-                  break;
-                default:
-                  break;
-              }
-            }
-            else {
-              pointSize = 1;
-            }
-            if (this.get_plotType() === 1) {
-              pointSize = 1;
-            }
-            if ((this.astronomical & !this.bufferIsFlat) === 1) {
-            }
-            if (this.startDateColumn > -1) {
-              var dateTime = new Date(row[this.startDateColumn]);
-              pointStartTime = (SpaceTimeController.utcToJulian(dateTime) - SpaceTimeController.utcToJulian(this.baseDate));
-              if (this.endDateColumn > -1) {
-                dateTime = new Date(row[this.endDateColumn]);
-                pointEndTime = (SpaceTimeController.utcToJulian(dateTime) - SpaceTimeController.utcToJulian(this.baseDate));
-              }
-              else {
-                pointEndTime = pointStartTime;
-              }
-            }
-            this.pointList.addPoint(position, pointColor, new Dates(pointStartTime, pointEndTime), pointSize);
-            if (this.geometryColumn > -1) {
-              this._parseGeometry$2(row[this.geometryColumn], pointColor, pointColor, altitude, new Dates(pointStartTime, pointEndTime));
-            }
-            currentIndex++;
-          }
-        }
-        catch ($e5) {
-        }
-        this.lines = false;
-      }
-      this._table$2.unlock();
-      this._dataDirty$2 = false;
-      this.dirty = false;
-      return false;
-    },
-    _parseGeometry$2: function(gs, lineColor, polyColor, alt, date) {
-      gs = ss.trim(gs).toLowerCase();
-      var index = gs.indexOf('(');
-      if (index < 0) {
-        return;
-      }
-      if (!ss.endsWith(gs, ')')) {
-        return;
-      }
-      var commandPart = ss.trim(gs.substring(0, index));
-      var parens = gs.substr(index);
-      var parts = commandPart.split(' ');
-      var command = null;
-      var mods = null;
-      if (parts.length > 0) {
-        var $enum1 = ss.enumerate(parts);
-        while ($enum1.moveNext()) {
-          var item = $enum1.current;
-          if (ss.emptyString(command)) {
-            command = item;
-          }
-          else if (ss.emptyString(mods)) {
-            mods = item;
-          }
-        }
-      }
-      switch (command) {
-        case 'multipolygon':
-        case 'polygon':
-          this._parsePolygon$2(parens, mods, lineColor, polyColor, alt, date);
-          break;
-        case 'multilinestring':
-          this._parseLineString$2(parens, mods, lineColor, alt, false, date);
-          break;
-        case 'linestring':
-          this._parseLineString$2(parens, mods, lineColor, alt, true, date);
-          break;
-        case 'geometrycollection':
-          parens = parens.substring(1, parens.length - 2);
-          var shapes = UiTools.splitString(parens, ',');
-          var $enum2 = ss.enumerate(shapes);
-          while ($enum2.moveNext()) {
-            var shape = $enum2.current;
-            this._parseGeometry$2(shape, lineColor, polyColor, alt, date);
-          }
-          break;
-        default:
-          break;
-      }
-    },
-    _parsePolygon$2: function(parens, mods, lineColor, polyColor, alt, date) {
-      if (!ss.startsWith(parens, '(') && ss.endsWith(parens, ')')) {
-        return;
-      }
-      parens = parens.substring(1, parens.length - 2);
-      var shapes = UiTools.splitString(parens, ',');
-      var $enum1 = ss.enumerate(shapes);
-      while ($enum1.moveNext()) {
-        var shape = $enum1.current;
-        var lineList = new KmlLineList();
-        lineList.astronomical = this.astronomical;
-        lineList.meanRadius = this._meanRadius$2;
-        lineList.parseWkt(shape, mods, alt, date);
-        if (!alt) {
-          this._addPolygonFlat$2(false, lineList, 1, polyColor, lineColor, true, true, date);
-        }
-        else {
-          this._addPolygon$2(false, lineList, 1, polyColor, lineColor, true, true, date);
-        }
-      }
-    },
-    _parseLineString$2: function(parens, mods, lineColor, alt, single, date) {
-      if (!ss.startsWith(parens, '(') && ss.endsWith(parens, ')')) {
-        return;
-      }
-      if (!single) {
-        parens = parens.substring(1, parens.length - 2);
-      }
-      var shapes = UiTools.splitString(parens, ',');
-      var $enum1 = ss.enumerate(shapes);
-      while ($enum1.moveNext()) {
-        var shape = $enum1.current;
-        var lineList = new KmlLineList();
-        lineList.astronomical = this.astronomical;
-        lineList.meanRadius = this._meanRadius$2;
-        lineList.parseWkt(shape, mods, alt, date);
-        this._addPolygon$2(false, lineList, 1, Colors.get_white(), lineColor, false, false, date);
-      }
-    },
-    _splitShapes$2: function(shapes) {
-      var shapeList = [];
-      var nesting = 0;
-      var current = 0;
-      while (current < shapes.length) {
-        if (shapes.substr(current, 1) === '(') {
-          nesting++;
-        }
-      }
-      return shapeList;
-    },
-    _addPolygon$2: function(sky, geo, lineWidth, polyColor, lineColor, extrude, fill, date) {
-      var vertexList = [];
-      var vertexListGround = [];
-      for (var i = 0; i < geo.pointList.length; i++) {
-        vertexList.push(Coordinates.geoTo3dDoubleRad(geo.pointList[i].lat, geo.pointList[i].lng, 1 + (geo.pointList[i].alt / this._meanRadius$2)));
-        vertexListGround.push(Coordinates.geoTo3dDoubleRad(geo.pointList[i].lat, geo.pointList[i].lng, 1));
-      }
-      for (var i = 0; i < (geo.pointList.length - 1); i++) {
-        if (sky) {
-        }
-        else {
-          if (extrude) {
-            this.triangleList.addQuad(vertexList[i], vertexList[i + 1], vertexListGround[i], vertexListGround[i + 1], polyColor, date);
-          }
-          if (lineWidth > 0) {
-            if (extrude) {
-              this.lineList.addLine(vertexList[i], vertexList[i + 1], lineColor, date);
-            }
-            else {
-              this.lineList2d.addLine(vertexList[i], vertexList[i + 1], lineColor, date);
-            }
-            if (extrude) {
-              this.lineList.addLine(vertexListGround[i], vertexListGround[i + 1], lineColor, date);
-              this.lineList.addLine(vertexList[i], vertexListGround[i], lineColor, date);
-              this.lineList.addLine(vertexList[i + 1], vertexListGround[i + 1], lineColor, date);
-            }
-          }
-        }
-      }
-      if (fill) {
-        var indexes = Tessellator.tesselateSimplePoly(vertexList);
-        for (var i = 0; i < indexes.length; i += 3) {
-          this.triangleList.addTriangle(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], polyColor, date);
-        }
-      }
-    },
-    _addPolygonFlat$2: function(sky, geo, lineWidth, polyColor, lineColor, extrude, fill, date) {
-      var vertexList = [];
-      for (var i = 0; i < geo.pointList.length; i++) {
-        vertexList.push(Coordinates.geoTo3dDoubleRad(geo.pointList[i].lat, geo.pointList[i].lng, 1 + (geo.pointList[i].alt / this._meanRadius$2)));
-      }
-      for (var i = 0; i < (geo.pointList.length - 1); i++) {
-        if (sky) {
-        }
-        else {
-          if (lineWidth > 0) {
-            this.lineList2d.addLine(vertexList[i], vertexList[i + 1], lineColor, date);
-          }
-        }
-      }
-      if (fill) {
-        var indexes = Tessellator.tesselateSimplePoly(vertexList);
-        for (var i = 0; i < indexes.length; i += 3) {
-          this.triangleList2d.addSubdividedTriangles(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], polyColor, date, 2);
-        }
-      }
-    },
-    _parseColor$2: function(colorText, defaultColor) {
-      return Color.load(colorText);
-    },
-    getScaleFactor: function(AltUnit, custom) {
-      var factor = 1;
-      switch (AltUnit) {
-        case 1:
-          factor = 1;
-          break;
-        case 2:
-          factor = 1 * 0.3048;
-          break;
-        case 3:
-          factor = (1 / 12) * 0.3048;
-          break;
-        case 4:
-          factor = 5280 * 0.3048;
-          break;
-        case 5:
-          factor = 1000;
-          break;
-        case 6:
-          factor = 1000 * 149598000;
-          break;
-        case 7:
-          factor = 1000 * 149598000 * 63239.6717;
-          break;
-        case 8:
-          factor = 1000 * 149598000 * 206264.806;
-          break;
-        case 9:
-          factor = 1000 * 149598000 * 206264.806 * 1000000;
-          break;
-        case 10:
-          factor = custom;
-          break;
-        default:
-          break;
-      }
-      return factor;
-    },
-    get__table: function() {
-      return this._table$2;
-    },
-    set__table: function(value) {
-      this._table$2 = value;
-      return value;
-    },
-    loadFromString: function(data, isUpdate, purgeOld, purgeAll, hasHeader) {
-      if (!isUpdate) {
-        this._table$2 = new Table();
-      }
-      this._table$2.lock();
-      this._table$2.loadFromString(data, isUpdate, purgeAll, hasHeader);
-      if (!isUpdate) {
-        this.guessHeaderAssignments();
-      }
-      if (this.astronomical && this.lngColumn > -1) {
-        var max = this.getMaxValue(this.lngColumn);
-        if (max > 24) {
-          this.set_raUnits(1);
-        }
-      }
-      if (purgeOld) {
-        this.purgeByTime();
-      }
-      this._table$2.unlock();
-    },
-    purgeByTime: function() {
-      if (this.startDateColumn < 0) {
-        return;
-      }
-      var columnToUse = this.startDateColumn;
-      if (this.endDateColumn > -1) {
-        columnToUse = this.endDateColumn;
-      }
-      var threasholdTime = SpaceTimeController.get_now();
-      var ts = ss.truncate(this.decay) * 24 * 60 * 60 * 1000;
-      threasholdTime = new Date(threasholdTime.getDate() - ts);
-      var count = this._table$2.rows.length;
-      for (var i = 0; i < count; i++) {
-        try {
-          var row = this._table$2.rows[i];
-          var colDate = new Date(row[columnToUse]);
-          if (colDate < threasholdTime) {
-            this._table$2.rows.splice(i, 1);
-            count--;
-            i--;
-          }
-        }
-        catch ($e1) {
-        }
-      }
-    },
-    draw: function(renderContext, opacity, flat) {
-      var bVal = TimeSeriesLayer.prototype.draw.call(this, renderContext, opacity, flat);
-      return bVal;
-    },
-    cleanUp: function() {
-      this._table$2.lock();
-      TimeSeriesLayer.prototype.cleanUp.call(this);
-      this._table$2.unlock();
-      this.dirty = true;
-    }
-  };
-
-
   // wwtlib.SlideChangedEventArgs
 
   function SlideChangedEventArgs(caption) {
@@ -28322,7 +29059,7 @@ window.wwtlib = function(){
       ViewMoverSlew: [ ViewMoverSlew, ViewMoverSlew$, null, IViewMover ],
       MainView: [ MainView, null, null ],
       LayerCollection: [ LayerCollection, LayerCollection$, Layer ],
-      SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, TimeSeriesLayer ]
+      SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, Layer ]
     },
     {
       DAY_OF_WEEK: DAY_OF_WEEK,
@@ -28851,6 +29588,7 @@ window.wwtlib = function(){
   (function() {
     var canvas = document.getElementById('canvas');
   })();
+  SpreadSheetLayer._circleTexture$1 = null;
   TimeSeriesLayer._circleTexture$1 = null;
   ToastTile.slashIndexBuffer = new Array(64);
   ToastTile.backSlashIndexBuffer = new Array(64);

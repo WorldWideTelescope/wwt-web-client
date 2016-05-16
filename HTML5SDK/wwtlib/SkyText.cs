@@ -145,30 +145,43 @@ namespace wwtlib
             foreach (Text3d t3d in Items)
             {
                 String text = t3d.Text;
-                Vector2d size = Vector2d.Create(1000,100); //g.MeasureString(text, font);
-
+                float left = 0;
+                float top = 0;
+                float fntAdjust = TextObject.FontSize / 128f;
                 float factor = .6666f;
-                t3d.width = size.X * (float)t3d.scale * factor;
-                t3d.height = size.Y * (float)t3d.scale * factor;
+                float width = 0;
+                float height = 0;
+                for (int i = 0; i < text.Length; i++)
+                {
+                    GlyphItem item = glyphCache.GetGlyphItem(text.Substr(i, 1));
+                    if (item != null)
+                    {
+                        width += (float)(item.Extents.X);
+                        height = Math.Max(item.Extents.Y, height);
+                    }
+                }
 
-                 float left = 0;
-                 float top = 0;
-                 float fntAdjust = TextObject.FontSize / 128f;
+                Vector2d size = Vector2d.Create(width, height); 
+ 
+                t3d.width = size.X * (float)t3d.scale * factor * fntAdjust;
+                t3d.height = size.Y * (float)t3d.scale * factor * fntAdjust;
+
 
                 int charsLeft = text.Length;
 
                 for (int i = 0; i < charsLeft; i++)
                 {
-                    GlyphItem item = glyphCache.GetGlyphItem(text.Substr(i,1));
+                    GlyphItem item = glyphCache.GetGlyphItem(text.Substr(i, 1));
+                    if (item != null)
+                    {
+                        Rectangle position = Rectangle.Create(left * (float)t3d.scale * factor, 0 * (float)t3d.scale * factor, item.Extents.X * fntAdjust * (float)t3d.scale * factor, item.Extents.Y * fntAdjust * (float)t3d.scale * factor);
+                        left += (float)(item.Extents.X * fntAdjust);
 
-                    Rectangle position = Rectangle.Create(left * (float)t3d.scale * factor, 0 * (float)t3d.scale * factor, item.Extents.X * fntAdjust * (float)t3d.scale * factor, item.Extents.Y * fntAdjust * (float)t3d.scale * factor);
-                    left += (float)(item.Extents.X * fntAdjust);
+                        //System.Diagnostics.Debug.WriteLine((position.Width/position1.Width).ToString() + ", " + (position.Height / position1.Height).ToString());
 
-                    //System.Diagnostics.Debug.WriteLine((position.Width/position1.Width).ToString() + ", " + (position.Height / position1.Height).ToString());
-
-                    t3d.AddGlyphPoints(verts, item.Size, position, item.UVRect);
+                        t3d.AddGlyphPoints(verts, item.Size, position, item.UVRect);
+                    }
                 }
-
             }
 
 
@@ -340,6 +353,7 @@ namespace wwtlib
         private void LoadXmlGlyph(XmlDocument xml)
         {
             XmlNode nodes = Util.SelectSingleNode(xml, "GlyphItems");
+
             foreach (XmlNode glyphItem in nodes.ChildNodes)
             {
                 if (glyphItem.Name == "GlyphItem")
@@ -728,7 +742,10 @@ namespace wwtlib
                 }
             }
 
-            pointList.AddRange(points);
+            foreach (PositionTexture pnt in points)
+            {
+                pointList.Add(pnt);
+            }
         }
 
     }
