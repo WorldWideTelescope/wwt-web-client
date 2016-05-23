@@ -9,6 +9,7 @@ namespace wwtlib
 {
     public class RenderContext
     {
+        public static bool UseGl = false;
         public CanvasContext2D Device;
         public GL gl;
 
@@ -661,6 +662,33 @@ namespace wwtlib
         public double PerspectiveFov = Math.PI / 4;
 
 
+        public void SetupMatricesOverlays()
+        {
+
+            World = Matrix3d.Identity;
+
+            Matrix3d lookAtAdjust = Matrix3d.Identity;
+
+            Vector3d lookFrom =  Vector3d.Create(0, 0, 0);
+            Vector3d lookAt =  Vector3d.Create(0, 0, 1);
+            Vector3d lookUp =  Vector3d.Create(0, 1, 0);
+
+            Matrix3d view;
+            view = Matrix3d.LookAtLH(lookFrom, lookAt, lookUp);
+            view.Multiply( Matrix3d.Scaling(1, -1, 1));
+
+ 
+            View = view;
+
+            double back = 10000;
+            nearPlane = .1f;
+
+            Projection = Matrix3d.PerspectiveFovLH(fovLocal, Width / Height, nearPlane, back);
+
+
+
+        }
+
         public void SetupMatricesSolarSystem(bool forStars)
         {
             Lighting = Settings.Active.SolarSystemLighting;
@@ -706,9 +734,6 @@ namespace wwtlib
             bool dome = false;
 
             Vector3d lookUp;
-
-
-
 
 
             if (useSolarSystemTilt && !SandboxMode)

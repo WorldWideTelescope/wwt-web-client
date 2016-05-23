@@ -267,6 +267,9 @@ namespace wwtlib
 
             return temp;
         }
+
+        public Color Color = new Color();
+
         //
         // Summary:
         //     Initializes a new instance of the Microsoft.DirectX.Direct3D.CustomVertex.PositionTextured

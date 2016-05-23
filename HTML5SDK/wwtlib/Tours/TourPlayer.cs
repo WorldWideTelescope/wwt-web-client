@@ -80,49 +80,83 @@ namespace wwtlib
             //todo implement gl based tour rendering
             if (renderContext.gl != null)
             {
-                return;
-            }
-
-            renderContext.Device.Scale(renderContext.Height / 1116, renderContext.Height / 1116);
-
-            double aspectOrig = 1920 / 1116;
-
-            double aspectNow = renderContext.Width / renderContext.Height;
-
-            renderContext.Device.Translate(-((1920 - (aspectNow * 1116)) / 2), 0);
-
-            //todo Factor opacity in somehow ??
-            //view.overlays.Opacity = overlayBlend.Opacity;
-
-
-            if (currentMasterSlide != null)
-            {
-                foreach (Overlay overlay in currentMasterSlide.Overlays)
+                renderContext.SetupMatricesOverlays();
+          
+                //todo Factor opacity in somehow ??
+                //view.overlays.Opacity = overlayBlend.Opacity;
+                
+                if (currentMasterSlide != null)
                 {
-                    overlay.TweenFactor = 1f;           
-                    overlay.Draw3D(renderContext, false);
-                }
-            }
-
-            if (onTarget)
-            {
-                foreach (Overlay overlay in tour.CurrentTourStop.Overlays)
-                {
-                    if (overlay.Name.ToLowerCase() != "caption" || WWTControl.scriptInterface.ShowCaptions)
+                    foreach (Overlay overlay in currentMasterSlide.Overlays)
                     {
-                        overlay.TweenFactor = (float)CameraParameters.EaseCurve(tour.CurrentTourStop.TweenPosition, overlay.InterpolationType == InterpolationType.DefaultV ? tour.CurrentTourStop.InterpolationType : overlay.InterpolationType);
+                        overlay.TweenFactor = 1f;
                         overlay.Draw3D(renderContext, false);
                     }
                 }
+
+                if (onTarget)
+                {
+                    foreach (Overlay overlay in tour.CurrentTourStop.Overlays)
+                    {
+                        if (overlay.Name.ToLowerCase() != "caption" || WWTControl.scriptInterface.ShowCaptions)
+                        {
+                            overlay.TweenFactor = (float)CameraParameters.EaseCurve(tour.CurrentTourStop.TweenPosition, overlay.InterpolationType == InterpolationType.DefaultV ? tour.CurrentTourStop.InterpolationType : overlay.InterpolationType);
+                            overlay.Draw3D(renderContext, false);
+                        }
+                    }
+                }
+
+
+                renderContext.Restore();
+
+                //DrawPlayerControls(renderContext);
             }
             else
             {
-                int i = 0;
+
+                renderContext.Device.Scale(renderContext.Height / 1116, renderContext.Height / 1116);
+
+                double aspectOrig = 1920 / 1116;
+
+                double aspectNow = renderContext.Width / renderContext.Height;
+
+                renderContext.Device.Translate(-((1920 - (aspectNow * 1116)) / 2), 0);
+
+                //todo Factor opacity in somehow ??
+                //view.overlays.Opacity = overlayBlend.Opacity;
+
+
+                if (currentMasterSlide != null)
+                {
+                    foreach (Overlay overlay in currentMasterSlide.Overlays)
+                    {
+                        overlay.TweenFactor = 1f;
+                        overlay.Draw3D(renderContext, false);
+                    }
+                }
+
+                if (onTarget)
+                {
+                    foreach (Overlay overlay in tour.CurrentTourStop.Overlays)
+                    {
+                        if (overlay.Name.ToLowerCase() != "caption" || WWTControl.scriptInterface.ShowCaptions)
+                        {
+                            overlay.TweenFactor = (float)CameraParameters.EaseCurve(tour.CurrentTourStop.TweenPosition, overlay.InterpolationType == InterpolationType.DefaultV ? tour.CurrentTourStop.InterpolationType : overlay.InterpolationType);
+                            overlay.Draw3D(renderContext, false);
+                        }
+                    }
+                }
+                else
+                {
+                    int i = 0;
+                }
+                renderContext.Restore();
+
+                DrawPlayerControls(renderContext);
+                
             }
 
-            renderContext.Restore();
-            
-            DrawPlayerControls(renderContext);
+          
         }
 
         BlendState PlayerState = BlendState.Create(false, 2000);

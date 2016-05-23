@@ -92,6 +92,7 @@
     <Compile Include="Graphics\GlBuffers.cs" />
     <Compile Include="Graphics\Primatives3d.cs" />
     <Compile Include="Graphics\Shaders.cs" />
+    <Compile Include="Graphics\Sprite2d.cs" />
     <Compile Include="Graphics\Tessellator.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Grids.cs" />

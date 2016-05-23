@@ -5774,6 +5774,42 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.PositionColoredTexturedVertexBuffer
+
+  function PositionColoredTexturedVertexBuffer(count) {
+    this.count = 0;
+    this._verts = null;
+    this.count = count;
+  }
+  var PositionColoredTexturedVertexBuffer$ = {
+    lock: function() {
+      this._verts = new Array(this.count);
+      return this._verts;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 9);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
   // wwtlib.Dates
 
   function Dates(start, end) {
@@ -6641,6 +6677,75 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.SpriteShader
+
+  function SpriteShader() {
+  }
+  SpriteShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision mediump float;                                                                \n' + '                                                                                         \n' + '   varying vec2 vTextureCoord;                                                           \n' + '   varying lowp vec4 vColor;                                                             \n' + '   uniform sampler2D uSampler;                                                           \n' + '                                                                                         \n' + '   void main(void) {                                                                     \n' + '   gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t)) * vColor;  \n' + '   }                                                                                     \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '     attribute lowp vec4 aColor;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec4 vColor;                                                         \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '         vColor = aColor;                                                         \n' + '     }                                                                            \n' + '                                                                                  \n';
+    SpriteShader._frag = gl.createShader(35632);
+    gl.shaderSource(SpriteShader._frag, fragShaderText);
+    gl.compileShader(SpriteShader._frag);
+    var stat = gl.getShaderParameter(SpriteShader._frag, 35713);
+    SpriteShader._vert = gl.createShader(35633);
+    gl.shaderSource(SpriteShader._vert, vertexShaderText);
+    gl.compileShader(SpriteShader._vert);
+    var stat1 = gl.getShaderParameter(SpriteShader._vert, 35713);
+    SpriteShader._prog = gl.createProgram();
+    gl.attachShader(SpriteShader._prog, SpriteShader._vert);
+    gl.attachShader(SpriteShader._prog, SpriteShader._frag);
+    gl.linkProgram(SpriteShader._prog);
+    var errcode = gl.getProgramParameter(SpriteShader._prog, 35714);
+    gl.useProgram(SpriteShader._prog);
+    SpriteShader.vertLoc = gl.getAttribLocation(SpriteShader._prog, 'aVertexPosition');
+    SpriteShader.textureLoc = gl.getAttribLocation(SpriteShader._prog, 'aTextureCoord');
+    SpriteShader.colorLoc = gl.getAttribLocation(SpriteShader._prog, 'aColor');
+    SpriteShader.projMatLoc = gl.getUniformLocation(SpriteShader._prog, 'uPMatrix');
+    SpriteShader.mvMatLoc = gl.getUniformLocation(SpriteShader._prog, 'uMVMatrix');
+    SpriteShader.sampLoc = gl.getUniformLocation(SpriteShader._prog, 'uSampler');
+    Tile.uvMultiple = 1;
+    Tile.demEnabled = true;
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    SpriteShader.initialized = true;
+  };
+  SpriteShader.use = function(renderContext, vertex, texture) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!SpriteShader.initialized) {
+        SpriteShader.init(renderContext);
+      }
+      gl.useProgram(SpriteShader._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniformMatrix4fv(SpriteShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(SpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      gl.uniform1i(SpriteShader.sampLoc, 0);
+      if (renderContext.space) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.enableVertexAttribArray(SpriteShader.vertLoc);
+      gl.enableVertexAttribArray(SpriteShader.textureLoc);
+      gl.enableVertexAttribArray(SpriteShader.colorLoc);
+      gl.bindBuffer(34962, vertex);
+      gl.vertexAttribPointer(SpriteShader.vertLoc, 3, 5126, false, 36, 0);
+      gl.vertexAttribPointer(SpriteShader.colorLoc, 4, 5126, false, 36, 12);
+      gl.vertexAttribPointer(SpriteShader.textureLoc, 2, 5126, false, 36, 28);
+      gl.activeTexture(33984);
+      gl.bindTexture(3553, texture);
+      gl.bindBuffer(34963, null);
+      gl.blendFunc(770, 771);
+    }
+  };
+  var SpriteShader$ = {
+
+  };
+
+
   // wwtlib.TextShader
 
   function TextShader() {
@@ -6702,6 +6807,66 @@ window.wwtlib = function(){
     }
   };
   var TextShader$ = {
+
+  };
+
+
+  // wwtlib.Sprite2d
+
+  function Sprite2d() {
+  }
+  Sprite2d.draw = function(renderContext, points, count, texture, triangle, opacity) {
+    if (Sprite2d.vertexBuffer == null) {
+      Sprite2d.create(points);
+    }
+    else {
+      Sprite2d.update(points);
+    }
+    SpriteShader.use(renderContext, Sprite2d.vertexBuffer, texture.texture2d);
+    renderContext.gl.drawArrays(5, 0, points.length);
+  };
+  Sprite2d.create = function(verts) {
+    Sprite2d.vertexBuffer = Tile.prepDevice.createBuffer();
+    Tile.prepDevice.bindBuffer(34962, Sprite2d.vertexBuffer);
+    var f32array = new Float32Array(verts.length * 9);
+    var buffer = f32array;
+    var index = 0;
+    var $enum1 = ss.enumerate(verts);
+    while ($enum1.moveNext()) {
+      var pt = $enum1.current;
+      buffer[index++] = pt.position.x;
+      buffer[index++] = pt.position.y;
+      buffer[index++] = pt.position.z;
+      buffer[index++] = pt.color.r / 255;
+      buffer[index++] = pt.color.g / 255;
+      buffer[index++] = pt.color.b / 255;
+      buffer[index++] = pt.color.a / 255;
+      buffer[index++] = pt.tu;
+      buffer[index++] = pt.tv;
+    }
+    Tile.prepDevice.bufferData(34962, f32array, 35048);
+  };
+  Sprite2d.update = function(verts) {
+    Tile.prepDevice.bindBuffer(34962, Sprite2d.vertexBuffer);
+    var f32array = new Float32Array(verts.length * 9);
+    var buffer = f32array;
+    var index = 0;
+    var $enum1 = ss.enumerate(verts);
+    while ($enum1.moveNext()) {
+      var pt = $enum1.current;
+      buffer[index++] = pt.position.x;
+      buffer[index++] = pt.position.y;
+      buffer[index++] = pt.position.z;
+      buffer[index++] = pt.color.r / 255;
+      buffer[index++] = pt.color.g / 255;
+      buffer[index++] = pt.color.b / 255;
+      buffer[index++] = pt.color.a / 255;
+      buffer[index++] = pt.tu;
+      buffer[index++] = pt.tv;
+    }
+    Tile.prepDevice.bufferSubData(34962, 0, f32array);
+  };
+  var Sprite2d$ = {
 
   };
 
@@ -6819,6 +6984,10 @@ window.wwtlib = function(){
     this.URL = '';
   }
   var Texture$ = {
+    cleanUp: function() {
+      this.imageElement = null;
+      Tile.prepDevice.deleteTexture(this.texture2d);
+    },
     load: function(url) {
       var $this = this;
 
@@ -6859,7 +7028,7 @@ window.wwtlib = function(){
             temp.height = this._fitPowerOfTwo(image.height);
             temp.width = this._fitPowerOfTwo(image.width);
             var ctx = temp.getContext('2d');
-            ctx.drawImage(image, 0, 0, image.width, image.height);
+            ctx.drawImage(image, 0, 0, temp.width, temp.height);
             image = temp;
           }
           Tile.prepDevice.texParameteri(3553, 10242, 33071);
@@ -10294,6 +10463,20 @@ window.wwtlib = function(){
       this._fovLocal = value;
       return value;
     },
+    setupMatricesOverlays: function() {
+      this.set_world(Matrix3d.get_identity());
+      var lookAtAdjust = Matrix3d.get_identity();
+      var lookFrom = Vector3d.create(0, 0, 0);
+      var lookAt = Vector3d.create(0, 0, 1);
+      var lookUp = Vector3d.create(0, 1, 0);
+      var view;
+      view = Matrix3d.lookAtLH(lookFrom, lookAt, lookUp);
+      view._multiply(Matrix3d._scaling(1, -1, 1));
+      this.set_view(view);
+      var back = 10000;
+      this.nearPlane = 0.1;
+      this.set_projection(Matrix3d.perspectiveFovLH(this._fovLocal, this.width / this.height, this.nearPlane, back));
+    },
     setupMatricesSolarSystem: function(forStars) {
       this.lighting = Settings.get_active().get_solarSystemLighting();
       this.space = false;
@@ -13193,11 +13376,17 @@ window.wwtlib = function(){
   // wwtlib.Overlay
 
   function Overlay() {
+    this.isDynamic = false;
     this.isDesignTimeOnly = false;
     this.id = (Overlay.nextId++).toString();
     this._owner = null;
     this._url = '';
     this._linkID = '';
+    this._domeMatrix = Matrix3d.get_identity();
+    this._domeMatX = 0;
+    this._domeMatY = 0;
+    this._domeAngle = 0;
+    this.points = null;
     this._animate = false;
     this._tweenFactor = 0;
     this._endX = 0;
@@ -13217,6 +13406,7 @@ window.wwtlib = function(){
     this._rotationAngle = 0;
     this.currentRotation = 0;
     this.texture = null;
+    this.texture2d = null;
     this._interpolationType = 5;
   }
   Overlay._fromXml = function(owner, overlay) {
@@ -13267,6 +13457,18 @@ window.wwtlib = function(){
       this._owner = value;
       return value;
     },
+    get_zOrder: function() {
+      var index = 0;
+      var $enum1 = ss.enumerate(this._owner.get_overlays());
+      while ($enum1.moveNext()) {
+        var item = $enum1.current;
+        if (item === this) {
+          break;
+        }
+        index++;
+      }
+      return index;
+    },
     get_url: function() {
       return this._url;
     },
@@ -13289,7 +13491,32 @@ window.wwtlib = function(){
     },
     seek: function(time) {
     },
+    makePosition: function(centerX, centerY, offsetX, offsetY, angle) {
+      centerX -= 960;
+      centerY -= 558;
+      var point = Vector3d.create(centerX + offsetX, centerY + offsetY, 1347);
+      if (!!this._domeMatX || !!this._domeMatY || this._domeAngle !== angle) {
+        this._domeMatX = centerX;
+        this._domeMatY = centerY;
+        this._domeMatrix = Matrix3d.translation(Vector3d.create(-centerX, -centerY, 0));
+        this._domeMatrix._multiply(Matrix3d._rotationZ((angle / 180 * Math.PI)));
+        this._domeMatrix._multiply(Matrix3d.translation(Vector3d.create(centerX, centerY, 0)));
+      }
+      point = Vector3d._transformCoordinate(point, this._domeMatrix);
+      return point;
+    },
     draw3D: function(renderContext, designTime) {
+      if (RenderContext.useGl) {
+        if (this.texture == null || this.isDynamic) {
+          this.initializeTexture();
+        }
+        if (!this.isDesignTimeOnly || designTime) {
+          this.initiaizeGeometry();
+          this.updateRotation();
+        }
+      }
+      else {
+      }
     },
     cleanUp: function() {
       if (this.texture != null) {
@@ -13300,8 +13527,33 @@ window.wwtlib = function(){
     },
     cleanUpGeometry: function() {
       this.currentRotation = 0;
+      this.points = null;
     },
     initiaizeGeometry: function() {
+      if (this.points == null) {
+        this.currentRotation = 0;
+        this.points = new Array(4);
+        this.points[0] = new PositionColoredTextured();
+        this.points[0].position = this.makePosition(this.get_x(), this.get_y(), -this.get_width() / 2, -this.get_height() / 2, this.get_rotationAngle());
+        this.points[0].tu = 0;
+        this.points[0].tv = 0;
+        this.points[0].color = this.get_color();
+        this.points[1] = new PositionColoredTextured();
+        this.points[1].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 2, -this.get_height() / 2, this.get_rotationAngle());
+        this.points[1].tu = 1;
+        this.points[1].tv = 0;
+        this.points[1].color = this.get_color();
+        this.points[2] = new PositionColoredTextured();
+        this.points[2].position = this.makePosition(this.get_x(), this.get_y(), -this.get_width() / 2, this.get_height() / 2, this.get_rotationAngle());
+        this.points[2].tu = 0;
+        this.points[2].tv = 1;
+        this.points[2].color = this.get_color();
+        this.points[3] = new PositionColoredTextured();
+        this.points[3].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 2, this.get_height() / 2, this.get_rotationAngle());
+        this.points[3].tu = 1;
+        this.points[3].tv = 1;
+        this.points[3].color = this.get_color();
+      }
     },
     updateRotation: function() {
     },
@@ -14289,6 +14541,18 @@ window.wwtlib = function(){
       this._textureList[filename] = texture;
       return texture;
     },
+    getCachedTexture2d: function(filename) {
+      if (this._textureList2d == null) {
+        this._textureList2d = {};
+      }
+      if (ss.keyExists(this._textureList2d, filename)) {
+        return this._textureList2d[filename];
+      }
+      var texture = new Texture();
+      texture.load(this.getFileStream(filename));
+      this._textureList2d[filename] = texture;
+      return texture;
+    },
     getFileStream: function(filename) {
       return Util.getTourComponent(this.url, filename);
     },
@@ -14400,35 +14664,56 @@ window.wwtlib = function(){
         }
       }
       if (renderContext.gl != null) {
-        return;
-      }
-      renderContext.device.scale(renderContext.height / 1116, renderContext.height / 1116);
-      var aspectOrig = 1920 / 1116;
-      var aspectNow = renderContext.width / renderContext.height;
-      renderContext.device.translate(-((1920 - (aspectNow * 1116)) / 2), 0);
-      if (this._currentMasterSlide != null) {
-        var $enum2 = ss.enumerate(this._currentMasterSlide.get_overlays());
-        while ($enum2.moveNext()) {
-          var overlay = $enum2.current;
-          overlay.set_tweenFactor(1);
-          overlay.draw3D(renderContext, false);
-        }
-      }
-      if (this._onTarget) {
-        var $enum3 = ss.enumerate(this._tour.get_currentTourStop().get_overlays());
-        while ($enum3.moveNext()) {
-          var overlay = $enum3.current;
-          if (overlay.get_name().toLowerCase() !== 'caption' || WWTControl.scriptInterface.get_showCaptions()) {
-            overlay.set_tweenFactor(CameraParameters.easeCurve(this._tour.get_currentTourStop().get_tweenPosition(), (overlay.get_interpolationType() === 5) ? this._tour.get_currentTourStop().get_interpolationType() : overlay.get_interpolationType()));
+        renderContext.setupMatricesOverlays();
+        if (this._currentMasterSlide != null) {
+          var $enum2 = ss.enumerate(this._currentMasterSlide.get_overlays());
+          while ($enum2.moveNext()) {
+            var overlay = $enum2.current;
+            overlay.set_tweenFactor(1);
             overlay.draw3D(renderContext, false);
           }
         }
+        if (this._onTarget) {
+          var $enum3 = ss.enumerate(this._tour.get_currentTourStop().get_overlays());
+          while ($enum3.moveNext()) {
+            var overlay = $enum3.current;
+            if (overlay.get_name().toLowerCase() !== 'caption' || WWTControl.scriptInterface.get_showCaptions()) {
+              overlay.set_tweenFactor(CameraParameters.easeCurve(this._tour.get_currentTourStop().get_tweenPosition(), (overlay.get_interpolationType() === 5) ? this._tour.get_currentTourStop().get_interpolationType() : overlay.get_interpolationType()));
+              overlay.draw3D(renderContext, false);
+            }
+          }
+        }
+        renderContext.restore();
       }
       else {
-        var i = 0;
+        renderContext.device.scale(renderContext.height / 1116, renderContext.height / 1116);
+        var aspectOrig = 1920 / 1116;
+        var aspectNow = renderContext.width / renderContext.height;
+        renderContext.device.translate(-((1920 - (aspectNow * 1116)) / 2), 0);
+        if (this._currentMasterSlide != null) {
+          var $enum4 = ss.enumerate(this._currentMasterSlide.get_overlays());
+          while ($enum4.moveNext()) {
+            var overlay = $enum4.current;
+            overlay.set_tweenFactor(1);
+            overlay.draw3D(renderContext, false);
+          }
+        }
+        if (this._onTarget) {
+          var $enum5 = ss.enumerate(this._tour.get_currentTourStop().get_overlays());
+          while ($enum5.moveNext()) {
+            var overlay = $enum5.current;
+            if (overlay.get_name().toLowerCase() !== 'caption' || WWTControl.scriptInterface.get_showCaptions()) {
+              overlay.set_tweenFactor(CameraParameters.easeCurve(this._tour.get_currentTourStop().get_tweenPosition(), (overlay.get_interpolationType() === 5) ? this._tour.get_currentTourStop().get_interpolationType() : overlay.get_interpolationType()));
+              overlay.draw3D(renderContext, false);
+            }
+          }
+        }
+        else {
+          var i = 0;
+        }
+        renderContext.restore();
+        this._drawPlayerControls(renderContext);
       }
-      renderContext.restore();
-      this._drawPlayerControls(renderContext);
     },
     _drawPlayerControls: function(renderContext) {
       this._loadImages();
@@ -16804,7 +17089,7 @@ window.wwtlib = function(){
     this._moving = false;
     this._targetStudyImageset = null;
     this._targetBackgroundImageset = null;
-    this._tour = null;
+    this.tour = null;
   }
   WWTControl.get_renderNeeded = function() {
     return WWTControl._renderNeeded;
@@ -16839,6 +17124,7 @@ window.wwtlib = function(){
       else {
         Tile.prepDevice = gl;
         WWTControl.singleton.renderContext.gl = gl;
+        RenderContext.useGl = true;
       }
       WWTControl.singleton.canvas = canvas;
       WWTControl.singleton.renderContext.width = canvas.width;
@@ -17985,10 +18271,10 @@ window.wwtlib = function(){
         var player = this.uiController;
         player.stop(false);
       }
-      this._tour = TourDocument.fromUrl(url, function() {
+      this.tour = TourDocument.fromUrl(url, function() {
         var player = new TourPlayer();
-        player.set_tour($this._tour);
-        $this._tour.set_currentTourstopIndex(-1);
+        player.set_tour($this.tour);
+        $this.tour.set_currentTourstopIndex(-1);
         $this.uiController = player;
         player.play();
       });
@@ -20060,6 +20346,7 @@ window.wwtlib = function(){
   function PositionColoredTextured() {
     this.tu = 0;
     this.tv = 0;
+    this.color = new Color();
     this.position = new Vector3d();
   }
   PositionColoredTextured.createPos = function(pos, u, v) {
@@ -27393,14 +27680,24 @@ window.wwtlib = function(){
     },
     cleanUp: function() {
       this.texture = null;
+      if (this.texture2d != null) {
+        this.texture2d.cleanUp();
+        this.texture2d = null;
+      }
     },
     initializeTexture: function() {
       var $this = this;
 
       try {
-        this.texture = this.get_owner().get_owner().getCachedTexture(this._filename$1, function() {
-          $this._textureReady$1 = true;
-        });
+        if (RenderContext.useGl) {
+          this.texture2d = this.get_owner().get_owner().getCachedTexture2d(this._filename$1);
+          this._textureReady$1 = true;
+        }
+        else {
+          this.texture = this.get_owner().get_owner().getCachedTexture(this._filename$1, function() {
+            $this._textureReady$1 = true;
+          });
+        }
         if (!this.get_width() && !this.get_height()) {
         }
       }
@@ -27408,19 +27705,29 @@ window.wwtlib = function(){
       }
     },
     draw3D: function(renderContext, designTime) {
-      if (this.texture == null) {
-        this.initializeTexture();
+      if (RenderContext.useGl) {
+        if (this.texture2d == null) {
+          this.initializeTexture();
+        }
+        this.initiaizeGeometry();
+        this.updateRotation();
+        Sprite2d.draw(renderContext, this.points, this.points.length, this.texture2d, true, 1);
       }
-      if (!this._textureReady$1) {
-        return;
+      else {
+        if (this.texture == null) {
+          this.initializeTexture();
+        }
+        if (!this._textureReady$1) {
+          return;
+        }
+        var ctx = renderContext.device;
+        ctx.save();
+        ctx.translate(this.get_x(), this.get_y());
+        ctx.rotate(this.get_rotationAngle() * Overlay.RC);
+        ctx.globalAlpha = this.get_opacity();
+        ctx.drawImage(this.texture, -this.get_width() / 2, -this.get_height() / 2, this.get_width(), this.get_height());
+        ctx.restore();
       }
-      var ctx = renderContext.device;
-      ctx.save();
-      ctx.translate(this.get_x(), this.get_y());
-      ctx.rotate(this.get_rotationAngle() * Overlay.RC);
-      ctx.globalAlpha = this.get_opacity();
-      ctx.drawImage(this.texture, -this.get_width() / 2, -this.get_height() / 2, this.get_width(), this.get_height());
-      ctx.restore();
     },
     initializeFromXml: function(node) {
       var bitmap = Util.selectSingleNode(node, 'Bitmap');
@@ -27447,45 +27754,49 @@ window.wwtlib = function(){
       return value;
     },
     draw3D: function(renderContext, designTime) {
-      var ctx = renderContext.device;
-      ctx.save();
-      ctx.translate(this.get_x(), this.get_y());
-      ctx.rotate(this.get_rotationAngle() * Overlay.RC);
-      ctx.globalAlpha = this.get_opacity();
-      ctx.fillStyle = this.textObject.forgroundColor.toString();
-      ctx.font = ((this.textObject.italic) ? 'italic' : 'normal') + ' ' + ((this.textObject.bold) ? 'bold' : 'normal') + ' ' + Math.round(this.textObject.fontSize * 1.2).toString() + 'px ' + this.textObject.fontName;
-      ctx.textBaseline = 'top';
-      var text = this.textObject.text;
-      if (text.indexOf('{$') > -1) {
-        if (text.indexOf('{$DATE}') > -1) {
-          var date = ss.format('{0:yyyy/MM/dd}', SpaceTimeController.get_now());
-          text = ss.replaceString(text, '{$DATE}', date);
-        }
-        if (text.indexOf('{$TIME}') > -1) {
-          var time = ss.format('{0:HH:mm:ss}', SpaceTimeController.get_now());
-          text = ss.replaceString(text, '{$TIME}', time);
-        }
-        text = ss.replaceString(text, '{$LAT}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
-        text = ss.replaceString(text, '{$LNG}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
-        text = ss.replaceString(text, '{$RA}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_RA()));
-        text = ss.replaceString(text, '{$DEC}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_dec()));
-        text = ss.replaceString(text, '{$FOV}', Coordinates.formatDMS(WWTControl.singleton.renderContext.get_fovAngle()));
+      if (RenderContext.useGl) {
       }
-      var lines = text.split('\n');
-      var baseline = -(this.get_height() / 2);
-      var lineSpace = this.textObject.fontSize * 1.7;
-      var $enum1 = ss.enumerate(lines);
-      while ($enum1.moveNext()) {
-        var line = $enum1.current;
-        var parts = Util.getWrappedText(ctx, line, this.get_width());
-        var $enum2 = ss.enumerate(parts);
-        while ($enum2.moveNext()) {
-          var part = $enum2.current;
-          ctx.fillText(part, -this.get_width() / 2, baseline);
-          baseline += lineSpace;
+      else {
+        var ctx = renderContext.device;
+        ctx.save();
+        ctx.translate(this.get_x(), this.get_y());
+        ctx.rotate(this.get_rotationAngle() * Overlay.RC);
+        ctx.globalAlpha = this.get_opacity();
+        ctx.fillStyle = this.textObject.forgroundColor.toString();
+        ctx.font = ((this.textObject.italic) ? 'italic' : 'normal') + ' ' + ((this.textObject.bold) ? 'bold' : 'normal') + ' ' + Math.round(this.textObject.fontSize * 1.2).toString() + 'px ' + this.textObject.fontName;
+        ctx.textBaseline = 'top';
+        var text = this.textObject.text;
+        if (text.indexOf('{$') > -1) {
+          if (text.indexOf('{$DATE}') > -1) {
+            var date = ss.format('{0:yyyy/MM/dd}', SpaceTimeController.get_now());
+            text = ss.replaceString(text, '{$DATE}', date);
+          }
+          if (text.indexOf('{$TIME}') > -1) {
+            var time = ss.format('{0:HH:mm:ss}', SpaceTimeController.get_now());
+            text = ss.replaceString(text, '{$TIME}', time);
+          }
+          text = ss.replaceString(text, '{$LAT}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
+          text = ss.replaceString(text, '{$LNG}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
+          text = ss.replaceString(text, '{$RA}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_RA()));
+          text = ss.replaceString(text, '{$DEC}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_dec()));
+          text = ss.replaceString(text, '{$FOV}', Coordinates.formatDMS(WWTControl.singleton.renderContext.get_fovAngle()));
         }
+        var lines = text.split('\n');
+        var baseline = -(this.get_height() / 2);
+        var lineSpace = this.textObject.fontSize * 1.7;
+        var $enum1 = ss.enumerate(lines);
+        while ($enum1.moveNext()) {
+          var line = $enum1.current;
+          var parts = Util.getWrappedText(ctx, line, this.get_width());
+          var $enum2 = ss.enumerate(parts);
+          while ($enum2.moveNext()) {
+            var part = $enum2.current;
+            ctx.fillText(part, -this.get_width() / 2, baseline);
+            baseline += lineSpace;
+          }
+        }
+        ctx.restore();
       }
-      ctx.restore();
     },
     initializeTexture: function() {
     },
@@ -27514,30 +27825,34 @@ window.wwtlib = function(){
       return value;
     },
     draw3D: function(renderContext, designTime) {
-      switch (this._shapeType$1) {
-        case 0:
-          this._createCircleGeometry$1(renderContext);
-          break;
-        case 1:
-          this._createRectGeometry$1(renderContext);
-          break;
-        case 6:
-          this._createOpenRectGeometry$1(renderContext);
-          break;
-        case 2:
-          this._createStarGeometry$1(renderContext);
-          break;
-        case 3:
-          this._createDonutGeometry$1(renderContext);
-          break;
-        case 4:
-          this._createArrowGeometry$1(renderContext);
-          break;
-        case 5:
-          this._createLineGeometry$1(renderContext);
-          break;
-        default:
-          break;
+      if (RenderContext.useGl) {
+      }
+      else {
+        switch (this._shapeType$1) {
+          case 0:
+            this._drawCircleGeometry$1(renderContext);
+            break;
+          case 1:
+            this._drawRectGeometry$1(renderContext);
+            break;
+          case 6:
+            this._drawOpenRectGeometry$1(renderContext);
+            break;
+          case 2:
+            this._drawStarGeometry$1(renderContext);
+            break;
+          case 3:
+            this._drawDonutGeometry$1(renderContext);
+            break;
+          case 4:
+            this._drawArrowGeometry$1(renderContext);
+            break;
+          case 5:
+            this._createLineGeometry$1(renderContext);
+            break;
+          default:
+            break;
+        }
       }
     },
     initiaizeGeometry: function() {
@@ -27556,7 +27871,7 @@ window.wwtlib = function(){
       ctx.stroke();
       ctx.restore();
     },
-    _createOpenRectGeometry$1: function(renderContext) {
+    _drawOpenRectGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       ctx.translate(this.get_x(), this.get_y());
@@ -27573,7 +27888,7 @@ window.wwtlib = function(){
       ctx.stroke();
       ctx.restore();
     },
-    _createRectGeometry$1: function(renderContext) {
+    _drawRectGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       ctx.translate(this.get_x(), this.get_y());
@@ -27590,7 +27905,7 @@ window.wwtlib = function(){
       ctx.fill();
       ctx.restore();
     },
-    _createStarGeometry$1: function(renderContext) {
+    _drawStarGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       ctx.translate(this.get_x(), this.get_y());
@@ -27620,7 +27935,7 @@ window.wwtlib = function(){
       ctx.fill();
       ctx.restore();
     },
-    _createArrowGeometry$1: function(renderContext) {
+    _drawArrowGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       ctx.translate(this.get_x(), this.get_y());
@@ -27640,7 +27955,7 @@ window.wwtlib = function(){
       ctx.fill();
       ctx.restore();
     },
-    _createDonutGeometry$1: function(renderContext) {
+    _drawDonutGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       ctx.translate(this.get_x(), this.get_y());
@@ -27655,7 +27970,7 @@ window.wwtlib = function(){
       ctx.stroke();
       ctx.restore();
     },
-    _createCircleGeometry$1: function(renderContext) {
+    _drawCircleGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       ctx.scale(1, this.get_width() / this.get_height());
@@ -29043,6 +29358,8 @@ window.wwtlib = function(){
       PositionTextureVertexBuffer: [ PositionTextureVertexBuffer, PositionTextureVertexBuffer$, null ],
       TimeSeriesLineVertexBuffer: [ TimeSeriesLineVertexBuffer, TimeSeriesLineVertexBuffer$, null ],
       TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, null ],
+      PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, null ],
+      Sprite2d: [ Sprite2d, Sprite2d$, null ],
       Table: [ Table, Table$, null ],
       TileCache: [ TileCache, TileCache$, null ],
       DistanceCalc: [ DistanceCalc, DistanceCalc$, null ],
@@ -29176,6 +29493,7 @@ window.wwtlib = function(){
       LineShaderNormalDates: [ LineShaderNormalDates, LineShaderNormalDates$, null ],
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
+      SpriteShader: [ SpriteShader, SpriteShader$, null ],
       TextShader: [ TextShader, TextShader$, null ],
       Tessellator: [ Tessellator, Tessellator$, null ],
       Texture: [ Texture, Texture$, null ],
@@ -29446,6 +29764,11 @@ window.wwtlib = function(){
   TileShader.textureLoc = 0;
   TileShader.initialized = false;
   TileShader._prog = null;
+  SpriteShader.vertLoc = 0;
+  SpriteShader.textureLoc = 0;
+  SpriteShader.colorLoc = 0;
+  SpriteShader.initialized = false;
+  SpriteShader._prog = null;
   TextShader.vertLoc = 0;
   TextShader.textureLoc = 0;
   TextShader.initialized = false;
@@ -29478,6 +29801,7 @@ window.wwtlib = function(){
   Planets._lastUpdate = new Date();
   Planets._ringsTriangleLists = new Array(2);
   Planets._ringImage = null;
+  RenderContext.useGl = false;
   RenderContext.back = 0;
   RenderTriangle.width = 1024;
   RenderTriangle.height = 768;

@@ -1780,7 +1780,7 @@ namespace wwtlib
 
 
                 //todo remove this line to turn WebGL on...
-                webGL = false; 
+                webGL = true; 
 
                 if (webGL)
                 {
@@ -1800,6 +1800,8 @@ namespace wwtlib
                 {
                     Tile.PrepDevice = gl;
                     Singleton.RenderContext.gl = gl;
+                    RenderContext.UseGl = true;
+
                 }
 
                 Singleton.Canvas = canvas;
@@ -2402,7 +2404,9 @@ namespace wwtlib
         {
             //todo implement tour close
         }
-        TourDocument tour = null;
+
+        public TourDocument tour = null;
+
         public void PlayTour(string url)
         {
             if (uiController is TourPlayer)
@@ -2423,6 +2427,7 @@ namespace wwtlib
             );
             
         }
+
 
         public void PlayCurrentTour()
         {

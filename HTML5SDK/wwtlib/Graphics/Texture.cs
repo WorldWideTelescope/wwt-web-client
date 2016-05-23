@@ -22,6 +22,14 @@ namespace wwtlib
         bool Errored = false;
 
         public string URL = "";
+
+        public void CleanUp()
+        {
+            ImageElement = null;
+            Tile.PrepDevice.deleteTexture(Texture2d);
+
+        }
+
         public void Load(string url)
         {
             URL = url;
@@ -83,7 +91,7 @@ namespace wwtlib
                         temp.Height = FitPowerOfTwo(image.Height);
                         temp.Width = FitPowerOfTwo(image.Width);
                         CanvasContext2D ctx = (CanvasContext2D)temp.GetContext(Rendering.Render2D);
-                        ctx.DrawImage(image, 0, 0, image.Width, image.Height);
+                        ctx.DrawImage(image, 0, 0, temp.Width, temp.Height);
                         //Substitute the resized image
                         image = (ImageElement)(Element)temp;
                     }
@@ -121,5 +129,6 @@ namespace wwtlib
             return val + 1;
         }
 
+        
     }
 }

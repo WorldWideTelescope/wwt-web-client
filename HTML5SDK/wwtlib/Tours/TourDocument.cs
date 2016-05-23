@@ -926,6 +926,30 @@ namespace wwtlib
 
         }
 
+        private Dictionary<string, Texture> textureList2d;
+        public Texture GetCachedTexture2d(string filename)
+        {
+
+            if (textureList2d == null)
+            {
+                textureList2d = new Dictionary<string, Texture>();
+            }
+
+            if (textureList2d.ContainsKey(filename))
+            {
+                return textureList2d[filename];
+            }
+
+            Texture texture = new Texture();
+
+            texture.Load(GetFileStream(filename));
+            textureList2d[filename] = texture;
+
+            return texture;
+
+        }
+
+
         public string GetFileStream(string filename)
         {
             return Util.GetTourComponent(Url, filename);

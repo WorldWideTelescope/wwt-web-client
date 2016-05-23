@@ -14,7 +14,7 @@ namespace wwtlib
     public abstract class Overlay
     {
         public const string ClipboardFormat = "WorldWideTelescope.Overlay";
-
+        public bool isDynamic = false;
         protected bool isDesignTimeOnly = false;
         string name;
         public static int NextId = 11231;
@@ -34,6 +34,23 @@ namespace wwtlib
         {
             get { return owner; }
             set { owner = value; }
+        }
+
+        public int ZOrder
+        {
+            get
+            {
+                int index = 0;
+                foreach (Overlay item in owner.Overlays)
+                {
+                    if (item == this)
+                    {
+                        break;
+                    }
+                    index++;
+                }
+                return index;
+            }
         }
 
         private string url = "";
@@ -71,9 +88,56 @@ namespace wwtlib
         {
         }
 
+        Matrix3d domeMatrix = Matrix3d.Identity;
+
+        double domeMatX = 0;
+        double domeMatY = 0;
+        double domeAngle = 0;
+
+        public Vector3d MakePosition(double centerX, double centerY, double offsetX, double offsetY, double angle)
+        {
+            centerX -= 960;
+            centerY -= 558;
+
+            Vector3d point = Vector3d.Create(centerX + offsetX, centerY + offsetY, 1347);
+
+            if (domeMatX != 0 || domeMatY != 0 || domeAngle != angle)
+            {
+                domeMatX = centerX;
+                domeMatY = centerY;
+                domeMatrix = Matrix3d.Translation(Vector3d.Create(-centerX, -centerY, 0));
+                domeMatrix.Multiply(Matrix3d.RotationZ((float)(angle / 180 * Math.PI)));
+                domeMatrix.Multiply(Matrix3d.Translation(Vector3d.Create(centerX, centerY, 0)));
+            }
+            point = Vector3d.TransformCoordinate(point, domeMatrix);
+
+            return point;
+
+        }
+
         virtual public void Draw3D(RenderContext renderContext, bool designTime)
         {
+            if (RenderContext.UseGl)
+            {
+                if (texture == null || isDynamic)
+                {
+                    InitializeTexture();
+                }
 
+                if (!isDesignTimeOnly || designTime)
+                {
+                    InitiaizeGeometry();
+
+                    UpdateRotation();
+
+                    //todo call proper drawing for this
+                    // Sprite2d.Draw(renderContext, points, points.Length, texture, TriangleStrip ? SharpDX.Direct3D.PrimitiveTopology.TriangleStrip : SharpDX.Direct3D.PrimitiveTopology.TriangleList, transparancy);
+                }
+            }
+            else
+            {
+             
+            }
         }
 
         virtual public void CleanUp()
@@ -88,14 +152,45 @@ namespace wwtlib
         {
         }
 
+        protected PositionColoredTextured[] points = null;
+
         virtual public void CleanUpGeometry()
         {
             currentRotation = 0;
+            points = null;
         }
 
         virtual public void InitiaizeGeometry()
         {
+            if (points == null)
+            {
 
+                currentRotation = 0;
+                points = new PositionColoredTextured[4];
+                points[0] = new PositionColoredTextured();
+                points[0].Position = MakePosition(X, Y, -Width / 2, -Height / 2, RotationAngle);
+                points[0].Tu = 0;
+                points[0].Tv = 0;
+                points[0].Color = Color;
+
+                points[1] = new PositionColoredTextured();
+                points[1].Position = MakePosition(X, Y, Width / 2, -Height / 2, RotationAngle);
+                points[1].Tu = 1;
+                points[1].Tv = 0;
+                points[1].Color = Color;
+
+                points[2] = new PositionColoredTextured();
+                points[2].Position = MakePosition(X, Y, -Width / 2, Height / 2, RotationAngle);
+                points[2].Tu = 0;
+                points[2].Tv = 1;
+                points[2].Color = Color;
+
+                points[3] = new PositionColoredTextured();
+                points[3].Position = MakePosition(X, Y, Width / 2, Height / 2, RotationAngle);
+                points[3].Tu = 1;
+                points[3].Tv = 1;
+                points[3].Color = Color;
+            }
         }
 
         virtual public void UpdateRotation()
@@ -394,6 +489,7 @@ namespace wwtlib
         }
 
         protected ImageElement texture = null;
+        protected Texture texture2d = null;
 
         virtual public bool HitTest(Vector2d pntTest)
         {
@@ -611,6 +707,12 @@ namespace wwtlib
         public override void CleanUp()
         {
             texture = null;
+            if (texture2d != null)
+            {
+                texture2d.CleanUp();
+                texture2d = null;
+            }
+
         }
 
         bool textureReady = false;
@@ -618,7 +720,15 @@ namespace wwtlib
         {
             try
             {
-                texture = Owner.Owner.GetCachedTexture(filename, delegate { textureReady = true; });
+                if (RenderContext.UseGl)
+                {
+                    texture2d = Owner.Owner.GetCachedTexture2d(filename);
+                    textureReady = true;
+                }
+                else
+                {
+                    texture = Owner.Owner.GetCachedTexture(filename, delegate { textureReady = true; });
+                }
 
                 if (Width == 0 && Height == 0)
                 {
@@ -632,26 +742,46 @@ namespace wwtlib
 
             }
         }
+
         private ImageElement imageBrush;
+
         public override void Draw3D(RenderContext renderContext, bool designTime)
         {
-            if (texture == null)
+            if (RenderContext.UseGl)
             {
-                InitializeTexture();
-            }
+                if (texture2d == null)
+                {
+                    InitializeTexture();
+                }
 
-            if (!textureReady)
+                InitiaizeGeometry();
+
+                UpdateRotation();
+
+                    //todo call proper drawing for this
+                Sprite2d.Draw(renderContext, points, points.Length, texture2d, true, 1);
+            }
+            else
             {
-                return;
-            }
-            CanvasContext2D ctx = renderContext.Device;
-            ctx.Save();
 
-            ctx.Translate(X, Y);
-            ctx.Rotate(RotationAngle*RC);
-            ctx.Alpha = Opacity;
-            ctx.DrawImage(texture, - Width / 2, - Height / 2, Width, Height);
-            ctx.Restore();
+                if (texture == null)
+                {
+                    InitializeTexture();
+                }
+
+                if (!textureReady)
+                {
+                    return;
+                }
+                CanvasContext2D ctx = renderContext.Device;
+                ctx.Save();
+
+                ctx.Translate(X, Y);
+                ctx.Rotate(RotationAngle * RC);
+                ctx.Alpha = Opacity;
+                ctx.DrawImage(texture, -Width / 2, -Height / 2, Width, Height);
+                ctx.Restore();
+            }
         }
 
         public override void InitializeFromXml(XmlNode node)
@@ -699,76 +829,82 @@ namespace wwtlib
 
         public override void Draw3D(RenderContext renderContext, bool designTime)
         {
-            //TextBlock textBlock = new TextBlock();
-            //textBlock.Width = this.Width;
-            //textBlock.Height = this.Height;
-            //textBlock.Foreground = new SolidColorBrush(TextObject.ForgroundColor);
-            //textBlock.Text = TextObject.Text;
-            //textBlock.FontWeight = TextObject.Bold ? FontWeights.Bold : FontWeights.Normal;
-            //textBlock.FontSize = TextObject.FontSize * 1.2;
-            //textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-            //TranslateTransform tt = new TranslateTransform();
-            //tt.X = this.X - (Width / 2);
-            //tt.Y = this.Y - (Height / 2);
-            //textBlock.RenderTransform = tt;
-            //canvas.Children.Add(textBlock);
-            //textBlock.Opacity = this.Opacity;
-
-            CanvasContext2D ctx = renderContext.Device;
-            ctx.Save();
-
-            ctx.Translate(X, Y);
-            ctx.Rotate(RotationAngle*RC);
-            ctx.Alpha = Opacity;
-            ctx.FillStyle = TextObject.ForgroundColor.ToString();
-            ctx.Font = (TextObject.Italic ? "italic" : "normal") + " " + (TextObject.Bold ? "bold" : "normal") + " " + Math.Round(TextObject.FontSize * 1.2).ToString() + "px " + TextObject.FontName;
-            ctx.TextBaseline = TextBaseline.Top;
-
-            String text = TextObject.Text;
-
-            if (text.IndexOf("{$") >  -1)
+            if (RenderContext.UseGl)
             {
-                if (text.IndexOf("{$DATE}") > -1)
-                {
-                    string date = String.Format("{0:yyyy/MM/dd}",SpaceTimeController.Now);
-                    text = text.Replace("{$DATE}", date);
-                }
-
-                if (text.IndexOf("{$TIME}") > -1)
-                {
-                    string time =  String.Format("{0:HH:mm:ss}", SpaceTimeController.Now);
-                    text = text.Replace("{$TIME}", time);
-                }
-
-
-              //  text = text.Replace("{$DIST}", UiTools.FormatDistance(WWTControl.Singleton.SolarSystemCameraDistance));
-                text = text.Replace("{$LAT}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
-                text = text.Replace("{$LNG}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
-                text = text.Replace("{$RA}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.RA));
-                text = text.Replace("{$DEC}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Dec));
-                text = text.Replace("{$FOV}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.FovAngle));
             }
-
-
-
-
-
-            string[] lines = text.Split("\n");
-
-            double baseline =  - (Height / 2);
-            double lineSpace = TextObject.FontSize * 1.7;
-
-            foreach (string line in lines)
+            else
             {
-                List<string> parts = Util.GetWrappedText(ctx, line, Width);
-                foreach (string part in parts)
-                {
-                    ctx.FillText(part, -Width / 2, baseline);
-                    baseline += lineSpace;
-                }
-            }
+                //TextBlock textBlock = new TextBlock();
+                //textBlock.Width = this.Width;
+                //textBlock.Height = this.Height;
+                //textBlock.Foreground = new SolidColorBrush(TextObject.ForgroundColor);
+                //textBlock.Text = TextObject.Text;
+                //textBlock.FontWeight = TextObject.Bold ? FontWeights.Bold : FontWeights.Normal;
+                //textBlock.FontSize = TextObject.FontSize * 1.2;
+                //textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                //TranslateTransform tt = new TranslateTransform();
+                //tt.X = this.X - (Width / 2);
+                //tt.Y = this.Y - (Height / 2);
+                //textBlock.RenderTransform = tt;
+                //canvas.Children.Add(textBlock);
+                //textBlock.Opacity = this.Opacity;
 
-            ctx.Restore();
+                CanvasContext2D ctx = renderContext.Device;
+                ctx.Save();
+
+                ctx.Translate(X, Y);
+                ctx.Rotate(RotationAngle * RC);
+                ctx.Alpha = Opacity;
+                ctx.FillStyle = TextObject.ForgroundColor.ToString();
+                ctx.Font = (TextObject.Italic ? "italic" : "normal") + " " + (TextObject.Bold ? "bold" : "normal") + " " + Math.Round(TextObject.FontSize * 1.2).ToString() + "px " + TextObject.FontName;
+                ctx.TextBaseline = TextBaseline.Top;
+
+                String text = TextObject.Text;
+
+                if (text.IndexOf("{$") > -1)
+                {
+                    if (text.IndexOf("{$DATE}") > -1)
+                    {
+                        string date = String.Format("{0:yyyy/MM/dd}", SpaceTimeController.Now);
+                        text = text.Replace("{$DATE}", date);
+                    }
+
+                    if (text.IndexOf("{$TIME}") > -1)
+                    {
+                        string time = String.Format("{0:HH:mm:ss}", SpaceTimeController.Now);
+                        text = text.Replace("{$TIME}", time);
+                    }
+
+
+                    //  text = text.Replace("{$DIST}", UiTools.FormatDistance(WWTControl.Singleton.SolarSystemCameraDistance));
+                    text = text.Replace("{$LAT}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
+                    text = text.Replace("{$LNG}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
+                    text = text.Replace("{$RA}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.RA));
+                    text = text.Replace("{$DEC}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Dec));
+                    text = text.Replace("{$FOV}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.FovAngle));
+                }
+
+
+
+
+
+                string[] lines = text.Split("\n");
+
+                double baseline = -(Height / 2);
+                double lineSpace = TextObject.FontSize * 1.7;
+
+                foreach (string line in lines)
+                {
+                    List<string> parts = Util.GetWrappedText(ctx, line, Width);
+                    foreach (string part in parts)
+                    {
+                        ctx.FillText(part, -Width / 2, baseline);
+                        baseline += lineSpace;
+                    }
+                }
+
+                ctx.Restore();
+            }
         }
 
         public override void InitializeTexture()
@@ -879,34 +1015,40 @@ namespace wwtlib
 
         public override void Draw3D(RenderContext renderContext, bool designTime)
         {
-
-            switch (shapeType)
+            if (RenderContext.UseGl)
             {
-                case ShapeType.Circle:
-                    CreateCircleGeometry(renderContext);
-                    break;
-                case ShapeType.Rectagle:
-                    CreateRectGeometry(renderContext);
-                    break;
-                case ShapeType.OpenRectagle:
-                    CreateOpenRectGeometry(renderContext);
-                    break;
-                case ShapeType.Star:
-                    CreateStarGeometry(renderContext);
-                    break;
-                case ShapeType.Donut:
-                    CreateDonutGeometry(renderContext);
-                    break;
-                case ShapeType.Arrow:
-                    CreateArrowGeometry(renderContext);
-                    break;
-                case ShapeType.Line:
-                    CreateLineGeometry(renderContext);
-                    break;
-                default:
-                    break;
             }
+            else
+            {
 
+                switch (shapeType)
+                {
+                    case ShapeType.Circle:
+                        DrawCircleGeometry(renderContext);
+                        break;
+                    case ShapeType.Rectagle:
+                        DrawRectGeometry(renderContext);
+                        break;
+                    case ShapeType.OpenRectagle:
+                        DrawOpenRectGeometry(renderContext);
+                        break;
+                    case ShapeType.Star:
+                        DrawStarGeometry(renderContext);
+                        break;
+                    case ShapeType.Donut:
+                        DrawDonutGeometry(renderContext);
+                        break;
+                    case ShapeType.Arrow:
+                        DrawArrowGeometry(renderContext);
+                        break;
+                    case ShapeType.Line:
+                        CreateLineGeometry(renderContext);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
         }
         public override void InitiaizeGeometry()
         {
@@ -933,7 +1075,7 @@ namespace wwtlib
 
 
         }
-        private void CreateOpenRectGeometry(RenderContext renderContext)
+        private void DrawOpenRectGeometry(RenderContext renderContext)
         {
             CanvasContext2D ctx = renderContext.Device;
             ctx.Save();
@@ -954,7 +1096,7 @@ namespace wwtlib
             ctx.Restore();
         }
 
-        private void CreateRectGeometry(RenderContext renderContext)
+        private void DrawRectGeometry(RenderContext renderContext)
         {
             CanvasContext2D ctx = renderContext.Device;
             ctx.Save();
@@ -974,7 +1116,7 @@ namespace wwtlib
             ctx.Fill();
             ctx.Restore();
         }
-        private void CreateStarGeometry(RenderContext renderContext)
+        private void DrawStarGeometry(RenderContext renderContext)
         {
 
             CanvasContext2D ctx = renderContext.Device;
@@ -1018,7 +1160,7 @@ namespace wwtlib
             ctx.Fill();
             ctx.Restore();
         }
-        private void CreateArrowGeometry(RenderContext renderContext)
+        private void DrawArrowGeometry(RenderContext renderContext)
         {
             CanvasContext2D ctx = renderContext.Device;
             ctx.Save();
@@ -1042,7 +1184,7 @@ namespace wwtlib
             ctx.Restore();
         }
 
-        private void CreateDonutGeometry(RenderContext renderContext)
+        private void DrawDonutGeometry(RenderContext renderContext)
         {
             //todo move to dashed lines in future
             CanvasContext2D ctx = renderContext.Device;
@@ -1063,7 +1205,7 @@ namespace wwtlib
 
         }
 
-        private void CreateCircleGeometry(RenderContext renderContext)
+        private void DrawCircleGeometry(RenderContext renderContext)
         {
             CanvasContext2D ctx = renderContext.Device;
             ctx.Save();

@@ -594,6 +594,140 @@ namespace wwtlib
         }
     }
 
+    public class SpriteShader
+    {
+        public SpriteShader()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+
+        public static int vertLoc;
+        public static int textureLoc;
+        public static int colorLoc;
+        public static WebGLUniformLocation projMatLoc;
+        public static WebGLUniformLocation mvMatLoc;
+        public static WebGLUniformLocation sampLoc;
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                      " precision mediump float;                                                                \n" +
+                      "                                                                                         \n" +
+                      "   varying vec2 vTextureCoord;                                                           \n" +
+                      "   varying lowp vec4 vColor;                                                             \n" +
+                      "   uniform sampler2D uSampler;                                                           \n" +
+                      "                                                                                         \n" +
+                      "   void main(void) {                                                                     \n" +
+                      "   gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t)) * vColor;  \n" +
+ //                     "   gl_FragColor = vec4(1,1,1,1);  \n" +
+                      "   }                                                                                     \n";
+
+
+            String vertexShaderText =
+                    "     attribute vec3 aVertexPosition;                                              \n" +
+                    "     attribute vec2 aTextureCoord;                                                \n" +
+                    "     attribute lowp vec4 aColor;                                                \n" +
+                    "                                                                                  \n" +
+                    "     uniform mat4 uMVMatrix;                                                      \n" +
+                    "     uniform mat4 uPMatrix;                                                       \n" +
+                    "                                                                                  \n" +
+                    "     varying vec2 vTextureCoord;                                                  \n" +
+                    "     varying vec4 vColor;                                                         \n" +
+                    "                                                                                  \n" +
+                    "                                                                                  \n" +
+                    "     void main(void) {                                                            \n" +
+                    "         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n" +
+                    "         vTextureCoord = aTextureCoord;                                           \n" +
+                    "         vColor = aColor;                                                         \n" +
+                    "     }                                                                            \n" +
+                    "                                                                                  \n";
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            vertLoc = gl.getAttribLocation(prog, "aVertexPosition");
+            textureLoc = gl.getAttribLocation(prog, "aTextureCoord");
+            colorLoc = gl.getAttribLocation(prog, "aColor");
+            projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
+            mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
+            sampLoc = gl.getUniformLocation(prog, "uSampler");
+
+            Tile.uvMultiple = 1;
+            Tile.DemEnabled = true;
+
+            gl.enable(GL.BLEND);
+            gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture)
+        {
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+
+                gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
+                gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
+                gl.uniform1i(sampLoc, 0);
+                if (renderContext.Space)
+                {
+                    gl.disable(GL.DEPTH_TEST);
+                }
+                else
+                {
+                    gl.enable(GL.DEPTH_TEST);
+                }
+
+                gl.enableVertexAttribArray(vertLoc);
+                gl.enableVertexAttribArray(textureLoc);
+                gl.enableVertexAttribArray(colorLoc);
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+                gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 36, 0);
+                gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
+                gl.vertexAttribPointer(textureLoc, 2, GL.FLOAT, false, 36, 28);
+                gl.activeTexture(GL.TEXTURE0);
+                gl.bindTexture(GL.TEXTURE_2D, texture);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            }
+        }
+    }
+
     public class TextShader
     {
         public TextShader()
@@ -681,6 +815,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
+        //todo add color rendering
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture)
         {
             GL gl = renderContext.gl;
