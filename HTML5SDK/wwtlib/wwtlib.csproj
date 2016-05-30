@@ -147,13 +147,17 @@
     <Compile Include="Tour.cs" />
     <Compile Include="Tours\ISettings.cs" />
     <Compile Include="Tours\Overlay.cs" />
+    <Compile Include="Tours\Selection.cs" />
     <Compile Include="Tours\TextObject.cs" />
     <Compile Include="Tours\TourDocument.cs" />
+    <Compile Include="Tours\TourEditor.cs" />
     <Compile Include="Tours\TourPlayer.cs" />
     <Compile Include="Tours\TourStop.cs" />
+    <Compile Include="Tours\Undo.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="UiTools.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="Utilities\ContextMenuStrip.cs" />
     <Compile Include="VizLayer.cs" />
     <Compile Include="WebFile.cs" />
     <Compile Include="WebGL.cs" />

@@ -1106,7 +1106,7 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 **/
-var wwt = {
+var wwt = { 
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
 		'ngTouch',  
@@ -4072,19 +4072,52 @@ wwt.controllers.controller('MainController',
 			$('#openModal').modal('show');
 		};
 
-		$scope.playTour = function(url) {
-			$('.finder-scope').hide();
-			wwtlib.WWTControl.singleton.playTour(url);
-			wwt.tourPlaying = $rootScope.tourPlaying = true;
-			wwt.wc.add_tourEnded(tourChangeHandler);
-		    //wwt.wc.add_tourPaused(tourChangeHandler);
-		    setTimeout(function() {
-		        $('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
-		    }, 200);
-			
-		}
+	    $scope.playTour = function(url) {
+	        $('.finder-scope').hide();
+	        wwtlib.WWTControl.singleton.playTour(url);
+	        wwt.tourPlaying = $rootScope.tourPlaying = true;
+	        $rootScope.tourPaused = false;
+           
+	        wwt.wc.add_tourEnded(tourChangeHandler);
+	        wwt.wc.add_tourReady(function() {
 
-		function tourChangeHandler() {
+	            $scope.$applyAsync(function() {
+	                $scope.currentTour = wwtlib.WWTControl.singleton.tour;
+	                $scope.currentTour.duration = 0;
+	                $scope.tourStops = $scope.currentTour.get_tourStops().map(function(s) {
+	                    s.description = s.get_description();
+	                    s.thumb = s.get_thumbnail();
+	                    s.duration = s.get_duration();
+	                    s.secDuration = Math.round(s.duration / 1000);
+	                    if (s.secDuration < 10) {
+	                        s.secDuration = '0' + s.secDuration;
+	                    }
+	                    s.secDuration = '0:' + s.secDuration;
+	                    $scope.currentTour.duration += s.duration;
+	                    return s;
+	                });
+	                $scope.currentTour.minuteDuration = Math.floor($scope.currentTour.duration / 60000);
+	                $scope.currentTour.secDuration = Math.floor(($scope.currentTour.duration % 60000) / 1000);
+	                $scope.activeItem = { label: 'currentTour' };
+	                $scope.activePanel = 'currentTour';
+	            });
+	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
+
+	        });
+	        //wwt.wc.add_tourPaused(tourChangeHandler);
+
+	    };
+
+	    $scope.gotoStop = function(index) {
+	        $scope.currentTour.set_currentTourstopIndex(index);
+	    };
+
+	    $scope.pauseTour = function () {
+	        wwtlib.WWTControl.singleton.uiController.pauseTour();
+	        $rootScope.tourPaused = !$rootScope.tourPaused;
+        }
+
+	    function tourChangeHandler() {
 			var settings = appState.get('settings') || {};
 			wwt.tourPlaying = $rootScope.tourPlaying = false;
 
@@ -4093,6 +4126,7 @@ wwt.controllers.controller('MainController',
 				$('.context-panel').fadeIn(800);
 			}
 			if (!settings.autoHideTabs) {
+               
 				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
 			}
 			ctl.clearAnnotations();
@@ -4120,7 +4154,7 @@ wwt.controllers.controller('MainController',
 		$scope.setLanguageCode = function(code) {
 			appState.set('language', code);
 			$timeout(function() {
-				if ($scope.selectedLanguage != code) {
+				if ($scope.selectedLanguage !== code) {
 					$scope.selectedLanguage = code;
 					$scope.languageCode = code;
 				}
@@ -4147,7 +4181,7 @@ wwt.controllers.controller('MainController',
 				//util.log('loc calls: ' + locCalls);
 			}
 			var key = englishString + $scope.selectedLanguage;
-			if ($scope.selectedLanguage == 'EN') {
+			if ($scope.selectedLanguage === 'EN') {
 				localized[key] = englishString;
 			}
 			if (localized[key]) {
@@ -6004,6 +6038,11 @@ wwt.controllers.controller('CommunityController',
         
     }
 ]);
+wwt.controllers.controller('CurrentTourController', ['$scope', function($scope) {
+    
+}]);
+
+    
 wwt.controllers.controller('ShareController',
 [
 	'$scope',

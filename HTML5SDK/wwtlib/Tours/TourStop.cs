@@ -1322,7 +1322,7 @@ namespace wwtlib
 
             //todo fix load thumbnail
             //newTourStop.thumbnail = UiTools.LoadBitmap(string.Format("{0}{1}.thumb.png", newTourStop.owner.WorkingDirectory, newTourStop.id));
-
+            newTourStop.thumbnail = owner.GetCachedTexture(string.Format("{0}.thumb.png", newTourStop.id), delegate { int c=0; });
             return newTourStop;
         }
 
@@ -1586,5 +1586,72 @@ namespace wwtlib
         public double[] StartParams = new double[0];
         public double[] EndParams = new double[0];
         public double[] FrameParams = new double[0];
+    }
+
+    public interface IUndoStep
+    {
+        void Redo();
+        string ToString();
+        void Undo();
+    }
+
+    public class UndoTourStopChange : IUndoStep
+    {
+        string undoXml = "";
+        string redoXml = "";
+        int currentIndex = 0;
+        string actionText = "";
+
+        public string ActionText
+        {
+            get { return actionText; }
+            set { actionText = value; }
+        }
+        TourDocument targetTour = null;
+        public UndoTourStopChange(string text, TourDocument tour)
+        {
+            //currentIndex = tour.CurrentTourstopIndex;
+            //actionText = text;
+            //targetTour = tour;
+            //undoXml = TourStop.GetXmlText(tour.CurrentTourStop);
+            //targetTour.TourDirty = true;
+
+        }
+
+        public void Undo()
+        {
+            //TourStop tsRedo = targetTour.TourStops[currentIndex];
+            //System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            //doc.LoadXml(undoXml);
+            //System.Xml.XmlNode node = doc["TourStop"];
+            //targetTour.TourStops[currentIndex] = TourStop.FromXml(targetTour, node);
+
+            //targetTour.CurrentTourstopIndex = currentIndex;
+
+            //// Setup redo
+            //if (string.IsNullOrEmpty(redoXml))
+            //{
+            //    redoXml = TourStop.GetXmlText(tsRedo);
+            //}
+            //targetTour.TourDirty = true;
+
+        }
+
+        public void Redo()
+        {
+            //System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+
+            //doc.LoadXml(redoXml);
+            //System.Xml.XmlNode node = doc["TourStop"];
+            //targetTour.TourStops[currentIndex] = TourStop.FromXml(targetTour, node);
+
+            //targetTour.CurrentTourstopIndex = currentIndex;
+            //targetTour.TourDirty = true;
+        }
+
+        override public string ToString()
+        {
+            return actionText;
+        }
     }
 }

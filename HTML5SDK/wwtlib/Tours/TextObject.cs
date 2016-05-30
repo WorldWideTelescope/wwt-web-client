@@ -40,7 +40,7 @@ namespace wwtlib
         public Color ForgroundColor;
         public Color BackgroundColor;
         public TextBorderStyle BorderStyle;
-
+        internal Color ForegroundColor;
 
         public override string ToString()
         {

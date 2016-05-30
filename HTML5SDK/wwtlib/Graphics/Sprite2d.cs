@@ -7,8 +7,8 @@ namespace wwtlib
 
     class Sprite2d
     {
-        public static void Draw(RenderContext renderContext, PositionColoredTextured[] points, int count,
-            Texture texture, bool triangle, double opacity)
+        public void Draw(RenderContext renderContext, PositionColoredTextured[] points, int count,
+            Texture texture, bool triangleStrips, double opacity)
         {
             if (VertexBuffer == null)
             {
@@ -19,14 +19,23 @@ namespace wwtlib
                 Update(points);
             }
 
-            SpriteShader.Use(renderContext, VertexBuffer, texture.Texture2d);
+            if (texture == null)
+            {
+                ShapeSpriteShader.Use(renderContext, VertexBuffer);
+                renderContext.gl.drawArrays(triangleStrips ? GL.TRIANGLE_STRIP : GL.TRIANGLES, 0, points.Length);
 
-            renderContext.gl.drawArrays(GL.TRIANGLE_STRIP,0, points.Length);
-
+            }
+            else
+            {
+                SpriteShader.Use(renderContext, VertexBuffer, texture != null ? texture.Texture2d : null);
+                renderContext.gl.drawArrays(triangleStrips ? GL.TRIANGLE_STRIP : GL.TRIANGLES, 0, points.Length);
+            }
         }
 
-        public static WebGLBuffer VertexBuffer;
-        public static void Create(PositionColoredTextured[] verts)
+        public WebGLBuffer VertexBuffer;
+        public int vertCount = 0;
+
+        public void Create(PositionColoredTextured[] verts)
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
             Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, VertexBuffer);
@@ -48,8 +57,15 @@ namespace wwtlib
 
             Tile.PrepDevice.bufferData(GL.ARRAY_BUFFER, f32array, GL.DYNAMIC_DRAW);
         }
-        public static void Update(PositionColoredTextured[] verts)
+        public void Update(PositionColoredTextured[] verts)
         {
+            if (vertCount < verts.Length)
+            {
+                Tile.PrepDevice.deleteBuffer(VertexBuffer);
+                Create(verts);
+                return;
+            }
+
             Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, VertexBuffer);
             Float32Array f32array = new Float32Array(verts.Length * 9);
             float[] buffer = (float[])(object)f32array;

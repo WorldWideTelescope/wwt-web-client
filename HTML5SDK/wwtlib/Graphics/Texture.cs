@@ -17,6 +17,14 @@ namespace wwtlib
 
         }
 
+        public static Texture FromUrl(string url)
+        {
+            Texture tex = new Texture();
+            tex.Load(url);
+
+            return tex;
+        }
+
         bool Downloading = false;
         bool Ready = false;
         bool Errored = false;

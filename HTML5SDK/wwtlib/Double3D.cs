@@ -2608,6 +2608,31 @@ namespace wwtlib
                 (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33))
             );
         }
+
+        public static Matrix2d RotateAt(double angle, Vector2d pnt)
+        {
+            Matrix2d matT0 = Matrix2d.Translation(-pnt.X, -pnt.Y);
+            Matrix2d matR = Matrix2d.Rotation(angle);
+            Matrix2d matT1 = Matrix2d.Translation(pnt.X, pnt.Y);
+
+            return Multiply(Multiply(matT0, matR), matT1);
+       }
+
+        internal void TransformPoints(Vector2d[] points)
+        {
+            foreach (Vector2d pnt in points)
+            {
+                MultiplyPoint(pnt);
+            }
+        }
+        public void MultiplyPoint(Vector2d point)
+        {
+
+            double x = point.X;
+            double y = point.Y;
+            point.X = (((x * this.M11) + (y * this.M21)) + this.M31);
+            point.Y = (((x * this.M12) + (y * this.M22)) + this.M32);
+        }
     }
 
     public static class DoubleUtilities

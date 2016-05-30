@@ -1797,6 +1797,24 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.SelectionAnchor
+
+  var SelectionAnchor = {
+    topLeft: 0, 
+    top: 1, 
+    topRight: 2, 
+    right: 3, 
+    bottomRight: 4, 
+    bottom: 5, 
+    bottomLeft: 6, 
+    left: 7, 
+    rotate: 8, 
+    move: 9, 
+    center: 10, 
+    none: 11
+  };
+
+
   // wwtlib.TextBorderStyle
 
   var TextBorderStyle = {
@@ -1816,6 +1834,213 @@ window.wwtlib = function(){
     advanced: 2, 
     educator: 3, 
     professional: 4
+  };
+
+
+  // wwtlib.Keys
+
+  var Keys = {
+    modifiers: -65536, 
+    none: 0, 
+    lButton: 1, 
+    rButton: 2, 
+    cancel: 3, 
+    mButton: 4, 
+    xButton1: 5, 
+    xButton2: 6, 
+    back: 8, 
+    tab: 9, 
+    lineFeed: 10, 
+    clearKey: 12, 
+    returnKey: 13, 
+    enter: 13, 
+    shiftKey: 16, 
+    controlKey: 17, 
+    menu: 18, 
+    pause: 19, 
+    capital: 20, 
+    capsLock: 20, 
+    kanaMode: 21, 
+    hanguelMode: 21, 
+    hangulMode: 21, 
+    junjaMode: 23, 
+    finalMode: 24, 
+    hanjaMode: 25, 
+    kanjiMode: 25, 
+    escape: 27, 
+    imeConvert: 28, 
+    imeNonconvert: 29, 
+    imeAccept: 30, 
+    imeAceept: 30, 
+    imeModeChange: 31, 
+    space: 32, 
+    prior: 33, 
+    pageUp: 33, 
+    next: 34, 
+    pageDown: 34, 
+    end: 35, 
+    home: 36, 
+    left: 37, 
+    up: 38, 
+    right: 39, 
+    down: 40, 
+    select: 41, 
+    print: 42, 
+    execute: 43, 
+    snapshot: 44, 
+    printScreen: 44, 
+    insertKey: 45, 
+    deleteKey: 46, 
+    help: 47, 
+    d0: 48, 
+    d1: 49, 
+    d2: 50, 
+    d3: 51, 
+    d4: 52, 
+    d5: 53, 
+    d6: 54, 
+    d7: 55, 
+    d8: 56, 
+    d9: 57, 
+    a: 65, 
+    b: 66, 
+    c: 67, 
+    d: 68, 
+    e: 69, 
+    f: 70, 
+    g: 71, 
+    h: 72, 
+    i: 73, 
+    j: 74, 
+    k: 75, 
+    l: 76, 
+    m: 77, 
+    n: 78, 
+    o: 79, 
+    p: 80, 
+    q: 81, 
+    r: 82, 
+    s: 83, 
+    t: 84, 
+    u: 85, 
+    v: 86, 
+    w: 87, 
+    x: 88, 
+    y: 89, 
+    z: 90, 
+    lWin: 91, 
+    rWin: 92, 
+    apps: 93, 
+    sleep: 95, 
+    numPad0: 96, 
+    numPad1: 97, 
+    numPad2: 98, 
+    numPad3: 99, 
+    numPad4: 100, 
+    numPad5: 101, 
+    numPad6: 102, 
+    numPad7: 103, 
+    numPad8: 104, 
+    numPad9: 105, 
+    multiply: 106, 
+    add: 107, 
+    separator: 108, 
+    subtract: 109, 
+    decimal: 110, 
+    divide: 111, 
+    f1: 112, 
+    f2: 113, 
+    f3: 114, 
+    f4: 115, 
+    f5: 116, 
+    f6: 117, 
+    f7: 118, 
+    f8: 119, 
+    f9: 120, 
+    f10: 121, 
+    f11: 122, 
+    f12: 123, 
+    f13: 124, 
+    f14: 125, 
+    f15: 126, 
+    f16: 127, 
+    f17: 128, 
+    f18: 129, 
+    f19: 130, 
+    f20: 131, 
+    f21: 132, 
+    f22: 133, 
+    f23: 134, 
+    f24: 135, 
+    numLock: 144, 
+    scroll: 145, 
+    lShiftKey: 160, 
+    rShiftKey: 161, 
+    lControlKey: 162, 
+    rControlKey: 163, 
+    lMenu: 164, 
+    rMenu: 165, 
+    browserBack: 166, 
+    browserForward: 167, 
+    browserRefresh: 168, 
+    browserStop: 169, 
+    browserSearch: 170, 
+    browserFavorites: 171, 
+    browserHome: 172, 
+    volumeMute: 173, 
+    volumeDown: 174, 
+    volumeUp: 175, 
+    mediaNextTrack: 176, 
+    mediaPreviousTrack: 177, 
+    mediaStop: 178, 
+    mediaPlayPause: 179, 
+    launchMail: 180, 
+    selectMedia: 181, 
+    launchApplication1: 182, 
+    launchApplication2: 183, 
+    oemSemicolon: 186, 
+    oem1: 186, 
+    oemplus: 187, 
+    oemcomma: 188, 
+    oemMinus: 189, 
+    oemPeriod: 190, 
+    oemQuestion: 191, 
+    oem2: 191, 
+    oemtilde: 192, 
+    oem3: 192, 
+    oemOpenBrackets: 219, 
+    oem4: 219, 
+    oemPipe: 220, 
+    oem5: 220, 
+    oemCloseBrackets: 221, 
+    oem6: 221, 
+    oemQuotes: 222, 
+    oem7: 222, 
+    oem8: 223, 
+    oemBackslash: 226, 
+    oem102: 226, 
+    processKey: 229, 
+    packet: 231, 
+    attn: 246, 
+    crsel: 247, 
+    exsel: 248, 
+    eraseEof: 249, 
+    play: 250, 
+    zoom: 251, 
+    noName: 252, 
+    pa1: 253, 
+    oemClear: 254, 
+    keyCode: 65535, 
+    shift: 65536, 
+    control: 131072, 
+    alt: 262144
+  };
+
+
+  // wwtlib.DialogResult
+
+  var DialogResult = {
+    OK: 1
   };
 
 
@@ -2021,6 +2246,11 @@ window.wwtlib = function(){
   // wwtlib.ISettings
 
   function ISettings() { }
+
+
+  // wwtlib.IUndoStep
+
+  function IUndoStep() { }
 
 
   // wwtlib.IFolder
@@ -8262,6 +8492,68 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ShapeSpriteShader
+
+  function ShapeSpriteShader() {
+  }
+  ShapeSpriteShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision mediump float;                                                                \n' + '                                                                                         \n' + '   varying lowp vec4 vColor;                                                             \n' + '                                                                                         \n' + '   void main(void) {                                                                     \n' + '   gl_FragColor =  vColor;  \n' + '   }                                                                                     \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '     attribute lowp vec4 aColor;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec4 vColor;                                                         \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '         vColor = aColor;                                                         \n' + '     }                                                                            \n' + '                                                                                  \n';
+    ShapeSpriteShader._frag = gl.createShader(35632);
+    gl.shaderSource(ShapeSpriteShader._frag, fragShaderText);
+    gl.compileShader(ShapeSpriteShader._frag);
+    var stat = gl.getShaderParameter(ShapeSpriteShader._frag, 35713);
+    ShapeSpriteShader._vert = gl.createShader(35633);
+    gl.shaderSource(ShapeSpriteShader._vert, vertexShaderText);
+    gl.compileShader(ShapeSpriteShader._vert);
+    var stat1 = gl.getShaderParameter(ShapeSpriteShader._vert, 35713);
+    ShapeSpriteShader._prog = gl.createProgram();
+    gl.attachShader(ShapeSpriteShader._prog, ShapeSpriteShader._vert);
+    gl.attachShader(ShapeSpriteShader._prog, ShapeSpriteShader._frag);
+    gl.linkProgram(ShapeSpriteShader._prog);
+    var errcode = gl.getProgramParameter(ShapeSpriteShader._prog, 35714);
+    gl.useProgram(ShapeSpriteShader._prog);
+    ShapeSpriteShader.vertLoc = gl.getAttribLocation(ShapeSpriteShader._prog, 'aVertexPosition');
+    ShapeSpriteShader.colorLoc = gl.getAttribLocation(ShapeSpriteShader._prog, 'aColor');
+    ShapeSpriteShader.projMatLoc = gl.getUniformLocation(ShapeSpriteShader._prog, 'uPMatrix');
+    ShapeSpriteShader.mvMatLoc = gl.getUniformLocation(ShapeSpriteShader._prog, 'uMVMatrix');
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    ShapeSpriteShader.initialized = true;
+  };
+  ShapeSpriteShader.use = function(renderContext, vertex) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!ShapeSpriteShader.initialized) {
+        ShapeSpriteShader.init(renderContext);
+      }
+      gl.useProgram(ShapeSpriteShader._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniformMatrix4fv(ShapeSpriteShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(ShapeSpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      gl.uniform1i(ShapeSpriteShader.sampLoc, 0);
+      if (renderContext.space) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.enableVertexAttribArray(ShapeSpriteShader.vertLoc);
+      gl.enableVertexAttribArray(ShapeSpriteShader.textureLoc);
+      gl.enableVertexAttribArray(ShapeSpriteShader.colorLoc);
+      gl.bindBuffer(34962, vertex);
+      gl.vertexAttribPointer(ShapeSpriteShader.vertLoc, 3, 5126, false, 36, 0);
+      gl.vertexAttribPointer(ShapeSpriteShader.colorLoc, 4, 5126, false, 36, 12);
+      gl.bindBuffer(34963, null);
+      gl.blendFunc(770, 771);
+    }
+  };
+  var ShapeSpriteShader$ = {
+
+  };
+
+
   // wwtlib.TextShader
 
   function TextShader() {
@@ -8330,60 +8622,71 @@ window.wwtlib = function(){
   // wwtlib.Sprite2d
 
   function Sprite2d() {
+    this.vertCount = 0;
   }
-  Sprite2d.draw = function(renderContext, points, count, texture, triangle, opacity) {
-    if (Sprite2d.vertexBuffer == null) {
-      Sprite2d.create(points);
-    }
-    else {
-      Sprite2d.update(points);
-    }
-    SpriteShader.use(renderContext, Sprite2d.vertexBuffer, texture.texture2d);
-    renderContext.gl.drawArrays(5, 0, points.length);
-  };
-  Sprite2d.create = function(verts) {
-    Sprite2d.vertexBuffer = Tile.prepDevice.createBuffer();
-    Tile.prepDevice.bindBuffer(34962, Sprite2d.vertexBuffer);
-    var f32array = new Float32Array(verts.length * 9);
-    var buffer = f32array;
-    var index = 0;
-    var $enum1 = ss.enumerate(verts);
-    while ($enum1.moveNext()) {
-      var pt = $enum1.current;
-      buffer[index++] = pt.position.x;
-      buffer[index++] = pt.position.y;
-      buffer[index++] = pt.position.z;
-      buffer[index++] = pt.color.r / 255;
-      buffer[index++] = pt.color.g / 255;
-      buffer[index++] = pt.color.b / 255;
-      buffer[index++] = pt.color.a / 255;
-      buffer[index++] = pt.tu;
-      buffer[index++] = pt.tv;
-    }
-    Tile.prepDevice.bufferData(34962, f32array, 35048);
-  };
-  Sprite2d.update = function(verts) {
-    Tile.prepDevice.bindBuffer(34962, Sprite2d.vertexBuffer);
-    var f32array = new Float32Array(verts.length * 9);
-    var buffer = f32array;
-    var index = 0;
-    var $enum1 = ss.enumerate(verts);
-    while ($enum1.moveNext()) {
-      var pt = $enum1.current;
-      buffer[index++] = pt.position.x;
-      buffer[index++] = pt.position.y;
-      buffer[index++] = pt.position.z;
-      buffer[index++] = pt.color.r / 255;
-      buffer[index++] = pt.color.g / 255;
-      buffer[index++] = pt.color.b / 255;
-      buffer[index++] = pt.color.a / 255;
-      buffer[index++] = pt.tu;
-      buffer[index++] = pt.tv;
-    }
-    Tile.prepDevice.bufferSubData(34962, 0, f32array);
-  };
   var Sprite2d$ = {
-
+    draw: function(renderContext, points, count, texture, triangleStrips, opacity) {
+      if (this.vertexBuffer == null) {
+        this.create(points);
+      }
+      else {
+        this.update(points);
+      }
+      if (texture == null) {
+        ShapeSpriteShader.use(renderContext, this.vertexBuffer);
+        renderContext.gl.drawArrays((triangleStrips) ? 5 : 4, 0, points.length);
+      }
+      else {
+        SpriteShader.use(renderContext, this.vertexBuffer, (texture != null) ? texture.texture2d : null);
+        renderContext.gl.drawArrays((triangleStrips) ? 5 : 4, 0, points.length);
+      }
+    },
+    create: function(verts) {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(verts.length * 9);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(verts);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35048);
+    },
+    update: function(verts) {
+      if (this.vertCount < verts.length) {
+        Tile.prepDevice.deleteBuffer(this.vertexBuffer);
+        this.create(verts);
+        return;
+      }
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(verts.length * 9);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(verts);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferSubData(34962, 0, f32array);
+    }
   };
 
 
@@ -8499,6 +8802,11 @@ window.wwtlib = function(){
     this._errored = false;
     this.URL = '';
   }
+  Texture.fromUrl = function(url) {
+    var tex = new Texture();
+    tex.load(url);
+    return tex;
+  };
   var Texture$ = {
     cleanUp: function() {
       this.imageElement = null;
@@ -15259,7 +15567,12 @@ window.wwtlib = function(){
       return value;
     },
     hitTest: function(pntTest) {
-      return false;
+      var tempPoints = new Array(1);
+      tempPoints[0] = Vector2d.create(pntTest.x, pntTest.y);
+      var mat = Matrix2d.rotateAt(-this.get_rotationAngle() / 180 * Math.PI, Vector2d.create(this.get_x(), this.get_y()));
+      mat._transformPoints(tempPoints);
+      var rect = Rectangle.create((this.get_x() - (this.get_width() / 2)), (this.get_y() - (this.get_height() / 2)), this.get_width(), this.get_height());
+      return rect.contains(tempPoints[0]);
     },
     get_bounds: function() {
       return this._bounds;
@@ -15331,6 +15644,200 @@ window.wwtlib = function(){
     },
     toString: function() {
       return this.get_name();
+    }
+  };
+
+
+  // wwtlib.Selection
+
+  function Selection() {
+    this._singleSelectHandles = null;
+    this._multiSelectHandles = null;
+    this._focusHandles = null;
+    this.selectionSet = [];
+    this._focus = null;
+    this._ratio = 1;
+    this._sprite = new Sprite2d();
+    this._centerX = 0;
+    this._centerY = 0;
+  }
+  var Selection$ = {
+    clearSelection: function() {
+      this.selectionSet.length = 0;
+    },
+    addSelection: function(overlay) {
+      if (overlay != null) {
+        if (!(this.selectionSet.indexOf(overlay) >= 0)) {
+          this.selectionSet.push(overlay);
+        }
+      }
+    },
+    addSelectionRange: function(overlays) {
+      var $enum1 = ss.enumerate(overlays);
+      while ($enum1.moveNext()) {
+        var ov = $enum1.current;
+        this.selectionSet.push(ov);
+      }
+    },
+    isOverlaySelected: function(overlay) {
+      return (this.selectionSet.indexOf(overlay) >= 0);
+    },
+    setSelection: function(overlay) {
+      this.selectionSet.length = 0;
+      if (overlay != null) {
+        this.selectionSet.push(overlay);
+      }
+    },
+    get_multiSelect: function() {
+      return this.selectionSet.length > 1;
+    },
+    setSelectionRange: function(overlays) {
+      this.selectionSet.length = 0;
+      var $enum1 = ss.enumerate(overlays);
+      while ($enum1.moveNext()) {
+        var ov = $enum1.current;
+        this.selectionSet.push(ov);
+      }
+    },
+    get_focus: function() {
+      return this._focus;
+    },
+    set_focus: function(value) {
+      this._focus = value;
+      return value;
+    },
+    draw3D: function(renderContext, transparancy) {
+      this._ratio = 1116 / renderContext.height;
+      if (this._singleSelectHandles == null) {
+        this._singleSelectHandles = Texture.fromUrl('images/Selhand.bmp');
+      }
+      if (this._multiSelectHandles == null) {
+        this._multiSelectHandles = Texture.fromUrl('images/multiSelhand.bmp');
+      }
+      if (this._focusHandles == null) {
+        this._focusHandles = Texture.fromUrl('images/FocusHandles.png');
+      }
+      if (this.selectionSet.length > 1) {
+        var $enum1 = ss.enumerate(this.selectionSet);
+        while ($enum1.moveNext()) {
+          var overlay = $enum1.current;
+          if (overlay === this._focus) {
+            this._drawSelectionHandles(renderContext, overlay, this._focusHandles);
+          }
+          else {
+            this._drawSelectionHandles(renderContext, overlay, this._multiSelectHandles);
+          }
+        }
+      }
+      else {
+        var $enum2 = ss.enumerate(this.selectionSet);
+        while ($enum2.moveNext()) {
+          var overlay = $enum2.current;
+          this._drawSelectionHandles(renderContext, overlay, this._singleSelectHandles);
+        }
+      }
+    },
+    _drawSelectionHandles: function(renderContext, overlay, handleTexture) {
+      var handles = this.makeHandles(overlay);
+      var angle = overlay.get_rotationAngle();
+      var i = 0;
+      var j = 0;
+      var $enum1 = ss.enumerate(handles);
+      while ($enum1.moveNext()) {
+        var handle = $enum1.current;
+        Selection._points[i + 0] = new PositionColoredTextured();
+        Selection._points[i + 0].position = overlay.makePosition(this._centerX, this._centerY, handle.get_left() - this._centerX, handle.get_top() - this._centerY, angle);
+        Selection._points[i + 0].tu = j * (1 / 9);
+        Selection._points[i + 0].tv = 0;
+        Selection._points[i + 0].color = Colors.get_white();
+        Selection._points[i + 1] = new PositionColoredTextured();
+        Selection._points[i + 1].position = overlay.makePosition(this._centerX, this._centerY, handle.get_right() - this._centerX, handle.get_top() - this._centerY, angle);
+        Selection._points[i + 1].tu = (j + 1) * (1 / 9);
+        Selection._points[i + 1].tv = 0;
+        Selection._points[i + 1].color = Colors.get_white();
+        Selection._points[i + 2] = new PositionColoredTextured();
+        Selection._points[i + 2].position = overlay.makePosition(this._centerX, this._centerY, handle.get_left() - this._centerX, handle.get_bottom() - this._centerY, angle);
+        Selection._points[i + 2].tu = j * (1 / 9);
+        Selection._points[i + 2].tv = 1;
+        Selection._points[i + 2].color = Colors.get_white();
+        Selection._points[i + 3] = new PositionColoredTextured();
+        Selection._points[i + 3].position = overlay.makePosition(this._centerX, this._centerY, handle.get_right() - this._centerX, handle.get_top() - this._centerY, angle);
+        Selection._points[i + 3].tu = (j + 1) * (1 / 9);
+        Selection._points[i + 3].tv = 0;
+        Selection._points[i + 3].color = Colors.get_white();
+        Selection._points[i + 4] = new PositionColoredTextured();
+        Selection._points[i + 4].position = overlay.makePosition(this._centerX, this._centerY, handle.get_right() - this._centerX, handle.get_bottom() - this._centerY, angle);
+        Selection._points[i + 4].tu = (j + 1) * (1 / 9);
+        Selection._points[i + 4].tv = 1;
+        Selection._points[i + 4].color = Colors.get_white();
+        Selection._points[i + 5] = new PositionColoredTextured();
+        Selection._points[i + 5].position = overlay.makePosition(this._centerX, this._centerY, handle.get_left() - this._centerX, handle.get_bottom() - this._centerY, angle);
+        Selection._points[i + 5].tu = j * (1 / 9);
+        Selection._points[i + 5].tv = 1;
+        Selection._points[i + 5].color = Colors.get_white();
+        i += 6;
+        j++;
+      }
+      if (this.get_multiSelect()) {
+        this._sprite.draw(renderContext, Selection._points, Selection._points.length - 6, handleTexture, false, 1);
+      }
+      else {
+        this._sprite.draw(renderContext, Selection._points, Selection._points.length, handleTexture, false, 1);
+      }
+    },
+    pointToSelectionSpace: function(pntIn) {
+      var tempPoints = new Array(1);
+      tempPoints[0] = Vector2d.create(pntIn.x, pntIn.y);
+      var mat = Matrix2d.rotateAt(-this.selectionSet[0].get_rotationAngle() / 180 * Math.PI, Vector2d.create(this.selectionSet[0].get_x(), this.selectionSet[0].get_y()));
+      mat._transformPoints(tempPoints);
+      return tempPoints[0];
+    },
+    pointToScreenSpace: function(pntIn) {
+      var tempPoints = new Array(1);
+      tempPoints[0] = Vector2d.create(pntIn.x, pntIn.y);
+      var mat = Matrix2d.rotateAt(this.selectionSet[0].get_rotationAngle() / 180 * Math.PI, Vector2d.create(this.selectionSet[0].get_x(), this.selectionSet[0].get_y()));
+      mat._transformPoints(tempPoints);
+      return tempPoints[0];
+    },
+    hitTest: function(position) {
+      if (this.selectionSet.length === 1) {
+        var $enum1 = ss.enumerate(this.selectionSet);
+        while ($enum1.moveNext()) {
+          var overlay = $enum1.current;
+          var handles = this.makeHandles(overlay);
+          var index = 0;
+          var testPoint = this.pointToSelectionSpace(position);
+          var $enum2 = ss.enumerate(handles);
+          while ($enum2.moveNext()) {
+            var rectf = $enum2.current;
+            if (rectf.contains(testPoint)) {
+              return index;
+            }
+            index++;
+          }
+        }
+      }
+      return 11;
+    },
+    makeHandles: function(overlay) {
+      var x = ss.truncate((overlay.get_x() - (overlay.get_width() / 2))) + 0.5;
+      var y = (ss.truncate(overlay.get_y()) - (overlay.get_height() / 2)) + 0.5;
+      this._centerX = overlay.get_x();
+      this._centerY = overlay.get_y();
+      var width = overlay.get_width();
+      var height = overlay.get_height();
+      var handleSize = 12 * this._ratio;
+      var handles = new Array(9);
+      handles[0] = Rectangle.create(x - handleSize, y - handleSize, handleSize, handleSize);
+      handles[1] = Rectangle.create((x + (width / 2)) - (handleSize / 2), y - handleSize, handleSize, handleSize);
+      handles[2] = Rectangle.create(x + width, y - handleSize, handleSize, handleSize);
+      handles[3] = Rectangle.create(x + width, (y + (height / 2)) - (handleSize / 2), handleSize, handleSize);
+      handles[4] = Rectangle.create(x + width, (y + height), handleSize, handleSize);
+      handles[5] = Rectangle.create((x + (width / 2)) - (handleSize / 2), (y + height), handleSize, handleSize);
+      handles[6] = Rectangle.create(x - handleSize, (y + height), handleSize, handleSize);
+      handles[7] = Rectangle.create(x - handleSize, (y + (height / 2)) - (handleSize / 2), handleSize, handleSize);
+      handles[8] = Rectangle.create((x + (width / 2)) - (handleSize / 2), y - 30 * this._ratio, handleSize, handleSize);
+      return handles;
     }
   };
 
@@ -16098,6 +16605,1305 @@ window.wwtlib = function(){
     },
     clearTempFiles: function() {
     }
+  };
+
+
+  // wwtlib.TourEditor
+
+  function TourEditor() {
+    this.selection = new Selection();
+    this._contextMenu = new ContextMenuStrip();
+    this._tour = null;
+    this._mouseDown = false;
+    this._selectionAction = 11;
+    this._needUndoFrame = false;
+    this._contextPoint = new Vector2d();
+    this._dragCopying = false;
+    this._brokeThreshold = false;
+    this._defaultColor = Colors.get_white();
+  }
+  var TourEditor$ = {
+    render: function(renderContext) {
+      renderContext.setupMatricesOverlays();
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      var $enum1 = ss.enumerate(this._tour.get_currentTourStop().get_overlays());
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        if (overlay.get_animate() && this.get_tour().get_currentTourStop().get_keyFramed()) {
+          overlay.set_tweenFactor(this._tour.get_currentTourStop().get_tweenPosition());
+        }
+        else if (!this.get_tour().get_currentTourStop().get_keyFramed()) {
+          overlay.set_tweenFactor((this._tour.get_currentTourStop().get_tweenPosition() < 0.5) ? 0 : 1);
+        }
+        overlay.draw3D(renderContext, true);
+      }
+      this.selection.draw3D(renderContext, 1);
+      if (TourEditor.currentEditor != null) {
+        TourEditor.currentEditor.render(renderContext);
+      }
+      Settings.tourSettings = null;
+    },
+    get_tour: function() {
+      return this._tour;
+    },
+    set_tour: function(value) {
+      this._tour = value;
+      return value;
+    },
+    close: function() {
+      if (this._tour != null) {
+        this._tour = null;
+        this.set_focus(null);
+      }
+    },
+    clearSelection: function() {
+      this.selection.clearSelection();
+      OverlayList._updateOverlayListSelection(this.selection);
+      this.set_focus(null);
+    },
+    get_focus: function() {
+      return this.selection.get_focus();
+    },
+    set_focus: function(value) {
+      this.selection.set_focus(value);
+      return value;
+    },
+    pointToView: function(pnt) {
+      var clientHeight = WWTControl.singleton.renderContext.height;
+      var clientWidth = WWTControl.singleton.renderContext.width;
+      var viewWidth = (WWTControl.singleton.renderContext.width / WWTControl.singleton.renderContext.height) * 1116;
+      var x = ((pnt.x) / (clientWidth) * viewWidth) - ((viewWidth - 1920) / 2);
+      var y = (pnt.y) / clientHeight * 1116;
+      return Vector2d.create(x, y);
+    },
+    mouseDown: function(sender, e) {
+      this._brokeThreshold = false;
+      this._needUndoFrame = true;
+      var location = this.pointToView(Vector2d.create(e.offsetX, e.offsetY));
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        this._needUndoFrame = false;
+        return false;
+      }
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.mouseDown(sender, e)) {
+          return true;
+        }
+      }
+      if (this.get_focus() != null) {
+        if (this.selection.get_multiSelect()) {
+          var $enum1 = ss.enumerate(this.selection.selectionSet);
+          while ($enum1.moveNext()) {
+            var overlay = $enum1.current;
+            if (overlay.hitTest(location)) {
+              this._selectionAction = 9;
+              this._mouseDown = true;
+              this._pointDown = location;
+              this.set_focus(overlay);
+              if (e.ctrlKey) {
+                this._dragCopying = true;
+              }
+              return true;
+            }
+          }
+        }
+        else {
+          if (this.get_focus().hitTest(location)) {
+            this._selectionAction = 9;
+            this._mouseDown = true;
+            this._pointDown = location;
+            if (e.ctrlKey) {
+              this._dragCopying = true;
+            }
+            return true;
+          }
+        }
+        var hit = this.selection.hitTest(location);
+        if (hit !== 11) {
+          this._selectionAction = hit;
+          this._mouseDown = true;
+          if (hit === 8) {
+            this._pointDown = location;
+          }
+          else {
+            this._pointDown = this.selection.pointToSelectionSpace(location);
+          }
+          return true;
+        }
+      }
+      for (var i = this._tour.get_currentTourStop().get_overlays().length - 1; i >= 0; i--) {
+        if (this._tour.get_currentTourStop().get_overlays()[i].hitTest(location)) {
+          this._selectionAction = 9;
+          this.set_focus(this._tour.get_currentTourStop().get_overlays()[i]);
+          if (e.ctrlKey || e.shiftKey) {
+            this.selection.addSelection(this.get_focus());
+          }
+          else {
+            this.selection.setSelection(this.get_focus());
+          }
+          OverlayList._updateOverlayListSelection(this.selection);
+          this._mouseDown = true;
+          this._pointDown = location;
+          return true;
+        }
+      }
+      this.set_focus(null);
+      this.clearSelection();
+      this._needUndoFrame = false;
+      return false;
+    },
+    mouseUp: function(sender, e) {
+      this._brokeThreshold = false;
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.mouseUp(sender, e)) {
+          return true;
+        }
+      }
+      this._contextPoint = Vector2d.create(e.offsetX, e.offsetY);
+      if (this._mouseDown) {
+        this._mouseDown = false;
+        if (e.button === 2) {
+          if (this.get_focus() != null) {
+            this.showSelectionContextMenu(Vector2d.create(e.offsetX, e.offsetY));
+          }
+        }
+        return true;
+      }
+      if (e.button === 2) {
+        if (this.get_focus() == null) {
+          this._showNoSelectionContextMenu();
+        }
+        return true;
+      }
+      return false;
+    },
+    mouseMove: function(sender, e) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.mouseMove(sender, e)) {
+          return true;
+        }
+      }
+      var location = this.pointToView(Vector2d.create(e.offsetX, e.offsetY));
+      if (this._mouseDown && this.get_focus() != null) {
+        var undoFrame = null;
+        var actionText = Language.getLocalizedText(502, 'Edit');
+        if (this._needUndoFrame) {
+          undoFrame = new UndoTourStopChange(Language.getLocalizedText(502, 'Edit'), this._tour);
+        }
+        var moveX;
+        var moveY;
+        if (this._selectionAction !== 9 && this._selectionAction !== 8) {
+          var newPoint = this.selection.pointToSelectionSpace(location);
+          moveX = newPoint.x - this._pointDown.x;
+          moveY = newPoint.y - this._pointDown.y;
+          this._pointDown = newPoint;
+        }
+        else {
+          moveX = location.x - this._pointDown.x;
+          moveY = location.y - this._pointDown.y;
+          if (this._selectionAction === 9 && !this._brokeThreshold) {
+            if (Math.abs(moveX) > 3 || Math.abs(moveY) > 3) {
+              this._brokeThreshold = true;
+            }
+            else {
+              return true;
+            }
+          }
+          this._pointDown = location;
+        }
+        if (this._dragCopying) {
+          if (this.selection.get_multiSelect()) {
+            var set = this.selection.selectionSet;
+            this.clearSelection();
+            var $enum1 = ss.enumerate(set);
+            while ($enum1.moveNext()) {
+              var overlay = $enum1.current;
+              var newOverlay = this.addOverlay(overlay);
+              newOverlay.set_x(overlay.get_x());
+              newOverlay.set_y(overlay.get_y());
+              this.set_focus(newOverlay);
+              this.selection.addSelection(this.get_focus());
+            }
+            OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+            this._dragCopying = false;
+          }
+          else {
+            var newOverlay = this.addOverlay(this.get_focus());
+            newOverlay.set_x(this.get_focus().get_x());
+            newOverlay.set_y(this.get_focus().get_y());
+            this.set_focus(newOverlay);
+            this.selection.setSelection(this.get_focus());
+            OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+            this._dragCopying = false;
+          }
+        }
+        var aspect = this.get_focus().get_width() / this.get_focus().get_height();
+        var center = Vector2d.create(this.get_focus().get_x(), this.get_focus().get_y());
+        if (e.ctrlKey) {
+          actionText = Language.getLocalizedText(537, 'Resize');
+          switch (this._selectionAction) {
+            case 0:
+              this.get_focus().set_width(Math.max(2, this.get_focus().get_width() - moveX * 2));
+              this.get_focus().set_height(Math.max(2, this.get_focus().get_height() - (moveX / aspect) * 2));
+              break;
+            case 1:
+              this.get_focus().set_height(Math.max(2, this.get_focus().get_height() - moveY * 2));
+              break;
+            case 2:
+              this.get_focus().set_width(Math.max(2, this.get_focus().get_width() + moveX * 2));
+              this.get_focus().set_height(Math.max(2, this.get_focus().get_height() + (moveX / aspect) * 2));
+              break;
+            case 3:
+              this.get_focus().set_width(Math.max(2, this.get_focus().get_width() + moveX * 2));
+              break;
+            case 4:
+              this.get_focus().set_width(Math.max(2, this.get_focus().get_width() + moveX * 2));
+              this.get_focus().set_height(Math.max(2, this.get_focus().get_height() + (moveX / aspect) * 2));
+              break;
+            case 5:
+              this.get_focus().set_height(Math.max(2, this.get_focus().get_height() + moveY * 2));
+              break;
+            case 6:
+              this.get_focus().set_width(Math.max(2, this.get_focus().get_width() - moveX * 2));
+              this.get_focus().set_height(Math.max(2, this.get_focus().get_height() - (moveX / aspect) * 2));
+              break;
+            case 7:
+              this.get_focus().set_width(Math.max(2, this.get_focus().get_width() - moveX * 2));
+              break;
+            case 8:
+              actionText = Language.getLocalizedText(538, 'Rotate');
+              this.get_focus().set_rotationAngle(this.get_focus().get_rotationAngle() + moveX / 10);
+              break;
+            case 9:
+              actionText = Language.getLocalizedText(539, 'Drag Copy');
+              center.x += moveX;
+              center.y += moveY;
+              break;
+            case 10:
+              break;
+            case 11:
+              break;
+            default:
+              break;
+          }
+        }
+        else {
+          if (this._selectionAction !== 8 && this._selectionAction !== 9) {
+            if (moveX > (this.get_focus().get_width() - 2)) {
+              moveX = 0;
+            }
+            if (moveY > (this.get_focus().get_height() - 2)) {
+              moveY = 0;
+            }
+          }
+          actionText = Language.getLocalizedText(537, 'Resize');
+          switch (this._selectionAction) {
+            case 0:
+              this.get_focus().set_width(this.get_focus().get_width() - moveX);
+              this.get_focus().set_height(this.get_focus().get_height() - (moveX / aspect));
+              center.x += (moveX / 2);
+              center.y += ((moveX / aspect) / 2);
+              break;
+            case 1:
+              this.get_focus().set_height(this.get_focus().get_height() - moveY);
+              center.y += (moveY / 2);
+              break;
+            case 2:
+              this.get_focus().set_width(this.get_focus().get_width() + moveX);
+              this.get_focus().set_height(this.get_focus().get_height() + (moveX / aspect));
+              center.x += (moveX / 2);
+              center.y -= ((moveX / aspect) / 2);
+              break;
+            case 3:
+              this.get_focus().set_width(this.get_focus().get_width() + moveX);
+              center.x += (moveX / 2);
+              break;
+            case 4:
+              this.get_focus().set_width(this.get_focus().get_width() + moveX);
+              this.get_focus().set_height(this.get_focus().get_height() + (moveX / aspect));
+              center.x += (moveX / 2);
+              center.y += ((moveX / aspect) / 2);
+              break;
+            case 5:
+              this.get_focus().set_height(this.get_focus().get_height() + moveY);
+              center.y += (moveY / 2);
+              break;
+            case 6:
+              this.get_focus().set_width(this.get_focus().get_width() - moveX);
+              this.get_focus().set_height(this.get_focus().get_height() - (moveX / aspect));
+              center.x += (moveX / 2);
+              center.y -= ((moveX / aspect) / 2);
+              break;
+            case 7:
+              this.get_focus().set_width(this.get_focus().get_width() - moveX);
+              center.x += (moveX / 2);
+              break;
+            case 8:
+              actionText = Language.getLocalizedText(538, 'Rotate');
+              this.get_focus().set_rotationAngle(this.get_focus().get_rotationAngle() + moveX);
+              break;
+            case 9:
+              actionText = Language.getLocalizedText(540, 'Move');
+              center.x += moveX;
+              center.y += moveY;
+              break;
+            case 10:
+              break;
+            case 11:
+              break;
+            default:
+              break;
+          }
+        }
+        if (this._selectionAction !== 9 && this._selectionAction !== 8) {
+          center = this.selection.pointToScreenSpace(center);
+        }
+        if (this.selection.get_multiSelect()) {
+          var $enum2 = ss.enumerate(this.selection.selectionSet);
+          while ($enum2.moveNext()) {
+            var overlay = $enum2.current;
+            overlay.set_x(overlay.get_x() + moveX);
+            overlay.set_y(overlay.get_y() + moveY);
+          }
+        }
+        else {
+          this.get_focus().set_x(center.x);
+          this.get_focus().set_y(center.y);
+        }
+        if (this._needUndoFrame) {
+          this._needUndoFrame = false;
+          undoFrame.set_actionText(actionText);
+          Undo.push(undoFrame);
+        }
+      }
+      else {
+        if (this.get_focus() != null) {
+          if (this.get_focus().hitTest(location)) {
+            Cursor.set_current(Cursors.get_sizeAll());
+            return false;
+          }
+          var hit = this.selection.hitTest(location);
+          if (hit === 11) {
+            return false;
+          }
+          switch (hit) {
+            case 0:
+              Cursor.set_current(Cursors.get_sizeNWSE());
+              break;
+            case 1:
+              Cursor.set_current(Cursors.get_sizeNS());
+              break;
+            case 2:
+              Cursor.set_current(Cursors.get_sizeNESW());
+              break;
+            case 3:
+              Cursor.set_current(Cursors.get_sizeWE());
+              break;
+            case 4:
+              Cursor.set_current(Cursors.get_sizeNWSE());
+              break;
+            case 5:
+              Cursor.set_current(Cursors.get_sizeNS());
+              break;
+            case 6:
+              Cursor.set_current(Cursors.get_sizeNESW());
+              break;
+            case 7:
+              Cursor.set_current(Cursors.get_sizeWE());
+              break;
+            case 8:
+              Cursor.set_current(Cursors.get_sizeWE());
+              break;
+            case 10:
+              break;
+            case 11:
+              break;
+            default:
+              break;
+          }
+        }
+      }
+      return false;
+    },
+    _showNoSelectionContextMenu: function() {
+    },
+    showSelectionContextMenu: function(position) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      var multiSelect = this.selection.get_multiSelect();
+      if (this._contextMenu != null) {
+        this._contextMenu._dispose();
+      }
+      this._contextMenu = new ContextMenuStrip();
+      var cutMenu = ToolStripMenuItem.create(Language.getLocalizedText(427, 'Cut'));
+      var copyMenu = ToolStripMenuItem.create(Language.getLocalizedText(428, 'Copy'));
+      var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(425, 'Paste'));
+      var deleteMenu = ToolStripMenuItem.create(Language.getLocalizedText(167, 'Delete'));
+      var sep1 = new ToolStripSeparator();
+      var sep2 = new ToolStripSeparator();
+      var sep3 = new ToolStripSeparator();
+      var bringToFront = ToolStripMenuItem.create(Language.getLocalizedText(452, 'Bring to Front'));
+      var sendToBack = ToolStripMenuItem.create(Language.getLocalizedText(453, 'Send to Back'));
+      var bringForward = ToolStripMenuItem.create(Language.getLocalizedText(454, 'Bring Forward'));
+      var sendBackward = ToolStripMenuItem.create(Language.getLocalizedText(455, 'Send Backward'));
+      var properties = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
+      var editText = ToolStripMenuItem.create(Language.getLocalizedText(502, 'Edit'));
+      var url = ToolStripMenuItem.create(Language.getLocalizedText(587, 'Hyperlink'));
+      var linkString = this.get_focus().get_linkID();
+      switch (this.get_focus().get_linkID()) {
+        case '':
+        case null:
+          linkString = ' (' + Language.getLocalizedText(609, 'No Link') + ')';
+          break;
+        case 'Next':
+          linkString = ' (' + Language.getLocalizedText(610, 'Next Slide') + ')';
+          break;
+        case 'Return':
+          linkString = ' (' + Language.getLocalizedText(602, 'Return to Caller') + ')';
+          break;
+        default:
+          var index = this.get_tour().getTourStopIndexByID(this.get_focus().get_linkID());
+          if (index > -1) {
+            if (ss.emptyString(this._tour.get_tourStops()[index].get_description())) {
+              linkString = ss.format(' (' + Language.getLocalizedText(1340, 'Slide') + ' {0})', index);
+            }
+            else {
+              linkString = ' (' + this._tour.get_tourStops()[index].get_description() + ')';
+            }
+          }
+          break;
+      }
+      var animateMenu = ToolStripMenuItem.create(Language.getLocalizedText(588, 'Animate'));
+      var linkID = ToolStripMenuItem.create(Language.getLocalizedText(589, 'Link to Slide') + linkString);
+      var pickColor = ToolStripMenuItem.create(Language.getLocalizedText(458, 'Color/Opacity'));
+      var flipbookProperties = ToolStripMenuItem.create(Language.getLocalizedText(630, 'Flipbook Properties'));
+      var interpolateMenu = ToolStripMenuItem.create(Language.getLocalizedText(1029, 'Animation Tween Type'));
+      var Linear = ToolStripMenuItem.create(Language.getLocalizedText(1030, 'Linear'));
+      var Ease = ToolStripMenuItem.create(Language.getLocalizedText(1031, 'Ease In/Out'));
+      var EaseIn = ToolStripMenuItem.create(Language.getLocalizedText(1032, 'Ease In'));
+      var EaseOut = ToolStripMenuItem.create(Language.getLocalizedText(1033, 'Ease Out'));
+      var Exponential = ToolStripMenuItem.create(Language.getLocalizedText(1034, 'Exponential'));
+      var Default = ToolStripMenuItem.create(Language.getLocalizedText(1035, 'Slide Default'));
+      var Align = ToolStripMenuItem.create(Language.getLocalizedText(790, 'Align'));
+      var AlignTop = ToolStripMenuItem.create(Language.getLocalizedText(1333, 'Top'));
+      var AlignBottom = ToolStripMenuItem.create(Language.getLocalizedText(1334, 'Bottom'));
+      var AlignLeft = ToolStripMenuItem.create(Language.getLocalizedText(1335, 'Left'));
+      var AlignRight = ToolStripMenuItem.create(Language.getLocalizedText(1336, 'Right'));
+      var AlignHorizon = ToolStripMenuItem.create(Language.getLocalizedText(1337, 'Horizontal'));
+      var AlignVertical = ToolStripMenuItem.create(Language.getLocalizedText(1338, 'Vertical'));
+      var AlignCenter = ToolStripMenuItem.create(Language.getLocalizedText(1339, 'Centered'));
+      Align.dropDownItems.push(AlignTop);
+      Align.dropDownItems.push(AlignBottom);
+      Align.dropDownItems.push(AlignLeft);
+      Align.dropDownItems.push(AlignRight);
+      Align.dropDownItems.push(AlignHorizon);
+      Align.dropDownItems.push(AlignVertical);
+      Align.dropDownItems.push(AlignCenter);
+      Linear.tag = 0;
+      Ease.tag = 3;
+      EaseIn.tag = 1;
+      EaseOut.tag = 2;
+      Exponential.tag = 4;
+      Default.tag = 5;
+      Linear.click = ss.bind('_interpolation_Click', this);
+      Ease.click = ss.bind('_interpolation_Click', this);
+      EaseIn.click = ss.bind('_interpolation_Click', this);
+      EaseOut.click = ss.bind('_interpolation_Click', this);
+      Exponential.click = ss.bind('_interpolation_Click', this);
+      Default.click = ss.bind('_interpolation_Click', this);
+      switch (this.get_focus().get_interpolationType()) {
+        case 0:
+          Linear.checked = true;
+          break;
+        case 1:
+          EaseIn.checked = true;
+          break;
+        case 2:
+          EaseOut.checked = true;
+          break;
+        case 3:
+          Ease.checked = true;
+          break;
+        case 4:
+          Exponential.checked = true;
+          break;
+        case 5:
+          Default.checked = true;
+          break;
+        default:
+          break;
+      }
+      interpolateMenu.dropDownItems.push(Default);
+      interpolateMenu.dropDownItems.push(Linear);
+      interpolateMenu.dropDownItems.push(Ease);
+      interpolateMenu.dropDownItems.push(EaseIn);
+      interpolateMenu.dropDownItems.push(EaseOut);
+      interpolateMenu.dropDownItems.push(Exponential);
+      cutMenu.click = ss.bind('_cutMenu_Click', this);
+      copyMenu.click = ss.bind('_copyMenu_Click', this);
+      deleteMenu.click = ss.bind('_deleteMenu_Click', this);
+      bringToFront.click = ss.bind('_bringToFront_Click', this);
+      sendToBack.click = ss.bind('_sendToBack_Click', this);
+      sendBackward.click = ss.bind('_sendBackward_Click', this);
+      bringForward.click = ss.bind('_bringForward_Click', this);
+      properties.click = ss.bind('_properties_Click', this);
+      editText.click = ss.bind('_editText_Click', this);
+      url.click = ss.bind('_url_Click', this);
+      pickColor.click = ss.bind('_pickColor_Click', this);
+      pasteMenu.click = ss.bind('_pasteMenu_Click', this);
+      animateMenu.click = ss.bind('_animateMenu_Click', this);
+      flipbookProperties.click = ss.bind('_flipbookProperties_Click', this);
+      linkID.click = ss.bind('_linkID_Click', this);
+      AlignTop.click = ss.bind('_alignTop_Click', this);
+      AlignBottom.click = ss.bind('_alignBottom_Click', this);
+      AlignLeft.click = ss.bind('_alignLeft_Click', this);
+      AlignRight.click = ss.bind('_alignRight_Click', this);
+      AlignHorizon.click = ss.bind('_alignHorizon_Click', this);
+      AlignVertical.click = ss.bind('_alignVertical_Click', this);
+      AlignCenter.click = ss.bind('_alignCenter_Click', this);
+      this._contextMenu.items.push(cutMenu);
+      this._contextMenu.items.push(copyMenu);
+      this._contextMenu.items.push(pasteMenu);
+      this._contextMenu.items.push(deleteMenu);
+      this._contextMenu.items.push(sep1);
+      this._contextMenu.items.push(bringToFront);
+      this._contextMenu.items.push(sendToBack);
+      this._contextMenu.items.push(bringForward);
+      this._contextMenu.items.push(sendBackward);
+      this._contextMenu.items.push(Align);
+      this._contextMenu.items.push(sep2);
+      pasteMenu.enabled = false;
+      this._contextMenu.items.push(pickColor);
+      this._contextMenu.items.push(url);
+      this._contextMenu.items.push(linkID);
+      this._contextMenu.items.push(animateMenu);
+      this._contextMenu.items.push(sep3);
+      this._contextMenu.items.push(flipbookProperties);
+      animateMenu.checked = this.get_focus().get_animate();
+      this._contextMenu.items.push(interpolateMenu);
+      interpolateMenu.enabled = this.get_focus().get_animate();
+      flipbookProperties.visible = (ss.canCast(this.get_focus(), FlipbookOverlay));
+      sep3.visible = (ss.canCast(this.get_focus(), FlipbookOverlay));
+      if (multiSelect) {
+        url.visible = false;
+        linkID.visible = false;
+        properties.visible = false;
+        flipbookProperties.visible = false;
+        bringForward.visible = false;
+        sendBackward.visible = false;
+      }
+      else {
+        Align.visible = false;
+      }
+      this._contextMenu.items.push(properties);
+      if (this.get_focus() != null) {
+        if (ss.typeOf(this.get_focus()) === TextOverlay) {
+          this._contextMenu.items.push(editText);
+        }
+      }
+      this._contextMenu._show(position);
+    },
+    _editText_Click: function(sender, e) {
+      if (this.get_focus() != null) {
+        if (ss.typeOf(this.get_focus()) === TextOverlay) {
+          this._editText();
+        }
+      }
+    },
+    _alignVertical_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1036, 'Vertical Align'), this._tour));
+      var xCenter = this.get_focus().get_x();
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_x(xCenter);
+      }
+    },
+    _alignHorizon_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1037, 'Horizontal Align'), this._tour));
+      var yCenter = this.get_focus().get_y();
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_y(yCenter);
+      }
+    },
+    _alignCenter_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1038, 'Align Centers'), this._tour));
+      var yCenter = this.get_focus().get_y();
+      var xCenter = this.get_focus().get_x();
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_y(yCenter);
+        overlay.set_x(xCenter);
+      }
+    },
+    _alignRight_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1040, 'Align Right'), this._tour));
+      var left = this.get_focus().get_x() + this.get_focus().get_width() / 2;
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_x(left - overlay.get_width() / 2);
+      }
+    },
+    _alignLeft_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1041, 'Align Left'), this._tour));
+      var right = this.get_focus().get_x() - this.get_focus().get_width() / 2;
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_x(right + overlay.get_width() / 2);
+      }
+    },
+    _alignBottom_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1042, 'Align Bottoms'), this._tour));
+      var top = this.get_focus().get_y() + this.get_focus().get_height() / 2;
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_y(top - overlay.get_height() / 2);
+      }
+    },
+    _alignTop_Click: function(sender, e) {
+      if (this.get_focus() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(1039, 'Align Tops'), this._tour));
+      var top = this.get_focus().get_y() - this.get_focus().get_height() / 2;
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_y(top + overlay.get_height() / 2);
+      }
+    },
+    _interpolation_Click: function(sender, e) {
+      var item = sender;
+      if (this.get_focus() != null) {
+        var $enum1 = ss.enumerate(this.selection.selectionSet);
+        while ($enum1.moveNext()) {
+          var overlay = $enum1.current;
+          overlay.set_interpolationType(item.tag);
+        }
+      }
+    },
+    _linkID_Click: function(sender, e) {
+      var selectDialog = new SelectLink();
+      selectDialog.tour = this._tour;
+      selectDialog.id = this.get_focus().get_linkID();
+      if (selectDialog._showDialog() === 1) {
+        this.get_focus().set_linkID(selectDialog.id);
+      }
+    },
+    _flipbookProperties_Click: function(sender, e) {
+    },
+    _animateMenu_Click: function(sender, e) {
+      if (this.get_focus() != null) {
+        Undo.push(new UndoTourStopChange(Language.getLocalizedText(588, 'Animate'), this._tour));
+        var animate = !this.get_focus().get_animate();
+        var $enum1 = ss.enumerate(this.selection.selectionSet);
+        while ($enum1.moveNext()) {
+          var overlay = $enum1.current;
+          overlay.set_animate(animate);
+        }
+      }
+    },
+    _url_Click: function(sender, e) {
+      if (this.get_focus() != null) {
+        var input = new SimpleInput(Language.getLocalizedText(541, 'Edit Hyperlink'), Language.getLocalizedText(542, 'Url'), this.get_focus().get_url(), 2048);
+        if (input.showDialog() === 1) {
+          Undo.push(new UndoTourStopChange(Language.getLocalizedText(541, 'Edit Hyperlink'), this._tour));
+          this.get_focus().set_url(input.resultText);
+        }
+      }
+    },
+    _pickColor_Click: function(sender, e) {
+      var picker = new PopupColorPicker();
+      picker.location = Cursor.get_position();
+      picker.color = this.get_focus().get_color();
+      if (picker.showDialog() === 1) {
+        Undo.push(new UndoTourStopChange(Language.getLocalizedText(543, 'Edit Color'), this._tour));
+        var $enum1 = ss.enumerate(this.selection.selectionSet);
+        while ($enum1.moveNext()) {
+          var overlay = $enum1.current;
+          overlay.set_color(picker.color);
+        }
+      }
+    },
+    _volume_Click: function(sender, e) {
+      var vol = new PopupVolume();
+      vol.volume = (this.get_focus()).get_volume();
+      vol.showDialog();
+      (this.get_focus()).set_volume(vol.volume);
+    },
+    _deleteMenu_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(167, 'Delete'), this._tour));
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        this._tour.get_currentTourStop().removeOverlay(overlay);
+      }
+      this.set_focus(null);
+      this.clearSelection();
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _properties_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(549, 'Properties Edit'), this._tour));
+      var props = new OverlayProperties();
+      props.overlay = this.get_focus();
+      props.showDialog();
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _bringForward_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(454, 'Bring Forward'), this._tour));
+      var $enum1 = ss.enumerate(this._getSortedSelection(false));
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        this._tour.get_currentTourStop().bringForward(overlay);
+      }
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _sendBackward_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(455, 'Send Backward'), this._tour));
+      var $enum1 = ss.enumerate(this._getSortedSelection(true));
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        this._tour.get_currentTourStop().sendBackward(overlay);
+      }
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _sendToBack_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(453, 'Send to Back'), this._tour));
+      var $enum1 = ss.enumerate(this._getSortedSelection(true));
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        this._tour.get_currentTourStop().sendToBack(overlay);
+      }
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _bringToFront_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(452, 'Bring to Front'), this._tour));
+      var $enum1 = ss.enumerate(this._getSortedSelection(false));
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        this._tour.get_currentTourStop().bringToFront(overlay);
+      }
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _getSortedSelection: function(reverse) {
+      var sorted = [];
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var ov = $enum1.current;
+        sorted.push(ov);
+      }
+      if (reverse) {
+        sorted.sort(function(p1, p2) {
+          return -Util.compare(p1.get_zOrder(), p2.get_zOrder());
+        });
+      }
+      else {
+        sorted.sort(function(p1, p2) {
+          return Util.compare(p1.get_zOrder(), p2.get_zOrder());
+        });
+      }
+      return sorted;
+    },
+    _copyMenu_Click: function(sender, e) {
+    },
+    _cutMenu_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(427, 'Cut'), this._tour));
+      this._copyMenu_Click(sender, e);
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        this._tour.get_currentTourStop().removeOverlay(overlay);
+      }
+      this.set_focus(null);
+      this.clearSelection();
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _pasteMenu_Click: function(sender, e) {
+    },
+    mouseClick: function(sender, e) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.mouseClick(sender, e)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    click: function(sender, e) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.click(sender, e)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    mouseDoubleClick: function(sender, e) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.mouseDoubleClick(sender, e)) {
+          return true;
+        }
+      }
+      if (this.get_focus() != null) {
+        if (ss.typeOf(this.get_focus()) === TextOverlay) {
+          this._editText();
+          return true;
+        }
+      }
+      return true;
+    },
+    _editText: function() {
+    },
+    keyDown: function(sender, e) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.keyDown(sender, e)) {
+          return true;
+        }
+      }
+      var increment = 1;
+      if (e.ctrlKey) {
+        increment = 10;
+      }
+      switch (e.keyCode) {
+        case 65:
+          if (e.ctrlKey) {
+            this.clearSelection();
+            this.selection.addSelectionRange(this._tour.get_currentTourStop().get_overlays());
+            OverlayList._updateOverlayListSelection(this.selection);
+            if (this._tour.get_currentTourStop().get_overlays().length > 0) {
+              this.set_focus(this._tour.get_currentTourStop().get_overlays()[0]);
+            }
+          }
+          break;
+        case 90:
+          if (e.ctrlKey) {
+            if (Undo.peekAction()) {
+              TourEdit._undoStep();
+            }
+            else {
+              UiTools._beep();
+            }
+          }
+          break;
+        case 89:
+          if (e.ctrlKey) {
+            if (Undo.peekRedoAction()) {
+              TourEdit._redoStep();
+            }
+            else {
+              UiTools._beep();
+            }
+          }
+          break;
+        case 67:
+          if (e.ctrlKey) {
+            this._copyMenu_Click(this, new ss.EventArgs());
+          }
+          break;
+        case 86:
+          if (e.ctrlKey) {
+            this._pasteMenu_Click(this, new ss.EventArgs());
+          }
+          break;
+        case 88:
+          if (e.ctrlKey) {
+            this._cutMenu_Click(this, new ss.EventArgs());
+          }
+          break;
+        case 46:
+          this._deleteMenu_Click(null, null);
+          return true;
+        case 9:
+          if (e.shiftKey) {
+            this._selectLast();
+          }
+          else {
+            this._selectNext();
+          }
+          return true;
+        case 37:
+          if (this.get_focus() != null) {
+            var $enum1 = ss.enumerate(this.selection.selectionSet);
+            while ($enum1.moveNext()) {
+              var overlay = $enum1.current;
+              if (e.shiftKey) {
+                if (e.altKey) {
+                  if (overlay.get_width() > increment) {
+                    Undo.push(new UndoTourStopChange(Language.getLocalizedText(537, 'Resize'), this._tour));
+                    overlay.set_width(overlay.get_width() - increment);
+                  }
+                }
+                else {
+                  var aspect = overlay.get_width() / overlay.get_height();
+                  if (overlay.get_width() > increment && overlay.get_height() > (increment * aspect)) {
+                    Undo.push(new UndoTourStopChange(Language.getLocalizedText(537, 'Resize'), this._tour));
+                    overlay.set_width(overlay.get_width() - increment);
+                    overlay.set_height(overlay.get_height() - increment * aspect);
+                  }
+                }
+              }
+              else if (e.altKey) {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(538, 'Rotate'), this._tour));
+                overlay.set_rotationAngle(overlay.get_rotationAngle() - increment);
+              }
+              else {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(540, 'Move'), this._tour));
+                overlay.set_x(overlay.get_x() - increment);
+              }
+            }
+            return true;
+          }
+          break;
+        case 39:
+          if (this.get_focus() != null) {
+            var $enum2 = ss.enumerate(this.selection.selectionSet);
+            while ($enum2.moveNext()) {
+              var overlay = $enum2.current;
+              if (e.shiftKey) {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(537, 'Resize'), this._tour));
+                if (e.altKey) {
+                  overlay.set_width(overlay.get_width() + increment);
+                }
+                else {
+                  var aspect = overlay.get_width() / overlay.get_height();
+                  overlay.set_width(overlay.get_width() + increment);
+                  overlay.set_height(overlay.get_height() + increment * aspect);
+                }
+              }
+              else if (e.altKey) {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(538, 'Rotate'), this._tour));
+                overlay.set_rotationAngle(overlay.get_rotationAngle() + increment);
+              }
+              else {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(540, 'Move'), this._tour));
+                overlay.set_x(overlay.get_x() + increment);
+              }
+            }
+            return true;
+          }
+          break;
+        case 38:
+          if (this.get_focus() != null) {
+            var $enum3 = ss.enumerate(this.selection.selectionSet);
+            while ($enum3.moveNext()) {
+              var overlay = $enum3.current;
+              if (e.shiftKey) {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(537, 'Resize'), this._tour));
+                if (e.altKey) {
+                  overlay.set_height(overlay.get_height() + increment);
+                }
+                else {
+                  var aspect = overlay.get_width() / overlay.get_height();
+                  overlay.set_width(overlay.get_width() + increment);
+                  overlay.set_height(overlay.get_height() + increment * aspect);
+                }
+              }
+              else if (!e.altKey) {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(540, 'Move'), this._tour));
+                overlay.set_y(overlay.get_y() - increment);
+              }
+            }
+            return true;
+          }
+          break;
+        case 40:
+          if (this.get_focus() != null) {
+            var $enum4 = ss.enumerate(this.selection.selectionSet);
+            while ($enum4.moveNext()) {
+              var overlay = $enum4.current;
+              if (e.shiftKey) {
+                if (e.altKey) {
+                  if (overlay.get_height() > increment) {
+                    Undo.push(new UndoTourStopChange(Language.getLocalizedText(537, 'Resize'), this._tour));
+                    overlay.set_height(overlay.get_height() - increment);
+                  }
+                }
+                else {
+                  var aspect = overlay.get_width() / overlay.get_height();
+                  if (overlay.get_width() > increment && overlay.get_height() > (increment * aspect)) {
+                    Undo.push(new UndoTourStopChange(Language.getLocalizedText(537, 'Resize'), this._tour));
+                    overlay.set_width(overlay.get_width() - increment);
+                    overlay.set_height(overlay.get_height() - increment * aspect);
+                  }
+                }
+              }
+              else if (!e.altKey) {
+                Undo.push(new UndoTourStopChange(Language.getLocalizedText(540, 'Move'), this._tour));
+                overlay.set_y(overlay.get_y() + increment);
+              }
+            }
+            return true;
+          }
+          break;
+        case 34:
+          if (e.altKey) {
+            if (this._tour.get_currentTourstopIndex() < (this._tour.get_tourStops().length - 1)) {
+              this._tour.set_currentTourstopIndex(this._tour.get_currentTourstopIndex() + 1) - 1;
+              TourEdit._selectCurrent();
+              TourEdit._ensureSelectedVisible();
+            }
+            return true;
+          }
+          break;
+        case 33:
+          if (e.altKey) {
+            if (this._tour.get_currentTourstopIndex() > 0) {
+              this._tour.set_currentTourstopIndex(this._tour.get_currentTourstopIndex() - 1) + 1;
+              TourEdit._selectCurrent();
+              TourEdit._ensureSelectedVisible();
+            }
+            return true;
+          }
+          break;
+      }
+      return false;
+    },
+    _selectNext: function() {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      this.set_focus(this._tour.get_currentTourStop().getNextOverlay(this.get_focus()));
+      this.selection.setSelection(this.get_focus());
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    _selectLast: function() {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      this.set_focus(this._tour.get_currentTourStop().getPerviousOverlay(this.get_focus()));
+      this.selection.setSelection(this.get_focus());
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+    },
+    keyUp: function(sender, e) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.keyUp(sender, e)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    addPicture: function(filename) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return false;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(546, 'Insert Picture'), this._tour));
+      var bmp = BitmapOverlay.create(this._tour.get_currentTourStop(), filename);
+      bmp.set_x(960);
+      bmp.set_y(600);
+      this._tour.get_currentTourStop().addOverlay(bmp);
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+      return true;
+    },
+    addFlipbook: function(filename) {
+      return false;
+    },
+    addAudio: function(filename) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return false;
+      }
+      var audio = AudioOverlay.create(this._tour.get_currentTourStop(), filename);
+      audio.set_x(900);
+      audio.set_y(600);
+      this._tour.get_currentTourStop().addOverlay(audio);
+      return true;
+    },
+    addVideo: function(filename) {
+      return true;
+    },
+    addText: function(p, textObject) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return false;
+      }
+      var text = TextOverlay.create(textObject);
+      text.set_color(textObject._foregroundColor);
+      text.set_x(960);
+      text.set_y(600);
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(547, 'Insert Text'), this._tour));
+      this._tour.get_currentTourStop().addOverlay(text);
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+      return true;
+    },
+    addOverlay: function(ol) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return null;
+      }
+      if (ss.typeOf(ol) === ShapeOverlay) {
+        var srcShapeOverlay = ol;
+        if (srcShapeOverlay != null) {
+          var shape = ShapeOverlay._create(this._tour.get_currentTourStop(), srcShapeOverlay.get_shapeType());
+          shape.set_width(srcShapeOverlay.get_width());
+          shape.set_height(srcShapeOverlay.get_height());
+          shape.set_x(this._contextPoint.x);
+          shape.set_y(this._contextPoint.y);
+          shape.set_color(srcShapeOverlay.get_color());
+          shape.set_rotationAngle(srcShapeOverlay.get_rotationAngle());
+          this._tour.get_currentTourStop().addOverlay(shape);
+          return shape;
+        }
+      }
+      else if (ss.typeOf(ol) === TextOverlay) {
+        var srcTxtOverlay = ol;
+        if (srcTxtOverlay != null) {
+          var text = TextOverlay.create(srcTxtOverlay.textObject);
+          text.set_x(this._contextPoint.x);
+          text.set_y(this._contextPoint.y);
+          text.set_color(srcTxtOverlay.get_color());
+          this._tour.get_currentTourStop().addOverlay(text);
+          return text;
+        }
+      }
+      else if (ss.typeOf(ol) === BitmapOverlay) {
+        var srcBmpOverlay = ol;
+        if (srcBmpOverlay != null) {
+          var bitmap = srcBmpOverlay.copy(this._tour.get_currentTourStop());
+          bitmap.set_x(this._contextPoint.x);
+          bitmap.set_y(this._contextPoint.y);
+          this._tour.get_currentTourStop().addOverlay(bitmap);
+          return bitmap;
+        }
+      }
+      else if (ss.typeOf(ol) === FlipbookOverlay) {
+        var srcFlipbookOverlay = ol;
+        if (srcFlipbookOverlay != null) {
+          var bitmap = srcFlipbookOverlay.copy(this._tour.get_currentTourStop());
+          bitmap.set_x(this._contextPoint.x);
+          bitmap.set_y(this._contextPoint.y);
+          this._tour.get_currentTourStop().addOverlay(bitmap);
+          return bitmap;
+        }
+      }
+      return null;
+    },
+    addShape: function(p, shapeType) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return false;
+      }
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(548, 'Insert Shape'), this._tour));
+      var shape = ShapeOverlay._create(this._tour.get_currentTourStop(), shapeType);
+      shape.set_width(200);
+      shape.set_height(200);
+      if (shapeType === 4) {
+        shape.set_height(shape.get_height() / 2);
+      }
+      if (shapeType === 5) {
+        shape.set_height(12);
+      }
+      shape.set_x(960);
+      shape.set_y(600);
+      this._tour.get_currentTourStop().addOverlay(shape);
+      this.set_focus(shape);
+      this.selection.setSelection(this.get_focus());
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+      return true;
+    },
+    getCurrentColor: function() {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return this._defaultColor;
+      }
+      if (this.get_focus() != null) {
+        return this.get_focus().get_color();
+      }
+      else {
+        return this._defaultColor;
+      }
+    },
+    setCurrentColor: function(color) {
+      this._defaultColor = color;
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      if (this.get_focus() != null) {
+        this.get_focus().set_color(color);
+      }
+    },
+    dispose: function() {
+      if (this._contextMenu != null) {
+        this._contextMenu._dispose();
+        this._contextMenu = null;
+      }
+    },
+    hover: function(pnt) {
+      if (TourEditor.currentEditor != null) {
+        if (TourEditor.currentEditor.hover(pnt)) {
+          return true;
+        }
+      }
+      return true;
+    }
+  };
+
+
+  // wwtlib.OverlayList
+
+  function OverlayList() {
+  }
+  OverlayList._updateOverlayList = function(currentTourStop, selection) {
+  };
+  OverlayList._updateOverlayListSelection = function(selection) {
+  };
+  var OverlayList$ = {
+
+  };
+
+
+  // wwtlib.TourEdit
+
+  function TourEdit() {
+  }
+  TourEdit._ensureSelectedVisible = function() {
+  };
+  TourEdit._redoStep = function() {
+  };
+  TourEdit._selectCurrent = function() {
+  };
+  TourEdit._undoStep = function() {
+  };
+  var TourEdit$ = {
+
   };
 
 
@@ -17100,6 +18906,9 @@ window.wwtlib = function(){
     if (voiceNode != null) {
       newTourStop._voiceTrack = Overlay._fromXml(newTourStop, Util.selectSingleNode(voiceNode, 'Overlay'));
     }
+    newTourStop._thumbnail = owner.getCachedTexture(ss.format('{0}.thumb.png', newTourStop._id), function() {
+      var c = 0;
+    });
     return newTourStop;
   };
   var TourStop$ = {
@@ -17904,6 +19713,97 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.UndoTourStopChange
+
+  function UndoTourStopChange(text, tour) {
+    this._undoXml = '';
+    this._redoXml = '';
+    this._currentIndex = 0;
+    this._actionText = '';
+    this._targetTour = null;
+  }
+  var UndoTourStopChange$ = {
+    get_actionText: function() {
+      return this._actionText;
+    },
+    set_actionText: function(value) {
+      this._actionText = value;
+      return value;
+    },
+    undo: function() {
+    },
+    redo: function() {
+    },
+    toString: function() {
+      return this._actionText;
+    }
+  };
+
+
+  // wwtlib.Undo
+
+  function Undo() {
+  }
+  Undo.clear = function() {
+    Undo._undoStack = new ss.Stack();
+    Undo._redoStack = new ss.Stack();
+  };
+  Undo.push = function(step) {
+    Undo._undoStack.push(step);
+    Undo._redoStack = new ss.Stack();
+  };
+  Undo.peekActionString = function() {
+    if (Undo._undoStack.count > 0) {
+      return Undo._undoStack.peek().toString();
+    }
+    else {
+      return Language.getLocalizedText(551, 'Nothing to Undo');
+    }
+  };
+  Undo.peekRedoActionString = function() {
+    if (Undo._redoStack.count > 0) {
+      return Undo._redoStack.peek().toString();
+    }
+    else {
+      return '';
+    }
+  };
+  Undo.peekAction = function() {
+    return (Undo._undoStack.count > 0);
+  };
+  Undo.peekRedoAction = function() {
+    return (Undo._redoStack.count > 0);
+  };
+  Undo.stepBack = function() {
+    var step = Undo._undoStack.pop();
+    step.undo();
+    Undo._redoStack.push(step);
+  };
+  Undo.stepForward = function() {
+    var step = Undo._redoStack.pop();
+    step.redo();
+    Undo._undoStack.push(step);
+  };
+  var Undo$ = {
+
+  };
+
+
+  // wwtlib.UndoStep
+
+  function UndoStep() {
+  }
+  var UndoStep$ = {
+    undo: function() {
+    },
+    redo: function() {
+    },
+    toString: function() {
+      return Language.getLocalizedText(551, 'Nothing to Undo');
+    }
+  };
+
+
   // wwtlib.Triangle
 
   function Triangle() {
@@ -18096,6 +19996,8 @@ window.wwtlib = function(){
     }
     return output;
   };
+  UiTools._beep = function() {
+  };
   var UiTools$ = {
 
   };
@@ -18116,6 +20018,15 @@ window.wwtlib = function(){
     }
     return hash;
   };
+  Util.compare = function(l, r) {
+    if (l === r) {
+      return 0;
+    }
+    if (l > r) {
+      return 1;
+    }
+    return -1;
+  };
   Util.logN = function(num, b) {
     return Math.log(num) / Math.log(b);
   };
@@ -18123,10 +20034,16 @@ window.wwtlib = function(){
     return '';
   };
   Util.getProxiedUrl = function(url) {
-    if ((ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) && url.toLowerCase().indexOf('worldwidetelescope.org/wwtweb/') === -1) {
+    if (ss.startsWith(url.toLowerCase(), 'http://worldwidetelescope.org') || ss.startsWith(url.toLowerCase(), 'http://www.worldwidetelescope.org')) {
+      if (url.toLowerCase().indexOf('worldwidetelescope.org/wwtweb/') < 12) {
+        return url;
+      }
       return url.split('worldwidetelescope.org')[1];
     }
-    if ((ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net') || ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net')) && url.toLowerCase().indexOf('wwtstaging.azurewebsites.net/wwtweb/') === -1) {
+    if (ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net') || ss.startsWith(url.toLowerCase(), 'http://wwtstaging.azurewebsites.net')) {
+      if (url.toLowerCase().indexOf('wwtstaging.azurewebsites.net/wwtweb/') < 12) {
+        return url;
+      }
       return url.split('wwtstaging.azurewebsites.net')[1];
     }
     if (ss.startsWith(url.toLowerCase(), 'http')) {
@@ -18287,6 +20204,17 @@ window.wwtlib = function(){
     get_bottom: function() {
       return this.y + this.height;
     },
+    contains: function(point) {
+      return (this._between(point.x, this.x, this.x + this.width) && this._between(point.y, this.y, this.y + this.height));
+    },
+    _between: function(n, n1, n2) {
+      if (n1 > n2) {
+        return !(n > n1) && !(n < n2);
+      }
+      else {
+        return !(n < n1) && !(n > n2);
+      }
+    },
     copy: function() {
       var temp = new Rectangle();
       temp.x = this.x;
@@ -18343,6 +20271,277 @@ window.wwtlib = function(){
       } while ((element = element.offsetParent) != null);
     }
     return me.pageY - y;
+  };
+
+
+  // wwtlib.Language
+
+  function Language() {
+  }
+  Language.getLocalizedText = function(id, text) {
+    return text;
+  };
+  var Language$ = {
+
+  };
+
+
+  // wwtlib.Cursor
+
+  function Cursor() {
+  }
+  Cursor.get_position = function() {
+    return new Vector2d();
+  };
+  Cursor.get_current = function() {
+    return document.body.style.cursor;
+  };
+  Cursor.set_current = function(value) {
+    document.body.style.cursor = value;
+    return value;
+  };
+  var Cursor$ = {
+
+  };
+
+
+  // wwtlib.Cursors
+
+  function Cursors() {
+  }
+  Cursors.get_arrow = function() {
+    return 'default';
+  };
+  Cursors.get_cross = function() {
+    return 'crosshair';
+  };
+  Cursors.get_defaultV = function() {
+    return 'default';
+  };
+  Cursors.get_hand = function() {
+    return 'grab';
+  };
+  Cursors.get_help = function() {
+    return 'help';
+  };
+  Cursors.get_hSplit = function() {
+    return 'row-resize';
+  };
+  Cursors.get_iBeam = function() {
+    return 'text';
+  };
+  Cursors.get_no = function() {
+    return 'not-allowed';
+  };
+  Cursors.get_sizeAll = function() {
+    return 'help';
+  };
+  Cursors.get_sizeNESW = function() {
+    return 'nwse-resize';
+  };
+  Cursors.get_sizeNS = function() {
+    return 'ns-resize';
+  };
+  Cursors.get_sizeNWSE = function() {
+    return 'nwse-resize';
+  };
+  Cursors.get_sizeWE = function() {
+    return 'ew-resize';
+  };
+  Cursors.get_upArrow = function() {
+    return 'help';
+  };
+  Cursors.get_vSplit = function() {
+    return 'col-resize';
+  };
+  Cursors.get_waitCursor = function() {
+    return 'wait';
+  };
+  var Cursors$ = {
+
+  };
+
+
+  // wwtlib.SimpleInput
+
+  function SimpleInput(v1, v2, url, v3) {
+    this._v3 = 0;
+    this.resultText = new String();
+    this._v1 = v1;
+    this._v2 = v2;
+    this._url = url;
+    this._v3 = v3;
+  }
+  var SimpleInput$ = {
+    showDialog: function() {
+      return 1;
+    }
+  };
+
+
+  // wwtlib.SelectLink
+
+  function SelectLink() {
+    this.id = new String();
+    this.tour = null;
+  }
+  var SelectLink$ = {
+    _showDialog: function() {
+      return 1;
+    }
+  };
+
+
+  // wwtlib.PopupVolume
+
+  function PopupVolume() {
+    this.volume = 0;
+  }
+  var PopupVolume$ = {
+    showDialog: function() {
+      return 1;
+    }
+  };
+
+
+  // wwtlib.PopupColorPicker
+
+  function PopupColorPicker() {
+    this.volume = 0;
+    this.location = new Vector2d();
+    this.color = new Color();
+  }
+  var PopupColorPicker$ = {
+    showDialog: function() {
+      return 1;
+    }
+  };
+
+
+  // wwtlib.OverlayProperties
+
+  function OverlayProperties() {
+    this.volume = 0;
+    this.location = new Vector2d();
+    this.overlay = null;
+  }
+  var OverlayProperties$ = {
+    showDialog: function() {
+      return 1;
+    }
+  };
+
+
+  // wwtlib.ContextMenuStrip
+
+  function ContextMenuStrip() {
+    this.items = [];
+  }
+  var ContextMenuStrip$ = {
+    _dispose: function() {
+    },
+    _nonMenuClick: function(e) {
+      var menu = document.getElementById('contextmenu');
+      menu.style.display = 'none';
+      window.removeEventListener('click', ss.bind('_nonMenuClick', this), false);
+      var popup = document.getElementById('popoutmenu');
+      while (popup.firstChild != null) {
+        popup.removeChild(popup.firstChild);
+      }
+      popup.style.display = 'none';
+    },
+    _menuItemClicked: function(e) {
+      var me = e.currentTarget;
+      me.itemTag.click(me.itemTag, new ss.EventArgs());
+    },
+    _show: function(position) {
+      var menu = document.getElementById('contextmenu');
+      while (menu.firstChild != null) {
+        menu.removeChild(menu.firstChild);
+      }
+      menu.className = 'contextmenu';
+      menu.style.display = 'block';
+      menu.style.left = position.x.toString() + 'px';
+      menu.style.top = position.y.toString() + 'px';
+      window.addEventListener('click', ss.bind('_nonMenuClick', this), true);
+      var $enum1 = ss.enumerate(this.items);
+      while ($enum1.moveNext()) {
+        var item = $enum1.current;
+        if (item.visible) {
+          var md = document.createElement('div');
+          md.className = 'contextmenuitem';
+          md.innerText = item.name;
+          var it = md;
+          it.itemTag = item;
+          md.addEventListener('mouseover', ss.bind('_openSubMenu', this), false);
+          if (item.click != null) {
+            md.addEventListener('click', ss.bind('_menuItemClicked', this), false);
+          }
+          menu.appendChild(md);
+        }
+      }
+    },
+    _openSubMenu: function(e) {
+      var me = e.currentTarget;
+      var child = me.itemTag;
+      var menu = document.getElementById('popoutmenu');
+      while (menu.firstChild != null) {
+        menu.removeChild(menu.firstChild);
+      }
+      menu.style.display = 'none';
+      if (!child.dropDownItems.length) {
+        return;
+      }
+      var position = new Vector2d();
+      position.x = e.currentTarget.parentNode.offsetLeft + e.currentTarget.parentNode.clientWidth;
+      position.y = e.currentTarget.parentNode.offsetTop + e.currentTarget.offsetTop;
+      menu.className = 'contextmenu';
+      menu.style.display = 'block';
+      menu.style.left = position.x.toString() + 'px';
+      menu.style.top = position.y.toString() + 'px';
+      window.addEventListener('click', ss.bind('_nonMenuClick', this), true);
+      var $enum1 = ss.enumerate(child.dropDownItems);
+      while ($enum1.moveNext()) {
+        var item = $enum1.current;
+        if (item.visible) {
+          var md = document.createElement('div');
+          md.className = 'contextmenuitem';
+          md.innerText = item.name;
+          var it = md;
+          it.itemTag = item;
+          md.addEventListener('click', ss.bind('_menuItemClicked', this), false);
+          menu.appendChild(md);
+        }
+      }
+    }
+  };
+
+
+  // wwtlib.ToolStripMenuItem
+
+  function ToolStripMenuItem() {
+    this.tag = null;
+    this.dropDownItems = [];
+    this.checked = false;
+    this.enabled = true;
+    this.visible = true;
+  }
+  ToolStripMenuItem.create = function(name) {
+    var tsmi = new ToolStripMenuItem();
+    tsmi.name = name;
+    return tsmi;
+  };
+  var ToolStripMenuItem$ = {
+
+  };
+
+
+  // wwtlib.TagMe
+
+  function TagMe() {
+  }
+  var TagMe$ = {
+
   };
 
 
@@ -19110,6 +21309,7 @@ window.wwtlib = function(){
       }
     },
     setup: function(canvas) {
+      window.addEventListener('contextmenu', ss.bind('onContextMenu', this), false);
       canvas.addEventListener('dblclick', ss.bind('onDoubleClick', this), false);
       canvas.addEventListener('mousedown', ss.bind('onMouseDown', this), false);
       canvas.addEventListener('mousewheel', ss.bind('onMouseWheel', this), false);
@@ -19380,6 +21580,10 @@ window.wwtlib = function(){
       this._lastX = Mouse.offsetX(this.canvas, e);
       this._lastY = Mouse.offsetY(this.canvas, e);
     },
+    onContextMenu: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
     onMouseMove: function(e) {
       this._lastMouseMove = ss.now();
       this._hoverTextPoint = Vector2d.create(Mouse.offsetX(this.canvas, e), Mouse.offsetY(this.canvas, e));
@@ -19423,6 +21627,7 @@ window.wwtlib = function(){
       if (this.uiController != null) {
         if (this.uiController.mouseUp(this, e)) {
           this._mouseDown = false;
+          e.preventDefault();
           return;
         }
       }
@@ -19788,11 +21993,11 @@ window.wwtlib = function(){
         player.stop(false);
       }
       this.tour = TourDocument.fromUrl(url, function() {
-        var player = new TourPlayer();
-        player.set_tour($this.tour);
-        $this.tour.set_currentTourstopIndex(-1);
-        $this.uiController = player;
-        player.play();
+        var editor = new TourEditor();
+        editor.set_tour($this.tour);
+        $this.tour.set_currentTourstopIndex(0);
+        $this.uiController = editor;
+        WWTControl.scriptInterface._fireTourReady();
       });
     },
     playCurrentTour: function() {
@@ -23097,8 +25302,26 @@ window.wwtlib = function(){
   Matrix2d.multiply = function(matrix1, matrix2) {
     return Matrix2d.create((((matrix1.m11 * matrix2.m11) + (matrix1.m12 * matrix2.m21)) + (matrix1.m13 * matrix2.m31)), (((matrix1.m11 * matrix2.m12) + (matrix1.m12 * matrix2.m22)) + (matrix1.m13 * matrix2.m32)), (((matrix1.m11 * matrix2.m13) + (matrix1.m12 * matrix2.m23)) + (matrix1.m13 * matrix2.m33)), (((matrix1.m21 * matrix2.m11) + (matrix1.m22 * matrix2.m21)) + (matrix1.m23 * matrix2.m31)), (((matrix1.m21 * matrix2.m12) + (matrix1.m22 * matrix2.m22)) + (matrix1.m23 * matrix2.m32)), (((matrix1.m21 * matrix2.m13) + (matrix1.m22 * matrix2.m23)) + (matrix1.m23 * matrix2.m33)), (((matrix1.m31 * matrix2.m11) + (matrix1.m32 * matrix2.m21)) + (matrix1.m33 * matrix2.m31)), (((matrix1.m31 * matrix2.m12) + (matrix1.m32 * matrix2.m22)) + (matrix1.m33 * matrix2.m32)), (((matrix1.m31 * matrix2.m13) + (matrix1.m32 * matrix2.m23)) + (matrix1.m33 * matrix2.m33)));
   };
+  Matrix2d.rotateAt = function(angle, pnt) {
+    var matT0 = Matrix2d.translation(-pnt.x, -pnt.y);
+    var matR = Matrix2d.rotation(angle);
+    var matT1 = Matrix2d.translation(pnt.x, pnt.y);
+    return Matrix2d.multiply(Matrix2d.multiply(matT0, matR), matT1);
+  };
   var Matrix2d$ = {
-
+    _transformPoints: function(points) {
+      var $enum1 = ss.enumerate(points);
+      while ($enum1.moveNext()) {
+        var pnt = $enum1.current;
+        this.multiplyPoint(pnt);
+      }
+    },
+    multiplyPoint: function(point) {
+      var x = point.x;
+      var y = point.y;
+      point.x = (((x * this.m11) + (y * this.m21)) + this.m31);
+      point.y = (((x * this.m12) + (y * this.m22)) + this.m32);
+    }
   };
 
 
@@ -29168,9 +31391,10 @@ window.wwtlib = function(){
 
   function BitmapOverlay() {
     this._textureReady$1 = false;
+    this._sprite$1 = new Sprite2d();
     Overlay.call(this);
   }
-  BitmapOverlay.create = function(renderContext, owner, image) {
+  BitmapOverlay.create = function(owner, filename) {
     var temp = new BitmapOverlay();
     temp.set_owner(owner);
     temp._filename$1 = (Overlay.nextId++).toString() + '.png';
@@ -29227,7 +31451,7 @@ window.wwtlib = function(){
         }
         this.initiaizeGeometry();
         this.updateRotation();
-        Sprite2d.draw(renderContext, this.points, this.points.length, this.texture2d, true, 1);
+        this._sprite$1.draw(renderContext, this.points, this.points.length, this.texture2d, true, 1);
       }
       else {
         if (this.texture == null) {
@@ -29255,8 +31479,16 @@ window.wwtlib = function(){
   // wwtlib.TextOverlay
 
   function TextOverlay() {
+    this._sprite$1 = new Sprite2d();
+    this._ctx$1 = null;
+    this._ce$1 = null;
     Overlay.call(this);
   }
+  TextOverlay.create = function(textObject) {
+    var to = new TextOverlay();
+    to.textObject = textObject;
+    return to;
+  };
   var TextOverlay$ = {
     get_color: function() {
       return Overlay.prototype.get_color.call(this);
@@ -29271,6 +31503,10 @@ window.wwtlib = function(){
     },
     draw3D: function(renderContext, designTime) {
       if (RenderContext.useGl) {
+        this.initializeTexture();
+        this.initiaizeGeometry();
+        this.updateRotation();
+        this._sprite$1.draw(renderContext, this.points, this.points.length, this.texture2d, true, 1);
       }
       else {
         var ctx = renderContext.device;
@@ -29278,49 +31514,70 @@ window.wwtlib = function(){
         ctx.translate(this.get_x(), this.get_y());
         ctx.rotate(this.get_rotationAngle() * Overlay.RC);
         ctx.globalAlpha = this.get_opacity();
-        ctx.fillStyle = this.textObject.forgroundColor.toString();
-        ctx.font = ((this.textObject.italic) ? 'italic' : 'normal') + ' ' + ((this.textObject.bold) ? 'bold' : 'normal') + ' ' + Math.round(this.textObject.fontSize * 1.2).toString() + 'px ' + this.textObject.fontName;
-        ctx.textBaseline = 'top';
-        var text = this.textObject.text;
-        if (text.indexOf('{$') > -1) {
-          if (text.indexOf('{$DATE}') > -1) {
-            var date = ss.format('{0:yyyy/MM/dd}', SpaceTimeController.get_now());
-            text = ss.replaceString(text, '{$DATE}', date);
-          }
-          if (text.indexOf('{$TIME}') > -1) {
-            var time = ss.format('{0:HH:mm:ss}', SpaceTimeController.get_now());
-            text = ss.replaceString(text, '{$TIME}', time);
-          }
-          text = ss.replaceString(text, '{$LAT}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
-          text = ss.replaceString(text, '{$LNG}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
-          text = ss.replaceString(text, '{$RA}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_RA()));
-          text = ss.replaceString(text, '{$DEC}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_dec()));
-          text = ss.replaceString(text, '{$FOV}', Coordinates.formatDMS(WWTControl.singleton.renderContext.get_fovAngle()));
-        }
-        var lines = text.split('\n');
-        var baseline = -(this.get_height() / 2);
-        var lineSpace = this.textObject.fontSize * 1.7;
-        var $enum1 = ss.enumerate(lines);
-        while ($enum1.moveNext()) {
-          var line = $enum1.current;
-          var parts = Util.getWrappedText(ctx, line, this.get_width());
-          var $enum2 = ss.enumerate(parts);
-          while ($enum2.moveNext()) {
-            var part = $enum2.current;
-            ctx.fillText(part, -this.get_width() / 2, baseline);
-            baseline += lineSpace;
-          }
-        }
+        this._drawCanvasText$1(ctx);
         ctx.restore();
       }
     },
+    _drawCanvasText$1: function(ctx) {
+      ctx.fillStyle = this.textObject.forgroundColor.toString();
+      ctx.font = ((this.textObject.italic) ? 'italic' : 'normal') + ' ' + ((this.textObject.bold) ? 'bold' : 'normal') + ' ' + Math.round(this.textObject.fontSize * 1.2).toString() + 'px ' + this.textObject.fontName;
+      ctx.textBaseline = 'top';
+      var text = this.textObject.text;
+      if (text.indexOf('{$') > -1) {
+        if (text.indexOf('{$DATE}') > -1) {
+          var date = ss.format('{0:yyyy/MM/dd}', SpaceTimeController.get_now());
+          text = ss.replaceString(text, '{$DATE}', date);
+        }
+        if (text.indexOf('{$TIME}') > -1) {
+          var time = ss.format('{0:HH:mm:ss}', SpaceTimeController.get_now());
+          text = ss.replaceString(text, '{$TIME}', time);
+        }
+        text = ss.replaceString(text, '{$DIST}', UiTools.formatDistance(WWTControl.singleton.renderContext.get_solarSystemCameraDistance()));
+        text = ss.replaceString(text, '{$LAT}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
+        text = ss.replaceString(text, '{$LNG}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
+        text = ss.replaceString(text, '{$RA}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_RA()));
+        text = ss.replaceString(text, '{$DEC}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_dec()));
+        text = ss.replaceString(text, '{$FOV}', Coordinates.formatDMS(WWTControl.singleton.renderContext.get_fovAngle()));
+      }
+      var lines = text.split('\n');
+      var baseline = -(this.get_height() / 2);
+      var lineSpace = this.textObject.fontSize * 1.7;
+      var $enum1 = ss.enumerate(lines);
+      while ($enum1.moveNext()) {
+        var line = $enum1.current;
+        var parts = Util.getWrappedText(ctx, line, this.get_width());
+        var $enum2 = ss.enumerate(parts);
+        while ($enum2.moveNext()) {
+          var part = $enum2.current;
+          ctx.fillText(part, -this.get_width() / 2, baseline);
+          baseline += lineSpace;
+        }
+      }
+    },
     initializeTexture: function() {
+      if (this.texture2d == null) {
+        if (this._ctx$1 == null || this._ce$1 == null) {
+          this._ce$1 = document.createElement('canvas');
+          this._ce$1.height = ss.truncate(this.get_height());
+          this._ce$1.width = ss.truncate(this.get_width());
+          this._ctx$1 = this._ce$1.getContext('2d');
+        }
+        this._ctx$1.translate(this.get_width() / 2, this.get_height() / 2);
+        this._ctx$1.clearRect(0, 0, this.get_width(), this.get_height());
+        this._drawCanvasText$1(this._ctx$1);
+        this.texture2d = new Texture();
+        this.texture2d.imageElement = this._ce$1;
+        this.texture2d.makeTexture();
+      }
     },
     initializeFromXml: function(node) {
       var text = Util.selectSingleNode(node, 'Text');
       this.textObject = TextObject._fromXml(Util.selectSingleNode(text, 'TextObject'));
     },
     initiaizeGeometry: function() {
+      if (RenderContext.useGl) {
+        Overlay.prototype.initiaizeGeometry.call(this);
+      }
     }
   };
 
@@ -29329,8 +31586,16 @@ window.wwtlib = function(){
 
   function ShapeOverlay() {
     this._shapeType$1 = 1;
+    this._sprite$1 = new Sprite2d();
+    this._triangleStrip$1 = true;
     Overlay.call(this);
   }
+  ShapeOverlay._create = function(currentTourStop, shapeType) {
+    var overlay = new ShapeOverlay();
+    overlay._shapeType$1 = shapeType;
+    overlay.set_owner(currentTourStop);
+    return overlay;
+  };
   var ShapeOverlay$ = {
     get_shapeType: function() {
       return this._shapeType$1;
@@ -29342,6 +31607,8 @@ window.wwtlib = function(){
     },
     draw3D: function(renderContext, designTime) {
       if (RenderContext.useGl) {
+        this.initiaizeGeometry();
+        this._sprite$1.draw(renderContext, this.points, this.points.length, null, this._triangleStrip$1, this.get_opacity());
       }
       else {
         switch (this._shapeType$1) {
@@ -29364,7 +31631,7 @@ window.wwtlib = function(){
             this._drawArrowGeometry$1(renderContext);
             break;
           case 5:
-            this._createLineGeometry$1(renderContext);
+            this._drawLineGeometry$1(renderContext);
             break;
           default:
             break;
@@ -29372,8 +31639,276 @@ window.wwtlib = function(){
       }
     },
     initiaizeGeometry: function() {
+      if (this.points == null) {
+        switch (this._shapeType$1) {
+          case 0:
+            this._createCircleGeometry$1();
+            break;
+          case 1:
+            Overlay.prototype.initiaizeGeometry.call(this);
+            break;
+          case 6:
+            this._createOpenRectGeometry$1();
+            break;
+          case 2:
+            this._createStarGeometry$1();
+            break;
+          case 3:
+            this._createDonutGeometry$1();
+            break;
+          case 4:
+            this._createArrowGeometry$1();
+            break;
+          case 5:
+            this._createLineGeometry$1();
+            break;
+          default:
+            break;
+        }
+      }
     },
-    _createLineGeometry$1: function(renderContext) {
+    _createLineGeometry$1: function() {
+      var centerX = this.get_x();
+      var centerY = this.get_y();
+      var radius = this.get_width() / 2;
+      var length = this.get_width();
+      var segments = ss.truncate((length / 12)) + 1;
+      var radiansPerSegment = (Math.PI * 2) / segments;
+      if (this.points == null) {
+        this.points = new Array(segments * 2 + 2);
+      }
+      for (var j = 0; j <= segments; j++) {
+        var i = j * 2;
+        this.points[i] = new PositionColoredTextured();
+        this.points[i].position = this.makePosition(this.get_x(), this.get_y(), ((j / segments) * this.get_width() - (this.get_width() / 2)), 6, this.get_rotationAngle());
+        this.points[i].tu = (j % 2);
+        this.points[i].tv = 0;
+        this.points[i].color = this.get_color();
+        this.points[i + 1] = new PositionColoredTextured();
+        this.points[i + 1].position = this.makePosition(this.get_x(), this.get_y(), ((j / segments) * this.get_width() - (this.get_width() / 2)), -6, this.get_rotationAngle());
+        this.points[i + 1].tu = (j % 2);
+        this.points[i + 1].tv = 1;
+        this.points[i + 1].color = this.get_color();
+      }
+    },
+    _createOpenRectGeometry$1: function() {
+      var centerX = this.get_x();
+      var centerY = this.get_y();
+      var radius = this.get_width() / 2;
+      var length = this.get_width();
+      var segments = ss.truncate((length / 12)) + 1;
+      var segmentsHigh = ss.truncate((this.get_height() / 12)) + 1;
+      var totalPoints = (((segments + 1) * 2) + ((segmentsHigh + 1) * 2)) * 2;
+      if (this.points == null) {
+        this.points = new Array(totalPoints);
+      }
+      for (var j = 0; j <= segments; j++) {
+        var i = j * 2;
+        this.points[i] = new PositionColoredTextured();
+        this.points[i].position = this.makePosition(centerX, centerY, (j / segments) * this.get_width() - (this.get_width() / 2), (this.get_height() / 2), this.get_rotationAngle());
+        this.points[i].tu = (j % 2);
+        this.points[i].tv = 0;
+        this.points[i].color = this.get_color();
+        this.points[i + 1] = new PositionColoredTextured();
+        this.points[i + 1].position = this.makePosition(centerX, centerY, (j / segments) * this.get_width() - (this.get_width() / 2), ((this.get_height() / 2) - 12), this.get_rotationAngle());
+        this.points[i + 1].tu = (j % 2);
+        this.points[i + 1].tv = 1;
+        this.points[i + 1].color = this.get_color();
+        var k = (((segments + 1) * 4) + ((segmentsHigh + 1) * 2) - 2) - i;
+        this.points[k] = new PositionColoredTextured();
+        this.points[k].position = this.makePosition(centerX, centerY, (j / segments) * this.get_width() - (this.get_width() / 2), (-(this.get_height() / 2)) + 12, this.get_rotationAngle());
+        this.points[k].tu = (j % 2);
+        this.points[k].tv = 0;
+        this.points[k].color = this.get_color();
+        this.points[k + 1] = new PositionColoredTextured();
+        this.points[k + 1].position = this.makePosition(centerX, centerY, (j / segments) * this.get_width() - (this.get_width() / 2), (-(this.get_height() / 2)), this.get_rotationAngle());
+        this.points[k + 1].tu = (j % 2);
+        this.points[k + 1].tv = 1;
+        this.points[k + 1].color = this.get_color();
+      }
+      var offset = ((segments + 1) * 2);
+      for (var j = 0; j <= segmentsHigh; j++) {
+        var top = ((segmentsHigh + 1) * 2) + offset - 2;
+        var i = j * 2;
+        this.points[top - i] = new PositionColoredTextured();
+        this.points[top - i].position = this.makePosition(centerX, centerY, (this.get_width() / 2), ((j / segmentsHigh) * this.get_height() - (this.get_height() / 2)), this.get_rotationAngle());
+        this.points[top - i].tu = (j % 2);
+        this.points[top - i].tv = 0;
+        this.points[top - i].color = this.get_color();
+        this.points[top - i + 1] = new PositionColoredTextured();
+        this.points[top - i + 1].position = this.makePosition(centerX, centerY, ((this.get_width() / 2) - 12), ((j / segmentsHigh) * this.get_height() - (this.get_height() / 2)), this.get_rotationAngle());
+        this.points[top - i + 1].tu = (j % 2);
+        this.points[top - i + 1].tv = 1;
+        this.points[top - i + 1].color = this.get_color();
+        var k = i + ((segments + 1) * 4) + ((segmentsHigh + 1) * 2);
+        this.points[k] = new PositionColoredTextured();
+        this.points[k].position = this.makePosition(centerX, centerY, (-(this.get_width() / 2) + 12), ((j / segmentsHigh) * this.get_height() - (this.get_height() / 2)), this.get_rotationAngle());
+        this.points[k].tu = (j % 2);
+        this.points[k].tv = 0;
+        this.points[k].color = this.get_color();
+        this.points[k + 1] = new PositionColoredTextured();
+        this.points[k + 1].position = this.makePosition(centerX, centerY, (-(this.get_width() / 2)), ((j / segmentsHigh) * this.get_height() - (this.get_height() / 2)), this.get_rotationAngle());
+        this.points[k + 1].tu = (j % 2);
+        this.points[k + 1].tv = 1;
+        this.points[k + 1].color = this.get_color();
+      }
+    },
+    _createStarGeometry$1: function() {
+      var centerX = this.get_x();
+      var centerY = this.get_y();
+      var radius = this.get_width() / 2;
+      var radiansPerSegment = (Math.PI * 2) / 5;
+      if (this.points == null) {
+        this.points = new Array(12);
+      }
+      if (this._pnts$1 == null) {
+        this._pnts$1 = new Array(10);
+      }
+      for (var i = 0; i < 5; i++) {
+        var rads = i * radiansPerSegment - (Math.PI / 2);
+        this._pnts$1[i] = new PositionColoredTextured();
+        this._pnts$1[i].position = this.makePosition(centerX, centerY, (Math.cos(rads) * (this.get_width() / 2)), (Math.sin(rads) * (this.get_height() / 2)), this.get_rotationAngle());
+        this._pnts$1[i].tu = 0;
+        this._pnts$1[i].tv = 0;
+        this._pnts$1[i].color = this.get_color();
+      }
+      for (var i = 5; i < 10; i++) {
+        var rads = i * radiansPerSegment + (radiansPerSegment / 2) - (Math.PI / 2);
+        this._pnts$1[i] = new PositionColoredTextured();
+        this._pnts$1[i].position = this.makePosition(centerX, centerY, (Math.cos(rads) * (this.get_width() / 5.3)), (Math.sin(rads) * (this.get_height() / 5.3)), this.get_rotationAngle());
+        this._pnts$1[i].tu = 0;
+        this._pnts$1[i].tv = 0;
+        this._pnts$1[i].color = this.get_color();
+      }
+      this.points[0] = this._pnts$1[0];
+      this.points[1] = this._pnts$1[5];
+      this.points[2] = this._pnts$1[9];
+      this.points[3] = this._pnts$1[1];
+      this.points[4] = this._pnts$1[7];
+      this.points[5] = this._pnts$1[4];
+      this.points[6] = this._pnts$1[6];
+      this.points[7] = this._pnts$1[2];
+      this.points[8] = this._pnts$1[7];
+      this.points[9] = this._pnts$1[7];
+      this.points[10] = this._pnts$1[3];
+      this.points[11] = this._pnts$1[8];
+      this._triangleStrip$1 = false;
+    },
+    _createArrowGeometry$1: function() {
+      if (this.points == null) {
+        this.points = new Array(9);
+      }
+      this.points[0] = new PositionColoredTextured();
+      this.points[0].position = this.makePosition(this.get_x(), this.get_y(), -this.get_width() / 2, -this.get_height() / 4, this.get_rotationAngle());
+      this.points[0].tu = 0;
+      this.points[0].tv = 0;
+      this.points[0].color = this.get_color();
+      this.points[1] = new PositionColoredTextured();
+      this.points[1].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 4, -this.get_height() / 4, this.get_rotationAngle());
+      this.points[1].tu = 1;
+      this.points[1].tv = 0;
+      this.points[1].color = this.get_color();
+      this.points[2] = new PositionColoredTextured();
+      this.points[2].position = this.makePosition(this.get_x(), this.get_y(), -this.get_width() / 2, this.get_height() / 4, this.get_rotationAngle());
+      this.points[2].tu = 0;
+      this.points[2].tv = 1;
+      this.points[2].color = this.get_color();
+      this.points[3] = new PositionColoredTextured();
+      this.points[3].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 4, -this.get_height() / 4, this.get_rotationAngle());
+      this.points[3].tu = 1;
+      this.points[3].tv = 0;
+      this.points[3].color = this.get_color();
+      this.points[4] = new PositionColoredTextured();
+      this.points[4].position = this.makePosition(this.get_x(), this.get_y(), -this.get_width() / 2, this.get_height() / 4, this.get_rotationAngle());
+      this.points[4].tu = 0;
+      this.points[4].tv = 1;
+      this.points[4].color = this.get_color();
+      this.points[5] = new PositionColoredTextured();
+      this.points[5].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 4, this.get_height() / 4, this.get_rotationAngle());
+      this.points[5].tu = 1;
+      this.points[5].tv = 1;
+      this.points[5].color = this.get_color();
+      this.points[6] = new PositionColoredTextured();
+      this.points[6].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 4, -this.get_height() / 2, this.get_rotationAngle());
+      this.points[6].tu = 1;
+      this.points[6].tv = 1;
+      this.points[6].color = this.get_color();
+      this.points[7] = new PositionColoredTextured();
+      this.points[7].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 2, 0, this.get_rotationAngle());
+      this.points[7].tu = 1;
+      this.points[7].tv = 0.5;
+      this.points[7].color = this.get_color();
+      this.points[8] = new PositionColoredTextured();
+      this.points[8].position = this.makePosition(this.get_x(), this.get_y(), this.get_width() / 4, this.get_height() / 2, this.get_rotationAngle());
+      this.points[8].tu = 1;
+      this.points[8].tv = 1;
+      this.points[8].color = this.get_color();
+      this._triangleStrip$1 = false;
+    },
+    _createDonutGeometry$1: function() {
+      var centerX = this.get_x();
+      var centerY = this.get_y();
+      var radius = this.get_width() / 2;
+      var circumference = Math.PI * 2 * radius;
+      var segments = ss.truncate((circumference / 12)) + 1;
+      var radiansPerSegment = (Math.PI * 2) / segments;
+      if (this.points == null) {
+        this.points = new Array(segments * 2 + 2);
+      }
+      for (var j = 0; j <= segments; j++) {
+        var i = j * 2;
+        this.points[i] = new PositionColoredTextured();
+        this.points[i].position = this.makePosition(centerX, centerY, (Math.cos(j * radiansPerSegment) * (this.get_width() / 2)), (Math.sin(j * radiansPerSegment) * (this.get_height() / 2)), this.get_rotationAngle());
+        this.points[i].tu = (j % 2);
+        this.points[i].tv = 0;
+        this.points[i].color = this.get_color();
+        this.points[i + 1] = new PositionColoredTextured();
+        this.points[i + 1].position = this.makePosition(centerX, centerY, (Math.cos(j * radiansPerSegment) * ((this.get_width() / 2) - 10)), (Math.sin(j * radiansPerSegment) * ((this.get_height() / 2) - 10)), this.get_rotationAngle());
+        this.points[i + 1].tu = (j % 2);
+        this.points[i + 1].tv = 1;
+        this.points[i + 1].color = this.get_color();
+      }
+    },
+    _createCircleGeometry$1: function() {
+      var centerX = this.get_x();
+      var centerY = this.get_y();
+      var radius = this.get_width() / 2;
+      var circumference = Math.PI * 2 * radius;
+      var segments = ss.truncate((circumference / 12)) + 1;
+      var radiansPerSegment = (Math.PI * 2) / segments;
+      if (this.points == null) {
+        this.points = new Array(segments * 2 + 2);
+      }
+      for (var j = 0; j <= segments; j++) {
+        var i = j * 2;
+        this.points[i] = new PositionColoredTextured();
+        this.points[i].position = this.makePosition(centerX, centerY, (Math.cos(j * radiansPerSegment) * (this.get_width() / 2)), (Math.sin(j * radiansPerSegment) * (this.get_height() / 2)), this.get_rotationAngle());
+        this.points[i].tu = (j % 2);
+        this.points[i].tv = 0;
+        this.points[i].color = this.get_color();
+        this.points[i + 1] = new PositionColoredTextured();
+        this.points[i + 1].position = this.makePosition(centerX, centerY, 0, 0, this.get_rotationAngle());
+        this.points[i + 1].tu = (j % 2);
+        this.points[i + 1].tv = 1;
+        this.points[i + 1].color = this.get_color();
+      }
+    },
+    initializeTexture: function() {
+      switch (this.get_shapeType()) {
+        case 5:
+        case 3:
+        case 6:
+          break;
+        case 0:
+        case 1:
+        case 2:
+        case 4:
+        default:
+          this.texture = null;
+          break;
+      }
+    },
+    _drawLineGeometry$1: function(renderContext) {
       var ctx = renderContext.device;
       ctx.save();
       var radius = this.get_width() / 2;
@@ -29501,8 +32036,6 @@ window.wwtlib = function(){
       ctx.fill();
       ctx.restore();
     },
-    initializeTexture: function() {
-    },
     cleanUpGeometry: function() {
       Overlay.prototype.cleanUpGeometry.call(this);
       this.cleanUp();
@@ -29549,6 +32082,12 @@ window.wwtlib = function(){
     Overlay.call(this);
     this.isDesignTimeOnly = true;
   }
+  AudioOverlay.create = function(currentTourStop, filename) {
+    var ao = new AudioOverlay();
+    ao.set_owner(currentTourStop);
+    ao._filename$1 = filename;
+    return ao;
+  };
   var AudioOverlay$ = {
     get_mute: function() {
       return this._mute$1;
@@ -29875,6 +32414,17 @@ window.wwtlib = function(){
       }
       this.currentRotation = 0;
     }
+  };
+
+
+  // wwtlib.ToolStripSeparator
+
+  function ToolStripSeparator() {
+    ToolStripMenuItem.call(this);
+    this.name = '--------------------------------------';
+  }
+  var ToolStripSeparator$ = {
+
   };
 
 
@@ -30910,8 +33460,11 @@ window.wwtlib = function(){
       AudioType: AudioType,
       ShapeType: ShapeType,
       LoopTypes: LoopTypes,
+      SelectionAnchor: SelectionAnchor,
       TextBorderStyle: TextBorderStyle,
       UserLevel: UserLevel,
+      Keys: Keys,
+      DialogResult: DialogResult,
       StateType: StateType,
       SolarSystemObjects: SolarSystemObjects,
       InterpolationType: InterpolationType,
@@ -30927,6 +33480,7 @@ window.wwtlib = function(){
       Classification: Classification,
       IUIServicesCallbacks: [ IUIServicesCallbacks ],
       ISettings: [ ISettings ],
+      IUndoStep: [ IUndoStep ],
       IThumbnail: [ IThumbnail ],
       IPlace: [ IPlace ],
       IUiController: [ IUiController ],
@@ -31010,6 +33564,7 @@ window.wwtlib = function(){
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
       SpriteShader: [ SpriteShader, SpriteShader$, null ],
+      ShapeSpriteShader: [ ShapeSpriteShader, ShapeSpriteShader$, null ],
       TextShader: [ TextShader, TextShader$, null ],
       Tessellator: [ Tessellator, Tessellator$, null ],
       Texture: [ Texture, Texture$, null ],
@@ -31040,16 +33595,34 @@ window.wwtlib = function(){
       Tour: [ Tour, Tour$, null, IThumbnail ],
       SettingParameter: [ SettingParameter, SettingParameter$, null ],
       Overlay: [ Overlay, Overlay$, null ],
+      Selection: [ Selection, Selection$, null ],
       TextObject: [ TextObject, TextObject$, null ],
       TourDocument: [ TourDocument, TourDocument$, null ],
+      TourEditor: [ TourEditor, TourEditor$, null, IUiController ],
+      OverlayList: [ OverlayList, OverlayList$, null ],
+      TourEdit: [ TourEdit, TourEdit$, null ],
       TourPlayer: [ TourPlayer, TourPlayer$, null, IUiController ],
       MasterTime: [ MasterTime, MasterTime$, null ],
       TourStop: [ TourStop, TourStop$, null, ISettings ],
       LayerInfo: [ LayerInfo, LayerInfo$, null ],
+      UndoTourStopChange: [ UndoTourStopChange, UndoTourStopChange$, null, IUndoStep ],
+      Undo: [ Undo, Undo$, null ],
+      UndoStep: [ UndoStep, UndoStep$, null, IUndoStep ],
       UiTools: [ UiTools, UiTools$, null ],
       Rectangle: [ Rectangle, Rectangle$, null ],
       Guid: [ Guid, Guid$, null ],
       Mouse: [ Mouse, null, null ],
+      Language: [ Language, Language$, null ],
+      Cursor: [ Cursor, Cursor$, null ],
+      Cursors: [ Cursors, Cursors$, null ],
+      SimpleInput: [ SimpleInput, SimpleInput$, null ],
+      SelectLink: [ SelectLink, SelectLink$, null ],
+      PopupVolume: [ PopupVolume, PopupVolume$, null ],
+      PopupColorPicker: [ PopupColorPicker, PopupColorPicker$, null ],
+      OverlayProperties: [ OverlayProperties, OverlayProperties$, null ],
+      ContextMenuStrip: [ ContextMenuStrip, ContextMenuStrip$, null ],
+      ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
+      TagMe: [ TagMe, TagMe$, null ],
       VizLayer: [ VizLayer, VizLayer$, null ],
       DataItem: [ DataItem, DataItem$, null ],
       WebFile: [ WebFile, WebFile$, null ],
@@ -31095,6 +33668,7 @@ window.wwtlib = function(){
       ShapeOverlay: [ ShapeOverlay, ShapeOverlay$, Overlay ],
       AudioOverlay: [ AudioOverlay, AudioOverlay$, Overlay ],
       FlipbookOverlay: [ FlipbookOverlay, FlipbookOverlay$, Overlay ],
+      ToolStripSeparator: [ ToolStripSeparator, ToolStripSeparator$, ToolStripMenuItem ],
       Circle: [ Circle, Circle$, Annotation ],
       Poly: [ Poly, Poly$, Annotation ],
       PolyLine: [ PolyLine, PolyLine$, Annotation ],
@@ -31285,6 +33859,11 @@ window.wwtlib = function(){
   SpriteShader.colorLoc = 0;
   SpriteShader.initialized = false;
   SpriteShader._prog = null;
+  ShapeSpriteShader.vertLoc = 0;
+  ShapeSpriteShader.textureLoc = 0;
+  ShapeSpriteShader.colorLoc = 0;
+  ShapeSpriteShader.initialized = false;
+  ShapeSpriteShader._prog = null;
   TextShader.vertLoc = 0;
   TextShader.textureLoc = 0;
   TextShader.initialized = false;
@@ -31371,10 +33950,15 @@ window.wwtlib = function(){
   Overlay.clipboardFormat = 'WorldWideTelescope.Overlay';
   Overlay.nextId = 11231;
   Overlay.RC = 3.1415927 / 180;
+  Selection._points = new Array(9 * 3 * 2);
+  TourEditor.capturing = false;
+  TourEditor.currentEditor = null;
   TourPlayer._playing = false;
   TourPlayer._switchedToFullScreen = false;
   TourPlayer.noRestoreUIOnStop = false;
   TourStop.clipboardFormat = 'WorldWideTelescope.Slide';
+  Undo._undoStack = new ss.Stack();
+  Undo._redoStack = new ss.Stack();
   UiTools.kilometersPerAu = 149598000;
   UiTools.auPerParsec = 206264.806;
   UiTools.auPerLightYear = 63239.6717;

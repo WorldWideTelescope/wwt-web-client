@@ -74,6 +74,7 @@
     <Content Include="controllers\LoginController.js" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\tabs\CommunityController.js" />
+    <Content Include="controllers\tabs\CurrentTourController.js" />
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
     <Content Include="Gruntfile.js" />
@@ -162,6 +163,7 @@
     <Content Include="Images\earth.jpg" />
     <Content Include="Images\europa.jpg" />
     <Content Include="Images\finder-scope.png" />
+    <Content Include="Images\FocusHandles.png" />
     <Content Include="Images\ganymede.jpg" />
     <Content Include="Images\glyphs1.png" />
     <Content Include="Images\glyphs1.xml" />
@@ -172,11 +174,13 @@
     <Content Include="Images\mars.jpg" />
     <Content Include="Images\mercury.jpg" />
     <Content Include="Images\moon.jpg" />
+    <Content Include="Images\MultiSelhand.bmp" />
     <Content Include="Images\neptune.jpg" />
     <Content Include="Images\pluto.jpg" />
     <Content Include="Images\saturn.png" />
     <Content Include="Images\SaturnRings.png" />
     <Content Include="Images\SaturnRingsShadow.png" />
+    <Content Include="Images\Selhand.bmp" />
     <Content Include="Images\StarProfile.png" />
     <Content Include="Images\sun.jpg" />
     <Content Include="Images\sunCorona.png" />
@@ -189,7 +193,6 @@
     <Content Include="Images\wwtlogo.png" />
     <Content Include="login.aspx" />
     <Content Include="package.json" />
-    <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -265,21 +268,20 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="App_Data\wurfl-latest.zip" />
+    <Content Include="Chandra.wtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.2.0.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.js" />
-    <Content Include="sdk\mscorlib.dll" />
+    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="sdk\mscorlib.xml" />
     <Content Include="sdk\old\wwtsdk_old.debug.js" />
-    <Content Include="sdk\Script.Web.dll" />
     <Content Include="sdk\Script.Web.xml" />
     <Content Include="sdk\ss.js" />
     <Content Include="sdk\ss.min.js" />
     <Content Include="sdk\wwtsdk.aspx" />
-    <Content Include="sdk\wwtlib.dll" />
     <Content Include="sdk\wwtlib.xml" />
     <Content Include="searchdata.min.js" />
     <Content Include="searchdataraw.js" />
@@ -321,7 +323,7 @@
     </None>
     <Content Include="README.md" />
     <Content Include="sdk\wwtlib.scripts" />
-    <Content Include="Scripts\jquery-2.2.0.min.map" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -106,7 +106,7 @@ namespace wwtlib
                 domeMatX = centerX;
                 domeMatY = centerY;
                 domeMatrix = Matrix3d.Translation(Vector3d.Create(-centerX, -centerY, 0));
-                domeMatrix.Multiply(Matrix3d.RotationZ((float)(angle / 180 * Math.PI)));
+                domeMatrix.Multiply(Matrix3d.RotationZ((double)(angle / 180 * Math.PI)));
                 domeMatrix.Multiply(Matrix3d.Translation(Vector3d.Create(centerX, centerY, 0)));
             }
             point = Vector3d.TransformCoordinate(point, domeMatrix);
@@ -493,6 +493,20 @@ namespace wwtlib
 
         virtual public bool HitTest(Vector2d pntTest)
         {
+            Vector2d[] tempPoints = new Vector2d[1];
+            tempPoints[0] = Vector2d.Create(pntTest.X, pntTest.Y);
+
+            Matrix2d mat = Matrix2d.RotateAt(-RotationAngle / 180 * Math.PI, Vector2d.Create(X, Y));
+            mat.TransformPoints(tempPoints);
+
+            Rectangle rect = Rectangle.Create((X - (Width / 2)), (Y - (Height / 2)), Width, Height);
+
+            return rect.Contains(tempPoints[0]);
+
+
+
+
+
             //todo this needs to be translated to script#
 
             //Matrix3d mat = new Matrix3d();
@@ -507,7 +521,7 @@ namespace wwtlib
             //{
             //    return true;
             //}
-            return false;
+            //return false;
         }
 
 
@@ -672,8 +686,9 @@ namespace wwtlib
         //}
 
 
-        public static BitmapOverlay Create(RenderContext renderContext, TourStop owner, ImageElement image)
+        public static BitmapOverlay Create(TourStop owner, string filename)
         {
+            //todo figure out how to load local files into clound and to cabinet
             BitmapOverlay temp = new BitmapOverlay();
 
             temp.Owner = owner;
@@ -744,6 +759,7 @@ namespace wwtlib
         }
 
         private ImageElement imageBrush;
+        private Sprite2d sprite = new Sprite2d();
 
         public override void Draw3D(RenderContext renderContext, bool designTime)
         {
@@ -759,7 +775,7 @@ namespace wwtlib
                 UpdateRotation();
 
                     //todo call proper drawing for this
-                Sprite2d.Draw(renderContext, points, points.Length, texture2d, true, 1);
+                sprite.Draw(renderContext, points, points.Length, texture2d, true, 1);
             }
             else
             {
@@ -816,6 +832,13 @@ namespace wwtlib
         {
         }
 
+        public static TextOverlay Create(TextObject textObject)
+        {
+            TextOverlay to = new TextOverlay();
+            to.TextObject = textObject;
+            return to;
+        }
+
         //public static TextOverlay(Canvas canvas, TextObject textObject)
         //{
         //    this.canvas = canvas;
@@ -826,11 +849,19 @@ namespace wwtlib
 
         //}
 
+        Sprite2d sprite = new Sprite2d();
 
         public override void Draw3D(RenderContext renderContext, bool designTime)
         {
             if (RenderContext.UseGl)
             {
+                InitializeTexture();
+                InitiaizeGeometry();
+
+                UpdateRotation();
+
+                //todo call proper drawing for this
+                sprite.Draw(renderContext, points, points.Length, texture2d, true, 1);
             }
             else
             {
@@ -855,60 +886,84 @@ namespace wwtlib
                 ctx.Translate(X, Y);
                 ctx.Rotate(RotationAngle * RC);
                 ctx.Alpha = Opacity;
-                ctx.FillStyle = TextObject.ForgroundColor.ToString();
-                ctx.Font = (TextObject.Italic ? "italic" : "normal") + " " + (TextObject.Bold ? "bold" : "normal") + " " + Math.Round(TextObject.FontSize * 1.2).ToString() + "px " + TextObject.FontName;
-                ctx.TextBaseline = TextBaseline.Top;
-
-                String text = TextObject.Text;
-
-                if (text.IndexOf("{$") > -1)
-                {
-                    if (text.IndexOf("{$DATE}") > -1)
-                    {
-                        string date = String.Format("{0:yyyy/MM/dd}", SpaceTimeController.Now);
-                        text = text.Replace("{$DATE}", date);
-                    }
-
-                    if (text.IndexOf("{$TIME}") > -1)
-                    {
-                        string time = String.Format("{0:HH:mm:ss}", SpaceTimeController.Now);
-                        text = text.Replace("{$TIME}", time);
-                    }
-
-
-                    //  text = text.Replace("{$DIST}", UiTools.FormatDistance(WWTControl.Singleton.SolarSystemCameraDistance));
-                    text = text.Replace("{$LAT}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
-                    text = text.Replace("{$LNG}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
-                    text = text.Replace("{$RA}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.RA));
-                    text = text.Replace("{$DEC}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Dec));
-                    text = text.Replace("{$FOV}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.FovAngle));
-                }
-
-
-
-
-
-                string[] lines = text.Split("\n");
-
-                double baseline = -(Height / 2);
-                double lineSpace = TextObject.FontSize * 1.7;
-
-                foreach (string line in lines)
-                {
-                    List<string> parts = Util.GetWrappedText(ctx, line, Width);
-                    foreach (string part in parts)
-                    {
-                        ctx.FillText(part, -Width / 2, baseline);
-                        baseline += lineSpace;
-                    }
-                }
+                DrawCanvasText(ctx);
 
                 ctx.Restore();
             }
         }
 
+        private void DrawCanvasText(CanvasContext2D ctx)
+        {
+            ctx.FillStyle = TextObject.ForgroundColor.ToString();
+            ctx.Font = (TextObject.Italic ? "italic" : "normal") + " " + (TextObject.Bold ? "bold" : "normal") + " " + Math.Round(TextObject.FontSize * 1.2).ToString() + "px " + TextObject.FontName;
+            ctx.TextBaseline = TextBaseline.Top;
+
+            String text = TextObject.Text;
+
+            if (text.IndexOf("{$") > -1)
+            {
+                if (text.IndexOf("{$DATE}") > -1)
+                {
+                    string date = String.Format("{0:yyyy/MM/dd}", SpaceTimeController.Now);
+                    text = text.Replace("{$DATE}", date);
+                }
+
+                if (text.IndexOf("{$TIME}") > -1)
+                {
+                    string time = String.Format("{0:HH:mm:ss}", SpaceTimeController.Now);
+                    text = text.Replace("{$TIME}", time);
+                }
+
+
+                text = text.Replace("{$DIST}", UiTools.FormatDistance(WWTControl.Singleton.RenderContext.SolarSystemCameraDistance));
+                text = text.Replace("{$LAT}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
+                text = text.Replace("{$LNG}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
+                text = text.Replace("{$RA}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.RA));
+                text = text.Replace("{$DEC}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Dec));
+                text = text.Replace("{$FOV}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.FovAngle));
+            }
+
+            string[] lines = text.Split("\n");
+
+            double baseline = -(Height / 2);
+            double lineSpace = TextObject.FontSize * 1.7;
+
+            foreach (string line in lines)
+            {
+                List<string> parts = Util.GetWrappedText(ctx, line, Width);
+                foreach (string part in parts)
+                {
+                    ctx.FillText(part, -Width / 2, baseline);
+                    baseline += lineSpace;
+                }
+            }
+        }
+
+        CanvasContext2D ctx = null;
+        CanvasElement ce = null;
+
         public override void InitializeTexture()
         {
+            if (texture2d == null)
+            {
+                if (ctx == null || ce == null)
+                {
+                    ce = (CanvasElement) Document.CreateElement("canvas")  ;
+                    ce.Height = (int)Height;
+                    ce.Width = (int)Width;
+                    ctx = (CanvasContext2D)ce.GetContext(Rendering.Render2D);
+                }
+                ctx.Translate(Width/2, Height/2);
+                ctx.ClearRect(0, 0, Width, Height);
+                DrawCanvasText(ctx);
+
+                texture2d = new Texture();
+
+                texture2d.ImageElement = (ImageElement)(Element)ce;
+                texture2d.MakeTexture();
+            }
+
+
             //System.Drawing.Font font = TextObject.Font;
             //StringFormat sf = new StringFormat();
             //sf.Alignment = StringAlignment.Near;
@@ -982,7 +1037,10 @@ namespace wwtlib
 
         override public void InitiaizeGeometry()
         {
-
+            if (RenderContext.UseGl)
+            {
+                base.InitiaizeGeometry();
+            }
         }
     }
 
@@ -1013,10 +1071,14 @@ namespace wwtlib
         //    this.Name = owner.GetNextDefaultName(shapeType.ToString());
         //}
 
+        Sprite2d sprite = new Sprite2d();
+
         public override void Draw3D(RenderContext renderContext, bool designTime)
         {
             if (RenderContext.UseGl)
             {
+                InitiaizeGeometry();
+                sprite.Draw(renderContext, points, points.Length, null, TriangleStrip, Opacity);
             }
             else
             {
@@ -1042,7 +1104,7 @@ namespace wwtlib
                         DrawArrowGeometry(renderContext);
                         break;
                     case ShapeType.Line:
-                        CreateLineGeometry(renderContext);
+                        DrawLineGeometry(renderContext);
                         break;
                     default:
                         break;
@@ -1052,9 +1114,384 @@ namespace wwtlib
         }
         public override void InitiaizeGeometry()
         {
+            if (points == null)
+            {
+                switch (shapeType)
+                {
+                    case ShapeType.Circle:
+                        {
+                            CreateCircleGeometry();
 
+                        }
+                        break;
+                    case ShapeType.Rectagle:
+                        base.InitiaizeGeometry();
+                        break;
+                    case ShapeType.OpenRectagle:
+                        CreateOpenRectGeometry();
+                        break;
+                    case ShapeType.Star:
+                        CreateStarGeometry();
+                        break;
+                    case ShapeType.Donut:
+                        CreateDonutGeometry();
+                        break;
+                    case ShapeType.Arrow:
+                        CreateArrowGeometry();
+                        break;
+                    case ShapeType.Line:
+                        CreateLineGeometry();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-        private void CreateLineGeometry(RenderContext renderContext)
+        private void CreateLineGeometry()
+        {
+            double centerX = X;
+            double centerY = Y;
+            double radius = Width / 2;
+
+            //float length = (float)Math.Sqrt(Width * Width + Height * Height);
+            double length = Width;
+            int segments = (int)(length / 12f) + 1;
+            float radiansPerSegment = ((float)Math.PI * 2) / segments;
+            if (points == null)
+            {
+                points = new PositionColoredTextured[segments * 2 + 2];
+            }
+
+            for (int j = 0; j <= segments; j++)
+            {
+                int i = j * 2;
+                points[i] = new PositionColoredTextured();
+                points[i].Position = MakePosition(X, Y, (((double)j / (double)segments) * (Width) - (Width / 2)), 6f, RotationAngle);
+                points[i].Tu = ((j) % 2);
+                points[i].Tv = 0;
+                points[i].Color = Color;
+
+                points[i + 1] = new PositionColoredTextured();
+                points[i + 1].Position = MakePosition(X, Y, (((double)j / (double)segments) * (Width) - (Width / 2)), -6f, RotationAngle);
+                points[i + 1].Tu = (j % 2);
+                points[i + 1].Tv = 1;
+                points[i + 1].Color = Color;
+
+            }
+        }
+        private void CreateOpenRectGeometry()
+        {
+            double centerX = X;
+            double centerY = Y;
+            double radius = Width / 2;
+
+            double length = Width;
+            int segments = (int)(length / 12f) + 1;
+            int segmentsHigh = (int)(Height / 12f) + 1;
+
+            int totalPoints = (((segments + 1) * 2) + ((segmentsHigh + 1) * 2)) * 2;
+            if (points == null)
+            {
+                points = new PositionColoredTextured[totalPoints];
+            }
+            for (int j = 0; j <= segments; j++)
+            {
+                int i = j * 2;
+                points[i] = new PositionColoredTextured();
+                points[i].Position = MakePosition(centerX, centerY,
+                    ((double)j / (double)segments) * (Width) - (Width / 2),
+                    ((Height / 2)), RotationAngle);
+                points[i].Tu = ((j) % 2);
+                points[i].Tv = 0;
+                points[i].Color = Color;
+
+                points[i + 1] = new PositionColoredTextured();
+                points[i + 1].Position = MakePosition(centerX, centerY,
+                    ((double)j / (double)segments) * (Width) - (Width / 2),
+                    ((Height / 2) - 12f), RotationAngle);
+                points[i + 1].Tu = (j % 2);
+                points[i + 1].Tv = 1;
+                points[i + 1].Color = Color;
+
+                int k = (((segments + 1) * 4) + ((segmentsHigh + 1) * 2) - 2) - i;
+
+                points[k] = new PositionColoredTextured();
+                points[k].Position = MakePosition(centerX, centerY,
+                    ((double)j / (double)segments) * (Width) - (Width / 2),
+                    (-(Height / 2)) + 12f, RotationAngle);
+
+                points[k].Tu = ((j) % 2);
+                points[k].Tv = 0;
+                points[k].Color = Color;
+
+                points[k + 1] = new PositionColoredTextured();
+                points[k + 1].Position = MakePosition(centerX, centerY,
+                    ((double)j / (double)segments) * (Width) - (Width / 2),
+                    (-(Height / 2)), RotationAngle);
+                points[k + 1].Tu = (j % 2);
+                points[k + 1].Tv = 1;
+                points[k + 1].Color = Color;
+
+            }
+            int offset = ((segments + 1) * 2);
+            for (int j = 0; j <= segmentsHigh; j++)
+            {
+                int top = ((segmentsHigh + 1) * 2) + offset - 2;
+                int i = j * 2;
+                points[top - i] = new PositionColoredTextured();
+                points[top - i].Position = MakePosition(centerX, centerY, (float)(Width / 2), (float)(((double)j / (double)segmentsHigh) * (Height) - (Height / 2)), RotationAngle);
+
+                points[top - i].Tu = ((j) % 2);
+                points[top - i].Tv = 0;
+                points[top - i].Color = Color;
+
+                points[top - i + 1] = new PositionColoredTextured();
+                points[top - i + 1].Position = MakePosition(centerX, centerY,
+                    ((Width / 2) - 12f),
+                    (((double)j / (double)segmentsHigh) * Height - ((Height / 2))), RotationAngle);
+
+                points[top - i + 1].Tu = (j % 2);
+                points[top - i + 1].Tv = 1;
+                points[top - i + 1].Color = Color;
+
+                int k = i + ((segments + 1) * 4) + ((segmentsHigh + 1) * 2);
+                points[k] = new PositionColoredTextured();
+                points[k].Position = MakePosition(centerX, centerY,
+                                (-(Width / 2) + 12),
+                                (((double)j / (double)segmentsHigh) * (Height) - (Height / 2)), RotationAngle);
+                points[k].Tu = ((j) % 2);
+                points[k].Tv = 0;
+                points[k].Color = Color;
+
+                points[k + 1] = new PositionColoredTextured();
+                points[k + 1].Position = MakePosition(centerX, centerY,
+                               (-(Width / 2)),
+                               (((double)j / (double)segmentsHigh) * Height - ((Height / 2))), RotationAngle);
+                points[k + 1].Tu = (j % 2);
+                points[k + 1].Tv = 1;
+                points[k + 1].Color = Color;
+
+            }
+        }
+        PositionColoredTextured[] pnts;
+        private void CreateStarGeometry()
+        {
+            double centerX = X;
+            double centerY = Y;
+            double radius = Width / 2;
+
+            double radiansPerSegment = (Math.PI * 2) / 5;
+            if (points == null)
+            {
+                points = new PositionColoredTextured[12];
+            }
+
+            if (pnts == null)
+            {
+                pnts = new PositionColoredTextured[10];
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                double rads = i * radiansPerSegment - (Math.PI / 2);
+                pnts[i] = new PositionColoredTextured();
+                pnts[i].Position = MakePosition(centerX, centerY, (Math.Cos(rads) * (Width / 2)), (Math.Sin(rads) * (Height / 2)), RotationAngle);
+                pnts[i].Tu = 0;
+                pnts[i].Tv = 0;
+                pnts[i].Color = Color;
+            }
+
+            for (int i = 5; i < 10; i++)
+            {
+                double rads = i * radiansPerSegment + (radiansPerSegment / 2) - (Math.PI / 2);
+                pnts[i] = new PositionColoredTextured();
+                pnts[i].Position = MakePosition(centerX, centerY, (Math.Cos(rads) * (Width / 5.3)), (Math.Sin(rads) * (Height / 5.3)), RotationAngle);
+
+                pnts[i].Tu = 0;
+                pnts[i].Tv = 0;
+                pnts[i].Color = Color;
+            }
+
+            points[0] = pnts[0];
+            points[1] = pnts[5];
+            points[2] = pnts[9];
+            points[3] = pnts[1];
+            points[4] = pnts[7];
+            points[5] = pnts[4];
+            points[6] = pnts[6];
+            points[7] = pnts[2];
+            points[8] = pnts[7];
+            points[9] = pnts[7];
+            points[10] = pnts[3];
+            points[11] = pnts[8];
+            TriangleStrip = false;
+        }
+        private void CreateArrowGeometry()
+        {
+            if (points == null)
+            {
+                points = new PositionColoredTextured[9];
+            }
+
+            points[0] = new PositionColoredTextured();
+            points[0].Position = MakePosition(X, Y, -Width / 2, -Height / 4, RotationAngle);
+            points[0].Tu = 0;
+            points[0].Tv = 0;
+            points[0].Color = Color;
+
+            points[1] = new PositionColoredTextured();
+            points[1].Position = MakePosition(X, Y, Width / 4, -Height / 4, RotationAngle);
+            points[1].Tu = 1;
+            points[1].Tv = 0;
+            points[1].Color = Color;
+
+
+            points[2] = new PositionColoredTextured();
+            points[2].Position = MakePosition(X, Y, -Width / 2, Height / 4, RotationAngle);
+            points[2].Tu = 0;
+            points[2].Tv = 1;
+            points[2].Color = Color;
+
+            points[3] = new PositionColoredTextured();
+            points[3].Position = MakePosition(X, Y, Width / 4, -Height / 4, RotationAngle);
+            points[3].Tu = 1;
+            points[3].Tv = 0;
+            points[3].Color = Color;
+
+
+            points[4] = new PositionColoredTextured();
+            points[4].Position = MakePosition(X, Y, -Width / 2, Height / 4, RotationAngle);
+            points[4].Tu = 0;
+            points[4].Tv = 1;
+            points[4].Color = Color;
+
+
+            points[5] = new PositionColoredTextured();
+            points[5].Position = MakePosition(X, Y, Width / 4, Height / 4, RotationAngle);
+            points[5].Tu = 1;
+            points[5].Tv = 1;
+            points[5].Color = Color;
+
+            // Point
+
+            points[6] = new PositionColoredTextured();
+            points[6].Position = MakePosition(X, Y, Width / 4, -Height / 2, RotationAngle);
+            points[6].Tu = 1;
+            points[6].Tv = 1;
+            points[6].Color = Color;
+
+            points[7] = new PositionColoredTextured();
+            points[7].Position = MakePosition(X, Y, Width / 2, 0, RotationAngle);
+            points[7].Tu = 1;
+            points[7].Tv = .5f;
+            points[7].Color = Color;
+
+            points[8] = new PositionColoredTextured();
+            points[8].Position = MakePosition(X, Y, Width / 4, Height / 2, RotationAngle);
+            points[8].Tu = 1;
+            points[8].Tv = 1;
+            points[8].Color = Color;
+
+            TriangleStrip = false;
+        }
+        private void CreateDonutGeometry()
+        {
+            double centerX = X;
+            double centerY = Y;
+            double radius = Width / 2;
+
+            double circumference = Math.PI * 2.0f * radius;
+            int segments = (int)(circumference / 12) + 1;
+            double radiansPerSegment = (Math.PI * 2) / segments;
+            if (points == null)
+            {
+                points = new PositionColoredTextured[segments * 2 + 2];
+            }
+
+            for (int j = 0; j <= segments; j++)
+            {
+                int i = j * 2;
+                points[i] = new PositionColoredTextured();
+                points[i].Position = MakePosition(centerX, centerY, (Math.Cos(j * radiansPerSegment) * (Width / 2)), (Math.Sin(j * radiansPerSegment) * (Height / 2)), RotationAngle);
+                points[i].Tu = ((j) % 2);
+                points[i].Tv = 0;
+                points[i].Color = Color;
+
+                points[i + 1] = new PositionColoredTextured();
+                points[i + 1].Position = MakePosition(centerX, centerY, (Math.Cos(j * radiansPerSegment) * ((Width / 2) - 10)), (Math.Sin(j * radiansPerSegment) * ((Height / 2) - 10)), RotationAngle);
+                points[i + 1].Tu = (j % 2);
+                points[i + 1].Tv = 1;
+                points[i + 1].Color = Color;
+
+            }
+        }
+
+        bool TriangleStrip = true;
+
+        private void CreateCircleGeometry()
+        {
+            double centerX = X;
+            double centerY = Y;
+            double radius = Width / 2;
+
+            double circumference = Math.PI * 2.0f * radius;
+            int segments = (int)(circumference / 12) + 1;
+            double radiansPerSegment = (Math.PI * 2) / segments;
+            if (points == null)
+            {
+                points = new PositionColoredTextured[segments * 2 + 2];
+            }
+            for (int j = 0; j <= segments; j++)
+            {
+                int i = j * 2;
+                points[i] = new PositionColoredTextured();
+                points[i].Position = MakePosition(centerX, centerY, (Math.Cos(j * radiansPerSegment) * (Width / 2)), (Math.Sin(j * radiansPerSegment) * (Height / 2)), RotationAngle);
+                points[i].Tu = ((j) % 2);
+                points[i].Tv = 0;
+                points[i].Color = Color;
+
+
+                points[i + 1] = new PositionColoredTextured();
+                points[i + 1].Position = MakePosition(centerX, centerY, 0, 0, RotationAngle);
+                points[i + 1].Tu = (j % 2);
+                points[i + 1].Tv = 1;
+                points[i + 1].Color = Color;
+
+            }
+        }
+        public override void InitializeTexture()
+        {
+            switch (ShapeType)
+            {
+                case ShapeType.Line:
+                case ShapeType.Donut:
+                case ShapeType.OpenRectagle:
+                    {
+                        //Bitmap bmp = new Bitmap(13, 10);
+                        //Graphics g = Graphics.FromImage(bmp);
+                        //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        //Brush brush = new SolidBrush(Color);
+                        //g.FillEllipse(brush, 1, 0, 10, 9);
+                        //g.Dispose();
+                        //texture = Texture11.FromBitmap(bmp);
+                        //bmp.Dispose();
+                    }
+                    break;
+                case ShapeType.Circle:
+
+                case ShapeType.Rectagle:
+                case ShapeType.Star:
+
+                case ShapeType.Arrow:
+                default:
+                    {
+                        texture = null;
+                    }
+                    break;
+            }
+        }
+
+        private void DrawLineGeometry(RenderContext renderContext)
         {
 
             //todo this needs to be Dashed rounded lines..
@@ -1222,11 +1659,7 @@ namespace wwtlib
             ctx.Restore();
         }
 
-        public override void InitializeTexture()
-        {
-
-        }
-
+  
         public override void CleanUpGeometry()
         {
             base.CleanUpGeometry();
@@ -1267,6 +1700,16 @@ namespace wwtlib
                     break;
 
             }
+        }
+
+        internal static ShapeOverlay Create(TourStop currentTourStop, ShapeType shapeType)
+        {
+            ShapeOverlay overlay = new ShapeOverlay();
+            overlay.shapeType = shapeType;
+            overlay.Owner = currentTourStop;
+            
+
+            return overlay;
         }
     }
     public class AudioOverlay : Overlay
@@ -1465,6 +1908,15 @@ namespace wwtlib
                         break;
                 }
             }
+        }
+
+        public static AudioOverlay Create(TourStop currentTourStop, string filename)
+        {
+            AudioOverlay ao = new AudioOverlay();
+            ao.Owner = currentTourStop;
+            ao.filename = filename;
+
+            return ao;
         }
     }
 

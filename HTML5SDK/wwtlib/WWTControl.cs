@@ -1124,6 +1124,7 @@ namespace wwtlib
         Folder webFolder;
         public void Setup(CanvasElement canvas)
         {
+            Window.AddEventListener("contextmenu", OnContextMenu, false);
             canvas.AddEventListener("dblclick", OnDoubleClick, false);
             //canvas.AddEventListener("mousemove", OnMouseMove, false);
             //canvas.AddEventListener("mouseup", OnMouseUp, false);
@@ -1585,7 +1586,12 @@ namespace wwtlib
             lastY = Mouse.OffsetY(Canvas, e);
         }
 
-       
+        public void OnContextMenu(ElementEvent e)
+        {
+            e.PreventDefault();
+            e.StopPropagation();
+            
+        }
 
 
         public void OnMouseMove(ElementEvent e)
@@ -1655,6 +1661,7 @@ namespace wwtlib
                 if (uiController.MouseUp(this, e))
                 {
                     mouseDown = false;
+                    e.PreventDefault();
                     return;
                 }
             }
@@ -1800,8 +1807,8 @@ namespace wwtlib
                 {
                     Tile.PrepDevice = gl;
                     Singleton.RenderContext.gl = gl;
+                 
                     RenderContext.UseGl = true;
-
                 }
 
                 Singleton.Canvas = canvas;
@@ -2404,9 +2411,7 @@ namespace wwtlib
         {
             //todo implement tour close
         }
-
         public TourDocument tour = null;
-
         public void PlayTour(string url)
         {
             if (uiController is TourPlayer)
@@ -2417,17 +2422,25 @@ namespace wwtlib
 
             tour = TourDocument.FromUrl(url, delegate
             {
-                TourPlayer player = new TourPlayer();
-                player.Tour = tour;
-                tour.CurrentTourstopIndex = -1;
-                uiController = player;
-                player.Play();
+                //TourPlayer player = new TourPlayer();
+                //player.Tour = tour;
+                //tour.CurrentTourstopIndex = -1;
+                //uiController = player;
+                //WWTControl.scriptInterface.FireTourReady();
+                //player.Play();
+
+                TourEditor editor = new TourEditor();
+                editor.Tour = tour;
+                tour.CurrentTourstopIndex = 0;
+                uiController = editor;
+                WWTControl.scriptInterface.FireTourReady();
+                
+
 
             }
             );
             
         }
-
 
         public void PlayCurrentTour()
         {

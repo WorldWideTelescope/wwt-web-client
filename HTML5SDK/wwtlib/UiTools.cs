@@ -200,5 +200,8 @@ namespace wwtlib
             return output;
         }
 
+        internal static void Beep()
+        {
+        }
     }
 }
