@@ -69,6 +69,7 @@ module.exports = function(grunt) {
                     'controllers/tabs/ViewController.js',
                     'controllers/tabs/ToursController.js',
                     'controllers/tabs/CommunityController.js',
+                    'controllers/tabs/CurrentTourController.js',
                     'controllers/modals/ShareController.js',
                     'controllers/modals/OpenItemController.js',
                     'controllers/modals/ObservingTimeController.js',

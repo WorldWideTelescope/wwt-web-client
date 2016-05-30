@@ -21,7 +21,7 @@
 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 **/
-var wwt = {
+var wwt = { 
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
 		'ngTouch',  

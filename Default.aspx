@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" %>
 <%@ Import Namespace="System.Globalization" %>
+<%@ Import Namespace="System.Security.Cryptography.X509Certificates" %>
 <%@ Import Namespace="WURFL" %>
 <script runat="server">
     public bool Debug = false;
@@ -129,13 +130,15 @@
     <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" /> 
     <link rel="icon" href="favicon.ico"/>
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
-       { %>
-    <%-- Console complains about unquoted css, but need this to get resourcesversion in the path - 
-        otherwise webforms will error with quotes --%>
-    <link href=css/webclient.min.css?v=<%= ResourcesVersion%> rel="stylesheet" />
-    <link href=css/angular-motion.css?v=<%= ResourcesVersion%> rel="stylesheet" />
+       { 
+        string css = "<link href=\"css/webclient.min.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
+        css+="<link href=\"css/angular-motion.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
+        css+="<link href=\"ext/introjs.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
+        %>
+    <%=css%>
+    
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <link href=ext/introjs.css?v=<%= ResourcesVersion%> rel="stylesheet" />
+
     <style> 
         html, body.fs-player, iframe {
             height: 100%;
@@ -147,19 +150,47 @@
         .finder-scope {
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
         }
+
+        body .contextmenu {
+            background: rgba(25,30,43,.88);
+            position: absolute;
+            display: none;
+            width: 240px;
+            top: 400px;
+            left: 400px;
+            z-index: 1000;
+            box-shadow: 0 0 4px #808080;
+            background-clip: border-box;
+            padding-left: 15px;
+            border: solid 1px rgba(105,115,150,.7);
+        }
+        body .contextmenuitem {
+            border-left: solid 1px rgba(105,115,150,.7);
+            padding: 2px 4px 2px 4px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body .contextmenuitem:hover {
+            background-color: rgba(1,14,23,.85);
+        }
+
     </style> 
      
     <script src="//js.live.net/v5.0/wl.js"></script>
     <script src="sdk/wwtsdk.js"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-touch.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-route.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-cookies.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-animate.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.2.4/angular-strap.tpl.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-touch.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-route.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-cookies.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-animate.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl.min.js"></script>
     <% if (Debug || DebugChrome) 
        { %>
 
@@ -198,6 +229,7 @@
     <script src="<%= ResourcesLocation %>/controllers/tabs/ToursController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ViewController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/CommunityController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/tabs/CurrentTourController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/LoginController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controls/move.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controls/util.js?v=<%= ResourcesVersion%>"></script>
@@ -254,6 +286,14 @@
     <div id="WorldWideTelescopeControlHost">
         <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile? "" : "showFinderScope"%>"></div>
     </div>
+
+    <div id="contextmenu" class="contextmenu">
+
+    </div>
+    <div id="popoutmenu" class="contextmenu">
+
+    </div>
+
 <% if (Client == Clients.Mobile)
    { %>
     
@@ -445,6 +485,16 @@
                         <div class="menu" data-ng-click="menuClick(tab.menu)" id="tabMenu{{$index}}" data-target="#menu{{$index}}">
                             <i class="fa fa-caret-down"></i>
                         </div>
+                    </a>
+                </div>
+            </li>
+            <li data-ng-class="activePanel == 'currentTour' ? 'active' : 'hide'">
+                <div class="outer">
+                    <a href="javascript:void(0)">
+                        <span class="label" data-ng-click="tabClick(tab)" id="btnCurTour" localize="{{currentTour._title}}"></span>
+                        <%--<div class="menu" data-ng-click="menuClick(tab.menu)" id="tabMenu{{ribbon.tabs.length}}" data-target="#menu{{ribbon.tabs.length}}">
+                            <i class="fa fa-caret-down"></i>
+                        </div>--%>
                     </a>
                 </div>
             </li>
@@ -840,7 +890,54 @@
             
         
         </div>
-           <%  } %>    
+           <%  } %>  
+        <div 
+            ng-show="!loadingUrlPlace" 
+            ng-switch-when="currentTour"
+            id="currentTourPanel"
+            class="explore-panel rel" 
+            ng-controller="CurrentTourController" 
+            
+            >
+            <table>
+                <colgroup>
+                    <col style="width:80px"/>
+                    <col style="width:99%"/>
+                    <col style="width:16px"/>
+                </colgroup>
+                <tr>
+                    <td class="play-tour">
+                        <a class="btn-play-tour" ng-click="pauseTour()">
+                            <i class="fa fa-{{tourPaused ? 'play' : 'pause'}}"></i>
+                        </a><br/>
+                        {{currentTour.minuteDuration}}:{{currentTour.secDuration}}
+                    </td>
+                    <td class="tour-stops">
+                        <div class="scroller">
+                            <div class="stops-container">
+                                <div class="stop-arrow" ng-repeat="stop in tourStops">
+                                <div class="stop-thumb thumbnail" ng-click="gotoStop($index)">
+                                    <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
+                                    <label>{{stop.description}}</label>
+                                    <label class="duration">{{stop.secDuration}}</label>
+                                </div>
+                                    <div class="right-arrow" ng-if="!$last">
+                                    <i class="fa fa-stop"></i><i class="fa fa-caret-right"></i>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            
+            
+            
+        </div>  
     </div>
     <div class="layer-manager desktop" ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block'}" ng-init="initLayerManager()">
         <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">×</button>
