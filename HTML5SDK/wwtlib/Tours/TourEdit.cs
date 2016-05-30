@@ -15,8 +15,8 @@ namespace wwtlib
             //SetUiStrings();
         }
 
-        public SoundEditor MusicTrack = null;
-        public SoundEditor VoiceTrack = null;
+        public SoundEditor MusicTrack = new SoundEditor();
+        public SoundEditor VoiceTrack = new SoundEditor();
 
 
         public void SetUiStrings()
@@ -226,11 +226,11 @@ namespace wwtlib
         {
             if (!tour.EditMode)
             {
-                return;
+            //    return;
             }
             //IDataObject dataObject = Clipboard.GetDataObject();
 
-            tour.CurrentTourstopIndex = tourStopList.SelectedItem;
+           // tour.CurrentTourstopIndex = tourStopList.SelectedItem;
 
 
             //if (tourStopList.HitType == TourStopList.HitPosition.Transition)
@@ -238,7 +238,7 @@ namespace wwtlib
             //    return;
             //}
 
-            if (e.Button == 2)
+           // if (e.Button == 2)
             {
                 if (tourStopList.MultipleSelection)
                 {
@@ -490,7 +490,7 @@ namespace wwtlib
                     contextMenu.Items.Add(trackSpaceTime);
                     contextMenu.Items.Add(interpolation);
                     // contextMenu.Items.Add(properties);
-                    contextMenu.Show(Cursor.Position);
+                    contextMenu.Show(Vector2d.Create(e.ClientX,e.ClientY));
                 }
             }
         }

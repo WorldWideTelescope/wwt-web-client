@@ -2412,6 +2412,9 @@ namespace wwtlib
             //todo implement tour close
         }
         public TourDocument tour = null;
+
+        //public TourEditor TourEditor = null;
+        public TourEditTab TourEdit = null;
         public void PlayTour(string url)
         {
             if (uiController is TourPlayer)
@@ -2421,24 +2424,22 @@ namespace wwtlib
             }
 
             tour = TourDocument.FromUrl(url, delegate
-            {
-                //TourPlayer player = new TourPlayer();
-                //player.Tour = tour;
-                //tour.CurrentTourstopIndex = -1;
-                //uiController = player;
-                //WWTControl.scriptInterface.FireTourReady();
-                //player.Play();
+                    {
+                        //TourPlayer player = new TourPlayer();
+                        //player.Tour = tour;
+                        //tour.CurrentTourstopIndex = -1;
+                        //uiController = player;
+                        //WWTControl.scriptInterface.FireTourReady();
+                        //player.Play();
 
-                TourEditor editor = new TourEditor();
-                editor.Tour = tour;
-                tour.CurrentTourstopIndex = 0;
-                uiController = editor;
-                WWTControl.scriptInterface.FireTourReady();
-                
+                        TourEdit = new TourEditTab();
+                        TourEdit.Tour = tour;
+                        tour.CurrentTourstopIndex = 0;
 
+                        uiController = TourEdit.TourEditorUI;
 
-            }
-            );
+                        WWTControl.scriptInterface.FireTourReady();
+                    });
             
         }
 

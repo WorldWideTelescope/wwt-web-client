@@ -1233,6 +1233,19 @@ wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
     };
 }]);
 
+wwt.app.directive('ngRightClick', function ($parse) {
+    return function (scope, element, attrs) {
+        var fn = $parse(attrs.ngRightClick);
+        element.bind('contextmenu', function (event) {
+            scope.$apply(function () {
+                event.preventDefault();
+                fn(scope, { $event: event });
+            });
+        });
+    };
+});
+
+
 wwt.app.factory('AppState', function() {
 	var api = {
 		set: setKey,
@@ -3839,6 +3852,10 @@ wwt.controllers.controller('MainController',
 			$scope.showFinderScope();
 		});
 
+		$scope.$on('showContextMenu', function () {
+		    $scope.showContextMenu()
+		});
+
 		var finderTimer, finderActive = false,finderMoved = true;
 		$scope.showFinderScope = function (event) {
 			if ($scope.lookAt === 'Sky') {
@@ -4081,6 +4098,27 @@ wwt.controllers.controller('MainController',
 	        wwt.wc.add_tourEnded(tourChangeHandler);
 	        wwt.wc.add_tourReady(function() {
 
+	            wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
+	                $scope.$applyAsync(function () {
+	                   
+	                    $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
+	                        s.description = s.get_description();
+	                        s.thumb = s.get_thumbnail();
+	                        s.duration = s.get_duration();
+	                        s.secDuration = Math.round(s.duration / 1000);
+	                        if (s.secDuration < 10) {
+	                            s.secDuration = '0' + s.secDuration;
+	                        }
+	                        s.secDuration = '0:' + s.secDuration;
+	                        $scope.currentTour.duration += s.duration;
+	                        return s;
+	                    });
+	                
+	                });
+	            }
+                
+
+
 	            $scope.$applyAsync(function() {
 	                $scope.currentTour = wwtlib.WWTControl.singleton.tour;
 	                $scope.currentTour.duration = 0;
@@ -4108,8 +4146,15 @@ wwt.controllers.controller('MainController',
 
 	    };
 
-	    $scope.gotoStop = function(index) {
+	    $scope.gotoStop = function(index, e) {
 	        $scope.currentTour.set_currentTourstopIndex(index);
+	       
+	    };
+
+	    $scope.showContextMenu = function ( e) {
+	        var itemid = parseInt(e.currentTarget.attributes["itemid"].nodeValue);
+	        $scope.currentTour.set_currentTourstopIndex(itemid);
+	        wwtlib.WWTControl.singleton.tourEdit.tourStopList_MouseClick(this, e);
 	    };
 
 	    $scope.pauseTour = function () {

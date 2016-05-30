@@ -969,7 +969,7 @@
                         <div class="scroller">
                             <div class="stops-container">
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
-                                <div class="stop-thumb thumbnail" ng-click="gotoStop($index)">
+                                <div class="stop-thumb thumbnail" itemid="{{$index}}" ng-click="gotoStop($index, $event)" ng-context-menu="showContextMenu">
                                     <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
                                     <label>{{stop.description}}</label>
                                     <label class="duration">{{stop.secDuration}}</label>

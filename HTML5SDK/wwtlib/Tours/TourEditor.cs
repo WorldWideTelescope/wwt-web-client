@@ -2260,7 +2260,7 @@ namespace wwtlib
     {
         public TourStop Target = null;
     }
-
+    
     public class TourStopList
     {
         public TourDocument Tour = null;
@@ -2272,8 +2272,14 @@ namespace wwtlib
         {
 
         }
+        public Action refreshCallback = null;
+
         public void Refresh()
         {
+            if (refreshCallback != null)
+            {
+                refreshCallback();
+            }
         }
 
         public bool MultipleSelection = false;
