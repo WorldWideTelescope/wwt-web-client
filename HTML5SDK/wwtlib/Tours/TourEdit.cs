@@ -19,7 +19,7 @@ namespace wwtlib
         public SoundEditor VoiceTrack = null;
 
 
-        private void SetUiStrings()
+        public void SetUiStrings()
         {
             //this.toolTip.SetToolTip(this.tourStopList, Language.GetLocalizedText(416, "Slides"));
             //this.AddText.Text = Language.GetLocalizedText(417, "Text");
@@ -84,7 +84,7 @@ namespace wwtlib
             tourStopList.Refresh();
         }
 
-        private void TourEdit_Load(object sender, EventArgs e)
+        public void TourEdit_Load(object sender, EventArgs e)
         {
             //if (tour != null && !tour.EditMode)
             //{
@@ -157,7 +157,7 @@ namespace wwtlib
 
         }
 
-        private void tourStopList_ItemClicked(object sender, TourStop e)
+        public void tourStopList_ItemClicked(object sender, TourStop e)
         {
             if (tour.CurrentTourStop != e)
             {
@@ -184,7 +184,7 @@ namespace wwtlib
         }
 
 
-        private void tourStopList_ItemDoubleClicked(object sender, TourStop e)
+        public void tourStopList_ItemDoubleClicked(object sender, TourStop e)
         {
             ShowSlideStartPosition(e);
 
@@ -606,7 +606,7 @@ namespace wwtlib
             PlayFromCurrentTourstop();
         }
 
-        private void PlayFromCurrentTourstop()
+        public void PlayFromCurrentTourstop()
         {
             playing = true;
             WWTControl.Singleton.GotoTarget(tour.CurrentTourStop.Target, false, true, false);
@@ -735,7 +735,7 @@ namespace wwtlib
             throw new Exception("The method or operation is not implemented.");
         }
 
-        private void tourStopList_AddNewSlide(object sender, TourStop e)
+        public void tourStopList_AddNewSlide(object sender, TourStop e)
         {
             AddSlide(false);
             tourStopList.EnsureAddVisible();
@@ -753,7 +753,7 @@ namespace wwtlib
 
         }
 
-        private void AddSlide(bool insert)
+        public void AddSlide(bool insert)
         {
             //todo localize
             Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(426, "Add New Slide"), tour));
@@ -902,7 +902,7 @@ namespace wwtlib
             TourEditorUI.ClearSelection();
         }
 
-        //private void tourText_TextChanged(object sender, EventArgs e)
+        //public void tourText_TextChanged(object sender, EventArgs e)
         //{
         //    if (tour.CurrentTourStop != null)
         //    {
@@ -922,7 +922,7 @@ namespace wwtlib
 
 
         bool playing = false;
-        private void Preview_Click(object sender, EventArgs e)
+        public void Preview_Click(object sender, EventArgs e)
         {
             playing = !playing;
             if (playing && tour.EditMode)
@@ -933,7 +933,7 @@ namespace wwtlib
         }
 
         TourPlayer player = null;
-        private void SetPlayPauseMode()
+        public void SetPlayPauseMode()
         {
             if (tour.EditMode)
             {
@@ -1001,7 +1001,7 @@ namespace wwtlib
             }
         }
 
-        private void PlayerTimer_Tick(object sender, EventArgs e)
+        public void PlayerTimer_Tick(object sender, EventArgs e)
         {
 
             if (playing)
@@ -1028,25 +1028,25 @@ namespace wwtlib
 
         }
 
-        private void InsertShapeCircle_Click(object sender, EventArgs e)
+        public void InsertShapeCircle_Click(object sender, EventArgs e)
         {
             TourEditorUI.AddShape("", ShapeType.Circle);
 
         }
 
-        private void InsertShapeRectangle_Click(object sender, EventArgs e)
+        public void InsertShapeRectangle_Click(object sender, EventArgs e)
         {
             TourEditorUI.AddShape("", ShapeType.Rectagle);
 
         }
 
-        private void InsertShapeLine_Click(object sender, EventArgs e)
+        public void InsertShapeLine_Click(object sender, EventArgs e)
         {
             TourEditorUI.AddShape("", ShapeType.Line);
 
         }
 
-        private void insertDonut_Click(object sender, EventArgs e)
+        public void insertDonut_Click(object sender, EventArgs e)
         {
             TourEditorUI.AddShape("", ShapeType.Donut);
 
@@ -1059,12 +1059,12 @@ namespace wwtlib
 
         }
 
-        private void InsertVideo_Click(object sender, EventArgs e)
+        public void InsertVideo_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void InsertAudio_Click(object sender, EventArgs e)
+        public void InsertAudio_Click(object sender, EventArgs e)
         {
             //OpenFileDialog fileDialog = new OpenFileDialog();
             //fileDialog.Filter = Language.GetLocalizedText(442, "Sound/Music") + "(*.MP3;*.WMA)|*.MP3;*.WMA";
@@ -1076,13 +1076,13 @@ namespace wwtlib
             //}
         }
 
-        private void InsertHyperlink_Click(object sender, EventArgs e)
+        public void InsertHyperlink_Click(object sender, EventArgs e)
         {
 
         }
         Color defultColor = Colors.White;
 
-        private void ColorPicker_Click(object sender, EventArgs e)
+        public void ColorPicker_Click(object sender, EventArgs e)
         {
             //PopupColorPicker picker = new PopupColorPicker();
 
@@ -1096,7 +1096,7 @@ namespace wwtlib
             //}
         }
 
-        //private void toolkit_MouseEnter(object sender, EventArgs e)
+        //public void toolkit_MouseEnter(object sender, EventArgs e)
         //{
         //    //if (Earth3d.MainWindow.IsWindowOrChildFocused())
         //    //{
@@ -1104,12 +1104,12 @@ namespace wwtlib
         //    //}
         //}
 
-        private void TourEditTab_Leave(object sender, EventArgs e)
+        public void TourEditTab_Leave(object sender, EventArgs e)
         {
             
         }
 
-        private void EditTourProperties_Click(object sender, EventArgs e)
+        public void EditTourProperties_Click(object sender, EventArgs e)
         {
 
             //TourProperties tourProps = new TourProperties();
@@ -1120,7 +1120,7 @@ namespace wwtlib
             //}
         }
 
-        private void SaveTour_Click(object sender, EventArgs e)
+        public void SaveTour_Click(object sender, EventArgs e)
         {
             //tour.SaveToXml(false);
 
@@ -1155,7 +1155,7 @@ namespace wwtlib
             return true;
         }
 
-        private void AddVideo_Click(object sender, EventArgs e)
+        public void AddVideo_Click(object sender, EventArgs e)
         {
             //OpenFileDialog fileDialog = new OpenFileDialog();
 
@@ -1166,7 +1166,7 @@ namespace wwtlib
             //}
         }
 
-        private void AddPicture_Click(object sender, EventArgs e)
+        public void AddPicture_Click(object sender, EventArgs e)
         {
             //if (tour == null || Tour.CurrentTourStop == null)
             //{
@@ -1196,7 +1196,7 @@ namespace wwtlib
             //}
         }
 
-        private void AddShape_Click(object sender, EventArgs e)
+        public void AddShape_Click(object sender, EventArgs e)
         {
             //if (tour.CurrentTourStop != null)
             //{
@@ -1248,7 +1248,7 @@ namespace wwtlib
         }
 
 
-        private void AddText_Click(object sender, EventArgs e)
+        public void AddText_Click(object sender, EventArgs e)
         {
             //todo add text editor
             //if (tour != null && Tour.CurrentTourStop != null)
@@ -1263,7 +1263,7 @@ namespace wwtlib
 
         }
 
-        private void Preview_EnabledChanged(object sender, EventArgs e)
+        public void Preview_EnabledChanged(object sender, EventArgs e)
         {
             if (playing)
             {
@@ -1274,7 +1274,7 @@ namespace wwtlib
             }
         }
 
-        private void Preview_MouseEnter(object sender, EventArgs e)
+        public void Preview_MouseEnter(object sender, EventArgs e)
         {
             //if (playing)
             //{
@@ -1286,7 +1286,7 @@ namespace wwtlib
             //}
         }
 
-        private void Preview_MouseLeave(object sender, EventArgs e)
+        public void Preview_MouseLeave(object sender, EventArgs e)
         {
             //if (playing)
             //{
@@ -1298,7 +1298,7 @@ namespace wwtlib
             //}
         }
 
-        private void Preview_MouseUp(object sender, ElementEvent e)
+        public void Preview_MouseUp(object sender, ElementEvent e)
         {
             //if (playing)
             //{
@@ -1310,7 +1310,7 @@ namespace wwtlib
             //}
         }
 
-        private void Preview_MouseDown(object sender, ElementEvent e)
+        public void Preview_MouseDown(object sender, ElementEvent e)
         {
             //if (playing)
             //{
@@ -1323,12 +1323,12 @@ namespace wwtlib
         }
         //Bitmap menuArrow = global::TerraViewer.Properties.Resources.menuArrow;
 
-        //private void AddShape_Paint(object sender, PaintEventArgs e)
+        //public void AddShape_Paint(object sender, PaintEventArgs e)
         //{
         ////    e.Graphics.DrawImageUnscaled(menuArrow, new Point((AddShape.Width / 2) - (menuArrow.Width / 2), (AddShape.Height - menuArrow.Height) - 2));
         //}
 
-        private void tourStopList_ItemHover(object sender, TourStop e)
+        public void tourStopList_ItemHover(object sender, TourStop e)
         {
             //if (e != null)
             //{
@@ -1341,7 +1341,7 @@ namespace wwtlib
 
         }
 
-        //private void TourEditTab_FormClosed(object sender, FormClosedEventArgs e)
+        //public void TourEditTab_FormClosed(object sender, FormClosedEventArgs e)
         //{
         //    TourPlayer.Playing = false;
         //    TourPlayer.TourEnded -= new EventHandler(TourPlayer_TourEnded);
@@ -1349,7 +1349,7 @@ namespace wwtlib
 
        
 
-        //private void ShowSafeArea_CheckedChanged(object sender, EventArgs e)
+        //public void ShowSafeArea_CheckedChanged(object sender, EventArgs e)
         //{
         //    Properties.Settings.Default.ShowSafeArea = ShowSafeArea.Checked;
         //}
@@ -1385,25 +1385,25 @@ namespace wwtlib
             }
         }
 
-        private void tourStopList_ShowEndPosition(object sender, TourStop e)
+        public void tourStopList_ShowEndPosition(object sender, TourStop e)
         {
             showEndSkyPosition_Click(this, new EventArgs());
         }
 
-        private void tourStopList_ShowStartPosition(object sender, TourStop e)
+        public void tourStopList_ShowStartPosition(object sender, TourStop e)
         {
             ShowSlideStartPosition(Tour.CurrentTourStop);
             TourEditorUI.ClearSelection();
         }
 
-        //private void Dome_CheckedChanged(object sender, EventArgs e)
+        //public void Dome_CheckedChanged(object sender, EventArgs e)
         //{
         //    Undo.Push(new UndoTourPropertiesChange(Language.GetLocalizedText(549, "Properties Edit"), Tour));
         //    Tour.DomeMode = Dome.Checked;
         //    Overlay.DefaultAnchor = OverlayAnchor.Screen;
         //}
 
-        private void tourStopList_KeyDown(object sender, ElementEvent e)
+        public void tourStopList_KeyDown(object sender, ElementEvent e)
         {
             if (e.CtrlKey)
             {

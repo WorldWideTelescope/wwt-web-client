@@ -158,6 +158,7 @@
     <Content Include="Images\button_previous_top_normal.png" />
     <Content Include="Images\button_previous_top_pressed.png" />
     <Content Include="Images\callisto.jpg" />
+    <Content Include="Images\ColorPickerHex.png" />
     <Content Include="Images\context-menu-arrow.png" />
     <Content Include="Images\dragInsertMarker.png" />
     <Content Include="Images\earth.jpg" />

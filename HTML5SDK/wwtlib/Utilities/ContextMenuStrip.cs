@@ -73,7 +73,14 @@ namespace wwtlib
                     }
                     else
                     {
-                        md.ClassName = "contextmenuitem";
+                        if (item.Checked)
+                        {
+                            md.ClassName = "contextmenuitem checkedmenu";
+                        }
+                        else
+                        {
+                            md.ClassName = "contextmenuitem";
+                        }
                     }
                     md.InnerText = item.Name;
 

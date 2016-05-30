@@ -158,6 +158,7 @@
     <Compile Include="Triangle.cs" />
     <Compile Include="UiTools.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="Utilities\ColorPicker.cs" />
     <Compile Include="Utilities\ContextMenuStrip.cs" />
     <Compile Include="VizLayer.cs" />
     <Compile Include="WebFile.cs" />

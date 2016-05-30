@@ -1320,13 +1320,15 @@ namespace wwtlib
 
         void pickColor_Click(object sender, EventArgs e)
         {
-            PopupColorPicker picker = new PopupColorPicker();
+            ColorPicker picker = new ColorPicker();
 
-            picker.Location = Cursor.Position;
+            //picker.Location = Cursor.Position;
 
-            picker.Color = Focus.Color;
+            //picker.Color = Focus.Color;
 
-            if (picker.ShowDialog() == DialogResult.OK)
+            // if (picker.ShowDialog() == DialogResult.OK)
+
+            picker.CallBack = delegate
             {
                 //todo localize
                 Undo.Push(new UndoTourStopChange(Language.GetLocalizedText(543, "Edit Color"), tour));
@@ -1334,7 +1336,9 @@ namespace wwtlib
                 {
                     overlay.Color = picker.Color;
                 }
-            }
+            };
+
+            picker.Show( Vector2d.Create(500, 500));
         }
 
         void volume_Click(object sender, EventArgs e)

@@ -16632,17 +16632,18 @@ window.wwtlib = function(){
       }
     },
     _pickColor_Click: function(sender, e) {
-      var picker = new PopupColorPicker();
-      picker.location = Cursor.get_position();
-      picker.color = this.get_focus().get_color();
-      if (picker.showDialog() === 1) {
-        Undo.push(new UndoTourStopChange(Language.getLocalizedText(543, 'Edit Color'), this._tour));
-        var $enum1 = ss.enumerate(this.selection.selectionSet);
+      var $this = this;
+
+      var picker = new ColorPicker();
+      picker.callBack = function() {
+        Undo.push(new UndoTourStopChange(Language.getLocalizedText(543, 'Edit Color'), $this._tour));
+        var $enum1 = ss.enumerate($this.selection.selectionSet);
         while ($enum1.moveNext()) {
           var overlay = $enum1.current;
           overlay.set_color(picker.color);
         }
-      }
+      };
+      picker.show(Vector2d.create(500, 500));
     },
     _volume_Click: function(sender, e) {
       var vol = new PopupVolume();
@@ -19941,6 +19942,47 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ColorPicker
+
+  function ColorPicker() {
+    this.callBack = null;
+    this.color = Colors.get_red();
+  }
+  var ColorPicker$ = {
+    nonMenuClick: function(e) {
+      var menu = document.getElementById('colorpicker');
+      menu.style.display = 'none';
+      window.removeEventListener('click', ss.bind('nonMenuClick', this), true);
+      var image = document.getElementById('colorhex');
+      image.removeEventListener('click', ss.bind('pickColor', this), false);
+    },
+    show: function(position) {
+      var picker = document.getElementById('colorpicker');
+      picker.className = 'colorpicker';
+      picker.style.display = 'block';
+      picker.style.left = position.x.toString() + 'px';
+      picker.style.top = position.y.toString() + 'px';
+      window.addEventListener('click', ss.bind('nonMenuClick', this), true);
+      var image = document.getElementById('colorhex');
+      image.addEventListener('mousedown', ss.bind('pickColor', this), false);
+    },
+    pickColor: function(e) {
+      var picker = document.getElementById('colorpicker');
+      var image = document.getElementById('colorhex');
+      var canvas = document.createElement('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0);
+      var pixels = ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
+      this.color = Color.fromArgb(pixels[3], pixels[0], pixels[1], pixels[2]);
+      if (this.callBack != null) {
+        this.callBack(this.color);
+      }
+    }
+  };
+
+
   // wwtlib.ContextMenuStrip
 
   function ContextMenuStrip() {
@@ -19982,7 +20024,12 @@ window.wwtlib = function(){
             md.className = 'contextmenuitem submenu';
           }
           else {
-            md.className = 'contextmenuitem';
+            if (item.checked) {
+              md.className = 'contextmenuitem checkedmenu';
+            }
+            else {
+              md.className = 'contextmenuitem';
+            }
           }
           md.innerText = item.name;
           var it = md;
@@ -33140,6 +33187,7 @@ window.wwtlib = function(){
       PopupVolume: [ PopupVolume, PopupVolume$, null ],
       PopupColorPicker: [ PopupColorPicker, PopupColorPicker$, null ],
       OverlayProperties: [ OverlayProperties, OverlayProperties$, null ],
+      ColorPicker: [ ColorPicker, ColorPicker$, null ],
       ContextMenuStrip: [ ContextMenuStrip, ContextMenuStrip$, null ],
       ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
       TagMe: [ TagMe, TagMe$, null ],
