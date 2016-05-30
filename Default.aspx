@@ -164,6 +164,7 @@
             padding-left: 15px;
             border: solid 1px rgba(105,115,150,.7);
         }
+
         body .contextmenuitem {
             border-left: solid 1px rgba(105,115,150,.7);
             padding: 2px 4px 2px 4px;
@@ -174,6 +175,7 @@
             -ms-user-select: none;
             user-select: none;
         }
+
         body .contextmenuitem:hover {
             background-color: rgba(1,14,23,.85);
         }
@@ -194,15 +196,33 @@
             }
 
 
-        body .contextmenuitem2:after {
-            content: "";
-            position: absolute;
-            right: 6px;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-            border: 5px solid transparent;
-            border-left-color: #808080; 
+           body .checkedmenu:after {
+                font-family: FontAwesome;
+                content: "\f00c";
+                font-size: 13px;
+                color: rgba(255,255,255,.8);
+                text-align: center;
+                line-height: 15px;
+                height: 15px;
+                width: 15px;
+                position: absolute;
+                left: 0;
+            }
+
+          body .colorpicker {
+                background: rgba(25,30,43,.88);
+                position: absolute;
+                display: none;
+                width: 220px;
+                height: 240px;
+                top: 400px;
+                left: 400px;
+                z-index: 1000;
+                box-shadow: 0 0 4px #808080;
+                background-clip: border-box;
+                padding-left: 15px;
+                padding-top: 15px;
+                border: solid 1px rgba(105,115,150,.7);
             }
 
 
@@ -321,6 +341,11 @@
     <div id="popoutmenu" class="contextmenu">
 
     </div>
+
+    <div id="colorpicker" class="colorpicker">
+        <img id="colorhex" src="images\ColorPickerHex.png" width="189" height="208" />
+    </div>
+   
 
 <% if (Client == Clients.Mobile)
    { %>
