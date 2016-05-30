@@ -178,6 +178,34 @@
             background-color: rgba(1,14,23,.85);
         }
 
+        body .submenu:after {
+              display: block;
+              right: 6px;
+              content: " ";
+              float: right;
+              width: 0;
+              height: 0;
+              border-color: transparent;
+              border-style: solid;
+              border-width: 5px 0 5px 5px;
+              border-left-color: #cccccc;
+              margin-top: 5px;
+              margin-right: 10px;
+            }
+
+
+        body .contextmenuitem2:after {
+            content: "";
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            border: 5px solid transparent;
+            border-left-color: #808080; 
+            }
+
+
     </style> 
      
     <script src="//js.live.net/v5.0/wl.js"></script>

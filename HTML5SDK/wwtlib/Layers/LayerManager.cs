@@ -661,6 +661,57 @@ namespace wwtlib
             renderContext.WorldBaseNonRotating = matOldNonRotating;
         }
 
+        internal static Dictionary<Guid, LayerInfo> GetVisibleLayerList(Dictionary<Guid, LayerInfo> previous)
+        {
+            Dictionary<Guid, LayerInfo> list = new Dictionary<Guid, LayerInfo>();
+
+            foreach (Guid key in LayerList.Keys)
+            {
+                Layer layer = LayerList[key];
+                if (layer.Enabled)
+                {
+                    LayerInfo info = new LayerInfo();
+                    info.StartOpacity = info.EndOpacity = layer.Opacity;
+                    info.ID = layer.ID;
+                    info.StartParams = layer.GetParams();
+
+
+                    if (previous.ContainsKey(info.ID))
+                    {
+                        info.EndOpacity = previous[info.ID].EndOpacity;
+                        info.EndParams = previous[info.ID].EndParams;
+                    }
+                    else
+                    {
+                        info.EndParams = layer.GetParams();
+                    }
+                    list[layer.ID] = info;
+                }
+            }
+            return list;
+        }
+
+        public static void SetVisibleLayerList(Dictionary<Guid, LayerInfo> list)
+        {
+            foreach (Guid key in LayerList.Keys)
+            {
+                Layer layer = LayerList[key];
+                layer.Enabled = list.ContainsKey(layer.ID);
+                try
+                {
+                    if (layer.Enabled)
+                    {
+                        layer.Opacity = list[layer.ID].FrameOpacity;
+                        layer.SetParams(list[layer.ID].FrameParams);
+                    }
+                }
+                catch
+                {
+                }
+            }
+            //SyncLayerState();
+        }
+
         //todo remove the stuff from draw that is redundant once predraw has run
         internal static void PreDraw(RenderContext renderContext, float opacity, bool astronomical, string referenceFrame, bool nested)
         {

@@ -87,12 +87,14 @@ namespace wwtlib
 
         }
 
-        //public TourStop(Place target)
-        //{
-        //    this.target = target;
-        //    id = Guid.NewGuid().ToString();
+        public static TourStop Create(Place target)
+        {
+            TourStop ts = new TourStop();
+            
+            ts.target = target;
 
-        //}
+            return ts;
+        }
 
         TourDocument owner = null;
 
@@ -465,6 +467,73 @@ namespace wwtlib
             milkyWayModel = Settings.Current.MilkyWayModel;
             minorPlanetsFilter = Settings.Current.MinorPlanetsFilter;
             planetOrbitsFilter = Settings.Current.PlanetOrbitsFilter;
+        }
+
+        public void SyncSettings()
+        {
+            //Earth3d.ignoreChanges = true;
+            //LayerManager.ProcessingUpdate = true;
+
+            Settings.GlobalSettings.ActualPlanetScale = actualPlanetScale;
+            Settings.GlobalSettings.LocationAltitude = locationAltitude;
+            Settings.GlobalSettings.LocationLat = locationLat;
+            Settings.GlobalSettings.LocationLng = locationLng;
+         //   Settings.GlobalSettings.ShowClouds.TargetState = showClouds;
+            Settings.GlobalSettings.EarthCutawayView = earthCutawayView;
+            Settings.GlobalSettings.ShowConstellationBoundries = showConstellationBoundries;
+            Settings.GlobalSettings.ShowConstellationFigures = showConstellationFigures;
+            Settings.GlobalSettings.ShowConstellationSelection = showConstellationSelection;
+            Settings.GlobalSettings.ShowEcliptic = showEcliptic;
+            Settings.GlobalSettings.ShowElevationModel = showElevationModel;
+           // Settings.GlobalSettings.ShowFieldOfView = showFieldOfView;
+            Settings.GlobalSettings.ShowGrid = showGrid;
+            Settings.GlobalSettings.ShowHorizon = showHorizon;
+         //   Settings.GlobalSettings.ShowHorizonPanorama = showHorizonPanorama;
+         //   Settings.GlobalSettings.ShowMoonsAsPointSource = showMoonsAsPointSource;
+            Settings.GlobalSettings.ShowSolarSystem = showSolarSystem;
+        //    Settings.GlobalSettings.FovTelescope = fovTelescope;
+        //    Settings.GlobalSettings.FovEyepiece = fovEyepiece;
+        //    Settings.GlobalSettings.FovCamera = fovCamera;
+            Settings.GlobalSettings.LocalHorizonMode = localHorizonMode;         
+            Settings.GlobalSettings.GalacticMode = galacticMode;
+            Settings.GlobalSettings.SolarSystemStars = solarSystemStars;
+            Settings.GlobalSettings.SolarSystemMilkyWay = solarSystemMilkyWay;
+            Settings.GlobalSettings.SolarSystemCosmos = solarSystemCosmos;
+            Settings.GlobalSettings.SolarSystemCMB = solarSystemCMB;
+            Settings.GlobalSettings.SolarSystemOrbits = solarSystemOrbits;
+            Settings.GlobalSettings.SolarSystemMinorOrbits = solarSystemMinorOrbits;
+            Settings.GlobalSettings.SolarSystemMinorPlanets = solarSystemMinorPlanets;
+            Settings.GlobalSettings.SolarSystemOverlays = solarSystemOverlays;
+            Settings.GlobalSettings.SolarSystemLighting = solarSystemLighting;
+            Settings.GlobalSettings.ShowISSModel = showISSModel;
+            Settings.GlobalSettings.SolarSystemScale = solarSystemScale;
+            Settings.GlobalSettings.SolarSystemMultiRes = solarSystemMultiRes;
+            Settings.GlobalSettings.ShowEarthSky = showEarthSky;
+            Settings.GlobalSettings.MinorPlanetsFilter = minorPlanetsFilter;
+            Settings.GlobalSettings.PlanetOrbitsFilter = planetOrbitsFilter;
+            Settings.GlobalSettings.ShowEquatorialGridText = showEquatorialGridText;
+            Settings.GlobalSettings.ShowGalacticGrid = showGalacticGrid;
+            Settings.GlobalSettings.ShowGalacticGridText = showGalacticGridText;
+            Settings.GlobalSettings.ShowEclipticGrid = showEclipticGrid;
+            Settings.GlobalSettings.ShowEclipticGridText = showEclipticGridText;
+            Settings.GlobalSettings.ShowEclipticOverviewText = showEclipticOverviewText;
+            Settings.GlobalSettings.ShowAltAzGrid = showAltAzGrid;
+            Settings.GlobalSettings.ShowAltAzGridText = showAltAzGridText;
+            Settings.GlobalSettings.ShowPrecessionChart = showPrecessionChart;
+            Settings.GlobalSettings.ShowConstellationPictures = showConstellationPictures;
+            Settings.GlobalSettings.ConstellationsEnabled = constellationsEnabled;
+            Settings.GlobalSettings.ShowSkyOverlays = showSkyOverlays;
+            Settings.GlobalSettings.Constellations = showConstellations;
+            Settings.GlobalSettings.ShowSkyNode = showSkyNode;
+            Settings.GlobalSettings.ShowSkyGrids = showSkyGrids;
+           // Settings.GlobalSettings.ShowSkyOverlaysIn3d = skyOverlaysIn3d;
+            Settings.GlobalSettings.ConstellationFiguresFilter = constellationFiguresFilter.Clone();
+            Settings.GlobalSettings.ConstellationBoundariesFilter = constellationBoundariesFilter.Clone();
+            Settings.GlobalSettings.ConstellationNamesFilter=constellationNamesFilter.Clone();
+            Settings.GlobalSettings.ConstellationArtFilter=constellationArtFilter.Clone();
+           // Earth3d.ignoreChanges = false;
+          //  LayerManager.ProcessingUpdate = false;
+            //Settings.Default.PulseMeForUpdate = !Properties.Settings.Default.PulseMeForUpdate;
         }
 
         #region ISettings Members

@@ -13,6 +13,8 @@ namespace wwtlib
 
     public abstract class Overlay
     {
+        public static OverlayAnchor DefaultAnchor = OverlayAnchor.Screen;
+
         public const string ClipboardFormat = "WorldWideTelescope.Overlay";
         public bool isDynamic = false;
         protected bool isDesignTimeOnly = false;

@@ -676,7 +676,7 @@ namespace wwtlib
             get { return tourStops; }
             set { tourStops = value; }
         }
-
+        //todo need change notifications.
         int currentTourstopIndex = -1;
 
         public int CurrentTourstopIndex

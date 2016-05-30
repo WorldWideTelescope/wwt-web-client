@@ -67,7 +67,14 @@ namespace wwtlib
                 if (item.Visible)
                 {
                     DivElement md = (DivElement)Document.CreateElement("div");
-                    md.ClassName = "contextmenuitem";
+                    if (item.DropDownItems.Count > 0)
+                    {
+                        md.ClassName = "contextmenuitem submenu";
+                    }
+                    else
+                    {
+                        md.ClassName = "contextmenuitem";
+                    }
                     md.InnerText = item.Name;
 
                     TagMe it = (TagMe)(Object)md;

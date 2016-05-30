@@ -8499,7 +8499,7 @@ window.wwtlib = function(){
   ShapeSpriteShader.init = function(renderContext) {
     var gl = renderContext.gl;
     var fragShaderText = ' precision mediump float;                                                                \n' + '                                                                                         \n' + '   varying lowp vec4 vColor;                                                             \n' + '                                                                                         \n' + '   void main(void) {                                                                     \n' + '   gl_FragColor =  vColor;  \n' + '   }                                                                                     \n';
-    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '     attribute lowp vec4 aColor;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec4 vColor;                                                         \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '         vColor = aColor;                                                         \n' + '     }                                                                            \n' + '                                                                                  \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute lowp vec4 aColor;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec4 vColor;                                                         \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vColor = aColor;                                                         \n' + '     }                                                                            \n' + '                                                                                  \n';
     ShapeSpriteShader._frag = gl.createShader(35632);
     gl.shaderSource(ShapeSpriteShader._frag, fragShaderText);
     gl.compileShader(ShapeSpriteShader._frag);
@@ -10090,6 +10090,45 @@ window.wwtlib = function(){
     renderContext.set_nominalRadius(oldNominalRadius);
     renderContext.set_world(matOld);
     renderContext.set_worldBaseNonRotating(matOldNonRotating);
+  };
+  LayerManager._getVisibleLayerList = function(previous) {
+    var list = {};
+    var $enum1 = ss.enumerate(ss.keys(LayerManager.get_layerList()));
+    while ($enum1.moveNext()) {
+      var key = $enum1.current;
+      var layer = LayerManager.get_layerList()[key];
+      if (layer.get_enabled()) {
+        var info = new LayerInfo();
+        info.startOpacity = info.endOpacity = layer.get_opacity();
+        info.id = layer.id;
+        info.startParams = layer.getParams();
+        if (ss.keyExists(previous, info.id)) {
+          info.endOpacity = previous[info.id].endOpacity;
+          info.endParams = previous[info.id].endParams;
+        }
+        else {
+          info.endParams = layer.getParams();
+        }
+        list[layer.id] = info;
+      }
+    }
+    return list;
+  };
+  LayerManager.setVisibleLayerList = function(list) {
+    var $enum1 = ss.enumerate(ss.keys(LayerManager.get_layerList()));
+    while ($enum1.moveNext()) {
+      var key = $enum1.current;
+      var layer = LayerManager.get_layerList()[key];
+      layer.set_enabled(ss.keyExists(list, layer.id));
+      try {
+        if (layer.get_enabled()) {
+          layer.set_opacity(list[layer.id].frameOpacity);
+          layer.setParams(list[layer.id].frameParams);
+        }
+      }
+      catch ($e2) {
+      }
+    }
   };
   LayerManager._preDraw = function(renderContext, opacity, astronomical, referenceFrame, nested) {
     if (!ss.keyExists(LayerManager.get_allMaps(), referenceFrame)) {
@@ -12999,6 +13038,7 @@ window.wwtlib = function(){
     this._solarSystemMultiRes = true;
     this._solarSystemScale = 1;
     this._smoothPan = true;
+    this._showElevationModel = true;
     this._showEquatorialGridText = false;
     this._showGalacticGrid = false;
     this._showGalacticGridText = false;
@@ -13030,6 +13070,7 @@ window.wwtlib = function(){
     this._milkyWayModel = false;
     this._minorPlanetsFilter = 255;
     this._planetOrbitsFilter = 2147483647;
+    this._constellations = true;
   }
   Settings.get_current = function() {
     if (Settings._active == null) {
@@ -13098,6 +13139,10 @@ window.wwtlib = function(){
     get_actualPlanetScale: function() {
       return this._actualPlanetScale;
     },
+    set_actualPlanetScale: function(value) {
+      this._actualPlanetScale = value;
+      return value;
+    },
     get_fovCamera: function() {
       return this._fovCamera;
     },
@@ -13160,7 +13205,11 @@ window.wwtlib = function(){
       return value;
     },
     get_showElevationModel: function() {
-      return false;
+      return this._showElevationModel;
+    },
+    set_showElevationModel: function(value) {
+      this._showElevationModel = value;
+      return value;
     },
     get_showFieldOfView: function() {
       return this._showFiledOfView;
@@ -13187,6 +13236,10 @@ window.wwtlib = function(){
     },
     get_showSolarSystem: function() {
       return this._showSolarSystem;
+    },
+    set_showSolarSystem: function(value) {
+      this._showSolarSystem = value;
+      return value;
     },
     get_localHorizonMode: function() {
       return this._localHorizonMode;
@@ -13473,6 +13526,13 @@ window.wwtlib = function(){
     },
     set_planetOrbitsFilter: function(value) {
       this._planetOrbitsFilter = value;
+      return value;
+    },
+    get_constellations: function() {
+      return this._constellations;
+    },
+    set_constellations: function(value) {
+      this._constellations = value;
       return value;
     },
     getSetting: function(type) {
@@ -16608,6 +16668,705 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.TourEditTab
+
+  function TourEditTab() {
+    this.musicTrack = null;
+    this.voiceTrack = null;
+    this._tour = null;
+    this.tourStopList = new TourStopList();
+    this.tourEditorUI = new TourEditor();
+    this._contextMenu = new ContextMenuStrip();
+    this._playing = false;
+    this._player = null;
+    this._defultColor = Colors.get_white();
+  }
+  var TourEditTab$ = {
+    _setUiStrings: function() {
+    },
+    get_tour: function() {
+      return this._tour;
+    },
+    set_tour: function(value) {
+      this._tour = value;
+      this.tourEditorUI.set_tour(this._tour);
+      this.tourStopList.tour = this._tour;
+      Overlay.defaultAnchor = 1;
+      if (this._tour.get_tourStops().length > 0) {
+        WWTControl.singleton.gotoTarget(this._tour.get_tourStops()[0].get_target(), false, true, false);
+        this._tour.set_currentTourstopIndex(0);
+        this.tourStopList.selectedItem = this._tour.get_currentTourstopIndex();
+        this.musicTrack.target = this._tour.get_currentTourStop();
+        this.voiceTrack.target = this._tour.get_currentTourStop();
+        LayerManager.setVisibleLayerList(this._tour.get_currentTourStop().layers);
+      }
+      this.setEditMode(this._tour.get_editMode());
+      return value;
+    },
+    tour_CurrentTourstopChanged: function(sender, e) {
+      OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.tourEditorUI.selection);
+      this.tourStopList.refresh();
+    },
+    setFocusedChild: function() {
+    },
+    selectCurrent: function() {
+      this.tourStopList.selectedItem = this._tour.get_currentTourstopIndex();
+      this.tourStopList.refresh();
+    },
+    _tourEdit_Load: function(sender, e) {
+    },
+    playNow: function(fromStart) {
+      this._playing = true;
+      if (this.get_tour().get_editMode() || fromStart) {
+        this.get_tour().set_currentTourstopIndex(-1);
+      }
+      this._setPlayPauseMode();
+    },
+    _tourPlayer_TourEnded: function(sender, e) {
+    },
+    _endTour_CloseTour: function(sender, e) {
+    },
+    _endTour_LaunchTour: function(sender, e) {
+      this.playNow(true);
+    },
+    setEditMode: function(visible) {
+    },
+    _tourStopList_ItemClicked: function(sender, e) {
+      if (this._tour.get_currentTourStop() !== e) {
+        this._tour.set_currentTourStop(e);
+        if (e != null) {
+          this.musicTrack.target = this._tour.get_currentTourStop();
+          this.voiceTrack.target = this._tour.get_currentTourStop();
+        }
+        else {
+          this.musicTrack.target = null;
+          this.voiceTrack.target = null;
+        }
+        this.tourEditorUI.clearSelection();
+      }
+      if (this._playing) {
+        this._playFromHere_Click(sender, new ss.EventArgs());
+      }
+    },
+    _tourStopList_ItemDoubleClicked: function(sender, e) {
+      this.showSlideStartPosition(e);
+    },
+    showSlideStartPosition: function(ts) {
+      this._tour.set_currentTourStop(ts);
+      if (ts != null) {
+        this.musicTrack.target = this._tour.get_currentTourStop();
+        this.voiceTrack.target = this._tour.get_currentTourStop();
+      }
+      else {
+        this.musicTrack.target = null;
+        this.voiceTrack.target = null;
+      }
+      this.tourEditorUI.clearSelection();
+      if (this._tour.get_currentTourStop() != null) {
+        this._tour.get_currentTourStop().syncSettings();
+        SpaceTimeController.set_now(this._tour.get_currentTourStop().get_startTime());
+        SpaceTimeController.set_syncToClock(false);
+        WWTControl.singleton.gotoTarget(ts.get_target(), false, true, false);
+        this._tour.get_currentTourStop().set_tweenPosition(0);
+        this._tour.get_currentTourStop()._updateLayerOpacity();
+        LayerManager.setVisibleLayerList(this._tour.get_currentTourStop().layers);
+      }
+    },
+    tourStopList_MouseClick: function(sender, e) {
+      if (!this._tour.get_editMode()) {
+        return;
+      }
+      this._tour.set_currentTourstopIndex(this.tourStopList.selectedItem);
+      if (e.button === 2) {
+        if (this.tourStopList.multipleSelection) {
+          if (this._contextMenu != null) {
+            this._contextMenu._dispose();
+          }
+          this._contextMenu = new ContextMenuStrip();
+          var selectAllMenu = ToolStripMenuItem.create(Language.getLocalizedText(1345, 'Select All'));
+          var cutMenu = ToolStripMenuItem.create(Language.getLocalizedText(427, 'Cut'));
+          var copyMenu = ToolStripMenuItem.create(Language.getLocalizedText(428, 'Copy'));
+          var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(429, 'Paste'));
+          var deleteMenu = ToolStripMenuItem.create(Language.getLocalizedText(167, 'Delete'));
+          cutMenu.click = ss.bind('_cutMenu_Click', this);
+          copyMenu.click = ss.bind('_copyMenu_Click', this);
+          pasteMenu.click = ss.bind('_pasteMenu_Click', this);
+          deleteMenu.click = ss.bind('_deleteMenu_Click', this);
+          selectAllMenu.click = ss.bind('_selectAllMenu_Click', this);
+          var sep1 = new ToolStripSeparator();
+          this._contextMenu.items.push(selectAllMenu);
+          this._contextMenu.items.push(sep1);
+          this._contextMenu.items.push(cutMenu);
+          this._contextMenu.items.push(copyMenu);
+          this._contextMenu.items.push(pasteMenu);
+          this._contextMenu.items.push(deleteMenu);
+          this._contextMenu._show(Cursor.get_position());
+        }
+        else if (this._tour.get_currentTourStop() == null) {
+          if (this._contextMenu != null) {
+            this._contextMenu._dispose();
+          }
+          this._contextMenu = new ContextMenuStrip();
+          var selectAllMenu = ToolStripMenuItem.create(Language.getLocalizedText(1345, 'Select All'));
+          var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(425, 'Paste'));
+          var sep1 = new ToolStripSeparator();
+          var sep2 = new ToolStripSeparator();
+          var insertSlide = ToolStripMenuItem.create(Language.getLocalizedText(426, 'Add New Slide'));
+          pasteMenu.click = ss.bind('_pasteMenu_Click', this);
+          selectAllMenu.click = ss.bind('_selectAllMenu_Click', this);
+          insertSlide.click = ss.bind('_addNewSlide_Click', this);
+          this._contextMenu.items.push(selectAllMenu);
+          this._contextMenu.items.push(sep1);
+          this._contextMenu.items.push(pasteMenu);
+          this._contextMenu.items.push(sep2);
+          this._contextMenu.items.push(insertSlide);
+          this._contextMenu._show(Cursor.get_position());
+        }
+        else {
+          if (this._contextMenu != null) {
+            this._contextMenu._dispose();
+          }
+          this._contextMenu = new ContextMenuStrip();
+          var selectAllMenu = ToolStripMenuItem.create(Language.getLocalizedText(1345, 'Select All'));
+          var cutMenu = ToolStripMenuItem.create(Language.getLocalizedText(427, 'Cut'));
+          var copyMenu = ToolStripMenuItem.create(Language.getLocalizedText(428, 'Copy'));
+          var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(429, 'Paste'));
+          var deleteMenu = ToolStripMenuItem.create(Language.getLocalizedText(167, 'Delete'));
+          var sep1 = new ToolStripSeparator();
+          var sep3 = new ToolStripSeparator();
+          var sep4 = new ToolStripSeparator();
+          var sep5 = new ToolStripSeparator();
+          var sep6 = new ToolStripSeparator();
+          var sep7 = new ToolStripSeparator();
+          var insertSlide = ToolStripMenuItem.create(Language.getLocalizedText(431, 'Insert New Slide'));
+          var insertDuplicate = ToolStripMenuItem.create(Language.getLocalizedText(627, 'Duplicate Slide at End Position'));
+          var insertSlideshow = ToolStripMenuItem.create(Language.getLocalizedText(628, 'Merge Tour after slide...'));
+          var playFromHere = ToolStripMenuItem.create(Language.getLocalizedText(432, 'Preview Tour From Here'));
+          var sep2 = new ToolStripSeparator();
+          var captureThumbnail = ToolStripMenuItem.create(Language.getLocalizedText(433, 'Capture New Thumbnail'));
+          var setSkyPosition = ToolStripMenuItem.create(Language.getLocalizedText(434, 'Set Start Camera Position'));
+          var setEndSkyPosition = ToolStripMenuItem.create(Language.getLocalizedText(435, 'Set End Camera Position'));
+          var showSkyPosition = ToolStripMenuItem.create(Language.getLocalizedText(436, 'Show Start Camera Position'));
+          var showEndSkyPosition = ToolStripMenuItem.create(Language.getLocalizedText(437, 'Show End Camera Position'));
+          var masterSlide = ToolStripMenuItem.create(Language.getLocalizedText(438, 'Master Slide'));
+          var makeTimeline = ToolStripMenuItem.create(Language.getLocalizedText(1346, 'Create Timeline'));
+          var showTimeline = ToolStripMenuItem.create(Language.getLocalizedText(1347, 'Show Timeline'));
+          var linkString = this._tour.get_currentTourStop().get_nextSlide();
+          switch (linkString) {
+            case '':
+            case null:
+            case 'Next':
+              linkString = ' (' + Language.getLocalizedText(610, 'Next Slide') + ')';
+              break;
+            case 'Return':
+              linkString = ' (' + Language.getLocalizedText(602, 'Return to Caller') + ')';
+              break;
+            default:
+              var index = this.get_tour().getTourStopIndexByID(linkString);
+              if (index > -1) {
+                if (ss.emptyString(this._tour.get_tourStops()[index].get_description())) {
+                  linkString = ss.format(' (Slide {0})', index);
+                }
+                else {
+                  linkString = ' (' + this._tour.get_tourStops()[index].get_description() + ')';
+                }
+              }
+              break;
+          }
+          var setNextSlide = ToolStripMenuItem.create(Language.getLocalizedText(590, 'Set Next Slide') + linkString);
+          var trackSpaceTime = ToolStripMenuItem.create(Language.getLocalizedText(439, 'Track Date/Time/Location'));
+          var fadeInOverlays = ToolStripMenuItem.create(Language.getLocalizedText(629, 'Fade In Slide Elements'));
+          var properties = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
+          var interpolation = ToolStripMenuItem.create(Language.getLocalizedText(1029, 'Animation Tween Type'));
+          var Linear = ToolStripMenuItem.create(Language.getLocalizedText(1030, 'Linear'));
+          var Ease = ToolStripMenuItem.create(Language.getLocalizedText(1031, 'Ease In/Out'));
+          var EaseIn = ToolStripMenuItem.create(Language.getLocalizedText(1032, 'Ease In'));
+          var EaseOut = ToolStripMenuItem.create(Language.getLocalizedText(1033, 'Ease Out'));
+          var Exponential = ToolStripMenuItem.create(Language.getLocalizedText(1034, 'Exponential'));
+          Linear.tag = 0;
+          Ease.tag = 3;
+          EaseIn.tag = 1;
+          EaseOut.tag = 2;
+          Exponential.tag = 4;
+          Linear.click = ss.bind('_interpolation_Click', this);
+          Ease.click = ss.bind('_interpolation_Click', this);
+          EaseIn.click = ss.bind('_interpolation_Click', this);
+          EaseOut.click = ss.bind('_interpolation_Click', this);
+          Exponential.click = ss.bind('_interpolation_Click', this);
+          switch (this._tour.get_currentTourStop().get_interpolationType()) {
+            case 0:
+              Linear.checked = true;
+              break;
+            case 1:
+              EaseIn.checked = true;
+              break;
+            case 2:
+              EaseOut.checked = true;
+              break;
+            case 3:
+              Ease.checked = true;
+              break;
+            case 4:
+              Exponential.checked = true;
+              break;
+            default:
+              break;
+          }
+          interpolation.dropDownItems.push(Linear);
+          interpolation.dropDownItems.push(Ease);
+          interpolation.dropDownItems.push(EaseIn);
+          interpolation.dropDownItems.push(EaseOut);
+          interpolation.dropDownItems.push(Exponential);
+          selectAllMenu.click = ss.bind('_selectAllMenu_Click', this);
+          insertDuplicate.click = ss.bind('_insertDuplicate_Click', this);
+          cutMenu.click = ss.bind('_cutMenu_Click', this);
+          copyMenu.click = ss.bind('_copyMenu_Click', this);
+          pasteMenu.click = ss.bind('_pasteMenu_Click', this);
+          deleteMenu.click = ss.bind('_deleteMenu_Click', this);
+          insertSlide.click = ss.bind('_insertNewSlide_Click', this);
+          properties.click = ss.bind('_properties_Click', this);
+          captureThumbnail.click = ss.bind('_captureThumbnail_Click', this);
+          setSkyPosition.click = ss.bind('_setSkyPosition_Click', this);
+          setEndSkyPosition.click = ss.bind('_setEndSkyPosition_Click', this);
+          showEndSkyPosition.click = ss.bind('_showEndSkyPosition_Click', this);
+          showSkyPosition.click = ss.bind('_showSkyPosition_Click', this);
+          playFromHere.click = ss.bind('_playFromHere_Click', this);
+          masterSlide.click = ss.bind('_masterSlide_Click', this);
+          setNextSlide.click = ss.bind('_setNextSlide_Click', this);
+          trackSpaceTime.click = ss.bind('_trackSpaceTime_Click', this);
+          insertSlideshow.click = ss.bind('_insertSlideshow_Click', this);
+          fadeInOverlays.click = ss.bind('_fadeInOverlays_Click', this);
+          if (this._tour.get_currentTourStop().get_masterSlide()) {
+            masterSlide.checked = true;
+          }
+          if (this._tour.get_currentTourStop().get_hasTime()) {
+            trackSpaceTime.checked = true;
+          }
+          fadeInOverlays.checked = this._tour.get_currentTourStop().get_fadeInOverlays();
+          this._contextMenu.items.push(selectAllMenu);
+          this._contextMenu.items.push(sep7);
+          this._contextMenu.items.push(cutMenu);
+          this._contextMenu.items.push(copyMenu);
+          this._contextMenu.items.push(pasteMenu);
+          this._contextMenu.items.push(deleteMenu);
+          this._contextMenu.items.push(sep1);
+          this._contextMenu.items.push(insertSlide);
+          this._contextMenu.items.push(insertDuplicate);
+          this._contextMenu.items.push(insertSlideshow);
+          this._contextMenu.items.push(sep2);
+          this._contextMenu.items.push(playFromHere);
+          this._contextMenu.items.push(sep3);
+          this._contextMenu.items.push(setSkyPosition);
+          this._contextMenu.items.push(setEndSkyPosition);
+          this._contextMenu.items.push(sep4);
+          this._contextMenu.items.push(showSkyPosition);
+          this._contextMenu.items.push(showEndSkyPosition);
+          this._contextMenu.items.push(sep5);
+          this._contextMenu.items.push(captureThumbnail);
+          this._contextMenu.items.push(sep6);
+          if (!this._tour.get_currentTourStop().get_keyFramed()) {
+            this._contextMenu.items.push(makeTimeline);
+          }
+          else {
+            this._contextMenu.items.push(showTimeline);
+          }
+          this._contextMenu.items.push(masterSlide);
+          this._contextMenu.items.push(setNextSlide);
+          this._contextMenu.items.push(fadeInOverlays);
+          this._contextMenu.items.push(trackSpaceTime);
+          this._contextMenu.items.push(interpolation);
+          this._contextMenu._show(Cursor.get_position());
+        }
+      }
+    },
+    _selectAllMenu_Click: function(sender, e) {
+      this.tourStopList.selectAll();
+    },
+    _interpolation_Click: function(sender, e) {
+      var item = sender;
+      this._tour.get_currentTourStop().set_interpolationType(item.tag);
+    },
+    _setNextSlide_Click: function(sender, e) {
+    },
+    _insertDuplicate_Click: function(sender, e) {
+    },
+    _fadeInOverlays_Click: function(sender, e) {
+      this._tour.get_currentTourStop().set_fadeInOverlays(!this._tour.get_currentTourStop().get_fadeInOverlays());
+    },
+    _insertSlideshow_Click: function(sender, e) {
+    },
+    _trackSpaceTime_Click: function(sender, e) {
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(532, 'Track Time Edit'), this._tour));
+      this._tour.get_currentTourStop().set_hasTime(!this._tour.get_currentTourStop().get_hasTime());
+    },
+    _masterSlide_Click: function(sender, e) {
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(533, 'Master Slide State Edit'), this._tour));
+      this._tour.get_currentTourStop().set_masterSlide(!this._tour.get_currentTourStop().get_masterSlide());
+      this.tourStopList.refresh();
+    },
+    _playFromHere_Click: function(sender, e) {
+      this._playFromCurrentTourstop();
+    },
+    _playFromCurrentTourstop: function() {
+      this._playing = true;
+      WWTControl.singleton.gotoTarget(this._tour.get_currentTourStop().get_target(), false, true, false);
+      SpaceTimeController.set_now(this._tour.get_currentTourStop().get_startTime());
+      SpaceTimeController.set_syncToClock(false);
+      this._setPlayPauseMode();
+    },
+    playFromTourstop: function(ts) {
+      this._tour.set_currentTourStop(ts);
+      this._playFromCurrentTourstop();
+    },
+    _showSkyPosition_Click: function(sender, e) {
+      if (this._tour.get_currentTourStop() != null) {
+        WWTControl.singleton.gotoTarget(this._tour.get_currentTourStop().get_target(), false, true, false);
+        this._tour.get_currentTourStop().syncSettings();
+        SpaceTimeController.set_now(this._tour.get_currentTourStop().get_startTime());
+        SpaceTimeController.set_syncToClock(false);
+        this._tour.get_currentTourStop().set_tweenPosition(0);
+        LayerManager.setVisibleLayerList(this._tour.get_currentTourStop().layers);
+        this.tourStopList.refresh();
+      }
+    },
+    _showEndSkyPosition_Click: function(sender, e) {
+      this._tour.get_currentTourStop().set_tweenPosition(1);
+      this._tour.get_currentTourStop()._updateLayerOpacity();
+      if (this._tour.get_currentTourStop() != null && this._tour.get_currentTourStop().get_endTarget() != null) {
+        WWTControl.singleton.gotoTargetFull(false, true, this._tour.get_currentTourStop().get_endTarget().get_camParams(), this._tour.get_currentTourStop().get_target().get_studyImageset(), this._tour.get_currentTourStop().get_target().get_backgroundImageset());
+        WWTControl.singleton.renderContext.set_solarSystemTrack(this._tour.get_currentTourStop().get_endTarget().get_target());
+        SpaceTimeController.set_now(this._tour.get_currentTourStop().get_endTime());
+        this._tour.get_currentTourStop().syncSettings();
+        LayerManager.setVisibleLayerList(this._tour.get_currentTourStop().layers);
+        SpaceTimeController.set_syncToClock(false);
+        this.tourStopList.refresh();
+        this.tourEditorUI.clearSelection();
+      }
+    },
+    _setEndSkyPosition_Click: function(sender, e) {
+      if (this._tour.get_currentTourStop() != null) {
+        Undo.push(new UndoTourStopChange(Language.getLocalizedText(435, 'Set End Camera Position'), this._tour));
+        var newPlace = Place.createCameraParams('End Place', WWTControl.singleton.renderContext.viewCamera, 268435456, WWTControl.singleton.constellation, WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType(), WWTControl.singleton.renderContext.get_solarSystemTrack());
+        this._tour.get_currentTourStop().set_endTarget(newPlace);
+        this._tour.get_currentTourStop().get_endTarget().set_constellation(WWTControl.singleton.constellation);
+        this._tour.get_currentTourStop().set_endTime(SpaceTimeController.get_now());
+        this._tour.get_currentTourStop().set_tweenPosition(1);
+        var $enum1 = ss.enumerate(ss.keys(this._tour.get_currentTourStop().layers));
+        while ($enum1.moveNext()) {
+          var key = $enum1.current;
+          var info = this._tour.get_currentTourStop().layers[key];
+          if (ss.keyExists(LayerManager.get_layerList(), info.id)) {
+            info.endOpacity = LayerManager.get_layerList()[info.id].get_opacity();
+            info.endParams = LayerManager.get_layerList()[info.id].getParams();
+          }
+        }
+        this._tour.get_currentTourStop()._updateLayerOpacity();
+        this.tourStopList.refresh();
+        TimeLine.refreshUi();
+        this.tourEditorUI.clearSelection();
+      }
+    },
+    _setSkyPosition_Click: function(sender, e) {
+      if (this._tour.get_currentTourStop() != null) {
+        Undo.push(new UndoTourStopChange(Language.getLocalizedText(434, 'Set Start Camera Position'), this._tour));
+        this._tour.get_currentTourStop().get_target().set_target(WWTControl.singleton.renderContext.get_solarSystemTrack());
+        this._tour.get_currentTourStop().get_target().set_type(WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType());
+        this._tour.get_currentTourStop().get_target().set_camParams(WWTControl.singleton.renderContext.viewCamera);
+        this._tour.get_currentTourStop().get_target().set_constellation(WWTControl.singleton.constellation);
+        this._tour.get_currentTourStop().get_target().set_studyImageset(WWTControl.singleton.renderContext.get_foregroundImageset());
+        this._tour.get_currentTourStop().get_target().set_type(WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType());
+        this._tour.get_currentTourStop().get_target().set_backgroundImageset(WWTControl.singleton.renderContext.get_backgroundImageset().get_stockImageSet());
+        this._tour.get_currentTourStop().captureSettings();
+        this._tour.get_currentTourStop().layers = LayerManager._getVisibleLayerList(this._tour.get_currentTourStop().layers);
+        this._tour.get_currentTourStop().set_tweenPosition(0);
+        this.tourStopList.refresh();
+        TimeLine.refreshUi();
+        this.tourEditorUI.clearSelection();
+      }
+    },
+    _captureThumbnail_Click: function(sender, e) {
+      if (this._tour.get_currentTourStop() != null) {
+        this.tourStopList.refresh();
+      }
+    },
+    _properties_Click: function(sender, e) {
+      throw new Error('The method or operation is not implemented.');
+    },
+    _tourStopList_AddNewSlide: function(sender, e) {
+      this._addSlide(false);
+      this.tourStopList.ensureAddVisible();
+    },
+    _addNewSlide_Click: function(sender, e) {
+      this._addSlide(false);
+      this.tourStopList.ensureAddVisible();
+    },
+    _insertNewSlide_Click: function(sender, e) {
+      this._addSlide(true);
+    },
+    _addSlide: function(insert) {
+      Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(426, 'Add New Slide'), this._tour));
+      Cursor.set_current(Cursors.get_waitCursor());
+      var placeName = 'Current Screen';
+      var newPlace = Place.createCameraParams(placeName, WWTControl.singleton.renderContext.viewCamera, 268435456, WWTControl.singleton.constellation, WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType(), WWTControl.singleton.renderContext.get_solarSystemTrack());
+      newPlace.set_studyImageset(WWTControl.singleton.renderContext.get_foregroundImageset());
+      newPlace.set_backgroundImageset(WWTControl.singleton.renderContext.get_backgroundImageset().get_stockImageSet());
+      var newTourStop = TourStop.create(newPlace);
+      if (insert) {
+        this._tour.insertTourStop(newTourStop);
+      }
+      else {
+        this._tour.addTourStop(newTourStop);
+      }
+      if (this._tour.get_currentTourStop() != null) {
+        this.musicTrack.target = this._tour.get_currentTourStop();
+        this.voiceTrack.target = this._tour.get_currentTourStop();
+      }
+      else {
+        this.musicTrack.target = null;
+        this.voiceTrack.target = null;
+      }
+      this._tour.get_currentTourStop().layers = LayerManager._getVisibleLayerList(this._tour.get_currentTourStop().layers);
+      this.tourStopList.selectedItem = this.tourStopList.findItem(newTourStop);
+      this.tourStopList.refresh();
+      this.tourEditorUI.clearSelection();
+      Cursor.set_current(Cursors.get_defaultV());
+      TimeLine.refreshUi();
+    },
+    _deleteMenu_Click: function(sender, e) {
+      Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(534, 'Delete Slide'), this._tour));
+      var $enum1 = ss.enumerate(ss.keys(this.tourStopList.selectedItems));
+      while ($enum1.moveNext()) {
+        var key = $enum1.current;
+        var item = this.tourStopList.selectedItems[key];
+        this._tour.removeTourStop(item);
+      }
+      ss.clearKeys(this.tourStopList.selectedItems);
+      this.tourStopList.selectedItem = -1;
+      this._tour.set_currentTourStop(null);
+      this.musicTrack.target = null;
+      this.voiceTrack.target = null;
+      this.tourStopList.refresh();
+      this.tourEditorUI.clearSelection();
+    },
+    _pasteMenu_Click: function(sender, e) {
+    },
+    _copyMenu_Click: function(sender, e) {
+    },
+    _cutMenu_Click: function(sender, e) {
+      Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(536, 'Cut Slide'), this._tour));
+      this._copyMenu_Click(sender, e);
+      var $enum1 = ss.enumerate(ss.keys(this.tourStopList.selectedItems));
+      while ($enum1.moveNext()) {
+        var key = $enum1.current;
+        var item = this.tourStopList.selectedItems[key];
+        this._tour.removeTourStop(item);
+      }
+      ss.clearKeys(this.tourStopList.selectedItems);
+      this.tourStopList.refresh();
+      this.tourEditorUI.clearSelection();
+    },
+    pauseTour: function() {
+      if (this._playing) {
+        this._playing = false;
+      }
+      this._setPlayPauseMode();
+    },
+    _preview_Click: function(sender, e) {
+      this._playing = !this._playing;
+      if (this._playing && this._tour.get_editMode()) {
+        this.get_tour().set_currentTourstopIndex(-1);
+      }
+      this._setPlayPauseMode();
+    },
+    _setPlayPauseMode: function() {
+      if (this._tour.get_editMode()) {
+        if (this._playing) {
+          if (this._player == null) {
+            this._player = new TourPlayer();
+          }
+          this._player.set_tour(this._tour);
+          WWTControl.singleton.uiController = this._player;
+          this._player.play();
+          this.tourStopList.showAddButton = false;
+        }
+        else {
+          WWTControl.singleton.uiController = this.tourEditorUI;
+          if (this._player != null) {
+            this._player.stop(false);
+          }
+          this._player = null;
+          WWTControl.singleton.uiController = null;
+          this.tourStopList.showAddButton = this._tour.get_editMode();
+        }
+      }
+      else {
+        if (this._playing) {
+          if (this._player == null) {
+            this._player = new TourPlayer();
+          }
+          this._player.set_tour(this._tour);
+          WWTControl.singleton.uiController = this._player;
+          this._player.play();
+          this.tourStopList.showAddButton = false;
+        }
+        else {
+          WWTControl.singleton.uiController = null;
+          if (this._player != null) {
+            this._player.stop(false);
+          }
+          this._player = null;
+          WWTControl.singleton.uiController = null;
+          this.tourStopList.showAddButton = this._tour.get_editMode();
+        }
+      }
+    },
+    _playerTimer_Tick: function(sender, e) {
+      if (this._playing) {
+        if (this._player != null) {
+          if (!TourPlayer.get_playing()) {
+            this._playing = false;
+            this._setPlayPauseMode();
+          }
+          else {
+            if (this.tourStopList.selectedItem !== this._tour.get_currentTourstopIndex()) {
+              this.tourStopList.selectedItem = this._tour.get_currentTourstopIndex();
+            }
+          }
+        }
+      }
+    },
+    _insertShapeCircle_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 0);
+    },
+    _insertShapeRectangle_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 1);
+    },
+    _insertShapeLine_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 5);
+    },
+    _insertDonut_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 3);
+    },
+    _addArrow_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 4);
+    },
+    _insertVideo_Click: function(sender, e) {
+    },
+    _insertAudio_Click: function(sender, e) {
+    },
+    _insertHyperlink_Click: function(sender, e) {
+    },
+    _colorPicker_Click: function(sender, e) {
+    },
+    _tourEditTab_Leave: function(sender, e) {
+    },
+    _editTourProperties_Click: function(sender, e) {
+    },
+    _saveTour_Click: function(sender, e) {
+      this.save(false);
+    },
+    save: function(saveAs) {
+      return true;
+    },
+    _addVideo_Click: function(sender, e) {
+    },
+    _addPicture_Click: function(sender, e) {
+    },
+    _addShape_Click: function(sender, e) {
+    },
+    _addOpenRectangle_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 6);
+    },
+    _addStar_Click: function(sender, e) {
+      this.tourEditorUI.addShape('', 2);
+    },
+    _addText_Click: function(sender, e) {
+    },
+    _preview_EnabledChanged: function(sender, e) {
+      if (this._playing) {
+      }
+      else {
+      }
+    },
+    _preview_MouseEnter: function(sender, e) {
+    },
+    _preview_MouseLeave: function(sender, e) {
+    },
+    _preview_MouseUp: function(sender, e) {
+    },
+    _preview_MouseDown: function(sender, e) {
+    },
+    _tourStopList_ItemHover: function(sender, e) {
+    },
+    refresh: function() {
+    },
+    undoStep: function() {
+      if (Undo.peekAction()) {
+        Undo.stepBack();
+        this.tourStopList.refresh();
+        this.tourStopList.selectedItem = this._tour.get_currentTourstopIndex();
+        this.showSlideStartPosition(this._tour.get_currentTourStop());
+        this.refresh();
+        OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.tourEditorUI.selection);
+      }
+    },
+    redoStep: function() {
+      if (Undo.peekRedoAction()) {
+        Undo.stepForward();
+        this.tourStopList.refresh();
+        this.tourStopList.selectedItem = this._tour.get_currentTourstopIndex();
+        this.showSlideStartPosition(this._tour.get_currentTourStop());
+        this.refresh();
+        OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.tourEditorUI.selection);
+      }
+    },
+    _tourStopList_ShowEndPosition: function(sender, e) {
+      this._showEndSkyPosition_Click(this, new ss.EventArgs());
+    },
+    _tourStopList_ShowStartPosition: function(sender, e) {
+      this.showSlideStartPosition(this.get_tour().get_currentTourStop());
+      this.tourEditorUI.clearSelection();
+    },
+    _tourStopList_KeyDown: function(sender, e) {
+      if (e.ctrlKey) {
+        switch (e.keyCode) {
+          case 67:
+            this._copyMenu_Click(null, new ss.EventArgs());
+            break;
+          case 86:
+            this._pasteMenu_Click(null, new ss.EventArgs());
+            break;
+          case 88:
+            this._cutMenu_Click(null, new ss.EventArgs());
+            break;
+          case 90:
+            if (Undo.peekAction()) {
+              TourEdit._undoStep();
+            }
+            else {
+              UiTools._beep();
+            }
+            break;
+          case 89:
+            if (Undo.peekRedoAction()) {
+              TourEdit._redoStep();
+            }
+            else {
+              UiTools._beep();
+            }
+            break;
+        }
+      }
+      if (e.keyCode === 46) {
+        this._deleteMenu_Click(null, new ss.EventArgs());
+      }
+    },
+    _ensureSelectedVisible: function() {
+      this.tourStopList.ensureSelectedVisible();
+    }
+  };
+
+
   // wwtlib.TourEditor
 
   function TourEditor() {
@@ -16772,7 +17531,7 @@ window.wwtlib = function(){
       }
       if (e.button === 2) {
         if (this.get_focus() == null) {
-          this._showNoSelectionContextMenu();
+          this._showNoSelectionContextMenu(Vector2d.create(e.offsetX, e.offsetY));
         }
         return true;
       }
@@ -17026,7 +17785,57 @@ window.wwtlib = function(){
       }
       return false;
     },
-    _showNoSelectionContextMenu: function() {
+    _showNoSelectionContextMenu: function(position) {
+      if (this._contextMenu != null) {
+        this._contextMenu._dispose();
+      }
+      if (this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      this._contextMenu = new ContextMenuStrip();
+      var AddCircle = ToolStripMenuItem.create(Language.getLocalizedText(444, 'Circle'));
+      var AddRectangle = ToolStripMenuItem.create(Language.getLocalizedText(445, 'Rectangle'));
+      var AddOpenRectangle = ToolStripMenuItem.create(Language.getLocalizedText(446, 'Open Rectangle'));
+      var AddRing = ToolStripMenuItem.create(Language.getLocalizedText(447, 'Ring'));
+      var AddLine = ToolStripMenuItem.create(Language.getLocalizedText(448, 'Line'));
+      var AddArrow = ToolStripMenuItem.create(Language.getLocalizedText(449, 'Arrow'));
+      var AddStar = ToolStripMenuItem.create(Language.getLocalizedText(450, 'Star'));
+      AddCircle.click = ss.bind('_insertShapeCircle_Click', this);
+      AddRectangle.click = ss.bind('_insertShapeRectangle_Click', this);
+      AddOpenRectangle.click = ss.bind('_addOpenRectangle_Click', this);
+      AddRing.click = ss.bind('_insertDonut_Click', this);
+      AddLine.click = ss.bind('_insertShapeLine_Click', this);
+      AddArrow.click = ss.bind('_addArrow_Click', this);
+      AddStar.click = ss.bind('_addStar_Click', this);
+      this._contextMenu.items.push(AddCircle);
+      this._contextMenu.items.push(AddRectangle);
+      this._contextMenu.items.push(AddOpenRectangle);
+      this._contextMenu.items.push(AddRing);
+      this._contextMenu.items.push(AddLine);
+      this._contextMenu.items.push(AddArrow);
+      this._contextMenu.items.push(AddStar);
+      this._contextMenu._show(position);
+    },
+    _addOpenRectangle_Click: function(sender, e) {
+      this.addShape('', 6);
+    },
+    _addStar_Click: function(sender, e) {
+      this.addShape('', 2);
+    },
+    _insertShapeCircle_Click: function(sender, e) {
+      this.addShape('', 0);
+    },
+    _insertShapeRectangle_Click: function(sender, e) {
+      this.addShape('', 1);
+    },
+    _insertShapeLine_Click: function(sender, e) {
+      this.addShape('', 5);
+    },
+    _insertDonut_Click: function(sender, e) {
+      this.addShape('', 3);
+    },
+    _addArrow_Click: function(sender, e) {
+      this.addShape('', 4);
     },
     showSelectionContextMenu: function(position) {
       if (this.get_focus() == null) {
@@ -17907,6 +18716,52 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.SoundEditor
+
+  function SoundEditor() {
+    this.target = null;
+  }
+  var SoundEditor$ = {
+
+  };
+
+
+  // wwtlib.TourStopList
+
+  function TourStopList() {
+    this.tour = null;
+    this.showAddButton = false;
+    this.selectedItems = null;
+    this.selectedItem = -1;
+    this.multipleSelection = false;
+    this.hitType = false;
+  }
+  var TourStopList$ = {
+    selectAll: function() {
+    },
+    refresh: function() {
+    },
+    findItem: function(ts) {
+      return -1;
+    },
+    ensureSelectedVisible: function() {
+    },
+    ensureAddVisible: function() {
+    }
+  };
+
+
+  // wwtlib.TimeLine
+
+  function TimeLine() {
+  }
+  TimeLine.refreshUi = function() {
+  };
+  var TimeLine$ = {
+
+  };
+
+
   // wwtlib.TourPlayer
 
   function TourPlayer() {
@@ -18608,6 +19463,11 @@ window.wwtlib = function(){
     this._voiceTrack = null;
     this._id = Guid.newGuid().toString();
   }
+  TourStop.create = function(target) {
+    var ts = new TourStop();
+    ts._target = target;
+    return ts;
+  };
   TourStop._fromXml = function(owner, tourStop) {
     var newTourStop = new TourStop();
     newTourStop._owner = owner;
@@ -19195,6 +20055,57 @@ window.wwtlib = function(){
       this._milkyWayModel = Settings.get_current().get_milkyWayModel();
       this._minorPlanetsFilter = Settings.get_current().get_minorPlanetsFilter();
       this._planetOrbitsFilter = Settings.get_current().get_planetOrbitsFilter();
+    },
+    syncSettings: function() {
+      Settings.get_globalSettings().set_actualPlanetScale(this._actualPlanetScale);
+      Settings.get_globalSettings().set_locationAltitude(this._locationAltitude);
+      Settings.get_globalSettings().set_locationLat(this._locationLat);
+      Settings.get_globalSettings().set_locationLng(this._locationLng);
+      Settings.get_globalSettings().set_earthCutawayView(this._earthCutawayView);
+      Settings.get_globalSettings().set_showConstellationBoundries(this._showConstellationBoundries);
+      Settings.get_globalSettings().set_showConstellationFigures(this._showConstellationFigures);
+      Settings.get_globalSettings().set_showConstellationSelection(this._showConstellationSelection);
+      Settings.get_globalSettings().set_showEcliptic(this._showEcliptic);
+      Settings.get_globalSettings().set_showElevationModel(this._showElevationModel);
+      Settings.get_globalSettings().set_showGrid(this._showGrid);
+      Settings.get_globalSettings().set_showHorizon(this._showHorizon);
+      Settings.get_globalSettings().set_showSolarSystem(this._showSolarSystem);
+      Settings.get_globalSettings().set_localHorizonMode(this._localHorizonMode);
+      Settings.get_globalSettings().set_galacticMode(this._galacticMode);
+      Settings.get_globalSettings().set_solarSystemStars(this._solarSystemStars);
+      Settings.get_globalSettings().set_solarSystemMilkyWay(this._solarSystemMilkyWay);
+      Settings.get_globalSettings().set_solarSystemCosmos(this._solarSystemCosmos);
+      Settings.get_globalSettings().set_solarSystemCMB(this._solarSystemCMB);
+      Settings.get_globalSettings().set_solarSystemOrbits(this._solarSystemOrbits);
+      Settings.get_globalSettings().set_solarSystemMinorOrbits(this._solarSystemMinorOrbits);
+      Settings.get_globalSettings().set_solarSystemMinorPlanets(this._solarSystemMinorPlanets);
+      Settings.get_globalSettings().set_solarSystemOverlays(this._solarSystemOverlays);
+      Settings.get_globalSettings().set_solarSystemLighting(this._solarSystemLighting);
+      Settings.get_globalSettings().set_showISSModel(this._showISSModel);
+      Settings.get_globalSettings().set_solarSystemScale(this._solarSystemScale);
+      Settings.get_globalSettings().set_solarSystemMultiRes(this._solarSystemMultiRes);
+      Settings.get_globalSettings().set_showEarthSky(this._showEarthSky);
+      Settings.get_globalSettings().set_minorPlanetsFilter(this._minorPlanetsFilter);
+      Settings.get_globalSettings().set_planetOrbitsFilter(this._planetOrbitsFilter);
+      Settings.get_globalSettings().set_showEquatorialGridText(this._showEquatorialGridText);
+      Settings.get_globalSettings().set_showGalacticGrid(this._showGalacticGrid);
+      Settings.get_globalSettings().set_showGalacticGridText(this._showGalacticGridText);
+      Settings.get_globalSettings().set_showEclipticGrid(this._showEclipticGrid);
+      Settings.get_globalSettings().set_showEclipticGridText(this._showEclipticGridText);
+      Settings.get_globalSettings().set_showEclipticOverviewText(this._showEclipticOverviewText);
+      Settings.get_globalSettings().set_showAltAzGrid(this._showAltAzGrid);
+      Settings.get_globalSettings().set_showAltAzGridText(this._showAltAzGridText);
+      Settings.get_globalSettings().set_showPrecessionChart(this._showPrecessionChart);
+      Settings.get_globalSettings().set_showConstellationPictures(this._showConstellationPictures);
+      Settings.get_globalSettings().set_constellationsEnabled(this._constellationsEnabled);
+      Settings.get_globalSettings().set_showSkyOverlays(this._showSkyOverlays);
+      Settings.get_globalSettings().set_constellations(this._showConstellations);
+      Settings.get_globalSettings().set_showSkyNode(this._showSkyNode);
+      Settings.get_globalSettings().set_showSkyGrids(this._showSkyGrids);
+      Settings.get_globalSettings().set_constellationFiguresFilter(this._constellationFiguresFilter.clone());
+      Settings.get_globalSettings().set_constellationBoundariesFilter(this._constellationBoundariesFilter.clone());
+      Settings.get_globalSettings().set_constellationNamesFilter(this._constellationNamesFilter.clone());
+      Settings.get_globalSettings().set_constellationArtFilter(this._constellationArtFilter.clone());
     },
     get_solarSystemStars: function() {
       return this._solarSystemStars;
@@ -19800,6 +20711,120 @@ window.wwtlib = function(){
     },
     toString: function() {
       return Language.getLocalizedText(551, 'Nothing to Undo');
+    }
+  };
+
+
+  // wwtlib.UndoTourSlidelistChange
+
+  function UndoTourSlidelistChange(text, tour) {
+    this._currentIndex = 0;
+    this._actionText = '';
+    this._targetTour = null;
+    this._undoList = [];
+    for (var i = 0; i < tour.get_tourStops().length; i++) {
+      this._undoList.push(tour.get_tourStops()[i]);
+    }
+    this._currentIndex = tour.get_currentTourstopIndex();
+    this._actionText = text;
+    this._targetTour = tour;
+    this._targetTour.set_tourDirty(true);
+  }
+  var UndoTourSlidelistChange$ = {
+    get_actionText: function() {
+      return this._actionText;
+    },
+    set_actionText: function(value) {
+      this._actionText = value;
+      return value;
+    },
+    undo: function() {
+      this._redoList = this._targetTour.get_tourStops();
+      this._targetTour.set_tourStops(this._undoList);
+      this._targetTour.set_currentTourstopIndex(this._currentIndex);
+      this._targetTour.set_tourDirty(true);
+    },
+    redo: function() {
+      this._undoList = this._targetTour.get_tourStops();
+      this._targetTour.set_tourStops(this._redoList);
+      this._targetTour.set_currentTourstopIndex(this._currentIndex);
+      this._targetTour.set_tourDirty(true);
+    },
+    toString: function() {
+      return this._actionText;
+    }
+  };
+
+
+  // wwtlib.UndoTourPropertiesChange
+
+  function UndoTourPropertiesChange(text, tour) {
+    this._actionText = '';
+    this._targetTour = null;
+    this._undoDomeMode = false;
+    this._undoLevel = 0;
+    this._redoDomeMode = false;
+    this._redoLevel = 0;
+    this._undoTitle = tour.get_title();
+    this._undoAuthor = tour.get_author();
+    this._undoAuthorEmail = tour.get_authorEmail();
+    this._undoDescription = tour.get_description();
+    this._undoAuthorImage = tour.get_authorImage();
+    this._undoOrganizationUrl = tour.get_organizationUrl();
+    this._undoOrgName = tour.get_orgName();
+    this._undoKeywords = tour.get_keywords();
+    this._undoTaxonomy = tour.get_taxonomy();
+    this._undoLevel = tour.get_level();
+    this._actionText = text;
+    this._targetTour = tour;
+    this._targetTour.set_tourDirty(true);
+  }
+  var UndoTourPropertiesChange$ = {
+    get_actionText: function() {
+      return this._actionText;
+    },
+    set_actionText: function(value) {
+      this._actionText = value;
+      return value;
+    },
+    undo: function() {
+      this._redoTitle = this._targetTour.get_title();
+      this._redoAuthor = this._targetTour.get_author();
+      this._redoAuthorEmail = this._targetTour.get_authorEmail();
+      this._redoDescription = this._targetTour.get_description();
+      this._redoAuthorImage = this._targetTour.get_authorImage();
+      this._redoOrganizationUrl = this._targetTour.get_organizationUrl();
+      this._redoOrgName = this._targetTour.get_orgName();
+      this._redoKeywords = this._targetTour.get_keywords();
+      this._redoTaxonomy = this._targetTour.get_taxonomy();
+      this._redoLevel = this._targetTour.get_level();
+      this._targetTour.set_title(this._undoTitle);
+      this._targetTour.set_author(this._undoAuthor);
+      this._targetTour.set_authorEmail(this._undoAuthorEmail);
+      this._targetTour.set_description(this._undoDescription);
+      this._targetTour.set_authorImage(this._undoAuthorImage);
+      this._targetTour.set_organizationUrl(this._undoOrganizationUrl);
+      this._targetTour.set_orgName(this._undoOrgName);
+      this._targetTour.set_keywords(this._undoKeywords);
+      this._targetTour.set_taxonomy(this._undoTaxonomy);
+      this._targetTour.set_level(this._undoLevel);
+      this._targetTour.set_tourDirty(true);
+    },
+    redo: function() {
+      this._targetTour.set_title(this._redoTitle);
+      this._targetTour.set_author(this._redoAuthor);
+      this._targetTour.set_authorEmail(this._redoAuthorEmail);
+      this._targetTour.set_description(this._redoDescription);
+      this._targetTour.set_authorImage(this._redoAuthorImage);
+      this._targetTour.set_organizationUrl(this._redoOrganizationUrl);
+      this._targetTour.set_orgName(this._redoOrgName);
+      this._targetTour.set_keywords(this._redoKeywords);
+      this._targetTour.set_taxonomy(this._redoTaxonomy);
+      this._targetTour.set_level(this._redoLevel);
+      this._targetTour.set_tourDirty(true);
+    },
+    toString: function() {
+      return this._actionText;
     }
   };
 
@@ -20469,7 +21494,12 @@ window.wwtlib = function(){
         var item = $enum1.current;
         if (item.visible) {
           var md = document.createElement('div');
-          md.className = 'contextmenuitem';
+          if (item.dropDownItems.length > 0) {
+            md.className = 'contextmenuitem submenu';
+          }
+          else {
+            md.className = 'contextmenuitem';
+          }
           md.innerText = item.name;
           var it = md;
           it.itemTag = item;
@@ -33598,9 +34628,13 @@ window.wwtlib = function(){
       Selection: [ Selection, Selection$, null ],
       TextObject: [ TextObject, TextObject$, null ],
       TourDocument: [ TourDocument, TourDocument$, null ],
+      TourEditTab: [ TourEditTab, TourEditTab$, null ],
       TourEditor: [ TourEditor, TourEditor$, null, IUiController ],
       OverlayList: [ OverlayList, OverlayList$, null ],
       TourEdit: [ TourEdit, TourEdit$, null ],
+      SoundEditor: [ SoundEditor, SoundEditor$, null ],
+      TourStopList: [ TourStopList, TourStopList$, null ],
+      TimeLine: [ TimeLine, TimeLine$, null ],
       TourPlayer: [ TourPlayer, TourPlayer$, null, IUiController ],
       MasterTime: [ MasterTime, MasterTime$, null ],
       TourStop: [ TourStop, TourStop$, null, ISettings ],
@@ -33608,6 +34642,8 @@ window.wwtlib = function(){
       UndoTourStopChange: [ UndoTourStopChange, UndoTourStopChange$, null, IUndoStep ],
       Undo: [ Undo, Undo$, null ],
       UndoStep: [ UndoStep, UndoStep$, null, IUndoStep ],
+      UndoTourSlidelistChange: [ UndoTourSlidelistChange, UndoTourSlidelistChange$, null, IUndoStep ],
+      UndoTourPropertiesChange: [ UndoTourPropertiesChange, UndoTourPropertiesChange$, null, IUndoStep ],
       UiTools: [ UiTools, UiTools$, null ],
       Rectangle: [ Rectangle, Rectangle$, null ],
       Guid: [ Guid, Guid$, null ],
@@ -33947,6 +34983,7 @@ window.wwtlib = function(){
   TileCache.maxReadyToRenderSize = 200;
   TileCache.accessID = 0;
   TileCache._maxTotalToPurge = 0;
+  Overlay.defaultAnchor = 1;
   Overlay.clipboardFormat = 'WorldWideTelescope.Overlay';
   Overlay.nextId = 11231;
   Overlay.RC = 3.1415927 / 180;

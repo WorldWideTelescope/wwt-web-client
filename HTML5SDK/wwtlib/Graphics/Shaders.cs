@@ -764,7 +764,7 @@ namespace wwtlib
 
             String vertexShaderText =
                     "     attribute vec3 aVertexPosition;                                              \n" +
-                    "     attribute vec2 aTextureCoord;                                                \n" +
+               //     "     attribute vec2 aTextureCoord;                                                \n" +
                     "     attribute lowp vec4 aColor;                                                \n" +
                     "                                                                                  \n" +
                     "     uniform mat4 uMVMatrix;                                                      \n" +
@@ -776,7 +776,7 @@ namespace wwtlib
                     "                                                                                  \n" +
                     "     void main(void) {                                                            \n" +
                     "         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n" +
-                    "         vTextureCoord = aTextureCoord;                                           \n" +
+                 //   "         vTextureCoord = aTextureCoord;                                           \n" +
                     "         vColor = aColor;                                                         \n" +
                     "     }                                                                            \n" +
                     "                                                                                  \n";

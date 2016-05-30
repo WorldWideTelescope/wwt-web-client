@@ -131,6 +131,7 @@ namespace wwtlib
         public bool ActualPlanetScale
         {
             get { return actualPlanetScale; }
+            set { actualPlanetScale = value; }
         }
 
         public int FovCamera
@@ -195,9 +196,12 @@ namespace wwtlib
             set { showEcliptic = value; }
         }
 
+        bool showElevationModel = true;
+
         public bool ShowElevationModel
         {
-            get { return false; }
+            get { return showElevationModel; }
+            set { showElevationModel = value; }
         }
 
         public bool ShowFieldOfView
@@ -234,6 +238,7 @@ namespace wwtlib
         public bool ShowSolarSystem
         {
             get { return showSolarSystem; }
+            set { showSolarSystem = value; }
         }
 
         public bool LocalHorizonMode
@@ -518,6 +523,12 @@ namespace wwtlib
         {
             get { return planetOrbitsFilter; }
             set { planetOrbitsFilter = value;}
+        }
+        bool constellations = true;
+        public bool Constellations
+        {
+            get { return constellations; }
+            set { constellations = value; }
         }
 
         public SettingParameter GetSetting(StockSkyOverlayTypes type)

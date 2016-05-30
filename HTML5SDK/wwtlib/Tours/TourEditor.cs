@@ -406,7 +406,7 @@ namespace wwtlib
             {
                 if (Focus == null)
                 {
-                    ShowNoSelectionContextMenu();
+                    ShowNoSelectionContextMenu(Vector2d.Create(e.OffsetX, e.OffsetY));
                 }
                 return true;
             }
@@ -716,30 +716,97 @@ namespace wwtlib
             return false;
         }
 
-        private void ShowNoSelectionContextMenu()
+        private void ShowNoSelectionContextMenu(Vector2d position)
         {
-            //if (contextMenu != null)
-            //{
-            //    contextMenu.Dispose();
-            //}
-            //if (tour.CurrentTourStop == null)
-            //{
-            //    return;
-            //}
+            if (contextMenu != null)
+            {
+                contextMenu.Dispose();
+            }
+            if (tour.CurrentTourStop == null)
+            {
+                return;
+            }
 
-            //contextMenu = new ContextMenuStrip();
+            contextMenu = new ContextMenuStrip();
 
-            //ToolStripMenuItem pasteMenu = new ToolStripMenuItem(Language.GetLocalizedText(425, "Paste"));
-            //IDataObject data = Clipboard.GetDataObject();
+            //  ToolStripMenuItem pasteMenu = new ToolStripMenuItem(Language.GetLocalizedText(425, "Paste"));
+            //   IDataObject data = Clipboard.GetDataObject();
 
-            //pasteMenu.Enabled = Clipboard.ContainsImage() | Clipboard.ContainsText() | Clipboard.ContainsAudio() | data.GetDataPresent(Overlay.ClipboardFormat);
+            //   pasteMenu.Enabled = Clipboard.ContainsImage() | Clipboard.ContainsText() | Clipboard.ContainsAudio() | data.GetDataPresent(Overlay.ClipboardFormat);
 
-            //pasteMenu.Click =pasteMenu_Click;
-            //contextMenu.Items.Add(pasteMenu);
-            //contextMenu.Show(Cursor.Position);
+            //  pasteMenu.Click =pasteMenu_Click;
+            //  contextMenu.Items.Add(pasteMenu);
+
+            //    contextMenu = new ContextMenuStrip();
+
+            ToolStripMenuItem AddCircle = ToolStripMenuItem.Create(Language.GetLocalizedText(444, "Circle"));
+            ToolStripMenuItem AddRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(445, "Rectangle"));
+            ToolStripMenuItem AddOpenRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(446, "Open Rectangle"));
+            ToolStripMenuItem AddRing = ToolStripMenuItem.Create(Language.GetLocalizedText(447, "Ring"));
+            ToolStripMenuItem AddLine = ToolStripMenuItem.Create(Language.GetLocalizedText(448, "Line"));
+            ToolStripMenuItem AddArrow = ToolStripMenuItem.Create(Language.GetLocalizedText(449, "Arrow"));
+            ToolStripMenuItem AddStar = ToolStripMenuItem.Create(Language.GetLocalizedText(450, "Star"));
+
+            AddCircle.Click = InsertShapeCircle_Click;
+            AddRectangle.Click = InsertShapeRectangle_Click;
+            AddOpenRectangle.Click = AddOpenRectangle_Click;
+            AddRing.Click = insertDonut_Click;
+            AddLine.Click = InsertShapeLine_Click;
+            AddArrow.Click = AddArrow_Click;
+            AddStar.Click = AddStar_Click;
+
+
+            contextMenu.Items.Add(AddCircle);
+            contextMenu.Items.Add(AddRectangle);
+            contextMenu.Items.Add(AddOpenRectangle);
+            contextMenu.Items.Add(AddRing);
+            contextMenu.Items.Add(AddLine);
+            contextMenu.Items.Add(AddArrow);
+            contextMenu.Items.Add(AddStar);
+            contextMenu.Show(position);
+        }
+
+        void AddOpenRectangle_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.OpenRectagle);
+        }
+
+        void AddStar_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.Star);
+
+        }
+
+        private void InsertShapeCircle_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.Circle);
+
+        }
+
+        private void InsertShapeRectangle_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.Rectagle);
+
+        }
+
+        private void InsertShapeLine_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.Line);
+
+        }
+
+        private void insertDonut_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.Donut);
+
         }
 
 
+        void AddArrow_Click(object sender, EventArgs e)
+        {
+            AddShape("", ShapeType.Arrow);
+
+        }
 
         public void ShowSelectionContextMenu( Vector2d position)
         {
@@ -2184,4 +2251,50 @@ namespace wwtlib
         {
         }
     }
+
+    public class SoundEditor
+    {
+        public TourStop Target = null;
+    }
+
+    public class TourStopList
+    {
+        public TourDocument Tour = null;
+        public bool ShowAddButton = false;
+
+        public Dictionary<int, TourStop> SelectedItems = null;
+        public int SelectedItem = -1;
+        public void SelectAll()
+        {
+
+        }
+        public void Refresh()
+        {
+        }
+
+        public bool MultipleSelection = false;
+        public bool HitType = false;
+
+        public int FindItem(TourStop ts)
+        {
+            return -1;
+        }
+        public void EnsureSelectedVisible()
+        {
+
+        }
+        public void EnsureAddVisible()
+        {
+
+        }
+    }
+
+    public class TimeLine
+    {
+        public static void RefreshUi()
+        {
+
+        }
+    }
+
 }

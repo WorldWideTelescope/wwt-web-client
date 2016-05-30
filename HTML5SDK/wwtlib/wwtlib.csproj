@@ -150,6 +150,7 @@
     <Compile Include="Tours\Selection.cs" />
     <Compile Include="Tours\TextObject.cs" />
     <Compile Include="Tours\TourDocument.cs" />
+    <Compile Include="Tours\TourEdit.cs" />
     <Compile Include="Tours\TourEditor.cs" />
     <Compile Include="Tours\TourPlayer.cs" />
     <Compile Include="Tours\TourStop.cs" />
