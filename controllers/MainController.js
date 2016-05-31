@@ -248,7 +248,10 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
-					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours']
+					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
+					    'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
+                        sep2: null,
+					    'Create a New Tour...': [$scope.createNewTour]
 					}
 				}, {
 				    label: 'Search',
@@ -642,32 +645,49 @@ wwt.controllers.controller('MainController',
            
 	        wwt.wc.add_tourEnded(tourChangeHandler);
 	        wwt.wc.add_tourReady(function() {
+	            $scope.registerTourStopListRefresh();
+	            $scope.$applyAsync(function () {
+                   $scope.setupTour(wwtlib.WWTControl.singleton.tour);               
+	            });
+	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 
-	            wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
-	                $scope.$applyAsync(function () {
-	                   
-	                    $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	                        s.description = s.get_description();
-	                        s.thumb = s.get_thumbnail();
-	                        s.duration = s.get_duration();
-	                        s.secDuration = Math.round(s.duration / 1000);
-	                        if (s.secDuration < 10) {
-	                            s.secDuration = '0' + s.secDuration;
-	                        }
-	                        s.secDuration = '0:' + s.secDuration;
-	                        $scope.currentTour.duration += s.duration;
-	                        return s;
-	                    });
-	                
-	                });
+	        });
+	        //wwt.wc.add_tourPaused(tourChangeHandler);
+
+	    };
+
+	    $scope.createNewTour = function () {
+	        //todo show dialog for tour properties
+	        $scope.setupTour(wwtlib.WWTControl.singleton.createTour("New Tour"));
+	        $scope.registerTourStopListRefresh();
+	    }
+
+	    $scope.setupTour = function (tour) {
+	        $scope.currentTour = tour;
+	        $scope.currentTour.duration = 0;
+	        $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
+	            s.description = s.get_description();
+	            s.thumb = s.get_thumbnail();
+	            s.duration = s.get_duration();
+	            s.secDuration = Math.round(s.duration / 1000);
+	            if (s.secDuration < 10) {
+	                s.secDuration = '0' + s.secDuration;
 	            }
-                
+	            s.secDuration = '0:' + s.secDuration;
+	            $scope.currentTour.duration += s.duration;
+	            return s;
+	        });
+	        $scope.currentTour.minuteDuration = Math.floor($scope.currentTour.duration / 60000);
+	        $scope.currentTour.secDuration = Math.floor(($scope.currentTour.duration % 60000) / 1000);
+	        $scope.activeItem = { label: 'currentTour' };
+	        $scope.activePanel = 'currentTour';
+	    }
 
-
-	            $scope.$applyAsync(function() {
-	                $scope.currentTour = wwtlib.WWTControl.singleton.tour;
-	                $scope.currentTour.duration = 0;
-	                $scope.tourStops = $scope.currentTour.get_tourStops().map(function(s) {
+	    $scope.registerTourStopListRefresh = function() {
+	        wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
+	            $scope.$applyAsync(function () {
+	                   
+	                $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
 	                    s.description = s.get_description();
 	                    s.thumb = s.get_thumbnail();
 	                    s.duration = s.get_duration();
@@ -679,17 +699,10 @@ wwt.controllers.controller('MainController',
 	                    $scope.currentTour.duration += s.duration;
 	                    return s;
 	                });
-	                $scope.currentTour.minuteDuration = Math.floor($scope.currentTour.duration / 60000);
-	                $scope.currentTour.secDuration = Math.floor(($scope.currentTour.duration % 60000) / 1000);
-	                $scope.activeItem = { label: 'currentTour' };
-	                $scope.activePanel = 'currentTour';
+	                
 	            });
-	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
-
-	        });
-	        //wwt.wc.add_tourPaused(tourChangeHandler);
-
-	    };
+	        }
+	    }
 
 	    $scope.gotoStop = function(index, e) {
 	        $scope.currentTour.set_currentTourstopIndex(index);
