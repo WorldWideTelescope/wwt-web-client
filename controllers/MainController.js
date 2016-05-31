@@ -703,8 +703,19 @@ wwt.controllers.controller('MainController',
 	    };
 
 	    $scope.pauseTour = function () {
-	        wwtlib.WWTControl.singleton.uiController.pauseTour();
-	        $rootScope.tourPaused = !$rootScope.tourPaused;
+	        if (wwtlib.WWTControl.singleton.tourEdit.playing)
+	        {
+	            wwtlib.WWTControl.singleton.tourEdit.pauseTour();
+	        }
+	        else
+	        {
+	            wwtlib.WWTControl.singleton.tourEdit.playNow(true);
+	        }
+	        //wwtlib.WWTControl.singleton.uiController.pauseTour();
+	        
+	        //$rootScope.tourPaused = !$rootScope.tourPaused;
+
+	        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
         }
 
 	    function tourChangeHandler() {
