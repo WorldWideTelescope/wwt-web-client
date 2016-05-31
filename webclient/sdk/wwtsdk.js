@@ -12471,6 +12471,11 @@ window.wwtlib = function(){
       Tile.uvMultiple = 1;
       Tile.demEnabled = true;
       TileShader.init(this);
+    },
+    freezeView: function() {
+      this.targetAlt = this.alt;
+      this.targetAz = this.az;
+      this.targetCamera = this.viewCamera.copy();
     }
   };
 
@@ -16677,7 +16682,7 @@ window.wwtlib = function(){
     this.tourStopList = new TourStopList();
     this.tourEditorUI = new TourEditor();
     this._contextMenu = new ContextMenuStrip();
-    this._playing = false;
+    this.playing = false;
     this._player = null;
     this._defultColor = Colors.get_white();
   }
@@ -16716,7 +16721,7 @@ window.wwtlib = function(){
     tourEdit_Load: function(sender, e) {
     },
     playNow: function(fromStart) {
-      this._playing = true;
+      this.playing = true;
       if (this.get_tour().get_editMode() || fromStart) {
         this.get_tour().set_currentTourstopIndex(-1);
       }
@@ -16744,7 +16749,7 @@ window.wwtlib = function(){
         }
         this.tourEditorUI.clearSelection();
       }
-      if (this._playing) {
+      if (this.playing) {
         this._playFromHere_Click(sender, new ss.EventArgs());
       }
     },
@@ -17004,7 +17009,7 @@ window.wwtlib = function(){
       this.playFromCurrentTourstop();
     },
     playFromCurrentTourstop: function() {
-      this._playing = true;
+      this.playing = true;
       WWTControl.singleton.gotoTarget(this._tour.get_currentTourStop().get_target(), false, true, false);
       SpaceTimeController.set_now(this._tour.get_currentTourStop().get_startTime());
       SpaceTimeController.set_syncToClock(false);
@@ -17082,6 +17087,7 @@ window.wwtlib = function(){
     },
     _captureThumbnail_Click: function(sender, e) {
       if (this._tour.get_currentTourStop() != null) {
+        this._tour.get_currentTourStop().set_thumbnail(WWTControl.singleton.captureThumbnail());
         this.tourStopList.refresh();
       }
     },
@@ -17162,21 +17168,21 @@ window.wwtlib = function(){
       this.tourEditorUI.clearSelection();
     },
     pauseTour: function() {
-      if (this._playing) {
-        this._playing = false;
+      if (this.playing) {
+        this.playing = false;
       }
       this.setPlayPauseMode();
     },
     preview_Click: function(sender, e) {
-      this._playing = !this._playing;
-      if (this._playing && this._tour.get_editMode()) {
+      this.playing = !this.playing;
+      if (this.playing && this._tour.get_editMode()) {
         this.get_tour().set_currentTourstopIndex(-1);
       }
       this.setPlayPauseMode();
     },
     setPlayPauseMode: function() {
       if (this._tour.get_editMode()) {
-        if (this._playing) {
+        if (this.playing) {
           if (this._player == null) {
             this._player = new TourPlayer();
           }
@@ -17192,11 +17198,12 @@ window.wwtlib = function(){
           }
           this._player = null;
           WWTControl.singleton.uiController = null;
+          WWTControl.singleton.set__mover(null);
           this.tourStopList.showAddButton = this._tour.get_editMode();
         }
       }
       else {
-        if (this._playing) {
+        if (this.playing) {
           if (this._player == null) {
             this._player = new TourPlayer();
           }
@@ -17207,20 +17214,22 @@ window.wwtlib = function(){
         }
         else {
           WWTControl.singleton.uiController = null;
+          WWTControl.singleton.renderContext.freezeView();
           if (this._player != null) {
             this._player.stop(false);
           }
           this._player = null;
           WWTControl.singleton.uiController = null;
+          WWTControl.singleton.set__mover(null);
           this.tourStopList.showAddButton = this._tour.get_editMode();
         }
       }
     },
     playerTimer_Tick: function(sender, e) {
-      if (this._playing) {
+      if (this.playing) {
         if (this._player != null) {
           if (!TourPlayer.get_playing()) {
-            this._playing = false;
+            this.playing = false;
             this.setPlayPauseMode();
           }
           else {
@@ -17279,7 +17288,7 @@ window.wwtlib = function(){
     addText_Click: function(sender, e) {
     },
     preview_EnabledChanged: function(sender, e) {
-      if (this._playing) {
+      if (this.playing) {
       }
       else {
       }
@@ -23074,6 +23083,7 @@ window.wwtlib = function(){
         $this.tourEdit = new TourEditTab();
         $this.tourEdit.set_tour($this.tour);
         $this.tour.set_currentTourstopIndex(0);
+        $this.tour.set_editMode(true);
         $this.uiController = $this.tourEdit.tourEditorUI;
         WWTControl.scriptInterface._fireTourReady();
       });
@@ -23134,6 +23144,11 @@ window.wwtlib = function(){
         ctx.stroke();
         ctx.restore();
       }
+    },
+    captureThumbnail: function() {
+      var image = new Image();
+      image.src = WWTControl.singleton.canvas.toDataURL();
+      return image;
     }
   };
 

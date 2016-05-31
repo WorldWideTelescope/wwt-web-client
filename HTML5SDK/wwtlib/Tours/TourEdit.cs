@@ -725,7 +725,9 @@ namespace wwtlib
             {
                 //TODO undo issues with image bitmaps. Must serialize images
                 //todo get thumbnal
-                //tour.CurrentTourStop.Thumbnail = WWTControl.Singleton.RenderContext.GetScreenThumbnail();
+
+
+                tour.CurrentTourStop.Thumbnail = WWTControl.Singleton.CaptureThumbnail();
                 tourStopList.Refresh();
             }
         }
@@ -921,7 +923,7 @@ namespace wwtlib
         }
 
 
-        bool playing = false;
+        public bool playing = false;
         public void Preview_Click(object sender, EventArgs e)
         {
             playing = !playing;
@@ -963,6 +965,7 @@ namespace wwtlib
                     }
                     player = null;
                     WWTControl.Singleton.uiController = null;
+                    WWTControl.Singleton.Mover = null;
                     tourStopList.ShowAddButton = tour.EditMode;
                 }
             }
@@ -985,7 +988,7 @@ namespace wwtlib
                 {
 
                     WWTControl.Singleton.uiController = null;
-                    //WWTControl.Singleton.RenderContext.FreezeView();
+                    WWTControl.Singleton.RenderContext.FreezeView();
 
                     //Preview.Image = global::TerraViewer.Properties.Resources.button_play_normal;
                     //Preview.Text = Language.GetLocalizedText(441, "Play");
@@ -996,6 +999,7 @@ namespace wwtlib
                     }
                     player = null;
                     WWTControl.Singleton.uiController = null;
+                    WWTControl.Singleton.Mover = null;
                     tourStopList.ShowAddButton = tour.EditMode;
                 }
             }

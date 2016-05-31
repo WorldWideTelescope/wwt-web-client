@@ -1010,5 +1010,13 @@ namespace wwtlib
 
             TileShader.Init(this);
         }
+
+        public void FreezeView()
+        {
+            targetAlt = alt;
+            targetAz = az;
+
+            TargetCamera = ViewCamera.Copy();
+        }
     }
 }

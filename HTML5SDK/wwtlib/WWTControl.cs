@@ -2435,7 +2435,7 @@ namespace wwtlib
                         TourEdit = new TourEditTab();
                         TourEdit.Tour = tour;
                         tour.CurrentTourstopIndex = 0;
-
+                        tour.EditMode = true;
                         uiController = TourEdit.TourEditorUI;
 
                         WWTControl.scriptInterface.FireTourReady();
@@ -2526,6 +2526,46 @@ namespace wwtlib
                 ctx.Stroke();
                 ctx.Restore();
             }
+        }
+
+        public ImageElement CaptureThumbnail()
+        {
+            ImageElement image = new ImageElement();
+            image.Src = Singleton.Canvas.GetDataUrl();
+
+            //Document.Body.AppendChild(image);
+
+            return image;
+
+            //int width = gl.canvas.Width;
+            //int height = gl.canvas.Height;
+            //WebGLTexture texture = gl.createTexture();
+            //// Create a framebuffer backed by the texture
+            //WebGLFramebuffer framebuffer = gl.createFramebuffer();
+            //gl.bindFramebuffer(GL.FRAMEBUFFER, framebuffer);
+            //gl.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0, GL.TEXTURE_2D, texture, 0);
+
+            //// Read the contents of the framebuffer
+            ////byte[] data = new byte[width * height * 4];
+
+            //WebGLArray data = gl.readPixels(0, 0, width, height, GL.RGBA, GL.UNSIGNED_BYTE);
+
+            //gl.deleteFramebuffer(framebuffer);
+
+            //// Create a 2D canvas to store the result 
+            //CanvasElement canvas = Document.CreateElement('canvas');
+            //canvas.Width = width;
+            //canvas.Height = height;
+            //CanvasContext2D context = (CanvasContext2D)canvas.GetContext(Rendering.Render2D);
+
+            //// Copy the pixels to a 2D canvas
+            //ImageData imageData = context.CreateImageData(width, height);
+            //imageData.Data = data;
+            //context.putImageData(imageData, 0, 0);
+
+            //ImageElement img = new ImageElement();
+            //img.Src = canvas.ToDataURL();
+            //return img;
         }
     }
 
