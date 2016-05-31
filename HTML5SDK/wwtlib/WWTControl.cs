@@ -561,8 +561,11 @@ namespace wwtlib
                      
             }
 
+          //  Script.Literal("requestAnimationFrame(this.render);");
+
+
             //TileCache.PurgeLRU();
-            Script.SetTimeout(delegate() { Render(); }, 20);
+            Script.SetTimeout(delegate() { Render(); }, 10);
         }
 
         private void DrawSkyOverlays()
@@ -2415,6 +2418,36 @@ namespace wwtlib
 
         //public TourEditor TourEditor = null;
         public TourEditTab TourEdit = null;
+
+
+
+        public TourDocument CreateTour(string name)
+        {
+            if (uiController is TourPlayer)
+            {
+                TourPlayer player = (TourPlayer)uiController;
+                player.Stop(false);
+
+            }
+
+            tour = new TourDocument();
+            tour.Title = name;
+            SetupTour();
+
+            TourEdit.AddSlide(false);
+
+            return tour;
+        }
+
+        public void SetupTour()
+        {
+           TourEdit = new TourEditTab();
+           TourEdit.Tour = tour;
+           tour.CurrentTourstopIndex = 0;
+           tour.EditMode = true;
+           uiController = TourEdit.TourEditorUI;
+        }
+
         public void PlayTour(string url)
         {
             if (uiController is TourPlayer)
@@ -2432,12 +2465,7 @@ namespace wwtlib
                         //WWTControl.scriptInterface.FireTourReady();
                         //player.Play();
 
-                        TourEdit = new TourEditTab();
-                        TourEdit.Tour = tour;
-                        tour.CurrentTourstopIndex = 0;
-                        tour.EditMode = true;
-                        uiController = TourEdit.TourEditorUI;
-
+                        SetupTour();
                         WWTControl.scriptInterface.FireTourReady();
                     });
             
@@ -2530,10 +2558,11 @@ namespace wwtlib
 
         public ImageElement CaptureThumbnail()
         {
-            ImageElement image = new ImageElement();
+            Render();
+            ImageElement image = (ImageElement)Document.CreateElement("img");
             image.Src = Singleton.Canvas.GetDataUrl();
 
-            //Document.Body.AppendChild(image);
+           // Document.Body.AppendChild(image);
 
             return image;
 

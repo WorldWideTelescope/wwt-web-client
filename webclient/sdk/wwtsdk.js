@@ -22204,7 +22204,7 @@ window.wwtlib = function(){
       }
       setTimeout(function() {
         $this.render();
-      }, 20);
+      }, 10);
     },
     _drawSkyOverlays: function() {
       if (Settings.get_active().get_showConstellationPictures()) {
@@ -23072,6 +23072,24 @@ window.wwtlib = function(){
     },
     _closeTour: function() {
     },
+    createTour: function(name) {
+      if (ss.canCast(this.uiController, TourPlayer)) {
+        var player = this.uiController;
+        player.stop(false);
+      }
+      this.tour = new TourDocument();
+      this.tour.set_title(name);
+      this.setupTour();
+      this.tourEdit.addSlide(false);
+      return this.tour;
+    },
+    setupTour: function() {
+      this.tourEdit = new TourEditTab();
+      this.tourEdit.set_tour(this.tour);
+      this.tour.set_currentTourstopIndex(0);
+      this.tour.set_editMode(true);
+      this.uiController = this.tourEdit.tourEditorUI;
+    },
     playTour: function(url) {
       var $this = this;
 
@@ -23080,11 +23098,7 @@ window.wwtlib = function(){
         player.stop(false);
       }
       this.tour = TourDocument.fromUrl(url, function() {
-        $this.tourEdit = new TourEditTab();
-        $this.tourEdit.set_tour($this.tour);
-        $this.tour.set_currentTourstopIndex(0);
-        $this.tour.set_editMode(true);
-        $this.uiController = $this.tourEdit.tourEditorUI;
+        $this.setupTour();
         WWTControl.scriptInterface._fireTourReady();
       });
     },
@@ -23146,7 +23160,8 @@ window.wwtlib = function(){
       }
     },
     captureThumbnail: function() {
-      var image = new Image();
+      this.render();
+      var image = document.createElement('img');
       image.src = WWTControl.singleton.canvas.toDataURL();
       return image;
     }
