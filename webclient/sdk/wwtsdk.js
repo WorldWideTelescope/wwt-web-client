@@ -17128,6 +17128,7 @@ window.wwtlib = function(){
         this.voiceTrack.target = null;
       }
       this._tour.get_currentTourStop().layers = LayerManager._getVisibleLayerList(this._tour.get_currentTourStop().layers);
+      newTourStop.set_thumbnail(newPlace.set_thumbnail(WWTControl.singleton.captureThumbnail()));
       this.tourStopList.selectedItem = this.tourStopList.findItem(newTourStop);
       this.tourStopList.refresh();
       this.tourEditorUI.clearSelection();

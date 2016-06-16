@@ -792,7 +792,7 @@ namespace wwtlib
             }
             tour.CurrentTourStop.Layers = LayerManager.GetVisibleLayerList(tour.CurrentTourStop.Layers);
             //todo get thumbnail 
-            //newTourStop.Thumbnail = newPlace.ThumbNail = WWTControl.Singleton.RenderContext.GetScreenThumbnail();
+            newTourStop.Thumbnail = newPlace.Thumbnail = WWTControl.Singleton.CaptureThumbnail();
 
             tourStopList.SelectedItem = tourStopList.FindItem(newTourStop);
             tourStopList.Refresh();

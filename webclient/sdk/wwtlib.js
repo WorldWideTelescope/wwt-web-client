@@ -1,6 +1,6 @@
 "use strict";
 
-define('wwtlib', ['ss'], function(ss) {
+window.wwtlib = function(){
   var $global = this;
 
   // DAY_OF_WEEK
@@ -15612,6 +15612,7 @@ define('wwtlib', ['ss'], function(ss) {
         this.voiceTrack.target = null;
       }
       this._tour.get_currentTourStop().layers = LayerManager._getVisibleLayerList(this._tour.get_currentTourStop().layers);
+      newTourStop.set_thumbnail(newPlace.set_thumbnail(WWTControl.singleton.captureThumbnail()));
       this.tourStopList.selectedItem = this.tourStopList.findItem(newTourStop);
       this.tourStopList.refresh();
       this.tourEditorUI.clearSelection();
@@ -33613,4 +33614,4 @@ define('wwtlib', ['ss'], function(ss) {
   ToastTile.rootIndexBuffer = new Array(4);
 
   return $exports;
-});
+}();
