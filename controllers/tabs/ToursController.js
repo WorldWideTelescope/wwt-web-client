@@ -72,7 +72,7 @@
 
 		var calcPageSize = function () {
 			$timeout(function () {
-				var tnWid = 116;
+				var tnWid = 118;
 				var winWid = $(window).width();
 				$scope.pageSize = Math.floor(winWid / tnWid);
 				$scope.pageCount = Math.ceil($scope.tourList.length / $scope.pageSize);
