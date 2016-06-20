@@ -969,13 +969,17 @@
                         <div class="scroller">
                             <div class="stops-container">
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
-                                <div class="stop-thumb thumbnail" itemid="{{$index}}" ng-click="gotoStop($index, $event)" ng-context-menu="showContextMenu">
-                                    <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
-                                    <label>{{stop.description}}</label>
-                                    <label class="duration">{{stop.secDuration}}</label>
-                                </div>
+                                    <div class="thumbwrap">
+                                        <div class="stop-thumb thumbnail" itemid="{{$index}}" ng-click="gotoStop($index, $event)" ng-context-menu="showContextMenu">
+                                            <a class="ear stop-start"></a>
+                                            <a class="ear stop-end"></a>
+                                            <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
+                                            <label class="slide-label">{{stop.description}}</label>
+                                            <label class="duration">{{stop.secDuration}}</label>
+                                        </div>
+                                    </div>
                                     <div class="right-arrow" ng-if="!$last">
-                                    <i class="fa fa-stop"></i><i class="fa fa-caret-right"></i>
+                                    <i class="arrow-line"></i><i class="arrow-head"></i>
 
                                     </div>
                                 </div>
