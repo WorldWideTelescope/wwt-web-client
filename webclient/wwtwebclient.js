@@ -3856,7 +3856,7 @@ wwt.controllers.controller('MainController',
 		});
 
 		$scope.$on('showContextMenu', function () {
-		    $scope.showContextMenu()
+		    $scope.showContextMenu();
 		});
 
 		var finderTimer, finderActive = false,finderMoved = true;
@@ -4100,9 +4100,10 @@ wwt.controllers.controller('MainController',
            
 	        wwt.wc.add_tourEnded(tourChangeHandler);
 	        wwt.wc.add_tourReady(function() {
-	            $scope.registerTourStopListRefresh();
+	           
 	            $scope.$applyAsync(function () {
-                   $scope.setupTour(wwtlib.WWTControl.singleton.tour);               
+	                $scope.activeItem = { label: 'currentTour' };
+	                $scope.activePanel = 'currentTour';
 	            });
 	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 
@@ -4111,80 +4112,13 @@ wwt.controllers.controller('MainController',
 
 	    };
 
-	    $scope.createNewTour = function () {
+	    $scope.createNewTour = function() {
 	        //todo show dialog for tour properties
-	        $scope.setupTour(wwtlib.WWTControl.singleton.createTour("New Tour"));
-	        $scope.registerTourStopListRefresh();
-	    }
+	        $scope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
 
-	    $scope.setupTour = function (tour) {
-	        $scope.currentTour = tour;
-	        $scope.currentTour.duration = 0;
-	        $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	            s.description = s.get_description();
-	            s.thumb = s.get_thumbnail();
-	            s.duration = s.get_duration();
-	            s.secDuration = Math.round(s.duration / 1000);
-	            if (s.secDuration < 10) {
-	                s.secDuration = '0' + s.secDuration;
-	            }
-	            s.secDuration = '0:' + s.secDuration;
-	            $scope.currentTour.duration += s.duration;
-	            return s;
-	        });
-	        $scope.currentTour.minuteDuration = Math.floor($scope.currentTour.duration / 60000);
-	        $scope.currentTour.secDuration = Math.floor(($scope.currentTour.duration % 60000) / 1000);
 	        $scope.activeItem = { label: 'currentTour' };
 	        $scope.activePanel = 'currentTour';
-	    }
-
-	    $scope.registerTourStopListRefresh = function() {
-	        wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
-	            $scope.$applyAsync(function () {
-	                   
-	                $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	                    s.description = s.get_description();
-	                    s.thumb = s.get_thumbnail();
-	                    s.duration = s.get_duration();
-	                    s.secDuration = Math.round(s.duration / 1000);
-	                    if (s.secDuration < 10) {
-	                        s.secDuration = '0' + s.secDuration;
-	                    }
-	                    s.secDuration = '0:' + s.secDuration;
-	                    $scope.currentTour.duration += s.duration;
-	                    return s;
-	                });
-	                
-	            });
-	        }
-	    }
-
-	    $scope.gotoStop = function(index, e) {
-	        $scope.currentTour.set_currentTourstopIndex(index);
-	       
 	    };
-
-	    $scope.showContextMenu = function ( e) {
-	        var itemid = parseInt(e.currentTarget.attributes["itemid"].nodeValue);
-	        $scope.currentTour.set_currentTourstopIndex(itemid);
-	        wwtlib.WWTControl.singleton.tourEdit.tourStopList_MouseClick(this, e);
-	    };
-
-	    $scope.pauseTour = function () {
-	        if (wwtlib.WWTControl.singleton.tourEdit.playing)
-	        {
-	            wwtlib.WWTControl.singleton.tourEdit.pauseTour();
-	        }
-	        else
-	        {
-	            wwtlib.WWTControl.singleton.tourEdit.playNow(true);
-	        }
-	        //wwtlib.WWTControl.singleton.uiController.pauseTour();
-	        
-	        //$rootScope.tourPaused = !$rootScope.tourPaused;
-
-	        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
-        }
 
 	    function tourChangeHandler() {
 			var settings = appState.get('settings') || {};
@@ -6107,8 +6041,78 @@ wwt.controllers.controller('CommunityController',
         
     }
 ]);
-wwt.controllers.controller('CurrentTourController', ['$scope', function($scope) {
+wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', function($scope,$rootScope) {
+    var tourEdit = wwtlib.WWTControl.singleton.tourEdit;
+    var tour;
+    $scope.init = function (curTour) {
+        $scope.tour = tour = curTour;
+        tour.duration = 0;
+        $scope.tourStops = tour.get_tourStops().map(function (s) {
+            s.description = s.get_description();
+            s.thumb = s.get_thumbnail();
+            s.duration = s.get_duration();
+            s.secDuration = Math.round(s.duration / 1000);
+            if (s.secDuration < 10) {
+                s.secDuration = '0' + s.secDuration;
+            }
+            s.secDuration = '0:' + s.secDuration;
+            tour.duration += s.duration;
+            return s;
+        });
+        tour.minuteDuration = Math.floor(tour.duration / 60000);
+        tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
+    };
     
+    $rootScope.$watch('currentTour', function() {
+        console.log($rootScope.currentTour);
+    })
+    
+    $scope.showContextMenu = function (index) {
+        tour.set_currentTourstopIndex(index);
+        tourEdit.tourStopList_MouseClick(this, e);
+    };
+    $scope.gotoStop = function (index, e) {
+        tour.set_currentTourstopIndex(index);
+    };
+
+    $scope.showStartCameraPosition = function (index) {
+        tour.set_currentTourstopIndex(index);
+        tourEdit.tourStopList_ShowStartPosition();
+    }
+    $scope.showEndCameraPosition = function (index) {
+        tour.set_currentTourstopIndex(index);
+        tourEdit.tourStopList_ShowEndPosition();
+    }
+
+    $scope.pauseTour = function () {
+        if (tourEdit.playing) {
+            tourEdit.pauseTour();
+        }
+        else {
+            tourEdit.playNow(true);
+        }
+        
+        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
+    }
+
+    wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
+        $scope.$applyAsync(function () {
+
+            $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
+                s.description = s.get_description();
+                s.thumb = s.get_thumbnail();
+                s.duration = s.get_duration();
+                s.secDuration = Math.round(s.duration / 1000);
+                if (s.secDuration < 10) {
+                    s.secDuration = '0' + s.secDuration;
+                }
+                s.secDuration = '0:' + s.secDuration;
+                $scope.currentTour.duration += s.duration;
+                return s;
+            });
+
+        });
+    }
 }]);
 
     
