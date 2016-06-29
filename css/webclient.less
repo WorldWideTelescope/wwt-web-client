@@ -595,11 +595,21 @@ body.wwt-webclient-wrapper.mobile{
         background-color:rgba(0,0,0,.3);
         #gradient > .vertical-four-colors(rgba(255,255,255,.3), rgba(155,155,155,.01), 50%, rgba(155,155,155,.01), 75%, rgba(44,185,201,.7));
         border:solid 1px #000;
-        i.fa{
+        i.fa-play{
             margin:14px 17px;
         }
-        i.fa.fa-pause{
-            margin:14px 14px;
+        div.paused{
+            display:inline-block;
+            margin: 9px 0;
+            white-space: nowrap;
+            position: relative;
+            left: -2px;
+            i.fa.fa-minus{
+                transform:rotate(90deg);
+                height:10px; 
+                overflow:hidden;
+                margin: 0 -12px 0 0;
+            }
         }
     }
     a.btn-play-tour:after{

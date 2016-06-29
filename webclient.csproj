@@ -312,7 +312,6 @@
     <Content Include="css\webclient.less" />
     <Content Include="WWTSL.xap" />
     <Content Include="wwtwebclient.js" />
-    <Content Include="wwtwebclient.min.js" />
     <Content Include="ensurenpm.cmd" />
     <Content Include="adsass.wtml" />
     <Content Include="packages.config" />

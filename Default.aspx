@@ -950,7 +950,7 @@
             id="currentTourPanel"
             class="explore-panel rel" 
             ng-controller="CurrentTourController" 
-            
+            ng-init="init(tour)"
             >
             <table>
                 <colgroup>
@@ -961,7 +961,11 @@
                 <tr>
                     <td class="play-tour">
                         <a class="btn-play-tour" ng-click="pauseTour()">
-                            <i class="fa fa-{{tourPaused ? 'play' : 'pause'}}"></i>
+                            <i class="fa fa-play" ng-if="tourPaused"></i>
+                            <div class="paused" ng-if="!tourPaused">
+                                <i class="fa fa-minus"></i>
+                                <i class="fa fa-minus"></i>
+                            </div>
                         </a><br/>
                         {{currentTour.minuteDuration}}:{{currentTour.secDuration}}
                     </td>
@@ -970,9 +974,11 @@
                             <div class="stops-container">
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
                                     <div class="thumbwrap">
-                                        <div class="stop-thumb thumbnail" itemid="{{$index}}" ng-click="gotoStop($index, $event)" ng-context-menu="showContextMenu">
-                                            <a class="ear stop-start"></a>
-                                            <a class="ear stop-end"></a>
+                                        <div class="stop-thumb thumbnail" 
+                                            ng-click="gotoStop($index, $event)" 
+                                            ng-context-menu="showContextMenu($index)">
+                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)"></a>
+                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
                                             <label class="slide-label">{{stop.description}}</label>
                                             <label class="duration">{{stop.secDuration}}</label>
