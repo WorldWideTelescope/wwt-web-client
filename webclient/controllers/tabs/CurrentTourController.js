@@ -4,7 +4,7 @@
     $scope.init = function (curTour) {
         $scope.tour = tour = curTour;
         tour.duration = 0;
-        $scope.tourStops = tour.get_tourStops().map(function (s) {
+        $scope.tourStops = tourEdit.get_tour().get_tourStops().map(function (s) {
             s.description = s.get_description();
             s.thumb = s.get_thumbnail();
             s.duration = s.get_duration();
@@ -35,11 +35,11 @@
     $scope.showStartCameraPosition = function (index) {
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowStartPosition();
-    }
+    };
     $scope.showEndCameraPosition = function (index) {
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowEndPosition();
-    }
+    };
 
     $scope.pauseTour = function () {
         if (tourEdit.playing) {

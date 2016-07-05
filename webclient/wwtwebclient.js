@@ -6047,7 +6047,7 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
     $scope.init = function (curTour) {
         $scope.tour = tour = curTour;
         tour.duration = 0;
-        $scope.tourStops = tour.get_tourStops().map(function (s) {
+        $scope.tourStops = tourEdit.get_tour().get_tourStops().map(function (s) {
             s.description = s.get_description();
             s.thumb = s.get_thumbnail();
             s.duration = s.get_duration();
@@ -6062,10 +6062,10 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
         tour.minuteDuration = Math.floor(tour.duration / 60000);
         tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
     };
-    
+
     $rootScope.$watch('currentTour', function() {
         console.log($rootScope.currentTour);
-    })
+    });
     
     $scope.showContextMenu = function (index) {
         tour.set_currentTourstopIndex(index);
@@ -6078,11 +6078,11 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
     $scope.showStartCameraPosition = function (index) {
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowStartPosition();
-    }
+    };
     $scope.showEndCameraPosition = function (index) {
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowEndPosition();
-    }
+    };
 
     $scope.pauseTour = function () {
         if (tourEdit.playing) {
