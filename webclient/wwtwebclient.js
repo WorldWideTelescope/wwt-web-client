@@ -1224,7 +1224,7 @@ wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
                 event.preventDefault();
                 var index = event.delegateTarget.getAttribute('index');
                 if (index) {
-                    handler(parseInt(index));
+                    handler(parseInt(index),event);
                 } else if  (handler) {
                     handler(event);
                 }
@@ -6045,31 +6045,16 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
     var tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     $scope.init = function (curTour) {
-        $scope.tour = tour = curTour;
-        tour.duration = 0;
-        $scope.tourStops = tourEdit.get_tour().get_tourStops().map(function (s) {
-            s.description = s.get_description();
-            s.thumb = s.get_thumbnail();
-            s.duration = s.get_duration();
-            s.secDuration = Math.round(s.duration / 1000);
-            if (s.secDuration < 10) {
-                s.secDuration = '0' + s.secDuration;
-            }
-            s.secDuration = '0:' + s.secDuration;
-            tour.duration += s.duration;
-            return s;
-        });
-        tour.minuteDuration = Math.floor(tour.duration / 60000);
-        tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
+        $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
+        tourEdit.tourStopList.refreshCallback = mapStops;
+        mapStops();  
     };
 
-    $rootScope.$watch('currentTour', function() {
-        console.log($rootScope.currentTour);
-    });
-    
-    $scope.showContextMenu = function (index) {
-        tour.set_currentTourstopIndex(index);
-        tourEdit.tourStopList_MouseClick(this, e);
+    $scope.showContextMenu = function (index,e) {
+        if (e) {
+            tour.set_currentTourstopIndex(index);
+            tourEdit.tourStopList_MouseClick(index, e);
+        }
     };
     $scope.gotoStop = function (index, e) {
         tour.set_currentTourstopIndex(index);
@@ -6091,14 +6076,13 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
         else {
             tourEdit.playNow(true);
         }
-        
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     }
 
-    wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
-        $scope.$applyAsync(function () {
-
-            $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
+    var mapStops = function () {
+        $scope.$applyAsync(function () { 
+            tour.duration = 0;
+            $scope.tourStops = tour.get_tourStops().map(function (s) {
                 s.description = s.get_description();
                 s.thumb = s.get_thumbnail();
                 s.duration = s.get_duration();
@@ -6107,12 +6091,16 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
                     s.secDuration = '0' + s.secDuration;
                 }
                 s.secDuration = '0:' + s.secDuration;
-                $scope.currentTour.duration += s.duration;
+                tour.duration += s.duration;
                 return s;
             });
-
+            tour.minuteDuration = Math.floor(tour.duration / 60000);
+            tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
+            $scope.tour = tour;
         });
     }
+
+    
 }]);
 
     

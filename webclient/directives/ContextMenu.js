@@ -8,7 +8,7 @@
                 event.preventDefault();
                 var index = event.delegateTarget.getAttribute('index');
                 if (index) {
-                    handler(parseInt(index));
+                    handler(parseInt(index),event);
                 } else if  (handler) {
                     handler(event);
                 }
