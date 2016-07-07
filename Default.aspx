@@ -967,7 +967,7 @@
                                 <i class="fa fa-minus"></i>
                             </div>
                         </a><br/>
-                        {{currentTour.minuteDuration}}:{{currentTour.secDuration}}
+                        {{tour.minuteDuration}}:{{tour.secDuration}}
                     </td>
                     <td class="tour-stops">
                         <div class="scroller">
@@ -975,8 +975,9 @@
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
                                     <div class="thumbwrap">
                                         <div class="stop-thumb thumbnail" 
+                                            index="{{$index}}"
                                             ng-click="gotoStop($index, $event)" 
-                                            ng-context-menu="showContextMenu($index)">
+                                            ng-context-menu="showContextMenu">
                                             <a class="ear stop-start" ng-click="showStartCameraPosition($index)"></a>
                                             <a class="ear stop-end" ng-click="showEndCameraPosition($index)"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
