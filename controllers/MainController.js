@@ -24,7 +24,9 @@ wwt.controllers.controller('MainController',
 	'Skyball',
 	'SearchUtil',
 	'$modal',
-	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal) {
+    '$element',
+    '$cookies',
+	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies) {
 		var ctl;
 		 
 		//#region LookAt/Imagery 
@@ -221,7 +223,7 @@ wwt.controllers.controller('MainController',
 			$scope.ribbon = {
 				tabs: [
 				{
-					label: 'Explore',
+					label: 'Explore', 
 					button: "rbnExplore",
 					mobileLabel: 'Explore Collections',
 						mobileAction: function() {
@@ -237,7 +239,7 @@ wwt.controllers.controller('MainController',
 						'Tour WWT Features': [$scope.tourFeatures],
 						'Show Welcome Tips':[showTips],
 						'Show Finder (right click)': [$scope.showFinderScope],
-						'WorldWide Telescope Home': [util.nav, '/'],
+						'WorldWide Telescope Home': [util.nav, '/home'],
 						'Getting Started (Help)': [util.nav, '/Learn/'],
 						'WorldWide Telescope Terms of Use': [util.nav, '/Terms'],
 						'About WorldWide Telescope': [util.nav, '/About']/*,
@@ -764,7 +766,7 @@ wwt.controllers.controller('MainController',
 		$rootScope.languagePromise.then(function (result) {
 			$rootScope.na = loc.getFromEn('n/a');
 			$rootScope.neverRises = loc.getFromEn('Never Rises');
-			$scope.hideIntroModal = appState.get('hideIntroModal');
+			$scope.hideIntroModal = appState.get('hideIntroModalv2');
 			if (!$scope.hideIntroModal && !$scope.loadingUrlPlace) {
 				setTimeout(showTips,1200);
 			}
@@ -805,9 +807,19 @@ wwt.controllers.controller('MainController',
 	        return show;
 	    };
 		
-		$scope.hideIntroModalChange = function(hideIntroModal) {
-			appState.set('hideIntroModal', hideIntroModal);
-		};
+	    $scope.hideIntroModalChange = function (hideIntroModal) {
+	        appState.set('hideIntroModalv2', hideIntroModal);
+	    };
+	    $scope.iswebclientHome = $cookies.get('homepage') !== 'home';
+	    $scope.homePrefChange = function (isWebclient) {
+	        $cookies.remove('homepage');
+	        if (!isWebclient) {
+	            $cookies.put('homepage', 'home', { expires: new Date(2050, 1, 1), path: "/" });
+	            //location.href = '/'
+	        } else {
+	            $cookies.put('homepage', 'webclient', { expires: new Date(2050, 1, 1), path: "/" });
+	        }
+	    };
 		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
