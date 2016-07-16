@@ -6785,6 +6785,12 @@ button.close {
   position: absolute;
   top: -9999px;
 }
+html {
+  -ms-content-zooming: none;
+}
+html .desktop {
+  position: relative;
+}
 body.wwt-webclient-wrapper.modal-open,
 .wwt-webclient-wrapper.modal-open .navbar-fixed-top,
 .wwt-webclient-wrapper.modal-open .navbar-fixed-bottom {
@@ -7434,6 +7440,14 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   background-image: -o-linear-gradient(#697396, #22262f 50%, #0f0f14 50.1%, #263048);
   background-image: linear-gradient(#697396, #22262f 50%, #0f0f14 50.1%, #263048);
   background-repeat: no-repeat;
+}
+.wwt-webclient-wrapper #ribbon .home-icon {
+  position: absolute;
+  left: 12px;
+  top: 4px;
+}
+.wwt-webclient-wrapper #ribbon .home-icon .fa {
+  font-size: 24px;
 }
 .wwt-webclient-wrapper #ribbon a.btn.pull-right {
   margin: 3px 16px 0 0;
@@ -8419,8 +8433,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   left: 0px;
 }
 .wwt-webclient-wrapper .context-panel {
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  bottom: -6px;
   right: 0;
   left: 0;
   -moz-box-sizing: border-box;

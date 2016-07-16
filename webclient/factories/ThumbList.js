@@ -195,7 +195,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         $timeout(function () {
             scope.pageCount = Math.ceil(listLength / scope.pageSize);
             spliceOnePage(scope);
-        });
+        },10);
     };
 
     function goBack(scope) {
@@ -211,8 +211,10 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
     };
 
     function spliceOnePage(scope) {
-        var start = scope.currentPage * scope.pageSize;
-        scope.collectionPage = scope.collection.slice(start, start + scope.pageSize);
+        if (scope.collection) {
+            var start = scope.currentPage * scope.pageSize;
+            scope.collectionPage = scope.collection.slice(start, start + scope.pageSize);
+        }
     };
 
     return api;

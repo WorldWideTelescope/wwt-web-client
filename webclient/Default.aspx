@@ -13,7 +13,6 @@
     public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
     public string BodyClass;
     public string SDKLocation = "http://localhost:26993/scripts/wwtsdk.aspx?debug=true";
-
     public enum Clients
     {
         Html5 = 0,
@@ -114,6 +113,7 @@
         {
             Response.Redirect(string.Format("/webclient/?client=html5{0}", Debug ? "&debug=true" : ""));
         }
+        
     }
 </script>
 <!DOCTYPE html>
@@ -530,7 +530,11 @@
             <i class="fa fa-download"></i>
             <span localize="Install Windows Client"></span>
         </a>
+        <a class="home-icon" href="/home">
+            <i class="fa fa-home"></i>               
+        </a>
         <ul class="wwt-tabs">
+            
             <li data-ng-repeat="tab in ribbon.tabs" data-ng-class="activePanel == tab.label ? 'active' : ''">
                 <div class="outer">
                     <a href="javascript:void(0)">
@@ -985,8 +989,8 @@
                                             <label class="duration">{{stop.secDuration}}</label>
                                         </div>
                                     </div>
-                                    <div class="right-arrow" ng-if="!$last">
-                                    <i class="arrow-line"></i><i class="arrow-head"></i>
+                                    <div class="right-arrow" ng-if="!$last" bs-popover template-url="/views/popovers/transition-type.html" trigger="hover" placement="bottom-left" data-content="{1}" title="Transition">
+                                        <i class="arrow-line"></i><i class="arrow-head"></i>
 
                                     </div>
                                 </div>

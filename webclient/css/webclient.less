@@ -1,7 +1,11 @@
 ﻿@import '../../packages/bootstrap.less.3.3.6/content/Content/bootstrap/bootstrap.less';
 @import 'variables.less';
 
- 
+html {
+    -ms-content-zooming: none;
+    .desktop{position:relative;}
+}
+
 body.wwt-webclient-wrapper.modal-open, .wwt-webclient-wrapper.modal-open .navbar-fixed-top, .wwt-webclient-wrapper.modal-open .navbar-fixed-bottom{
 	margin-right:0;
 } 
@@ -641,7 +645,7 @@ body.wwt-webclient-wrapper.mobile{
 			max-height: 377px;
 		}
 
-	#ribbon {
+	#ribbon { 
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -655,7 +659,14 @@ body.wwt-webclient-wrapper.mobile{
 		border-bottom: solid 1px black;
 		overflow: hidden;
 		#gradient > .vertical-four-colors(rgb(105,115,150), rgb(34,38,47), 50%, rgb(15,15,20), 50.1%, rgb(38,48,72));
-
+        .home-icon{
+            position:absolute;
+            left:12px;
+            top:4px;
+            .fa{
+                font-size:24px;
+            }
+        }
 		a.btn.pull-right {
 			margin: 3px 16px 0 0;
 		}
@@ -1557,8 +1568,8 @@ body.wwt-webclient-wrapper.mobile{
 		}
 	}
 	.context-panel {
-		position: absolute;
-		bottom: 0;
+		position: fixed; 
+		bottom:-6px;
 		right: 0;
 		left: 0;
 		-moz-box-sizing: border-box;
