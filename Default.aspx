@@ -136,96 +136,14 @@
         css+="<link href=\"ext/introjs.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
         %>
     <%=css%>
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/style/jquery.jscrollpane.css" rel="stylesheet"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
 
     <style> 
-        html, body.fs-player, iframe {
-            height: 100%;
-            width: 100%;   
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        } 
-        .finder-scope {
+        
+    body  .finder-scope {
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
         }
-
-        body .contextmenu {
-            background: rgba(25,30,43,.88);
-            position: absolute;
-            display: none;
-            width: 240px;
-            top: 400px;
-            left: 400px;
-            z-index: 1000;
-            box-shadow: 0 0 4px #808080;
-            background-clip: border-box;
-            padding-left: 15px;
-            border: solid 1px rgba(105,115,150,.7);
-        }
-
-        body .contextmenuitem {
-            border-left: solid 1px rgba(105,115,150,.7);
-            padding: 2px 4px 2px 4px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        body .contextmenuitem:hover {
-            background-color: rgba(1,14,23,.85);
-        }
-
-        body .submenu:after {
-              display: block;
-              right: 6px;
-              content: " ";
-              float: right;
-              width: 0;
-              height: 0;
-              border-color: transparent;
-              border-style: solid;
-              border-width: 5px 0 5px 5px;
-              border-left-color: #cccccc;
-              margin-top: 5px;
-              margin-right: 10px;
-            }
-
-
-           body .checkedmenu:after {
-                font-family: FontAwesome;
-                content: "\f00c";
-                font-size: 13px;
-                color: rgba(255,255,255,.8);
-                text-align: center;
-                line-height: 15px;
-                height: 15px;
-                width: 15px;
-                position: absolute;
-                left: 0;
-            }
-
-          body .colorpicker {
-                background: rgba(25,30,43,.88);
-                position: absolute;
-                display: none;
-                width: 220px;
-                height: 240px;
-                top: 400px;
-                left: 400px;
-                z-index: 1000;
-                box-shadow: 0 0 4px #808080;
-                background-clip: border-box;
-                padding-left: 15px;
-                padding-top: 15px;
-                border: solid 1px rgba(105,115,150,.7);
-            }
-
-
     </style> 
      
     <script src="//js.live.net/v5.0/wl.js"></script>
@@ -239,6 +157,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-animate.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
     <% if (Debug || DebugChrome) 
        { %>
 
@@ -435,7 +355,7 @@
                         <hr class="clearfix"/>
                     </li>
                     <li>
-                        <a ng-click="gotoPage('/')" target="_blank" localize="WorldWide Telescope Home"></a>
+                        <a ng-click="gotoPage('/home')" target="_blank" localize="WorldWide Telescope Home"></a>
                     </li>
                     <li>
                         <a ng-click="gotoPage('/Learn')" target="_blank" localize="Getting Started (Help)"></a>
@@ -455,24 +375,43 @@
         </div>
     </div>
     <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
-        <img src='<%= ResourcesLocation%>/Images/wwtlogo.png' 
-            class="pull-left" 
-            localize="WorldWide Telescope Logo"
-            localize-only="alt"
-         />
+        <a href="http://aas.org" target="_blank" style="position:relative;left:3px;z-index:5"
+            class="pull-right">
+            <img ng-src="https://wwtweb.blob.core.windows.net/images/aas-white110.png"
+                    localize="American Astronomical Society (AAS) Logo"
+                    localize-only="alt" style="width:60px;height:60px;"/>
+        </a>
+        <a class="pull-left" href="/home" style="margin-left: -11px;">
+            <img src='<%= ResourcesLocation%>/Images/wwtlogo.png' 
+                localize="WorldWide Telescope Logo"
+                localize-only="alt"
+                style="height:60px;width:60px"
+             />
+        </a>
         <h3>
-            
+            <div class="small text-white">American Astronomical Society</div>
             World<span class="brand-blue">Wide Telescope</span>
         </h3>
+        <br />
         <h4 localize="Welcome to the WorldWide Telescope Web Client"></h4>
-        <p>
+        <br />
+        <p style="text-align:center">
             <i class="fa fa-spin fa-spinner"></i>
-            <span localize="WorldWide Telescope is loading. Please wait."></span>
+            <span localize="WorldWide Telescope is loading."></span><br />
+            <span localize="Please wait."></span>
             
         </p>
+        <br />
         <p class="small" localize="Please ensure you have a strong connection to the internet for the best experience.">
-            (Please ensure you have a strong connection to the internet for the best experience.)
+            Please ensure you have a strong connection to the internet for the best experience.
         </p>
+
+        <div class="checkbox pull-left">
+            <label data-ng-class="iswebclientHome ? 'checked' : ''">
+                <input type="checkbox" ng-model="iswebclientHome" ng-change="homePrefChange(iswebclientHome)" />
+                <span localize="Show the web client as WWT landing page"></span>
+            </label>
+        </div>
     </div>
     <ng-include src="'views/modals/mobile-nearby-objects.html'"></ng-include>
     <div class="context-panel">
@@ -548,11 +487,10 @@
             <li data-ng-class="activePanel == 'currentTour' ? 'active' : 'hide'">
                 <div class="outer">
                     <a href="javascript:void(0)">
-                        <span class="label" data-ng-click="tabClick(tab)" id="btnCurTour" localize="{{currentTour._title}}"></span>
-                        <%--<div class="menu" data-ng-click="menuClick(tab.menu)" id="tabMenu{{ribbon.tabs.length}}" data-target="#menu{{ribbon.tabs.length}}">
-                            <i class="fa fa-caret-down"></i>
-                        </div>--%>
+                        <span class="label" style="padding-right:22px" localize="{{currentTour._title}}"></span>
+                        <span ng-click="finishTour()" class="close-tour"><i class="fa fa-close"></i></span>
                     </a>
+                    
                 </div>
             </li>
         </ul>
@@ -952,15 +890,15 @@
             ng-show="!loadingUrlPlace" 
             ng-switch-when="currentTour"
             id="currentTourPanel"
-            class="explore-panel rel" 
+            class="explore-panel rel curtour-panel" 
             ng-controller="CurrentTourController" 
             ng-init="init(tour)"
             >
-            <table>
+            <table ng-if="escaped == true">
                 <colgroup>
                     <col style="width:80px"/>
-                    <col style="width:99%"/>
-                    <col style="width:16px"/>
+                    <col style="width:100%"/>
+                    <col style="width:2px"/>
                 </colgroup>
                 <tr>
                     <td class="play-tour">
@@ -971,27 +909,54 @@
                                 <i class="fa fa-minus"></i>
                             </div>
                         </a><br/>
-                        {{tour.minuteDuration}}:{{tour.secDuration}}
+                        <div class="small" localize="Run Time"></div>
+                        <div class="small">{{tour.minuteDuration}}:{{tour.secDuration}}</div>
+
                     </td>
                     <td class="tour-stops">
-                        <div class="scroller">
+                        <div class="scroller" data-jquery-scrollbar>
                             <div class="stops-container">
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
                                     <div class="thumbwrap">
-                                        <div class="stop-thumb thumbnail" 
+                                        <div class="stop-thumb thumbnail {{$index == activeIndex?'active':''}}" 
                                             index="{{$index}}"
-                                            ng-click="gotoStop($index, $event)" 
+                                            ng-click="selectStop($index, $event)" 
+                                            ng-dblclick="showStartCameraPosition($index)"
                                             ng-context-menu="showContextMenu">
-                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)"></a>
-                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)"></a>
+                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour"></a>
+                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
                                             <label class="slide-label">{{stop.description}}</label>
                                             <label class="duration">{{stop.secDuration}}</label>
                                         </div>
                                     </div>
-                                    <div class="right-arrow" ng-if="!$last" bs-popover template-url="/views/popovers/transition-type.html" trigger="hover" placement="bottom-left" data-content="{1}" title="Transition">
-                                        <i class="arrow-line"></i><i class="arrow-head"></i>
-
+                                    <div class="transition-choice" ng-if="!$last" bs-popover template-url="views/popovers/transition-type.html" trigger="click" placement="bottom-left" data-content="{1}" title="Transition" data-container="body">
+                                        
+                                        <div class="right-arrow choice" ng-if="stop.transitionType==0">
+                                            <i class="arrow-line"></i><i class="arrow-head"></i>
+                                        </div>
+       
+                                        <div class="crossfade choice" ng-if="stop.transitionType==1">
+                                            <span class="shape"></span>
+                                        </div>
+        
+                                        <div class="abrupt choice" ng-if="stop.transitionType==2">
+                                            <span class="shape"></span>
+                                        </div>
+        
+                                        <div class="fadeout-in choice" ng-if="stop.transitionType==3">
+                                            <span class="shape left"></span>
+                                            <span class="shape right"></span>
+                                        </div>
+        
+                                        <div class="fadein choice" ng-if="stop.transitionType==4">
+                                            <span class="shape"></span>
+                                        </div>
+        
+                                        <div class="fadeout choice" ng-if="stop.transitionType==5">
+                                            <span class="shape"></span>
+                                        </div>
+       
                                     </div>
                                 </div>
 

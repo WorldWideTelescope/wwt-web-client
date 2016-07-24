@@ -250,10 +250,13 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
+                        
 					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
 					    'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
-                        sep2: null,
-					    'Create a New Tour...': [$scope.createNewTour]
+					    sep2: null,
+					    
+					    'Create a New Tour...': [$scope.createNewTour],
+					    
 					}
 				}, {
 				    label: 'Search',
@@ -639,25 +642,43 @@ wwt.controllers.controller('MainController',
 			$('#openModal').modal('show');
 		};
 
-	    $scope.playTour = function(url) {
+		$scope.playTour = function (url) {
+		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
 	        wwtlib.WWTControl.singleton.playTour(url);
 	        wwt.tourPlaying = $rootScope.tourPlaying = true;
 	        $rootScope.tourPaused = false;
            
 	        wwt.wc.add_tourEnded(tourChangeHandler);
-	        wwt.wc.add_tourReady(function() {
-	           
-	            $scope.$applyAsync(function () {
-	                $scope.activeItem = { label: 'currentTour' };
-	                $scope.activePanel = 'currentTour';
+	        wwt.wc.add_tourReady(function() {	            
+	            $('#ribbon,.top-panel,.context-panel,.layer-manager')
+                    .fadeOut(800, function () {
+	                $scope.$applyAsync(function () {
+	                    $scope.activeItem = { label: 'currentTour' };
+	                    $scope.activePanel = 'currentTour';
+	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour]
+	                });
 	            });
-	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 
 	        });
 	        //wwt.wc.add_tourPaused(tourChangeHandler);
 
-	    };
+		};
+
+		$scope.editTour = function () {
+		    $rootScope.$applyAsync(function () {
+		        $rootScope.editingTour = true;
+		    });
+		};
+
+		$rootScope.finishTour = function () {
+		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
+		    $rootScope.editingTour = false;
+	        $rootScope.tourPlaying = false;
+	        wwtlib.WWTControl.singleton.stopCurrentTour();
+	        $scope.activePanel = 'Guided Tours'; 
+	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
+	    }
 
 	    $scope.createNewTour = function() {
 	        //todo show dialog for tour properties
@@ -815,7 +836,6 @@ wwt.controllers.controller('MainController',
 	        $cookies.remove('homepage');
 	        if (!isWebclient) {
 	            $cookies.put('homepage', 'home', { expires: new Date(2050, 1, 1), path: "/" });
-	            //location.href = '/'
 	        } else {
 	            $cookies.put('homepage', 'webclient', { expires: new Date(2050, 1, 1), path: "/" });
 	        }
@@ -918,6 +938,9 @@ wwt.controllers.controller('MainController',
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
+		}
+		if (util.getQSParam('playTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('playTour')))
 		}
 	}
 ]);
