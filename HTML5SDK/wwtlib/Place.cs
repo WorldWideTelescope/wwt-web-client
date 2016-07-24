@@ -452,7 +452,7 @@ namespace wwtlib
 
             newPlace.name = place.Attributes.GetNamedItem("Name").Value;
 
-            if (place.Attributes.GetNamedItem("MSRComponentId") != null && place.Attributes.GetNamedItem("Permission") != null)
+            if (place.Attributes.GetNamedItem("MSRComponentId") != null && place.Attributes.GetNamedItem("Permission") != null && place.Attributes.GetNamedItem("Url") != null)
             {
                 //communities item
                 newPlace.Url = place.Attributes.GetNamedItem("Url").Value;

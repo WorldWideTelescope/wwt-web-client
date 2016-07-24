@@ -59,18 +59,20 @@
             </div>
             <div class="modal-footer" style="border: none">
                 <div class="pull-left">
-                    <div class="checkbox">
+                    <div class="checkbox pull-left">
+                        <label data-ng-class="iswebclientHome ? 'checked' : ''">
+                            <input type="checkbox" ng-model="iswebclientHome" ng-change="homePrefChange(iswebclientHome)" />
+                            <span localize="Show the web client as WWT landing page"></span>
+                        </label>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="checkbox pull-left">
                         <label data-ng-class="hideIntroModal ? 'checked' : ''">
                             <input type="checkbox" ng-model="hideIntroModal" ng-change="hideIntroModalChange(hideIntroModal)" />
                             <span localize="Do not show me this dialog again"></span>
                         </label>
                     </div>
-                    <div class="checkbox pull-left">
-                        <label data-ng-class="iswebclientHome ? 'checked' : ''">
-                            <input type="checkbox" ng-model="iswebclientHome" ng-change="homePrefChange(iswebclientHome)" />
-                            <span localize="Web client is WWT home page"></span>
-                        </label>
-                    </div>
+
                 </div>
                 <a class="btn" ng-click="tourFeatures()">Tour WWT Features</a>
                 <button type="button" class="btn" data-dismiss="modal" id="btnCloseIntro" style="width:80px" localize="Close"></button>

@@ -1,10 +1,12 @@
 ﻿<div class="tour-info">
     <h3 class="rel">
-        <a ng-click="playTour(tour.get_tourUrl())" class="iblock" style="cursor: pointer;position:absolute;z-index: 10">
+        <!--<a ng-click="playTour(tour.get_tourUrl())" class="iblock" style="cursor: pointer;position:absolute;z-index: 10">
             <i class="fa fa-play-circle text-info"></i>
+        </a>-->
+        <a class="btn-play-tour iblock" ng-click="playTour(tour.get_tourUrl())">
+            <i class="fa fa-play"></i>
         </a>
-
-        <span class="label" style="margin-left: 20px">{{tour.get_name()}}</span>
+        <span class="label" style="margin-left: 42px">{{tour.get_name()}}</span>
         <div style="display: inline-block" class="pull-right">
             <span class="small">
                 <span localize="Rating"></span>:
@@ -35,7 +37,7 @@
         <h4>{{tour.author}}</h4>
         <h5>{{tour.organizationName}}</h5>
         <p>{{tour.description}}</p>
-        <div ng-if="relatedTours">
+        <div ng-if="relatedTours" style="clear:left">
             <h4 localize="Related Tours"></h4>
             <hr />
             <div style="display: inline-block;vertical-align:top;" ng-repeat="item in relatedTours">

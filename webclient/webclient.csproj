@@ -271,6 +271,8 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="Chandra.wtml" />
+    <Content Include="css\contextmenu.less" />
+    <Content Include="css\tours.less" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

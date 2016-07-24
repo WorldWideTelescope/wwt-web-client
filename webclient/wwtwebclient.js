@@ -1145,7 +1145,7 @@ $(window).on('load', function() {
 	document.getElementsByTagName("head")[0].appendChild(scr);
 });
 
-wwt.app.directive("scrollBuffer", function ($window) {
+wwt.app.directive("scrollBuffer", ['$window',function ($window) {
 	return function ($scope, element, attrs) {
 		var buffer = parseInt(attrs.scrollBuffer);
 		var scope = $scope;
@@ -1169,7 +1169,38 @@ wwt.app.directive("scrollBuffer", function ($window) {
 		});
 		
 	};
-});
+}]);
+
+wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootScope,$window) {
+    return function ($scope, element, attrs) {
+        
+        var scope = $scope;
+        var movable = $(element).find('.jspPane');
+        $(element).on('mousewheel', function (event) {
+            var e = event.originalEvent;
+            movable = $(element).find('.jspPane');
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+            var curLeft = movable.position().left;
+            var increment = 155;
+            var newLeft;
+
+            //scrolling down?
+            if (delta < 0) {
+                newLeft = Math.floor((curLeft - increment) / increment) * increment;
+            }
+
+                //scrolling up?
+            else {
+                newLeft = Math.floor((curLeft + increment) / increment) * increment;
+            }
+            //movable.css('left', Math.max(newLeft,0));
+            $(element).data('jsp').scrollToX(Math.abs(newLeft));
+        })
+
+    };
+}
+])
 wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', function (loc, $rootScope,appState,util) {
 	return function ($scope, element, attrs) {
 		if (appState.get('language') !== 'EN') {
@@ -1739,6 +1770,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		isStaging: function() {
 			return location.href.indexOf('worldwidetelescope') === -1;
 		},
+        isDebug:getQSParam('debug')!=null,
 		nav: nav,
 		log: log,
 		resetCamera: resetCamera,
@@ -1821,9 +1853,6 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			return parseFloat(input);
 		}
 	}
-	
-
-	
 
 	function getAstroDetails(place) {
 		var coords = wwtlib.Coordinates.fromRaDec(place.get_RA(), place.get_dec());
@@ -1939,18 +1968,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 	}
 	
 	var accelDevice = false; 
-	//window.ondevicemotion = function(event) {
-	//	if (event.acceleration &&
-	//		event.acceleration.x != null) {
-	//		log('devicemotionevent', event);
-	//		accelDevice = true;
-	//		if (!api.isMobile && minDimension < 500) {
-
-	//			redirectClient('mobile');
-	//		}
-	//		window.ondevicemotion = null;
-	//	}
-	//}
+	
 	function redirectClient(val) {
 		return;
 		var qs = location.search.substr(1);
@@ -2022,6 +2040,16 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
 		
 	}
+
+	var keyHandler = function (e) {
+	    switch (e.keyCode) {
+	        case 27:
+	            $rootScope.$broadcast('escKey');
+	            break;
+	    }
+	};
+
+	$(document).on('keyup', keyHandler);
 
 	var dirtyInterval,
         viewport = {
@@ -2244,23 +2272,10 @@ wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 		init: init
 	};
 	var canvas, ctx;
-	//var renderLog = [];
-	//var avgs = [];
-	//var getAvg = function () { 
-	//	var sum = 0;
-	//	$.each(renderLog, function() {
-	//		sum += this; 
-	//	});
-	//	avgs.push(sum / renderLog.length);
-	//	renderLog = [];
-	//} 
-
+	 
 	function draw(event, viewport) {
 		if (!viewport.isDirty && !viewport.init){ return;}
-		//var d1 = new Date();
-		/*if (canvas == undefined) {
-			init();
-		}*/
+		
 		ctx.clearRect(0, 0, 100, 100);
 		var sphereSize = $('#skyball').height();
 		var radius = sphereSize / 2;
@@ -2308,12 +2323,6 @@ wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 		ctx.fillStyle = (z / 4) > 0 ? 'rgba(255,255,0,.9)' : 'rgba(255,255,0,.5)';
 		ctx.fill();
 		ctx.stroke();
-		//var renderTime = new Date().valueOf() - d1.valueOf();
-		//renderLog.push(renderTime);
-		//if (renderLog.length == 50) {
-		//	getAvg();
-		//	console.log('skyball avg: ', avgs);
-		//}
 		
 	};
 
@@ -3709,10 +3718,13 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
+                        
 					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
 					    'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
-                        sep2: null,
-					    'Create a New Tour...': [$scope.createNewTour]
+					    sep2: null,
+					    
+					    'Create a New Tour...': [$scope.createNewTour],
+					    
 					}
 				}, {
 				    label: 'Search',
@@ -4098,25 +4110,43 @@ wwt.controllers.controller('MainController',
 			$('#openModal').modal('show');
 		};
 
-	    $scope.playTour = function(url) {
+		$scope.playTour = function (url) {
+		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
 	        wwtlib.WWTControl.singleton.playTour(url);
 	        wwt.tourPlaying = $rootScope.tourPlaying = true;
 	        $rootScope.tourPaused = false;
            
 	        wwt.wc.add_tourEnded(tourChangeHandler);
-	        wwt.wc.add_tourReady(function() {
-	           
-	            $scope.$applyAsync(function () {
-	                $scope.activeItem = { label: 'currentTour' };
-	                $scope.activePanel = 'currentTour';
+	        wwt.wc.add_tourReady(function() {	            
+	            $('#ribbon,.top-panel,.context-panel,.layer-manager')
+                    .fadeOut(800, function () {
+	                $scope.$applyAsync(function () {
+	                    $scope.activeItem = { label: 'currentTour' };
+	                    $scope.activePanel = 'currentTour';
+	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour]
+	                });
 	            });
-	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 
 	        });
 	        //wwt.wc.add_tourPaused(tourChangeHandler);
 
-	    };
+		};
+
+		$scope.editTour = function () {
+		    $rootScope.$applyAsync(function () {
+		        $rootScope.editingTour = true;
+		    });
+		};
+
+		$rootScope.finishTour = function () {
+		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
+		    $rootScope.editingTour = false;
+	        $rootScope.tourPlaying = false;
+	        wwtlib.WWTControl.singleton.stopCurrentTour();
+	        $scope.activePanel = 'Guided Tours'; 
+	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
+	    }
 
 	    $scope.createNewTour = function() {
 	        //todo show dialog for tour properties
@@ -4274,7 +4304,6 @@ wwt.controllers.controller('MainController',
 	        $cookies.remove('homepage');
 	        if (!isWebclient) {
 	            $cookies.put('homepage', 'home', { expires: new Date(2050, 1, 1), path: "/" });
-	            //location.href = '/'
 	        } else {
 	            $cookies.put('homepage', 'webclient', { expires: new Date(2050, 1, 1), path: "/" });
 	        }
@@ -4377,6 +4406,9 @@ wwt.controllers.controller('MainController',
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
+		}
+		if (util.getQSParam('playTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('playTour')))
 		}
 	}
 ]);
@@ -5910,7 +5942,7 @@ wwt.controllers.controller('ToursController',
 		        title: item.get_name(),
 		        target: $(event.currentTarget),
 		        id: 'tourpop',
-		        template:'views/popovers/tour-template.html',
+		        templateUrl:'views/popovers/tour-template.html',
 		        contentTemplate: 'views/popovers/tour-info.html',
 		        placement: 'bottom-left',
 		        scope: $scope,
@@ -6057,23 +6089,45 @@ wwt.controllers.controller('CommunityController',
         
     }
 ]);
-wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', function($scope,$rootScope) {
+wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Util', function($scope,$rootScope,util) {
     var tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     $scope.init = function (curTour) {
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
-        mapStops();  
+        mapStops();
+        $rootScope.$on('escKey', function () {
+            $scope.$applyAsync(showTourSlides);
+        });
+        $rootScope.$watch('editingTour', function () { });
+        if (util.isDebug) {
+            showTourSlides();
+        }
+    };
+
+    var showTourSlides = function () {
+        $('#ribbon,.top-panel').fadeIn(400);
+        tourEdit.pauseTour();
+        $rootScope.tourPaused = true;
+        $scope.escaped = true;
+        if (util.isDebug) {
+            $rootScope.editingTour = true;
+        }
+        setTimeout(function () {
+            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 });
+        }, 200);
     };
 
     $scope.showContextMenu = function (index,e) {
         if (e) {
             tour.set_currentTourstopIndex(index);
             tourEdit.tourStopList_MouseClick(index, e);
+            $scope.activeIndex = index;
         }
     };
-    $scope.gotoStop = function (index, e) {
+    $scope.selectStop = function (index, e) {
         tour.set_currentTourstopIndex(index);
+        $scope.activeIndex = index;
     };
 
     $scope.showStartCameraPosition = function (index) {
@@ -6108,14 +6162,23 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope', fun
                 }
                 s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
+                s.transitionType = s.get__transition();
+                console.log(s);
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);
             tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
             $scope.tour = tour;
+            
+           
         });
     }
 
+    $scope.setStopTransition = function (index, transitionType) {
+        var stop = $scope.tourStops[index];
+        stop.set__transition(transitionType);
+        stop.transitionType = transitionType;
+    }
     
 }]);
 

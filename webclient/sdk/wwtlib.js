@@ -26974,7 +26974,7 @@ window.wwtlib = function(){
   Place._fromXml = function(place) {
     var newPlace = new Place();
     newPlace._name = place.attributes.getNamedItem('Name').nodeValue;
-    if (place.attributes.getNamedItem('MSRComponentId') != null && place.attributes.getNamedItem('Permission') != null) {
+    if (place.attributes.getNamedItem('MSRComponentId') != null && place.attributes.getNamedItem('Permission') != null && place.attributes.getNamedItem('Url') != null) {
       newPlace.set_url(place.attributes.getNamedItem('Url').nodeValue);
       newPlace.set_thumbnailUrl(place.attributes.getNamedItem('Thumbnail').nodeValue);
       return newPlace;

@@ -1,6 +1,7 @@
 ﻿@import '../../packages/bootstrap.less.3.3.6/content/Content/bootstrap/bootstrap.less';
 @import 'variables.less';
-
+@import 'tours.less';
+@import 'contextmenu.less';
 html {
     -ms-content-zooming: none;
     .desktop{position:relative;}
@@ -64,7 +65,9 @@ body.wwt-webclient-wrapper.mobile{
 			padding:16px;
             h3{
                 position:relative;
-                top:-2px;
+                top: -12px;
+                left:3px;
+                white-space: nowrap;
                 .text-white{color:white;}
                 .brand-blue{color:@brand-blue;}
             }
@@ -473,172 +476,11 @@ body.wwt-webclient-wrapper.mobile{
 		margin: -3px -8px -8px -8px;
 
 	}
-
-	div.explore-panel {
+    div.explore-panel {
 		padding-left: 4px;
-		max-height: 97px;
-		height: 97px;
-		//overflow: hidden;
-        table{
-            table-layout:fixed;
-            width:100%;
-            margin:2px 8px 0 8px;
-            td.play-tour{
-                width:80px;
-                vertical-align:middle;
-                text-align:center;
-                height:100px;
-            }
-            td.tour-stops{
-                width:100%;
-                border: solid 1px @bordercolor;
-                .scroller{
-                    padding-left:5px;
-                    max-width: 100%; 
-                    overflow-x: auto;
-                    overflow-y:hidden;
-                    div.stops-container{
-                        position:relative;
-                        top:10px;
-                        height:88px;
-                        white-space:nowrap;
-                        vertical-align:text-top;
-                        .stop-arrow{
-                            white-space:nowrap;
-                            vertical-align:text-top;
-                            width:155px;
-                            display:inline-block;
-                        }
-                        div.stop-thumb{
-                            position:relative;
-                            
-                            img{
-                                display:inline-block;
-                                border:none;
-                            }
-                            .slide-label{
-                                position:absolute;
-                                bottom:0;
-                                left:4px;
-                            }
-                            .duration{
-                                position:absolute;
-                                bottom:-16px;
-                                left:0;
-                                width:99px;
-                                text-align:center;
-                                display:block;
-                            }
-                            .ear{
-                                height:0;
-                                width:0;
-                                position:absolute;
-                                top:-9px;
-                                display:inline-block;
-                            }
-                            .ear:hover, .ear.active{
-                                border-bottom-color:yellow;
-                            }
-                            .stop-start{
-                                left:-1px;
-                                border-bottom: 7px solid @bordercolor-opaque; 
-                                border-right: 7px solid transparent;
-                            }
-                            
-                            .stop-end{
-                                right:-1px;
-                                border-bottom: 7px solid @bordercolor-opaque; 
-                                border-left: 7px solid transparent;
-                            }
-                        } 
-                        .right-arrow{
-                            padding-top:29px;
-                            width:50px;
-                            vertical-align:middle;
-                            display:inline-block;
-                            position: relative;
-                            //top: 11px; 
-                            left: -3px;
-                            i.arrow-line{
-                                display:inline-block;
-                                height:7px;
-                                width:23px;
-                                background:@bordercolor-opaque;
-                            }
-                            i.arrow-head{
-                               display:inline-block;
-                               border-top: 14px solid @bordercolor-opaque; 
-                               border-left: 14px solid transparent;
-                               transform:rotate(45deg);
-                               margin-left:-8px;
-                               margin-bottom:-3px;
-                            }
-                        }
-                    }
-                
-                }
-                
-            }
         }
-        tour-slides{
-            overflow-x:scroll;
-        }
-	}
 
-    a.btn-play-tour{
-        height:48px;width:48px;
-        border-radius:50%;
-        display:inline-block;
-        font-size: 20px;
-        //padding: 10px 17px;
-        //margin:16px 0 0 8px;
-        box-shadow:inset 0 -2px 6px #324272,
-            inset 0 0 2px rgba(0,0,0,.5), 
-            0 0 3px rgba(0,0,0,.5),
-             0 0 6px  rgba(44,185,201,.7);
-        background-color:rgba(0,0,0,.3);
-        #gradient > .vertical-four-colors(rgba(255,255,255,.3), rgba(155,155,155,.01), 50%, rgba(155,155,155,.01), 75%, rgba(44,185,201,.7));
-        border:solid 1px #000;
-        i.fa-play{
-            margin:14px 17px;
-        }
-        div.paused{
-            display:inline-block;
-            margin: 9px 0;
-            white-space: nowrap;
-            position: relative;
-            left: -2px;
-            i.fa.fa-minus{
-                transform:rotate(90deg);
-                height:10px; 
-                overflow:hidden;
-                margin: 0 -12px 0 0;
-            }
-        }
-    }
-    a.btn-play-tour:after{
-        content:" ";
-        position:absolute;
-        top:21px;
-        left:32px;
-        background:linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.3) 40%, rgba(255,255,255,.1));
-        height:22px;
-        width:42px;
-        border-radius: 50% 50% 50% 50%/75% 75% 25% 25%;
-    }
-    a.btn-play-tour:hover::after{
-        background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,.4) 40%, rgba(255,255,255,.15));
-    }
-    a.btn-play-tour:hover {
-        box-shadow:inset 0 -2px 6px lighten(rgba(44,185,201,1),10%),
-            inset 0 0 2px rgba(0,0,0,.3), 
-            0 0 2px rgba(0,0,0,.5),
-             0 0 9px lighten(rgba(44,185,201,1),10%);
-        border:solid 1px #000;
-        background-color:rgba(23,56,156,.5);
-        #gradient > .vertical-four-colors(rgba(255,255,255,.6), rgba(155,155,155,.01), 50%, rgba(155,155,155,.01), 75%, rgba(44,185,201,.7));
-        
-    }
+	
 
 	div.explore-panel.expanded {
 			height: 377px;
@@ -697,7 +539,7 @@ body.wwt-webclient-wrapper.mobile{
 					overflow: hidden;
 					position: relative;
 
-
+                    
 					a {
 						text-align: center;
 						display: block;
@@ -747,6 +589,20 @@ body.wwt-webclient-wrapper.mobile{
 							text-decoration: none;
 							color: white;
 						}
+                    .close-tour{
+                        font-weight:100;
+                        position: absolute;
+                        top: 0px;
+                        right: 2px;height:17px;
+                         background-color:transparent;
+                         width:14px;
+                         cursor:pointer;
+                         display:inline-block;
+                    }
+                    .close-tour:hover{
+                        background-color:#006;
+                        
+                    }
 				}
 			}
 
@@ -1057,22 +913,25 @@ body.wwt-webclient-wrapper.mobile{
 			margin: 1px 0 4px;
 		}
 	}
-
+    .popover.tour-preview{
+        border-radius:3px;
+        top:17px !important;
+    }
 	.tour-pop {
 		padding: 0;
 		width: 470px;
         margin-top:3px;
 		.tour-info {
-			margin: 0;
+			margin:-3px 0 0 0;
 			padding: 2px;
 
 			h3 {
-				background-color: rgba(222,222,222,.2);
+				background-color: rgba(114, 156, 208, 0.28);
 				margin: -3px;
 				padding: 2px 5px 6px;
-				border-top-right-radius: 3px;
-				border-top-left-radius: 3px;
-
+				/*border-top-right-radius: 3px;
+				border-top-left-radius: 3px;*/
+                height:45px;
 				span.label {
 					max-width: 380px;
 					display: inline-block;
@@ -1086,6 +945,7 @@ body.wwt-webclient-wrapper.mobile{
 						font-size: 12px;
 						display: block;
                         color:@text-color;
+                        margin-bottom:6px;
 						.rating-container {
 							display: inline-block;
 							position: relative;
@@ -1417,6 +1277,9 @@ body.wwt-webclient-wrapper.mobile{
 			overflow: hidden;
 		}
 	}
+    .thumbnail.active {
+        border-color: yellow;
+    }
 
 	.property-panel a.thumbnail, .finder-scope .thumbnail {
 		height: 58px;

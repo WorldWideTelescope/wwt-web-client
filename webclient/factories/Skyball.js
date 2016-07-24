@@ -3,23 +3,10 @@
 		init: init
 	};
 	var canvas, ctx;
-	//var renderLog = [];
-	//var avgs = [];
-	//var getAvg = function () { 
-	//	var sum = 0;
-	//	$.each(renderLog, function() {
-	//		sum += this; 
-	//	});
-	//	avgs.push(sum / renderLog.length);
-	//	renderLog = [];
-	//} 
-
+	 
 	function draw(event, viewport) {
 		if (!viewport.isDirty && !viewport.init){ return;}
-		//var d1 = new Date();
-		/*if (canvas == undefined) {
-			init();
-		}*/
+		
 		ctx.clearRect(0, 0, 100, 100);
 		var sphereSize = $('#skyball').height();
 		var radius = sphereSize / 2;
@@ -67,12 +54,6 @@
 		ctx.fillStyle = (z / 4) > 0 ? 'rgba(255,255,0,.9)' : 'rgba(255,255,0,.5)';
 		ctx.fill();
 		ctx.stroke();
-		//var renderTime = new Date().valueOf() - d1.valueOf();
-		//renderLog.push(renderTime);
-		//if (renderLog.length == 50) {
-		//	getAvg();
-		//	console.log('skyball avg: ', avgs);
-		//}
 		
 	};
 
