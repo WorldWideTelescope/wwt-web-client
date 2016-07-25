@@ -4097,6 +4097,9 @@ wwt.controllers.controller('MainController',
 			$(document).off('click', hideMenu);
 		};
 		$scope.tabClick = function (tab) {
+		    if ($rootScope.editingTour) {
+		        $scope.finishTour();
+		    }
 		    $('body').append($('#researchMenu'));
 			$scope.expandTop(false); 
 			$scope.activePanel = tab.label;
@@ -4140,6 +4143,7 @@ wwt.controllers.controller('MainController',
 		};
 
 		$rootScope.finishTour = function () {
+		    $rootScope.editingTour = false;
 		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
 		    $rootScope.editingTour = false;
 	        $rootScope.tourPlaying = false;
@@ -6090,7 +6094,7 @@ wwt.controllers.controller('CommunityController',
     }
 ]);
 wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Util', function($scope,$rootScope,util) {
-    var tourEdit = wwtlib.WWTControl.singleton.tourEdit;
+    var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     $scope.init = function (curTour) {
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
@@ -6103,6 +6107,7 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
         if (util.isDebug) {
             showTourSlides();
         }
+        $('#contextmenu,#popoutmenu').on('click', mapStops);
     };
 
     var showTourSlides = function () {
@@ -6139,11 +6144,13 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
         tourEdit.tourStopList_ShowEndPosition();
     };
 
-    $scope.pauseTour = function () {
+    $scope.pauseTourEdit = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        else {
+        else if ($scope.activeIndex) {
+            tourEdit.playFromCurrentTourstop();
+        } else {
             tourEdit.playNow(true);
         }
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
@@ -6163,7 +6170,6 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
                 s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
                 s.transitionType = s.get__transition();
-                console.log(s);
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);

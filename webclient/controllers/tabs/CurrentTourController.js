@@ -1,5 +1,5 @@
 ﻿wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Util', function($scope,$rootScope,util) {
-    var tourEdit = wwtlib.WWTControl.singleton.tourEdit;
+    var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     $scope.init = function (curTour) {
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
@@ -12,6 +12,7 @@
         if (util.isDebug) {
             showTourSlides();
         }
+        $('#contextmenu,#popoutmenu').on('click', mapStops);
     };
 
     var showTourSlides = function () {
@@ -48,11 +49,13 @@
         tourEdit.tourStopList_ShowEndPosition();
     };
 
-    $scope.pauseTour = function () {
+    $scope.pauseTourEdit = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        else {
+        else if ($scope.activeIndex) {
+            tourEdit.playFromCurrentTourstop();
+        } else {
             tourEdit.playNow(true);
         }
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
@@ -72,7 +75,6 @@
                 s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
                 s.transitionType = s.get__transition();
-                console.log(s);
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);

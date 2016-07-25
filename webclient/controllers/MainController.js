@@ -629,6 +629,9 @@ wwt.controllers.controller('MainController',
 			$(document).off('click', hideMenu);
 		};
 		$scope.tabClick = function (tab) {
+		    if ($rootScope.editingTour) {
+		        $scope.finishTour();
+		    }
 		    $('body').append($('#researchMenu'));
 			$scope.expandTop(false); 
 			$scope.activePanel = tab.label;
@@ -672,6 +675,7 @@ wwt.controllers.controller('MainController',
 		};
 
 		$rootScope.finishTour = function () {
+		    $rootScope.editingTour = false;
 		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
 		    $rootScope.editingTour = false;
 	        $rootScope.tourPlaying = false;

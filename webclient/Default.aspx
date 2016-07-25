@@ -902,9 +902,9 @@
                 </colgroup>
                 <tr>
                     <td class="play-tour">
-                        <a class="btn-play-tour" ng-click="pauseTour()">
-                            <i class="fa fa-play" ng-if="tourPaused"></i>
-                            <div class="paused" ng-if="!tourPaused">
+                        <a class="btn-play-tour" ng-click="pauseTourEdit()">
+                            <i class="fa fa-play" ng-if="!tourEdit.playing"></i>
+                            <div class="paused" ng-if="tourEdit.playing">
                                 <i class="fa fa-minus"></i>
                                 <i class="fa fa-minus"></i>
                             </div>

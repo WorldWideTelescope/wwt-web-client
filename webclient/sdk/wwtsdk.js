@@ -21602,7 +21602,7 @@ window.wwtlib = function(){
         var item = $enum1.current;
         if (item.visible) {
           var md = document.createElement('div');
-          md.className = 'contextmenuitem';
+          md.className = (item.checked) ? 'contextmenuitem checkedmenu' : 'contextmenuitem';
           md.innerText = item.name;
           var it = md;
           it.itemTag = item;
