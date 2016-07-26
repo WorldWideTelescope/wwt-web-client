@@ -327,12 +327,6 @@
     <Content Include="README.md" />
     <Content Include="sdk\wwtlib.scripts" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
     <Content Include="webclient.sln.DotSettings" />
     <Content Include="Wise.wtml">
       <SubType>Designer</SubType>

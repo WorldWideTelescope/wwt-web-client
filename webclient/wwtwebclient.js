@@ -6100,24 +6100,24 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
         mapStops();
-        $rootScope.$on('escKey', function () {
-            $scope.$applyAsync(showTourSlides);
-        });
+        //$rootScope.$on('escKey', function () {
+            //$scope.$applyAsync(showTourSlides);
+        //});
         $rootScope.$watch('editingTour', function () { });
-        if (util.isDebug) {
+        if (true){//util.isDebug) {
             showTourSlides();
         }
         $('#contextmenu,#popoutmenu').on('click', mapStops);
     };
 
     var showTourSlides = function () {
-        $('#ribbon,.top-panel').fadeIn(400);
-        tourEdit.pauseTour();
+        $('#ribbon,.top-panel,.context-panel,.layer-manager').fadeIn(400);
+        //tourEdit.pauseTour();
         $rootScope.tourPaused = true;
         $scope.escaped = true;
-        if (util.isDebug) {
+        //if (util.isDebug) {
             $rootScope.editingTour = true;
-        }
+        //}
         setTimeout(function () {
             $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 });
         }, 200);
@@ -6154,7 +6154,7 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
             tourEdit.playNow(true);
         }
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
-    }
+    };
 
     var mapStops = function () {
         $scope.$applyAsync(function () { 
