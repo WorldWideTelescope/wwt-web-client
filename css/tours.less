@@ -126,6 +126,96 @@
                 }
                 
             }
+            td.edit-panel{
+                vertical-align:top;
+                div.edit-panel{
+                    padding-left:5px;
+                    height:112px;
+                    .menu-button{
+                        width:55px;
+                        height:44px;
+                        position:relative;
+                        margin:0;
+                        box-sizing:border-box;
+                        label{
+                            
+                            position:absolute;
+                            bottom: -1px;
+                            display: block;
+                            text-align: center;
+                            width: 100%;
+                            left: 0;
+                        }
+                    }
+                    .menu-button.text{
+                        .icon{
+                            .A{
+                                font-family:'Times New Roman',Times;
+                                display: inline-block;
+                                height: 10px;
+                                position: absolute;
+                                top: -2px;
+                                left: 2px;
+                                font-size:10px;
+                                color:#333;
+
+                            }
+                            height:17px;
+                            width:20px;
+                            padding:2px;
+                            border:solid 1px @bordercolor;
+                            .iblock();
+                            background:rgba(255,255,255,.75);
+                            position:relative;
+                            margin:6px 0 0 1px;
+                            box-sizing:border-box;
+                            text-align:right;
+                            
+                            .tbar{
+                                border-top:solid 1px #5f78b0;
+                                border-bottom:solid 1px #5f78b0;
+                                width:5px;
+                                box-sizing:border-box;
+                                height:3px;
+                                display:block;
+                                margin-bottom: 1px;
+                                overflow: hidden;
+                                margin-left: 9px;
+                            }
+                            .longbar{
+                                width:100%;
+                                margin-left:0;
+                            }
+                        }
+                        
+                    }
+                    .menu-button.shape{
+                        i{
+                            height:13px;
+                            width:13px;
+                            position:absolute;
+                            #gradient > .vertical(lighten(rgba(215,215,215,.8),10%),lighten(rgba(73,135,192,.8),12%));
+                            box-sizing:border-box;
+                            border:solid 1px @bordercolor;
+                        }
+                        i.sq{
+                            top:8px;
+                            left:16px;
+                        }i.circ{
+                             top:13px;
+                             left:21px;
+                             border-radius:50%;
+                         }
+                    }
+                    .sound-container{
+                        width:195px;
+                        height:49px;
+                        background:fade(@bordercolor-opaque,30%);
+                        border:solid 1px @bordercolor;
+                        margin-bottom:5px;
+                    }
+                }
+            }
         }
         tour-slides{
             overflow-x:scroll;
