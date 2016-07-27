@@ -6905,6 +6905,102 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
   border-bottom: 7px solid #4e5672;
   border-left: 7px solid transparent;
 }
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel {
+  vertical-align: top;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel {
+  padding-left: 5px;
+  height: 112px;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button {
+  width: 55px;
+  height: 44px;
+  position: relative;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button label {
+  position: absolute;
+  bottom: -1px;
+  display: block;
+  text-align: center;
+  width: 100%;
+  left: 0;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.text .icon {
+  height: 17px;
+  width: 20px;
+  padding: 2px;
+  border: solid 1px rgba(105, 115, 150, 0.7);
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.75);
+  position: relative;
+  margin: 6px 0 0 1px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: right;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.text .icon .A {
+  font-family: 'Times New Roman', Times;
+  display: inline-block;
+  height: 10px;
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  font-size: 10px;
+  color: #333;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.text .icon .tbar {
+  border-top: solid 1px #5f78b0;
+  border-bottom: solid 1px #5f78b0;
+  width: 5px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 3px;
+  display: block;
+  margin-bottom: 1px;
+  overflow: hidden;
+  margin-left: 9px;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.text .icon .longbar {
+  width: 100%;
+  margin-left: 0;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.shape i {
+  height: 13px;
+  width: 13px;
+  position: absolute;
+  background-image: -webkit-linear-gradient(top, rgba(241, 241, 241, 0.8) 0%, rgba(118, 165, 208, 0.8) 100%);
+  background-image: -o-linear-gradient(top, rgba(241, 241, 241, 0.8) 0%, rgba(118, 165, 208, 0.8) 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(241, 241, 241, 0.8)), to(rgba(118, 165, 208, 0.8)));
+  background-image: linear-gradient(to bottom, rgba(241, 241, 241, 0.8) 0%, rgba(118, 165, 208, 0.8) 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccf1f1f1', endColorstr='#cc76a5d0', GradientType=0);
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  border: solid 1px rgba(105, 115, 150, 0.7);
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.shape i.sq {
+  top: 8px;
+  left: 16px;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.shape i.circ {
+  top: 13px;
+  left: 21px;
+  border-radius: 50%;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container {
+  width: 195px;
+  height: 49px;
+  background: rgba(78, 86, 114, 0.3);
+  border: solid 1px rgba(105, 115, 150, 0.7);
+  margin-bottom: 5px;
+}
 body.wwt-webclient-wrapper div.curtour-panel tour-slides {
   overflow-x: scroll;
 }

@@ -16,7 +16,7 @@
     };
 
     var showTourSlides = function () {
-        $('#ribbon,.top-panel,.context-panel,.layer-manager').fadeIn(400);
+        $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         //tourEdit.pauseTour();
         $rootScope.tourPaused = true;
         $scope.escaped = true;
@@ -74,7 +74,14 @@
                 }
                 s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
+
+            //placeholder values until transition api is there
+                s.atime = 2;
+                s.btime = 2;
+                s.holdtime = 4;
+
                 s.transitionType = s.get__transition();
+
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);
@@ -85,11 +92,6 @@
         });
     }
 
-    $scope.setStopTransition = function (index, transitionType) {
-        var stop = $scope.tourStops[index];
-        stop.set__transition(transitionType);
-        stop.transitionType = transitionType;
-    }
     
 }]);
 

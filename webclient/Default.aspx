@@ -898,7 +898,7 @@
                 <colgroup>
                     <col style="width:80px"/>
                     <col style="width:100%"/>
-                    <col style="width:2px"/>
+                    <col ng-style="{'width':editingTour?365:1}"/>
                 </colgroup>
                 <tr>
                     <td class="play-tour">
@@ -930,7 +930,11 @@
                                             <label class="duration">{{stop.secDuration}}</label>
                                         </div>
                                     </div>
-                                    <div class="transition-choice" ng-if="!$last" bs-popover template-url="views/popovers/transition-type.html" trigger="click" placement="bottom-left" data-content="{1}" title="Transition" data-container="body">
+                                    <div class="transition-choice {{stop.transHover ? 'active' : ''}}" 
+                                        ng-if="!$last" bs-popover template-url="views/popovers/transition-type.html" 
+                                        trigger="click" placement="bottom-left" data-content="{1}" 
+                                        title="Transition" data-container="body" 
+                                        data-on-show="testfn()" data-on-hide="testfn()">
                                         
                                         <div class="right-arrow choice" ng-if="stop.transitionType==0">
                                             <i class="arrow-line"></i><i class="arrow-head"></i>
@@ -964,7 +968,36 @@
                         </div>
 
                     </td>
-                    <td>&nbsp;</td>
+                    <td class="edit-panel">
+                        <div ng-if="editingTour" class="edit-panel">
+                            <div class="iblock">
+                                <a class="btn" localize="Tour Properties"></a>
+                                <a class="btn" localize="Save"></a>
+                                <div class="checkbox">
+                                    <label data-ng-class="tourEdit.showSafeArea ? 'checked' : ''">
+                                        <input type="checkbox" ng-model="tourEdit.showSafeAre" ng-change="" />
+                                        <span localize="Show safe area"></span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <a class="btn menu-button text">
+                                        <div class="icon">
+                                            <i class="A">A</i>
+                                            <i class="tbar"></i>
+                                            <i class="tbar"></i>
+                                            <i class="tbar longbar"></i>
+                                        </div>
+                                        <label>Text</label>
+                                    </a>
+                                    <a class="btn menu-button shape">
+                                        
+                                        <i class="sq"></i><i class="circ"></i>
+                                        <label>Shape</label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             </table>
             
