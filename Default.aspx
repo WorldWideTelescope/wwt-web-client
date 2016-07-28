@@ -898,7 +898,7 @@
                 <colgroup>
                     <col style="width:80px"/>
                     <col style="width:100%"/>
-                    <col ng-style="{'width':editingTour?365:1}"/>
+                    <col ng-style="{'width':editingTour?374:1}"/>
                 </colgroup>
                 <tr>
                     <td class="play-tour">
@@ -970,9 +970,13 @@
                     </td>
                     <td class="edit-panel">
                         <div ng-if="editingTour" class="edit-panel">
-                            <div class="iblock">
-                                <a class="btn" localize="Tour Properties"></a>
-                                <a class="btn" localize="Save"></a>
+                            <div class="left">
+                                <a class="btn" bs-popover 
+                                    localize="Tour Properties" style="width:98px;"
+                                    template-url="views/popovers/tour-properties.html" 
+                                    trigger="click" placement="bottom-left" data-content="{1}" 
+                                    title="Tour Properties" data-container="body"></a>
+                                <a class="btn" localize="Save" style="width:48px;"></a>
                                 <div class="checkbox">
                                     <label data-ng-class="tourEdit.showSafeArea ? 'checked' : ''">
                                         <input type="checkbox" ng-model="tourEdit.showSafeAre" ng-change="" />
@@ -989,12 +993,48 @@
                                         </div>
                                         <label>Text</label>
                                     </a>
-                                    <a class="btn menu-button shape">
-                                        
+                                    <a class="btn menu-button shape" bs-dropdown aria-haspopup="true" aria-expanded="false">
                                         <i class="sq"></i><i class="circ"></i>
                                         <label>Shape</label>
                                     </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="javascript:void(0)">Circle</a></li>
+                                        <li><a href="javascript:void(0)">Rectangle</a></li>
+                                        <li><a href="javascript:void(0)">Open Rectangle</a></li>
+                                        <li><a href="javascript:void(0)">Ring</a></li>
+                                        <li><a href="javascript:void(0)">Line</a></li>
+                                        <li><a href="javascript:void(0)">Arrow</a></li>
+                                        <li><a href="javascript:void(0)">Star</a></li>
+                                    </ul>
+                                    <a class="btn menu-button picture">
+                                        <i class="fa fa-photo"></i>
+                                        <label>Picture</label>
+                                    </a>
                                 </div>
+                            </div>
+                            <div class="right">
+                            <div class="sound-container">
+                                <label localize="Music:"></label>
+                                <div>
+                                    <a class="btn" localize="Browse..."></a>
+                                    <a class="btn"><i class="fa fa-volume-up"></i></a>
+                                    <div class="sound-level">
+                                        <a class="btn" style="left: 50px; position: absolute;">&nbsp;</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sound-container">
+                                <label localize="Voiceover:"></label>
+                                <div>
+                                    <a class="btn" localize="Browse..."></a>
+                                    <a class="btn"><i class="fa fa-volume-up"></i></a>
+                                    <div class="sound-level">
+                                        <a class="btn" style="left: 50px; position: absolute;">&nbsp;</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                                
                             </div>
                         </div>
                     </td>

@@ -306,6 +306,7 @@
     <Content Include="views\popovers\shareplace.html" />
     <Content Include="views\popovers\tour-info.html" />
     <Content Include="views\popovers\tour-template.html" />
+    <Content Include="views\popovers\tour-properties.html" />
     <Content Include="views\popovers\transition-type.html" />
     <Content Include="views\research-menu.html" />
     <Content Include="views\thumbnail.html" />

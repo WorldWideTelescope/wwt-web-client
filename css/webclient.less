@@ -1380,7 +1380,24 @@ body.wwt-webclient-wrapper.mobile{
 			color: white;
 		}
 	}
+    .cross-fader, .year-slider, .planetary-scale,.sound-level {
+		.boxGradient();
+		width: 100px;
+		height: 6px;
+		position: relative;
+		margin: 8px 0 0;
 
+		a.btn {
+			position: absolute;
+			left: 100px;
+			margin: -6px -6px;
+			width: 16px;
+			height: 19px;
+			border-radius:50%;
+			#gradient > .vertical-three-colors(rgba(255,255,255,.9), rgba(155,155,155,.6), 100%, rgb(0,0,0));
+				
+		}
+	}
 	.control {
 		display: inline-block;
 		margin: 0 5px 0 4px;
@@ -1404,24 +1421,7 @@ body.wwt-webclient-wrapper.mobile{
 			}
 		}
 
-		.cross-fader, .year-slider, .planetary-scale {
-			.boxGradient();
-			width: 100px;
-			height: 6px;
-			position: relative;
-			margin: 8px 0 0;
-
-			a.btn {
-				position: absolute;
-				left: 100px;
-				margin: -6px -6px;
-				width: 16px;
-				height: 19px;
-				border-radius:50%;
-				#gradient > .vertical-three-colors(rgba(255,255,255,.9), rgba(155,155,155,.6), 100%, rgb(0,0,0));
-				
-			}
-		}
+		
 		.planetary-scale {
 			width:66px;
 			margin-left:7px;  
