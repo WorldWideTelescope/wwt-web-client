@@ -53,6 +53,7 @@ module.exports = function(grunt) {
                     'factories/SearchUtil.js',
                     'factories/Skyball.js',
                     'factories/HashManager.js',
+                    'factories/MediaFile.js',
                     'dataproxy/Places.js',
                     'dataproxy/Tours.js',
                     'dataproxy/SearchData.js',

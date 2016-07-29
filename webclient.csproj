@@ -77,6 +77,7 @@
     <Content Include="controllers\tabs\CurrentTourController.js" />
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
+    <Content Include="factories\mediafile.js" />
     <Content Include="Gruntfile.js" />
     <Content Include=".editorconfig" />
     <Content Include="clientbin\WWTSL.xap" />

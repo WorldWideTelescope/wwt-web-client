@@ -182,6 +182,7 @@
     <script src="<%= ResourcesLocation %>/factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/MediaFile.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/ContextPanelController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
@@ -484,9 +485,9 @@
                     </a>
                 </div>
             </li>
-            <li data-ng-class="activePanel == 'currentTour' ? 'active' : 'hide'">
+            <li data-ng-class="activePanel == 'currentTour'  ? 'active' : editingTour ? '' :'hide'">
                 <div class="outer">
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0)" ng-click="activePanel = 'currentTour'">
                         <span class="label" style="padding-right:22px" localize="{{currentTour._title}}"></span>
                         <span ng-click="finishTour()" class="close-tour"><i class="fa fa-close"></i></span>
                     </a>
@@ -1014,22 +1015,24 @@
                             </div>
                             <div class="right">
                             <div class="sound-container">
-                                <label localize="Music:"></label>
+                                <label localize="Music:"></label>&nbsp;<label>{{musicFileName}}</label>
                                 <div>
-                                    <a class="btn" localize="Browse..."></a>
-                                    <a class="btn"><i class="fa fa-volume-up"></i></a>
-                                    <div class="sound-level">
-                                        <a class="btn" style="left: 50px; position: absolute;">&nbsp;</a>
+                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().musicChange(event,'music')"  />
+                                    <a class="btn {{!musicFileUrl ? 'disabled' : musicPlaying ? 'active' : ''}}" ng-click="toggleSound('music')"><i class="fa fa-volume-up" ng-disabled="!musicFileUrl"></i></a>
+                                    <audio  class="hide" id="musicPlayer"></audio>
+                                    <div class="sound-level  {{!musicFileUrl ? 'disabled' : ''}}">
+                                        <a class="btn  {{!musicFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;">&nbsp;</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="sound-container">
-                                <label localize="Voiceover:"></label>
+                                <label localize="Voiceover:"></label>&nbsp;<label>{{voiceOverFileName}}</label>
                                 <div>
-                                    <a class="btn" localize="Browse..."></a>
-                                    <a class="btn"><i class="fa fa-volume-up"></i></a>
-                                    <div class="sound-level">
-                                        <a class="btn" style="left: 50px; position: absolute;">&nbsp;</a>
+                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().musicChange(event,'voiceOver')"  />
+                                    <a class="btn {{!voiceOverFileUrl ? ' disabled' : voiceOverPlaying ? 'active' : ''}}" ng-click="toggleSound('voiceOver')" ng-disabled="!voiceOverFileUrl"><i class="fa fa-volume-up"></i></a>
+                                    <audio class="hide" id="voiceOverPlayer"></audio>
+                                    <div class="sound-level {{!voiceOverFileUrl ? 'disabled' : ''}}">
+                                        <a class="btn {{!voiceOverFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;">&nbsp;</a>
                                     </div>
                                 </div>
 
