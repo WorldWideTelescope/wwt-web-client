@@ -7021,6 +7021,91 @@ body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel 
           box-sizing: border-box;
   padding-left: 4px;
 }
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile {
+  width: 0;
+  height: 17px;
+  margin-right: 60px;
+  position: relative;
+  display: inline-block;
+  visibility: hidden;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after {
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  border: solid 1px #566783;
+  background: transparent;
+  display: inline-block;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77;
+          box-shadow: inset 0 1px 4px #4d5d77;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
+  background-image: -o-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-repeat: no-repeat;
+  content: 'Browse...';
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 1px;
+  padding: 2px 6px;
+  visibility: visible;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after:focus,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after:active:focus,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.active:focus,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.focus,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after:active.focus,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after:hover,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after:focus,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.focus {
+  color: #333333;
+  text-decoration: none;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after:active,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.disabled,
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after[disabled],
+fieldset[disabled] body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+abody.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.disabled,
+fieldset[disabled] abody.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after {
+  pointer-events: none;
+}
 body.wwt-webclient-wrapper div.curtour-panel tour-slides {
   overflow-x: scroll;
 }
@@ -8576,7 +8661,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   background-repeat: no-repeat;
   padding: 2px 6px;
 }
-.wwt-webclient-wrapper .btn:hover {
+.wwt-webclient-wrapper .btn:hover,
+.wwt-webclient-wrapper .btn.active {
   -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #2682a9;
           box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #2682a9;
   border-color: #62779d;
@@ -8845,6 +8931,21 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(155, 155, 155, 0.6) 100%, #000000);
   background-repeat: no-repeat;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6ffffff', endColorstr='#ff000000', GradientType=0);
+}
+.wwt-webclient-wrapper .cross-fader a.btn.disabled,
+.wwt-webclient-wrapper .year-slider a.btn.disabled,
+.wwt-webclient-wrapper .planetary-scale a.btn.disabled,
+.wwt-webclient-wrapper .sound-level a.btn.disabled {
+  background-image: none;
+  background-color: #ccc;
+  opacity: .9;
+}
+.wwt-webclient-wrapper .cross-fader.disabled,
+.wwt-webclient-wrapper .year-slider.disabled,
+.wwt-webclient-wrapper .planetary-scale.disabled,
+.wwt-webclient-wrapper .sound-level.disabled {
+  background-image: none;
+  opacity: .5;
 }
 .wwt-webclient-wrapper .control {
   display: inline-block;
