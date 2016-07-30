@@ -27,12 +27,15 @@
 		setBounds();
 		//  IE (sigh)
 		if (window.PointerEvent || window.MSPointerEvent) {
+		    
 			target.css('touch-action', 'none');
 			var pointerDownName = window.PointerEvent ? 'pointerdown' : 'MSPointerDown';
 			var pointerUpName = window.PointerEvent ? 'pointerup' : 'MSPointerUp';
 			var pointerMoveName = window.PointerEvent ? 'pointermove' : 'MSPointerMove';
 			document.body.addEventListener(pointerDownName, function (event) {
-				
+			    if (target.hasClass('disabled')) {
+			        return;
+			    }
 				if ((event.target !== target[0] && !$(target).has(event.target).length) || isMoving) {
 					return;
 				}
@@ -59,8 +62,12 @@
 				}, false);
 			}, false);
 			
-		}else {
-			target.on('mousedown touchstart', function(event) {
+		} else {
+		    
+		    target.on('mousedown touchstart', function (event) {
+		        if (target.hasClass('disabled')) {
+		            return;
+		        }
 				event.preventDefault();
 				event.stopPropagation();
 				moveInit(event);
