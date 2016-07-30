@@ -692,12 +692,14 @@ wwt.controllers.controller('MainController',
 	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
 	    }
 
-	    $scope.createNewTour = function() {
-	        //todo show dialog for tour properties
-	        $scope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
+		$scope.createNewTour = function () {
+		    $scope.$applyAsync(function () {
+		        //todo show dialog for tour properties
+		        $rootScope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
 
-	        $scope.activeItem = { label: 'currentTour' };
-	        $scope.activePanel = 'currentTour';
+		        $scope.activeItem = { label: 'currentTour' };
+		        $scope.activePanel = 'currentTour';
+		    });
 	    };
 
 	    function tourChangeHandler() {

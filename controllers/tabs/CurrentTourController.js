@@ -113,12 +113,16 @@
 
     $scope.showContextMenu = function (index,e) {
         if (e) {
+            tourEdit.tourStopList.selectedItem = index;
+            tourEdit.tourStopList.selectedItems = [index];
             tour.set_currentTourstopIndex(index);
             tourEdit.tourStopList_MouseClick(index, e);
             $scope.activeIndex = index;
         }
     };
     $scope.selectStop = function (index, e) {
+        tourEdit.tourStopList.selectedItem = index;
+        tourEdit.tourStopList.selectedItems = [index];
         tour.set_currentTourstopIndex(index);
         $scope.activeIndex = index;
     };
