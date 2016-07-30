@@ -8,8 +8,8 @@
         $scope.voiceOverPlaying = false;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
-        mapStops();
-        $scope.selectStop(0);
+        mapStops(true);
+        
         //$rootScope.$on('escKey', function () {
             //$scope.$applyAsync(showTourSlides);
         //});
@@ -113,16 +113,16 @@
 
     $scope.showContextMenu = function (index,e) {
         if (e) {
-            tourEdit.tourStopList.selectedItem = index;
-            tourEdit.tourStopList.selectedItems = [index];
-            tour.set_currentTourstopIndex(index);
+            
+            $scope.selectStop(index);
             tourEdit.tourStopList_MouseClick(index, e);
-            $scope.activeIndex = index;
+            
         }
     };
     $scope.selectStop = function (index, e) {
         tourEdit.tourStopList.selectedItem = index;
-        tourEdit.tourStopList.selectedItems = [index];
+        tourEdit.tourStopList.selectedItems = {};
+        tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
         tour.set_currentTourstopIndex(index);
         $scope.activeIndex = index;
     };
@@ -148,7 +148,7 @@
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     };
 
-    var mapStops = $scope.refreshStops = function () {
+    var mapStops = $scope.refreshStops = function (isInit) {
         $scope.$applyAsync(function () { 
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
@@ -175,7 +175,9 @@
             tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
             $scope.tour = tour;
             
-           
+            if (isInit) {
+                $scope.selectStop(0);
+            }
         });
     }
 
