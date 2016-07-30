@@ -18756,6 +18756,10 @@ window.wwtlib = function(){
   }
   var TourStopList$ = {
     selectAll: function() {
+      this.selectedItems = {};
+      for (var i = 0; i < this.tour.get_tourStops().length; i++) {
+        this.selectedItems[i] = this.tour.get_tourStops()[i];
+      }
     },
     refresh: function() {
       if (this.refreshCallback != null) {

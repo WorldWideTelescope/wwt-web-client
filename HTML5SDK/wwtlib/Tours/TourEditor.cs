@@ -2270,7 +2270,11 @@ namespace wwtlib
         public int SelectedItem = -1;
         public void SelectAll()
         {
-
+            SelectedItems = new Dictionary<int, TourStop>();
+            for (int i = 0; i < Tour.TourStops.Count; i++)
+            {
+                SelectedItems[i] = Tour.TourStops[i];
+            }
         }
         public Action refreshCallback = null;
 
