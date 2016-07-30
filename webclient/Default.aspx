@@ -924,15 +924,15 @@
                                             ng-click="selectStop($index, $event)" 
                                             ng-dblclick="showStartCameraPosition($index)"
                                             ng-context-menu="showContextMenu">
-                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour"></a>
-                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour"></a>
+                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
+                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
                                             <label class="slide-label">{{stop.description}}</label>
                                             <label class="duration">{{stop.secDuration}}</label>
                                         </div>
                                     </div>
                                     <div class="transition-choice {{stop.transHover ? 'active' : ''}}" 
-                                        ng-if="!$last" bs-popover template-url="views/popovers/transition-type.html" 
+                                        bs-popover template-url="views/popovers/transition-type.html" 
                                         trigger="click" placement="bottom-left" data-content="{1}" 
                                         title="Transition" data-container="body" 
                                         data-on-show="testfn()" data-on-hide="testfn()">
@@ -964,7 +964,16 @@
        
                                     </div>
                                 </div>
-
+                                <div class="stop-arrow">
+                                    <div class="thumbwrap">
+                                        <div class="stop-thumb thumbnail" 
+                                            ng-click="tourEdit.addSlide(false);refreshStops()">
+                                            <label class="slide-label" localize="Add New Slide" style="position:relative;top:20px;width:90px;text-align:center"></label>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                             </div>
                         </div>
 
@@ -975,15 +984,10 @@
                                 <a class="btn" bs-popover 
                                     localize="Tour Properties" style="width:98px;"
                                     template-url="views/popovers/tour-properties.html" 
-                                    trigger="click" placement="bottom-left" data-content="{1}" 
+                                    trigger="click" placement="bottom-left" data-content="{tour}" 
                                     title="Tour Properties" data-container="body"></a>
-                                <a class="btn" localize="Save" style="width:48px;"></a>
-                                <div class="checkbox">
-                                    <label data-ng-class="tourEdit.showSafeArea ? 'checked' : ''">
-                                        <input type="checkbox" ng-model="tourEdit.showSafeAre" ng-change="" />
-                                        <span localize="Show safe area"></span>
-                                    </label>
-                                </div>
+                                <a class="btn" localize="Save" style="width:48px;" ng-click="saveTour()"></a>
+                                
                                 <div>
                                     <a class="btn menu-button text">
                                         <div class="icon">
@@ -999,40 +1003,42 @@
                                         <label>Shape</label>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="javascript:void(0)">Circle</a></li>
-                                        <li><a href="javascript:void(0)">Rectangle</a></li>
-                                        <li><a href="javascript:void(0)">Open Rectangle</a></li>
-                                        <li><a href="javascript:void(0)">Ring</a></li>
-                                        <li><a href="javascript:void(0)">Line</a></li>
-                                        <li><a href="javascript:void(0)">Arrow</a></li>
-                                        <li><a href="javascript:void(0)">Star</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(0)">Circle</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(1)">Rectangle</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(2)">Open Rectangle</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(3)">Ring</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(4)">Line</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(5)">Arrow</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(6)">Star</a></li>
                                     </ul>
-                                    <a class="btn menu-button picture">
+                                    <a class="btn menu-button picture" href="javascript:$('#addPicture').click()">
                                         <i class="fa fa-photo"></i>
                                         <label>Picture</label>
+                                        <input type="file" id="addPicture" style="visibility:collapse;height:0;width:0;overflow:hidden;display:none" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" />
                                     </a>
+                                    
                                 </div>
                             </div>
                             <div class="right">
                             <div class="sound-container">
-                                <label localize="Music:"></label>&nbsp;<label>{{musicFileName}}</label>
+                                <label localize="Music:"></label><label style="width:160px;overflow:hidden;white-space:nowrap" title="{{musicFileName}}">&nbsp;{{musicFileName}}</label>
                                 <div>
-                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().musicChange(event,'music')"  />
+                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'music')"  />
                                     <a class="btn {{!musicFileUrl ? 'disabled' : musicPlaying ? 'active' : ''}}" ng-click="toggleSound('music')"><i class="fa fa-volume-up" ng-disabled="!musicFileUrl"></i></a>
                                     <audio  class="hide" id="musicPlayer"></audio>
                                     <div class="sound-level  {{!musicFileUrl ? 'disabled' : ''}}">
-                                        <a class="btn  {{!musicFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;">&nbsp;</a>
+                                        <a class="btn  {{!musicFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;" id="musicVol">&nbsp;</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="sound-container">
-                                <label localize="Voiceover:"></label>&nbsp;<label>{{voiceOverFileName}}</label>
+                                <label localize="Voiceover:"></label><label style="width:143px;overflow:hidden;white-space:nowrap" title="{{voiceOverFileName}}">&nbsp;{{voiceOverFileName}}</label>
                                 <div>
-                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().musicChange(event,'voiceOver')"  />
+                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'voiceOver')"  />
                                     <a class="btn {{!voiceOverFileUrl ? ' disabled' : voiceOverPlaying ? 'active' : ''}}" ng-click="toggleSound('voiceOver')" ng-disabled="!voiceOverFileUrl"><i class="fa fa-volume-up"></i></a>
                                     <audio class="hide" id="voiceOverPlayer"></audio>
                                     <div class="sound-level {{!voiceOverFileUrl ? 'disabled' : ''}}">
-                                        <a class="btn {{!voiceOverFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;">&nbsp;</a>
+                                        <a class="btn {{!voiceOverFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;" id="voiceVol">&nbsp;</a>
                                     </div>
                                 </div>
 

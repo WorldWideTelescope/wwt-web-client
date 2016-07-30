@@ -9,6 +9,7 @@
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
         mapStops();
+        $scope.selectStop(0);
         //$rootScope.$on('escKey', function () {
             //$scope.$applyAsync(showTourSlides);
         //});
@@ -17,9 +18,48 @@
             showTourSlides();
         }
         $('#contextmenu,#popoutmenu').on('click', mapStops);
+
+        setTimeout(initVolumeSliders, 111);
     };
 
-    $scope.musicChange = function (e, mediaKey) {
+    var initVolumeSliders = function () {
+        var volumeOpts = function (barEl, player) {
+            player.volume = .5;
+            return {
+                el: barEl,
+                bounds: {
+                    x: [-50, 50],
+                    y: [0, 0]
+                },
+                onstart: function () {
+                    barEl.addClass('moving');
+                },
+                onmove: function () {
+                    player.volume = this.css.left / 100;
+                },
+                oncomplete: function () {
+                    barEl.removeClass('moving');
+                }
+            }
+        };
+        var musicVol = new wwt.Move(volumeOpts($('#musicVol'), $('#musicPlayer')[0]));
+        var voiceVol = new wwt.Move(volumeOpts($('#voiceVol'), $('#voiceOverPlayer')[0]));
+
+    };
+
+    $scope.tourProp = function ($event, prop) {
+        tour['set_' + prop]($event.target.value);
+    };
+    $scope.saveTour = function () {
+        media.saveTour().then(function (tour) {
+            console.log(tour);
+        });
+    }
+    $scope.addShape = function (type) {
+        tourEdit.tourEditorUI.addShape('', type);
+    }
+
+    $scope.mediaFileChange = function (e, mediaKey, isImage) {
         console.time('storeLocal: ' + mediaKey);
         var file = e.target.files[0];
         if (!file.name) {
@@ -28,13 +68,22 @@
         $scope[mediaKey + 'FileName'] = file.name;
         media.addTourMedia(mediaKey, file).then(function (mediaResult) {
             //hook to the mediaResult.url here;
-            $scope[mediaKey + 'FileUrl'] = true;
-            $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
-            $scope[mediaKey + 'Playing'] = false;
+            
+            if (!isImage) {
+                $scope[mediaKey + 'FileUrl'] = true;
+                $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
+                $scope[mediaKey + 'Playing'] = false;
+            }
             console.timeEnd('storeLocal: ' + mediaKey);
-            media.getBinaryData(mediaResult.url).then(function (binary) {
-                console.log('binary string recieved - not logging because length = ' + binary.length);
-            });
+            if (!isImage) {
+                tourEdit.tourEditorUI.addAudio(mediaResult.url);
+                //media.getBinaryData(mediaResult.url).then(function (binary) {
+                //    console.log('binary string recieved - not logging because length = ' + binary.length);
+                //});
+            } else {
+                tourEdit.tourEditorUI.addPicture(mediaResult.url);
+                console.log('image created: '+ mediaResult.url)
+            }
         });
         
     }
@@ -95,7 +144,7 @@
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     };
 
-    var mapStops = function () {
+    var mapStops = $scope.refreshStops = function () {
         $scope.$applyAsync(function () { 
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {

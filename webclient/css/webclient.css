@@ -6918,14 +6918,17 @@ body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel 
   display: inline-block;
   vertical-align: text-top;
 }
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .left {
+  padding-top: 11px;
+}
 body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .checkbox {
   margin: 5px 0 6px -2px;
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button {
   width: 50px;
-  height: 44px;
+  height: 50px;
   position: relative;
-  margin: 0 -4px 0 0;
+  margin: 8px -4px 0 0;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
