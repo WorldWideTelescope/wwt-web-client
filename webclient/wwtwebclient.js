@@ -4354,12 +4354,14 @@ wwt.controllers.controller('MainController',
 	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
 	    }
 
-	    $scope.createNewTour = function() {
-	        //todo show dialog for tour properties
-	        $scope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
+		$scope.createNewTour = function () {
+		    $scope.$applyAsync(function () {
+		        //todo show dialog for tour properties
+		        $rootScope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
 
-	        $scope.activeItem = { label: 'currentTour' };
-	        $scope.activePanel = 'currentTour';
+		        $scope.activeItem = { label: 'currentTour' };
+		        $scope.activePanel = 'currentTour';
+		    });
 	    };
 
 	    function tourChangeHandler() {
@@ -6410,12 +6412,16 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
 
     $scope.showContextMenu = function (index,e) {
         if (e) {
+            tourEdit.tourStopList.selectedItem = index;
+            tourEdit.tourStopList.selectedItems = [index];
             tour.set_currentTourstopIndex(index);
             tourEdit.tourStopList_MouseClick(index, e);
             $scope.activeIndex = index;
         }
     };
     $scope.selectStop = function (index, e) {
+        tourEdit.tourStopList.selectedItem = index;
+        tourEdit.tourStopList.selectedItems = [index];
         tour.set_currentTourstopIndex(index);
         $scope.activeIndex = index;
     };
