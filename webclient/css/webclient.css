@@ -7357,6 +7357,21 @@ body.wwt-webclient-wrapper .popover.slide-transition .col-md-4 {
 body.wwt-webclient-wrapper .popover.slide-transition .col-md-4 input {
   width: 40px;
 }
+body.wwt-webclient-wrapper .popover.tour-text {
+  width: 750px;
+  max-width: 1000px;
+}
+body.wwt-webclient-wrapper .popover.tour-text .mce-container.mce-menubar,
+body.wwt-webclient-wrapper .popover.tour-text .mce-path {
+  display: none;
+}
+body.wwt-webclient-wrapper .popover.tour-text .mce-ico.mce-i-backcolor {
+  visibility: hidden;
+}
+body.wwt-webclient-wrapper .popover.tour-text .mce-widget.mce-colorbutton.mce-last .mce-preview {
+  margin-top: -7px;
+  height: 15px;
+}
 body.wwt-webclient-wrapper .popover.tour-props {
   width: 329px;
 }

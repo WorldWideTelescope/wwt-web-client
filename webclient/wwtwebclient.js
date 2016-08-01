@@ -6360,7 +6360,7 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
     $scope.addShape = function (type) {
         tourEdit.tourEditorUI.addShape('', type);
     }
-
+    
     $scope.mediaFileChange = function (e, mediaKey, isImage) {
         console.time('storeLocal: ' + mediaKey);
         var file = e.target.files[0];
