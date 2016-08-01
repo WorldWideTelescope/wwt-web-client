@@ -980,6 +980,8 @@
                     </td>
                     <td class="edit-panel">
                         <div ng-if="editingTour" class="edit-panel">
+                            <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.1/tinymce.min.js"></script>
+                            <link href="css/skin.min.css" rel="stylesheet" />
                             <div class="left">
                                 <a class="btn" bs-popover 
                                     localize="Tour Properties" style="width:98px;"
@@ -989,18 +991,20 @@
                                 <a class="btn" localize="Save" style="width:48px;" ng-click="saveTour()"></a>
                                 
                                 <div>
-                                    <a class="btn menu-button text">
+                                    <a class="btn menu-button text" bs-popover template-url="views/popovers/tour-text.html" 
+                                    trigger="click" placement="bottom-right" data-content="{tour}" 
+                                    title="Enter Text" data-container="body">
                                         <div class="icon">
                                             <i class="A">A</i>
                                             <i class="tbar"></i>
                                             <i class="tbar"></i>
                                             <i class="tbar longbar"></i>
                                         </div>
-                                        <label>Text</label>
+                                        <label localize="Text">Text</label>
                                     </a>
                                     <a class="btn menu-button shape" bs-dropdown aria-haspopup="true" aria-expanded="false">
                                         <i class="sq"></i><i class="circ"></i>
-                                        <label>Shape</label>
+                                        <label localize="Shape"></label>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="javascript:void(0)" ng-click="addShape(0)">Circle</a></li>
@@ -1013,7 +1017,7 @@
                                     </ul>
                                     <a class="btn menu-button picture" href="javascript:$('#addPicture').click()">
                                         <i class="fa fa-photo"></i>
-                                        <label>Picture</label>
+                                        <label localize="Picture"></label>
                                         <input type="file" id="addPicture" style="visibility:collapse;height:0;width:0;overflow:hidden;display:none" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" />
                                     </a>
                                     
