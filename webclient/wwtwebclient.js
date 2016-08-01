@@ -6350,9 +6350,12 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-        media.saveTour().then(function (tour) {
-            console.log(tour);
-        });
+
+        var xml = tour.getTourXML();
+        console.log(xml);
+       // media.saveTour().then(function (tour) {
+       //     console.log(tour);
+        //});
     }
     $scope.addShape = function (type) {
         tourEdit.tourEditorUI.addShape('', type);
