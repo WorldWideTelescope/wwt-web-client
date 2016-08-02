@@ -441,26 +441,37 @@ namespace wwtlib
         /* Save Load support
          * 
          */
- 
-        public virtual void SaveToXml(XmlNode xmlWriter)
+        public virtual string GetTypeName()
+        {
+            return "TerraViewer.Layer";
+        }
+
+
+        public virtual void SaveToXml(XmlTextWriter xmlWriter)
         {
             //todo write
-            //xmlWriter.WriteStartElement("Layer");
-            //xmlWriter.WriteAttributeString("Id", ID.ToString());
-            //xmlWriter.WriteAttributeString("Type", this.GetType().FullName);
-            //xmlWriter.WriteAttributeString("Name", Name);
-            //xmlWriter.WriteAttributeString("ReferenceFrame", referenceFrame);
-            //xmlWriter.WriteAttributeString("Color", SavedColor.Save(color));
-            //xmlWriter.WriteAttributeString("Opacity", opacity.ToString());
-            //xmlWriter.WriteAttributeString("StartTime", StartTime.ToString());
-            //xmlWriter.WriteAttributeString("EndTime", EndTime.ToString());
-            //xmlWriter.WriteAttributeString("FadeSpan", FadeSpan.ToString());
-            //xmlWriter.WriteAttributeString("FadeType", FadeType.ToString());
+            xmlWriter.WriteStartElement("Layer");
+            xmlWriter.WriteAttributeString("Id", ID.ToString());
+            xmlWriter.WriteAttributeString("Type", GetTypeName());
+            xmlWriter.WriteAttributeString("Name", Name);
+            xmlWriter.WriteAttributeString("ReferenceFrame", referenceFrame);
+            xmlWriter.WriteAttributeString("Color", color.ToString());
+            xmlWriter.WriteAttributeString("Opacity", opacity.ToString());
+            xmlWriter.WriteAttributeString("StartTime", StartTime.ToString());
+            xmlWriter.WriteAttributeString("EndTime", EndTime.ToString());
+            xmlWriter.WriteAttributeString("FadeSpan", FadeSpan.ToString());
+            xmlWriter.WriteAttributeString("FadeType", FadeType.ToString());
 
-            //this.WriteLayerProperties(xmlWriter);
+            WriteLayerProperties(xmlWriter);
 
-            //xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
         }
+
+        public virtual void WriteLayerProperties(XmlTextWriter xmlWriter)
+        {
+            return;
+        }
+
         public virtual void InitializeFromXml(XmlNode node)
         {
 

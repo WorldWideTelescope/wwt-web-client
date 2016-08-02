@@ -10,6 +10,12 @@ namespace wwtlib
 {
     public class GreatCirlceRouteLayer : Layer
     {
+
+        public override string GetTypeName()
+        {
+            return "TerraViewer.GreatCirlceRouteLayer";
+        }
+
         TriangleList triangleList = null;
         public override void CleanUp()
         {
@@ -205,7 +211,16 @@ namespace wwtlib
             }
         }
 
+        public override void WriteLayerProperties(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteAttributeString("LatStart", LatStart.ToString());
+            xmlWriter.WriteAttributeString("LngStart", LngStart.ToString());
+            xmlWriter.WriteAttributeString("LatEnd", LatEnd.ToString());
+            xmlWriter.WriteAttributeString("LngEnd", LngEnd.ToString());
+            xmlWriter.WriteAttributeString("Width", Width.ToString());
+            xmlWriter.WriteAttributeString("PercentComplete", PercentComplete.ToString());
 
+        }
 
         public override void InitializeFromXml(XmlNode node)
         {

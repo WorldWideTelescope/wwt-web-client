@@ -18,6 +18,10 @@ namespace wwtlib
         {
         }
 
+        public override string GetTypeName()
+        {
+            return "TerraViewer.SpreadSheetLayer";
+        }
 
         public List<string> Header
         {
@@ -1352,10 +1356,57 @@ namespace wwtlib
             dirty = true;
         }
 
-        public override void InitFromXml(XmlNode node)
+        //public override void InitFromXml(XmlNode node)
+        //{
+        //    base.InitFromXml(node);
+        //}
+
+        public override void WriteLayerProperties(XmlTextWriter xmlWriter)
         {
-            base.InitFromXml(node);
+            xmlWriter.WriteAttributeString("TimeSeries", TimeSeries.ToString());
+            xmlWriter.WriteAttributeString("BeginRange", BeginRange.ToString());
+            xmlWriter.WriteAttributeString("EndRange", EndRange.ToString());
+            xmlWriter.WriteAttributeString("Decay", Decay.ToString());
+            xmlWriter.WriteAttributeString("CoordinatesType", CoordinatesType.ToString());
+            xmlWriter.WriteAttributeString("LatColumn", LatColumn.ToString());
+            xmlWriter.WriteAttributeString("LngColumn", LngColumn.ToString());
+            xmlWriter.WriteAttributeString("GeometryColumn", GeometryColumn.ToString());
+            xmlWriter.WriteAttributeString("AltType", AltType.ToString());
+            xmlWriter.WriteAttributeString("MarkerMix", MarkerMix.ToString());
+            xmlWriter.WriteAttributeString("ColorMap", ColorMap.ToString());
+            xmlWriter.WriteAttributeString("MarkerColumn", MarkerColumn.ToString());
+            xmlWriter.WriteAttributeString("ColorMapColumn", ColorMapColumn.ToString());
+            xmlWriter.WriteAttributeString("PlotType", PlotType.ToString());
+            xmlWriter.WriteAttributeString("MarkerIndex", MarkerIndex.ToString());
+            xmlWriter.WriteAttributeString("MarkerScale", MarkerScale.ToString());
+            xmlWriter.WriteAttributeString("AltUnit", AltUnit.ToString());
+            xmlWriter.WriteAttributeString("AltColumn", AltColumn.ToString());
+            xmlWriter.WriteAttributeString("StartDateColumn", StartDateColumn.ToString());
+            xmlWriter.WriteAttributeString("EndDateColumn", EndDateColumn.ToString());
+            xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
+            xmlWriter.WriteAttributeString("HyperlinkFormat", HyperlinkFormat.ToString());
+            xmlWriter.WriteAttributeString("HyperlinkColumn", HyperlinkColumn.ToString());
+            xmlWriter.WriteAttributeString("ScaleFactor", ScaleFactor.ToString());
+            xmlWriter.WriteAttributeString("PointScaleType", PointScaleType.ToString());
+            xmlWriter.WriteAttributeString("ShowFarSide", ShowFarSide.ToString());
+            xmlWriter.WriteAttributeString("RaUnits", RaUnits.ToString());
+            xmlWriter.WriteAttributeString("HoverTextColumn", NameColumn.ToString());
+            xmlWriter.WriteAttributeString("XAxisColumn", XAxisColumn.ToString());
+            xmlWriter.WriteAttributeString("XAxisReverse", XAxisReverse.ToString());
+            xmlWriter.WriteAttributeString("YAxisColumn", YAxisColumn.ToString());
+            xmlWriter.WriteAttributeString("YAxisReverse", YAxisReverse.ToString());
+            xmlWriter.WriteAttributeString("ZAxisColumn", ZAxisColumn.ToString());
+            xmlWriter.WriteAttributeString("ZAxisReverse", ZAxisReverse.ToString());
+            xmlWriter.WriteAttributeString("CartesianScale", CartesianScale.ToString());
+            xmlWriter.WriteAttributeString("CartesianCustomScale", CartesianCustomScale.ToString());
+            xmlWriter.WriteAttributeString("DynamicData", DynamicData.ToString());
+            xmlWriter.WriteAttributeString("AutoUpdate", AutoUpdate.ToString());
+            xmlWriter.WriteAttributeString("DataSourceUrl", DataSourceUrl.ToString());
+
         }
+
+       
+
         protected bool isLongIndex = false;
         protected int shapeVertexCount;
 

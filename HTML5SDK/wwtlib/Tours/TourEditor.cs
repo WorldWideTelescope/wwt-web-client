@@ -2243,16 +2243,37 @@ namespace wwtlib
         {
         }
 
-        internal static void RedoStep()
-        {
-        }
+        
 
         internal static void SelectCurrent()
         {
         }
-
         internal static void UndoStep()
         {
+            if (Undo.PeekAction())
+            {
+                Undo.StepBack();
+                //todo wire this up to web ui
+                //tourStopList.Refresh();
+                //tourStopList.SelectedItem = tour.CurrentTourstopIndex;
+                //ShowSlideStartPosition(tour.CurrentTourStop);
+                //this.Refresh();
+               // OverlayList.UpdateOverlayList(tour.CurrentTourStop, TourEditorUI.Selection);
+            }
+        }
+
+        internal static void RedoStep()
+        {
+            if (Undo.PeekRedoAction())
+            {
+                Undo.StepForward();
+
+                //tourStopList.Refresh();
+                //tourStopList.SelectedItem = tour.CurrentTourstopIndex;
+                //ShowSlideStartPosition(tour.CurrentTourStop);
+                //this.Refresh();
+                //OverlayList.UpdateOverlayList(tour.CurrentTourStop, TourEditorUI.Selection);
+            }
         }
     }
 

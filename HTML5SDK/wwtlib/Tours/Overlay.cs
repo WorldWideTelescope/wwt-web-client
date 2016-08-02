@@ -549,6 +549,62 @@ namespace wwtlib
             set { interpolationType = value; }
         }
 
+
+        public virtual void SaveToXml(XmlTextWriter xmlWriter, bool saveKeys)
+        {
+            xmlWriter.WriteStartElement("Overlay");
+            xmlWriter.WriteAttributeString("Id", Id);
+            xmlWriter.WriteAttributeString("Type", GetTypeName());
+            xmlWriter.WriteAttributeString("Name", Name);
+            xmlWriter.WriteAttributeString("X", x.ToString());
+            xmlWriter.WriteAttributeString("Y", y.ToString());
+            xmlWriter.WriteAttributeString("Width", width.ToString());
+            xmlWriter.WriteAttributeString("Height", height.ToString());
+            xmlWriter.WriteAttributeString("Rotation", rotationAngle.ToString());
+            xmlWriter.WriteAttributeString("Color", color.ToString());
+            xmlWriter.WriteAttributeString("Url", url);
+            xmlWriter.WriteAttributeString("LinkID", linkID);
+            xmlWriter.WriteAttributeString("Animate", animate.ToString());
+            if (animate)
+            {
+                xmlWriter.WriteAttributeString("EndX", endX.ToString());
+                xmlWriter.WriteAttributeString("EndY", endY.ToString());
+                xmlWriter.WriteAttributeString("EndWidth", endWidth.ToString());
+                xmlWriter.WriteAttributeString("EndHeight", endHeight.ToString());
+                xmlWriter.WriteAttributeString("EndRotation", endRotationAngle.ToString());
+                xmlWriter.WriteAttributeString("EndColor", endColor.ToString());
+                xmlWriter.WriteAttributeString("InterpolationType", interpolationType.ToString());
+            }
+            xmlWriter.WriteAttributeString("Anchor", anchor.ToString());
+
+
+            this.WriteOverlayProperties(xmlWriter);
+
+            // todo add back for timeline tours
+            //if (AnimationTarget != null && saveKeys)
+            //{
+            //    AnimationTarget.SaveToXml(xmlWriter);
+            //}
+
+            xmlWriter.WriteEndElement();
+        }
+
+        public virtual string GetTypeName()
+        {
+            return "TerraViewer.Overlay";
+        }
+
+        public virtual void AddFilesToCabinet(FileCabinet fc)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public virtual void WriteOverlayProperties(XmlTextWriter xmlWriter)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+
         internal static Overlay FromXml(TourStop owner, XmlNode overlay)
         {
             if (overlay.Attributes == null)
@@ -669,6 +725,12 @@ namespace wwtlib
     }
     public class BitmapOverlay : Overlay
     {
+
+        public override string GetTypeName()
+        {
+            return "TerraViewer.BitmapOverlay";
+        }
+
         string filename;
 
         public BitmapOverlay()
@@ -802,6 +864,18 @@ namespace wwtlib
             }
         }
 
+        public override void AddFilesToCabinet(FileCabinet fc)
+        {
+            fc.AddFile(Owner.Owner.WorkingDirectory + filename);
+        }
+
+        public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Bitmap");
+            xmlWriter.WriteAttributeString("Filename", filename);
+            xmlWriter.WriteEndElement();
+        }
+
         public override void InitializeFromXml(XmlNode node)
         {
             XmlNode bitmap = Util.SelectSingleNode(node, "Bitmap");
@@ -811,6 +885,11 @@ namespace wwtlib
 
     public class TextOverlay : Overlay
     {
+        public override string GetTypeName()
+        {
+            return "TerraViewer.TextOverlay";
+        }
+
         public TextObject TextObject;
         public override Color Color
         {
@@ -821,9 +900,9 @@ namespace wwtlib
             }
             set
             {
-                if (TextObject.ForgroundColor != value)
+                if (TextObject.ForegroundColor != value)
                 {
-                    TextObject.ForgroundColor = value;
+                    TextObject.ForegroundColor = value;
                     base.Color = value;
                     CleanUp();
                 }
@@ -896,7 +975,7 @@ namespace wwtlib
 
         private void DrawCanvasText(CanvasContext2D ctx)
         {
-            ctx.FillStyle = TextObject.ForgroundColor.ToString();
+            ctx.FillStyle = TextObject.ForegroundColor.ToString();
             ctx.Font = (TextObject.Italic ? "italic" : "normal") + " " + (TextObject.Bold ? "bold" : "normal") + " " + Math.Round(TextObject.FontSize * 1.2).ToString() + "px " + TextObject.FontName;
             ctx.TextBaseline = TextBaseline.Top;
 
@@ -1026,7 +1105,12 @@ namespace wwtlib
             //}
         }
 
-
+        public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Text");
+            TextObject.SaveToXml(xmlWriter);
+            xmlWriter.WriteEndElement();
+        }
 
         public override void InitializeFromXml(XmlNode node)
         {
@@ -1049,6 +1133,12 @@ namespace wwtlib
     public enum ShapeType { Circle = 0, Rectagle = 1, Star = 2, Donut = 3, Arrow = 4, Line = 5, OpenRectagle = 6 };
     public class ShapeOverlay : Overlay
     {
+
+        public override string GetTypeName()
+        {
+            return "TerraViewer.ShapeOverlay";
+        }
+
         ShapeType shapeType = ShapeType.Rectagle;
 
         public ShapeOverlay()
@@ -1668,7 +1758,12 @@ namespace wwtlib
             CleanUp();
         }
 
-
+        public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Shape");
+            xmlWriter.WriteAttributeString("ShapeType", shapeType.ToString());
+            xmlWriter.WriteEndElement();
+        }
 
         public override void InitializeFromXml(XmlNode node)
         {
@@ -1716,6 +1811,10 @@ namespace wwtlib
     }
     public class AudioOverlay : Overlay
     {
+        public override string GetTypeName()
+        {
+            return "TerraViewer.AudioOverlay";
+        }
         string filename;
         AudioElement audio = null;
         int volume = 100;
@@ -1755,6 +1854,11 @@ namespace wwtlib
         //{
         //    audio.Stop();
         //}
+
+        public override void AddFilesToCabinet(FileCabinet fc)
+        {
+            fc.AddFile(Owner.Owner.GetFileStream(this.filename));
+        }
 
 
         public override void Play()
@@ -1881,7 +1985,20 @@ namespace wwtlib
             set { trackType = value; }
         }
 
-
+        public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Audio");
+            xmlWriter.WriteAttributeString("Filename", filename);
+            xmlWriter.WriteAttributeString("Volume", volume.ToString());
+            xmlWriter.WriteAttributeString("Mute", mute.ToString());
+            xmlWriter.WriteAttributeString("TrackType", trackType.ToString());
+          //  xmlWriter.WriteAttributeString("Begin", begin.ToString());
+          //  xmlWriter.WriteAttributeString("End", end.ToString());
+           // xmlWriter.WriteAttributeString("FadeIn", fadeIn.ToString());
+           // xmlWriter.WriteAttributeString("FadeOut", fadeOut.ToString());
+          //  xmlWriter.WriteAttributeString("Loop", loop.ToString());
+            xmlWriter.WriteEndElement();
+        }
 
         public override void InitializeFromXml(XmlNode node)
         {
@@ -1926,6 +2043,12 @@ namespace wwtlib
 
     public class FlipbookOverlay : Overlay
     {
+
+        public override string GetTypeName()
+        {
+            return "TerraViewer.FlipbookOverlay";
+        }
+
         string filename;
 
         LoopTypes loopType = LoopTypes.UpDown;
@@ -2104,7 +2227,26 @@ namespace wwtlib
             }
         }
 
+        public override void AddFilesToCabinet(FileCabinet fc)
+        {
+            fc.AddFile(Owner.Owner.WorkingDirectory + filename);
+        }
 
+        public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Flipbook");
+            xmlWriter.WriteAttributeString("Filename", filename);
+            xmlWriter.WriteAttributeString("Frames", frames.ToString());
+            xmlWriter.WriteAttributeString("Loop", loopType.ToString());
+            xmlWriter.WriteAttributeString("FramesX", framesX.ToString());
+            xmlWriter.WriteAttributeString("FramesY", framesY.ToString());
+            xmlWriter.WriteAttributeString("StartFrame", startFrame.ToString());
+            if (!string.IsNullOrEmpty(frameSequence))
+            {
+                xmlWriter.WriteAttributeString("FrameSequence", frameSequence.ToString());
+            }
+            xmlWriter.WriteEndElement();
+        }
 
         public override void InitializeFromXml(XmlNode node)
         {
