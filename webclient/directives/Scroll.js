@@ -34,20 +34,23 @@ wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootSco
             movable = $(element).find('.jspPane');
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 
-            var curLeft = movable.position().left;
+            var curLeft = Math.abs(Math.floor(movable.position().left));
             var increment = 155;
             var newLeft;
 
             //scrolling down?
             if (delta < 0) {
-                newLeft = Math.floor((curLeft - increment) / increment) * increment;
+                console.log('down')
+                newLeft = Math.floor((curLeft + increment) / increment) * increment;
             }
 
                 //scrolling up?
             else {
-                newLeft = Math.floor((curLeft + increment) / increment) * increment;
+                console.log('up')
+                newLeft = Math.floor((curLeft - increment) / increment) * increment;
             }
             //movable.css('left', Math.max(newLeft,0));
+            console.log(curLeft,newLeft)
             $(element).data('jsp').scrollToX(Math.abs(newLeft));
         })
 

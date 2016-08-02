@@ -1,4 +1,6 @@
-﻿wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Util', 'MediaFile',function($scope,$rootScope,util,media) {
+﻿wwt.controllers.controller('CurrentTourController', [
+    '$scope', '$rootScope', 'Util', 'MediaFile',
+    function ($scope, $rootScope, util, media) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     $scope.init = function (curTour) {
@@ -18,7 +20,6 @@
             showTourSlides();
         }
         $('#contextmenu,#popoutmenu').on('click', mapStops);
-
         setTimeout(initVolumeSliders, 111);
     };
 
@@ -107,7 +108,11 @@
             $rootScope.editingTour = true;
         //}
         setTimeout(function () {
-            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 });
+            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
+            $(window).on('resize', function () {
+                
+                $rootScope.stopScroller.reinitialise();
+            });
         }, 200);
     };
 

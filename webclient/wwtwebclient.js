@@ -1124,14 +1124,7 @@ var wwt = {
 			.width($('#WorldWideTelescopeControlHost').width());
 		$('body.desktop #WWTCanvas')
 			.height($(window).height())
-			.width($(window).width());
-		//if ($('body.desktop.length')) {
-			
-		//	/*$('body.desktop div.context-panel .controls, body.desktop div.context-panel .thumbnails')
-		//		.width($('div.context-panel').width() - ($('body.desktop .fov-panel').width() + 1));*/
-		//	//$('body.desktop .layer-manager .tree').css('height', $(window).height() - (166 + $('body.desktop .context-panel').height()));
-			
-		//}
+			.width($(window).width());	
 	}
 };
 
@@ -1181,20 +1174,23 @@ wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootSco
             movable = $(element).find('.jspPane');
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 
-            var curLeft = movable.position().left;
+            var curLeft = Math.abs(Math.floor(movable.position().left));
             var increment = 155;
             var newLeft;
 
             //scrolling down?
             if (delta < 0) {
-                newLeft = Math.floor((curLeft - increment) / increment) * increment;
+                console.log('down')
+                newLeft = Math.floor((curLeft + increment) / increment) * increment;
             }
 
                 //scrolling up?
             else {
-                newLeft = Math.floor((curLeft + increment) / increment) * increment;
+                console.log('up')
+                newLeft = Math.floor((curLeft - increment) / increment) * increment;
             }
             //movable.css('left', Math.max(newLeft,0));
+            console.log(curLeft,newLeft)
             $(element).data('jsp').scrollToX(Math.abs(newLeft));
         })
 
@@ -6297,7 +6293,9 @@ wwt.controllers.controller('CommunityController',
         
     }
 ]);
-wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Util', 'MediaFile',function($scope,$rootScope,util,media) {
+wwt.controllers.controller('CurrentTourController', [
+    '$scope', '$rootScope', 'Util', 'MediaFile',
+    function ($scope, $rootScope, util, media) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     $scope.init = function (curTour) {
@@ -6317,7 +6315,6 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
             showTourSlides();
         }
         $('#contextmenu,#popoutmenu').on('click', mapStops);
-
         setTimeout(initVolumeSliders, 111);
     };
 
@@ -6406,7 +6403,11 @@ wwt.controllers.controller('CurrentTourController', ['$scope', '$rootScope','Uti
             $rootScope.editingTour = true;
         //}
         setTimeout(function () {
-            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 });
+            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
+            $(window).on('resize', function () {
+                
+                $rootScope.stopScroller.reinitialise();
+            });
         }, 200);
     };
 
