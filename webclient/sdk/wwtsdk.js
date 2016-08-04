@@ -2044,6 +2044,13 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.Formatting
+
+  var Formatting = {
+    indented: 1
+  };
+
+
   // wwtlib.StateType
 
   var StateType = {
@@ -9637,7 +9644,26 @@ window.wwtlib = function(){
       }
       return value;
     },
+    getTypeName: function() {
+      return 'TerraViewer.Layer';
+    },
     saveToXml: function(xmlWriter) {
+      xmlWriter._writeStartElement('Layer');
+      xmlWriter._writeAttributeString('Id', this.id.toString());
+      xmlWriter._writeAttributeString('Type', this.getTypeName());
+      xmlWriter._writeAttributeString('Name', this.get_name());
+      xmlWriter._writeAttributeString('ReferenceFrame', this.referenceFrame);
+      xmlWriter._writeAttributeString('Color', this.color.toString());
+      xmlWriter._writeAttributeString('Opacity', this.opacity.toString());
+      xmlWriter._writeAttributeString('StartTime', this.get_startTime().toString());
+      xmlWriter._writeAttributeString('EndTime', this.get_endTime().toString());
+      xmlWriter._writeAttributeString('FadeSpan', this.get_fadeSpan().toString());
+      xmlWriter._writeAttributeString('FadeType', this.get_fadeType().toString());
+      this.writeLayerProperties(xmlWriter);
+      xmlWriter._writeEndElement();
+    },
+    writeLayerProperties: function(xmlWriter) {
+      return;
     },
     initializeFromXml: function(node) {
     },
@@ -10582,6 +10608,7 @@ window.wwtlib = function(){
   // wwtlib.ReferenceFrame
 
   function ReferenceFrame() {
+    this._systemGenerated = false;
     this.meanAnomoly = 0;
     this.orbitalYears = 0;
     this.reference = 18;
@@ -10675,6 +10702,45 @@ window.wwtlib = function(){
       return value;
     },
     importTrajectory: function(filename) {
+    },
+    saveToXml: function(xmlWriter) {
+      xmlWriter._writeStartElement('ReferenceFrame');
+      xmlWriter._writeAttributeString('Name', this.name);
+      xmlWriter._writeAttributeString('Parent', this.parent);
+      xmlWriter._writeAttributeString('ReferenceFrameType', this.referenceFrameType.toString());
+      xmlWriter._writeAttributeString('Reference', this.reference.toString());
+      xmlWriter._writeAttributeString('ParentsRoationalBase', this.parentsRoationalBase.toString());
+      xmlWriter._writeAttributeString('MeanRadius', this.meanRadius.toString());
+      xmlWriter._writeAttributeString('Oblateness', this.oblateness.toString());
+      xmlWriter._writeAttributeString('Heading', this.heading.toString());
+      xmlWriter._writeAttributeString('Pitch', this.pitch.toString());
+      xmlWriter._writeAttributeString('Roll', this.roll.toString());
+      xmlWriter._writeAttributeString('Scale', this.scale.toString());
+      xmlWriter._writeAttributeString('Tilt', this.tilt.toString());
+      xmlWriter._writeAttributeString('Translation', this.translation.toString());
+      if (!this.referenceFrameType) {
+        xmlWriter._writeAttributeString('Lat', this.lat.toString());
+        xmlWriter._writeAttributeString('Lng', this.lng.toString());
+        xmlWriter._writeAttributeString('Altitude', this.altitude.toString());
+      }
+      xmlWriter._writeAttributeString('RotationalPeriod', this.rotationalPeriod.toString());
+      xmlWriter._writeAttributeString('ZeroRotationDate', this.zeroRotationDate.toString());
+      xmlWriter._writeAttributeString('RepresentativeColor', this.get_representativeColor().toString());
+      xmlWriter._writeAttributeString('ShowAsPoint', this.showAsPoint.toString());
+      xmlWriter._writeAttributeString('ShowOrbitPath', this.showOrbitPath.toString());
+      xmlWriter._writeAttributeString('StationKeeping', this.stationKeeping.toString());
+      if (this.referenceFrameType === 1) {
+        xmlWriter._writeAttributeString('SemiMajorAxis', this.semiMajorAxis.toString());
+        xmlWriter._writeAttributeString('SemiMajorAxisScale', this.semiMajorAxisUnits.toString());
+        xmlWriter._writeAttributeString('Eccentricity', this.eccentricity.toString());
+        xmlWriter._writeAttributeString('Inclination', this.inclination.toString());
+        xmlWriter._writeAttributeString('ArgumentOfPeriapsis', this.argumentOfPeriapsis.toString());
+        xmlWriter._writeAttributeString('LongitudeOfAscendingNode', this.longitudeOfAscendingNode.toString());
+        xmlWriter._writeAttributeString('MeanAnomolyAtEpoch', this.meanAnomolyAtEpoch.toString());
+        xmlWriter._writeAttributeString('MeanDailyMotion', this.meanDailyMotion.toString());
+        xmlWriter._writeAttributeString('Epoch', this.epoch.toString());
+      }
+      xmlWriter._writeEndElement();
     },
     initializeFromXml: function(node) {
       this.name = node.attributes.getNamedItem('Name').nodeValue;
@@ -15256,6 +15322,16 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.FileCabinet
+
+  function FileCabinet() {
+  }
+  var FileCabinet$ = {
+    _addFile: function(v) {
+    }
+  };
+
+
   // wwtlib.SettingParameter
 
   function SettingParameter(edgeTrigger, opacity, targetState, filter) {
@@ -15663,6 +15739,42 @@ window.wwtlib = function(){
       this._interpolationType = value;
       return value;
     },
+    saveToXml: function(xmlWriter, saveKeys) {
+      xmlWriter._writeStartElement('Overlay');
+      xmlWriter._writeAttributeString('Id', this.id);
+      xmlWriter._writeAttributeString('Type', this.getTypeName());
+      xmlWriter._writeAttributeString('Name', this.get_name());
+      xmlWriter._writeAttributeString('X', this._x.toString());
+      xmlWriter._writeAttributeString('Y', this._y.toString());
+      xmlWriter._writeAttributeString('Width', this._width.toString());
+      xmlWriter._writeAttributeString('Height', this._height.toString());
+      xmlWriter._writeAttributeString('Rotation', this._rotationAngle.toString());
+      xmlWriter._writeAttributeString('Color', this._color.toString());
+      xmlWriter._writeAttributeString('Url', this._url);
+      xmlWriter._writeAttributeString('LinkID', this._linkID);
+      xmlWriter._writeAttributeString('Animate', this._animate.toString());
+      if (this._animate) {
+        xmlWriter._writeAttributeString('EndX', this._endX.toString());
+        xmlWriter._writeAttributeString('EndY', this._endY.toString());
+        xmlWriter._writeAttributeString('EndWidth', this._endWidth.toString());
+        xmlWriter._writeAttributeString('EndHeight', this._endHeight.toString());
+        xmlWriter._writeAttributeString('EndRotation', this._endRotationAngle.toString());
+        xmlWriter._writeAttributeString('EndColor', this._endColor.toString());
+        xmlWriter._writeAttributeString('InterpolationType', this._interpolationType.toString());
+      }
+      xmlWriter._writeAttributeString('Anchor', this._anchor.toString());
+      this.writeOverlayProperties(xmlWriter);
+      xmlWriter._writeEndElement();
+    },
+    getTypeName: function() {
+      return 'TerraViewer.Overlay';
+    },
+    addFilesToCabinet: function(fc) {
+      throw new Error('The method or operation is not implemented.');
+    },
+    writeOverlayProperties: function(xmlWriter) {
+      throw new Error('The method or operation is not implemented.');
+    },
     _initOverlayFromXml: function(node) {
       this.id = node.attributes.getNamedItem('Id').nodeValue;
       this.set_name(node.attributes.getNamedItem('Name').nodeValue);
@@ -15934,7 +16046,7 @@ window.wwtlib = function(){
     temp.underline = underline;
     temp.fontSize = fontSize;
     temp.fontName = fontName;
-    temp.forgroundColor = forgroundColor;
+    temp.foregroundColor = forgroundColor;
     temp.backgroundColor = backgroundColor;
     temp.borderStyle = borderStyle;
     return temp;
@@ -15948,7 +16060,7 @@ window.wwtlib = function(){
     newTextObject.underline = ss.boolean(node.attributes.getNamedItem('Underline').nodeValue);
     newTextObject.fontSize = parseFloat(node.attributes.getNamedItem('FontSize').nodeValue);
     newTextObject.fontName = node.attributes.getNamedItem('FontName').nodeValue;
-    newTextObject.forgroundColor = Color.load(node.attributes.getNamedItem('ForgroundColor').nodeValue);
+    newTextObject.foregroundColor = Color.load(node.attributes.getNamedItem('ForgroundColor').nodeValue);
     newTextObject.backgroundColor = Color.load(node.attributes.getNamedItem('BackgroundColor').nodeValue);
     if (node.attributes.getNamedItem('BorderStyle') != null) {
       switch (node.attributes.getNamedItem('BorderStyle').nodeValue) {
@@ -15976,6 +16088,19 @@ window.wwtlib = function(){
   var TextObject$ = {
     toString: function() {
       return this.text;
+    },
+    _saveToXml: function(xmlWriter) {
+      xmlWriter._writeStartElement('TextObject');
+      xmlWriter._writeAttributeString('Bold', this.bold.toString());
+      xmlWriter._writeAttributeString('Italic', this.italic.toString());
+      xmlWriter._writeAttributeString('Underline', this.underline.toString());
+      xmlWriter._writeAttributeString('FontSize', this.fontSize.toString());
+      xmlWriter._writeAttributeString('FontName', this.fontName);
+      xmlWriter._writeAttributeString('ForgroundColor', this.foregroundColor.toString());
+      xmlWriter._writeAttributeString('BackgroundColor', this.backgroundColor.toString());
+      xmlWriter._writeAttributeString('BorderStyle', this.borderStyle.toString());
+      xmlWriter._writeString(this.text);
+      xmlWriter._writeEndElement();
     }
   };
 
@@ -16249,6 +16374,89 @@ window.wwtlib = function(){
         LayerManager.loadTree();
       }
       this._tourDirty = 0;
+    },
+    _writeTourXML: function(outFile) {
+    },
+    getTourXML: function() {
+      var xmlWriter = new XmlTextWriter();
+      xmlWriter.formatting = 1;
+      xmlWriter._writeProcessingInstruction('xml', "version='1.0' encoding='UTF-8'");
+      xmlWriter._writeStartElement('Tour');
+      xmlWriter._writeAttributeString('ID', this._id);
+      xmlWriter._writeAttributeString('Title', this._title);
+      xmlWriter._writeAttributeString('Descirption', this.get_description());
+      xmlWriter._writeAttributeString('Description', this.get_description());
+      xmlWriter._writeAttributeString('RunTime', (this.get_runTime() / 1000).toString());
+      xmlWriter._writeAttributeString('Author', this._author);
+      xmlWriter._writeAttributeString('AuthorEmail', this._authorEmail);
+      xmlWriter._writeAttributeString('OrganizationUrl', this._organizationUrl);
+      xmlWriter._writeAttributeString('OrganizationName', this.get_orgName());
+      xmlWriter._writeAttributeString('Keywords', this.get_keywords());
+      xmlWriter._writeAttributeString('UserLevel', this._level.toString());
+      xmlWriter._writeAttributeString('Classification', this._type.toString());
+      xmlWriter._writeAttributeString('Taxonomy', this._taxonomy);
+      var timeLineTour = this._isTimelineTour();
+      xmlWriter._writeAttributeString('TimeLineTour', timeLineTour.toString());
+      xmlWriter._writeStartElement('TourStops');
+      var $enum1 = ss.enumerate(this.get_tourStops());
+      while ($enum1.moveNext()) {
+        var stop = $enum1.current;
+        stop._saveToXml(xmlWriter, true);
+      }
+      xmlWriter._writeEndElement();
+      var masterList = this._createLayerMasterList();
+      var referencedFrames = this._getReferenceFrameList();
+      xmlWriter._writeStartElement('ReferenceFrames');
+      var $enum2 = ss.enumerate(referencedFrames);
+      while ($enum2.moveNext()) {
+        var item = $enum2.current;
+        item.saveToXml(xmlWriter);
+      }
+      xmlWriter._writeEndElement();
+      xmlWriter._writeStartElement('Layers');
+      var $enum3 = ss.enumerate(masterList);
+      while ($enum3.moveNext()) {
+        var id = $enum3.current;
+        if (ss.keyExists(LayerManager.get_layerList(), id)) {
+          LayerManager.get_layerList()[id].saveToXml(xmlWriter);
+        }
+      }
+      xmlWriter._writeEndElement();
+      xmlWriter._writeFullEndElement();
+      xmlWriter._close();
+      return xmlWriter.body;
+    },
+    _getReferenceFrameList: function() {
+      var list = [];
+      var $enum1 = ss.enumerate(ss.keys(LayerManager.get_allMaps()));
+      while ($enum1.moveNext()) {
+        var key = $enum1.current;
+        var lm = LayerManager.get_allMaps()[key];
+        if ((lm.frame.reference === 18 || lm.frame.reference === 19) && !(list.indexOf(lm.frame) >= 0) && !lm.frame._systemGenerated) {
+          list.push(lm.frame);
+        }
+      }
+      return list;
+    },
+    _createLayerMasterList: function() {
+      var masterList = [];
+      var $enum1 = ss.enumerate(this.get_tourStops());
+      while ($enum1.moveNext()) {
+        var stop = $enum1.current;
+        var $enum2 = ss.enumerate(ss.keys(stop.layers));
+        while ($enum2.moveNext()) {
+          var id = $enum2.current;
+          if (!(masterList.indexOf(id) >= 0)) {
+            if (ss.keyExists(LayerManager.get_layerList(), id)) {
+              masterList.push(id);
+            }
+          }
+        }
+      }
+      return masterList;
+    },
+    _isTimelineTour: function() {
+      return false;
     },
     get_tagId: function() {
       return this._tagId;
@@ -18585,7 +18793,7 @@ window.wwtlib = function(){
         return false;
       }
       var text = TextOverlay.create(textObject);
-      text.set_color(textObject._foregroundColor);
+      text.set_color(textObject.foregroundColor);
       text.set_x(960);
       text.set_y(600);
       Undo.push(new UndoTourStopChange(Language.getLocalizedText(547, 'Insert Text'), this._tour));
@@ -18722,11 +18930,17 @@ window.wwtlib = function(){
   }
   TourEdit._ensureSelectedVisible = function() {
   };
-  TourEdit._redoStep = function() {
-  };
   TourEdit._selectCurrent = function() {
   };
   TourEdit._undoStep = function() {
+    if (Undo.peekAction()) {
+      Undo.stepBack();
+    }
+  };
+  TourEdit._redoStep = function() {
+    if (Undo.peekRedoAction()) {
+      Undo.stepForward();
+    }
   };
   var TourEdit$ = {
 
@@ -19411,6 +19625,9 @@ window.wwtlib = function(){
     this._tweenPosition = 0;
     this._owner = null;
     this._transition = 0;
+    this._transitionTime = 2;
+    this._transitionHoldTime = 4;
+    this._transitionOutTime = 2;
     this._nextSlide = 'Next';
     this._fadeInOverlays = false;
     this._masterSlide = false;
@@ -19492,6 +19709,13 @@ window.wwtlib = function(){
     var ts = new TourStop();
     ts._target = target;
     return ts;
+  };
+  TourStop.getXmlText = function(ts) {
+    var writer = new XmlTextWriter();
+    writer._writeProcessingInstruction('xml', "version='1.0' encoding='UTF-8'");
+    ts._saveToXml(writer, true);
+    writer._close();
+    return writer.body;
   };
   TourStop._fromXml = function(owner, tourStop) {
     var newTourStop = new TourStop();
@@ -19850,6 +20074,42 @@ window.wwtlib = function(){
       }
       return value;
     },
+    get__transitionTime: function() {
+      return this._transitionTime;
+    },
+    set__transitionTime: function(value) {
+      if (this._transitionTime !== value) {
+        this._transitionTime = value;
+        if (this._owner != null) {
+          this._owner.set_tourDirty(true);
+        }
+      }
+      return value;
+    },
+    get__transitionHoldTime: function() {
+      return this._transitionHoldTime;
+    },
+    set__transitionHoldTime: function(value) {
+      if (this._transitionHoldTime !== value) {
+        this._transitionHoldTime = value;
+        if (this._owner != null) {
+          this._owner.set_tourDirty(true);
+        }
+      }
+      return value;
+    },
+    get__transitionOutTime: function() {
+      return this._transitionOutTime;
+    },
+    set__transitionOutTime: function(value) {
+      if (this._transitionOutTime !== value) {
+        this._transitionOutTime = value;
+        if (this._owner != null) {
+          this._owner.set_tourDirty(true);
+        }
+      }
+      return value;
+    },
     get_nextSlide: function() {
       return this._nextSlide;
     },
@@ -20080,6 +20340,139 @@ window.wwtlib = function(){
       this._milkyWayModel = Settings.get_current().get_milkyWayModel();
       this._minorPlanetsFilter = Settings.get_current().get_minorPlanetsFilter();
       this._planetOrbitsFilter = Settings.get_current().get_planetOrbitsFilter();
+    },
+    _saveToXml: function(xmlWriter, saveContent) {
+      if (saveContent) {
+        if (this._thumbnail != null) {
+        }
+      }
+      xmlWriter._writeStartElement('TourStop');
+      xmlWriter._writeAttributeString('Id', this._id);
+      xmlWriter._writeAttributeString('Name', this._name);
+      xmlWriter._writeAttributeString('Description', this._description);
+      xmlWriter._writeAttributeString('Thumbnail', this._thumbnailString);
+      xmlWriter._writeAttributeString('Duration', this._duration.toString());
+      xmlWriter._writeAttributeString('Master', this._masterSlide.toString());
+      xmlWriter._writeAttributeString('TransitionType', this._transition.toString());
+      xmlWriter._writeAttributeString('TransitionTime', this._transitionTime.toString());
+      xmlWriter._writeAttributeString('TransitionOutTime', this._transitionOutTime.toString());
+      xmlWriter._writeAttributeString('TransitionHoldTime', this._transitionHoldTime.toString());
+      xmlWriter._writeAttributeString('NextSlide', this._nextSlide);
+      xmlWriter._writeAttributeString('InterpolationType', this._interpolationType.toString());
+      xmlWriter._writeAttributeString('HasLocation', this._hasLocation.toString());
+      if (this._hasLocation) {
+        xmlWriter._writeAttributeString('LocationAltitude', this._locationAltitude.toString());
+        xmlWriter._writeAttributeString('LocationLat', this._locationLat.toString());
+        xmlWriter._writeAttributeString('LocationLng', this._locationLng.toString());
+      }
+      xmlWriter._writeAttributeString('HasTime', this._hasTime.toString());
+      if (this._hasTime) {
+        xmlWriter._writeAttributeString('StartTime', this._startTime.toString());
+        xmlWriter._writeAttributeString('EndTime', this._endTime.toString());
+      }
+      xmlWriter._writeAttributeString('ActualPlanetScale', this._actualPlanetScale.toString());
+      xmlWriter._writeAttributeString('ShowClouds', this._showClouds.toString());
+      xmlWriter._writeAttributeString('EarthCutawayView', this._earthCutawayView.toString());
+      xmlWriter._writeAttributeString('ShowConstellationBoundries', this._showConstellationBoundries.toString());
+      xmlWriter._writeAttributeString('ShowConstellationFigures', this._showConstellationFigures.toString());
+      xmlWriter._writeAttributeString('ShowConstellationSelection', this._showConstellationSelection.toString());
+      xmlWriter._writeAttributeString('ShowEcliptic', this._showEcliptic.toString());
+      xmlWriter._writeAttributeString('ShowElevationModel', this._showElevationModel.toString());
+      this._showFieldOfView = false;
+      xmlWriter._writeAttributeString('ShowFieldOfView', this._showFieldOfView.toString());
+      xmlWriter._writeAttributeString('ShowGrid', this._showGrid.toString());
+      xmlWriter._writeAttributeString('ShowHorizon', this._showHorizon.toString());
+      xmlWriter._writeAttributeString('ShowHorizonPanorama', this._showHorizonPanorama.toString());
+      xmlWriter._writeAttributeString('ShowMoonsAsPointSource', this._showMoonsAsPointSource.toString());
+      xmlWriter._writeAttributeString('ShowSolarSystem', this._showSolarSystem.toString());
+      xmlWriter._writeAttributeString('FovTelescope', this._fovTelescope.toString());
+      xmlWriter._writeAttributeString('FovEyepiece', this._fovEyepiece.toString());
+      xmlWriter._writeAttributeString('FovCamera', this._fovCamera.toString());
+      xmlWriter._writeAttributeString('LocalHorizonMode', this._localHorizonMode.toString());
+      xmlWriter._writeAttributeString('GalacticMode', this._galacticMode.toString());
+      xmlWriter._writeAttributeString('FadeInOverlays', this._fadeInOverlays.toString());
+      xmlWriter._writeAttributeString('SolarSystemStars', this._solarSystemStars.toString());
+      xmlWriter._writeAttributeString('SolarSystemMilkyWay', this._solarSystemMilkyWay.toString());
+      xmlWriter._writeAttributeString('SolarSystemCosmos', this._solarSystemCosmos.toString());
+      xmlWriter._writeAttributeString('SolarSystemCMB', this._solarSystemCMB.toString());
+      xmlWriter._writeAttributeString('SolarSystemOrbits', this._solarSystemOrbits.toString());
+      xmlWriter._writeAttributeString('SolarSystemMinorOrbits', this._solarSystemMinorOrbits.toString());
+      xmlWriter._writeAttributeString('SolarSystemOverlays', this._solarSystemOverlays.toString());
+      xmlWriter._writeAttributeString('SolarSystemLighting', this._solarSystemLighting.toString());
+      xmlWriter._writeAttributeString('ShowISSModel', this._showISSModel.toString());
+      xmlWriter._writeAttributeString('SolarSystemScale', this._solarSystemScale.toString());
+      xmlWriter._writeAttributeString('MinorPlanetsFilter', this._minorPlanetsFilter.toString());
+      xmlWriter._writeAttributeString('PlanetOrbitsFilter', this._planetOrbitsFilter.toString());
+      xmlWriter._writeAttributeString('SolarSystemMultiRes', this._solarSystemMultiRes.toString());
+      xmlWriter._writeAttributeString('SolarSystemMinorPlanets', this._solarSystemMinorPlanets.toString());
+      xmlWriter._writeAttributeString('SolarSystemPlanets', this._solarSystemPlanets.toString());
+      xmlWriter._writeAttributeString('ShowEarthSky', this._showEarthSky.toString());
+      xmlWriter._writeAttributeString('ShowEquatorialGridText', this.get_showEquatorialGridText().toString());
+      xmlWriter._writeAttributeString('ShowGalacticGrid', this.get_showGalacticGrid().toString());
+      xmlWriter._writeAttributeString('ShowGalacticGridText', this.get_showGalacticGridText().toString());
+      xmlWriter._writeAttributeString('ShowEclipticGrid', this.get_showEclipticGrid().toString());
+      xmlWriter._writeAttributeString('ShowEclipticGridText', this.get_showEclipticGridText().toString());
+      xmlWriter._writeAttributeString('ShowEclipticOverviewText', this.get_showEclipticOverviewText().toString());
+      xmlWriter._writeAttributeString('ShowAltAzGrid', this.get_showAltAzGrid().toString());
+      xmlWriter._writeAttributeString('ShowAltAzGridText', this.get_showAltAzGridText().toString());
+      xmlWriter._writeAttributeString('ShowPrecessionChart', this.get_showPrecessionChart().toString());
+      xmlWriter._writeAttributeString('ConstellationPictures', this.get_showConstellationPictures().toString());
+      xmlWriter._writeAttributeString('ConstellationsEnabled', this.get_constellationsEnabled());
+      xmlWriter._writeAttributeString('ShowConstellationLabels', this.get_showConstellationLabels().toString());
+      xmlWriter._writeAttributeString('ShowSkyOverlays', this.get_showSkyOverlays().toString());
+      xmlWriter._writeAttributeString('ShowConstellations', this.get_showConstellations().toString());
+      xmlWriter._writeAttributeString('ShowSkyNode', this.get_showSkyNode().toString());
+      xmlWriter._writeAttributeString('ShowSkyGrids', this.get_showSkyGrids().toString());
+      xmlWriter._writeAttributeString('SkyOverlaysIn3d', this.get_showSkyOverlaysIn3d().toString());
+      xmlWriter._writeAttributeString('ConstellationFiguresFilter', this._constellationFiguresFilter.toString());
+      xmlWriter._writeAttributeString('ConstellationBoundariesFilter', this._constellationBoundariesFilter.toString());
+      xmlWriter._writeAttributeString('ConstellationNamesFilter', this._constellationNamesFilter.toString());
+      xmlWriter._writeAttributeString('ConstellationArtFilter', this._constellationArtFilter.toString());
+      this._target._saveToXml(xmlWriter, 'Place');
+      if (this._endTarget != null) {
+        this._endTarget._saveToXml(xmlWriter, 'EndTarget');
+      }
+      xmlWriter._writeStartElement('Overlays');
+      var $enum1 = ss.enumerate(this._overlays);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.saveToXml(xmlWriter, false);
+      }
+      xmlWriter._writeEndElement();
+      if (this._musicTrack != null) {
+        xmlWriter._writeStartElement('MusicTrack');
+        this._musicTrack.saveToXml(xmlWriter, false);
+        xmlWriter._writeEndElement();
+      }
+      if (this._voiceTrack != null) {
+        xmlWriter._writeStartElement('VoiceTrack');
+        this._voiceTrack.saveToXml(xmlWriter, false);
+        xmlWriter._writeEndElement();
+      }
+      this._writeLayerList(xmlWriter);
+      xmlWriter._writeEndElement();
+    },
+    _writeLayerList: function(xmlWriter) {
+      if (ss.keyCount(this.layers) > 0) {
+        xmlWriter._writeStartElement('VisibleLayers');
+        var $enum1 = ss.enumerate(ss.keys(this.layers));
+        while ($enum1.moveNext()) {
+          var key = $enum1.current;
+          var info = this.layers[key];
+          xmlWriter._writeStartElement('Layer');
+          xmlWriter._writeAttributeString('StartOpacity', info.startOpacity.toString());
+          xmlWriter._writeAttributeString('EndOpacity', info.endOpacity.toString());
+          var len = info.startParams.length;
+          xmlWriter._writeAttributeString('ParamCount', len.toString());
+          for (var i = 0; i < len; i++) {
+            xmlWriter._writeAttributeString(ss.format('StartParam{0}', i), info.startParams[i].toString());
+            xmlWriter._writeAttributeString(ss.format('EndParam{0}', i), info.endParams[i].toString());
+          }
+          xmlWriter._writeValue(info.id.toString());
+          xmlWriter._writeEndElement();
+        }
+        xmlWriter._writeEndElement();
+      }
     },
     syncSettings: function() {
       Settings.get_globalSettings().set_actualPlanetScale(this._actualPlanetScale);
@@ -20657,6 +21050,11 @@ window.wwtlib = function(){
     this._currentIndex = 0;
     this._actionText = '';
     this._targetTour = null;
+    this._currentIndex = tour.get_currentTourstopIndex();
+    this._actionText = text;
+    this._targetTour = tour;
+    this._undoXml = TourStop.getXmlText(tour.get_currentTourStop());
+    this._targetTour.set_tourDirty(true);
   }
   var UndoTourStopChange$ = {
     get_actionText: function() {
@@ -20667,8 +21065,24 @@ window.wwtlib = function(){
       return value;
     },
     undo: function() {
+      var tsRedo = this._targetTour.get_tourStops()[this._currentIndex];
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(this._undoXml, 'text/xml');
+      var node = Util.selectSingleNode(doc, 'TourStop');
+      this._targetTour.get_tourStops()[this._currentIndex] = TourStop._fromXml(this._targetTour, node);
+      this._targetTour.set_currentTourstopIndex(this._currentIndex);
+      if (ss.emptyString(this._redoXml)) {
+        this._redoXml = TourStop.getXmlText(tsRedo);
+      }
+      this._targetTour.set_tourDirty(true);
     },
     redo: function() {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(this._redoXml, 'text/xml');
+      var node = Util.selectSingleNode(doc, 'TourStop');
+      this._targetTour.get_tourStops()[this._currentIndex] = TourStop._fromXml(this._targetTour, node);
+      this._targetTour.set_currentTourstopIndex(this._currentIndex);
+      this._targetTour.set_tourDirty(true);
     },
     toString: function() {
       return this._actionText;
@@ -21643,6 +22057,81 @@ window.wwtlib = function(){
   }
   var TagMe$ = {
 
+  };
+
+
+  // wwtlib.XmlTextWriter
+
+  function XmlTextWriter() {
+    this.body = "<?xml version='1.0' encoding='UTF-8'?>\n";
+    this.formatting = 1;
+    this._elementStack = new ss.Stack();
+    this._pending = false;
+    this._currentName = '';
+    this._attributes = {};
+    this._value = '';
+  }
+  var XmlTextWriter$ = {
+    _pushNewElement: function(name) {
+      this._writePending();
+      this._elementStack.push(name);
+      this._pending = true;
+      this._currentName = name;
+    },
+    _writePending: function() {
+      if (this._pending) {
+        this.body += '<' + this._currentName;
+        if (ss.keyCount(this._attributes) > 0) {
+          var $enum1 = ss.enumerate(ss.keys(this._attributes));
+          while ($enum1.moveNext()) {
+            var key = $enum1.current;
+            this.body += ss.format(' {0}="{1}"', key, this._attributes[key]);
+          }
+        }
+        this.body += '>';
+        if (!ss.emptyString(this._value)) {
+          this.body += this._value;
+        }
+        else {
+          this.body += '\n';
+        }
+        this._pending = false;
+        this._currentName = '';
+        this._value = '';
+        this._attributes = {};
+      }
+    },
+    _writeProcessingInstruction: function(v1, v2) {
+    },
+    _writeStartElement: function(name) {
+      this._pushNewElement(name);
+    },
+    _writeAttributeString: function(key, value) {
+      this._attributes[key] = ss.replaceString(value.toString(), '&', '&amp;');
+    },
+    _writeEndElement: function() {
+      this._writePending();
+      this.body += ss.format('</{0}>\n', this._elementStack.pop());
+    },
+    _writeString: function(text) {
+      this._value = ss.replaceString(text, '&', '&amp;');
+    },
+    _writeFullEndElement: function() {
+      this._writeEndElement();
+    },
+    _close: function() {
+    },
+    _writeElementString: function(name, value) {
+      this._writeStartElement(name);
+      this._writeValue(ss.replaceString(value, '&', '&amp;'));
+      this._writeEndElement();
+    },
+    _writeValue: function(val) {
+      this._value = ss.replaceString(val, '&', '&amp;');
+    },
+    _writeCData: function(htmlDescription) {
+      this._value = ss.format('<![CDATA[{0}]]>', htmlDescription);
+    }
   };
 
 
@@ -27867,6 +28356,47 @@ window.wwtlib = function(){
       return null;
     }
   };
+  Imageset.saveToXml = function(xmlWriter, imageset, alternateUrl) {
+    xmlWriter._writeStartElement('ImageSet');
+    xmlWriter._writeAttributeString('Generic', imageset.get_generic().toString());
+    xmlWriter._writeAttributeString('DataSetType', imageset.get_dataSetType().toString());
+    xmlWriter._writeAttributeString('BandPass', imageset.get_bandPass().toString());
+    if (!imageset.get_generic()) {
+      xmlWriter._writeAttributeString('Name', imageset.get_name());
+      if (ss.emptyString(alternateUrl)) {
+        xmlWriter._writeAttributeString('Url', imageset.get_url());
+      }
+      else {
+        xmlWriter._writeAttributeString('Url', alternateUrl);
+      }
+      xmlWriter._writeAttributeString('DemUrl', imageset.get_demUrl());
+      xmlWriter._writeAttributeString('BaseTileLevel', imageset.get_baseLevel().toString());
+      xmlWriter._writeAttributeString('TileLevels', imageset.get_levels().toString());
+      xmlWriter._writeAttributeString('BaseDegreesPerTile', imageset.get_baseTileDegrees().toString());
+      xmlWriter._writeAttributeString('FileType', imageset.get_extension());
+      xmlWriter._writeAttributeString('BottomsUp', imageset.get_bottomsUp().toString());
+      xmlWriter._writeAttributeString('Projection', imageset.get_projection().toString());
+      xmlWriter._writeAttributeString('QuadTreeMap', imageset.get_quadTreeTileMap());
+      xmlWriter._writeAttributeString('CenterX', imageset.get_centerX().toString());
+      xmlWriter._writeAttributeString('CenterY', imageset.get_centerY().toString());
+      xmlWriter._writeAttributeString('OffsetX', imageset.get_offsetX().toString());
+      xmlWriter._writeAttributeString('OffsetY', imageset.get_offsetY().toString());
+      xmlWriter._writeAttributeString('Rotation', imageset.get_rotation().toString());
+      xmlWriter._writeAttributeString('Sparse', imageset.get_sparse().toString());
+      xmlWriter._writeAttributeString('ElevationModel', imageset.get_elevationModel().toString());
+      xmlWriter._writeAttributeString('StockSet', imageset.get_defaultSet().toString());
+      xmlWriter._writeAttributeString('WidthFactor', imageset.get_widthFactor().toString());
+      xmlWriter._writeAttributeString('MeanRadius', imageset.get_meanRadius().toString());
+      xmlWriter._writeAttributeString('ReferenceFrame', imageset.get_referenceFrame());
+      if (ss.emptyString(alternateUrl)) {
+        xmlWriter._writeElementString('ThumbnailUrl', imageset.get_thumbnailUrl());
+      }
+      else {
+        xmlWriter._writeElementString('ThumbnailUrl', imageset.get_url());
+      }
+    }
+    xmlWriter._writeEndElement();
+  };
   Imageset.createGeneric = function(dataSetType, bandPass) {
     var temp = new Imageset();
     temp._generic = true;
@@ -28964,6 +29494,43 @@ window.wwtlib = function(){
     toString: function() {
       return this._name;
     },
+    _saveToXml: function(xmlWriter, elementName) {
+      xmlWriter._writeStartElement(elementName);
+      xmlWriter._writeAttributeString('Name', this._name);
+      xmlWriter._writeAttributeString('DataSetType', this.get_type().toString());
+      if (this.get_type() === 2) {
+        xmlWriter._writeAttributeString('RA', this._camParams.get_RA().toString());
+        xmlWriter._writeAttributeString('Dec', this._camParams.get_dec().toString());
+      }
+      else {
+        xmlWriter._writeAttributeString('Lat', this.get_lat().toString());
+        xmlWriter._writeAttributeString('Lng', this.get_lng().toString());
+      }
+      xmlWriter._writeAttributeString('Constellation', this._constellation);
+      xmlWriter._writeAttributeString('Classification', this.get_classification().toString());
+      xmlWriter._writeAttributeString('Magnitude', this._magnitude.toString());
+      xmlWriter._writeAttributeString('Distance', this._distnace.toString());
+      xmlWriter._writeAttributeString('AngularSize', this.angularSize.toString());
+      xmlWriter._writeAttributeString('ZoomLevel', this.get_zoomLevel().toString());
+      xmlWriter._writeAttributeString('Rotation', this._camParams.rotation.toString());
+      xmlWriter._writeAttributeString('Angle', this._camParams.angle.toString());
+      xmlWriter._writeAttributeString('Opacity', this._camParams.opacity.toString());
+      xmlWriter._writeAttributeString('Target', this.get_target().toString());
+      xmlWriter._writeAttributeString('ViewTarget', this._camParams.viewTarget.toString());
+      xmlWriter._writeAttributeString('TargetReferenceFrame', this._camParams.targetReferenceFrame);
+      xmlWriter._writeStartElement('Description');
+      xmlWriter._writeCData(this.htmlDescription);
+      xmlWriter._writeEndElement();
+      if (this._backgroundImageSet != null) {
+        xmlWriter._writeStartElement('BackgroundImageSet');
+        Imageset.saveToXml(xmlWriter, this._backgroundImageSet, '');
+        xmlWriter._writeEndElement();
+      }
+      if (this._studyImageset != null) {
+        Imageset.saveToXml(xmlWriter, this._studyImageset, '');
+      }
+      xmlWriter._writeEndElement();
+    },
     get_bounds: function() {
       return this._bounds;
     },
@@ -29021,6 +29588,9 @@ window.wwtlib = function(){
     Layer.call(this);
   }
   var GreatCirlceRouteLayer$ = {
+    getTypeName: function() {
+      return 'TerraViewer.GreatCirlceRouteLayer';
+    },
     cleanUp: function() {
       if (this._triangleList$1 != null) {
         this._triangleList$1.clear();
@@ -29146,6 +29716,14 @@ window.wwtlib = function(){
         this.version++;
       }
       return value;
+    },
+    writeLayerProperties: function(xmlWriter) {
+      xmlWriter._writeAttributeString('LatStart', this.get_latStart().toString());
+      xmlWriter._writeAttributeString('LngStart', this.get_lngStart().toString());
+      xmlWriter._writeAttributeString('LatEnd', this.get_latEnd().toString());
+      xmlWriter._writeAttributeString('LngEnd', this.get_lngEnd().toString());
+      xmlWriter._writeAttributeString('Width', this.get_width().toString());
+      xmlWriter._writeAttributeString('PercentComplete', this.get_percentComplete().toString());
     },
     initializeFromXml: function(node) {
       this._latStart$1 = parseFloat(node.attributes.getNamedItem('LatStart').nodeValue);
@@ -29273,6 +29851,9 @@ window.wwtlib = function(){
     return SpreadSheetLayer._circleTexture$1;
   };
   var SpreadSheetLayer$ = {
+    getTypeName: function() {
+      return 'TerraViewer.SpreadSheetLayer';
+    },
     get_header: function() {
       return this._table$1.header;
     },
@@ -29955,8 +30536,46 @@ window.wwtlib = function(){
       this._table$1.unlock();
       this.dirty = true;
     },
-    initFromXml: function(node) {
-      Layer.prototype.initFromXml.call(this, node);
+    writeLayerProperties: function(xmlWriter) {
+      xmlWriter._writeAttributeString('TimeSeries', this.get_timeSeries().toString());
+      xmlWriter._writeAttributeString('BeginRange', this.get_beginRange().toString());
+      xmlWriter._writeAttributeString('EndRange', this.get_endRange().toString());
+      xmlWriter._writeAttributeString('Decay', this.get_decay().toString());
+      xmlWriter._writeAttributeString('CoordinatesType', this.get_coordinatesType().toString());
+      xmlWriter._writeAttributeString('LatColumn', this.get_latColumn().toString());
+      xmlWriter._writeAttributeString('LngColumn', this.get_lngColumn().toString());
+      xmlWriter._writeAttributeString('GeometryColumn', this.get_geometryColumn().toString());
+      xmlWriter._writeAttributeString('AltType', this.get_altType().toString());
+      xmlWriter._writeAttributeString('MarkerMix', this.get_markerMix().toString());
+      xmlWriter._writeAttributeString('ColorMap', this.get__colorMap().toString());
+      xmlWriter._writeAttributeString('MarkerColumn', this.get_markerColumn().toString());
+      xmlWriter._writeAttributeString('ColorMapColumn', this.get_colorMapColumn().toString());
+      xmlWriter._writeAttributeString('PlotType', this.get_plotType().toString());
+      xmlWriter._writeAttributeString('MarkerIndex', this.get_markerIndex().toString());
+      xmlWriter._writeAttributeString('MarkerScale', this.get_markerScale().toString());
+      xmlWriter._writeAttributeString('AltUnit', this.get_altUnit().toString());
+      xmlWriter._writeAttributeString('AltColumn', this.get_altColumn().toString());
+      xmlWriter._writeAttributeString('StartDateColumn', this.get_startDateColumn().toString());
+      xmlWriter._writeAttributeString('EndDateColumn', this.get_endDateColumn().toString());
+      xmlWriter._writeAttributeString('SizeColumn', this.get_sizeColumn().toString());
+      xmlWriter._writeAttributeString('HyperlinkFormat', this.get_hyperlinkFormat());
+      xmlWriter._writeAttributeString('HyperlinkColumn', this.get_hyperlinkColumn().toString());
+      xmlWriter._writeAttributeString('ScaleFactor', this.get_scaleFactor().toString());
+      xmlWriter._writeAttributeString('PointScaleType', this.get_pointScaleType().toString());
+      xmlWriter._writeAttributeString('ShowFarSide', this.get_showFarSide().toString());
+      xmlWriter._writeAttributeString('RaUnits', this.get_raUnits().toString());
+      xmlWriter._writeAttributeString('HoverTextColumn', this.get_nameColumn().toString());
+      xmlWriter._writeAttributeString('XAxisColumn', this.get_xAxisColumn().toString());
+      xmlWriter._writeAttributeString('XAxisReverse', this.get_xAxisReverse().toString());
+      xmlWriter._writeAttributeString('YAxisColumn', this.get_yAxisColumn().toString());
+      xmlWriter._writeAttributeString('YAxisReverse', this.get_yAxisReverse().toString());
+      xmlWriter._writeAttributeString('ZAxisColumn', this.get_zAxisColumn().toString());
+      xmlWriter._writeAttributeString('ZAxisReverse', this.get_zAxisReverse().toString());
+      xmlWriter._writeAttributeString('CartesianScale', this.get_cartesianScale().toString());
+      xmlWriter._writeAttributeString('CartesianCustomScale', this.get_cartesianCustomScale().toString());
+      xmlWriter._writeAttributeString('DynamicData', this.get_dynamicData().toString());
+      xmlWriter._writeAttributeString('AutoUpdate', this.get_autoUpdate().toString());
+      xmlWriter._writeAttributeString('DataSourceUrl', this.get_dataSourceUrl());
     },
     get_dynamicData: function() {
       return this._dynamicData$1;
@@ -32527,6 +33146,9 @@ window.wwtlib = function(){
     return temp;
   };
   var BitmapOverlay$ = {
+    getTypeName: function() {
+      return 'TerraViewer.BitmapOverlay';
+    },
     copy: function(owner) {
       var newBmpOverlay = new BitmapOverlay();
       newBmpOverlay.set_owner(owner);
@@ -32592,6 +33214,14 @@ window.wwtlib = function(){
         ctx.restore();
       }
     },
+    addFilesToCabinet: function(fc) {
+      fc._addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
+    },
+    writeOverlayProperties: function(xmlWriter) {
+      xmlWriter._writeStartElement('Bitmap');
+      xmlWriter._writeAttributeString('Filename', this._filename$1);
+      xmlWriter._writeEndElement();
+    },
     initializeFromXml: function(node) {
       var bitmap = Util.selectSingleNode(node, 'Bitmap');
       this._filename$1 = bitmap.attributes.getNamedItem('Filename').nodeValue;
@@ -32613,12 +33243,15 @@ window.wwtlib = function(){
     return to;
   };
   var TextOverlay$ = {
+    getTypeName: function() {
+      return 'TerraViewer.TextOverlay';
+    },
     get_color: function() {
       return Overlay.prototype.get_color.call(this);
     },
     set_color: function(value) {
-      if (this.textObject.forgroundColor !== value) {
-        this.textObject.forgroundColor = value;
+      if (this.textObject.foregroundColor !== value) {
+        this.textObject.foregroundColor = value;
         Overlay.prototype.set_color.call(this, value);
         this.cleanUp();
       }
@@ -32642,7 +33275,7 @@ window.wwtlib = function(){
       }
     },
     _drawCanvasText$1: function(ctx) {
-      ctx.fillStyle = this.textObject.forgroundColor.toString();
+      ctx.fillStyle = this.textObject.foregroundColor.toString();
       ctx.font = ((this.textObject.italic) ? 'italic' : 'normal') + ' ' + ((this.textObject.bold) ? 'bold' : 'normal') + ' ' + Math.round(this.textObject.fontSize * 1.2).toString() + 'px ' + this.textObject.fontName;
       ctx.textBaseline = 'top';
       var text = this.textObject.text;
@@ -32693,6 +33326,11 @@ window.wwtlib = function(){
         this.texture2d.makeTexture();
       }
     },
+    writeOverlayProperties: function(xmlWriter) {
+      xmlWriter._writeStartElement('Text');
+      this.textObject._saveToXml(xmlWriter);
+      xmlWriter._writeEndElement();
+    },
     initializeFromXml: function(node) {
       var text = Util.selectSingleNode(node, 'Text');
       this.textObject = TextObject._fromXml(Util.selectSingleNode(text, 'TextObject'));
@@ -32720,6 +33358,9 @@ window.wwtlib = function(){
     return overlay;
   };
   var ShapeOverlay$ = {
+    getTypeName: function() {
+      return 'TerraViewer.ShapeOverlay';
+    },
     get_shapeType: function() {
       return this._shapeType$1;
     },
@@ -33163,6 +33804,11 @@ window.wwtlib = function(){
       Overlay.prototype.cleanUpGeometry.call(this);
       this.cleanUp();
     },
+    writeOverlayProperties: function(xmlWriter) {
+      xmlWriter._writeStartElement('Shape');
+      xmlWriter._writeAttributeString('ShapeType', this._shapeType$1.toString());
+      xmlWriter._writeEndElement();
+    },
     initializeFromXml: function(node) {
       var shape = Util.selectSingleNode(node, 'Shape');
       switch (shape.attributes.getNamedItem('ShapeType').nodeValue) {
@@ -33212,6 +33858,9 @@ window.wwtlib = function(){
     return ao;
   };
   var AudioOverlay$ = {
+    getTypeName: function() {
+      return 'TerraViewer.AudioOverlay';
+    },
     get_mute: function() {
       return this._mute$1;
     },
@@ -33229,6 +33878,9 @@ window.wwtlib = function(){
         this._audio$1.volume = (this._mute$1) ? 0 : (this._volume$1 / 100);
       }
       return value;
+    },
+    addFilesToCabinet: function(fc) {
+      fc._addFile(this.get_owner().get_owner().getFileStream(this._filename$1));
     },
     play: function() {
       if (this._audio$1 == null) {
@@ -33301,6 +33953,14 @@ window.wwtlib = function(){
       this._trackType$1 = value;
       return value;
     },
+    writeOverlayProperties: function(xmlWriter) {
+      xmlWriter._writeStartElement('Audio');
+      xmlWriter._writeAttributeString('Filename', this._filename$1);
+      xmlWriter._writeAttributeString('Volume', this._volume$1.toString());
+      xmlWriter._writeAttributeString('Mute', this._mute$1.toString());
+      xmlWriter._writeAttributeString('TrackType', this._trackType$1.toString());
+      xmlWriter._writeEndElement();
+    },
     initializeFromXml: function(node) {
       var audio = Util.selectSingleNode(node, 'Audio');
       this._filename$1 = audio.attributes.getNamedItem('Filename').nodeValue;
@@ -33343,6 +34003,9 @@ window.wwtlib = function(){
     Overlay.call(this);
   }
   var FlipbookOverlay$ = {
+    getTypeName: function() {
+      return 'TerraViewer.FlipbookOverlay';
+    },
     get_loopType: function() {
       return this._loopType$1;
     },
@@ -33435,6 +34098,22 @@ window.wwtlib = function(){
       }
       catch ($e1) {
       }
+    },
+    addFilesToCabinet: function(fc) {
+      fc._addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
+    },
+    writeOverlayProperties: function(xmlWriter) {
+      xmlWriter._writeStartElement('Flipbook');
+      xmlWriter._writeAttributeString('Filename', this._filename$1);
+      xmlWriter._writeAttributeString('Frames', this._frames$1.toString());
+      xmlWriter._writeAttributeString('Loop', this._loopType$1.toString());
+      xmlWriter._writeAttributeString('FramesX', this._framesX$1.toString());
+      xmlWriter._writeAttributeString('FramesY', this._framesY$1.toString());
+      xmlWriter._writeAttributeString('StartFrame', this._startFrame$1.toString());
+      if (!ss.emptyString(this._frameSequence$1)) {
+        xmlWriter._writeAttributeString('FrameSequence', this._frameSequence$1);
+      }
+      xmlWriter._writeEndElement();
     },
     initializeFromXml: function(node) {
       var flipbook = Util.selectSingleNode(node, 'Flipbook');
@@ -34588,6 +35267,7 @@ window.wwtlib = function(){
       UserLevel: UserLevel,
       Keys: Keys,
       DialogResult: DialogResult,
+      Formatting: Formatting,
       StateType: StateType,
       SolarSystemObjects: SolarSystemObjects,
       InterpolationType: InterpolationType,
@@ -34716,6 +35396,7 @@ window.wwtlib = function(){
       Star: [ Star, Star$, null ],
       Tile: [ Tile, Tile$, null ],
       Tour: [ Tour, Tour$, null, IThumbnail ],
+      FileCabinet: [ FileCabinet, FileCabinet$, null ],
       SettingParameter: [ SettingParameter, SettingParameter$, null ],
       Overlay: [ Overlay, Overlay$, null ],
       Selection: [ Selection, Selection$, null ],
@@ -34753,6 +35434,7 @@ window.wwtlib = function(){
       ContextMenuStrip: [ ContextMenuStrip, ContextMenuStrip$, null ],
       ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
       TagMe: [ TagMe, TagMe$, null ],
+      XmlTextWriter: [ XmlTextWriter, XmlTextWriter$, null ],
       VizLayer: [ VizLayer, VizLayer$, null ],
       DataItem: [ DataItem, DataItem$, null ],
       WebFile: [ WebFile, WebFile$, null ],

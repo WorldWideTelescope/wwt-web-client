@@ -11,7 +11,7 @@
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
         mapStops(true);
-        
+         
         //$rootScope.$on('escKey', function () {
             //$scope.$applyAsync(showTourSlides);
         //});
@@ -52,16 +52,16 @@
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-
         var xml = tour.getTourXML();
         console.log(xml);
-       // media.saveTour().then(function (tour) {
-       //     console.log(tour);
+        // media.saveTour().then(function (tour) {
+        //     console.log(tour);
         //});
-    }
+    };
     $scope.addShape = function (type) {
         tourEdit.tourEditorUI.addShape('', type);
     }
+    
     
     $scope.mediaFileChange = function (e, mediaKey, isImage) {
         console.time('storeLocal: ' + mediaKey);
@@ -128,11 +128,31 @@
         }
     };
     $scope.selectStop = function (index, e) {
-        tourEdit.tourStopList.selectedItem = index;
-        tourEdit.tourStopList.selectedItems = {};
-        tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
-        tour.set_currentTourstopIndex(index);
-        $scope.activeIndex = index;
+        $scope.$applyAsync(function () {
+            tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
+            $scope.activeIndex = index;
+            if (e && e.shiftKey) {
+                tourEdit.tourStopList.selectedItems = {};
+                for (var i = Math.min(index, $scope.lastFocused) ; i <= Math.max(index, $scope.lastFocused) ; i++) {
+                    tourEdit.tourStopList.selectedItems[i] = $scope.tourStops[i];
+                }
+            }
+            else if (e && e.ctrlKey) {
+                var keys = Object.keys(tourEdit.tourStopList.selectedItems);
+                if (tourEdit.tourStopList.selectedItems[index] && keys.length > 1) {
+                    delete tourEdit.tourStopList.selectedItems[index];
+                    $scope.activeIndex = keys[0];//set to first key
+                } else {
+                    tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
+                }
+            }
+            else {
+                tourEdit.tourStopList.selectedItems = {};
+                tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
+            }
+            tour.set_currentTourstopIndex($scope.activeIndex);
+            $scope.lastFocused = index;
+        });
     };
 
     $scope.showStartCameraPosition = function (index) {
