@@ -919,7 +919,7 @@
                             <div class="stops-container">
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
                                     <div class="thumbwrap">
-                                        <div class="stop-thumb thumbnail {{$index == activeIndex?'active':''}}" 
+                                        <div class="stop-thumb thumbnail {{tourEdit.tourStopList.selectedItems[$index] ? 'active':''}}" 
                                             index="{{$index}}"
                                             ng-click="selectStop($index, $event)" 
                                             ng-dblclick="showStartCameraPosition($index)"

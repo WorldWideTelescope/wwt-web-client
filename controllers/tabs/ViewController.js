@@ -42,7 +42,6 @@
 				});
 			}
 		};
-
 		
 
 		$scope.fastBack_Click = function() {
