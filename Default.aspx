@@ -489,7 +489,7 @@
             <li data-ng-class="activePanel == 'currentTour'  ? 'active' : editingTour ? '' :'hide'">
                 <div class="outer">
                     <a href="javascript:void(0)" ng-click="activePanel = 'currentTour'">
-                        <span class="label" style="padding-right:22px" localize="{{currentTour._title}}"></span>
+                        <span class="label" style="padding-right:22px">{{currentTour._title}}</span>
                         <span ng-click="finishTour()" class="close-tour"><i class="fa fa-close"></i></span>
                     </a>
                     
@@ -918,20 +918,12 @@
                     <td class="tour-stops">
                         <div class="scroller" data-jquery-scrollbar>
                             <div class="stops-container">
+                                <a class="btn" bs-popover 
+                                    style="position:absolute;top:110px;left:190px"
+                                    template-url="views/popovers/tour-properties.html" 
+                                    trigger="click" placement="bottom-left" data-content="{tour}" 
+                                    data-container="body" id="newTourProps"></a>
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
-                                    <div class="thumbwrap">
-                                        <div class="stop-thumb thumbnail {{tourEdit.tourStopList.selectedItems[$index] ? 'active':''}}" 
-                                            index="{{$index}}"
-                                            ng-click="selectStop($index, $event)" 
-                                            ng-dblclick="showStartCameraPosition($index)"
-                                            ng-context-menu="showContextMenu">
-                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
-                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
-                                            <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
-                                            <label class="slide-label">{{stop.description}}</label>
-                                            <label class="duration">{{stop.secDuration}}</label>
-                                        </div>
-                                    </div>
                                     <div class="transition-choice {{stop.transHover ? 'active' : ''}}" 
                                         bs-popover template-url="views/popovers/transition-type.html" 
                                         trigger="click" placement="bottom-left" data-content="{1}" 
@@ -964,8 +956,23 @@
                                         </div>
        
                                     </div>
+                                    <div class="thumbwrap">
+                                        <div class="stop-thumb thumbnail {{tourEdit.tourStopList.selectedItems[$index] ? 'active':''}}" 
+                                            index="{{$index}}"
+                                            ng-click="selectStop($index, $event)" 
+                                            ng-dblclick="showStartCameraPosition($index)"
+                                            ng-context-menu="showContextMenu">
+                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
+                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
+                                            <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
+                                            <label class="slide-label">{{stop.description}}</label>
+                                            <label class="duration">{{stop.secDuration}}</label>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                                 <div class="stop-arrow">
+                                    <div class="transition-choice invisible"></div>
                                     <div class="thumbwrap">
                                         <div class="stop-thumb thumbnail" 
                                             ng-click="tourEdit.addSlide(false);refreshStops()">
@@ -1006,6 +1013,7 @@
                                     <a class="btn menu-button shape" bs-dropdown aria-haspopup="true" aria-expanded="false">
                                         <i class="sq"></i><i class="circ"></i>
                                         <label localize="Shape"></label>
+                                        <span class="fa fa-caret-down"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="javascript:void(0)" ng-click="addShape(0)">Circle</a></li>

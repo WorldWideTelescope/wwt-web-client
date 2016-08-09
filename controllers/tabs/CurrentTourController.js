@@ -177,7 +177,7 @@
     };
 
     var mapStops = $scope.refreshStops = function (isInit) {
-        $scope.$applyAsync(function () { 
+        $scope.$applyAsync(function () {
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
                 s.description = s.get_description();
@@ -190,11 +190,10 @@
                 s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
 
-            //placeholder values until transition api is there
-                s.atime = 2;
-                s.btime = 2;
-                s.holdtime = 4;
-
+                //placeholder values until transition api is there
+                s.atime = s.get__transitionTime();
+                s.btime = s.get__transitionOutTime();;
+                s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
 
                 return s;
@@ -202,14 +201,38 @@
             tour.minuteDuration = Math.floor(tour.duration / 60000);
             tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
             $scope.tour = tour;
-            
+
             if (isInit) {
                 $scope.selectStop(0);
+                if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
+                    setTimeout(function () {
+                        $('#newTourProps').click();
+                    }, 500);
+                }
             }
         });
-    }
+    };
 
-    
+    $scope.setStopTransition = function (index, transitionType, transTime) {
+        if (transitionType) {
+            var stop = $scope.tourStops[index];
+            stop.set__transition(transitionType);
+            stop.transitionType = transitionType;
+            return;
+        } else if (transTime && typeof transTime === 'string') {
+            switch (transTime) {
+                case 'atime':
+                    stop.set__transitionTime(stop.atime);
+                    break;
+                case 'btime':
+                    stop.set__transitionOutTime(stop.btime);
+                    break;
+                case 'holdtime':
+                    stop.set__transitionHoldTime(stop.holdtime);
+                    break;
+            }
+        }
+    };
 }]);
 
     

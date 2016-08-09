@@ -73,7 +73,6 @@
                             display:inline-block;
                             .transition-choice{
                                 position: relative;
-                                left: -10px;
                                 margin:0 0 0 6px;
                             }
                         }
@@ -84,6 +83,7 @@
                             img{
                                 display:inline-block;
                                 border:none;
+                                max-height:45px;
                             }
                             .slide-label{
                                 position:absolute;
@@ -151,11 +151,16 @@
                         label{
                             
                             position:absolute;
-                            bottom: -1px;
+                            bottom: 4px;
                             display: block;
                             text-align: center;
                             width: 100%;
                             left: 0;
+                        }
+                        span.fa{
+                            position: absolute;
+                            left: 44%;
+                            bottom: -2px;
                         }
                     }
                     .menu-button.text{
@@ -521,12 +526,6 @@
        }
        .popover-content{
            padding:0;
-           .rel();
-           .btn{
-               position:absolute;
-               top:6px;
-               right:5px;
-           }
        }
     }
 
