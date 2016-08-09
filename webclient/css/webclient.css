@@ -6785,6 +6785,9 @@ button.close {
   position: absolute;
   top: -9999px;
 }
+.invisible {
+  visibility: hidden;
+}
 body.wwt-webclient-wrapper div.curtour-panel {
   padding-left: 0;
   max-height: 108px;
@@ -6860,7 +6863,6 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container .stop-arrow .transition-choice {
   position: relative;
-  left: -10px;
   margin: 0 0 0 6px;
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb {
@@ -6870,6 +6872,7 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb img {
   display: inline-block;
   border: none;
+  max-height: 45px;
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb .slide-label {
   position: absolute;
@@ -6935,11 +6938,16 @@ body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel 
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button label {
   position: absolute;
-  bottom: -1px;
+  bottom: 4px;
   display: block;
   text-align: center;
   width: 100%;
   left: 0;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button span.fa {
+  position: absolute;
+  left: 44%;
+  bottom: -2px;
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .menu-button.text .icon {
   height: 17px;
@@ -7374,12 +7382,6 @@ body.wwt-webclient-wrapper .popover.tour-text .mce-widget.mce-colorbutton.mce-la
 }
 body.wwt-webclient-wrapper .popover.tour-text .popover-content {
   padding: 0;
-  position: relative;
-}
-body.wwt-webclient-wrapper .popover.tour-text .popover-content .btn {
-  position: absolute;
-  top: 6px;
-  right: 5px;
 }
 body.wwt-webclient-wrapper .popover.tour-props {
   width: 329px;
@@ -7797,6 +7799,18 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 }
 .wwt-webclient-wrapper .popover .popover-title {
   display: none;
+}
+.wwt-webclient-wrapper .popover .popover-content {
+  position: relative;
+}
+.wwt-webclient-wrapper .popover .popover-content .btn.close-x {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+}
+.wwt-webclient-wrapper .popover .popover-content .btn.close-x.tight {
+  top: 2px;
+  right: 2px;
 }
 .wwt-webclient-wrapper .popover.bottom .arrow:after {
   border-bottom-color: rgba(105, 115, 150, 0.7);

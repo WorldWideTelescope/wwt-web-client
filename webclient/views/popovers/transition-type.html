@@ -32,19 +32,19 @@
             </div>
         </div>
     </div>
-        <div class="row-fluid">
-            <div class="col-md-4">
-                <label>A Time</label>
-                <input type="number" min="0" ng-model="stop.atime" />
-            </div>
-            <div class="col-md-4">
-                <label>Hold Time</label>
-                <input type="number" min="0" ng-model="stop.holdtime" />
-            </div>
-            <div class="col-md-4">
-                <label>B Time</label>
-                <input type="number" min="0" ng-model="stop.btime" />
-            </div>
+    <div class="row-fluid">
+        <div class="col-md-4">
+            <label>A Time</label>
+            <input type="number" min="0" max="99" ng-model="stop.atime" ng-change="setStopTransition($index,null,'atime')" />
         </div>
+        <div class="col-md-4">
+            <label>Hold Time</label>
+            <input type="number" min="0" max="99" ng-model="stop.holdtime" ng-change="setStopTransition($index,null,'holdtime');" />
+        </div>
+        <div class="col-md-4">
+            <label>B Time</label>
+            <input type="number" min="0" max="99" ng-model="stop.btime" ng-change="setStopTransition($index,null,'btime');" />
+        </div>
+    </div>
     
 </div>

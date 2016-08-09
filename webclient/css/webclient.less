@@ -302,7 +302,18 @@ body.wwt-webclient-wrapper.mobile{
 		.popover-title {
 			display: none;
 		}
-
+        .popover-content{
+            position:relative;
+            .btn.close-x{
+               position:absolute;
+               top:6px;
+               right:5px;
+            }
+            .btn.close-x.tight{
+                top:2px;
+                right:2px;
+            }
+        }
 		background-color: @wc_bg;
 		border: solid 1px rgba(105,115,150,.7);
 	}
