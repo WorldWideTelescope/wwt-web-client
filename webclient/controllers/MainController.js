@@ -803,6 +803,13 @@ wwt.controllers.controller('MainController',
 			$rootScope.neverRises = loc.getFromEn('Never Rises');
 			$scope.hideIntroModal = appState.get('hideIntroModalv2');
 			if (!$scope.hideIntroModal && !$scope.loadingUrlPlace) {
+			    if (localStorage.getItem('login')) {
+			        var now = new Date().valueOf();
+			        var loginTime = parseInt(localStorage.getItem('login'));
+			        if (now - loginTime < 33333) {
+			            return;//no autoshow popup when logged in within last 30sec
+			        }
+			    }
 				setTimeout(showTips,1200);
 			}
 		});

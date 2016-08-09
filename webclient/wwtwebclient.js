@@ -4461,6 +4461,13 @@ wwt.controllers.controller('MainController',
 			$rootScope.neverRises = loc.getFromEn('Never Rises');
 			$scope.hideIntroModal = appState.get('hideIntroModalv2');
 			if (!$scope.hideIntroModal && !$scope.loadingUrlPlace) {
+			    if (localStorage.getItem('login')) {
+			        var now = new Date().valueOf();
+			        var loginTime = parseInt(localStorage.getItem('login'));
+			        if (now - loginTime < 33333) {
+			            return;//no autoshow popup when logged in within last 30sec
+			        }
+			    }
 				setTimeout(showTips,1200);
 			}
 		});
@@ -6507,6 +6514,155 @@ wwt.controllers.controller('CurrentTourController', [
 }]);
 
     
+wwt.controllers.controller('TourSlideText', [
+	'$scope',
+	'$rootScope',
+	'Util',
+	'$timeout',
+    function ($scope, $rootScope, util, $timeout) {
+        var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
+
+        var textObject = {
+            text: '',
+            foregroundColor: '#ffffff',
+            backgroundColor: 'transparent',
+            bold: 0,
+            italic: 0,
+            underline: 0,
+            fontSize: 24,
+            fontName: 'Arial',
+            borderStyle:'None'
+        };
+ 
+    var saving = false;
+    function initEditorObserver() {
+
+        var iframeBody = $('.popover.tour-text iframe').contents().find("body");
+
+        var getObserver = function (cb) {
+
+            return new MutationObserver(function (mutations) {
+                if (!saving) {
+                    mutations.forEach(function () { setTimeout(cb, 100) });
+                } else {
+                    console.log('not observing after save');
+                }
+            });
+        };
+        var fontConfig = {
+            attributes: true,
+            childList: true,
+            characterData: true
+        };
+        var fontFamily = $('.mce-widget[aria-label="Font Family"] span.mce-txt');
+        fontFamily.text(textObject.fontName);
+        var fontFamilyObserver = function (mutation) {
+            var ffText = fontFamily.text();
+            if (ffText.indexOf('Font') === 0) {
+                fontFamily.text(textObject.fontName);
+                return;
+            }
+            iframeBody.find('*').css('font-family', fontFamily.text());
+            textObject.fontName = fontFamily.text();
+        };
+        var fontSizes = $('.mce-widget[aria-label="Font Sizes"] span.mce-txt');
+        fontSizes.text(textObject.fontSize);
+        var fontSizesObserver = function (mutation) {
+            var fsText = fontSizes.text();
+            if (fsText.indexOf('Font') === 0) {
+                fontSizes.text(textObject.fontSize);
+                return;
+            }
+            iframeBody.find('*').css('font-size', fontSizes.text());
+            textObject.fontSize = parseInt(fontSizes.text().replace('pt', ''));
+        };
+        var boldBtn = $('.mce-i-bold').parent().parent();
+        var boldObserver = function (mutation) {
+            textObject.bold = boldBtn.hasClass('mce-active');
+            iframeBody.find('*').css('font-weight', textObject.bold ? 'bold' : 'normal')
+        };
+        var italicBtn = $('.mce-i-italic').parent().parent();
+        var italicObserver = function (mutation) {
+            textObject.italic = italicBtn.hasClass('mce-active');
+            iframeBody.find('*').css('font-style', textObject.italic ? 'italic' : 'normal')
+        };
+        var underBtn = $('.mce-i-underline').parent().parent();
+        var underObserver = function (mutation) {
+            textObject.underline = underBtn.hasClass('mce-active');
+            iframeBody.find('*').css('text-decoration', textObject.underline ? 'underline' : 'none');
+        };
+
+        getObserver(fontFamilyObserver).observe(fontFamily.parent().parent()[0], fontConfig);
+        getObserver(fontSizesObserver).observe(fontSizes.parent().parent()[0], fontConfig);
+        getObserver(boldObserver).observe(boldBtn[0], fontConfig);
+        getObserver(italicObserver).observe(italicBtn[0], fontConfig);
+        getObserver(underObserver).observe(underBtn[0], fontConfig);
+
+        var bgColor = $('.mce-ico.mce-i-backcolor').parent().parent().find('.mce-preview')[0];
+        var bgColorObserver = function (mutation) {
+            var newBg = $(bgColor).css('background-color');
+            textObject.backgroundColor = newBg;
+            console.log(newBg, $('.popover.tour-text iframe').contents());
+            iframeBody.css('background-color', newBg);
+        };
+        var fgColor = $('.mce-ico.mce-i-forecolor').parent().parent().find('.mce-preview')[0];
+        var fgColorObserver = function (mutation) {
+            var newFg = $(fgColor).css('background-color');
+            iframeBody.find('*').css('color', newFg);
+        };
+
+        var colorConfig = {
+            attributes: true,
+            childList: false,
+            characterData: false
+        };
+        getObserver(fgColorObserver).observe(fgColor, colorConfig);
+        getObserver(bgColorObserver).observe(bgColor, colorConfig);
+    };
+    var att = 0;
+    var readyTimer = function () {
+        att++;
+        if ($('.popover .mce-ico.mce-i-forecolor').length) {
+            console.log('editor ready');
+            initEditorObserver();
+
+        }
+        else {
+            console.log(att + ' init attempts');
+            setTimeout(readyTimer, 100);
+        }
+    };
+
+    var hideEditor = $scope.hideEditor = function () {
+        $scope.$parent.$applyAsync(function () {
+            $scope.$parent.$hide();
+        });
+    }
+    $timeout(function () {
+        tinymce.init({
+            selector: 'textarea.tour-text',
+            fontsize_formats: "8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 40pt 44pt 48pt 54pt 60pt 66pt 72pt 80pt 88pt 96pt 112pt 128pt 150pt 200pt",
+            height: 500,
+            theme: 'modern',
+            plugins: ['save contextmenu textcolor colorpicker'],
+            toolbar1: 'save | undo redo | fontselect fontsizeselect | bold italic underline | forecolor backcolor ',
+            toolbar2: '',
+            save_onsavecallback: function () {
+                saving = true;
+                console.log(textObject);
+                try {
+                    editorUI.addText({}, textObject);
+                } catch (ex) { }
+                hideEditor();
+            },
+            content_css: "css/mcecontent.css"
+        });
+        readyTimer();
+    }, 10);
+    
+    }]
+);
+    
 wwt.controllers.controller('ShareController',
 [
 	'$scope',
@@ -6702,54 +6858,57 @@ wwt.controllers.controller('LoginController',
     'Util',
     '$cookies',
     '$timeout',
-    function ($scope, $rootScope, $http, util, $cookies,$timeout) {
+    function ($scope, $rootScope, $http, util, $cookies, $timeout) {
 
-    $rootScope.loggedIn = false;
+        $rootScope.loggedIn = false;
 
-    function init() {
+        function init() {
 
-        $rootScope.liveAppId = $('body').data('liveid');
-        if (util.getQSParam('code') != null) {
-            var returnUrl = location.href.split('?')[0];
-            location.href = '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
-                '?returnUrl=' + encodeURIComponent(returnUrl);
-        } else if ($cookies.get('access_token')) {
-           
-            $rootScope.loggedIn = true;
-        }
-    }
+            $rootScope.liveAppId = $('body').data('liveid');
+            if (util.getQSParam('code') != null) {
 
-    function log(response) {
-        if (response.refresh_token) {
-            $cookies.put('refresh_token', response.refresh_token, { expires: new Date(2050, 1, 1) });
-            $cookies.put('access_token', response.access_token, { expires: new Date(2050, 1, 1) });
-            $timeout(function() {
+                var returnUrl = location.href.split('?')[0];
+                location.href = '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
+                    '?returnUrl=' + encodeURIComponent(returnUrl);
+            } else if ($cookies.get('access_token')) {
+
                 $rootScope.loggedIn = true;
-            });
+            }
         }
-        console.log(response, arguments);
-    }
 
-    $scope.login = function () {
-        var redir = 'http://' + location.host + '/webclient';
+        function log(response) {
+            if (response.refresh_token) {
+                $cookies.put('refresh_token', response.refresh_token, { expires: new Date(2050, 1, 1) });
+                $cookies.put('access_token', response.access_token, { expires: new Date(2050, 1, 1) });
+                $timeout(function () {
+                    $rootScope.loggedIn = true;
+                });
+            }
+            console.log(response, arguments);
+        }
+
+        $scope.login = function () {
+            localStorage.setItem('login', new Date().valueOf())
+            var redir = 'http://' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
                 $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
                 encodeURIComponent(redir) + '&display=popup';
             location.href = wlUrl;
-        return;
-    }
+            return;
+        }
 
-    $scope.logout = function() {
-        var storedData = localStorage.getItem('userSettings');
-        var data = storedData ? JSON.parse(storedData) : {};
-        data['rememberMe'] = false;
-        localStorage.setItem('userSettings', JSON.stringify(data));
-        location.href = '/Logout';
-    }
+        $scope.logout = function () {
+            localStorage.setItem('login', new Date().valueOf())
+            var storedData = localStorage.getItem('userSettings');
+            var data = storedData ? JSON.parse(storedData) : {};
+            data['rememberMe'] = false;
+            localStorage.setItem('userSettings', JSON.stringify(data));
+            location.href = '/Logout';
+        }
 
-    init();
+        init();
 
-}]);
+    }]);
 wwt.Move = function (createArgs) {
 	
 	//#region initialization

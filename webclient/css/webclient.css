@@ -7372,6 +7372,15 @@ body.wwt-webclient-wrapper .popover.tour-text .mce-widget.mce-colorbutton.mce-la
   margin-top: -7px;
   height: 15px;
 }
+body.wwt-webclient-wrapper .popover.tour-text .popover-content {
+  padding: 0;
+  position: relative;
+}
+body.wwt-webclient-wrapper .popover.tour-text .popover-content .btn {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+}
 body.wwt-webclient-wrapper .popover.tour-props {
   width: 329px;
 }

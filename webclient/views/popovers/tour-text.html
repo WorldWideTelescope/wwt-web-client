@@ -1,43 +1,15 @@
-﻿<div class="popover tour-text">
+﻿<div class="popover tour-text" ng-controller="TourSlideText">
     <div class="arrow"></div>
     <h3 class="popover-title" localize="Tour Text">Tour Text</h3>
     <div class="popover-content">
 
         <textarea class="tour-text" ng-blur="tourText($event)"></textarea>
 
-
+        <a class="btn" ng-click="hideEditor()">
+            <i class="fa fa-close"></i>
+            <!--<span localize="Close"></span>-->
+        </a>
     </div>
     
-    <script>
-        tinymce.init({
-            selector: 'textarea.tour-text',
-            fontsize_formats: "8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 40pt 44pt 48pt 54pt 60pt 66pt 72pt 80pt 88pt 96pt 112pt 128pt 150pt 200pt",
-            height: 500,
-            theme: 'modern',
-            plugins: ['save contextmenu textcolor colorpicker'],
-            toolbar1: 'save | undo redo | fontselect fontsizeselect | bold italic forecolor backcolor ',
-            toolbar2: '',
-            save_onsavecallback: function () { console.log(arguments); },
-            content_css: "css/mcecontent.css"
-        });
-        setTimeout(function () {
-            var target = $('.mce-ico.mce-i-backcolor').parent().parent().find('.mce-preview')[0];
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    var newBg = $(target).css('background-color');
-                    console.log(newBg, $('.popover.tour-text iframe').contents());
-                    $('.popover.tour-text iframe').contents().find("body").css('background-color',newBg);
-                });
-            });
-            var config = {
-                attributes: true,
-                childList: false,
-                characterData: false
-            };
-
-            observer.observe(target, config);
-            console.log(target);
-        },1500);
-        
-    </script>
+    
 </div>
