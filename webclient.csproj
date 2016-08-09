@@ -72,6 +72,7 @@
     <Content Include=".gitignore" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="controllers\LoginController.js" />
+    <Content Include="controllers\modals\TourSlideText.js" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\tabs\CommunityController.js" />
     <Content Include="controllers\tabs\CurrentTourController.js" />
