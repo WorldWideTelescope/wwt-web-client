@@ -136,8 +136,17 @@
                 textObject.text = iframeBody.text();
                 console.log(textObject);
                 try {
-                    
-                    editorUI.addText({}, textObject);
+                    var txtObj = wwtlib.TextObject.create(
+                        textObject.text,
+                        textObject.bold,
+                        textObject.italic,
+                        textObject.underline,
+                        textObject.fontSize,
+                        textObject.fontName,
+                        textObject.foregroundColor,
+                        textObject.backgroundColor,
+                        textObject.borderStyle)
+                    editorUI.addText({}, txtObj);
                 } catch (ex) { }
                 hideEditor();
             },

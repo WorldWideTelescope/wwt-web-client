@@ -6498,7 +6498,6 @@ wwt.controllers.controller('CurrentTourController', [
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
                 s.isMaster = s.get_masterSlide();
-                console.log(s);
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);
@@ -6677,8 +6676,17 @@ wwt.controllers.controller('TourSlideText', [
                 textObject.text = iframeBody.text();
                 console.log(textObject);
                 try {
-                    
-                    editorUI.addText({}, textObject);
+                    var txtObj = wwtlib.TextObject.create(
+                        textObject.text,
+                        textObject.bold,
+                        textObject.italic,
+                        textObject.underline,
+                        textObject.fontSize,
+                        textObject.fontName,
+                        textObject.foregroundColor,
+                        textObject.backgroundColor,
+                        textObject.borderStyle)
+                    editorUI.addText({}, txtObj);
                 } catch (ex) { }
                 hideEditor();
             },
