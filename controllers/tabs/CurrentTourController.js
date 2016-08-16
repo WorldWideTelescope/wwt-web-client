@@ -197,7 +197,6 @@
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
                 s.isMaster = s.get_masterSlide();
-                console.log(s);
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);
