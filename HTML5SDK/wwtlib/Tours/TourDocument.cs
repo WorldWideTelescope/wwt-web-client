@@ -482,7 +482,7 @@ namespace wwtlib
             return false;
         }
 
-        string tagId;
+        string tagId="";
 
         public string TagId
         {
@@ -520,7 +520,7 @@ namespace wwtlib
 
       
 
-        string id;
+        string id="";
 
         public string Id
         {
@@ -528,7 +528,7 @@ namespace wwtlib
             set { id = value; }
         }
 
-        string title;
+        string title="";
 
         public string Title
         {
@@ -557,7 +557,7 @@ namespace wwtlib
             }
         }
 
-        string description;
+        string description="";
 
         public string Description
         {
@@ -568,7 +568,7 @@ namespace wwtlib
                 TourDirty = true;
             }
         }
-        string attributesAndCredits;
+        string attributesAndCredits="";
 
         public string AttributesAndCredits
         {
@@ -580,7 +580,7 @@ namespace wwtlib
             }
         } 
         
-        string authorEmailOther;
+        string authorEmailOther="";
 
         public string AuthorEmailOther
         {
@@ -592,7 +592,7 @@ namespace wwtlib
             }
         } 
 
-        string authorEmail;
+        string authorEmail="";
 
         public string AuthorEmail
         {
@@ -604,7 +604,7 @@ namespace wwtlib
             }
         } 
 
-        string authorUrl;
+        string authorUrl="";
 
         public string AuthorUrl
         {
@@ -616,7 +616,7 @@ namespace wwtlib
             }
         } 
 
-        string authorPhone;
+        string authorPhone="";
 
         public string AuthorPhone
         {
@@ -628,7 +628,7 @@ namespace wwtlib
             }
         }
 
-        string authorContactText;
+        string authorContactText = "";
 
         public string AuthorContactText
         {
@@ -652,7 +652,7 @@ namespace wwtlib
             }
         }
 
-        string orgUrl;
+        string orgUrl = "";
 
         public string OrgUrl
         {
@@ -664,7 +664,7 @@ namespace wwtlib
             }
         }
 
-        string author;
+        string author = "";
 
         public string Author
         {
@@ -675,7 +675,7 @@ namespace wwtlib
                 TourDirty = true;
             }
         }
-        string authorImageUrl;
+        string authorImageUrl = "";
 
         public string AuthorImageUrl
         {
@@ -699,7 +699,7 @@ namespace wwtlib
             }
         }
 
-        string organizationUrl;
+        string organizationUrl = "";
 
         public string OrganizationUrl
         {
@@ -712,7 +712,7 @@ namespace wwtlib
         }
 
 
-        String filename;
+        String filename = "";
 
         public String FileName
         {

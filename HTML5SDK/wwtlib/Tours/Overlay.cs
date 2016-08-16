@@ -18,7 +18,7 @@ namespace wwtlib
         public const string ClipboardFormat = "WorldWideTelescope.Overlay";
         public bool isDynamic = false;
         protected bool isDesignTimeOnly = false;
-        string name;
+        string name = "";
         public static int NextId = 11231;
         public string Name
         {
@@ -917,6 +917,7 @@ namespace wwtlib
         {
             TextOverlay to = new TextOverlay();
             to.TextObject = textObject;
+            to.CalculateTextSize();
             return to;
         }
 
@@ -1020,12 +1021,72 @@ namespace wwtlib
             }
         }
 
+        private void CalculateTextSize()
+        {
+             
+            if (ctx == null || ce == null)
+            {
+                ce = (CanvasElement)Document.CreateElement("canvas");
+                ce.Height = (int)100;
+                ce.Width = (int)100;
+                ctx = (CanvasContext2D)ce.GetContext(Rendering.Render2D);
+            }
+            ctx.FillStyle = TextObject.ForegroundColor.ToString();
+            ctx.Font = (TextObject.Italic ? "italic" : "normal") + " " + (TextObject.Bold ? "bold" : "normal") + " " + Math.Round(TextObject.FontSize * 1.2).ToString() + "px " + TextObject.FontName;
+            ctx.TextBaseline = TextBaseline.Top;
+
+            String text = TextObject.Text;
+
+            if (text.IndexOf("{$") > -1)
+            {
+                if (text.IndexOf("{$DATE}") > -1)
+                {
+                    string date = String.Format("{0:yyyy/MM/dd}", SpaceTimeController.Now);
+                    text = text.Replace("{$DATE}", date);
+                }
+
+                if (text.IndexOf("{$TIME}") > -1)
+                {
+                    string time = String.Format("{0:HH:mm:ss}", SpaceTimeController.Now);
+                    text = text.Replace("{$TIME}", time);
+                }
+
+
+                text = text.Replace("{$DIST}", UiTools.FormatDistance(WWTControl.Singleton.RenderContext.SolarSystemCameraDistance));
+                text = text.Replace("{$LAT}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
+                text = text.Replace("{$LNG}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Lat));
+                text = text.Replace("{$RA}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.RA));
+                text = text.Replace("{$DEC}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.ViewCamera.Dec));
+                text = text.Replace("{$FOV}", Coordinates.FormatDMS(WWTControl.Singleton.RenderContext.FovAngle));
+            }
+
+            string[] lines = text.Split("\n");
+
+            double baseline = 0;
+            double lineSpace = TextObject.FontSize * 1.7;
+            double maxWidth = 0;
+            foreach (string line in lines)
+            {
+                double width = ctx.MeasureText(line).Width;
+                maxWidth = Math.Max(width, maxWidth);
+                baseline += lineSpace;
+            }
+            //Width + fudge factor
+            Width = maxWidth*1.01;
+            Height = baseline;
+            ce = null;
+            ctx = null;
+        }
+
+
+
+
         CanvasContext2D ctx = null;
         CanvasElement ce = null;
 
         public override void InitializeTexture()
         {
-            if (texture2d == null)
+            if (texture2d == null || (TextObject.Text.IndexOf("{$") > -1))
             {
                 if (ctx == null || ce == null)
                 {
@@ -1042,6 +1103,8 @@ namespace wwtlib
 
                 texture2d.ImageElement = (ImageElement)(Element)ce;
                 texture2d.MakeTexture();
+                ce = null;
+                ctx = null;
             }
 
 

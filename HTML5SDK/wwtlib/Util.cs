@@ -160,32 +160,36 @@ namespace wwtlib
         public static List<string> GetWrappedText(CanvasContext2D ctx, string text, double width)
         {
             List<string> lines = new List<string>();
-            string[] words = text.Split(" ");
-
-            string currentLine = "";
-
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (!string.IsNullOrEmpty(words[i]))
-                {
-                    if (currentLine == "" || ctx.MeasureText(currentLine + " " + words[i]).Width < width)
-                    {
-                        currentLine += " " + words[i];
-                    }
-                    else
-                    {
-                        lines.Add(currentLine);
-                        currentLine = words[i];
-                    }
-                }
-            }
-            if (currentLine != "")
-            {
-                lines.Add(currentLine);
-            }
-
-
+            lines.Add(text);
             return lines;
+
+
+            //string[] words = text.Split(" ");
+
+            //string currentLine = "";
+
+            //for (int i = 0; i < words.Length; i++)
+            //{
+            //    if (!string.IsNullOrEmpty(words[i]))
+            //    {
+            //        if (currentLine == "" || ctx.MeasureText(currentLine + " " + words[i]).Width < width)
+            //        {
+            //            currentLine += " " + words[i];
+            //        }
+            //        else
+            //        {
+            //            lines.Add(currentLine);
+            //            currentLine = words[i];
+            //        }
+            //    }
+            //}
+            //if (currentLine != "")
+            //{
+            //    lines.Add(currentLine);
+            //}
+
+
+            //return lines;
         }
 
         public static string ToHex(double number)
