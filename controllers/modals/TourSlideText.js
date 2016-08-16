@@ -133,7 +133,13 @@
             toolbar2: '',
             save_onsavecallback: function () {
                 saving = true;
-                textObject.text = iframeBody.text();
+                textObject.text = '';
+                iframeBody.find('p').each(function (i, p) {
+                    if (i > 0) {
+                        textObject.text += '\n';
+                    }
+                    textObject.text += $(p).text();
+                });
                 console.log(textObject);
                 try {
                     var txtObj = wwtlib.TextObject.create(
