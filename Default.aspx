@@ -957,6 +957,7 @@
        
                                     </div>
                                     <div class="thumbwrap">
+                                        <span class="master-slide" ng-if="stop.isMaster">M</span>
                                         <div class="stop-thumb thumbnail {{tourEdit.tourStopList.selectedItems[$index] ? 'active':''}}" 
                                             index="{{$index}}"
                                             ng-click="selectStop($index, $event)" 

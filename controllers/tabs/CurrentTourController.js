@@ -85,8 +85,9 @@
                 //    console.log('binary string recieved - not logging because length = ' + binary.length);
                 //});
             } else {
+                console.log('image created: ' + mediaResult.url);
                 tourEdit.tourEditorUI.addPicture(mediaResult.url);
-                console.log('image created: '+ mediaResult.url)
+                
             }
         });
         
@@ -195,7 +196,8 @@
                 s.btime = s.get__transitionOutTime();;
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
-
+                s.isMaster = s.get_masterSlide();
+                console.log(s);
                 return s;
             });
             tour.minuteDuration = Math.floor(tour.duration / 60000);
