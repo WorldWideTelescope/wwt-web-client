@@ -929,28 +929,28 @@
                                         trigger="click" placement="bottom-left" data-content="{1}" 
                                         title="Transition" data-container="body" 
                                         data-on-show="testfn()" data-on-hide="testfn()">
-                                        
+                                        <%-- slew --%>
                                         <div class="right-arrow choice" ng-if="stop.transitionType==0">
                                             <i class="arrow-line"></i><i class="arrow-head"></i>
                                         </div>
-       
+                                        <%-- xfade --%>
                                         <div class="crossfade choice" ng-if="stop.transitionType==1">
                                             <span class="shape"></span>
                                         </div>
-        
+                                        <%-- xcut --%>
                                         <div class="abrupt choice" ng-if="stop.transitionType==2">
                                             <span class="shape"></span>
                                         </div>
-        
+                                        <%-- fadeoutin --%>
                                         <div class="fadeout-in choice" ng-if="stop.transitionType==3">
                                             <span class="shape left"></span>
                                             <span class="shape right"></span>
                                         </div>
-        
+                                        <%-- fadein --%>
                                         <div class="fadein choice" ng-if="stop.transitionType==4">
                                             <span class="shape"></span>
                                         </div>
-        
+                                        <%-- fadeout --%>
                                         <div class="fadeout choice" ng-if="stop.transitionType==5">
                                             <span class="shape"></span>
                                         </div>
