@@ -6515,7 +6515,7 @@ wwt.controllers.controller('CurrentTourController', [
     };
 
     $scope.setStopTransition = function (index, transitionType, transTime) {
-        if (transitionType) {
+        if (transitionType || transitionType === 0) {
             var stop = $scope.tourStops[index];
             stop.set__transition(transitionType);
             stop.transitionType = transitionType;
@@ -6544,7 +6544,7 @@ wwt.controllers.controller('TourSlideText', [
 	'$timeout',
     function ($scope, $rootScope, util, $timeout) {
         var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
-
+        var iframeBody;
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -6560,7 +6560,7 @@ wwt.controllers.controller('TourSlideText', [
     var saving = false;
     function initEditorObserver() {
 
-        var iframeBody = $('.popover.tour-text iframe').contents().find("body");
+        iframeBody = $('.popover.tour-text iframe').contents().find("body");
 
         var getObserver = function (cb) {
 
@@ -6672,8 +6672,10 @@ wwt.controllers.controller('TourSlideText', [
             toolbar2: '',
             save_onsavecallback: function () {
                 saving = true;
+                textObject.text = iframeBody.text();
                 console.log(textObject);
                 try {
+                    
                     editorUI.addText({}, textObject);
                 } catch (ex) { }
                 hideEditor();

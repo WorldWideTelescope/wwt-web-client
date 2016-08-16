@@ -876,11 +876,11 @@ namespace wwtlib
                                 totalTime += slew.MoveTime*1000;
                             }
                             break;
-                        case TransitionType.Instant:
+                        case TransitionType.CrossCut:
                             break;
                         case TransitionType.CrossFade:
                             break;
-                        case TransitionType.FadeToBlack:
+                        case TransitionType.FadeOut:
                             break;
                         default:
                             break;
@@ -913,11 +913,11 @@ namespace wwtlib
                                 totalTime += slew.MoveTime*1000;
                             }
                             break;
-                        case TransitionType.Instant:
+                        case TransitionType.CrossCut:
                             break;
                         case TransitionType.CrossFade:
                             break;
-                        case TransitionType.FadeToBlack:
+                        case TransitionType.FadeOut:
                             break;
                         default:
                             break;
@@ -957,11 +957,11 @@ namespace wwtlib
                                 totalTime += slew.MoveTime*1000;
                             }
                             break;
-                        case TransitionType.Instant:
+                        case TransitionType.CrossCut:
                             break;
                         case TransitionType.CrossFade:
                             break;
-                        case TransitionType.FadeToBlack:
+                        case TransitionType.FadeOut:
                             break;
                         default:
                             break;

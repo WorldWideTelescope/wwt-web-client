@@ -214,7 +214,7 @@
     };
 
     $scope.setStopTransition = function (index, transitionType, transTime) {
-        if (transitionType) {
+        if (transitionType || transitionType === 0) {
             var stop = $scope.tourStops[index];
             stop.set__transition(transitionType);
             stop.transitionType = transitionType;

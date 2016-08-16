@@ -5,7 +5,7 @@
 	'$timeout',
     function ($scope, $rootScope, util, $timeout) {
         var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
-
+        var iframeBody;
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -21,7 +21,7 @@
     var saving = false;
     function initEditorObserver() {
 
-        var iframeBody = $('.popover.tour-text iframe').contents().find("body");
+        iframeBody = $('.popover.tour-text iframe').contents().find("body");
 
         var getObserver = function (cb) {
 
@@ -133,8 +133,10 @@
             toolbar2: '',
             save_onsavecallback: function () {
                 saving = true;
+                textObject.text = iframeBody.text();
                 console.log(textObject);
                 try {
+                    
                     editorUI.addText({}, textObject);
                 } catch (ex) { }
                 hideEditor();

@@ -16718,11 +16718,11 @@ window.wwtlib = function(){
                 totalTime += slew.get_moveTime() * 1000;
               }
               break;
-            case 1:
-              break;
             case 2:
               break;
-            case 3:
+            case 1:
+              break;
+            case 5:
               break;
             default:
               break;
@@ -16747,11 +16747,11 @@ window.wwtlib = function(){
                 totalTime += slew.get_moveTime() * 1000;
               }
               break;
-            case 1:
-              break;
             case 2:
               break;
-            case 3:
+            case 1:
+              break;
+            case 5:
               break;
             default:
               break;
@@ -16781,11 +16781,11 @@ window.wwtlib = function(){
                 totalTime += slew.get_moveTime() * 1000;
               }
               break;
-            case 1:
-              break;
             case 2:
               break;
-            case 3:
+            case 1:
+              break;
+            case 5:
               break;
             default:
               break;
@@ -19765,14 +19765,20 @@ window.wwtlib = function(){
         case 'Slew':
           newTourStop._transition = 0;
           break;
-        case 'Instant':
+        case 'CrossFade':
           newTourStop._transition = 1;
           break;
-        case 'CrossFade':
+        case 'CrossCut':
           newTourStop._transition = 2;
           break;
-        case 'FadeToBlack':
+        case 'FadeOutIn':
           newTourStop._transition = 3;
+          break;
+        case 'FadeIn':
+          newTourStop._transition = 4;
+          break;
+        case 'FadeOut':
+          newTourStop._transition = 5;
           break;
         default:
           break;
