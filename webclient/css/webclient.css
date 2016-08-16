@@ -6865,6 +6865,14 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
   position: relative;
   margin: 0 0 0 6px;
 }
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container .stop-arrow .master-slide {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  z-index: 2;
+  font-size: 21px;
+  font-weight: bold;
+}
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb {
   position: relative;
   vertical-align: text-top;
