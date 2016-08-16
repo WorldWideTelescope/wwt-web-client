@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace wwtlib
 {
-    enum TransitionType { Slew=0, Instant=1, CrossFade=2, FadeToBlack=3 };
+    enum TransitionType { Slew=0, CrossFade=1, CrossCut=2, FadeOutIn=3, FadeIn=4, FadeOut=5 };
     public class TourStop : ISettings
     {
         public const string ClipboardFormat = "WorldWideTelescope.Slide";
@@ -1218,23 +1218,25 @@ namespace wwtlib
 
             if (tourStop.Attributes.GetNamedItem("Transition") != null)
             {
-                //newTourStop.transition = (TransitionType)Enum.Parse(typeof(TransitionType), tourStop.Attributes.GetNamedItem("Transition").Value, true);
-
                 switch (tourStop.Attributes.GetNamedItem("Transition").Value)
                 {
                     case "Slew":
                         newTourStop.transition = TransitionType.Slew;
                         break;
-                    case "Instant":
-
-                        newTourStop.transition = TransitionType.Instant;
-                        break;
                     case "CrossFade":
-
                         newTourStop.transition = TransitionType.CrossFade;
                         break;
-                    case "FadeToBlack":
-                        newTourStop.transition = TransitionType.FadeToBlack;
+                    case "CrossCut":
+                        newTourStop.transition = TransitionType.CrossCut;
+                        break;
+                    case "FadeOutIn":
+                        newTourStop.transition = TransitionType.FadeOutIn;
+                        break;
+                    case "FadeIn":
+                        newTourStop.transition = TransitionType.FadeIn;
+                        break;
+                    case "FadeOut":
+                        newTourStop.transition = TransitionType.FadeOut;
                         break;
                     default:
                         break;
