@@ -1887,11 +1887,20 @@ namespace wwtlib
             Navigator.Geolocation.GetCurrentPosition(GetLocation, GetLocationError);
         }
 
-        private static void GetLocation (Position pos)
+        private static void GetLocation(Position pos)
         {
-            Settings.GlobalSettings.LocationLat = pos.Coords.Latitude;
-            Settings.GlobalSettings.LocationLng = pos.Coords.Longitude;
-            Settings.GlobalSettings.LocationAltitude = pos.Coords.Altitude;
+            if (pos.Coords.Latitude != 0)
+            {
+                Settings.GlobalSettings.LocationLat = pos.Coords.Latitude;
+            }
+            if (pos.Coords.Longitude != 0)
+            {
+                Settings.GlobalSettings.LocationLng = pos.Coords.Longitude;
+            }
+            if (pos.Coords.Altitude != 0)
+            {
+                Settings.GlobalSettings.LocationAltitude = pos.Coords.Altitude;
+            }
         }
         private static void GetLocationError (Position pos)
         {

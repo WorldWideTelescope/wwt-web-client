@@ -207,7 +207,7 @@ namespace wwtlib
             }
         }
 
-        string id;
+        string id = "";
 
         public string Id
         {
@@ -231,7 +231,7 @@ namespace wwtlib
             }
         }
 
-        string description;
+        string description = "";
 
         public string Description
         {
@@ -245,7 +245,7 @@ namespace wwtlib
                 }
             }
         }
-        private string name;
+        private string name =  "";
 
         public string Name
         {

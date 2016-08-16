@@ -18115,6 +18115,7 @@ window.wwtlib = function(){
     this._nextSlide = 'Next';
     this._fadeInOverlays = false;
     this._masterSlide = false;
+    this._name = '';
     this._duration = 10000;
     this._interpolationType = 0;
     this._hasLocation = true;
