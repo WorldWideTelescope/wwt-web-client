@@ -6788,6 +6788,16 @@ button.close {
 .invisible {
   visibility: hidden;
 }
+.tinybutton {
+  padding: 0;
+  height: 11px;
+  width: 22px;
+}
+.tinybutton i.fa {
+  position: relative;
+  top: -3px;
+  left: -5px;
+}
 body.wwt-webclient-wrapper div.curtour-panel {
   padding-left: 0;
   max-height: 108px;
@@ -6885,7 +6895,8 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb .slide-label {
   position: absolute;
   bottom: 0;
-  left: 4px;
+  left: 0px;
+  padding-left: 3px;
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb .duration {
   position: absolute;
@@ -6894,6 +6905,24 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
   width: 99px;
   text-align: center;
   display: block;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb a.tinybutton {
+  position: absolute;
+  bottom: -13px;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb a.tinybutton i.fa {
+  position: relative;
+  top: -6px;
+  left: 0;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb a.tinybutton.duration-up {
+  left: 0;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb a.tinybutton.duration-down {
+  right: 0;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb a.tinybutton.duration-down i.fa {
+  top: -4px;
 }
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb .ear {
   height: 0;

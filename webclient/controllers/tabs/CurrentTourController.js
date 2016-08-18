@@ -184,11 +184,6 @@
                 s.description = s.get_description();
                 s.thumb = s.get_thumbnail();
                 s.duration = s.get_duration();
-                s.secDuration = Math.round(s.duration / 1000);
-                if (s.secDuration < 10) {
-                    s.secDuration = '0' + s.secDuration;
-                }
-                s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
@@ -213,6 +208,8 @@
             }
         });
     };
+
+    
 
     $scope.setStopTransition = function (index, transitionType, transTime) {
         if (transitionType || transitionType === 0) {

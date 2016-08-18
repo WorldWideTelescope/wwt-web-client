@@ -172,6 +172,7 @@
     <script src="<%= ResourcesLocation %>/dataproxy/Community.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/directives/EditSlideValues.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
@@ -966,8 +967,14 @@
                                             <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
                                             <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
-                                            <label class="slide-label">{{stop.description}}</label>
-                                            <label class="duration">{{stop.secDuration}}</label>
+                                            <label class="slide-label" contenteditable="true"></label>
+                                            <label class="duration" contenteditable="true"></label>
+                                            <a class="btn tinybutton duration-up" ng-if="stop.editingDuration">
+                                                <i class="fa fa-caret-up"></i>
+                                            </a>
+                                            <a class="btn tinybutton duration-down" ng-if="stop.editingDuration">
+                                                <i class="fa fa-caret-down"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     

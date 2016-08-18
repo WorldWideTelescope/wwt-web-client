@@ -1273,6 +1273,149 @@ wwt.app.directive('ngRightClick', function ($parse) {
 });
 
 
+wwt.app.directive('contenteditable', [function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var isDuration = (element.hasClass('duration'));
+
+            var isLabel = !isDuration;
+            var stop = scope.stop;
+            var s = stop;
+            var lastGoodValue;
+            var el = $(element)[0];
+            function validate() {
+                var val = element.html();
+                
+                var minSec = val.split(':');
+                var sec, min,tenths = 0,secString;
+                if (minSec.length === 2) {
+                    min = parseInt(minSec[0].replace(/\D/g, ''));
+                    secString = minSec[1].split('.');
+                    
+                } else if (minSec.length === 1) {
+                    min = 0;
+                    secString = minSec[0].split('.');
+                }
+                else {
+                    s.duration = lastGoodValue;
+                    return;
+                }
+                sec = parseInt(secString[0].replace(/\D/g, ''));
+                if (secString.length === 2) {
+                    tenths = parseInt(secString[1].replace(/\D/g, ''));
+                }
+                s.duration = (min * 60000) + (sec * 1000) + (tenths * 100);
+                
+            }
+
+            
+            if (isDuration) {
+                renderDuration();
+            } else {
+                element.html(s.description);
+            }
+            
+            function renderDuration() {
+                if (s.duration > 100)
+                    lastGoodValue = s.duration;
+                else
+                    s.duration = lastGoodValue;
+
+                s.minDuration = Math.floor(s.duration / 60000);
+                var secs = (s.duration % 60000) / 1000;
+                s.secDuration = Math.floor(secs);
+                s.tenths = secs % 1 === 0 ? '.0' : secs % 1;
+                s.durationString = s.minDuration + ':' +
+                    (s.secDuration < 10 ? '0' : '') +
+                    s.secDuration + 
+                    s.tenths;
+                
+                console.log(s.duration);
+                element.html(s.durationString);
+            }
+
+            element.on('keyup', function (event) {
+                if (isDuration) {
+                    switch (event.keyCode) {
+                        case 33:
+                        case 38:
+                            stop.duration += 1000;
+                            renderDuration();
+                            return;
+                        case 34:
+                        case 40:
+                            stop.duration -= 1000;
+                            renderDuration();
+                            return;
+                        case 27:
+                        case 13:
+                        case 9:
+                            element.blur();
+                            return;
+                        default:
+                            validate();
+                            break;
+                    }
+                    
+                }
+            });
+            var incrementing = false;
+            if (isDuration) {
+                 
+                element.on('focus', function () {
+                    if (incrementing) return;
+                    scope.$apply(function () {
+                        stop.editingDuration = true;
+                    });
+                    element.parent().find('.tinybutton').on('mousedown', function (e) {
+                        incrementing = true;
+                        setTimeout(function () { incrementing = false }, 500);
+                        var btn = $(this);
+
+                        if (btn.hasClass('duration-up')) {
+                            stop.duration += 1000;
+                            renderDuration();
+                        } else {
+                            stop.duration -= 1000;
+                            renderDuration();
+                        }
+                        select();
+                    });
+                    element.parent().find('.tinybutton').on('mouseup', select);
+                });
+            }
+            element.on('blur', function () {
+                if (incrementing) return;
+                scope.$applyAsync(function () {
+                    if (isDuration) {
+                        
+                        validate();
+                        renderDuration();
+                        stop.set_duration(lastGoodValue);
+                        stop.editingDuration = false;
+
+                    } else {
+                        s.set_description(element.html());
+                    }
+                });
+            });
+            function select() {
+                setTimeout(function () {
+                    var txt = element.text();
+                    var range = document.createRange();
+                    range.setStart(el.firstChild, txt.indexOf(':') + 1);
+                    range.setEnd(el.firstChild, txt.indexOf('.'));
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }, 10);
+
+            }
+            
+        }
+    };
+}]);
 wwt.app.factory('AppState', function() {
 	var api = {
 		set: setKey,
@@ -6485,11 +6628,6 @@ wwt.controllers.controller('CurrentTourController', [
                 s.description = s.get_description();
                 s.thumb = s.get_thumbnail();
                 s.duration = s.get_duration();
-                s.secDuration = Math.round(s.duration / 1000);
-                if (s.secDuration < 10) {
-                    s.secDuration = '0' + s.secDuration;
-                }
-                s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
@@ -6514,6 +6652,8 @@ wwt.controllers.controller('CurrentTourController', [
             }
         });
     };
+
+    
 
     $scope.setStopTransition = function (index, transitionType, transTime) {
         if (transitionType || transitionType === 0) {
