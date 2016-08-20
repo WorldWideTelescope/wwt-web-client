@@ -1,4 +1,4 @@
-﻿wwt.app.directive("scrollBuffer", function ($window) {
+﻿wwt.app.directive("scrollBuffer", ['$window',function ($window) {
 	return function ($scope, element, attrs) {
 		var buffer = parseInt(attrs.scrollBuffer);
 		var scope = $scope;
@@ -22,4 +22,38 @@
 		});
 		
 	};
-});
+}]);
+
+wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootScope,$window) {
+    return function ($scope, element, attrs) {
+        
+        var scope = $scope;
+        var movable = $(element).find('.jspPane');
+        $(element).on('mousewheel', function (event) {
+            var e = event.originalEvent;
+            movable = $(element).find('.jspPane');
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+            var curLeft = Math.abs(Math.floor(movable.position().left));
+            var increment = 155;
+            var newLeft;
+
+            //scrolling down?
+            if (delta < 0) {
+                console.log('down')
+                newLeft = Math.floor((curLeft + increment) / increment) * increment;
+            }
+
+                //scrolling up?
+            else {
+                console.log('up')
+                newLeft = Math.floor((curLeft - increment) / increment) * increment;
+            }
+            //movable.css('left', Math.max(newLeft,0));
+            console.log(curLeft,newLeft)
+            $(element).data('jsp').scrollToX(Math.abs(newLeft));
+        })
+
+    };
+}
+])

@@ -1,0 +1,17 @@
+﻿<div class="popover tour-props">
+    <div class="arrow"></div>
+    <h3 class="popover-title" localize="Tour Properties">Tour Properties</h3>
+    <div class="popover-content">
+        <label localize="Tour Title *"></label>
+        <input type="text" ng-model="::tour._title" ng-blur="tourProp($event,'title')" />
+        <label localize="Tour Description"></label>
+        <textarea ng-model="::tour._description" ng-blur="tourProp($event,'description')"></textarea>
+        <label localize="Author Name"></label>
+        <input type="text" ng-model="::tour._author" ng-blur="tourProp($event,'author')" />
+        <label localize="Author Email"></label>
+        <input type="text" ng-model="::tour._authorEmail" ng-blur="tourProp($event,'authorEmail')"  />
+        <a class="btn close-x tight" ng-click="$hide()">
+            <i class="fa fa-close"></i> 
+        </a>
+    </div>
+</div>

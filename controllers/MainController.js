@@ -24,7 +24,9 @@ wwt.controllers.controller('MainController',
 	'Skyball',
 	'SearchUtil',
 	'$modal',
-	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal) {
+    '$element',
+    '$cookies',
+	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies) {
 		var ctl;
 		 
 		//#region LookAt/Imagery 
@@ -221,7 +223,7 @@ wwt.controllers.controller('MainController',
 			$scope.ribbon = {
 				tabs: [
 				{
-					label: 'Explore',
+					label: 'Explore', 
 					button: "rbnExplore",
 					mobileLabel: 'Explore Collections',
 						mobileAction: function() {
@@ -237,7 +239,7 @@ wwt.controllers.controller('MainController',
 						'Tour WWT Features': [$scope.tourFeatures],
 						'Show Welcome Tips':[showTips],
 						'Show Finder (right click)': [$scope.showFinderScope],
-						'WorldWide Telescope Home': [util.nav, '/'],
+						'WorldWide Telescope Home': [util.nav, '/home'],
 						'Getting Started (Help)': [util.nav, '/Learn/'],
 						'WorldWide Telescope Terms of Use': [util.nav, '/Terms'],
 						'About WorldWide Telescope': [util.nav, '/About']/*,
@@ -248,10 +250,13 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
+                        
 					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
 					    'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
-                        sep2: null,
-					    'Create a New Tour...': [$scope.createNewTour]
+					    sep2: null,
+					    
+					    'Create a New Tour...': [$scope.createNewTour],
+					    
 					}
 				}, {
 				    label: 'Search',
@@ -401,7 +406,7 @@ wwt.controllers.controller('MainController',
 		});
 
 		$scope.$on('showContextMenu', function () {
-		    $scope.showContextMenu()
+		    $scope.showContextMenu();
 		});
 
 		var finderTimer, finderActive = false,finderMoved = true;
@@ -624,6 +629,9 @@ wwt.controllers.controller('MainController',
 			$(document).off('click', hideMenu);
 		};
 		$scope.tabClick = function (tab) {
+		    if ($rootScope.editingTour) {
+		        //$scope.finishTour();
+		    }
 		    $('body').append($('#researchMenu'));
 			$scope.expandTop(false); 
 			$scope.activePanel = tab.label;
@@ -637,99 +645,62 @@ wwt.controllers.controller('MainController',
 			$('#openModal').modal('show');
 		};
 
-	    $scope.playTour = function(url) {
+		$scope.playTour = function (url) {
+		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
 	        wwtlib.WWTControl.singleton.playTour(url);
 	        wwt.tourPlaying = $rootScope.tourPlaying = true;
 	        $rootScope.tourPaused = false;
            
 	        wwt.wc.add_tourEnded(tourChangeHandler);
-	        wwt.wc.add_tourReady(function() {
-	            $scope.registerTourStopListRefresh();
-	            $scope.$applyAsync(function () {
-                   $scope.setupTour(wwtlib.WWTControl.singleton.tour);               
+	        wwt.wc.add_tourReady(function() {	            
+	            $('#ribbon,.top-panel,.context-panel,.layer-manager')
+                    .fadeOut(800, function () {
+	                $scope.$applyAsync(function () {
+	                    $scope.activeItem = { label: 'currentTour' };
+	                    $scope.activePanel = 'currentTour';
+	                    //$scope.ribbon.tabs[6] = {
+	                    //    label:'currentTour',
+	                    //    button: 'rbnCurrentTour',
+	                    //    menu: {
+	                    //        'Restore Defaults': [$scope.restoreDefaultSettings],
+                        //        'Product Support': [util.nav, '/Support/IssuesAndBugs']
+	                    //    }
+	                    //}
+	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour]
+	                });
 	            });
-	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 
 	        });
 	        //wwt.wc.add_tourPaused(tourChangeHandler);
 
-	    };
+		};
 
-	    $scope.createNewTour = function () {
-	        //todo show dialog for tour properties
-	        $scope.setupTour(wwtlib.WWTControl.singleton.createTour("New Tour"));
-	        $scope.registerTourStopListRefresh();
+		$scope.editTour = function () {
+		    $rootScope.$applyAsync(function () {
+		        $rootScope.editingTour = true;
+		    });
+		};
+
+		$rootScope.finishTour = function () {
+		    $rootScope.editingTour = false;
+		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
+		    $rootScope.editingTour = false;
+	        $rootScope.tourPlaying = false;
+	        wwtlib.WWTControl.singleton.stopCurrentTour();
+	        $scope.activePanel = 'Guided Tours'; 
+	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
 	    }
 
-	    $scope.setupTour = function (tour) {
-	        $scope.currentTour = tour;
-	        $scope.currentTour.duration = 0;
-	        $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	            s.description = s.get_description();
-	            s.thumb = s.get_thumbnail();
-	            s.duration = s.get_duration();
-	            s.secDuration = Math.round(s.duration / 1000);
-	            if (s.secDuration < 10) {
-	                s.secDuration = '0' + s.secDuration;
-	            }
-	            s.secDuration = '0:' + s.secDuration;
-	            $scope.currentTour.duration += s.duration;
-	            return s;
-	        });
-	        $scope.currentTour.minuteDuration = Math.floor($scope.currentTour.duration / 60000);
-	        $scope.currentTour.secDuration = Math.floor(($scope.currentTour.duration % 60000) / 1000);
-	        $scope.activeItem = { label: 'currentTour' };
-	        $scope.activePanel = 'currentTour';
-	    }
+		$scope.createNewTour = function () {
+		    $scope.$applyAsync(function () {
+		        //todo show dialog for tour properties
+		        $rootScope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
 
-	    $scope.registerTourStopListRefresh = function() {
-	        wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
-	            $scope.$applyAsync(function () {
-	                   
-	                $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	                    s.description = s.get_description();
-	                    s.thumb = s.get_thumbnail();
-	                    s.duration = s.get_duration();
-	                    s.secDuration = Math.round(s.duration / 1000);
-	                    if (s.secDuration < 10) {
-	                        s.secDuration = '0' + s.secDuration;
-	                    }
-	                    s.secDuration = '0:' + s.secDuration;
-	                    $scope.currentTour.duration += s.duration;
-	                    return s;
-	                });
-	                
-	            });
-	        }
-	    }
-
-	    $scope.gotoStop = function(index, e) {
-	        $scope.currentTour.set_currentTourstopIndex(index);
-	       
+		        $scope.activeItem = { label: 'currentTour' };
+		        $scope.activePanel = 'currentTour';
+		    });
 	    };
-
-	    $scope.showContextMenu = function ( e) {
-	        var itemid = parseInt(e.currentTarget.attributes["itemid"].nodeValue);
-	        $scope.currentTour.set_currentTourstopIndex(itemid);
-	        wwtlib.WWTControl.singleton.tourEdit.tourStopList_MouseClick(this, e);
-	    };
-
-	    $scope.pauseTour = function () {
-	        if (wwtlib.WWTControl.singleton.tourEdit.playing)
-	        {
-	            wwtlib.WWTControl.singleton.tourEdit.pauseTour();
-	        }
-	        else
-	        {
-	            wwtlib.WWTControl.singleton.tourEdit.playNow(true);
-	        }
-	        //wwtlib.WWTControl.singleton.uiController.pauseTour();
-	        
-	        //$rootScope.tourPaused = !$rootScope.tourPaused;
-
-	        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
-        }
 
 	    function tourChangeHandler() {
 			var settings = appState.get('settings') || {};
@@ -830,8 +801,15 @@ wwt.controllers.controller('MainController',
 		$rootScope.languagePromise.then(function (result) {
 			$rootScope.na = loc.getFromEn('n/a');
 			$rootScope.neverRises = loc.getFromEn('Never Rises');
-			$scope.hideIntroModal = appState.get('hideIntroModal');
+			$scope.hideIntroModal = appState.get('hideIntroModalv2');
 			if (!$scope.hideIntroModal && !$scope.loadingUrlPlace) {
+			    if (localStorage.getItem('login')) {
+			        var now = new Date().valueOf();
+			        var loginTime = parseInt(localStorage.getItem('login'));
+			        if (now - loginTime < 33333) {
+			            return;//no autoshow popup when logged in within last 30sec
+			        }
+			    }
 				setTimeout(showTips,1200);
 			}
 		});
@@ -871,9 +849,18 @@ wwt.controllers.controller('MainController',
 	        return show;
 	    };
 		
-		$scope.hideIntroModalChange = function(hideIntroModal) {
-			appState.set('hideIntroModal', hideIntroModal);
-		};
+	    $scope.hideIntroModalChange = function (hideIntroModal) {
+	        appState.set('hideIntroModalv2', hideIntroModal);
+	    };
+	    $scope.iswebclientHome = $cookies.get('homepage') !== 'home';
+	    $scope.homePrefChange = function (isWebclient) {
+	        $cookies.remove('homepage');
+	        if (!isWebclient) {
+	            $cookies.put('homepage', 'home', { expires: new Date(2050, 1, 1), path: "/" });
+	        } else {
+	            $cookies.put('homepage', 'webclient', { expires: new Date(2050, 1, 1), path: "/" });
+	        }
+	    };
 		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
@@ -972,6 +959,9 @@ wwt.controllers.controller('MainController',
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
+		}
+		if (util.getQSParam('playTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('playTour')))
 		}
 	}
 ]);

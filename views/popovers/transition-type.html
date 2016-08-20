@@ -1,0 +1,50 @@
+﻿<div class="popover slide-transition" ng-show="editingTour">
+    <div class="choose-transition">
+        <div class="transition-choice {{stop.transitionType==0?'active':''}}" ng-click="setStopTransition($index,0);$hide()">
+            <div class="right-arrow choice">
+                <i class="arrow-line"></i><i class="arrow-head"></i>
+            </div>
+        </div>
+        <div class="transition-choice {{stop.transitionType==1?'active':''}}" ng-click="setStopTransition($index,1);$hide()">
+            <div class="crossfade choice">
+                <span class="shape"></span>
+            </div>
+        </div>
+        <div class="transition-choice {{stop.transitionType==2?'active':''}}" ng-click="setStopTransition($index,2);$hide()">
+            <div class="abrupt choice">
+                <span class="shape"></span>
+            </div>
+        </div>
+        <div class="transition-choice {{stop.transitionType==3?'active':''}}" ng-click="setStopTransition($index,3);$hide()">
+            <div class="fadeout-in choice">
+                <span class="shape left"></span>
+                <span class="shape right"></span>
+            </div>
+        </div>
+        <div class="transition-choice {{stop.transitionType==4?'active':''}}" ng-click="setStopTransition($index,4);$hide()">
+            <div class="fadein choice">
+                <span class="shape"></span>
+            </div>
+        </div>
+        <div class="transition-choice {{stop.transitionType==5?'active':''}}" ng-click="setStopTransition($index,5);$hide()">
+            <div class="fadeout choice">
+                <span class="shape"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="col-md-4">
+            <label>A Time</label>
+            <input type="number" min="0" max="99" ng-model="stop.atime" ng-change="setStopTransition($index,null,'atime')" />
+        </div>
+        <div class="col-md-4">
+            <label>Hold Time</label>
+            <input type="number" min="0" max="99" ng-model="stop.holdtime" ng-change="setStopTransition($index,null,'holdtime');" />
+        </div>
+        <div class="col-md-4">
+            <label>B Time</label>
+            <input type="number" min="0" max="99" ng-model="stop.btime" ng-change="setStopTransition($index,null,'btime');" />
+        </div>
+    </div>
+    
+</div>

@@ -16,6 +16,7 @@
 		isStaging: function() {
 			return location.href.indexOf('worldwidetelescope') === -1;
 		},
+        isDebug:getQSParam('debug')!=null,
 		nav: nav,
 		log: log,
 		resetCamera: resetCamera,
@@ -98,9 +99,6 @@
 			return parseFloat(input);
 		}
 	}
-	
-
-	
 
 	function getAstroDetails(place) {
 		var coords = wwtlib.Coordinates.fromRaDec(place.get_RA(), place.get_dec());
@@ -216,18 +214,7 @@
 	}
 	
 	var accelDevice = false; 
-	//window.ondevicemotion = function(event) {
-	//	if (event.acceleration &&
-	//		event.acceleration.x != null) {
-	//		log('devicemotionevent', event);
-	//		accelDevice = true;
-	//		if (!api.isMobile && minDimension < 500) {
-
-	//			redirectClient('mobile');
-	//		}
-	//		window.ondevicemotion = null;
-	//	}
-	//}
+	
 	function redirectClient(val) {
 		return;
 		var qs = location.search.substr(1);
@@ -299,6 +286,16 @@
 		return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
 		
 	}
+
+	var keyHandler = function (e) {
+	    switch (e.keyCode) {
+	        case 27:
+	            $rootScope.$broadcast('escKey');
+	            break;
+	    }
+	};
+
+	$(document).on('keyup', keyHandler);
 
 	var dirtyInterval,
         viewport = {
