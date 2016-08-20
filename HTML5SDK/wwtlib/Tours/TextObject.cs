@@ -25,7 +25,7 @@ namespace wwtlib
             temp.Underline = underline;
             temp.FontSize = fontSize;
             temp.FontName = fontName;
-            temp.ForgroundColor = forgroundColor;
+            temp.ForegroundColor = forgroundColor;
             temp.BackgroundColor = backgroundColor;
             temp.BorderStyle = borderStyle;
             return temp;
@@ -37,14 +37,29 @@ namespace wwtlib
         public bool Underline;
         public float FontSize;
         public string FontName;
-        public Color ForgroundColor;
+        public Color ForegroundColor;
         public Color BackgroundColor;
         public TextBorderStyle BorderStyle;
-        internal Color ForegroundColor;
 
         public override string ToString()
         {
             return Text;
+        }
+
+        internal void SaveToXml(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("TextObject");
+            xmlWriter.WriteAttributeString("Bold", Bold.ToString());
+            xmlWriter.WriteAttributeString("Italic", Italic.ToString());
+            xmlWriter.WriteAttributeString("Underline", Underline.ToString());
+            xmlWriter.WriteAttributeString("FontSize", FontSize.ToString());
+            xmlWriter.WriteAttributeString("FontName", FontName);
+            xmlWriter.WriteAttributeString("ForgroundColor", ForegroundColor.ToString());
+            xmlWriter.WriteAttributeString("BackgroundColor", BackgroundColor.ToString());
+            xmlWriter.WriteAttributeString("BorderStyle", BorderStyle.ToString());
+
+            xmlWriter.WriteString(this.Text);
+            xmlWriter.WriteEndElement();
         }
 
         internal static TextObject FromXml(XmlNode node)
@@ -57,7 +72,7 @@ namespace wwtlib
             newTextObject.Underline = bool.Parse(node.Attributes.GetNamedItem("Underline").Value);
             newTextObject.FontSize = float.Parse(node.Attributes.GetNamedItem("FontSize").Value);
             newTextObject.FontName = node.Attributes.GetNamedItem("FontName").Value;
-            newTextObject.ForgroundColor = Color.Load(node.Attributes.GetNamedItem("ForgroundColor").Value);
+            newTextObject.ForegroundColor = Color.Load(node.Attributes.GetNamedItem("ForgroundColor").Value);
             newTextObject.BackgroundColor = Color.Load(node.Attributes.GetNamedItem("BackgroundColor").Value);
             if (node.Attributes.GetNamedItem("BorderStyle") != null)
             {

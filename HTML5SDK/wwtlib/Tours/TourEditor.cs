@@ -2243,16 +2243,37 @@ namespace wwtlib
         {
         }
 
-        internal static void RedoStep()
-        {
-        }
+        
 
         internal static void SelectCurrent()
         {
         }
-
         internal static void UndoStep()
         {
+            if (Undo.PeekAction())
+            {
+                Undo.StepBack();
+                //todo wire this up to web ui
+                //tourStopList.Refresh();
+                //tourStopList.SelectedItem = tour.CurrentTourstopIndex;
+                //ShowSlideStartPosition(tour.CurrentTourStop);
+                //this.Refresh();
+               // OverlayList.UpdateOverlayList(tour.CurrentTourStop, TourEditorUI.Selection);
+            }
+        }
+
+        internal static void RedoStep()
+        {
+            if (Undo.PeekRedoAction())
+            {
+                Undo.StepForward();
+
+                //tourStopList.Refresh();
+                //tourStopList.SelectedItem = tour.CurrentTourstopIndex;
+                //ShowSlideStartPosition(tour.CurrentTourStop);
+                //this.Refresh();
+                //OverlayList.UpdateOverlayList(tour.CurrentTourStop, TourEditorUI.Selection);
+            }
         }
     }
 
@@ -2270,7 +2291,11 @@ namespace wwtlib
         public int SelectedItem = -1;
         public void SelectAll()
         {
-
+            SelectedItems = new Dictionary<int, TourStop>();
+            for (int i = 0; i < Tour.TourStops.Count; i++)
+            {
+                SelectedItems[i] = Tour.TourStops[i];
+            }
         }
         public Action refreshCallback = null;
 

@@ -12,6 +12,8 @@ namespace wwtlib
     public enum ReferenceFrameTypes { FixedSherical=0, Orbital=1, Trajectory = 2 /*,FixedRectangular*/ };
     public class ReferenceFrame
     {
+
+        internal bool SystemGenerated = false;
         // Calclulated
         public Vector3d Position;
         public double MeanAnomoly;
@@ -89,7 +91,8 @@ namespace wwtlib
         EOE elements = new EOE();
 
 
-      //  public List<TrajectorySample> Trajectory = new List<TrajectorySample>();
+
+        //  public List<TrajectorySample> Trajectory = new List<TrajectorySample>();
 
         public void ImportTrajectory(string filename)
         {
@@ -144,6 +147,67 @@ namespace wwtlib
 
         //    xmlWriter.WriteEndElement();
         //}
+
+        public virtual void SaveToXml(XmlTextWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("ReferenceFrame");
+            xmlWriter.WriteAttributeString("Name", Name);
+            xmlWriter.WriteAttributeString("Parent", Parent);
+            xmlWriter.WriteAttributeString("ReferenceFrameType", ReferenceFrameType.ToString());
+            xmlWriter.WriteAttributeString("Reference", Reference.ToString());
+            xmlWriter.WriteAttributeString("ParentsRoationalBase", ParentsRoationalBase.ToString());
+            xmlWriter.WriteAttributeString("MeanRadius", MeanRadius.ToString());
+            xmlWriter.WriteAttributeString("Oblateness", Oblateness.ToString());
+            xmlWriter.WriteAttributeString("Heading", Heading.ToString());
+            xmlWriter.WriteAttributeString("Pitch", Pitch.ToString());
+            xmlWriter.WriteAttributeString("Roll", Roll.ToString());
+            xmlWriter.WriteAttributeString("Scale", Scale.ToString());
+            xmlWriter.WriteAttributeString("Tilt", Tilt.ToString());
+            xmlWriter.WriteAttributeString("Translation", Translation.ToString());
+            if (ReferenceFrameType == ReferenceFrameTypes.FixedSherical)
+            {
+                xmlWriter.WriteAttributeString("Lat", Lat.ToString());
+                xmlWriter.WriteAttributeString("Lng", Lng.ToString());
+                xmlWriter.WriteAttributeString("Altitude", Altitude.ToString());
+            }
+            xmlWriter.WriteAttributeString("RotationalPeriod", RotationalPeriod.ToString());
+            xmlWriter.WriteAttributeString("ZeroRotationDate", ZeroRotationDate.ToString());
+            xmlWriter.WriteAttributeString("RepresentativeColor", RepresentativeColor.ToString());
+            xmlWriter.WriteAttributeString("ShowAsPoint", ShowAsPoint.ToString());
+            xmlWriter.WriteAttributeString("ShowOrbitPath", ShowOrbitPath.ToString());
+
+            xmlWriter.WriteAttributeString("StationKeeping", StationKeeping.ToString());
+
+            if (ReferenceFrameType == ReferenceFrameTypes.Orbital)
+            {
+                xmlWriter.WriteAttributeString("SemiMajorAxis", SemiMajorAxis.ToString());
+                xmlWriter.WriteAttributeString("SemiMajorAxisScale", this.SemiMajorAxisUnits.ToString());
+                xmlWriter.WriteAttributeString("Eccentricity", Eccentricity.ToString());
+                xmlWriter.WriteAttributeString("Inclination", Inclination.ToString());
+                xmlWriter.WriteAttributeString("ArgumentOfPeriapsis", ArgumentOfPeriapsis.ToString());
+                xmlWriter.WriteAttributeString("LongitudeOfAscendingNode", LongitudeOfAscendingNode.ToString());
+                xmlWriter.WriteAttributeString("MeanAnomolyAtEpoch", MeanAnomolyAtEpoch.ToString());
+                xmlWriter.WriteAttributeString("MeanDailyMotion", MeanDailyMotion.ToString());
+                xmlWriter.WriteAttributeString("Epoch", Epoch.ToString());
+            }
+
+
+            //todo add this back when we support trajectories
+            //if (ReferenceFrameType == ReferenceFrameTypes.Trajectory)
+            //{
+            //    xmlWriter.WriteStartElement("Trajectory");
+
+            //    foreach (TrajectorySample sample in Trajectory)
+            //    {
+            //        string data = sample.ToString();
+            //        xmlWriter.WriteElementString("Sample", data);
+            //    }
+            //    xmlWriter.WriteEndElement();
+            //}
+
+            xmlWriter.WriteEndElement();
+        }
+
 
         public virtual void InitializeFromXml(XmlNode node)
         {

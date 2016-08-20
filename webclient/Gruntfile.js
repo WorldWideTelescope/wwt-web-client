@@ -1,3 +1,4 @@
+/// <binding ProjectOpened='watch' />
 /**!
 Gruntfile to perform wwt webclient less compilation,
 script concatenation/minification, and component updates
@@ -43,6 +44,7 @@ module.exports = function(grunt) {
                     'directives/Scroll.js',
                     'directives/Localize.js',
                     'directives/ContextMenu.js',
+                    'directives/EditSlideValues.js',
                     'factories/appstate.js',
                     'factories/localization.js',
                     'factories/FinderScope.js',
@@ -52,6 +54,7 @@ module.exports = function(grunt) {
                     'factories/SearchUtil.js',
                     'factories/Skyball.js',
                     'factories/HashManager.js',
+                    'factories/MediaFile.js',
                     'dataproxy/Places.js',
                     'dataproxy/Tours.js',
                     'dataproxy/SearchData.js',
@@ -70,6 +73,7 @@ module.exports = function(grunt) {
                     'controllers/tabs/ToursController.js',
                     'controllers/tabs/CommunityController.js',
                     'controllers/tabs/CurrentTourController.js',
+                    'controllers/modals/TourSlideText.js',
                     'controllers/modals/ShareController.js',
                     'controllers/modals/OpenItemController.js',
                     'controllers/modals/ObservingTimeController.js',

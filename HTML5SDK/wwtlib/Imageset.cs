@@ -594,55 +594,55 @@ namespace wwtlib
             }
         }
 
-        //public static void SaveToXml(System.Xml.XmlTextWriter xmlWriter, Imageset imageset, string alternateUrl)
-        //{
-        //    xmlWriter.WriteStartElement("ImageSet");
+        public static void SaveToXml(XmlTextWriter xmlWriter, Imageset imageset, string alternateUrl)
+        {
+            xmlWriter.WriteStartElement("ImageSet");
 
-        //    xmlWriter.WriteAttributeString("Generic", imageset.Generic.ToString());
-        //    xmlWriter.WriteAttributeString("DataSetType", imageset.DataSetType.ToString());
-        //    xmlWriter.WriteAttributeString("BandPass", imageset.BandPass.ToString());
-        //    if (!imageset.Generic)
-        //    {
-        //        xmlWriter.WriteAttributeString("Name", imageset.Name);
+            xmlWriter.WriteAttributeString("Generic", imageset.Generic.ToString());
+            xmlWriter.WriteAttributeString("DataSetType", imageset.DataSetType.ToString());
+            xmlWriter.WriteAttributeString("BandPass", imageset.BandPass.ToString());
+            if (!imageset.Generic)
+            {
+                xmlWriter.WriteAttributeString("Name", imageset.Name);
 
-        //        if (String.IsNullOrEmpty(alternateUrl))
-        //        {
-        //            xmlWriter.WriteAttributeString("Url",  imageset.Url);
-        //        }
-        //        else
-        //        {
-        //            xmlWriter.WriteAttributeString("Url",  alternateUrl);
-        //        }
-        //        xmlWriter.WriteAttributeString("DemUrl", imageset.DemUrl);
-        //        xmlWriter.WriteAttributeString("BaseTileLevel", imageset.BaseLevel.ToString());
-        //        xmlWriter.WriteAttributeString("TileLevels", imageset.Levels.ToString());
-        //        xmlWriter.WriteAttributeString("BaseDegreesPerTile", imageset.BaseTileDegrees.ToString());
-        //        xmlWriter.WriteAttributeString("FileType", imageset.Extension);
-        //        xmlWriter.WriteAttributeString("BottomsUp", imageset.BottomsUp.ToString());
-        //        xmlWriter.WriteAttributeString("Projection", imageset.Projection.ToString());
-        //        xmlWriter.WriteAttributeString("QuadTreeMap", imageset.QuadTreeTileMap);
-        //        xmlWriter.WriteAttributeString("CenterX", imageset.CenterX.ToString());
-        //        xmlWriter.WriteAttributeString("CenterY", imageset.CenterY.ToString());
-        //        xmlWriter.WriteAttributeString("OffsetX", imageset.OffsetX.ToString());
-        //        xmlWriter.WriteAttributeString("OffsetY", imageset.OffsetY.ToString());
-        //        xmlWriter.WriteAttributeString("Rotation", imageset.Rotation.ToString());
-        //        xmlWriter.WriteAttributeString("Sparse", imageset.Sparse.ToString());
-        //        xmlWriter.WriteAttributeString("ElevationModel", imageset.ElevationModel.ToString());
-        //        xmlWriter.WriteAttributeString("StockSet", imageset.DefaultSet.ToString());
-        //        xmlWriter.WriteAttributeString("WidthFactor", imageset.WidthFactor.ToString());
-        //        xmlWriter.WriteAttributeString("MeanRadius", imageset.MeanRadius.ToString());
-        //        xmlWriter.WriteAttributeString("ReferenceFrame", imageset.ReferenceFrame);
-        //        if (String.IsNullOrEmpty(alternateUrl))
-        //        {
-        //            xmlWriter.WriteElementString("ThumbnailUrl", imageset.ThumbnailUrl);
-        //        }
-        //        else
-        //        {
-        //            xmlWriter.WriteElementString("ThumbnailUrl", imageset.Url);
-        //        }
-        //    }
-        //    xmlWriter.WriteEndElement();
-        //}
+                if (String.IsNullOrEmpty(alternateUrl))
+                {
+                    xmlWriter.WriteAttributeString("Url", imageset.Url);
+                }
+                else
+                {
+                    xmlWriter.WriteAttributeString("Url", alternateUrl);
+                }
+                xmlWriter.WriteAttributeString("DemUrl", imageset.DemUrl);
+                xmlWriter.WriteAttributeString("BaseTileLevel", imageset.BaseLevel.ToString());
+                xmlWriter.WriteAttributeString("TileLevels", imageset.Levels.ToString());
+                xmlWriter.WriteAttributeString("BaseDegreesPerTile", imageset.BaseTileDegrees.ToString());
+                xmlWriter.WriteAttributeString("FileType", imageset.Extension);
+                xmlWriter.WriteAttributeString("BottomsUp", imageset.BottomsUp.ToString());
+                xmlWriter.WriteAttributeString("Projection", imageset.Projection.ToString());
+                xmlWriter.WriteAttributeString("QuadTreeMap", imageset.QuadTreeTileMap);
+                xmlWriter.WriteAttributeString("CenterX", imageset.CenterX.ToString());
+                xmlWriter.WriteAttributeString("CenterY", imageset.CenterY.ToString());
+                xmlWriter.WriteAttributeString("OffsetX", imageset.OffsetX.ToString());
+                xmlWriter.WriteAttributeString("OffsetY", imageset.OffsetY.ToString());
+                xmlWriter.WriteAttributeString("Rotation", imageset.Rotation.ToString());
+                xmlWriter.WriteAttributeString("Sparse", imageset.Sparse.ToString());
+                xmlWriter.WriteAttributeString("ElevationModel", imageset.ElevationModel.ToString());
+                xmlWriter.WriteAttributeString("StockSet", imageset.DefaultSet.ToString());
+                xmlWriter.WriteAttributeString("WidthFactor", imageset.WidthFactor.ToString());
+                xmlWriter.WriteAttributeString("MeanRadius", imageset.MeanRadius.ToString());
+                xmlWriter.WriteAttributeString("ReferenceFrame", imageset.ReferenceFrame);
+                if (String.IsNullOrEmpty(alternateUrl))
+                {
+                    xmlWriter.WriteElementString("ThumbnailUrl", imageset.ThumbnailUrl);
+                }
+                else
+                {
+                    xmlWriter.WriteElementString("ThumbnailUrl", imageset.Url);
+                }
+            }
+            xmlWriter.WriteEndElement();
+        }
 
         public override string ToString()
         {

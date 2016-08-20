@@ -1124,14 +1124,7 @@ var wwt = {
 			.width($('#WorldWideTelescopeControlHost').width());
 		$('body.desktop #WWTCanvas')
 			.height($(window).height())
-			.width($(window).width());
-		//if ($('body.desktop.length')) {
-			
-		//	/*$('body.desktop div.context-panel .controls, body.desktop div.context-panel .thumbnails')
-		//		.width($('div.context-panel').width() - ($('body.desktop .fov-panel').width() + 1));*/
-		//	//$('body.desktop .layer-manager .tree').css('height', $(window).height() - (166 + $('body.desktop .context-panel').height()));
-			
-		//}
+			.width($(window).width());	
 	}
 };
 
@@ -1145,7 +1138,7 @@ $(window).on('load', function() {
 	document.getElementsByTagName("head")[0].appendChild(scr);
 });
 
-wwt.app.directive("scrollBuffer", function ($window) {
+wwt.app.directive("scrollBuffer", ['$window',function ($window) {
 	return function ($scope, element, attrs) {
 		var buffer = parseInt(attrs.scrollBuffer);
 		var scope = $scope;
@@ -1169,7 +1162,41 @@ wwt.app.directive("scrollBuffer", function ($window) {
 		});
 		
 	};
-});
+}]);
+
+wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootScope,$window) {
+    return function ($scope, element, attrs) {
+        
+        var scope = $scope;
+        var movable = $(element).find('.jspPane');
+        $(element).on('mousewheel', function (event) {
+            var e = event.originalEvent;
+            movable = $(element).find('.jspPane');
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+            var curLeft = Math.abs(Math.floor(movable.position().left));
+            var increment = 155;
+            var newLeft;
+
+            //scrolling down?
+            if (delta < 0) {
+                console.log('down')
+                newLeft = Math.floor((curLeft + increment) / increment) * increment;
+            }
+
+                //scrolling up?
+            else {
+                console.log('up')
+                newLeft = Math.floor((curLeft - increment) / increment) * increment;
+            }
+            //movable.css('left', Math.max(newLeft,0));
+            console.log(curLeft,newLeft)
+            $(element).data('jsp').scrollToX(Math.abs(newLeft));
+        })
+
+    };
+}
+])
 wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', function (loc, $rootScope,appState,util) {
 	return function ($scope, element, attrs) {
 		if (appState.get('language') !== 'EN') {
@@ -1224,7 +1251,7 @@ wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
                 event.preventDefault();
                 var index = event.delegateTarget.getAttribute('index');
                 if (index) {
-                    handler(parseInt(index));
+                    handler(parseInt(index),event);
                 } else if  (handler) {
                     handler(event);
                 }
@@ -1246,6 +1273,149 @@ wwt.app.directive('ngRightClick', function ($parse) {
 });
 
 
+wwt.app.directive('contenteditable', [function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var isDuration = (element.hasClass('duration'));
+
+            var isLabel = !isDuration;
+            var stop = scope.stop;
+            var s = stop;
+            var lastGoodValue;
+            var el = $(element)[0];
+            function validate() {
+                var val = element.html();
+                
+                var minSec = val.split(':');
+                var sec, min,tenths = 0,secString;
+                if (minSec.length === 2) {
+                    min = parseInt(minSec[0].replace(/\D/g, ''));
+                    secString = minSec[1].split('.');
+                    
+                } else if (minSec.length === 1) {
+                    min = 0;
+                    secString = minSec[0].split('.');
+                }
+                else {
+                    s.duration = lastGoodValue;
+                    return;
+                }
+                sec = parseInt(secString[0].replace(/\D/g, ''));
+                if (secString.length === 2) {
+                    tenths = parseInt(secString[1].replace(/\D/g, ''));
+                }
+                s.duration = (min * 60000) + (sec * 1000) + (tenths * 100);
+                
+            }
+
+            
+            if (isDuration) {
+                renderDuration();
+            } else {
+                element.html(s.description);
+            }
+            
+            function renderDuration() {
+                if (s.duration > 100)
+                    lastGoodValue = s.duration;
+                else
+                    s.duration = lastGoodValue;
+
+                s.minDuration = Math.floor(s.duration / 60000);
+                var secs = (s.duration % 60000) / 1000;
+                s.secDuration = Math.floor(secs);
+                s.tenths = secs % 1 === 0 ? '.0' : secs % 1;
+                s.durationString = s.minDuration + ':' +
+                    (s.secDuration < 10 ? '0' : '') +
+                    s.secDuration + 
+                    s.tenths;
+                
+                console.log(s.duration);
+                element.html(s.durationString);
+            }
+
+            element.on('keyup', function (event) {
+                if (isDuration) {
+                    switch (event.keyCode) {
+                        case 33:
+                        case 38:
+                            stop.duration += 1000;
+                            renderDuration();
+                            return;
+                        case 34:
+                        case 40:
+                            stop.duration -= 1000;
+                            renderDuration();
+                            return;
+                        case 27:
+                        case 13:
+                        case 9:
+                            element.blur();
+                            return;
+                        default:
+                            validate();
+                            break;
+                    }
+                    
+                }
+            });
+            var incrementing = false;
+            if (isDuration) {
+                 
+                element.on('focus', function () {
+                    if (incrementing) return;
+                    scope.$apply(function () {
+                        stop.editingDuration = true;
+                    });
+                    element.parent().find('.tinybutton').on('mousedown', function (e) {
+                        incrementing = true;
+                        setTimeout(function () { incrementing = false }, 500);
+                        var btn = $(this);
+
+                        if (btn.hasClass('duration-up')) {
+                            stop.duration += 1000;
+                            renderDuration();
+                        } else {
+                            stop.duration -= 1000;
+                            renderDuration();
+                        }
+                        select();
+                    });
+                    element.parent().find('.tinybutton').on('mouseup', select);
+                });
+            }
+            element.on('blur', function () {
+                if (incrementing) return;
+                scope.$applyAsync(function () {
+                    if (isDuration) {
+                        
+                        validate();
+                        renderDuration();
+                        stop.set_duration(lastGoodValue);
+                        stop.editingDuration = false;
+
+                    } else {
+                        s.set_description(element.html());
+                    }
+                });
+            });
+            function select() {
+                setTimeout(function () {
+                    var txt = element.text();
+                    var range = document.createRange();
+                    range.setStart(el.firstChild, txt.indexOf(':') + 1);
+                    range.setEnd(el.firstChild, txt.indexOf('.'));
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }, 10);
+
+            }
+            
+        }
+    };
+}]);
 wwt.app.factory('AppState', function() {
 	var api = {
 		set: setKey,
@@ -1694,7 +1864,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         $timeout(function () {
             scope.pageCount = Math.ceil(listLength / scope.pageSize);
             spliceOnePage(scope);
-        });
+        },10);
     };
 
     function goBack(scope) {
@@ -1710,8 +1880,10 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
     };
 
     function spliceOnePage(scope) {
-        var start = scope.currentPage * scope.pageSize;
-        scope.collectionPage = scope.collection.slice(start, start + scope.pageSize);
+        if (scope.collection) {
+            var start = scope.currentPage * scope.pageSize;
+            scope.collectionPage = scope.collection.slice(start, start + scope.pageSize);
+        }
     };
 
     return api;
@@ -1737,6 +1909,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		isStaging: function() {
 			return location.href.indexOf('worldwidetelescope') === -1;
 		},
+        isDebug:getQSParam('debug')!=null,
 		nav: nav,
 		log: log,
 		resetCamera: resetCamera,
@@ -1819,9 +1992,6 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			return parseFloat(input);
 		}
 	}
-	
-
-	
 
 	function getAstroDetails(place) {
 		var coords = wwtlib.Coordinates.fromRaDec(place.get_RA(), place.get_dec());
@@ -1937,18 +2107,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 	}
 	
 	var accelDevice = false; 
-	//window.ondevicemotion = function(event) {
-	//	if (event.acceleration &&
-	//		event.acceleration.x != null) {
-	//		log('devicemotionevent', event);
-	//		accelDevice = true;
-	//		if (!api.isMobile && minDimension < 500) {
-
-	//			redirectClient('mobile');
-	//		}
-	//		window.ondevicemotion = null;
-	//	}
-	//}
+	
 	function redirectClient(val) {
 		return;
 		var qs = location.search.substr(1);
@@ -2020,6 +2179,16 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
 		
 	}
+
+	var keyHandler = function (e) {
+	    switch (e.keyCode) {
+	        case 27:
+	            $rootScope.$broadcast('escKey');
+	            break;
+	    }
+	};
+
+	$(document).on('keyup', keyHandler);
 
 	var dirtyInterval,
         viewport = {
@@ -2242,23 +2411,10 @@ wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 		init: init
 	};
 	var canvas, ctx;
-	//var renderLog = [];
-	//var avgs = [];
-	//var getAvg = function () { 
-	//	var sum = 0;
-	//	$.each(renderLog, function() {
-	//		sum += this; 
-	//	});
-	//	avgs.push(sum / renderLog.length);
-	//	renderLog = [];
-	//} 
-
+	 
 	function draw(event, viewport) {
 		if (!viewport.isDirty && !viewport.init){ return;}
-		//var d1 = new Date();
-		/*if (canvas == undefined) {
-			init();
-		}*/
+		
 		ctx.clearRect(0, 0, 100, 100);
 		var sphereSize = $('#skyball').height();
 		var radius = sphereSize / 2;
@@ -2306,12 +2462,6 @@ wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 		ctx.fillStyle = (z / 4) > 0 ? 'rgba(255,255,0,.9)' : 'rgba(255,255,0,.5)';
 		ctx.fill();
 		ctx.stroke();
-		//var renderTime = new Date().valueOf() - d1.valueOf();
-		//renderLog.push(renderTime);
-		//if (renderLog.length == 50) {
-		//	getAvg();
-		//	console.log('skyball avg: ', avgs);
-		//}
 		
 	};
 
@@ -2487,6 +2637,200 @@ wwt.app.factory('HashManager', [
 	}
 ]);
 
+wwt.app.factory('MediaFile', ['$q', function ($q) {
+    var api = {
+        getTourProgress: getTourProgress,
+        addTourMedia: addTourMedia,
+        flushStore: flushStore,
+        getBinaryData: getBinaryData,
+        saveTour:saveTour
+    };
+    var tourMedia = [];
+
+    function Media(params) {
+        
+        return{
+            url:params.url,
+            key:params.key,
+            db:'touredit',
+            size:params.size,
+            filename:params.name
+        }
+        
+    }
+
+    var imageIndex = 0;
+    
+
+    function getTourProgress() {
+        var savedMedia = localStorage.getItem('tourMedia');
+        if (savedMedia) {
+            tourMedia = JSON.parse(savedMedia);
+        }
+        return tourMedia
+    }
+    
+    function saveTour() {
+        var deferred = $q.defer();
+        var mediaPromises = [];
+        tourMedia.forEach(function (item) {
+            mediaPromises.push(getBinaryData(item.url,true))
+        });
+        $q.all(mediaPromises).then(function (results) {
+            var cab = document.implementation.createDocument(null, "FileCabinet");
+            cab.documentElement.setAttribute('HeaderSize','0x00000000');
+            var filesNode = cab.createElement('Files');
+            cab.documentElement.appendChild(filesNode);
+            var offset = 0;
+            var cabData =  new ArrayBuffer();
+            results.forEach(function (binary, i) {
+                var file = cab.createElement('File');
+                file.setAttribute('Name',tourMedia[i].filename);
+                file.setAttribute('Url',tourMedia[i].url);
+                file.setAttribute('Offset', offset);
+                file.setAttribute('Size', binary.length);
+                filesNode.appendChild(file);
+                offset += binary.byteLength;
+                cabData = appendBuffer(cabData,binary);
+            });
+            var serializer = new XMLSerializer();
+            var xmlString = "<?xml version='1.0' encoding='UTF-8'?>" + serializer.serializeToString(cab);
+            var hex = xmlString.length.toString(16);
+            var newHex = ('0x00000000').substr(0,10-hex.length) + hex;
+            var fileBuffer = appendBuffer(str2ab(xmlString.replace('0x00000000', newHex)),cabData);
+            cabData = xmlString = null;
+            var file = new Blob([fileBuffer], {type: 'application/wtt'});
+            addTourMedia('wtt', file).then(function (result) {
+                deferred.resolve(result);
+            });
+        });
+        return deferred.promise;
+    }
+
+    function addTourMedia(mediaKey, file, db) {
+        
+        var deferred = $q.defer();
+        var keys = ['music', 'voiceOver', 'wtt', 'image'];
+        var req = indexedDB.open('touredit');
+        req.onupgradeneeded = function () {
+            // Define the database schema if necessary.
+            var db = req.result;
+            var store = db.createObjectStore('files');
+        };
+        req.onsuccess = function () {
+            var db = req.result;
+
+            var key = keys.indexOf(mediaKey);
+            if (key === 2) {
+                key += imageIndex;
+                imageIndex++;
+            }
+            var tx = db.transaction('files', 'readwrite');
+            var store = tx.objectStore('files');
+            var addFile = function () {
+                var addTx = store.put(file, key);
+                addTx.onsuccess = readFile;
+
+            }
+            var readFile = function () {
+                var mediaReq = store.get(key);
+                mediaReq.onsuccess = function (e) {
+                    var file = mediaReq.result;
+                    var localUrl = URL.createObjectURL(file);
+                    var media = Media({
+                        url: localUrl,
+                        key: key,
+                        size: file.size,
+                        name: file.name
+                    });
+                    deferred.resolve(media);
+                    tourMedia[key] = media;
+                    localStorage.setItem('tourMedia', JSON.stringify(tourMedia));
+                    
+                };
+            };
+            addFile();
+           
+        }
+        return deferred.promise;
+    }
+
+    
+
+    function flushStore(db) {
+        var deferred = $q.defer();
+        var dbName = db || 'touredit';
+        var req = indexedDB.deleteDatabase(dbName);
+        req.onupgradeneeded = function () {
+            deferred.reject('upgradeneeded');
+        };
+        req.onsuccess = deferred.resolve;
+        req.onerror = deferred.reject;
+        req.onblocked = deferred.reject;
+        return deferred.promise;
+    }
+
+
+
+    function getBinaryData(url,asUIntArray,asArrayBuffer) {
+        var deferred = $q.defer();
+        console.time('get binary string');
+        var req = new XMLHttpRequest();
+        req.open('GET', url, true);
+        req.onload = function () {
+            if (asArrayBuffer) {
+                deferred.resolve(this.response);
+            }
+            else if (asUIntArray) {
+                var uInt8Array = new Uint8Array(this.response); 
+                for (var i = 0, len = uInt8Array.length; i < len; ++i) {
+                    uInt8Array[i] = this.response[i];
+                }
+                deferred.resolve(uInt8Array);
+            }
+            else {
+                deferred.resolve(req.responseText);
+            }
+            console.timeEnd('get binary data');
+        }
+        if (asUIntArray) {
+            req.responseType = 'arraybuffer';
+        } else {
+            req.overrideMimeType('text\/plain; charset=x-user-defined');
+        }
+        req.send(null);
+        return deferred.promise;
+    
+    }
+
+    var appendBuffer = function (buffer1, buffer2) {
+        var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+        tmp.set(new Uint8Array(buffer1), 0);
+        tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
+        return tmp.buffer;
+    };
+
+    function stringToUint(string) {
+        string = btoa(unescape(encodeURIComponent(string))),
+            charList = string.split(''),
+            uintArray = [];
+        for (var i = 0; i < charList.length; i++) {
+            uintArray.push(charList[i].charCodeAt(0));
+        }
+        return new Uint8Array(uintArray);
+    }
+
+    function str2ab(str) {
+        var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
+        var bufView = new Uint16Array(buf);
+        for (var i = 0, strLen = str.length; i < strLen; i++) {
+            bufView[i] = str.charCodeAt(i);
+        }
+        return buf;
+    }
+
+    return api;
+}]);
 wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	function ($http, $q, $timeout, util) {
 		
@@ -2774,7 +3118,9 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util', funct
         if (!guids) return null;
         var tours = [];
         $.each(guids.split(';'), function (i, item) {
-            tours.push(getTourById(item));
+            var tour = getTourById(item);
+            if (tour)
+                tours.push(tour);
         });
         return guids.length > 1 ? tours : null;
     }
@@ -3351,7 +3697,7 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 			}
 			root = wwt.wc.createFolder();
 		
-			root.loadFromUrl('http://' + location.host + '/Resource/Service/Payload', function () {
+			root.loadFromUrl('http://worldwidetelescope.org/Resource/Service/Payload', function () {
 				deferred.resolve(root.get_children());
 			});
 		}
@@ -3479,7 +3825,9 @@ wwt.controllers.controller('MainController',
 	'Skyball',
 	'SearchUtil',
 	'$modal',
-	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal) {
+    '$element',
+    '$cookies',
+	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies) {
 		var ctl;
 		 
 		//#region LookAt/Imagery 
@@ -3676,7 +4024,7 @@ wwt.controllers.controller('MainController',
 			$scope.ribbon = {
 				tabs: [
 				{
-					label: 'Explore',
+					label: 'Explore', 
 					button: "rbnExplore",
 					mobileLabel: 'Explore Collections',
 						mobileAction: function() {
@@ -3692,7 +4040,7 @@ wwt.controllers.controller('MainController',
 						'Tour WWT Features': [$scope.tourFeatures],
 						'Show Welcome Tips':[showTips],
 						'Show Finder (right click)': [$scope.showFinderScope],
-						'WorldWide Telescope Home': [util.nav, '/'],
+						'WorldWide Telescope Home': [util.nav, '/home'],
 						'Getting Started (Help)': [util.nav, '/Learn/'],
 						'WorldWide Telescope Terms of Use': [util.nav, '/Terms'],
 						'About WorldWide Telescope': [util.nav, '/About']/*,
@@ -3703,10 +4051,13 @@ wwt.controllers.controller('MainController',
 					label:'Guided Tours',
 					button:'rbnTours',
 					menu: {
+                        
 					    'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
 					    'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
-                        sep2: null,
-					    'Create a New Tour...': [$scope.createNewTour]
+					    sep2: null,
+					    
+					    'Create a New Tour...': [$scope.createNewTour],
+					    
 					}
 				}, {
 				    label: 'Search',
@@ -3856,7 +4207,7 @@ wwt.controllers.controller('MainController',
 		});
 
 		$scope.$on('showContextMenu', function () {
-		    $scope.showContextMenu()
+		    $scope.showContextMenu();
 		});
 
 		var finderTimer, finderActive = false,finderMoved = true;
@@ -4079,6 +4430,9 @@ wwt.controllers.controller('MainController',
 			$(document).off('click', hideMenu);
 		};
 		$scope.tabClick = function (tab) {
+		    if ($rootScope.editingTour) {
+		        //$scope.finishTour();
+		    }
 		    $('body').append($('#researchMenu'));
 			$scope.expandTop(false); 
 			$scope.activePanel = tab.label;
@@ -4092,99 +4446,62 @@ wwt.controllers.controller('MainController',
 			$('#openModal').modal('show');
 		};
 
-	    $scope.playTour = function(url) {
+		$scope.playTour = function (url) {
+		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
 	        wwtlib.WWTControl.singleton.playTour(url);
 	        wwt.tourPlaying = $rootScope.tourPlaying = true;
 	        $rootScope.tourPaused = false;
            
 	        wwt.wc.add_tourEnded(tourChangeHandler);
-	        wwt.wc.add_tourReady(function() {
-	            $scope.registerTourStopListRefresh();
-	            $scope.$applyAsync(function () {
-                   $scope.setupTour(wwtlib.WWTControl.singleton.tour);               
+	        wwt.wc.add_tourReady(function() {	            
+	            $('#ribbon,.top-panel,.context-panel,.layer-manager')
+                    .fadeOut(800, function () {
+	                $scope.$applyAsync(function () {
+	                    $scope.activeItem = { label: 'currentTour' };
+	                    $scope.activePanel = 'currentTour';
+	                    //$scope.ribbon.tabs[6] = {
+	                    //    label:'currentTour',
+	                    //    button: 'rbnCurrentTour',
+	                    //    menu: {
+	                    //        'Restore Defaults': [$scope.restoreDefaultSettings],
+                        //        'Product Support': [util.nav, '/Support/IssuesAndBugs']
+	                    //    }
+	                    //}
+	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour]
+	                });
 	            });
-	            //$('#ribbon,.top-panel,.context-panel,.layer-manager').fadeOut(800);
 
 	        });
 	        //wwt.wc.add_tourPaused(tourChangeHandler);
 
-	    };
+		};
 
-	    $scope.createNewTour = function () {
-	        //todo show dialog for tour properties
-	        $scope.setupTour(wwtlib.WWTControl.singleton.createTour("New Tour"));
-	        $scope.registerTourStopListRefresh();
+		$scope.editTour = function () {
+		    $rootScope.$applyAsync(function () {
+		        $rootScope.editingTour = true;
+		    });
+		};
+
+		$rootScope.finishTour = function () {
+		    $rootScope.editingTour = false;
+		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
+		    $rootScope.editingTour = false;
+	        $rootScope.tourPlaying = false;
+	        wwtlib.WWTControl.singleton.stopCurrentTour();
+	        $scope.activePanel = 'Guided Tours'; 
+	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
 	    }
 
-	    $scope.setupTour = function (tour) {
-	        $scope.currentTour = tour;
-	        $scope.currentTour.duration = 0;
-	        $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	            s.description = s.get_description();
-	            s.thumb = s.get_thumbnail();
-	            s.duration = s.get_duration();
-	            s.secDuration = Math.round(s.duration / 1000);
-	            if (s.secDuration < 10) {
-	                s.secDuration = '0' + s.secDuration;
-	            }
-	            s.secDuration = '0:' + s.secDuration;
-	            $scope.currentTour.duration += s.duration;
-	            return s;
-	        });
-	        $scope.currentTour.minuteDuration = Math.floor($scope.currentTour.duration / 60000);
-	        $scope.currentTour.secDuration = Math.floor(($scope.currentTour.duration % 60000) / 1000);
-	        $scope.activeItem = { label: 'currentTour' };
-	        $scope.activePanel = 'currentTour';
-	    }
+		$scope.createNewTour = function () {
+		    $scope.$applyAsync(function () {
+		        //todo show dialog for tour properties
+		        $rootScope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
 
-	    $scope.registerTourStopListRefresh = function() {
-	        wwtlib.WWTControl.singleton.tourEdit.tourStopList.refreshCallback = function () {
-	            $scope.$applyAsync(function () {
-	                   
-	                $scope.tourStops = $scope.currentTour.get_tourStops().map(function (s) {
-	                    s.description = s.get_description();
-	                    s.thumb = s.get_thumbnail();
-	                    s.duration = s.get_duration();
-	                    s.secDuration = Math.round(s.duration / 1000);
-	                    if (s.secDuration < 10) {
-	                        s.secDuration = '0' + s.secDuration;
-	                    }
-	                    s.secDuration = '0:' + s.secDuration;
-	                    $scope.currentTour.duration += s.duration;
-	                    return s;
-	                });
-	                
-	            });
-	        }
-	    }
-
-	    $scope.gotoStop = function(index, e) {
-	        $scope.currentTour.set_currentTourstopIndex(index);
-	       
+		        $scope.activeItem = { label: 'currentTour' };
+		        $scope.activePanel = 'currentTour';
+		    });
 	    };
-
-	    $scope.showContextMenu = function ( e) {
-	        var itemid = parseInt(e.currentTarget.attributes["itemid"].nodeValue);
-	        $scope.currentTour.set_currentTourstopIndex(itemid);
-	        wwtlib.WWTControl.singleton.tourEdit.tourStopList_MouseClick(this, e);
-	    };
-
-	    $scope.pauseTour = function () {
-	        if (wwtlib.WWTControl.singleton.tourEdit.playing)
-	        {
-	            wwtlib.WWTControl.singleton.tourEdit.pauseTour();
-	        }
-	        else
-	        {
-	            wwtlib.WWTControl.singleton.tourEdit.playNow(true);
-	        }
-	        //wwtlib.WWTControl.singleton.uiController.pauseTour();
-	        
-	        //$rootScope.tourPaused = !$rootScope.tourPaused;
-
-	        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
-        }
 
 	    function tourChangeHandler() {
 			var settings = appState.get('settings') || {};
@@ -4285,8 +4602,15 @@ wwt.controllers.controller('MainController',
 		$rootScope.languagePromise.then(function (result) {
 			$rootScope.na = loc.getFromEn('n/a');
 			$rootScope.neverRises = loc.getFromEn('Never Rises');
-			$scope.hideIntroModal = appState.get('hideIntroModal');
+			$scope.hideIntroModal = appState.get('hideIntroModalv2');
 			if (!$scope.hideIntroModal && !$scope.loadingUrlPlace) {
+			    if (localStorage.getItem('login')) {
+			        var now = new Date().valueOf();
+			        var loginTime = parseInt(localStorage.getItem('login'));
+			        if (now - loginTime < 33333) {
+			            return;//no autoshow popup when logged in within last 30sec
+			        }
+			    }
 				setTimeout(showTips,1200);
 			}
 		});
@@ -4326,9 +4650,18 @@ wwt.controllers.controller('MainController',
 	        return show;
 	    };
 		
-		$scope.hideIntroModalChange = function(hideIntroModal) {
-			appState.set('hideIntroModal', hideIntroModal);
-		};
+	    $scope.hideIntroModalChange = function (hideIntroModal) {
+	        appState.set('hideIntroModalv2', hideIntroModal);
+	    };
+	    $scope.iswebclientHome = $cookies.get('homepage') !== 'home';
+	    $scope.homePrefChange = function (isWebclient) {
+	        $cookies.remove('homepage');
+	        if (!isWebclient) {
+	            $cookies.put('homepage', 'home', { expires: new Date(2050, 1, 1), path: "/" });
+	        } else {
+	            $cookies.put('homepage', 'webclient', { expires: new Date(2050, 1, 1), path: "/" });
+	        }
+	    };
 		
 		$scope.setMenuContextItem = function(item,isExploreTab) {
 			$scope.menuContext = item;
@@ -4427,6 +4760,9 @@ wwt.controllers.controller('MainController',
 		}
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
+		}
+		if (util.getQSParam('playTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('playTour')))
 		}
 	}
 ]);
@@ -5758,7 +6094,6 @@ wwt.controllers.controller('ViewController',
 				});
 			}
 		};
-
 		
 
 		$scope.fastBack_Click = function() {
@@ -5960,7 +6295,7 @@ wwt.controllers.controller('ToursController',
 		        title: item.get_name(),
 		        target: $(event.currentTarget),
 		        id: 'tourpop',
-		        template:'views/popovers/tour-template.html',
+		        templateUrl:'views/popovers/tour-template.html',
 		        contentTemplate: 'views/popovers/tour-info.html',
 		        placement: 'bottom-left',
 		        scope: $scope,
@@ -6107,10 +6442,407 @@ wwt.controllers.controller('CommunityController',
         
     }
 ]);
-wwt.controllers.controller('CurrentTourController', ['$scope', function($scope) {
+wwt.controllers.controller('CurrentTourController', [
+    '$scope', '$rootScope', 'Util', 'MediaFile',
+    function ($scope, $rootScope, util, media) {
+    var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
+    var tour;
+    $scope.init = function (curTour) {
+        $scope.musicFileUrl = false;
+        $scope.voiceOverFileUrl = false;
+        $scope.musicPlaying = false;
+        $scope.voiceOverPlaying = false;
+        $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
+        tourEdit.tourStopList.refreshCallback = mapStops;
+        mapStops(true);
+         
+        //$rootScope.$on('escKey', function () {
+            //$scope.$applyAsync(showTourSlides);
+        //});
+        $rootScope.$watch('editingTour', function () { });
+        if (true){//util.isDebug) {
+            showTourSlides();
+        }
+        $('#contextmenu,#popoutmenu').on('click', mapStops);
+        setTimeout(initVolumeSliders, 111);
+    };
+
+    var initVolumeSliders = function () {
+        var volumeOpts = function (barEl, player) {
+            player.volume = .5;
+            return {
+                el: barEl,
+                bounds: {
+                    x: [-50, 50],
+                    y: [0, 0]
+                },
+                onstart: function () {
+                    barEl.addClass('moving');
+                },
+                onmove: function () {
+                    player.volume = this.css.left / 100;
+                },
+                oncomplete: function () {
+                    barEl.removeClass('moving');
+                }
+            }
+        };
+        var musicVol = new wwt.Move(volumeOpts($('#musicVol'), $('#musicPlayer')[0]));
+        var voiceVol = new wwt.Move(volumeOpts($('#voiceVol'), $('#voiceOverPlayer')[0]));
+
+    };
+
+    $scope.tourProp = function ($event, prop) {
+        tour['set_' + prop]($event.target.value);
+    };
+    $scope.saveTour = function () {
+        var xml = tour.getTourXML();
+        console.log(xml);
+        // media.saveTour().then(function (tour) {
+        //     console.log(tour);
+        //});
+    };
+    $scope.addShape = function (type) {
+        tourEdit.tourEditorUI.addShape('', type);
+    }
     
+    
+    $scope.mediaFileChange = function (e, mediaKey, isImage) {
+        console.time('storeLocal: ' + mediaKey);
+        var file = e.target.files[0];
+        if (!file.name) {
+            return;
+        }
+        $scope[mediaKey + 'FileName'] = file.name;
+        media.addTourMedia(mediaKey, file).then(function (mediaResult) {
+            //hook to the mediaResult.url here;
+            
+            if (!isImage) {
+                $scope[mediaKey + 'FileUrl'] = true;
+                $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
+                $scope[mediaKey + 'Playing'] = false;
+            }
+            console.timeEnd('storeLocal: ' + mediaKey);
+            if (!isImage) {
+                tourEdit.tourEditorUI.addAudio(mediaResult.url);
+                //media.getBinaryData(mediaResult.url).then(function (binary) {
+                //    console.log('binary string recieved - not logging because length = ' + binary.length);
+                //});
+            } else {
+                console.log('image created: ' + mediaResult.url);
+                tourEdit.tourEditorUI.addPicture(mediaResult.url);
+                
+            }
+        });
+        
+    }
+
+    $scope.toggleSound = function (mediaKey) {
+        var audio = $('#' + mediaKey + 'Player')[0];
+        if ($scope[mediaKey +'Playing']) {
+            audio.pause();
+        } else {
+            audio.play();
+        }
+        $scope[mediaKey + 'Playing'] = !$scope[mediaKey + 'Playing'];
+    }
+
+    var showTourSlides = function () {
+        $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
+        //tourEdit.pauseTour();
+        $rootScope.tourPaused = true;
+        $scope.escaped = true;
+        //if (util.isDebug) {
+            $rootScope.editingTour = true;
+        //}
+        setTimeout(function () {
+            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
+            $(window).on('resize', function () {
+                
+                $rootScope.stopScroller.reinitialise();
+            });
+        }, 200);
+    };
+
+    $scope.showContextMenu = function (index,e) {
+        if (e) {
+            
+            $scope.selectStop(index);
+            tourEdit.tourStopList_MouseClick(index, e);
+            
+        }
+    };
+    $scope.selectStop = function (index, e) {
+        $scope.$applyAsync(function () {
+            tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
+            $scope.activeIndex = index;
+            if (e && e.shiftKey) {
+                tourEdit.tourStopList.selectedItems = {};
+                for (var i = Math.min(index, $scope.lastFocused) ; i <= Math.max(index, $scope.lastFocused) ; i++) {
+                    tourEdit.tourStopList.selectedItems[i] = $scope.tourStops[i];
+                }
+            }
+            else if (e && e.ctrlKey) {
+                var keys = Object.keys(tourEdit.tourStopList.selectedItems);
+                if (tourEdit.tourStopList.selectedItems[index] && keys.length > 1) {
+                    delete tourEdit.tourStopList.selectedItems[index];
+                    $scope.activeIndex = keys[0];//set to first key
+                } else {
+                    tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
+                }
+            }
+            else {
+                tourEdit.tourStopList.selectedItems = {};
+                tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
+            }
+            tour.set_currentTourstopIndex($scope.activeIndex);
+            $scope.lastFocused = index;
+        });
+    };
+
+    $scope.showStartCameraPosition = function (index) {
+        tour.set_currentTourstopIndex(index);
+        tourEdit.tourStopList_ShowStartPosition();
+    };
+    $scope.showEndCameraPosition = function (index) {
+        tour.set_currentTourstopIndex(index);
+        tourEdit.tourStopList_ShowEndPosition();
+    };
+
+    $scope.pauseTourEdit = function () {
+        if (tourEdit.playing) {
+            tourEdit.pauseTour();
+        }
+        else if ($scope.activeIndex) {
+            tourEdit.playFromCurrentTourstop();
+        } else {
+            tourEdit.playNow(true);
+        }
+        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
+    };
+
+    var mapStops = $scope.refreshStops = function (isInit) {
+        $scope.$applyAsync(function () {
+            tour.duration = 0;
+            $scope.tourStops = tour.get_tourStops().map(function (s) {
+                s.description = s.get_description();
+                s.thumb = s.get_thumbnail();
+                s.duration = s.get_duration();
+                tour.duration += s.duration;
+
+                //placeholder values until transition api is there
+                s.atime = s.get__transitionTime();
+                s.btime = s.get__transitionOutTime();;
+                s.holdtime = s.get__transitionHoldTime();
+                s.transitionType = s.get__transition();
+                s.isMaster = s.get_masterSlide();
+                return s;
+            });
+            tour.minuteDuration = Math.floor(tour.duration / 60000);
+            tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
+            $scope.tour = tour;
+
+            if (isInit) {
+                $scope.selectStop(0);
+                if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
+                    setTimeout(function () {
+                        $('#newTourProps').click();
+                    }, 500);
+                }
+            }
+        });
+    };
+
+    
+
+    $scope.setStopTransition = function (index, transitionType, transTime) {
+        if (transitionType || transitionType === 0) {
+            var stop = $scope.tourStops[index];
+            stop.set__transition(transitionType);
+            stop.transitionType = transitionType;
+            return;
+        } else if (transTime && typeof transTime === 'string') {
+            switch (transTime) {
+                case 'atime':
+                    stop.set__transitionTime(stop.atime);
+                    break;
+                case 'btime':
+                    stop.set__transitionOutTime(stop.btime);
+                    break;
+                case 'holdtime':
+                    stop.set__transitionHoldTime(stop.holdtime);
+                    break;
+            }
+        }
+    };
 }]);
 
+    
+wwt.controllers.controller('TourSlideText', [
+	'$scope',
+	'$rootScope',
+	'Util',
+	'$timeout',
+    function ($scope, $rootScope, util, $timeout) {
+        var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
+        var iframeBody;
+        var textObject = {
+            text: '',
+            foregroundColor: '#ffffff',
+            backgroundColor: 'transparent',
+            bold: 0,
+            italic: 0,
+            underline: 0,
+            fontSize: 24,
+            fontName: 'Arial',
+            borderStyle:'None'
+        };
+ 
+    var saving = false;
+    function initEditorObserver() {
+
+        iframeBody = $('.popover.tour-text iframe').contents().find("body");
+
+        var getObserver = function (cb) {
+
+            return new MutationObserver(function (mutations) {
+                if (!saving) {
+                    mutations.forEach(function () { setTimeout(cb, 100) });
+                } else {
+                    console.log('not observing after save');
+                }
+            });
+        };
+        var fontConfig = {
+            attributes: true,
+            childList: true,
+            characterData: true
+        };
+        var fontFamily = $('.mce-widget[aria-label="Font Family"] span.mce-txt');
+        fontFamily.text(textObject.fontName);
+        var fontFamilyObserver = function (mutation) {
+            var ffText = fontFamily.text();
+            if (ffText.indexOf('Font') === 0) {
+                fontFamily.text(textObject.fontName);
+                return;
+            }
+            iframeBody.find('*').css('font-family', fontFamily.text());
+            textObject.fontName = fontFamily.text();
+        };
+        var fontSizes = $('.mce-widget[aria-label="Font Sizes"] span.mce-txt');
+        fontSizes.text(textObject.fontSize);
+        var fontSizesObserver = function (mutation) {
+            var fsText = fontSizes.text();
+            if (fsText.indexOf('Font') === 0) {
+                fontSizes.text(textObject.fontSize);
+                return;
+            }
+            iframeBody.find('*').css('font-size', fontSizes.text());
+            textObject.fontSize = parseInt(fontSizes.text().replace('pt', ''));
+        };
+        var boldBtn = $('.mce-i-bold').parent().parent();
+        var boldObserver = function (mutation) {
+            textObject.bold = boldBtn.hasClass('mce-active');
+            iframeBody.find('*').css('font-weight', textObject.bold ? 'bold' : 'normal')
+        };
+        var italicBtn = $('.mce-i-italic').parent().parent();
+        var italicObserver = function (mutation) {
+            textObject.italic = italicBtn.hasClass('mce-active');
+            iframeBody.find('*').css('font-style', textObject.italic ? 'italic' : 'normal')
+        };
+        var underBtn = $('.mce-i-underline').parent().parent();
+        var underObserver = function (mutation) {
+            textObject.underline = underBtn.hasClass('mce-active');
+            iframeBody.find('*').css('text-decoration', textObject.underline ? 'underline' : 'none');
+        };
+
+        getObserver(fontFamilyObserver).observe(fontFamily.parent().parent()[0], fontConfig);
+        getObserver(fontSizesObserver).observe(fontSizes.parent().parent()[0], fontConfig);
+        getObserver(boldObserver).observe(boldBtn[0], fontConfig);
+        getObserver(italicObserver).observe(italicBtn[0], fontConfig);
+        getObserver(underObserver).observe(underBtn[0], fontConfig);
+
+        var bgColor = $('.mce-ico.mce-i-backcolor').parent().parent().find('.mce-preview')[0];
+        var bgColorObserver = function (mutation) {
+            var newBg = $(bgColor).css('background-color');
+            textObject.backgroundColor = newBg;
+            console.log(newBg, $('.popover.tour-text iframe').contents());
+            iframeBody.css('background-color', newBg);
+        };
+        var fgColor = $('.mce-ico.mce-i-forecolor').parent().parent().find('.mce-preview')[0];
+        var fgColorObserver = function (mutation) {
+            var newFg = $(fgColor).css('background-color');
+            iframeBody.find('*').css('color', newFg);
+        };
+
+        var colorConfig = {
+            attributes: true,
+            childList: false,
+            characterData: false
+        };
+        getObserver(fgColorObserver).observe(fgColor, colorConfig);
+        getObserver(bgColorObserver).observe(bgColor, colorConfig);
+    };
+    var att = 0;
+    var readyTimer = function () {
+        att++;
+        if ($('.popover .mce-ico.mce-i-forecolor').length) {
+            console.log('editor ready');
+            initEditorObserver();
+
+        }
+        else {
+            console.log(att + ' init attempts');
+            setTimeout(readyTimer, 100);
+        }
+    };
+
+    var hideEditor = $scope.hideEditor = function () {
+        $scope.$parent.$applyAsync(function () {
+            $scope.$parent.$hide();
+        });
+    }
+    $timeout(function () {
+        tinymce.init({
+            selector: 'textarea.tour-text',
+            fontsize_formats: "8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 40pt 44pt 48pt 54pt 60pt 66pt 72pt 80pt 88pt 96pt 112pt 128pt 150pt 200pt",
+            height: 500,
+            theme: 'modern',
+            plugins: ['save contextmenu textcolor colorpicker'],
+            toolbar1: 'save | undo redo | fontselect fontsizeselect | bold italic underline | forecolor backcolor ',
+            toolbar2: '',
+            save_onsavecallback: function () {
+                saving = true;
+                textObject.text = '';
+                iframeBody.find('p').each(function (i, p) {
+                    if (i > 0) {
+                        textObject.text += '\n';
+                    }
+                    textObject.text += $(p).text();
+                });
+                console.log(textObject);
+                try {
+                    var txtObj = wwtlib.TextObject.create(
+                        textObject.text,
+                        textObject.bold,
+                        textObject.italic,
+                        textObject.underline,
+                        textObject.fontSize,
+                        textObject.fontName,
+                        textObject.foregroundColor,
+                        textObject.backgroundColor,
+                        textObject.borderStyle)
+                    editorUI.addText({}, txtObj);
+                } catch (ex) { }
+                hideEditor();
+            },
+            content_css: "css/mcecontent.css"
+        });
+        readyTimer();
+    }, 10);
+    
+    }]
+);
     
 wwt.controllers.controller('ShareController',
 [
@@ -6307,54 +7039,57 @@ wwt.controllers.controller('LoginController',
     'Util',
     '$cookies',
     '$timeout',
-    function ($scope, $rootScope, $http, util, $cookies,$timeout) {
+    function ($scope, $rootScope, $http, util, $cookies, $timeout) {
 
-    $rootScope.loggedIn = false;
+        $rootScope.loggedIn = false;
 
-    function init() {
+        function init() {
 
-        $rootScope.liveAppId = $('body').data('liveid');
-        if (util.getQSParam('code') != null) {
-            var returnUrl = location.href.split('?')[0];
-            location.href = '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
-                '?returnUrl=' + encodeURIComponent(returnUrl);
-        } else if ($cookies.get('access_token')) {
-           
-            $rootScope.loggedIn = true;
-        }
-    }
+            $rootScope.liveAppId = $('body').data('liveid');
+            if (util.getQSParam('code') != null) {
 
-    function log(response) {
-        if (response.refresh_token) {
-            $cookies.put('refresh_token', response.refresh_token, { expires: new Date(2050, 1, 1) });
-            $cookies.put('access_token', response.access_token, { expires: new Date(2050, 1, 1) });
-            $timeout(function() {
+                var returnUrl = location.href.split('?')[0];
+                location.href = '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
+                    '?returnUrl=' + encodeURIComponent(returnUrl);
+            } else if ($cookies.get('access_token')) {
+
                 $rootScope.loggedIn = true;
-            });
+            }
         }
-        console.log(response, arguments);
-    }
 
-    $scope.login = function () {
-        var redir = 'http://' + location.host + '/webclient';
+        function log(response) {
+            if (response.refresh_token) {
+                $cookies.put('refresh_token', response.refresh_token, { expires: new Date(2050, 1, 1) });
+                $cookies.put('access_token', response.access_token, { expires: new Date(2050, 1, 1) });
+                $timeout(function () {
+                    $rootScope.loggedIn = true;
+                });
+            }
+            console.log(response, arguments);
+        }
+
+        $scope.login = function () {
+            localStorage.setItem('login', new Date().valueOf())
+            var redir = 'http://' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
                 $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
                 encodeURIComponent(redir) + '&display=popup';
             location.href = wlUrl;
-        return;
-    }
+            return;
+        }
 
-    $scope.logout = function() {
-        var storedData = localStorage.getItem('userSettings');
-        var data = storedData ? JSON.parse(storedData) : {};
-        data['rememberMe'] = false;
-        localStorage.setItem('userSettings', JSON.stringify(data));
-        location.href = '/Logout';
-    }
+        $scope.logout = function () {
+            localStorage.setItem('login', new Date().valueOf())
+            var storedData = localStorage.getItem('userSettings');
+            var data = storedData ? JSON.parse(storedData) : {};
+            data['rememberMe'] = false;
+            localStorage.setItem('userSettings', JSON.stringify(data));
+            location.href = '/Logout';
+        }
 
-    init();
+        init();
 
-}]);
+    }]);
 wwt.Move = function (createArgs) {
 	
 	//#region initialization
@@ -6384,12 +7119,15 @@ wwt.Move = function (createArgs) {
 		setBounds();
 		//  IE (sigh)
 		if (window.PointerEvent || window.MSPointerEvent) {
+		    
 			target.css('touch-action', 'none');
 			var pointerDownName = window.PointerEvent ? 'pointerdown' : 'MSPointerDown';
 			var pointerUpName = window.PointerEvent ? 'pointerup' : 'MSPointerUp';
 			var pointerMoveName = window.PointerEvent ? 'pointermove' : 'MSPointerMove';
 			document.body.addEventListener(pointerDownName, function (event) {
-				
+			    if (target.hasClass('disabled')) {
+			        return;
+			    }
 				if ((event.target !== target[0] && !$(target).has(event.target).length) || isMoving) {
 					return;
 				}
@@ -6416,8 +7154,12 @@ wwt.Move = function (createArgs) {
 				}, false);
 			}, false);
 			
-		}else {
-			target.on('mousedown touchstart', function(event) {
+		} else {
+		    
+		    target.on('mousedown touchstart', function (event) {
+		        if (target.hasClass('disabled')) {
+		            return;
+		        }
 				event.preventDefault();
 				event.stopPropagation();
 				moveInit(event);

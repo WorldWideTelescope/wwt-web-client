@@ -133,7 +133,7 @@ namespace wwtlib
                 if (item.Visible)
                 {
                     DivElement md = (DivElement)Document.CreateElement("div");
-                    md.ClassName = "contextmenuitem";
+                    md.ClassName = item.Checked ? "contextmenuitem checkedmenu" : "contextmenuitem"; 
                     md.InnerText = item.Name;
 
                     TagMe it = (TagMe)(Object)md;

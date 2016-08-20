@@ -16,7 +16,9 @@
         if (!guids) return null;
         var tours = [];
         $.each(guids.split(';'), function (i, item) {
-            tours.push(getTourById(item));
+            var tour = getTourById(item);
+            if (tour)
+                tours.push(tour);
         });
         return guids.length > 1 ? tours : null;
     }

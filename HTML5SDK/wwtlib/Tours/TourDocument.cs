@@ -359,8 +359,130 @@ namespace wwtlib
             tourDirty = 0;
 
         }
-       
-        string tagId;
+
+        internal void WriteTourXML(string outFile)
+        {
+        }
+        public string GetTourXML()
+        { 
+            XmlTextWriter xmlWriter = new XmlTextWriter();
+            
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+                xmlWriter.WriteStartElement("Tour");
+
+                xmlWriter.WriteAttributeString("ID", this.id);
+                xmlWriter.WriteAttributeString("Title", this.title);
+                xmlWriter.WriteAttributeString("Descirption", this.Description);
+                xmlWriter.WriteAttributeString("Description", this.Description);
+                xmlWriter.WriteAttributeString("RunTime", ((double)this.RunTime / 1000.0).ToString());
+                xmlWriter.WriteAttributeString("Author", this.author);
+                xmlWriter.WriteAttributeString("AuthorEmail", this.authorEmail);
+                xmlWriter.WriteAttributeString("OrganizationUrl", this.organizationUrl);
+                xmlWriter.WriteAttributeString("OrganizationName", this.OrgName);
+                xmlWriter.WriteAttributeString("Keywords", this.Keywords);
+                xmlWriter.WriteAttributeString("UserLevel", level.ToString());
+                xmlWriter.WriteAttributeString("Classification", type.ToString());
+                xmlWriter.WriteAttributeString("Taxonomy", taxonomy.ToString());
+               // xmlWriter.WriteAttributeString("DomeMode", DomeMode.ToString());
+                bool timeLineTour = IsTimelineTour();
+                xmlWriter.WriteAttributeString("TimeLineTour", timeLineTour.ToString());
+
+                //if (timeLineTour)
+                //{
+                //    xmlWriter.WriteStartElement("TimeLineTourStops");
+                //    foreach (TourStop stop in TourStops)
+                //    {
+                //        stop.SaveToXml(xmlWriter, true);
+                //    }
+                //    xmlWriter.WriteEndElement();
+
+                //    //todo fix this
+                //    //xmlWriter.WriteRaw(Properties.Resources.UpdateRequired);
+
+                //}
+                //else
+                {
+                    xmlWriter.WriteStartElement("TourStops");
+                    foreach (TourStop stop in TourStops)
+                    {
+                        stop.SaveToXml(xmlWriter, true);
+                    }
+                    xmlWriter.WriteEndElement();
+                }
+
+
+                List<Guid> masterList = CreateLayerMasterList();
+
+                // This will now save and sync emtpy frames...
+                List<ReferenceFrame> referencedFrames = GetReferenceFrameList();
+
+                xmlWriter.WriteStartElement("ReferenceFrames");
+                foreach (ReferenceFrame item in referencedFrames)
+                {
+                    item.SaveToXml(xmlWriter);
+                }
+                xmlWriter.WriteEndElement();
+
+
+                xmlWriter.WriteStartElement("Layers");
+                foreach (Guid id in masterList)
+                {
+                    if (LayerManager.LayerList.ContainsKey(id))
+                    {
+                        LayerManager.LayerList[id].SaveToXml(xmlWriter);
+                    }
+                }
+                xmlWriter.WriteEndElement();
+
+
+                xmlWriter.WriteFullEndElement();
+                xmlWriter.Close();
+
+            return xmlWriter.Body;
+        }
+
+        private List<ReferenceFrame> GetReferenceFrameList()
+        {
+            List<ReferenceFrame> list = new List<ReferenceFrame>();
+
+            foreach (string key in LayerManager.AllMaps.Keys)
+            {
+                LayerMap lm = LayerManager.AllMaps[key];
+                if ((lm.Frame.Reference == ReferenceFrames.Custom || lm.Frame.Reference == ReferenceFrames.Identity) && !list.Contains(lm.Frame) && lm.Frame.SystemGenerated == false)
+                {
+                    list.Add(lm.Frame);
+                }
+            }
+
+            return list;
+        }
+
+        private List<Guid> CreateLayerMasterList()
+        {
+            List<Guid> masterList = new List<Guid>();
+            foreach (TourStop stop in TourStops)
+            {
+                foreach (Guid id in stop.Layers.Keys)
+                {
+                    if (!masterList.Contains(id))
+                    {
+                        if (LayerManager.LayerList.ContainsKey(id))
+                        {
+                            masterList.Add(id);
+                        }
+                    }
+                }
+            }
+            return masterList;
+        }
+
+        private bool IsTimelineTour()
+        {
+            return false;
+        }
+
+        string tagId="";
 
         public string TagId
         {
@@ -398,7 +520,7 @@ namespace wwtlib
 
       
 
-        string id;
+        string id="";
 
         public string Id
         {
@@ -406,7 +528,7 @@ namespace wwtlib
             set { id = value; }
         }
 
-        string title;
+        string title="";
 
         public string Title
         {
@@ -435,7 +557,7 @@ namespace wwtlib
             }
         }
 
-        string description;
+        string description="";
 
         public string Description
         {
@@ -446,7 +568,7 @@ namespace wwtlib
                 TourDirty = true;
             }
         }
-        string attributesAndCredits;
+        string attributesAndCredits="";
 
         public string AttributesAndCredits
         {
@@ -458,7 +580,7 @@ namespace wwtlib
             }
         } 
         
-        string authorEmailOther;
+        string authorEmailOther="";
 
         public string AuthorEmailOther
         {
@@ -470,7 +592,7 @@ namespace wwtlib
             }
         } 
 
-        string authorEmail;
+        string authorEmail="";
 
         public string AuthorEmail
         {
@@ -482,7 +604,7 @@ namespace wwtlib
             }
         } 
 
-        string authorUrl;
+        string authorUrl="";
 
         public string AuthorUrl
         {
@@ -494,7 +616,7 @@ namespace wwtlib
             }
         } 
 
-        string authorPhone;
+        string authorPhone="";
 
         public string AuthorPhone
         {
@@ -506,7 +628,7 @@ namespace wwtlib
             }
         }
 
-        string authorContactText;
+        string authorContactText = "";
 
         public string AuthorContactText
         {
@@ -530,7 +652,7 @@ namespace wwtlib
             }
         }
 
-        string orgUrl;
+        string orgUrl = "";
 
         public string OrgUrl
         {
@@ -542,7 +664,7 @@ namespace wwtlib
             }
         }
 
-        string author;
+        string author = "";
 
         public string Author
         {
@@ -553,7 +675,7 @@ namespace wwtlib
                 TourDirty = true;
             }
         }
-        string authorImageUrl;
+        string authorImageUrl = "";
 
         public string AuthorImageUrl
         {
@@ -577,7 +699,7 @@ namespace wwtlib
             }
         }
 
-        string organizationUrl;
+        string organizationUrl = "";
 
         public string OrganizationUrl
         {
@@ -590,7 +712,7 @@ namespace wwtlib
         }
 
 
-        String filename;
+        String filename = "";
 
         public String FileName
         {
@@ -754,11 +876,11 @@ namespace wwtlib
                                 totalTime += slew.MoveTime*1000;
                             }
                             break;
-                        case TransitionType.Instant:
+                        case TransitionType.CrossCut:
                             break;
                         case TransitionType.CrossFade:
                             break;
-                        case TransitionType.FadeToBlack:
+                        case TransitionType.FadeOut:
                             break;
                         default:
                             break;
@@ -791,11 +913,11 @@ namespace wwtlib
                                 totalTime += slew.MoveTime*1000;
                             }
                             break;
-                        case TransitionType.Instant:
+                        case TransitionType.CrossCut:
                             break;
                         case TransitionType.CrossFade:
                             break;
-                        case TransitionType.FadeToBlack:
+                        case TransitionType.FadeOut:
                             break;
                         default:
                             break;
@@ -835,11 +957,11 @@ namespace wwtlib
                                 totalTime += slew.MoveTime*1000;
                             }
                             break;
-                        case TransitionType.Instant:
+                        case TransitionType.CrossCut:
                             break;
                         case TransitionType.CrossFade:
                             break;
-                        case TransitionType.FadeToBlack:
+                        case TransitionType.FadeOut:
                             break;
                         default:
                             break;

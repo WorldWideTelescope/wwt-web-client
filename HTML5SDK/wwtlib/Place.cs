@@ -446,13 +446,65 @@ namespace wwtlib
         //    xmlWriter.WriteEndElement();
         //}
 
+        internal void SaveToXml(XmlTextWriter xmlWriter, string elementName)
+        {
+
+            xmlWriter.WriteStartElement(elementName);
+            xmlWriter.WriteAttributeString("Name", name);
+            xmlWriter.WriteAttributeString("DataSetType", this.Type.ToString());
+            if (this.Type == ImageSetType.Sky)
+            {
+                xmlWriter.WriteAttributeString("RA", camParams.RA.ToString());
+                xmlWriter.WriteAttributeString("Dec", camParams.Dec.ToString());
+            }
+            else
+            {
+                xmlWriter.WriteAttributeString("Lat", Lat.ToString());
+                xmlWriter.WriteAttributeString("Lng", Lng.ToString());
+            }
+
+            xmlWriter.WriteAttributeString("Constellation", constellation);
+            xmlWriter.WriteAttributeString("Classification", Classification.ToString());
+            xmlWriter.WriteAttributeString("Magnitude", magnitude.ToString());
+            xmlWriter.WriteAttributeString("Distance", distnace.ToString());
+            xmlWriter.WriteAttributeString("AngularSize", AngularSize.ToString());
+            xmlWriter.WriteAttributeString("ZoomLevel", ZoomLevel.ToString());
+            xmlWriter.WriteAttributeString("Rotation", camParams.Rotation.ToString());
+            xmlWriter.WriteAttributeString("Angle", camParams.Angle.ToString());
+            xmlWriter.WriteAttributeString("Opacity", camParams.Opacity.ToString());
+            xmlWriter.WriteAttributeString("Target", Target.ToString());
+            xmlWriter.WriteAttributeString("ViewTarget", camParams.ViewTarget.ToString());
+            xmlWriter.WriteAttributeString("TargetReferenceFrame", camParams.TargetReferenceFrame);
+            //todo what do we do with full dome?
+            // xmlWriter.WriteAttributeString("DomeAlt", camParams.DomeAlt.ToString());
+           // xmlWriter.WriteAttributeString("DomeAz", camParams.DomeAz.ToString());
+            xmlWriter.WriteStartElement("Description");
+            xmlWriter.WriteCData(HtmlDescription);
+            xmlWriter.WriteEndElement();
+
+
+            if (backgroundImageSet != null)
+            {
+                xmlWriter.WriteStartElement("BackgroundImageSet");
+                Imageset.SaveToXml(xmlWriter, backgroundImageSet, "");
+                
+                xmlWriter.WriteEndElement();
+            }
+
+            if (studyImageset != null)
+            {
+                Imageset.SaveToXml(xmlWriter, studyImageset, "");
+            }
+            xmlWriter.WriteEndElement();
+        }
+
         internal static Place FromXml(XmlNode place)
         {
             Place newPlace = new Place();
 
             newPlace.name = place.Attributes.GetNamedItem("Name").Value;
 
-            if (place.Attributes.GetNamedItem("MSRComponentId") != null && place.Attributes.GetNamedItem("Permission") != null)
+            if (place.Attributes.GetNamedItem("MSRComponentId") != null && place.Attributes.GetNamedItem("Permission") != null && place.Attributes.GetNamedItem("Url") != null)
             {
                 //communities item
                 newPlace.Url = place.Attributes.GetNamedItem("Url").Value;
