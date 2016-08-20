@@ -13863,6 +13863,7 @@ window.wwtlib = function(){
   function Overlay() {
     this.isDynamic = false;
     this.isDesignTimeOnly = false;
+    this._name = '';
     this.id = (Overlay.nextId++).toString();
     this._owner = null;
     this._url = '';
@@ -14621,10 +14622,25 @@ window.wwtlib = function(){
     this._tourDirty = 0;
     this._workingDirectory = '';
     this.url = '';
+    this._tagId = '';
     this._representativeThumbnailTourstop = 0;
+    this._id = '';
+    this._title = '';
     this._runTime = 0;
     this._lastDirtyCheck = 0;
+    this._description = '';
+    this._attributesAndCredits = '';
+    this._authorEmailOther = '';
+    this._authorEmail = '';
+    this._authorUrl = '';
+    this._authorPhone = '';
+    this._authorContactText = '';
     this._orgName = 'None';
+    this._orgUrl = '';
+    this._author = '';
+    this._authorImageUrl = '';
+    this._organizationUrl = '';
+    this._filename = '';
     this._level = 0;
     this._type = 0;
     this._taxonomy = '';
@@ -16113,6 +16129,7 @@ window.wwtlib = function(){
     this._contextPoint = new Vector2d();
     this._dragCopying = false;
     this._brokeThreshold = false;
+    this.editTextCallback = null;
     this._defaultColor = Colors.get_white();
   }
   var TourEditor$ = {
@@ -17040,7 +17057,16 @@ window.wwtlib = function(){
       }
       return true;
     },
+    _doneEditing: function() {
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(545, 'Text Edit'), this._tour));
+      (this.get_focus()).set_width(0);
+      (this.get_focus()).set_height(0);
+      this.get_focus().set_color((this.get_focus()).textObject.foregroundColor);
+      this.get_focus().cleanUp();
+    },
     _editText: function() {
+      var textObj = (this.get_focus()).textObject;
+      this.editTextCallback(textObj, ss.bind('_doneEditing', this));
     },
     keyDown: function(sender, e) {
       if (TourEditor.currentEditor != null) {
@@ -18141,6 +18167,8 @@ window.wwtlib = function(){
     this._nextSlide = 'Next';
     this._fadeInOverlays = false;
     this._masterSlide = false;
+    this._id = '';
+    this._description = '';
     this._name = '';
     this._duration = 10000;
     this._interpolationType = 0;
@@ -20068,22 +20096,7 @@ window.wwtlib = function(){
   };
   Util.getWrappedText = function(ctx, text, width) {
     var lines = [];
-    var words = text.split(' ');
-    var currentLine = '';
-    for (var i = 0; i < words.length; i++) {
-      if (!ss.emptyString(words[i])) {
-        if (!currentLine || ctx.measureText(currentLine + ' ' + words[i]).width < width) {
-          currentLine += ' ' + words[i];
-        }
-        else {
-          lines.push(currentLine);
-          currentLine = words[i];
-        }
-      }
-    }
-    if (!!currentLine) {
-      lines.push(currentLine);
-    }
+    lines.push(text);
     return lines;
   };
   Util.toHex = function(number) {
@@ -20970,9 +20983,15 @@ window.wwtlib = function(){
     navigator.geolocation.getCurrentPosition(WWTControl._getLocation, WWTControl._getLocationError);
   };
   WWTControl._getLocation = function(pos) {
-    Settings.get_globalSettings().set_locationLat(pos.coords.latitude);
-    Settings.get_globalSettings().set_locationLng(pos.coords.longitude);
-    Settings.get_globalSettings().set_locationAltitude(pos.coords.altitude);
+    if (!!pos.coords.latitude) {
+      Settings.get_globalSettings().set_locationLat(pos.coords.latitude);
+    }
+    if (!!pos.coords.longitude) {
+      Settings.get_globalSettings().set_locationLng(pos.coords.longitude);
+    }
+    if (!!pos.coords.altitude) {
+      Settings.get_globalSettings().set_locationAltitude(pos.coords.altitude);
+    }
   };
   WWTControl._getLocationError = function(pos) {
     if (pos != null && pos.coords != null) {
@@ -31757,6 +31776,7 @@ window.wwtlib = function(){
   TextOverlay.create = function(textObject) {
     var to = new TextOverlay();
     to.textObject = textObject;
+    to._calculateTextSize$1();
     return to;
   };
   var TextOverlay$ = {
@@ -31827,8 +31847,51 @@ window.wwtlib = function(){
         }
       }
     },
+    _calculateTextSize$1: function() {
+      if (this._ctx$1 == null || this._ce$1 == null) {
+        this._ce$1 = document.createElement('canvas');
+        this._ce$1.height = 100;
+        this._ce$1.width = 100;
+        this._ctx$1 = this._ce$1.getContext('2d');
+      }
+      this._ctx$1.fillStyle = this.textObject.foregroundColor.toString();
+      this._ctx$1.font = ((this.textObject.italic) ? 'italic' : 'normal') + ' ' + ((this.textObject.bold) ? 'bold' : 'normal') + ' ' + Math.round(this.textObject.fontSize * 1.2).toString() + 'px ' + this.textObject.fontName;
+      this._ctx$1.textBaseline = 'top';
+      var text = this.textObject.text;
+      if (text.indexOf('{$') > -1) {
+        if (text.indexOf('{$DATE}') > -1) {
+          var date = ss.format('{0:yyyy/MM/dd}', SpaceTimeController.get_now());
+          text = ss.replaceString(text, '{$DATE}', date);
+        }
+        if (text.indexOf('{$TIME}') > -1) {
+          var time = ss.format('{0:HH:mm:ss}', SpaceTimeController.get_now());
+          text = ss.replaceString(text, '{$TIME}', time);
+        }
+        text = ss.replaceString(text, '{$DIST}', UiTools.formatDistance(WWTControl.singleton.renderContext.get_solarSystemCameraDistance()));
+        text = ss.replaceString(text, '{$LAT}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
+        text = ss.replaceString(text, '{$LNG}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.lat));
+        text = ss.replaceString(text, '{$RA}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_RA()));
+        text = ss.replaceString(text, '{$DEC}', Coordinates.formatDMS(WWTControl.singleton.renderContext.viewCamera.get_dec()));
+        text = ss.replaceString(text, '{$FOV}', Coordinates.formatDMS(WWTControl.singleton.renderContext.get_fovAngle()));
+      }
+      var lines = text.split('\n');
+      var baseline = 0;
+      var lineSpace = this.textObject.fontSize * 1.7;
+      var maxWidth = 0;
+      var $enum1 = ss.enumerate(lines);
+      while ($enum1.moveNext()) {
+        var line = $enum1.current;
+        var width = this._ctx$1.measureText(line).width;
+        maxWidth = Math.max(width, maxWidth);
+        baseline += lineSpace;
+      }
+      this.set_width(maxWidth * 1.01);
+      this.set_height(baseline);
+      this._ce$1 = null;
+      this._ctx$1 = null;
+    },
     initializeTexture: function() {
-      if (this.texture2d == null) {
+      if (this.texture2d == null || (this.textObject.text.indexOf('{$') > -1)) {
         if (this._ctx$1 == null || this._ce$1 == null) {
           this._ce$1 = document.createElement('canvas');
           this._ce$1.height = ss.truncate(this.get_height());
@@ -31841,6 +31904,8 @@ window.wwtlib = function(){
         this.texture2d = new Texture();
         this.texture2d.imageElement = this._ce$1;
         this.texture2d.makeTexture();
+        this._ce$1 = null;
+        this._ctx$1 = null;
       }
     },
     writeOverlayProperties: function(xmlWriter) {
