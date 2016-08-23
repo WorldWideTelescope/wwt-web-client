@@ -1331,7 +1331,7 @@ wwt.app.directive('contenteditable', [function() {
                     s.secDuration + 
                     s.tenths;
                 
-                console.log(s.duration);
+                //console.log(s.duration);
                 element.html(s.durationString);
             }
 
@@ -6454,6 +6454,11 @@ wwt.controllers.controller('CurrentTourController', [
         $scope.voiceOverPlaying = false;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
+        $scope.editText = null;
+        tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
+            $scope.editText = { textObject: textObject, onFinished: onFinished };
+            $('#editTourText').click();
+        }
         mapStops(true);
          
         //$rootScope.$on('escKey', function () {
@@ -6642,7 +6647,7 @@ wwt.controllers.controller('CurrentTourController', [
             tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
             $scope.tour = tour;
 
-            if (isInit) {
+            if (isInit && isInit===true) {
                 $scope.selectStop(0);
                 if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
                     setTimeout(function () {
@@ -6686,6 +6691,17 @@ wwt.controllers.controller('TourSlideText', [
     function ($scope, $rootScope, util, $timeout) {
         var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
         var iframeBody;
+        var editScope = null;
+        var pristineText = null;
+        function init() {
+            editScope = angular.element('#currentTourPanel').scope();
+            if (editScope.editText) {
+                pristineText = editScope.editText.textObject;
+                textObject = Object.assign({}, pristineText);
+                
+            }
+        }
+
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -6701,8 +6717,22 @@ wwt.controllers.controller('TourSlideText', [
     var saving = false;
     function initEditorObserver() {
 
-        iframeBody = $('.popover.tour-text iframe').contents().find("body");
-
+        iframeBody = $('.modal.tour-text iframe').contents().find("body");
+        if (editScope.editText) {
+            iframeBody.html('');
+            textObject.text.split('\n').forEach(function (s, i) {
+                iframeBody.append($('<p></p>').html(s));
+            });
+            iframeBody.find('p').css({
+                color: textObject.foregroundColor,
+                backgroundColor: textObject.backgroundColor,
+                fontWeight: textObject.fontWeight ? 'bold' : 'normal',
+                fontSize: textObject.fontSize + 'pt',
+                textDecoration: textObject.underline ? 'underline' : 'none',
+                fontStyle: textObject.italic ? 'italic' : 'none',
+                fontFamily: textObject.fontName
+            });
+        }
         var getObserver = function (cb) {
 
             return new MutationObserver(function (mutations) {
@@ -6786,10 +6816,9 @@ wwt.controllers.controller('TourSlideText', [
     var att = 0;
     var readyTimer = function () {
         att++;
-        if ($('.popover .mce-ico.mce-i-forecolor').length) {
+        if ($('.modal .mce-ico.mce-i-forecolor').length) {
             console.log('editor ready');
             initEditorObserver();
-
         }
         else {
             console.log(att + ' init attempts');
@@ -6798,6 +6827,10 @@ wwt.controllers.controller('TourSlideText', [
     };
 
     var hideEditor = $scope.hideEditor = function () {
+        if (editScope.editText) {
+            editScope.editText.onFinished(pristineText);
+            editScope.editText = null;
+        }
         $scope.$parent.$applyAsync(function () {
             $scope.$parent.$hide();
         });
@@ -6822,7 +6855,8 @@ wwt.controllers.controller('TourSlideText', [
                 });
                 console.log(textObject);
                 try {
-                    var txtObj = wwtlib.TextObject.create(
+                    
+                    var txtObj = editScope.editText ? editScope.editText.textObject : wwtlib.TextObject.create(
                         textObject.text,
                         textObject.bold,
                         textObject.italic,
@@ -6831,8 +6865,13 @@ wwt.controllers.controller('TourSlideText', [
                         textObject.fontName,
                         textObject.foregroundColor,
                         textObject.backgroundColor,
-                        textObject.borderStyle)
-                    editorUI.addText({}, txtObj);
+                        textObject.borderStyle);
+                    if (editScope.editText) {
+                        editScope.editText.onFinished(textObject);
+                        editScope.editText = null;
+                    } else {
+                        editorUI.addText({}, txtObj);
+                    }
                 } catch (ex) { }
                 hideEditor();
             },
@@ -6840,7 +6879,7 @@ wwt.controllers.controller('TourSlideText', [
         });
         readyTimer();
     }, 10);
-    
+    init();
     }]
 );
     

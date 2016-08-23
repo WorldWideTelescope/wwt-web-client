@@ -56,7 +56,7 @@
                     s.secDuration + 
                     s.tenths;
                 
-                console.log(s.duration);
+                //console.log(s.duration);
                 element.html(s.durationString);
             }
 

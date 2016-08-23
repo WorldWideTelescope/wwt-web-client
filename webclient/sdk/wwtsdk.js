@@ -22153,7 +22153,9 @@ window.wwtlib = function(){
       this._pushNewElement(name);
     },
     _writeAttributeString: function(key, value) {
-      this._attributes[key] = ss.replaceString(value.toString(), '&', '&amp;');
+      if (value != null) {
+        this._attributes[key] = ss.replaceString(value.toString(), '&', '&amp;');
+      }
     },
     _writeEndElement: function() {
       this._writePending();

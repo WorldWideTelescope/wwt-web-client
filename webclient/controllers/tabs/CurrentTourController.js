@@ -10,6 +10,11 @@
         $scope.voiceOverPlaying = false;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
+        $scope.editText = null;
+        tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
+            $scope.editText = { textObject: textObject, onFinished: onFinished };
+            $('#editTourText').click();
+        }
         mapStops(true);
          
         //$rootScope.$on('escKey', function () {
@@ -198,7 +203,7 @@
             tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
             $scope.tour = tour;
 
-            if (isInit) {
+            if (isInit && isInit===true) {
                 $scope.selectStop(0);
                 if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
                     setTimeout(function () {
