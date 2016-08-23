@@ -1007,8 +1007,8 @@
                                 <a class="btn" localize="Save" style="width:48px;" ng-click="saveTour()"></a>
                                 
                                 <div>
-                                    <a class="btn menu-button text" bs-popover template-url="views/popovers/tour-text.html" 
-                                    trigger="click" placement="bottom-right" data-content="{tour}" 
+                                    <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html" 
+                                    trigger="click" data-content="{tour}" id="editTourText" placement="center"
                                     title="Enter Text" data-container="body">
                                         <div class="icon">
                                             <i class="A">A</i>

@@ -6,6 +6,17 @@
     function ($scope, $rootScope, util, $timeout) {
         var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
         var iframeBody;
+        var editScope = null;
+        var pristineText = null;
+        function init() {
+            editScope = angular.element('#currentTourPanel').scope();
+            if (editScope.editText) {
+                pristineText = editScope.editText.textObject;
+                textObject = Object.assign({}, pristineText);
+                
+            }
+        }
+
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -21,8 +32,22 @@
     var saving = false;
     function initEditorObserver() {
 
-        iframeBody = $('.popover.tour-text iframe').contents().find("body");
-
+        iframeBody = $('.modal.tour-text iframe').contents().find("body");
+        if (editScope.editText) {
+            iframeBody.html('');
+            textObject.text.split('\n').forEach(function (s, i) {
+                iframeBody.append($('<p></p>').html(s));
+            });
+            iframeBody.find('p').css({
+                color: textObject.foregroundColor,
+                backgroundColor: textObject.backgroundColor,
+                fontWeight: textObject.fontWeight ? 'bold' : 'normal',
+                fontSize: textObject.fontSize + 'pt',
+                textDecoration: textObject.underline ? 'underline' : 'none',
+                fontStyle: textObject.italic ? 'italic' : 'none',
+                fontFamily: textObject.fontName
+            });
+        }
         var getObserver = function (cb) {
 
             return new MutationObserver(function (mutations) {
@@ -106,10 +131,9 @@
     var att = 0;
     var readyTimer = function () {
         att++;
-        if ($('.popover .mce-ico.mce-i-forecolor').length) {
+        if ($('.modal .mce-ico.mce-i-forecolor').length) {
             console.log('editor ready');
             initEditorObserver();
-
         }
         else {
             console.log(att + ' init attempts');
@@ -118,6 +142,10 @@
     };
 
     var hideEditor = $scope.hideEditor = function () {
+        if (editScope.editText) {
+            editScope.editText.onFinished(pristineText);
+            editScope.editText = null;
+        }
         $scope.$parent.$applyAsync(function () {
             $scope.$parent.$hide();
         });
@@ -142,7 +170,8 @@
                 });
                 console.log(textObject);
                 try {
-                    var txtObj = wwtlib.TextObject.create(
+                    
+                    var txtObj = editScope.editText ? editScope.editText.textObject : wwtlib.TextObject.create(
                         textObject.text,
                         textObject.bold,
                         textObject.italic,
@@ -151,8 +180,13 @@
                         textObject.fontName,
                         textObject.foregroundColor,
                         textObject.backgroundColor,
-                        textObject.borderStyle)
-                    editorUI.addText({}, txtObj);
+                        textObject.borderStyle);
+                    if (editScope.editText) {
+                        editScope.editText.onFinished(textObject);
+                        editScope.editText = null;
+                    } else {
+                        editorUI.addText({}, txtObj);
+                    }
                 } catch (ex) { }
                 hideEditor();
             },
@@ -160,7 +194,7 @@
         });
         readyTimer();
     }, 10);
-    
+    init();
     }]
 );
     
