@@ -6458,9 +6458,9 @@ wwt.controllers.controller('CurrentTourController', [
         tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
-        }
+        } 
         mapStops(true);
-         
+        
         //$rootScope.$on('escKey', function () {
             //$scope.$applyAsync(showTourSlides);
         //});
@@ -6697,11 +6697,14 @@ wwt.controllers.controller('TourSlideText', [
             editScope = angular.element('#currentTourPanel').scope();
             if (editScope.editText) {
                 pristineText = editScope.editText.textObject;
-                textObject = Object.assign({}, pristineText);
+                $.each(editableKeys, function (i, key) {
+                    if (pristineText[key] !== textObject[key])
+                        textObject[key] = pristineText[key];
+                });
                 
             }
         }
-
+        
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -6713,6 +6716,7 @@ wwt.controllers.controller('TourSlideText', [
             fontName: 'Arial',
             borderStyle:'None'
         };
+        var editableKeys = Object.keys(textObject);
  
     var saving = false;
     function initEditorObserver() {
@@ -6730,7 +6734,8 @@ wwt.controllers.controller('TourSlideText', [
                 fontSize: textObject.fontSize + 'pt',
                 textDecoration: textObject.underline ? 'underline' : 'none',
                 fontStyle: textObject.italic ? 'italic' : 'none',
-                fontFamily: textObject.fontName
+                fontFamily: textObject.fontName,
+                margin:'3px 0'
             });
         }
         var getObserver = function (cb) {
@@ -6847,6 +6852,9 @@ wwt.controllers.controller('TourSlideText', [
             save_onsavecallback: function () {
                 saving = true;
                 textObject.text = '';
+                while (iframeBody.find('p').last().text().trim() === '') {
+                    iframeBody.find('p').last().remove()
+                }
                 iframeBody.find('p').each(function (i, p) {
                     if (i > 0) {
                         textObject.text += '\n';
@@ -6856,20 +6864,25 @@ wwt.controllers.controller('TourSlideText', [
                 console.log(textObject);
                 try {
                     
-                    var txtObj = editScope.editText ? editScope.editText.textObject : wwtlib.TextObject.create(
-                        textObject.text,
-                        textObject.bold,
-                        textObject.italic,
-                        textObject.underline,
-                        textObject.fontSize,
-                        textObject.fontName,
-                        textObject.foregroundColor,
-                        textObject.backgroundColor,
-                        textObject.borderStyle);
+                    
                     if (editScope.editText) {
+                        $.each(editableKeys, function (i, key) {
+                            if(pristineText[key] !== textObject[key])
+                                pristineText[key] = textObject[key];
+                        });
                         editScope.editText.onFinished(textObject);
                         editScope.editText = null;
                     } else {
+                        var txtObj = wwtlib.TextObject.create(
+                            textObject.text,
+                            textObject.bold,
+                            textObject.italic,
+                            textObject.underline,
+                            textObject.fontSize,
+                            textObject.fontName,
+                            textObject.foregroundColor,
+                            textObject.backgroundColor,
+                            textObject.borderStyle);
                         editorUI.addText({}, txtObj);
                     }
                 } catch (ex) { }
