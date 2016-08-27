@@ -1657,8 +1657,24 @@ namespace wwtlib
             return true;
         }
 
+
+       
+        public TextEditorDelegate editTextCallback = null;
+
+        private void DoneEditing()
+        {
+           Undo.Push(new UndoTourStopChange(Language.GetLocalizedText(545, "Text Edit"), tour));
+           ((TextOverlay)Focus).Width = 0;
+           ((TextOverlay)Focus).Height = 0;
+           Focus.Color = ((TextOverlay)Focus).TextObject.ForegroundColor;
+           Focus.CleanUp();
+        }
+
         private void EditText()
         {
+            TextObject textObj = ((TextOverlay)Focus).TextObject;
+            editTextCallback(textObj, DoneEditing);
+
             //todo port Text Editor
             //TextEditor te = new TextEditor();
             //te.TextObject = ((TextOverlay)Focus).TextObject;
@@ -2307,6 +2323,7 @@ namespace wwtlib
             }
         }
 
+    
         public bool MultipleSelection = false;
         public bool HitType = false;
 
@@ -2331,5 +2348,5 @@ namespace wwtlib
 
         }
     }
-
+    public delegate void TextEditorDelegate(TextObject item, Action done);
 }

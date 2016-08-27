@@ -44,6 +44,7 @@ module.exports = function(grunt) {
                     'directives/Scroll.js',
                     'directives/Localize.js',
                     'directives/ContextMenu.js',
+                    'directives/EditSlideValues.js',
                     'factories/appstate.js',
                     'factories/localization.js',
                     'factories/FinderScope.js',

@@ -86,6 +86,7 @@
     <Content Include="css\skin.min.css" />
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
+    <Content Include="directives\EditSlideValues.js" />
     <Content Include="factories\mediafile.js" />
     <Content Include="Gruntfile.js" />
     <Content Include=".editorconfig" />
@@ -310,7 +311,6 @@
     <Content Include="sunCorona.png" />
     <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\finder-scope.html" />
-    <Content Include="views\modals\intro.html" />
     <Content Include="views\modals\loading.html" />
     <Content Include="views\modals\mobile-explore.html" />
     <Content Include="views\modals\mobile-layer-manager.html" />

@@ -72,7 +72,10 @@ namespace wwtlib
 
         internal void WriteAttributeString(string key, object value)
         {
-            attributes[key] = value.ToString().Replace("&","&amp;");
+            if (value != null)
+            {
+                attributes[key] = value.ToString().Replace("&", "&amp;");
+            }
         }
 
         internal void WriteEndElement()

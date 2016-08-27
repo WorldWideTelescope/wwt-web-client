@@ -96,7 +96,8 @@
                             .slide-label{
                                 position:absolute;
                                 bottom:0;
-                                left:4px;
+                                left:0px;
+                                padding-left:3px;
                             }
                             .duration{
                                 position:absolute;
@@ -105,6 +106,24 @@
                                 width:99px;
                                 text-align:center;
                                 display:block;
+                            }
+                            a.tinybutton{
+                                position:absolute;
+                                bottom:-13px;
+                                i.fa{
+                                    position:relative;
+                                    top: -6px;
+                                    left: 0;
+                                }
+                            }
+                            a.tinybutton.duration-up{
+                                left:0;
+                            }
+                            a.tinybutton.duration-down{
+                                right:0;
+                                i.fa{
+                                    top:-4px
+                                }
                             }
                             .ear{
                                 height:0;
@@ -518,9 +537,9 @@
         }
     }
 
-    .popover.tour-text{
-        width:750px;
-        max-width:1000px;
+    .modal.tour-text .modal-dialog{
+        min-width:750px;
+        
        // margin-left:-150px;
        .mce-container.mce-menubar,.mce-path{
            display:none;
@@ -532,8 +551,9 @@
            margin-top:-7px;
            height:15px;
        }
-       .popover-content{
+       .modal-content{
            padding:0;
+           position:relative;
        }
     }
 
@@ -549,6 +569,20 @@
         label{
             display:block;
             margin:3px 0 0 0;
+        }
+    }
+
+    .popover,.modal {
+        .popover-content, .modal-content{
+            .btn.close-x{
+               position:absolute;
+               top:6px;
+               right:5px;
+            }
+            .btn.close-x.tight{
+                top:2px;
+                right:2px;
+            }
         }
     }
 }

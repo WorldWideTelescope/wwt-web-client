@@ -1023,9 +1023,67 @@ namespace wwtlib
             }
             else
             {
-                //todo add webgl method of drawing
-            }
-           
+                int count = orbitalSampleRate;
+                bool planetDropped = false;
+
+                Vector3d viewPoint = renderContext.ViewPoint;
+
+
+                //CanvasContext2D ctx = renderContext.Device;
+                //ctx.Save();
+
+                //ctx.StrokeStyle = eclipticColor.ToString();
+                //ctx.LineWidth = 2;
+                //ctx.Alpha = 1;
+                Vector3d point = new Vector3d();
+                Vector3d pointTest = new Vector3d();
+
+                Vector3d lastPoint = new Vector3d();
+                bool firstPoint = true;
+             //   Matrix3d translate = Matrix3d.Translation(Vector3d.Negate(centerPoint));
+             //   Matrix3d mat = Matrix3d.MultiplyMatrix(translate, renderContext.WVP);
+             //   Matrix3d matWV = Matrix3d.MultiplyMatrix(translate, renderContext.WV);
+                SimpleLineList list = new SimpleLineList();
+               
+
+                for (int i = 0; i < count; i++)
+                {
+                    Vector3d pnt = orbits[id][i];
+
+                    double angle = (Math.Atan2(orbits[id][i].Z, orbits[id][i].X) + Math.PI * 2 - startAngle) % (Math.PI * 2);
+                    int alpha = (int)((angle) / (Math.PI * 2) * 255);
+
+                    double alphaD = (double)alpha / 255.0;
+
+                    if (alpha < 2 && !planetDropped)
+                    {
+                        pnt = planetNow;
+                        alphaD = 1.0;
+
+                    }
+// pointTest = matWV.Transform(pnt);
+            //        point = mat.Transform(pnt);
+
+                    //if (pointTest.Z > 0)
+                    {
+
+
+                        if (firstPoint)
+                        {
+
+                            firstPoint = false;
+                        }
+                        else
+                        {
+                            list.AddLine(lastPoint, pnt);
+                        }
+                    }
+
+                    lastPoint = pnt;
+                }
+
+                list.DrawLines(renderContext, 1.0f, Colors.White);
+            }      
         }
 
 

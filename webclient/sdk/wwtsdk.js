@@ -11665,6 +11665,32 @@ window.wwtlib = function(){
       ctx.restore();
     }
     else {
+      var count = Planets._orbitalSampleRate;
+      var planetDropped = false;
+      var viewPoint = renderContext.get_viewPoint();
+      var point = new Vector3d();
+      var pointTest = new Vector3d();
+      var lastPoint = new Vector3d();
+      var firstPoint = true;
+      var list = new SimpleLineList();
+      for (var i = 0; i < count; i++) {
+        var pnt = Planets._orbits[id][i];
+        var angle = (Math.atan2(Planets._orbits[id][i].z, Planets._orbits[id][i].x) + Math.PI * 2 - startAngle) % (Math.PI * 2);
+        var alpha = ss.truncate((angle / (Math.PI * 2) * 255));
+        var alphaD = alpha / 255;
+        if (alpha < 2 && !planetDropped) {
+          pnt = planetNow;
+          alphaD = 1;
+        }
+        if (firstPoint) {
+          firstPoint = false;
+        }
+        else {
+          list.addLine(lastPoint, pnt);
+        }
+        lastPoint = pnt;
+      }
+      list.drawLines(renderContext, 1, Colors.get_white());
     }
   };
   Planets.isPlanetInFrustum = function(renderContext, rad) {
@@ -17763,6 +17789,7 @@ window.wwtlib = function(){
     this._contextPoint = new Vector2d();
     this._dragCopying = false;
     this._brokeThreshold = false;
+    this.editTextCallback = null;
     this._defaultColor = Colors.get_white();
   }
   var TourEditor$ = {
@@ -18690,7 +18717,16 @@ window.wwtlib = function(){
       }
       return true;
     },
+    _doneEditing: function() {
+      Undo.push(new UndoTourStopChange(Language.getLocalizedText(545, 'Text Edit'), this._tour));
+      (this.get_focus()).set_width(0);
+      (this.get_focus()).set_height(0);
+      this.get_focus().set_color((this.get_focus()).textObject.foregroundColor);
+      this.get_focus().cleanUp();
+    },
     _editText: function() {
+      var textObj = (this.get_focus()).textObject;
+      this.editTextCallback(textObj, ss.bind('_doneEditing', this));
     },
     keyDown: function(sender, e) {
       if (TourEditor.currentEditor != null) {
@@ -22261,7 +22297,9 @@ window.wwtlib = function(){
       this._pushNewElement(name);
     },
     _writeAttributeString: function(key, value) {
-      this._attributes[key] = ss.replaceString(value.toString(), '&', '&amp;');
+      if (value != null) {
+        this._attributes[key] = ss.replaceString(value.toString(), '&', '&amp;');
+      }
     },
     _writeEndElement: function() {
       this._writePending();
