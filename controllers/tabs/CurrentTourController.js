@@ -10,6 +10,11 @@
         $scope.voiceOverPlaying = false;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
         tourEdit.tourStopList.refreshCallback = mapStops;
+        $scope.editText = null;
+        tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
+            $scope.editText = { textObject: textObject, onFinished: onFinished };
+            $('#editTourText').click();
+        }
         mapStops(true);
          
         //$rootScope.$on('escKey', function () {
@@ -184,11 +189,6 @@
                 s.description = s.get_description();
                 s.thumb = s.get_thumbnail();
                 s.duration = s.get_duration();
-                s.secDuration = Math.round(s.duration / 1000);
-                if (s.secDuration < 10) {
-                    s.secDuration = '0' + s.secDuration;
-                }
-                s.secDuration = '0:' + s.secDuration;
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
@@ -203,7 +203,7 @@
             tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
             $scope.tour = tour;
 
-            if (isInit) {
+            if (isInit && isInit===true) {
                 $scope.selectStop(0);
                 if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
                     setTimeout(function () {
@@ -213,6 +213,8 @@
             }
         });
     };
+
+    
 
     $scope.setStopTransition = function (index, transitionType, transTime) {
         if (transitionType || transitionType === 0) {

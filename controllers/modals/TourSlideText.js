@@ -6,6 +6,20 @@
     function ($scope, $rootScope, util, $timeout) {
         var editorUI = wwtlib.WWTControl.singleton.tourEdit.tourEditorUI;
         var iframeBody;
+        var editScope = null;
+        var pristineText = null;
+        function init() {
+            editScope = angular.element('#currentTourPanel').scope();
+            if (editScope.editText) {
+                pristineText = editScope.editText.textObject;
+                $.each(editableKeys, function (i, key) {
+                    if (pristineText[key] !== textObject[key])
+                        textObject[key] = pristineText[key];
+                });
+                
+            }
+        }
+        
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -17,12 +31,28 @@
             fontName: 'Arial',
             borderStyle:'None'
         };
+        var editableKeys = Object.keys(textObject);
  
     var saving = false;
     function initEditorObserver() {
 
-        iframeBody = $('.popover.tour-text iframe').contents().find("body");
-
+        iframeBody = $('.modal.tour-text iframe').contents().find("body");
+        if (editScope.editText) {
+            iframeBody.html('');
+            textObject.text.split('\n').forEach(function (s, i) {
+                iframeBody.append($('<p></p>').html(s));
+            });
+            iframeBody.find('p').css({
+                color: textObject.foregroundColor,
+                backgroundColor: textObject.backgroundColor,
+                fontWeight: textObject.fontWeight ? 'bold' : 'normal',
+                fontSize: textObject.fontSize + 'pt',
+                textDecoration: textObject.underline ? 'underline' : 'none',
+                fontStyle: textObject.italic ? 'italic' : 'none',
+                fontFamily: textObject.fontName,
+                margin:'3px 0'
+            });
+        }
         var getObserver = function (cb) {
 
             return new MutationObserver(function (mutations) {
@@ -106,10 +136,9 @@
     var att = 0;
     var readyTimer = function () {
         att++;
-        if ($('.popover .mce-ico.mce-i-forecolor').length) {
+        if ($('.modal .mce-ico.mce-i-forecolor').length) {
             console.log('editor ready');
             initEditorObserver();
-
         }
         else {
             console.log(att + ' init attempts');
@@ -118,6 +147,10 @@
     };
 
     var hideEditor = $scope.hideEditor = function () {
+        if (editScope.editText) {
+            editScope.editText.onFinished(pristineText);
+            editScope.editText = null;
+        }
         $scope.$parent.$applyAsync(function () {
             $scope.$parent.$hide();
         });
@@ -134,6 +167,9 @@
             save_onsavecallback: function () {
                 saving = true;
                 textObject.text = '';
+                while (iframeBody.find('p').last().text().trim() === '') {
+                    iframeBody.find('p').last().remove()
+                }
                 iframeBody.find('p').each(function (i, p) {
                     if (i > 0) {
                         textObject.text += '\n';
@@ -142,17 +178,28 @@
                 });
                 console.log(textObject);
                 try {
-                    var txtObj = wwtlib.TextObject.create(
-                        textObject.text,
-                        textObject.bold,
-                        textObject.italic,
-                        textObject.underline,
-                        textObject.fontSize,
-                        textObject.fontName,
-                        textObject.foregroundColor,
-                        textObject.backgroundColor,
-                        textObject.borderStyle)
-                    editorUI.addText({}, txtObj);
+                    
+                    
+                    if (editScope.editText) {
+                        $.each(editableKeys, function (i, key) {
+                            if(pristineText[key] !== textObject[key])
+                                pristineText[key] = textObject[key];
+                        });
+                        editScope.editText.onFinished(textObject);
+                        editScope.editText = null;
+                    } else {
+                        var txtObj = wwtlib.TextObject.create(
+                            textObject.text,
+                            textObject.bold,
+                            textObject.italic,
+                            textObject.underline,
+                            textObject.fontSize,
+                            textObject.fontName,
+                            textObject.foregroundColor,
+                            textObject.backgroundColor,
+                            textObject.borderStyle);
+                        editorUI.addText({}, txtObj);
+                    }
                 } catch (ex) { }
                 hideEditor();
             },
@@ -160,7 +207,7 @@
         });
         readyTimer();
     }, 10);
-    
+    init();
     }]
 );
     
