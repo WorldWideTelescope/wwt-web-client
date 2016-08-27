@@ -601,6 +601,18 @@ namespace wwtlib
                 return "";
             }
         }
+
+        static public string TwoPlaces(int val)
+        {
+            string num = val.ToString();
+            if (num.Length < 2)
+            {
+                num = "0" + num;
+            }
+
+            return num;
+        }
+
         static public string FormatDMS(double angle)
         {
             try
@@ -611,7 +623,7 @@ namespace wwtlib
                 double seconds = ((minutes - ((int)minutes)) * 60);
                 string sign = angle < 0 ? "-" : "";
                // return String.Format("{3}{0:00}:{1:00}:{2:00}", Math.Abs(degrees), Math.Abs((int)minutes), Math.Abs((int)seconds), sign);
-                return String.Format("{3}{0}:{1}:{2}", Math.Abs(degrees), Math.Abs((int)minutes), Math.Abs((int)seconds), sign);
+                return String.Format("{3}{0}:{1}:{2}", Math.Abs(degrees), TwoPlaces(Math.Abs((int)minutes)), TwoPlaces(Math.Abs((int)seconds)), sign);
             }
             catch
             {

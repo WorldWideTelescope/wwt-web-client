@@ -1818,9 +1818,17 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 	function int2(dec) {
 		return Math.abs(Math.floor(dec)) < 10 ? dec < 0 ?  '-0' + Math.abs(Math.floor(dec)) : '0' + Math.floor(dec) : Math.floor(dec);
 	}
+
+	function truncate(n) {
+	    return (n >= 0) ? Math.floor(n) : Math.ceil(n);
+	}
+
 	function formatHms(angle, isHmsFormat, signed, spaced) {
-		var minutes = (angle - Math.floor(angle)) * 60;
-		var seconds = (minutes - Math.floor(minutes)) * 60;
+	    var minutes = (angle - truncate(angle)) * 60;
+	    var seconds = (minutes - truncate(minutes)) * 60;
+	    minutes = Math.abs(minutes);
+	    seconds = Math.abs(seconds);
+
 		var join = spaced ? ' : ' : ':';
 		if (isNaN(angle)) {
 			angle = minutes = seconds = 0;
