@@ -594,14 +594,18 @@
     .popover.slide-overlays{
         border-radius:3px;
         position:fixed;
-        top:170px;
-        left:260px;
+        top:140px;
+        left:270px;
         max-height:500px;
-        min-height:300px;
+        min-height:100px;
+        min-width:120px;
+        max-width:600px;
         overflow:auto;
         display:block;
+        resize:both;
         .popover-title{
-            border-radius:3px;
+            cursor:default;
+            border-radius:3px 3px 0 0;
             position:relative;
             display:block;
             background:@brand-heading;
@@ -609,9 +613,22 @@
             .close-x{
                 background-color:@brand-primary;
                 position:relative;
-                left:8px;
-                top:-1px;
+                left:9px;
+                top:-2px;
             }
         }
+        .popover-content{
+            div.checkbox {
+                label{
+                    padding-left:14px;
+                    text-indent:-20px;
+                }
+                label:before{
+                    text-align:right;
+                }
+            }
+
+        }
+        
     }
 }

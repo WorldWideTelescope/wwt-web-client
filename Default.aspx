@@ -174,6 +174,7 @@
     <script src="<%= ResourcesLocation %>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/EditSlideValues.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/directives/Movable.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>

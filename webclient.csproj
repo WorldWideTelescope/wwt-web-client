@@ -88,6 +88,7 @@
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
     <Content Include="directives\EditSlideValues.js" />
+    <Content Include="directives\Movable.js" />
     <Content Include="factories\mediafile.js" />
     <Content Include="Gruntfile.js" />
     <Content Include=".editorconfig" />
