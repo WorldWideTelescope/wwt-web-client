@@ -6466,9 +6466,9 @@ wwt.controllers.controller('CurrentTourController', [
         tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
-        } 
+        }
         mapStops(true);
-        
+         
         //$rootScope.$on('escKey', function () {
             //$scope.$applyAsync(showTourSlides);
         //});
@@ -6526,27 +6526,40 @@ wwt.controllers.controller('CurrentTourController', [
         if (!file.name) {
             return;
         }
-        $scope[mediaKey + 'FileName'] = file.name;
-        media.addTourMedia(mediaKey, file).then(function (mediaResult) {
-            //hook to the mediaResult.url here;
+
+        if (isImage) {
+            tourEdit.tourEditorUI.addPicture(file);
+        }
+        else {
+            tourEdit.tourEditorUI.AddAudio(file, true);
+        }
+
+
+        //$scope[mediaKey + 'FileName'] = file.name;
+
+
+
+
+        //media.addTourMedia(mediaKey, file).then(function (mediaResult) {
+        //    //hook to the mediaResult.url here;
             
-            if (!isImage) {
-                $scope[mediaKey + 'FileUrl'] = true;
-                $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
-                $scope[mediaKey + 'Playing'] = false;
-            }
-            console.timeEnd('storeLocal: ' + mediaKey);
-            if (!isImage) {
-                tourEdit.tourEditorUI.addAudio(mediaResult.url);
-                //media.getBinaryData(mediaResult.url).then(function (binary) {
-                //    console.log('binary string recieved - not logging because length = ' + binary.length);
-                //});
-            } else {
-                console.log('image created: ' + mediaResult.url);
-                tourEdit.tourEditorUI.addPicture(mediaResult.url);
+        //    if (!isImage) {
+        //        $scope[mediaKey + 'FileUrl'] = true;
+        //        $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
+        //        $scope[mediaKey + 'Playing'] = false;
+        //    }
+        //    console.timeEnd('storeLocal: ' + mediaKey);
+        //    if (!isImage) {
+        //        tourEdit.tourEditorUI.addAudio(mediaResult.url);
+        //        //media.getBinaryData(mediaResult.url).then(function (binary) {
+        //        //    console.log('binary string recieved - not logging because length = ' + binary.length);
+        //        //});
+        //    } else {
+        //        console.log('image created: ' + mediaResult.url);
+        //        tourEdit.tourEditorUI.addPicture(mediaResult.url);
                 
-            }
-        });
+        //    }
+        //});
         
     }
 

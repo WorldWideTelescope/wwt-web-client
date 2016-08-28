@@ -15402,6 +15402,41 @@ window.wwtlib = function(){
       ss.clearKeys(this._fileDirectory);
       this._currentOffset = 0;
     },
+    packageFiles: function() {
+      var xmlWriter = new XmlTextWriter();
+      xmlWriter.formatting = 1;
+      xmlWriter._writeProcessingInstruction('xml', "version='1.0' encoding='UTF-8'");
+      xmlWriter._writeStartElement('FileCabinet');
+      xmlWriter._writeAttributeString('HeaderSize', '0x0BADFOOD');
+      xmlWriter._writeStartElement('Files');
+      var $enum1 = ss.enumerate(this.fileList);
+      while ($enum1.moveNext()) {
+        var entry = $enum1.current;
+        xmlWriter._writeStartElement('File');
+        xmlWriter._writeAttributeString('Name', entry.filename);
+        xmlWriter._writeAttributeString('Size', entry.size.toString());
+        xmlWriter._writeAttributeString('Offset', entry.offset.toString());
+        xmlWriter._writeEndElement();
+      }
+      xmlWriter._writeEndElement();
+      xmlWriter._writeFullEndElement();
+      xmlWriter._close();
+      var data = xmlWriter.body;
+      var blob = new Blob([ data ]);
+      var sizeText = ss.format('0x{0:x8}', blob.size);
+      data = ss.replaceString(data, '0x0BADFOOD', sizeText);
+      blob = new Blob([ data ]);
+      var blobs = [];
+      blobs.push(blob);
+      var $enum2 = ss.enumerate(this.fileList);
+      while ($enum2.moveNext()) {
+        var entry = $enum2.current;
+        var b = this.getFileBlob(entry.filename);
+        blobs.push(b);
+      }
+      var cabBlob = new Blob(blobs, {type : 'application/x-wtt'});;
+      var bloblUrl = URL.createObjectURL(cabBlob);;
+    },
     _loadCabinet: function() {
       var $this = this;
 
@@ -15450,6 +15485,7 @@ window.wwtlib = function(){
       }
       catch ($e2) {
       }
+      this.packageFiles();
     },
     getFileBlob: function(filename) {
       var fe = this.getFileEntry(filename);
@@ -16308,6 +16344,7 @@ window.wwtlib = function(){
     this.implicitTourLinks = [];
     this._tourStops = [];
     this._currentTourstopIndex = -1;
+    this._fileCache = {};
     this.dontCleanUpTempFiles = false;
     this._id = Guid.newGuid().toString();
   }
@@ -17044,9 +17081,18 @@ window.wwtlib = function(){
       this._textureList2d[filename] = texture;
       return texture;
     },
+    addCachedFile: function(filename, file) {
+      this._fileCache[filename] = file;
+    },
     getFileStream: function(filename) {
-      var blob = this._cabinet.getFileBlob(this.get_workingDirectory() + filename);
-      return URL.createObjectURL(blob);;
+      if (ss.keyExists(this._fileCache, filename)) {
+        var blob = this._fileCache[filename];
+        return URL.createObjectURL(blob);;
+      }
+      else {
+        var blob = this._cabinet.getFileBlob(this.get_workingDirectory() + filename);
+        return URL.createObjectURL(blob);;
+      }
     },
     get_currentTourStop: function() {
       if (this._currentTourstopIndex > -1) {
@@ -18956,12 +19002,12 @@ window.wwtlib = function(){
       }
       return false;
     },
-    addPicture: function(filename) {
+    addPicture: function(file) {
       if (this._tour == null || this._tour.get_currentTourStop() == null) {
         return false;
       }
       Undo.push(new UndoTourStopChange(Language.getLocalizedText(546, 'Insert Picture'), this._tour));
-      var bmp = BitmapOverlay.create(this._tour.get_currentTourStop(), filename);
+      var bmp = BitmapOverlay.create(this._tour.get_currentTourStop(), file);
       bmp.set_x(960);
       bmp.set_y(600);
       this._tour.get_currentTourStop().addOverlay(bmp);
@@ -18971,14 +19017,19 @@ window.wwtlib = function(){
     addFlipbook: function(filename) {
       return false;
     },
-    addAudio: function(filename) {
+    addAudio: function(file, music) {
       if (this._tour == null || this._tour.get_currentTourStop() == null) {
         return false;
       }
-      var audio = AudioOverlay.create(this._tour.get_currentTourStop(), filename);
+      var audio = AudioOverlay.create(this._tour.get_currentTourStop(), file);
       audio.set_x(900);
       audio.set_y(600);
-      this._tour.get_currentTourStop().addOverlay(audio);
+      if (music) {
+        this._tour.get_currentTourStop().set_musicTrack(audio);
+      }
+      else {
+        this._tour.get_currentTourStop().set_voiceTrack(audio);
+      }
       return true;
     },
     addVideo: function(filename) {
@@ -22253,7 +22304,7 @@ window.wwtlib = function(){
   // wwtlib.XmlTextWriter
 
   function XmlTextWriter() {
-    this.body = "<?xml version='1.0' encoding='UTF-8'?>\n";
+    this.body = "<?xml version='1.0' encoding='UTF-8'?>\r\n";
     this.formatting = 1;
     this._elementStack = new ss.Stack();
     this._pending = false;
@@ -22263,13 +22314,17 @@ window.wwtlib = function(){
   }
   var XmlTextWriter$ = {
     _pushNewElement: function(name) {
-      this._writePending();
+      this._writePending(false);
       this._elementStack.push(name);
       this._pending = true;
       this._currentName = name;
     },
-    _writePending: function() {
+    _writePending: function(fullClose) {
+      var closed = true;
       if (this._pending) {
+        for (var i = 1; i < this._elementStack.count; i++) {
+          this.body += '  ';
+        }
         this.body += '<' + this._currentName;
         if (ss.keyCount(this._attributes) > 0) {
           var $enum1 = ss.enumerate(ss.keys(this._attributes));
@@ -22278,18 +22333,29 @@ window.wwtlib = function(){
             this.body += ss.format(' {0}="{1}"', key, this._attributes[key]);
           }
         }
-        this.body += '>';
         if (!ss.emptyString(this._value)) {
-          this.body += this._value;
+          this.body += '>';
+          closed = false;
+          if (!ss.emptyString(this._value)) {
+            this.body += this._value;
+          }
         }
         else {
-          this.body += '\n';
+          if (fullClose) {
+            this.body += ' />\r\n';
+            closed = true;
+          }
+          else {
+            this.body += '>\r\n';
+          }
         }
         this._pending = false;
         this._currentName = '';
         this._value = '';
         this._attributes = {};
+        return closed;
       }
+      return false;
     },
     _writeProcessingInstruction: function(v1, v2) {
     },
@@ -22302,14 +22368,25 @@ window.wwtlib = function(){
       }
     },
     _writeEndElement: function() {
-      this._writePending();
-      this.body += ss.format('</{0}>\n', this._elementStack.pop());
+      if (!this._writePending(true)) {
+        for (var i = 1; i < this._elementStack.count; i++) {
+          this.body += '  ';
+        }
+        this.body += ss.format('</{0}>\r\n', this._elementStack.pop());
+      }
+      else {
+        this._elementStack.pop();
+      }
     },
     _writeString: function(text) {
       this._value = ss.replaceString(text, '&', '&amp;');
     },
     _writeFullEndElement: function() {
-      this._writeEndElement();
+      this._writePending(false);
+      for (var i = 1; i < this._elementStack.count; i++) {
+        this.body += '  ';
+      }
+      this.body += ss.format('</{0}>\r\n', this._elementStack.pop());
     },
     _close: function() {
     },
@@ -33357,13 +33434,14 @@ window.wwtlib = function(){
     this._sprite$1 = new Sprite2d();
     Overlay.call(this);
   }
-  BitmapOverlay.create = function(owner, filename) {
+  BitmapOverlay.create = function(owner, file) {
     var temp = new BitmapOverlay();
     temp.set_owner(owner);
-    temp._filename$1 = (Overlay.nextId++).toString() + '.png';
+    temp._filename$1 = file.name;
     temp.set_name(owner.getNextDefaultName('Image'));
     temp.set_x(0);
     temp.set_y(0);
+    owner.get_owner().addCachedFile(file.name, file);
     return temp;
   };
   var BitmapOverlay$ = {
@@ -33404,8 +33482,6 @@ window.wwtlib = function(){
             $this._textureReady$1 = true;
           });
         }
-        if (!this.get_width() && !this.get_height()) {
-        }
       }
       catch ($e1) {
       }
@@ -33414,6 +33490,10 @@ window.wwtlib = function(){
       if (RenderContext.useGl) {
         if (this.texture2d == null) {
           this.initializeTexture();
+        }
+        if (!this.get_width() && !this.get_height()) {
+          this.set_width(this.texture2d.imageElement.width);
+          this.set_height(this.texture2d.imageElement.height);
         }
         this.initiaizeGeometry();
         this.updateRotation();
@@ -33425,6 +33505,10 @@ window.wwtlib = function(){
         }
         if (!this._textureReady$1) {
           return;
+        }
+        if (!this.get_width() && !this.get_height()) {
+          this.set_width(this.texture.width);
+          this.set_height(this.texture.height);
         }
         var ctx = renderContext.device;
         ctx.save();
@@ -34118,10 +34202,11 @@ window.wwtlib = function(){
     Overlay.call(this);
     this.isDesignTimeOnly = true;
   }
-  AudioOverlay.create = function(currentTourStop, filename) {
+  AudioOverlay.create = function(currentTourStop, file) {
     var ao = new AudioOverlay();
     ao.set_owner(currentTourStop);
-    ao._filename$1 = filename;
+    ao._filename$1 = file.name;
+    ao.get_owner().get_owner().addCachedFile(file.name, file);
     return ao;
   };
   var AudioOverlay$ = {
