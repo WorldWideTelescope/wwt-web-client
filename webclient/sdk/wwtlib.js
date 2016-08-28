@@ -13832,12 +13832,153 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.FileEntry
+
+  function FileEntry(filename, size) {
+    this.size = 0;
+    this.offset = 0;
+    this.filename = filename;
+    this.size = size;
+  }
+  var FileEntry$ = {
+    toString: function() {
+      return this.filename;
+    }
+  };
+
+
   // wwtlib.FileCabinet
 
   function FileCabinet() {
+    this._currentOffset = 0;
+    this._packageID = '';
+    this.url = '';
+    this.clearFileList();
   }
+  FileCabinet.fromUrl = function(url, callMe) {
+    var temp = new FileCabinet();
+    temp.url = url;
+    temp._callMe = callMe;
+    temp._webFile = new WebFile(url);
+    temp._webFile.responseType = 'blob';
+    temp._webFile.onStateChange = ss.bind('_loadCabinet', temp);
+    temp._webFile.send();
+    return temp;
+  };
   var FileCabinet$ = {
-    _addFile: function(v) {
+    get_packageID: function() {
+      return this._packageID;
+    },
+    set_packageID: function(value) {
+      this._packageID = value;
+      return value;
+    },
+    addFile: function(filename) {
+    },
+    clearFileList: function() {
+      if (this.fileList == null) {
+        this.fileList = [];
+      }
+      if (this._fileDirectory == null) {
+        this._fileDirectory = {};
+      }
+      this.fileList.length = 0;
+      ss.clearKeys(this._fileDirectory);
+      this._currentOffset = 0;
+    },
+    _loadCabinet: function() {
+      var $this = this;
+
+      if (this._webFile.get_state() === 2) {
+        alert(this._webFile.get_message());
+      }
+      else if (this._webFile.get_state() === 1) {
+        this._mainBlob = this._webFile.getBlob();
+        var chunck = new FileReader();
+        chunck.onloadend = function(e) {
+          var offset = $this._getSize(chunck.result);
+          var header = new FileReader();
+          header.onloadend = function(ee) {
+            var data = ss.safeCast(header.result, String);
+            var xParser = new DOMParser();
+            $this.extract(xParser.parseFromString(data, 'text/xml'), offset);
+            $this._callMe();
+          };
+          header.readAsText($this._mainBlob.slice(0, offset));
+        };
+        chunck.readAsText(this._mainBlob.slice(0, 255));
+      }
+    },
+    _getSize: function(data) {
+      var start = data.indexOf('0x');
+      if (start === -1) {
+        return 0;
+      }
+      return parseInt(data.substring(start, start + 10), 16);
+    },
+    extract: function(doc, offset) {
+      try {
+        var cab = Util.selectSingleNode(doc, 'FileCabinet');
+        var files = Util.selectSingleNode(cab, 'Files');
+        this.fileList.length = 0;
+        var $enum1 = ss.enumerate(files.childNodes);
+        while ($enum1.moveNext()) {
+          var child = $enum1.current;
+          if (child.nodeName === 'File') {
+            var fe = new FileEntry(child.attributes.getNamedItem('Name').nodeValue, parseInt(child.attributes.getNamedItem('Size').nodeValue));
+            fe.offset = offset;
+            offset += fe.size;
+            this.fileList.push(fe);
+          }
+        }
+      }
+      catch ($e2) {
+      }
+    },
+    getFileBlob: function(filename) {
+      var fe = this.getFileEntry(filename);
+      if (fe != null) {
+        var ext = filename.substr(filename.lastIndexOf('.')).toLowerCase();
+        var type = null;
+        switch (ext) {
+          case '.png':
+            type = 'image/png';
+            break;
+          case '.jpg':
+          case '.jpeg':
+            type = 'image/jpeg';
+            break;
+          case '.mp3':
+            type = 'audio/mpeg3';
+            break;
+        }
+        return this._mainBlob.slice(fe.offset, fe.offset + fe.size, type);
+      }
+      return null;
+    },
+    getFileEntry: function(filename) {
+      var $enum1 = ss.enumerate(this.fileList);
+      while ($enum1.moveNext()) {
+        var entry = $enum1.current;
+        if (entry.filename === filename) {
+          return entry;
+        }
+      }
+      return null;
+    },
+    get_masterFile: function() {
+      if (this.fileList.length > 0) {
+        return this.fileList[0].filename;
+      }
+      else {
+        return null;
+      }
+    },
+    clearTempFiles: function() {
+      var $enum1 = ss.enumerate(this.fileList);
+      while ($enum1.moveNext()) {
+        var entry = $enum1.current;
+      }
     }
   };
 
@@ -14661,9 +14802,7 @@ window.wwtlib = function(){
     var temp = new TourDocument();
     temp.url = url;
     temp._callMe = callMe;
-    temp._webFile = new WebFile(Util.getTourComponent(url, 'master'));
-    temp._webFile.onStateChange = ss.bind('_loadXmlDocument', temp);
-    temp._webFile.send();
+    temp._cabinet = FileCabinet.fromUrl(url, ss.bind('_loadXmlDocument', temp));
     return temp;
   };
   var TourDocument$ = {
@@ -14690,13 +14829,17 @@ window.wwtlib = function(){
       return value;
     },
     _loadXmlDocument: function() {
-      if (this._webFile.get_state() === 2) {
-        alert(this._webFile.get_message());
-      }
-      else if (this._webFile.get_state() === 1) {
-        this.fromXml(this._webFile.getXml());
-        this._callMe();
-      }
+      var $this = this;
+
+      var master = this._cabinet.get_masterFile();
+      var doc = new FileReader();
+      doc.onloadend = function(ee) {
+        var data = ss.safeCast(doc.result, String);
+        var xParser = new DOMParser();
+        $this.fromXml(xParser.parseFromString(data, 'text/xml'));
+        $this._callMe();
+      };
+      doc.readAsText(this._cabinet.getFileBlob(master));
     },
     fromXml: function(doc) {
       var root = Util.selectSingleNode(doc, 'Tour');
@@ -15386,7 +15529,8 @@ window.wwtlib = function(){
       return texture;
     },
     getFileStream: function(filename) {
-      return Util.getTourComponent(this.url, filename);
+      var blob = this._cabinet.getFileBlob(this.get_workingDirectory() + filename);
+      return URL.createObjectURL(blob);;
     },
     get_currentTourStop: function() {
       if (this._currentTourstopIndex > -1) {
@@ -20767,6 +20911,7 @@ window.wwtlib = function(){
 
   function WebFile(url) {
     this._state = 0;
+    this.responseType = '';
     this._url = url;
   }
   var WebFile$ = {
@@ -20797,6 +20942,10 @@ window.wwtlib = function(){
       this._data = textReceived;
       this.set_state(1);
     },
+    _loadBlob: function(blob) {
+      this._blobdata = blob;
+      this.set_state(1);
+    },
     _error: function() {
       this._message = ss.format('Error encountered loading {0}', this._url);
       this.set_state(2);
@@ -20823,9 +20972,17 @@ window.wwtlib = function(){
       this._xhr = new XMLHttpRequest();
       try {
         this._xhr.open('GET', this._url);
+        if (this.responseType != null) {
+          this._xhr.responseType = this.responseType;
+        }
         this._xhr.onreadystatechange = function() {
           if ($this._xhr.readyState === 4) {
-            $this._loadData($this._xhr.responseText);
+            if (!$this.responseType) {
+              $this._loadData($this._xhr.responseText);
+            }
+            else {
+              $this._loadBlob($this._xhr.response);
+            }
           }
         };
         this._xhr.send();
@@ -20838,6 +20995,9 @@ window.wwtlib = function(){
     },
     getText: function() {
       return this._data;
+    },
+    getBlob: function() {
+      return ss.safeCast(this._blobdata, Blob);
     },
     getXml: function() {
       var xParser = new DOMParser();
@@ -23939,6 +24099,13 @@ window.wwtlib = function(){
       return '';
     }
   };
+  Coordinates.twoPlaces = function(val) {
+    var num = val.toString();
+    if (num.length < 2) {
+      num = '0' + num;
+    }
+    return num;
+  };
   Coordinates.formatDMS = function(angle) {
     try {
       angle += (((angle < 0) ? -1 : 1) * 0.0001388888888889);
@@ -23946,7 +24113,7 @@ window.wwtlib = function(){
       var minutes = ((angle - ss.truncate(angle)) * 60);
       var seconds = ((minutes - ss.truncate(minutes)) * 60);
       var sign = (angle < 0) ? '-' : '';
-      return ss.format('{3}{0}:{1}:{2}', Math.abs(degrees), Math.abs(ss.truncate(minutes)), Math.abs(ss.truncate(seconds)), sign);
+      return ss.format('{3}{0}:{1}:{2}', Math.abs(degrees), Coordinates.twoPlaces(Math.abs(ss.truncate(minutes))), Coordinates.twoPlaces(Math.abs(ss.truncate(seconds))), sign);
     }
     catch ($e1) {
       return '';
@@ -31753,7 +31920,7 @@ window.wwtlib = function(){
       }
     },
     addFilesToCabinet: function(fc) {
-      fc._addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
+      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
     },
     writeOverlayProperties: function(xmlWriter) {
       xmlWriter._writeStartElement('Bitmap');
@@ -32464,7 +32631,7 @@ window.wwtlib = function(){
       return value;
     },
     addFilesToCabinet: function(fc) {
-      fc._addFile(this.get_owner().get_owner().getFileStream(this._filename$1));
+      fc.addFile(this.get_owner().get_owner().getFileStream(this._filename$1));
     },
     play: function() {
       if (this._audio$1 == null) {
@@ -32684,7 +32851,7 @@ window.wwtlib = function(){
       }
     },
     addFilesToCabinet: function(fc) {
-      fc._addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
+      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
     },
     writeOverlayProperties: function(xmlWriter) {
       xmlWriter._writeStartElement('Flipbook');
@@ -33980,6 +34147,7 @@ window.wwtlib = function(){
       Star: [ Star, Star$, null ],
       Tile: [ Tile, Tile$, null ],
       Tour: [ Tour, Tour$, null, IThumbnail ],
+      FileEntry: [ FileEntry, FileEntry$, null ],
       FileCabinet: [ FileCabinet, FileCabinet$, null ],
       SettingParameter: [ SettingParameter, SettingParameter$, null ],
       Overlay: [ Overlay, Overlay$, null ],

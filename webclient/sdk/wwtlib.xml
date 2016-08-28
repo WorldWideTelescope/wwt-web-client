@@ -4,6 +4,43 @@
         <name>wwtlib</name>
     </assembly>
     <members>
+        <member name="P:wwtlib.FileReader.ReadyState">
+            <summary>
+            Indicates the state of the FileReader. This will be one of the State constants. Read only.
+            </summary>
+        </member>
+        <member name="M:wwtlib.FileReader.AddEventListener(System.String,System.Html.ElementEventListener,System.Boolean)">
+            <summary>
+            Adds a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="listener">The listener to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the listener wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:wwtlib.FileReader.AddEventListener(System.String,System.Html.IElementEventHandler,System.Boolean)">
+            <summary>
+                Adds a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="handler">The handler to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the handler wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:wwtlib.FileReader.RemoveEventListener(System.String,System.Html.ElementEventListener,System.Boolean)">
+            <summary>
+            Removes a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="listener">The listener to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the listener wants to initiate capturing the event.</param>
+        </member>
+        <member name="M:wwtlib.FileReader.RemoveEventListener(System.String,System.Html.IElementEventHandler,System.Boolean)">
+            <summary>
+            Removes a listener for the specified event.
+            </summary>
+            <param name="eventName">The name of the event such as 'load'.</param>
+            <param name="handler">The handler to be invoked in response to the event.</param>
+            <param name="useCapture">Whether the handler wants to initiate capturing the event.</param>
+        </member>
         <member name="F:wwtlib.Folder.communityIdField">
             <remarks/>
             

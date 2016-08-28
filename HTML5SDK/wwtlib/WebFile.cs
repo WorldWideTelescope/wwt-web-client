@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Net;
+using System.Html.Data.Files;
 
 namespace wwtlib
 {
@@ -18,8 +19,9 @@ namespace wwtlib
         private string _message;
         private StateType _state;
         private string _data;
+        private object _blobdata;
         private XDomainRequest xdr;
-        private XmlHttpRequest xhr;
+        private XMLHttpRequest2 xhr;
 
         public WebFile(string url)
         {
@@ -42,6 +44,7 @@ namespace wwtlib
 
             State = StateType.Pending;
         }
+        public String ResponseType = "";
 
         public Action OnStateChange;
         public string Message { get { return _message; } }
@@ -64,7 +67,12 @@ namespace wwtlib
             _data = textReceived;
             State = StateType.Received;
         }
-
+        private void LoadBlob(object blob)
+        {
+            // received data, set the state vars and send statechange
+            _blobdata = blob;
+            State = StateType.Received;
+        }
         private void Error()
         {
             _message = String.Format("Error encountered loading {0}", _url);
@@ -92,17 +100,31 @@ namespace wwtlib
 
         private void CORS()
         {
-            xhr = new XmlHttpRequest();
+            xhr = new XMLHttpRequest2();
             try
             {
                 xhr.Open(HttpVerb.Get, _url);
+
+                if (ResponseType != null)
+                {
+                    xhr.ResponseType = ResponseType;
+                }
+
                 xhr.OnReadyStateChange = delegate()
                 {
                     if (xhr.ReadyState == ReadyState.Loaded)
                     {
-                        LoadData(xhr.ResponseText);
+                        if (ResponseType == "")
+                        {
+                            LoadData(xhr.ResponseText);
+                        }
+                        else
+                        {
+                            LoadBlob(xhr.Response);
+                        }
                     }
                 };
+
                 xhr.Send();
             }
             catch (Exception err)
@@ -116,6 +138,11 @@ namespace wwtlib
         public string GetText()
         {
             return _data;
+        }
+
+        public Blob GetBlob()
+        {
+            return _blobdata as Blob;
         }
 
         public XmlDocument GetXml()

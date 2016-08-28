@@ -9,7 +9,7 @@ namespace wwtlib
     public class XmlTextWriter
     {
 
-        public string Body = "<?xml version='1.0' encoding='UTF-8'?>\n";
+        public string Body = "<?xml version='1.0' encoding='UTF-8'?>\r\n";
         public Formatting Formatting = Formatting.Indented;
         Stack<string> elementStack = new Stack<string>();
         bool pending = false;
@@ -20,7 +20,7 @@ namespace wwtlib
         {
             //write pending element and attributes
 
-            WritePending();
+            WritePending(false);
 
             //Push new attribute on to stack
             elementStack.Push(name);
@@ -32,10 +32,16 @@ namespace wwtlib
 
         }
 
-        private void WritePending()
+        private bool WritePending(bool fullClose)
         {
+            bool closed = true;
             if (pending)
             {
+                for (int i = 1; i < elementStack.Count; i++)
+                {
+                    Body += "  ";
+                }
+
                 Body += "<" + currentName;
                 if (attributes.Count > 0)
                 {
@@ -44,20 +50,37 @@ namespace wwtlib
                         Body += string.Format(" {0}=\"{1}\"", key, attributes[key]);
                     }
                 }
-                Body += ">";
+                               
                 if (!string.IsNullOrEmpty(value))
-                {
-                    Body += value;
+                {               
+                    Body += ">";
+                    closed = false;
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        Body += value;
+                    }
                 }
                 else
                 {
-                    Body += "\n";
+                    if (fullClose)
+                    {
+                        Body += " />\r\n";
+                        closed = true;
+                    }
+                    else
+                    {
+                        Body += ">\r\n";
+                    }
                 }
+
                 pending = false;
                 currentName = "";
                 value = "";
                 attributes = new Dictionary<string, string>();
+                return closed;
             }
+
+            return false;
         }
 
         internal void WriteProcessingInstruction(string v1, string v2)
@@ -80,8 +103,18 @@ namespace wwtlib
 
         internal void WriteEndElement()
         {
-            WritePending();
-            Body += string.Format("</{0}>\n", elementStack.Pop());
+            if (!WritePending(true))
+            {
+                for (int i = 1; i < elementStack.Count; i++)
+                {
+                    Body += "  ";
+                }
+                Body += string.Format("</{0}>\r\n", elementStack.Pop());
+            }
+            else
+            {
+                elementStack.Pop();
+            }
         }
 
         internal void WriteString(string text)
@@ -91,7 +124,12 @@ namespace wwtlib
 
         internal void WriteFullEndElement()
         {
-            WriteEndElement();
+            WritePending(false);
+            for (int i = 1; i < elementStack.Count; i++)
+            {
+                Body += "  ";
+            }
+            Body += string.Format("</{0}>\r\n", elementStack.Pop());     
         }
 
         internal void Close()

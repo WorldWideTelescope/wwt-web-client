@@ -4,6 +4,7 @@ using System.Linq;
 using System.Html;
 using System.Xml;
 using System.Net;
+using System.Html.Data.Files;
 
 namespace wwtlib
 {
@@ -65,37 +66,65 @@ namespace wwtlib
 
         }
 
-        public string Url = "";
-        private WebFile webFile;
-        private Action callMe;
+        FileCabinet cabinet;
+
         public static TourDocument FromUrl(string url, Action callMe)
-        {
-            
+        {         
             TourDocument temp = new TourDocument();
             temp.Url = url;
             temp.callMe = callMe;
 
-            temp.webFile = new WebFile(Util.GetTourComponent(url, "master"));
-            temp.webFile.OnStateChange = temp.LoadXmlDocument;
-            temp.webFile.Send();
-
+            temp.cabinet = FileCabinet.FromUrl(url, temp.LoadXmlDocument);
             return temp;
         }
 
         private void LoadXmlDocument()
         {
-            if (webFile.State == StateType.Error)
+            string master = cabinet.MasterFile;
+
+            FileReader doc = new FileReader();
+            doc.OnLoadEnd = delegate (FileProgressEvent ee)
             {
-                Script.Literal("alert({0})", webFile.Message);
-            }
-            else if (webFile.State == StateType.Received)
-            {
-                FromXml(webFile.GetXml());
+                string data = doc.Result as string;
+                XmlDocumentParser xParser = new XmlDocumentParser();
+                FromXml(xParser.ParseFromString(data, "text/xml"));
                 callMe();
-            }
+            };
+            doc.ReadAsText(cabinet.GetFileBlob(master));
+           
         }
-        
-   
+
+        public string Url = "";
+        //private WebFile webFile;
+        private Action callMe;
+        //public static TourDocument FromUrl(string url, Action callMe)
+        //{
+
+        //    TourDocument temp = new TourDocument();
+        //    temp.Url = url;
+        //    temp.callMe = callMe;
+
+        //    temp.webFile = new WebFile(Util.GetTourComponent(url, "master"));
+        //    temp.webFile.OnStateChange = temp.LoadXmlDocument;
+        //    temp.webFile.Send();
+
+        //    return temp;
+        //}
+
+        //private void LoadXmlDocument()
+        //{
+        //    if (webFile.State == StateType.Error)
+        //    {
+        //        Script.Literal("alert({0})", webFile.Message);
+        //    }
+        //    else if (webFile.State == StateType.Received)
+        //    {
+        //        FromXml(webFile.GetXml());
+        //        callMe();
+        //    }
+        //}
+
+
         public void FromXml(XmlDocument doc)
         {
 
@@ -367,78 +396,63 @@ namespace wwtlib
         { 
             XmlTextWriter xmlWriter = new XmlTextWriter();
             
-                xmlWriter.Formatting = Formatting.Indented;
-                xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-                xmlWriter.WriteStartElement("Tour");
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+            xmlWriter.WriteStartElement("Tour");
 
-                xmlWriter.WriteAttributeString("ID", this.id);
-                xmlWriter.WriteAttributeString("Title", this.title);
-                xmlWriter.WriteAttributeString("Descirption", this.Description);
-                xmlWriter.WriteAttributeString("Description", this.Description);
-                xmlWriter.WriteAttributeString("RunTime", ((double)this.RunTime / 1000.0).ToString());
-                xmlWriter.WriteAttributeString("Author", this.author);
-                xmlWriter.WriteAttributeString("AuthorEmail", this.authorEmail);
-                xmlWriter.WriteAttributeString("OrganizationUrl", this.organizationUrl);
-                xmlWriter.WriteAttributeString("OrganizationName", this.OrgName);
-                xmlWriter.WriteAttributeString("Keywords", this.Keywords);
-                xmlWriter.WriteAttributeString("UserLevel", level.ToString());
-                xmlWriter.WriteAttributeString("Classification", type.ToString());
-                xmlWriter.WriteAttributeString("Taxonomy", taxonomy.ToString());
-               // xmlWriter.WriteAttributeString("DomeMode", DomeMode.ToString());
-                bool timeLineTour = IsTimelineTour();
-                xmlWriter.WriteAttributeString("TimeLineTour", timeLineTour.ToString());
+            xmlWriter.WriteAttributeString("ID", this.id);
+            xmlWriter.WriteAttributeString("Title", this.title);
+            xmlWriter.WriteAttributeString("Descirption", this.Description);
+            xmlWriter.WriteAttributeString("Description", this.Description);
+            xmlWriter.WriteAttributeString("RunTime", ((double)this.RunTime / 1000.0).ToString());
+            xmlWriter.WriteAttributeString("Author", this.author);
+            xmlWriter.WriteAttributeString("AuthorEmail", this.authorEmail);
+            xmlWriter.WriteAttributeString("OrganizationUrl", this.organizationUrl);
+            xmlWriter.WriteAttributeString("OrganizationName", this.OrgName);
+            xmlWriter.WriteAttributeString("Keywords", this.Keywords);
+            xmlWriter.WriteAttributeString("UserLevel", level.ToString());
+            xmlWriter.WriteAttributeString("Classification", type.ToString());
+            xmlWriter.WriteAttributeString("Taxonomy", taxonomy.ToString());
+            // xmlWriter.WriteAttributeString("DomeMode", DomeMode.ToString());
+            bool timeLineTour = IsTimelineTour();
+            xmlWriter.WriteAttributeString("TimeLineTour", timeLineTour.ToString());
 
-                //if (timeLineTour)
-                //{
-                //    xmlWriter.WriteStartElement("TimeLineTourStops");
-                //    foreach (TourStop stop in TourStops)
-                //    {
-                //        stop.SaveToXml(xmlWriter, true);
-                //    }
-                //    xmlWriter.WriteEndElement();
+            
+            xmlWriter.WriteStartElement("TourStops");
+            foreach (TourStop stop in TourStops)
+            {
+                stop.SaveToXml(xmlWriter, true);
+            }
+            xmlWriter.WriteEndElement();
+            
 
-                //    //todo fix this
-                //    //xmlWriter.WriteRaw(Properties.Resources.UpdateRequired);
+            List<Guid> masterList = CreateLayerMasterList();
 
-                //}
-                //else
+            // This will now save and sync emtpy frames...
+            List<ReferenceFrame> referencedFrames = GetReferenceFrameList();
+
+            xmlWriter.WriteStartElement("ReferenceFrames");
+            foreach (ReferenceFrame item in referencedFrames)
+            {
+                item.SaveToXml(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
+
+
+            xmlWriter.WriteStartElement("Layers");
+            foreach (Guid id in masterList)
+            {
+                if (LayerManager.LayerList.ContainsKey(id))
                 {
-                    xmlWriter.WriteStartElement("TourStops");
-                    foreach (TourStop stop in TourStops)
-                    {
-                        stop.SaveToXml(xmlWriter, true);
-                    }
-                    xmlWriter.WriteEndElement();
+                    LayerManager.LayerList[id].SaveToXml(xmlWriter);
                 }
+            }
+            xmlWriter.WriteEndElement();
 
 
-                List<Guid> masterList = CreateLayerMasterList();
-
-                // This will now save and sync emtpy frames...
-                List<ReferenceFrame> referencedFrames = GetReferenceFrameList();
-
-                xmlWriter.WriteStartElement("ReferenceFrames");
-                foreach (ReferenceFrame item in referencedFrames)
-                {
-                    item.SaveToXml(xmlWriter);
-                }
-                xmlWriter.WriteEndElement();
-
-
-                xmlWriter.WriteStartElement("Layers");
-                foreach (Guid id in masterList)
-                {
-                    if (LayerManager.LayerList.ContainsKey(id))
-                    {
-                        LayerManager.LayerList[id].SaveToXml(xmlWriter);
-                    }
-                }
-                xmlWriter.WriteEndElement();
-
-
-                xmlWriter.WriteFullEndElement();
-                xmlWriter.Close();
-
+            xmlWriter.WriteFullEndElement();
+            xmlWriter.Close();
+                
             return xmlWriter.Body;
         }
 
@@ -1074,7 +1088,11 @@ namespace wwtlib
 
         public string GetFileStream(string filename)
         {
-            return Util.GetTourComponent(Url, filename);
+            Blob blob = cabinet.GetFileBlob(WorkingDirectory + filename);
+
+            return (string)Script.Literal("URL.createObjectURL({0});", blob);
+
+            //return Util.GetTourComponent(Url, filename);
         }
 
 
