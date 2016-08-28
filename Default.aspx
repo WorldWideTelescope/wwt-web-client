@@ -1026,11 +1026,11 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="javascript:void(0)" ng-click="addShape(0)">Circle</a></li>
                                         <li><a href="javascript:void(0)" ng-click="addShape(1)">Rectangle</a></li>
-                                        <li><a href="javascript:void(0)" ng-click="addShape(2)">Open Rectangle</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(6)">Open Rectangle</a></li>
                                         <li><a href="javascript:void(0)" ng-click="addShape(3)">Ring</a></li>
-                                        <li><a href="javascript:void(0)" ng-click="addShape(4)">Line</a></li>
-                                        <li><a href="javascript:void(0)" ng-click="addShape(5)">Arrow</a></li>
-                                        <li><a href="javascript:void(0)" ng-click="addShape(6)">Star</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(5)">Line</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(4)">Arrow</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="addShape(2)">Star</a></li>
                                     </ul>
                                     <a class="btn menu-button picture" href="javascript:$('#addPicture').click()">
                                         <i class="fa fa-photo"></i>
