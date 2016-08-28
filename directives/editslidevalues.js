@@ -86,9 +86,10 @@
                 }
             });
             var incrementing = false;
-            if (isDuration) {
+            
                  
-                element.on('focus', function () {
+            element.on('focus', function () {
+                if (isDuration) {
                     if (incrementing) return;
                     scope.$apply(function () {
                         stop.editingDuration = true;
@@ -108,8 +109,12 @@
                         select();
                     });
                     element.parent().find('.tinybutton').on('mouseup', select);
-                });
-            }
+                }
+                else {
+                    select();
+                }
+            });
+            
             element.on('blur', function () {
                 if (incrementing) return;
                 scope.$applyAsync(function () {
@@ -127,10 +132,16 @@
             });
             function select() {
                 setTimeout(function () {
+                    
                     var txt = element.text();
                     var range = document.createRange();
-                    range.setStart(el.firstChild, txt.indexOf(':') + 1);
-                    range.setEnd(el.firstChild, txt.indexOf('.'));
+                    var start = 0, end = txt.length - 1;
+                    if (isDuration) {
+                        start = txt.indexOf(':') + 1;
+                        end = txt.indexOf('.');
+                    }
+                    range.setStart(el.firstChild, start);
+                    range.setEnd(el.firstChild, end);
                     var sel = window.getSelection();
                     sel.removeAllRanges();
                     sel.addRange(range);

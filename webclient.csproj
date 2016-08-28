@@ -72,6 +72,7 @@
     <Content Include=".gitignore" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="controllers\LoginController.js" />
+    <Content Include="controllers\modals\SlideSelectionController.js" />
     <Content Include="controllers\modals\TourSlideText.js" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\tabs\CommunityController.js" />
@@ -87,6 +88,7 @@
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
     <Content Include="directives\EditSlideValues.js" />
+    <Content Include="directives\Movable.js" />
     <Content Include="factories\mediafile.js" />
     <Content Include="Gruntfile.js" />
     <Content Include=".editorconfig" />
@@ -306,11 +308,14 @@
     <Content Include="sdk\ss.min.js" />
     <Content Include="sdk\wwtsdk.aspx" />
     <Content Include="sdk\wwtlib.xml" />
+    <Content Include="sdk\wwtsdk.js" />
+    <Content Include="sdk\wwtsdk.min.js" />
     <Content Include="searchdata.min.js" />
     <Content Include="searchdataraw.js" />
     <Content Include="sunCorona.png" />
     <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\finder-scope.html" />
+    <Content Include="views\modals\intro.html" />
     <Content Include="views\modals\loading.html" />
     <Content Include="views\modals\mobile-explore.html" />
     <Content Include="views\modals\mobile-layer-manager.html" />
@@ -327,6 +332,7 @@
     <Content Include="views\popovers\tour-text.html" />
     <Content Include="views\popovers\tour-template.html" />
     <Content Include="views\popovers\tour-properties.html" />
+    <Content Include="views\popovers\slide-overlays.html" />
     <Content Include="views\popovers\transition-type.html" />
     <Content Include="views\research-menu.html" />
     <Content Include="views\thumbnail.html" />
@@ -352,6 +358,7 @@
     <Content Include="Wise.wtml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="sdk\wwtsdk.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">

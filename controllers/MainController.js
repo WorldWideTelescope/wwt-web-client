@@ -659,15 +659,9 @@ wwt.controllers.controller('MainController',
 	                $scope.$applyAsync(function () {
 	                    $scope.activeItem = { label: 'currentTour' };
 	                    $scope.activePanel = 'currentTour';
-	                    //$scope.ribbon.tabs[6] = {
-	                    //    label:'currentTour',
-	                    //    button: 'rbnCurrentTour',
-	                    //    menu: {
-	                    //        'Restore Defaults': [$scope.restoreDefaultSettings],
-                        //        'Product Support': [util.nav, '/Support/IssuesAndBugs']
-	                    //    }
-	                    //}
-	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour]
+	                    
+	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
+	                    
 	                });
 	            });
 
