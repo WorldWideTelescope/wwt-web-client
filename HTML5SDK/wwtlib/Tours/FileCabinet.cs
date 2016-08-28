@@ -90,68 +90,59 @@ namespace wwtlib
             currentOffset = 0;
         }
 
-        //public void Package()
-        //{
-        //    StringWriter sw = new StringWriter();
-        //    using (XmlTextWriter xmlWriter = new XmlTextWriter(sw))
-        //    {
-        //        xmlWriter.Formatting = Formatting.Indented;
-        //        xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-        //        xmlWriter.WriteStartElement("FileCabinet");
-        //        xmlWriter.WriteAttributeString("HeaderSize", "0x0BADFOOD");
+        public void PackageFiles()
+        {
+            XmlTextWriter xmlWriter = new XmlTextWriter();
+           
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+            xmlWriter.WriteStartElement("FileCabinet");
+            xmlWriter.WriteAttributeString("HeaderSize", "0x0BADFOOD");
 
-        //        xmlWriter.WriteStartElement("Files");
-        //        foreach (FileEntry entry in FileList)
-        //        {
-        //            xmlWriter.WriteStartElement("File");
-        //            xmlWriter.WriteAttributeString("Name", entry.Filename);
-        //            xmlWriter.WriteAttributeString("Size", entry.Size.ToString());
-        //            xmlWriter.WriteAttributeString("Offset", entry.Offset.ToString());
-        //            xmlWriter.WriteEndElement();
-        //        }
-        //        xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("Files");
+            foreach (FileEntry entry in FileList)
+            {
+                xmlWriter.WriteStartElement("File");
+                xmlWriter.WriteAttributeString("Name", entry.Filename);
+                xmlWriter.WriteAttributeString("Size", entry.Size.ToString());
+                xmlWriter.WriteAttributeString("Offset", entry.Offset.ToString());
+                xmlWriter.WriteEndElement();
+            }
+            xmlWriter.WriteEndElement();
 
-        //        xmlWriter.WriteFullEndElement();
-        //        xmlWriter.Close();
+            xmlWriter.WriteFullEndElement();
+            xmlWriter.Close();
 
-        //    }
+            string data = xmlWriter.Body;
 
-        //    string data = sw.ToString();
+            Blob blob = new Blob(new object[] { data });
 
-        //    byte[] header = Encoding.UTF8.GetBytes(data);
+            string sizeText = String.Format("0x{0:x8}", blob.Size);
 
-        //    string sizeText = String.Format("0x{0:x8}", header.Length);
+            data = data.Replace("0x0BADFOOD", sizeText);
 
-        //    data = data.Replace("0x0BADFOOD", sizeText);
-
-        //    // Yeah this looks redundant, but we needed the data with the replaced size
-        //    header = Encoding.UTF8.GetBytes(data);
-
-        //    FileStream output = new FileStream(Filename, FileMode.Create);
-
-        //    // Write Header
-        //    output.Write(header, 0, header.Length);
+            blob = new Blob(new object[] { data });
 
 
 
-        //    // Write each file
-        //    foreach (FileEntry entry in FileList)
-        //    {
-        //        using (FileStream fs = new FileStream(TempDirectory + "\\" + entry.Filename, FileMode.Open, FileAccess.Read))
-        //        {
-        //            byte[] buffer = new byte[entry.Size];
-        //            if (fs.Read(buffer, 0, entry.Size) != entry.Size)
-        //            {
-        //                throw new SystemException(Language.GetLocalizedText(214, "One of the files in the collection is missing, corrupt or inaccessable"));
-        //            }
-        //            output.Write(buffer, 0, entry.Size);
-        //            fs.Close();
-        //        }
-        //    }
+            //// Write each file
+            //foreach (FileEntry entry in FileList)
+            //{
+            //    using (FileStream fs = new FileStream(TempDirectory + "\\" + entry.Filename, FileMode.Open, FileAccess.Read))
+            //    {
+            //        byte[] buffer = new byte[entry.Size];
+            //        if (fs.Read(buffer, 0, entry.Size) != entry.Size)
+            //        {
+            //            throw new SystemException(Language.GetLocalizedText(214, "One of the files in the collection is missing, corrupt or inaccessable"));
+            //        }
+            //        output.Write(buffer, 0, entry.Size);
+            //        fs.Close();
+            //    }
+            //}
 
-        //    output.Close();
+            //output.Close();
 
-        //}
+        }
 
         //public void Extract()
         //{
@@ -241,6 +232,8 @@ namespace wwtlib
             {
                 //  UiTools.ShowMessageBox("The data cabinet file was not found. WWT will now download all data from network.");
             }
+
+            PackageFiles();
 
         }
 
