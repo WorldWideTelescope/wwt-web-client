@@ -45,6 +45,7 @@ module.exports = function(grunt) {
                     'directives/Localize.js',
                     'directives/ContextMenu.js',
                     'directives/EditSlideValues.js',
+                    'directives/Movable.js',
                     'factories/appstate.js',
                     'factories/localization.js',
                     'factories/FinderScope.js',
@@ -77,6 +78,7 @@ module.exports = function(grunt) {
                     'controllers/modals/ShareController.js',
                     'controllers/modals/OpenItemController.js',
                     'controllers/modals/ObservingTimeController.js',
+                    'controllers/modals/SlideSelectionController.js',
                     'controllers/LoginController.js',
                     'controls/move.js',
                     'controls/util.js'
