@@ -738,30 +738,19 @@ namespace wwtlib
 
         }
 
-        //public static BitmapOverlay(RenderContext renderContext, TourStop owner, string filename)
-        //{
-        //    this.Owner = owner;
-        //    this.filename = Guid.NewGuid().ToString() + ".png";
-
-        //    this.Name = filename.Substr(filename.LastIndexOf('\\'));
-
-        //    X = 0;
-        //    Y = 0;
-        //}
-
-
-        public static BitmapOverlay Create(TourStop owner, string filename)
+        public static BitmapOverlay Create(TourStop owner, System.Html.Data.Files.File file )
         {
             //todo figure out how to load local files into clound and to cabinet
             BitmapOverlay temp = new BitmapOverlay();
 
             temp.Owner = owner;
             // to make directory and guid filename in tour temp dir.
-            temp.filename = (NextId++).ToString() + ".png";
+            temp.filename = file.Name;
 
             temp.Name = owner.GetNextDefaultName("Image");
             temp.X = 0;
             temp.Y = 0;
+            owner.Owner.AddCachedFile(file.Name, file);
 
             return temp;
         }
@@ -802,17 +791,11 @@ namespace wwtlib
                 if (RenderContext.UseGl)
                 {
                     texture2d = Owner.Owner.GetCachedTexture2d(filename);
-                    textureReady = true;
+                    textureReady = true;                 
                 }
                 else
                 {
                     texture = Owner.Owner.GetCachedTexture(filename, delegate { textureReady = true; });
-                }
-
-                if (Width == 0 && Height == 0)
-                {
-                    //Width = texture.Width;
-                    //Height = texture.Height;
 
                 }
             }
@@ -834,6 +817,13 @@ namespace wwtlib
                     InitializeTexture();
                 }
 
+                if (Width == 0 && Height == 0)
+                {
+                    Width = texture2d.ImageElement.Width;
+                    Height = texture2d.ImageElement.Height;
+                }
+
+
                 InitiaizeGeometry();
 
                 UpdateRotation();
@@ -853,6 +843,13 @@ namespace wwtlib
                 {
                     return;
                 }
+
+                if (Width == 0 && Height == 0)
+                {
+                    Width = texture.Width;
+                    Height = texture.Height;
+                }
+
                 CanvasContext2D ctx = renderContext.Device;
                 ctx.Save();
 
@@ -2092,12 +2089,12 @@ namespace wwtlib
             }
         }
 
-        public static AudioOverlay Create(TourStop currentTourStop, string filename)
+        public static AudioOverlay Create(TourStop currentTourStop, System.Html.Data.Files.File file)
         {
             AudioOverlay ao = new AudioOverlay();
             ao.Owner = currentTourStop;
-            ao.filename = filename;
-
+            ao.filename = file.Name;
+            ao.Owner.Owner.AddCachedFile(file.Name, file);
             return ao;
         }
     }

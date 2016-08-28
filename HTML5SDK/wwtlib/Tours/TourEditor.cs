@@ -1981,7 +1981,7 @@ namespace wwtlib
             return false;
         }
 
-        public bool AddPicture(string filename)
+        public bool AddPicture(System.Html.Data.Files.File file)
         {
             if (tour == null || tour.CurrentTourStop == null)
             {
@@ -1989,7 +1989,7 @@ namespace wwtlib
             }
 
             Undo.Push(new UndoTourStopChange(Language.GetLocalizedText(546, "Insert Picture"), tour));
-            BitmapOverlay bmp = BitmapOverlay.Create(tour.CurrentTourStop, filename);
+            BitmapOverlay bmp = BitmapOverlay.Create(tour.CurrentTourStop, file);
             bmp.X = 960;
             bmp.Y = 600;
             tour.CurrentTourStop.AddOverlay(bmp);
@@ -2029,17 +2029,26 @@ namespace wwtlib
             return false;
         }
 
-        public bool AddAudio(string filename)
+        public bool AddAudio(System.Html.Data.Files.File file, bool music)
         {
             if (tour == null || tour.CurrentTourStop == null)
             {
                 return false;
             }
 
-            AudioOverlay audio = AudioOverlay.Create(tour.CurrentTourStop, filename);
+            AudioOverlay audio = AudioOverlay.Create(tour.CurrentTourStop, file);
             audio.X = 900;
             audio.Y = 600;
-            tour.CurrentTourStop.AddOverlay(audio);
+
+            if (music)
+            {
+                tour.CurrentTourStop.MusicTrack = audio;
+            }
+            else
+            {
+                tour.CurrentTourStop.VoiceTrack = audio;
+            }
+            
             return true;
         }
 

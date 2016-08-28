@@ -1085,12 +1085,28 @@ namespace wwtlib
 
         }
 
+        // This handles new files added while editing a tour
+        private Dictionary<string, Blob> fileCache = new Dictionary<string, Blob>();
+
+        public void AddCachedFile( string filename, File file)
+        {
+            fileCache[filename] = (Blob)file;
+        }
 
         public string GetFileStream(string filename)
         {
-            Blob blob = cabinet.GetFileBlob(WorkingDirectory + filename);
+            if (fileCache.ContainsKey(filename))
+            {
+                Blob blob = fileCache[filename];
 
-            return (string)Script.Literal("URL.createObjectURL({0});", blob);
+                return (string)Script.Literal("URL.createObjectURL({0});", blob);
+            }
+            else
+            {
+                Blob blob = cabinet.GetFileBlob(WorkingDirectory + filename);
+
+                return (string)Script.Literal("URL.createObjectURL({0});", blob);
+            }
 
             //return Util.GetTourComponent(Url, filename);
         }

@@ -123,24 +123,33 @@ namespace wwtlib
 
             blob = new Blob(new object[] { data });
 
+            List<Blob> blobs = new List<Blob>();
 
+            blobs.Add(blob);
 
-            //// Write each file
-            //foreach (FileEntry entry in FileList)
-            //{
-            //    using (FileStream fs = new FileStream(TempDirectory + "\\" + entry.Filename, FileMode.Open, FileAccess.Read))
-            //    {
-            //        byte[] buffer = new byte[entry.Size];
-            //        if (fs.Read(buffer, 0, entry.Size) != entry.Size)
-            //        {
-            //            throw new SystemException(Language.GetLocalizedText(214, "One of the files in the collection is missing, corrupt or inaccessable"));
-            //        }
-            //        output.Write(buffer, 0, entry.Size);
-            //        fs.Close();
-            //    }
-            //}
+            // Write each file
+            foreach (FileEntry entry in FileList)
+            {
+                Blob b = GetFileBlob(entry.Filename);
+                blobs.Add(b);
+
+                //using (FileStream fs = new FileStream(TempDirectory + "\\" + entry.Filename, FileMode.Open, FileAccess.Read))
+                //{
+                //    byte[] buffer = new byte[entry.Size];
+                //    if (fs.Read(buffer, 0, entry.Size) != entry.Size)
+                //    {
+                //        throw new SystemException(Language.GetLocalizedText(214, "One of the files in the collection is missing, corrupt or inaccessable"));
+                //    }
+                //    output.Write(buffer, 0, entry.Size);
+                //    fs.Close();
+                //}
+            }
 
             //output.Close();
+
+            //Blob cabBlob = new Blob(blobs, OptionElement);
+            Blob cabBlob = (Blob)Script.Literal("new Blob({0}, {{type : 'application/x-wtt'}});", blobs);
+            string bloblUrl = (string)Script.Literal("URL.createObjectURL({0});", cabBlob);
 
         }
 
