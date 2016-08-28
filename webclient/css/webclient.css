@@ -7461,15 +7461,19 @@ body.wwt-webclient-wrapper .modal .modal-content .btn.close-x.tight {
 body.wwt-webclient-wrapper .popover.slide-overlays {
   border-radius: 3px;
   position: fixed;
-  top: 170px;
-  left: 260px;
+  top: 140px;
+  left: 270px;
   max-height: 500px;
-  min-height: 300px;
+  min-height: 100px;
+  min-width: 120px;
+  max-width: 600px;
   overflow: auto;
   display: block;
+  resize: both;
 }
 body.wwt-webclient-wrapper .popover.slide-overlays .popover-title {
-  border-radius: 3px;
+  cursor: default;
+  border-radius: 3px 3px 0 0;
   position: relative;
   display: block;
   background: rgba(255, 255, 255, 0.8);
@@ -7478,8 +7482,15 @@ body.wwt-webclient-wrapper .popover.slide-overlays .popover-title {
 body.wwt-webclient-wrapper .popover.slide-overlays .popover-title .close-x {
   background-color: #031422;
   position: relative;
-  left: 8px;
-  top: -1px;
+  left: 9px;
+  top: -2px;
+}
+body.wwt-webclient-wrapper .popover.slide-overlays .popover-content div.checkbox label {
+  padding-left: 14px;
+  text-indent: -20px;
+}
+body.wwt-webclient-wrapper .popover.slide-overlays .popover-content div.checkbox label:before {
+  text-align: right;
 }
 html,
 body.fs-player,

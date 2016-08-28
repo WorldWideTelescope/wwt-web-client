@@ -27,4 +27,5 @@
 
     $('canvas').on('dblclick click', init);
     tourScope.$on('initSlides', init);
+    setTimeout(init, 100);
 }]);
