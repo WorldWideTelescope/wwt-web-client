@@ -1173,24 +1173,19 @@ wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootSco
             var e = event.originalEvent;
             movable = $(element).find('.jspPane');
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-
             var curLeft = Math.abs(Math.floor(movable.position().left));
             var increment = 155;
-            var newLeft;
-
-            //scrolling down?
-            if (delta < 0) {
+            var newLeft;            
+            if (delta < 0) {//scrolling down/right
                 console.log('down')
                 newLeft = Math.floor((curLeft + increment) / increment) * increment;
-            }
-
-                //scrolling up?
-            else {
+                newLeft = Math.max(curLeft, Math.abs(newLeft));
+            } else {//scrolling up/left
                 console.log('up')
                 newLeft = Math.floor((curLeft - increment) / increment) * increment;
+                newLeft = Math.min(curLeft, Math.abs(newLeft));
             }
-            //movable.css('left', Math.max(newLeft,0));
-            console.log(curLeft,newLeft)
+            
             $(element).data('jsp').scrollToX(Math.abs(newLeft));
         })
 
@@ -1361,9 +1356,10 @@ wwt.app.directive('contenteditable', [function() {
                 }
             });
             var incrementing = false;
-            if (isDuration) {
+            
                  
-                element.on('focus', function () {
+            element.on('focus', function () {
+                if (isDuration) {
                     if (incrementing) return;
                     scope.$apply(function () {
                         stop.editingDuration = true;
@@ -1383,8 +1379,12 @@ wwt.app.directive('contenteditable', [function() {
                         select();
                     });
                     element.parent().find('.tinybutton').on('mouseup', select);
-                });
-            }
+                }
+                else {
+                    select();
+                }
+            });
+            
             element.on('blur', function () {
                 if (incrementing) return;
                 scope.$applyAsync(function () {
@@ -1402,10 +1402,16 @@ wwt.app.directive('contenteditable', [function() {
             });
             function select() {
                 setTimeout(function () {
+                    
                     var txt = element.text();
                     var range = document.createRange();
-                    range.setStart(el.firstChild, txt.indexOf(':') + 1);
-                    range.setEnd(el.firstChild, txt.indexOf('.'));
+                    var start = 0, end = txt.length - 1;
+                    if (isDuration) {
+                        start = txt.indexOf(':') + 1;
+                        end = txt.indexOf('.');
+                    }
+                    range.setStart(el.firstChild, start);
+                    range.setEnd(el.firstChild, end);
                     var sel = window.getSelection();
                     sel.removeAllRanges();
                     sel.addRange(range);
@@ -4460,15 +4466,9 @@ wwt.controllers.controller('MainController',
 	                $scope.$applyAsync(function () {
 	                    $scope.activeItem = { label: 'currentTour' };
 	                    $scope.activePanel = 'currentTour';
-	                    //$scope.ribbon.tabs[6] = {
-	                    //    label:'currentTour',
-	                    //    button: 'rbnCurrentTour',
-	                    //    menu: {
-	                    //        'Restore Defaults': [$scope.restoreDefaultSettings],
-                        //        'Product Support': [util.nav, '/Support/IssuesAndBugs']
-	                    //    }
-	                    //}
-	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour]
+	                    
+	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
+	                    
 	                });
 	            });
 
@@ -6443,10 +6443,13 @@ wwt.controllers.controller('CommunityController',
     }
 ]);
 wwt.controllers.controller('CurrentTourController', [
-    '$scope', '$rootScope', 'Util', 'MediaFile',
-    function ($scope, $rootScope, util, media) {
+    '$scope', '$rootScope', 'Util', 'MediaFile','AppState',
+    function ($scope, $rootScope, util, media,appState) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
+    var mainScope = angular.element('div.desktop').scope();
+    $scope.slideNumbering = appState.get('slideNumbering');
+    $scope.overlayList = appState.get('overlayList');
     $scope.init = function (curTour) {
         $scope.musicFileUrl = false;
         $scope.voiceOverFileUrl = false;
@@ -6467,10 +6470,26 @@ wwt.controllers.controller('CurrentTourController', [
         $rootScope.$watch('editingTour', function () { });
         if (true){//util.isDebug) {
             showTourSlides();
+            mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
+            mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers];
         }
         $('#contextmenu,#popoutmenu').on('click', mapStops);
         setTimeout(initVolumeSliders, 111);
+        $('canvas').on('dblclick click', $scope.$applyAsync);
     };
+
+    $scope.showSlideNumbers = function () {
+        $scope.$applyAsync(function () {
+            $scope.slideNumbering = !$scope.slideNumbering;
+            appState.set('slideNumbering', $scope.slideNumbering);
+        });
+    }
+    $scope.showOverlayList = function () {
+        $scope.$applyAsync(function () {
+            $scope.overlayList = !$scope.overlayList;
+            appState.set('overlayList', $scope.overlayList);
+        });
+    }
 
     var initVolumeSliders = function () {
         var volumeOpts = function (barEl, player) {
@@ -6536,7 +6555,11 @@ wwt.controllers.controller('CurrentTourController', [
             } else {
                 console.log('image created: ' + mediaResult.url);
                 tourEdit.tourEditorUI.addPicture(mediaResult.url);
-                
+                media.getBinaryData(mediaResult.url).then(function (binary) {
+                    window.bdata = binary;
+                    console.log(binary.length, binary);
+                });
+
             }
         });
         
@@ -6602,6 +6625,8 @@ wwt.controllers.controller('CurrentTourController', [
             }
             tour.set_currentTourstopIndex($scope.activeIndex);
             $scope.lastFocused = index;
+            $scope.selectedSlide = $scope.tourStops[$scope.activeIndex];
+            $scope.$broadcast('initSlides');
         });
     };
 
@@ -6654,7 +6679,9 @@ wwt.controllers.controller('CurrentTourController', [
                         $('#newTourProps').click();
                     }, 500);
                 }
+                
             }
+            $scope.$broadcast('initSlides');
         });
     };
 
@@ -7084,6 +7111,36 @@ wwt.controllers.controller('ObservingTimeController',
 		};
 	}
 ]);
+wwt.controllers.controller('SlideSelectionController', ['$scope', function ($scope) {
+    var tourScope = angular.element('#currentTourPanel').scope();
+    var overlays, selectionSet, selection;
+    var init = function () {
+        selection = tourScope.tourEdit.tourEditorUI.selection;
+        selectionSet = $scope.selectionSet = selection.selectionSet;
+        
+        overlays = $scope.overlays = tourScope.selectedSlide._overlays;
+        $scope.$applyAsync(function () {
+            overlays.forEach(function (overlay, j) {
+                overlay.selected = selection.isOverlaySelected(overlay);
+            });
+        });
+    }
+
+    $scope.selectionChange = function (overlay) {
+        selection.clearSelection();
+        var range = [];
+        overlays.forEach(function (overlay, i) {
+            if (overlay.selected) {
+                range.push(overlay);
+            }
+        });
+        selection.addSelectionRange(range);
+
+    }
+
+    $('canvas').on('dblclick click', init);
+    tourScope.$on('initSlides', init);
+}]);
 wwt.controllers.controller('LoginController',
     ['$scope',
     '$rootScope',

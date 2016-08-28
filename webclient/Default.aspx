@@ -193,6 +193,7 @@
     <script src="<%= ResourcesLocation %>/controllers/modals/ShareController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/modals/TourSlideText.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/modals/SlideSelectionController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/AdsController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ExploreController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/SearchController.js?v=<%= ResourcesVersion%>"></script>
@@ -897,6 +898,7 @@
             ng-controller="CurrentTourController" 
             ng-init="init(tour)"
             >
+            
             <table ng-if="escaped == true">
                 <colgroup>
                     <col style="width:80px"/>
@@ -959,6 +961,7 @@
                                     </div>
                                     <div class="thumbwrap">
                                         <span class="master-slide" ng-if="stop.isMaster">M</span>
+                                        <span class="slide-number" ng-if="slideNumbering">{{$index+1}}</span>
                                         <div class="stop-thumb thumbnail {{tourEdit.tourStopList.selectedItems[$index] ? 'active':''}}" 
                                             index="{{$index}}"
                                             ng-click="selectStop($index, $event)" 
@@ -967,7 +970,7 @@
                                             <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
                                             <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
-                                            <label class="slide-label" contenteditable="true"></label>
+                                            <label class="slide-label" contenteditable="true" bs-tooltip data-title="{{stop.description}}" placement="bottom" container="body"></label>
                                             <label class="duration" contenteditable="true"></label>
                                             <a class="btn tinybutton duration-up" ng-if="stop.editingDuration">
                                                 <i class="fa fa-caret-up"></i>
@@ -985,7 +988,6 @@
                                         <div class="stop-thumb thumbnail" 
                                             ng-click="tourEdit.addSlide(false);refreshStops()">
                                             <label class="slide-label" localize="Add New Slide" style="position:relative;top:20px;width:90px;text-align:center"></label>
-                                            
                                         </div>
                                     </div>
                                     
@@ -1071,7 +1073,7 @@
                 </tr>
             </table>
             
-            
+            <ng-include src="'views/popovers/slide-overlays.html'"></ng-include>
             
         </div>  
     </div>

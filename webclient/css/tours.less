@@ -83,6 +83,12 @@
                                 font-size: 21px;
                                 font-weight: bold;
                             }
+                            .slide-number{
+                                position: absolute;
+                                top: -12px;
+                                left: 48px;
+                                font-size: 12px;
+                            }
                         }
                         div.stop-thumb{
                             position:relative;
@@ -582,6 +588,29 @@
             .btn.close-x.tight{
                 top:2px;
                 right:2px;
+            }
+        }
+    }
+    .popover.slide-overlays{
+        border-radius:3px;
+        position:fixed;
+        top:170px;
+        left:260px;
+        max-height:500px;
+        min-height:300px;
+        overflow:auto;
+        display:block;
+        .popover-title{
+            border-radius:3px;
+            position:relative;
+            display:block;
+            background:@brand-heading;
+            color:@brand-primary;
+            .close-x{
+                background-color:@brand-primary;
+                position:relative;
+                left:8px;
+                top:-1px;
             }
         }
     }

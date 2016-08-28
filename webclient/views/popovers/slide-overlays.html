@@ -1,0 +1,16 @@
+﻿<div class="popover slide-overlays" ng-if="overlayList">
+    <h3 class="popover-title">
+        <span localize="Overlay List"></span>
+        <a class="btn close-x pull-right" ng-click="showOverlayList()">
+            <i class="fa fa-close"></i>
+        </a>
+    </h3>
+    <div class="popover-content" ng-controller="SlideSelectionController">
+        <div class="checkbox" ng-repeat="overlay in overlays">
+            <label data-ng-class="{checked:overlay.selected}">
+                <input type="checkbox"  ng-change="selectionChange(overlay)" ng-model="overlay.selected"  />
+                {{overlay._name}} 
+            </label>
+        </div>
+    </div>
+</div>

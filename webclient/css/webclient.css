@@ -6883,6 +6883,12 @@ body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.s
   font-size: 21px;
   font-weight: bold;
 }
+body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container .stop-arrow .slide-number {
+  position: absolute;
+  top: -12px;
+  left: 48px;
+  font-size: 12px;
+}
 body.wwt-webclient-wrapper div.curtour-panel table td.tour-stops .scroller div.stops-container div.stop-thumb {
   position: relative;
   vertical-align: text-top;
@@ -7451,6 +7457,29 @@ body.wwt-webclient-wrapper .popover .modal-content .btn.close-x.tight,
 body.wwt-webclient-wrapper .modal .modal-content .btn.close-x.tight {
   top: 2px;
   right: 2px;
+}
+body.wwt-webclient-wrapper .popover.slide-overlays {
+  border-radius: 3px;
+  position: fixed;
+  top: 170px;
+  left: 260px;
+  max-height: 500px;
+  min-height: 300px;
+  overflow: auto;
+  display: block;
+}
+body.wwt-webclient-wrapper .popover.slide-overlays .popover-title {
+  border-radius: 3px;
+  position: relative;
+  display: block;
+  background: rgba(255, 255, 255, 0.8);
+  color: #031422;
+}
+body.wwt-webclient-wrapper .popover.slide-overlays .popover-title .close-x {
+  background-color: #031422;
+  position: relative;
+  left: 8px;
+  top: -1px;
 }
 html,
 body.fs-player,
