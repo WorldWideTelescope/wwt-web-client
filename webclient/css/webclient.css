@@ -6748,6 +6748,13 @@ button.close {
     display: none !important;
   }
 }
+input[type=file] {
+  visibility: collapse;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  display: none;
+}
 .iblock {
   display: inline-block;
 }

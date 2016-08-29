@@ -29,9 +29,13 @@
             mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
             mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers];
         }
-        $('#contextmenu,#popoutmenu').on('click', mapStops);
+        $('#contextmenu,#popoutmenu').on('click', function () {
+            mapStops.apply($scope, []);
+        });
         setTimeout(initVolumeSliders, 111);
-        $('canvas').on('dblclick click', $scope.$applyAsync);
+        $('canvas').on('dblclick click', function () {
+            mapStops.apply($scope, []);
+        });
     };
 
     $scope.showSlideNumbers = function () {
