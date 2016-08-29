@@ -6644,15 +6644,16 @@ wwt.controllers.controller('CurrentTourController', [
         tourEdit.tourStopList_ShowEndPosition();
     };
 
-    $scope.pauseTourEdit = function () {
+    $scope.playButtonClick = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        else if ($scope.activeIndex) {
+        else {
             tourEdit.playFromCurrentTourstop();
-        } else {
-            tourEdit.playNow(true);
         }
+        //else {
+        //    tourEdit.playNow(true);
+        //}
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     };
 

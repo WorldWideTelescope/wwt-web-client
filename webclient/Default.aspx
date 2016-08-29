@@ -910,7 +910,7 @@
                 </colgroup>
                 <tr>
                     <td class="play-tour">
-                        <a class="btn-play-tour" ng-click="pauseTourEdit()">
+                        <a class="btn-play-tour" ng-click="playButtonClick()">
                             <i class="fa fa-play" ng-if="!tourEdit.playing"></i>
                             <div class="paused" ng-if="tourEdit.playing">
                                 <i class="fa fa-minus"></i>
