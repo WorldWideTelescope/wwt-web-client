@@ -170,8 +170,10 @@
         }
     };
     $scope.selectStop = function (index, e) {
-        $scope.$applyAsync(function () {
+        $scope.$applyAsync(function () { 
+            
             tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
+            
             $scope.activeIndex = index;
             if (e && e.shiftKey) {
                 tourEdit.tourStopList.selectedItems = {};
