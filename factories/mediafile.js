@@ -1,78 +1,29 @@
 ﻿wwt.app.factory('MediaFile', ['$q', function ($q) {
     var api = {
-        getTourProgress: getTourProgress,
-        addTourMedia: addTourMedia,
+        addLocalMedia: addLocalMedia,
         flushStore: flushStore,
         getBinaryData: getBinaryData,
-        saveTour:saveTour
+        
     };
-    var tourMedia = [];
+    var mediaCache = [];
 
     function Media(params) {
         
         return{
             url:params.url,
             key:params.key,
-            db:'touredit',
+            db:'tempblob',
             size:params.size,
             filename:params.name
         }
         
     }
 
-    var imageIndex = 0;
-    
-
-    function getTourProgress() {
-        var savedMedia = localStorage.getItem('tourMedia');
-        if (savedMedia) {
-            tourMedia = JSON.parse(savedMedia);
-        }
-        return tourMedia
-    }
-    
-    function saveTour() {
-        var deferred = $q.defer();
-        var mediaPromises = [];
-        tourMedia.forEach(function (item) {
-            mediaPromises.push(getBinaryData(item.url,true))
-        });
-        $q.all(mediaPromises).then(function (results) {
-            var cab = document.implementation.createDocument(null, "FileCabinet");
-            cab.documentElement.setAttribute('HeaderSize','0x00000000');
-            var filesNode = cab.createElement('Files');
-            cab.documentElement.appendChild(filesNode);
-            var offset = 0;
-            var cabData =  new ArrayBuffer();
-            results.forEach(function (binary, i) {
-                var file = cab.createElement('File');
-                file.setAttribute('Name',tourMedia[i].filename);
-                file.setAttribute('Url',tourMedia[i].url);
-                file.setAttribute('Offset', offset);
-                file.setAttribute('Size', binary.length);
-                filesNode.appendChild(file);
-                offset += binary.byteLength;
-                cabData = appendBuffer(cabData,binary);
-            });
-            var serializer = new XMLSerializer();
-            var xmlString = "<?xml version='1.0' encoding='UTF-8'?>" + serializer.serializeToString(cab);
-            var hex = xmlString.length.toString(16);
-            var newHex = ('0x00000000').substr(0,10-hex.length) + hex;
-            var fileBuffer = appendBuffer(str2ab(xmlString.replace('0x00000000', newHex)),cabData);
-            cabData = xmlString = null;
-            var file = new Blob([fileBuffer], {type: 'application/wtt'});
-            addTourMedia('wtt', file).then(function (result) {
-                deferred.resolve(result);
-            });
-        });
-        return deferred.promise;
-    }
-
-    function addTourMedia(mediaKey, file, db) {
+    function addLocalMedia(mediaKey, file, db) {
         
         var deferred = $q.defer();
-        var keys = ['music', 'voiceOver', 'wtt', 'image'];
-        var req = indexedDB.open('touredit');
+        var keys = ['collection', 'tour', 'image'];
+        var req = indexedDB.open('tempblob');
         req.onupgradeneeded = function () {
             // Define the database schema if necessary.
             var db = req.result;
@@ -82,16 +33,12 @@
             var db = req.result;
 
             var key = keys.indexOf(mediaKey);
-            if (key === 2) {
-                key += imageIndex;
-                imageIndex++;
-            }
+            
             var tx = db.transaction('files', 'readwrite');
             var store = tx.objectStore('files');
             var addFile = function () {
                 var addTx = store.put(file, key);
                 addTx.onsuccess = readFile;
-
             }
             var readFile = function () {
                 var mediaReq = store.get(key);
@@ -105,9 +52,7 @@
                         name: file.name
                     });
                     deferred.resolve(media);
-                    tourMedia[key] = media;
-                    localStorage.setItem('tourMedia', JSON.stringify(tourMedia));
-                    
+                    mediaCache[key] = media;                    
                 };
             };
             addFile();
@@ -120,7 +65,7 @@
 
     function flushStore(db) {
         var deferred = $q.defer();
-        var dbName = db || 'touredit';
+        var dbName = db || 'tempblob';
         var req = indexedDB.deleteDatabase(dbName);
         req.onupgradeneeded = function () {
             deferred.reject('upgradeneeded');

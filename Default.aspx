@@ -6,6 +6,7 @@
     public bool Debug = false;
     public bool DebugChrome = false;
     public bool ADS = false;
+    public string DotMin = ".min.js";
     // This enables the webclient to load in both the worldwidetelescope.org site
     // with js/css/imagery on the cdn and in standalone mode without a cdn
     public string ResourcesLocation;
@@ -35,6 +36,7 @@
         {
             DebugQs = "?debug=true&v=" + ResourcesVersion;
             Debug = true;
+            DotMin = ".js";
             if (Request.QueryString["debug"] == "chrome")
             {
                 Debug = false;
@@ -149,15 +151,15 @@
     <script src="//js.live.net/v5.0/wl.js"></script>
     <script src="sdk/wwtsdk.js"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-touch.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-route.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-cookies.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-animate.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-touch<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-route<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-cookies<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-animate<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl<%=DotMin %>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel<%=DotMin %>"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
     <% if (Debug || DebugChrome) 
        { %>
