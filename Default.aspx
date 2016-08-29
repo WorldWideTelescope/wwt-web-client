@@ -933,7 +933,7 @@
                                     <div class="transition-choice {{stop.transHover ? 'active' : ''}}" 
                                         bs-popover template-url="views/popovers/transition-type.html" 
                                         trigger="click" placement="bottom-left" data-content="{1}" 
-                                        title="Transition" data-container="body" 
+                                        title="Transition" data-container="body" data-auto-close="true"
                                         data-on-show="testfn()" data-on-hide="testfn()">
                                         <%-- slew --%>
                                         <div class="right-arrow choice" ng-if="stop.transitionType==0">
@@ -1040,31 +1040,41 @@
                                     <a class="btn menu-button picture" href="javascript:$('#addPicture').click()">
                                         <i class="fa fa-photo"></i>
                                         <label localize="Picture"></label>
-                                        <input type="file" id="addPicture" style="visibility:collapse;height:0;width:0;overflow:hidden;display:none" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" />
+                                        <input type="file" id="addPicture" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" />
                                     </a>
                                     
                                 </div>
                             </div>
                             <div class="right">
                             <div class="sound-container">
-                                <label localize="Music:"></label><label style="width:160px;overflow:hidden;white-space:nowrap" title="{{musicFileName}}">&nbsp;{{musicFileName}}</label>
+                                <label localize="Music:"></label><label style="width:160px;overflow:hidden;white-space:nowrap;position:relative;top:4px" title="{{activeSlide.music ? activeSlide.music.name : ''}}">&nbsp;
+                                    {{activeSlide.music ? activeSlide.music.name : ''}}</label>
                                 <div>
-                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'music')"  />
-                                    <a class="btn {{!musicFileUrl ? 'disabled' : musicPlaying ? 'active' : ''}}" ng-click="toggleSound('music')"><i class="fa fa-volume-up" ng-disabled="!musicFileUrl"></i></a>
-                                    <audio  class="hide" id="musicPlayer"></audio>
-                                    <div class="sound-level  {{!musicFileUrl ? 'disabled' : ''}}">
-                                        <a class="btn  {{!musicFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;" id="musicVol">&nbsp;</a>
+                                    <a class="btn remove" localize="Remove" ng-if="activeSlide.music" ng-click="activeSlide.music = activeSlide._musicTrack = null"></a>
+                                    <input type="file" class="audiofile{{activeSlide.music?' has-file':''}}" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'music')"  />
+                                    
+                                    <a class="btn{{!activeSlide.music?' disabled' : ''}}" ng-click="activeSlide.music.mute(!activeSlide.music.muted)" ng-disabled="!activeSlide.music">
+                                        <i class="fa fa-volume-up" ng-if="!activeSlide.music || !activeSlide.music.muted"></i>
+                                        <i class="fa fa-ban" ng-if="activeSlide.music && activeSlide.music.muted"></i>
+                                    </a>
+                                    <div class="sound-level  {{!activeSlide.music || activeSlide.music.muted ? 'disabled' : ''}}">
+                                        <a class="btn  {{!activeSlide.music || activeSlide.music.muted ? 'disabled' : ''}}" ng-style="{left: activeSlide.music ? activeSlide.music.vol : 50, position: 'absolute'}" id="musicVol">&nbsp;</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="sound-container">
-                                <label localize="Voiceover:"></label><label style="width:143px;overflow:hidden;white-space:nowrap" title="{{voiceOverFileName}}">&nbsp;{{voiceOverFileName}}</label>
+                                <label localize="Voiceover:"></label><label style="width:143px;overflow:hidden;white-space:nowrap;position:relative;top:4px" title="{{activeSlide.voice ? activeSlide.voice.name : ''}}">&nbsp;
+                                    {{activeSlide.voice ? activeSlide.voice.name : ''}}</label>
                                 <div>
-                                    <input type="file" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'voiceOver')"  />
-                                    <a class="btn {{!voiceOverFileUrl ? ' disabled' : voiceOverPlaying ? 'active' : ''}}" ng-click="toggleSound('voiceOver')" ng-disabled="!voiceOverFileUrl"><i class="fa fa-volume-up"></i></a>
-                                    <audio class="hide" id="voiceOverPlayer"></audio>
-                                    <div class="sound-level {{!voiceOverFileUrl ? 'disabled' : ''}}">
-                                        <a class="btn {{!voiceOverFileUrl ? 'disabled' : ''}}" style="left: 50px; position: absolute;" id="voiceVol">&nbsp;</a>
+                                    <a class="btn remove" localize="Remove" ng-if="activeSlide.voice" ng-click="activeSlide.voice = activeSlide._voiceTrack = null"></a>
+                                    <input type="file" class="audiofile{{activeSlide.voice?' has-file':''}}" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'voiceOver')"  />
+                                    <a class="btn{{!activeSlide.voice?' disabled' : ''}}" ng-click="activeSlide.voice.mute(!activeSlide.voice.muted)" ng-disabled="!activeSlide.voice">
+                                        <i class="fa fa-volume-up" ng-if="!activeSlide.voice || !activeSlide.voice.muted"></i>
+                                        <i class="fa fa-ban" ng-if="activeSlide.voice && activeSlide.voice.muted"></i>
+                                    </a>
+                                    <div class="sound-level {{!activeSlide.voice || activeSlide.voice.muted ? 'disabled' : ''}}">
+                                        <a class="btn {{!activeSlide.voice || activeSlide.voice.muted ? 'disabled' : ''}}"
+                                            ng-style="{left: activeSlide.voice ? activeSlide.voice.vol : 50, position: 'absolute'}" id="voiceVol">&nbsp;</a>
                                     </div>
                                 </div>
 
