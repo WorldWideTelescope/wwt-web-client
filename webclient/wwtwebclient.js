@@ -6435,8 +6435,8 @@ wwt.controllers.controller('CommunityController',
     }
 ]);
 wwt.controllers.controller('CurrentTourController', [
-    '$scope', '$rootScope', 'Util', 'MediaFile','AppState',
-    function ($scope, $rootScope, util, media,appState) {
+    '$scope', '$rootScope', 'Util', 'MediaFile','AppState','$timeout',
+    function ($scope, $rootScope, util, media,appState,$timeout) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     var mainScope = angular.element('div.desktop').scope();
@@ -6488,8 +6488,8 @@ wwt.controllers.controller('CurrentTourController', [
     }
 
     var initVolumeSliders = function () {
-        var volumeOpts = function (barEl, player) {
-            player.volume = .5;
+        var volumeOpts = function (barEl) {
+            
             return {
                 el: barEl,
                 bounds: {
@@ -6500,15 +6500,23 @@ wwt.controllers.controller('CurrentTourController', [
                     barEl.addClass('moving');
                 },
                 onmove: function () {
-                    player.volume = this.css.left / 100;
+                    var audio = barEl.attr('id') === 'voiceVol' ? $scope.activeSlide.voice : $scope.activeSlide.music;
+                    if (audio) {
+                        audio.set_volume(this.css.left);
+                        
+                    }
                 },
                 oncomplete: function () {
                     barEl.removeClass('moving');
+                    var audio = barEl.attr('id') === 'voiceVol' ? $scope.activeSlide.voice : $scope.activeSlide.music;
+                    $scope.$applyAsync(function(){
+                        audio.vol = this.css.left;
+                    });
                 }
             }
         };
-        var musicVol = new wwt.Move(volumeOpts($('#musicVol'), $('#musicPlayer')[0]));
-        var voiceVol = new wwt.Move(volumeOpts($('#voiceVol'), $('#voiceOverPlayer')[0]));
+        var musicVol = new wwt.Move(volumeOpts($('#musicVol')));
+        var voiceVol = new wwt.Move(volumeOpts($('#voiceVol')));
 
     };
 
@@ -6538,48 +6546,11 @@ wwt.controllers.controller('CurrentTourController', [
             tourEdit.tourEditorUI.addPicture(file);
         }
         else {
-            tourEdit.tourEditorUI.AddAudio(file, true);
+            tourEdit.tourEditorUI.addAudio(file, mediaKey === 'music');
+            $timeout(bindAudio, 500);
         }
-
-
-        //$scope[mediaKey + 'FileName'] = file.name;
-
-
-
-
-        //media.addTourMedia(mediaKey, file).then(function (mediaResult) {
-        //    //hook to the mediaResult.url here;
-            
-        //    if (!isImage) {
-        //        $scope[mediaKey + 'FileUrl'] = true;
-        //        $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
-        //        $scope[mediaKey + 'Playing'] = false;
-        //    }
-        //    console.timeEnd('storeLocal: ' + mediaKey);
-        //    if (!isImage) {
-        //        tourEdit.tourEditorUI.addAudio(mediaResult.url);
-        //        //media.getBinaryData(mediaResult.url).then(function (binary) {
-        //        //    console.log('binary string recieved - not logging because length = ' + binary.length);
-        //        //});
-        //    } else {
-        //        console.log('image created: ' + mediaResult.url);
-        //        tourEdit.tourEditorUI.addPicture(mediaResult.url);
-                
-        //    }
-        //});
-        
-    }
-
-    $scope.toggleSound = function (mediaKey) {
-        var audio = $('#' + mediaKey + 'Player')[0];
-        if ($scope[mediaKey +'Playing']) {
-            audio.pause();
-        } else {
-            audio.play();
-        }
-        $scope[mediaKey + 'Playing'] = !$scope[mediaKey + 'Playing'];
-    }
-
+    };
+    
     var showTourSlides = function () {
         $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         //tourEdit.pauseTour();
@@ -6608,7 +6579,7 @@ wwt.controllers.controller('CurrentTourController', [
     $scope.selectStop = function (index, e) {
         $scope.$applyAsync(function () { 
             
-            tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
+            $scope.activeSlide = tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
             
             $scope.activeIndex = index;
             if (e && e.shiftKey) {
@@ -6630,12 +6601,35 @@ wwt.controllers.controller('CurrentTourController', [
                 tourEdit.tourStopList.selectedItems = {};
                 tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
             }
+            
             tour.set_currentTourstopIndex($scope.activeIndex);
             $scope.lastFocused = index;
             $scope.selectedSlide = $scope.tourStops[$scope.activeIndex];
             $scope.$broadcast('initSlides');
+            $timeout(bindAudio, 500);
         });
     };
+
+    var bindAudio = function () {
+        var mapAudioProps = function (audio) {
+            if (audio) {
+                audio.muted = audio.get_mute();
+                audio.name = audio._name === '' ? audio._filename$1 : audio._name;
+                audio.vol = audio.get_volume();
+                audio.mute = function (flag) {
+                    $scope.$applyAsync(function () {
+                        audio.muted = flag;
+                        audio.set_mute(flag);
+                    });
+                }
+            }
+
+            return audio;
+        }
+
+        $scope.activeSlide.music = mapAudioProps($scope.activeSlide._musicTrack);
+        $scope.activeSlide.voice = mapAudioProps($scope.activeSlide._voiceTrack);
+    }
 
     $scope.showStartCameraPosition = function (index) {
         tour.set_currentTourstopIndex(index);
