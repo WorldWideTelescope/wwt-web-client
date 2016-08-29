@@ -16132,7 +16132,6 @@ window.wwtlib = function(){
             this._player.stop(false);
           }
           this._player = null;
-          WWTControl.singleton.uiController = null;
           WWTControl.singleton.set__mover(null);
           this.tourStopList.showAddButton = this._tour.get_editMode();
         }

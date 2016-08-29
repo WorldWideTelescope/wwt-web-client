@@ -5,37 +5,64 @@
 	'Places',
 	'Util',
 	'Astrometry',
-	function ($rootScope, $scope, appState, places, util, astrometry) {
+    'MediaFile',
+	function ($rootScope, $scope, appState, places, util, astrometry, media) {
+	    
+	    $rootScope.$on('openItem', function () {
+	        $scope.openItemUrl = '';
+	        setTimeout(function () {
+	            $('#txtOpenItem').focus();
+	        },100);
+	    });
 
-		$scope.openItem = function (itemType) {
-			if (itemType === 'collection') {
-				places.openCollection($scope.openItemUrl).then(function (folder) {
-					util.log('initExplorer broadcast', folder);
-					$rootScope.newFolder = folder;
-					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-					$('#openModal').modal('hide');
-				});
-			} else if (itemType === 'tour') {
-				$scope.playTour($scope.openItemUrl);
-				$('#openModal').modal('hide');
-			} else {
-				//var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
-				//$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
-				places.importImage($scope.openItemUrl).then(function (folder) {
-					//var imported = folder.get_children()[0];
-					if (folder) {
-						util.log('initExplorer broadcast', folder);
-						$rootScope.newFolder = folder;
-						$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-						$('#openModal').modal('hide');
-					} else {
-						$scope.importState = 'notAVMTagged';
-						$scope.imageFail = true;
-					}
-				});
-			}
-			
-		}
+	    $scope.openItem = function () {
+	        var itemType = $rootScope.openType;
+	        if (itemType === 'collection') {
+	            places.openCollection($scope.openItemUrl).then(function (folder) {
+	                util.log('initExplorer broadcast', folder);
+	                $rootScope.newFolder = folder;
+	                $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+	                $('#openModal').modal('hide');
+	            });
+	        } else if (itemType === 'tour') {
+	            $scope.playTour($scope.openItemUrl);
+	            $('#openModal').modal('hide');
+	        } else {
+	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
+	            //$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
+	            places.importImage($scope.openItemUrl).then(function (folder) {
+	                //var imported = folder.get_children()[0];
+	                if (folder) {
+	                    util.log('initExplorer broadcast', folder);
+	                    $rootScope.newFolder = folder;
+	                    $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+	                    $('#openModal').modal('hide');
+	                } else {
+	                    $scope.importState = 'notAVMTagged';
+	                    $scope.imageFail = true;
+	                }
+	            });
+	        } 
+	    };
+
+	    $scope.mediaFileChange = function (e) {
+	        var type = $rootScope.openType;
+	        console.time('openLocal: ' + type);
+	        var file = e.target.files[0];
+	        if (!file.name) {
+	            return;
+	        }
+
+	        $scope[type + 'FileName'] = file.name;
+
+	        media.addLocalMedia(type, file).then(function (mediaResult) {
+	            console.timeEnd('openLocal: ' + type);
+	            $scope.openItemUrl = mediaResult.url;
+	            $scope.openItem();
+	        });
+
+	    }
+
 		$scope.astrometryStatusText = '';
 		$scope.astroCallback = function(data) {
 			if ($scope.astrometryStatusText.indexOf(data.message) == 0) {
@@ -76,10 +103,9 @@
 		}
 
 		$scope.solveAstrometry = function () {
-			$scope.importState = 'astrometryProgress';
-			astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
-		}
-		//util.log(itemType,$scope.openItemUrl);
+		    $scope.importState = 'astrometryProgress';
+		    astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
+		};
 			
 	}
 ]);

@@ -1326,7 +1326,8 @@ wwt.app.directive('contenteditable', [function() {
                     s.secDuration + 
                     s.tenths;
                 
-                //console.log(s.duration);
+                stop.set_duration(lastGoodValue);
+                angular.element('#currentTourPanel').scope().refreshStops();
                 element.html(s.durationString);
             }
 
@@ -1398,6 +1399,7 @@ wwt.app.directive('contenteditable', [function() {
                     } else {
                         s.set_description(element.html());
                     }
+                    angular.element('#currentTourPanel').scope().refreshStops();
                 });
             });
             function select() {
@@ -1405,7 +1407,7 @@ wwt.app.directive('contenteditable', [function() {
                     
                     var txt = element.text();
                     var range = document.createRange();
-                    var start = 0, end = txt.length - 1;
+                    var start = 0, end = txt.length;
                     if (isDuration) {
                         start = txt.indexOf(':') + 1;
                         end = txt.indexOf('.');
@@ -2689,79 +2691,30 @@ wwt.app.factory('HashManager', [
 
 wwt.app.factory('MediaFile', ['$q', function ($q) {
     var api = {
-        getTourProgress: getTourProgress,
-        addTourMedia: addTourMedia,
+        addLocalMedia: addLocalMedia,
         flushStore: flushStore,
         getBinaryData: getBinaryData,
-        saveTour:saveTour
+        
     };
-    var tourMedia = [];
+    var mediaCache = [];
 
     function Media(params) {
         
         return{
             url:params.url,
             key:params.key,
-            db:'touredit',
+            db:'tempblob',
             size:params.size,
             filename:params.name
         }
         
     }
 
-    var imageIndex = 0;
-    
-
-    function getTourProgress() {
-        var savedMedia = localStorage.getItem('tourMedia');
-        if (savedMedia) {
-            tourMedia = JSON.parse(savedMedia);
-        }
-        return tourMedia
-    }
-    
-    function saveTour() {
-        var deferred = $q.defer();
-        var mediaPromises = [];
-        tourMedia.forEach(function (item) {
-            mediaPromises.push(getBinaryData(item.url,true))
-        });
-        $q.all(mediaPromises).then(function (results) {
-            var cab = document.implementation.createDocument(null, "FileCabinet");
-            cab.documentElement.setAttribute('HeaderSize','0x00000000');
-            var filesNode = cab.createElement('Files');
-            cab.documentElement.appendChild(filesNode);
-            var offset = 0;
-            var cabData =  new ArrayBuffer();
-            results.forEach(function (binary, i) {
-                var file = cab.createElement('File');
-                file.setAttribute('Name',tourMedia[i].filename);
-                file.setAttribute('Url',tourMedia[i].url);
-                file.setAttribute('Offset', offset);
-                file.setAttribute('Size', binary.length);
-                filesNode.appendChild(file);
-                offset += binary.byteLength;
-                cabData = appendBuffer(cabData,binary);
-            });
-            var serializer = new XMLSerializer();
-            var xmlString = "<?xml version='1.0' encoding='UTF-8'?>" + serializer.serializeToString(cab);
-            var hex = xmlString.length.toString(16);
-            var newHex = ('0x00000000').substr(0,10-hex.length) + hex;
-            var fileBuffer = appendBuffer(str2ab(xmlString.replace('0x00000000', newHex)),cabData);
-            cabData = xmlString = null;
-            var file = new Blob([fileBuffer], {type: 'application/wtt'});
-            addTourMedia('wtt', file).then(function (result) {
-                deferred.resolve(result);
-            });
-        });
-        return deferred.promise;
-    }
-
-    function addTourMedia(mediaKey, file, db) {
+    function addLocalMedia(mediaKey, file, db) {
         
         var deferred = $q.defer();
-        var keys = ['music', 'voiceOver', 'wtt', 'image'];
-        var req = indexedDB.open('touredit');
+        var keys = ['collection', 'tour', 'image'];
+        var req = indexedDB.open('tempblob');
         req.onupgradeneeded = function () {
             // Define the database schema if necessary.
             var db = req.result;
@@ -2771,16 +2724,12 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
             var db = req.result;
 
             var key = keys.indexOf(mediaKey);
-            if (key === 2) {
-                key += imageIndex;
-                imageIndex++;
-            }
+            
             var tx = db.transaction('files', 'readwrite');
             var store = tx.objectStore('files');
             var addFile = function () {
                 var addTx = store.put(file, key);
                 addTx.onsuccess = readFile;
-
             }
             var readFile = function () {
                 var mediaReq = store.get(key);
@@ -2794,9 +2743,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
                         name: file.name
                     });
                     deferred.resolve(media);
-                    tourMedia[key] = media;
-                    localStorage.setItem('tourMedia', JSON.stringify(tourMedia));
-                    
+                    mediaCache[key] = media;                    
                 };
             };
             addFile();
@@ -2809,7 +2756,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
 
     function flushStore(db) {
         var deferred = $q.defer();
-        var dbName = db || 'touredit';
+        var dbName = db || 'tempblob';
         var req = indexedDB.deleteDatabase(dbName);
         req.onupgradeneeded = function () {
             deferred.reject('upgradeneeded');
@@ -4489,11 +4436,14 @@ wwt.controllers.controller('MainController',
 			appState.set('activePanel', tab.label);
 		};
 		$scope.openItem = function (type) {
-			$scope.openType = type;
-			if (type === 'collection') {
-				$scope.tabClick($scope.ribbon.tabs[0]);
-			}
-			$('#openModal').modal('show');
+		    $scope.$applyAsync(function () {
+		        $rootScope.openType = type;
+		        $rootScope.$broadcast('openItem');
+		        if (type === 'collection') {
+		            $scope.tabClick($scope.ribbon.tabs[0]);
+		        }
+		        $('#openModal').modal('show');
+		    });
 		};
 
 		$scope.playTour = function (url) {
@@ -6487,8 +6437,8 @@ wwt.controllers.controller('CommunityController',
     }
 ]);
 wwt.controllers.controller('CurrentTourController', [
-    '$scope', '$rootScope', 'Util', 'MediaFile','AppState',
-    function ($scope, $rootScope, util, media,appState) {
+    '$scope', '$rootScope', 'Util', 'MediaFile','AppState','$timeout',
+    function ($scope, $rootScope, util, media,appState,$timeout) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     var mainScope = angular.element('div.desktop').scope();
@@ -6505,9 +6455,9 @@ wwt.controllers.controller('CurrentTourController', [
         tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
-        }
+        } 
         mapStops(true);
-         
+        
         //$rootScope.$on('escKey', function () {
             //$scope.$applyAsync(showTourSlides);
         //});
@@ -6517,9 +6467,13 @@ wwt.controllers.controller('CurrentTourController', [
             mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
             mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers];
         }
-        $('#contextmenu,#popoutmenu').on('click', mapStops);
+        $('#contextmenu,#popoutmenu').on('click', function () {
+            mapStops.apply($scope, []);
+        });
         setTimeout(initVolumeSliders, 111);
-        $('canvas').on('dblclick click', $scope.$applyAsync);
+        $('canvas').on('dblclick click', function () {
+            mapStops.apply($scope, []);
+        });
     };
 
     $scope.showSlideNumbers = function () {
@@ -6536,8 +6490,8 @@ wwt.controllers.controller('CurrentTourController', [
     }
 
     var initVolumeSliders = function () {
-        var volumeOpts = function (barEl, player) {
-            player.volume = .5;
+        var volumeOpts = function (barEl) {
+            
             return {
                 el: barEl,
                 bounds: {
@@ -6548,15 +6502,23 @@ wwt.controllers.controller('CurrentTourController', [
                     barEl.addClass('moving');
                 },
                 onmove: function () {
-                    player.volume = this.css.left / 100;
+                    var audio = barEl.attr('id') === 'voiceVol' ? $scope.activeSlide.voice : $scope.activeSlide.music;
+                    if (audio) {
+                        audio.set_volume(this.css.left);
+                        
+                    }
                 },
                 oncomplete: function () {
                     barEl.removeClass('moving');
+                    var audio = barEl.attr('id') === 'voiceVol' ? $scope.activeSlide.voice : $scope.activeSlide.music;
+                    $scope.$applyAsync(function(){
+                        audio.vol = this.css.left;
+                    });
                 }
             }
         };
-        var musicVol = new wwt.Move(volumeOpts($('#musicVol'), $('#musicPlayer')[0]));
-        var voiceVol = new wwt.Move(volumeOpts($('#voiceVol'), $('#voiceOverPlayer')[0]));
+        var musicVol = new wwt.Move(volumeOpts($('#musicVol')));
+        var voiceVol = new wwt.Move(volumeOpts($('#voiceVol')));
 
     };
 
@@ -6586,48 +6548,11 @@ wwt.controllers.controller('CurrentTourController', [
             tourEdit.tourEditorUI.addPicture(file);
         }
         else {
-            tourEdit.tourEditorUI.AddAudio(file, true);
+            tourEdit.tourEditorUI.addAudio(file, mediaKey === 'music');
+            $timeout(bindAudio, 500);
         }
-
-
-        //$scope[mediaKey + 'FileName'] = file.name;
-
-
-
-
-        //media.addTourMedia(mediaKey, file).then(function (mediaResult) {
-        //    //hook to the mediaResult.url here;
-            
-        //    if (!isImage) {
-        //        $scope[mediaKey + 'FileUrl'] = true;
-        //        $('#' + mediaKey + 'Player').attr('src', mediaResult.url);
-        //        $scope[mediaKey + 'Playing'] = false;
-        //    }
-        //    console.timeEnd('storeLocal: ' + mediaKey);
-        //    if (!isImage) {
-        //        tourEdit.tourEditorUI.addAudio(mediaResult.url);
-        //        //media.getBinaryData(mediaResult.url).then(function (binary) {
-        //        //    console.log('binary string recieved - not logging because length = ' + binary.length);
-        //        //});
-        //    } else {
-        //        console.log('image created: ' + mediaResult.url);
-        //        tourEdit.tourEditorUI.addPicture(mediaResult.url);
-                
-        //    }
-        //});
-        
-    }
-
-    $scope.toggleSound = function (mediaKey) {
-        var audio = $('#' + mediaKey + 'Player')[0];
-        if ($scope[mediaKey +'Playing']) {
-            audio.pause();
-        } else {
-            audio.play();
-        }
-        $scope[mediaKey + 'Playing'] = !$scope[mediaKey + 'Playing'];
-    }
-
+    };
+    
     var showTourSlides = function () {
         $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         //tourEdit.pauseTour();
@@ -6654,8 +6579,10 @@ wwt.controllers.controller('CurrentTourController', [
         }
     };
     $scope.selectStop = function (index, e) {
-        $scope.$applyAsync(function () {
-            tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
+        $scope.$applyAsync(function () { 
+            
+            $scope.activeSlide = tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
+            
             $scope.activeIndex = index;
             if (e && e.shiftKey) {
                 tourEdit.tourStopList.selectedItems = {};
@@ -6676,12 +6603,35 @@ wwt.controllers.controller('CurrentTourController', [
                 tourEdit.tourStopList.selectedItems = {};
                 tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
             }
+            
             tour.set_currentTourstopIndex($scope.activeIndex);
             $scope.lastFocused = index;
             $scope.selectedSlide = $scope.tourStops[$scope.activeIndex];
             $scope.$broadcast('initSlides');
+            $timeout(bindAudio, 500);
         });
     };
+
+    var bindAudio = function () {
+        var mapAudioProps = function (audio) {
+            if (audio) {
+                audio.muted = audio.get_mute();
+                audio.name = audio._name === '' ? audio._filename$1 : audio._name;
+                audio.vol = audio.get_volume();
+                audio.mute = function (flag) {
+                    $scope.$applyAsync(function () {
+                        audio.muted = flag;
+                        audio.set_mute(flag);
+                    });
+                }
+            }
+
+            return audio;
+        }
+
+        $scope.activeSlide.music = mapAudioProps($scope.activeSlide._musicTrack);
+        $scope.activeSlide.voice = mapAudioProps($scope.activeSlide._voiceTrack);
+    }
 
     $scope.showStartCameraPosition = function (index) {
         tour.set_currentTourstopIndex(index);
@@ -6692,15 +6642,16 @@ wwt.controllers.controller('CurrentTourController', [
         tourEdit.tourStopList_ShowEndPosition();
     };
 
-    $scope.pauseTourEdit = function () {
+    $scope.playButtonClick = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        else if ($scope.activeIndex) {
+        else {
             tourEdit.playFromCurrentTourstop();
-        } else {
-            tourEdit.playNow(true);
         }
+        //else {
+        //    tourEdit.playNow(true);
+        //}
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     };
 
@@ -7060,37 +7011,64 @@ wwt.controllers.controller('OpenItemController',
 	'Places',
 	'Util',
 	'Astrometry',
-	function ($rootScope, $scope, appState, places, util, astrometry) {
+    'MediaFile',
+	function ($rootScope, $scope, appState, places, util, astrometry, media) {
+	    
+	    $rootScope.$on('openItem', function () {
+	        $scope.openItemUrl = '';
+	        setTimeout(function () {
+	            $('#txtOpenItem').focus();
+	        },100);
+	    });
 
-		$scope.openItem = function (itemType) {
-			if (itemType === 'collection') {
-				places.openCollection($scope.openItemUrl).then(function (folder) {
-					util.log('initExplorer broadcast', folder);
-					$rootScope.newFolder = folder;
-					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-					$('#openModal').modal('hide');
-				});
-			} else if (itemType === 'tour') {
-				$scope.playTour($scope.openItemUrl);
-				$('#openModal').modal('hide');
-			} else {
-				//var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
-				//$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
-				places.importImage($scope.openItemUrl).then(function (folder) {
-					//var imported = folder.get_children()[0];
-					if (folder) {
-						util.log('initExplorer broadcast', folder);
-						$rootScope.newFolder = folder;
-						$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-						$('#openModal').modal('hide');
-					} else {
-						$scope.importState = 'notAVMTagged';
-						$scope.imageFail = true;
-					}
-				});
-			}
-			
-		}
+	    $scope.openItem = function () {
+	        var itemType = $rootScope.openType;
+	        if (itemType === 'collection') {
+	            places.openCollection($scope.openItemUrl).then(function (folder) {
+	                util.log('initExplorer broadcast', folder);
+	                $rootScope.newFolder = folder;
+	                $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+	                $('#openModal').modal('hide');
+	            });
+	        } else if (itemType === 'tour') {
+	            $scope.playTour($scope.openItemUrl);
+	            $('#openModal').modal('hide');
+	        } else {
+	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
+	            //$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
+	            places.importImage($scope.openItemUrl).then(function (folder) {
+	                //var imported = folder.get_children()[0];
+	                if (folder) {
+	                    util.log('initExplorer broadcast', folder);
+	                    $rootScope.newFolder = folder;
+	                    $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+	                    $('#openModal').modal('hide');
+	                } else {
+	                    $scope.importState = 'notAVMTagged';
+	                    $scope.imageFail = true;
+	                }
+	            });
+	        } 
+	    };
+
+	    $scope.mediaFileChange = function (e) {
+	        var type = $rootScope.openType;
+	        console.time('openLocal: ' + type);
+	        var file = e.target.files[0];
+	        if (!file.name) {
+	            return;
+	        }
+
+	        $scope[type + 'FileName'] = file.name;
+
+	        media.addLocalMedia(type, file).then(function (mediaResult) {
+	            console.timeEnd('openLocal: ' + type);
+	            $scope.openItemUrl = mediaResult.url;
+	            $scope.openItem();
+	        });
+
+	    }
+
 		$scope.astrometryStatusText = '';
 		$scope.astroCallback = function(data) {
 			if ($scope.astrometryStatusText.indexOf(data.message) == 0) {
@@ -7131,10 +7109,9 @@ wwt.controllers.controller('OpenItemController',
 		}
 
 		$scope.solveAstrometry = function () {
-			$scope.importState = 'astrometryProgress';
-			astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
-		}
-		//util.log(itemType,$scope.openItemUrl);
+		    $scope.importState = 'astrometryProgress';
+		    astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
+		};
 			
 	}
 ]);
@@ -7164,14 +7141,15 @@ wwt.controllers.controller('ObservingTimeController',
 		};
 	}
 ]);
-wwt.controllers.controller('SlideSelectionController', ['$scope', function ($scope) {
+wwt.controllers.controller('SlideSelectionController', ['$scope', '$timeout', function ($scope,$timeout) {
     var tourScope = angular.element('#currentTourPanel').scope();
     var overlays, selectionSet, selection;
-    var init = function () {
+    var init = $scope.init = function () {
         selection = tourScope.tourEdit.tourEditorUI.selection;
         selectionSet = $scope.selectionSet = selection.selectionSet;
         
         overlays = $scope.overlays = tourScope.selectedSlide._overlays;
+
         $scope.$applyAsync(function () {
             overlays.forEach(function (overlay, j) {
                 overlay.selected = selection.isOverlaySelected(overlay);
@@ -7191,9 +7169,13 @@ wwt.controllers.controller('SlideSelectionController', ['$scope', function ($sco
 
     }
 
-    $('canvas').on('dblclick click', init);
-    tourScope.$on('initSlides', init);
-    setTimeout(init, 100);
+    var rebind = function () {
+        init.apply($scope, []);
+    }
+
+    $('canvas').on('dblclick click keyup', rebind);
+    tourScope.$on('initSlides', rebind);
+    $timeout(rebind, 100);
 }]);
 wwt.controllers.controller('LoginController',
     ['$scope',

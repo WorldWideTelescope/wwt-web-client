@@ -6748,6 +6748,11 @@ button.close {
     display: none !important;
   }
 }
+input[type=file] {
+  visibility: collapse;
+  height: 0;
+  width: 0;
+}
 .iblock {
   display: inline-block;
 }
@@ -7159,6 +7164,17 @@ fieldset[disabled] body.wwt-webclient-wrapper div.curtour-panel table td.edit-pa
 abody.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after.disabled,
 fieldset[disabled] abody.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile:after {
   pointer-events: none;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .audiofile.has-file:after {
+  display: none;
+}
+body.wwt-webclient-wrapper div.curtour-panel table td.edit-panel div.edit-panel .sound-container .remove {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 26px;
+  padding: 2px 6px;
+  visibility: visible;
 }
 body.wwt-webclient-wrapper div.curtour-panel tour-slides {
   overflow-x: scroll;
