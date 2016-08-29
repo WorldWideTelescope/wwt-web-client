@@ -638,11 +638,14 @@ wwt.controllers.controller('MainController',
 			appState.set('activePanel', tab.label);
 		};
 		$scope.openItem = function (type) {
-			$scope.openType = type;
-			if (type === 'collection') {
-				$scope.tabClick($scope.ribbon.tabs[0]);
-			}
-			$('#openModal').modal('show');
+		    $scope.$applyAsync(function () {
+		        $rootScope.openType = type;
+		        $rootScope.$broadcast('openItem');
+		        if (type === 'collection') {
+		            $scope.tabClick($scope.ribbon.tabs[0]);
+		        }
+		        $('#openModal').modal('show');
+		    });
 		};
 
 		$scope.playTour = function (url) {

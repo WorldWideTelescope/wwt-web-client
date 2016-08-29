@@ -1,11 +1,12 @@
-﻿wwt.controllers.controller('SlideSelectionController', ['$scope', function ($scope) {
+﻿wwt.controllers.controller('SlideSelectionController', ['$scope', '$timeout', function ($scope,$timeout) {
     var tourScope = angular.element('#currentTourPanel').scope();
     var overlays, selectionSet, selection;
-    var init = function () {
+    var init = $scope.init = function () {
         selection = tourScope.tourEdit.tourEditorUI.selection;
         selectionSet = $scope.selectionSet = selection.selectionSet;
         
         overlays = $scope.overlays = tourScope.selectedSlide._overlays;
+
         $scope.$applyAsync(function () {
             overlays.forEach(function (overlay, j) {
                 overlay.selected = selection.isOverlaySelected(overlay);
@@ -25,7 +26,11 @@
 
     }
 
-    $('canvas').on('dblclick click', init);
-    tourScope.$on('initSlides', init);
-    setTimeout(init, 100);
+    var rebind = function () {
+        init.apply($scope, []);
+    }
+
+    $('canvas').on('dblclick click keyup', rebind);
+    tourScope.$on('initSlides', rebind);
+    $timeout(rebind, 100);
 }]);

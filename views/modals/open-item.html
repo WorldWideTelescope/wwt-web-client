@@ -5,12 +5,17 @@
 			<div class="modal-body">
 				
 				<h4><span localize="Open"></span> {{openType}}</h4>
-					<p>Enter the Url for the {{openType}} you want to open in WorldWide Telescope</p>
-					<div class="form-group">
-						<!--<label for="txtOpenItem">Enter {{openType}} url</label>-->
-						<input type="url" class="form-control" ng-model="openItemUrl" id="txtOpenItem" placeholder="Enter {{openType}} url" ng-disabled="imageFail">
-					</div>
-				<div ng-show="imageFail">
+                <p>Enter the Url for the {{openType}} you want to open in WorldWide Telescope</p>
+                <div class="form-group">
+                    <!--<label for="txtOpenItem">Enter {{openType}} url</label>-->
+                    <input type="url" class="form-control" ng-model="openItemUrl" id="txtOpenItem" placeholder="Enter {{openType}} url" ng-disabled="imageFail">
+                </div>
+                <div ng-if="openType != 'image'">
+                    <p localize="Or"></p>
+                    <a class="btn" localize="Choose local file" href="javascript:$('#addFile').click()" />
+                    <input type="file" id="addFile" onchange="angular.element(this).scope().mediaFileChange(event)" />
+                </div>
+                <div ng-show="imageFail">
 					<hr/>
 					<div ng-switch="importState">
 						<div ng-switch-when="astrometrysuccess">
