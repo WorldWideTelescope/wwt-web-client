@@ -1326,7 +1326,8 @@ wwt.app.directive('contenteditable', [function() {
                     s.secDuration + 
                     s.tenths;
                 
-                //console.log(s.duration);
+                stop.set_duration(lastGoodValue);
+                angular.element('#currentTourPanel').scope().refreshStops();
                 element.html(s.durationString);
             }
 
@@ -1398,6 +1399,7 @@ wwt.app.directive('contenteditable', [function() {
                     } else {
                         s.set_description(element.html());
                     }
+                    angular.element('#currentTourPanel').scope().refreshStops();
                 });
             });
             function select() {
@@ -1405,7 +1407,7 @@ wwt.app.directive('contenteditable', [function() {
                     
                     var txt = element.text();
                     var range = document.createRange();
-                    var start = 0, end = txt.length - 1;
+                    var start = 0, end = txt.length;
                     if (isDuration) {
                         start = txt.indexOf(':') + 1;
                         end = txt.indexOf('.');
