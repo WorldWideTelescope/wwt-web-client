@@ -34,6 +34,48 @@ namespace wwtlib
     //        tableMutex.ReleaseMutex();
         }
 
+        public string Save()
+        {
+            string data = "";
+
+            bool first = true;
+
+            foreach (string col in Header)
+            {
+                if (!first)
+                {
+                    data += "\t";
+                }
+                else
+                {
+                    first = false;
+                }
+
+                data += col;
+            }
+            data += "\r\n";
+            foreach (string[] row in Rows)
+            {
+                first = true;
+                foreach (string col in row)
+                {
+                    if (!first)
+                    {
+                        data += "\t";
+                    }
+                    else
+                    {
+                        first = false;
+                    }
+
+                    data += col;
+                }
+                data += "\r\n";
+            }
+
+            return data;
+        }
+
         //public void Save(string path)
         //{
 

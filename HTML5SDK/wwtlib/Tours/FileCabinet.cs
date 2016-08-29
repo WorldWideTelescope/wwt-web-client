@@ -13,6 +13,7 @@ namespace wwtlib
         public string Filename;
         public int Size;
         public int Offset;
+        public Blob Blob;
         public FileEntry(string filename, int size)
         {
             Filename = filename;
@@ -51,28 +52,22 @@ namespace wwtlib
             ClearFileList();
         }
 
-        public void AddFile(string filename)
+        public void AddFile(string filename, Blob data)
         {
-
-        //    FileInfo fi = new FileInfo(filename);
-        //    string filePart;
-        //    if (filename.ToLower().StartsWith(TempDirectory.ToLower()))
-        //    {
-        //        filePart = filename.Substring(TempDirectory.Length);
-        //    }
-        //    else
-        //    {
-        //        filePart = filename.Substring(filename.LastIndexOf(@"\") + 1);
-        //    }
-
-        //    if (!FileDirectory.ContainsKey(filePart))
-        //    {
-        //        FileEntry fe = new FileEntry(filePart, (int)fi.Length);
-        //        fe.Offset = currentOffset;
-        //        FileList.Add(fe);
-        //        FileDirectory.Add(filePart, fe);
-        //        currentOffset += fe.Size;
-        //    }
+            if (data == null)
+            {
+                return;
+            }
+          
+            if (!FileDirectory.ContainsKey(filename))
+            {
+                FileEntry fe = new FileEntry(filename, (int)data.Size);
+                fe.Offset = currentOffset;
+                fe.Blob = data;
+                FileList.Add(fe);
+                FileDirectory[filename] = fe;
+                currentOffset += fe.Size;
+            }
         }
 
         public void ClearFileList()
@@ -90,7 +85,7 @@ namespace wwtlib
             currentOffset = 0;
         }
 
-        public void PackageFiles()
+        public string PackageFiles()
         {
             XmlTextWriter xmlWriter = new XmlTextWriter();
            
@@ -127,37 +122,18 @@ namespace wwtlib
 
             blobs.Add(blob);
 
-            // Write each file
+            // add the blobs to array to append in order
             foreach (FileEntry entry in FileList)
-            {
-                Blob b = GetFileBlob(entry.Filename);
-                blobs.Add(b);
-
-                //using (FileStream fs = new FileStream(TempDirectory + "\\" + entry.Filename, FileMode.Open, FileAccess.Read))
-                //{
-                //    byte[] buffer = new byte[entry.Size];
-                //    if (fs.Read(buffer, 0, entry.Size) != entry.Size)
-                //    {
-                //        throw new SystemException(Language.GetLocalizedText(214, "One of the files in the collection is missing, corrupt or inaccessable"));
-                //    }
-                //    output.Write(buffer, 0, entry.Size);
-                //    fs.Close();
-                //}
+            {   
+                blobs.Add(entry.Blob);
             }
 
-            //output.Close();
-
-            //Blob cabBlob = new Blob(blobs, OptionElement);
             Blob cabBlob = (Blob)Script.Literal("new Blob({0}, {{type : 'application/x-wtt'}});", blobs);
             string bloblUrl = (string)Script.Literal("URL.createObjectURL({0});", cabBlob);
 
+            return bloblUrl;
         }
 
-        //public void Extract()
-        //{
-        //    Extract(true, null);
-
-        //}
 
         public string Url = "";
         private WebFile webFile;

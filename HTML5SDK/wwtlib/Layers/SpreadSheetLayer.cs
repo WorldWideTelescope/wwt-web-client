@@ -200,16 +200,27 @@ namespace wwtlib
                 }
             };
             xhr.Send();
-
-            
-
-    
-           
         }
 
 
         string fileName;
-      
+
+
+        public override void AddFilesToCabinet(FileCabinet fc)
+        {
+ 
+            fileName = fc.TempDirectory + string.Format("{0}\\{1}.txt", fc.PackageID, this.ID.ToString());
+
+            string dir = fileName.Substring(0, fileName.LastIndexOf("\\"));
+           
+            string data = table.Save();
+
+            System.Html.Data.Files.Blob blob = new System.Html.Data.Files.Blob(new object[] { data });
+            
+            fc.AddFile(fileName, blob);
+
+            base.AddFilesToCabinet(fc);
+        }
 
         public void GuessHeaderAssignments()
         {
@@ -1364,21 +1375,21 @@ namespace wwtlib
         public override void WriteLayerProperties(XmlTextWriter xmlWriter)
         {
             xmlWriter.WriteAttributeString("TimeSeries", TimeSeries.ToString());
-            xmlWriter.WriteAttributeString("BeginRange", BeginRange.ToString());
-            xmlWriter.WriteAttributeString("EndRange", EndRange.ToString());
+            xmlWriter.WriteAttributeString("BeginRange", Util.XMLDate(BeginRange));
+            xmlWriter.WriteAttributeString("EndRange", Util.XMLDate(EndRange));
             xmlWriter.WriteAttributeString("Decay", Decay.ToString());
-            xmlWriter.WriteAttributeString("CoordinatesType", CoordinatesType.ToString());
+            xmlWriter.WriteAttributeString("CoordinatesType", Enums.ToXml("CoordinatesTypes",(int)CoordinatesType));
             xmlWriter.WriteAttributeString("LatColumn", LatColumn.ToString());
             xmlWriter.WriteAttributeString("LngColumn", LngColumn.ToString());
             xmlWriter.WriteAttributeString("GeometryColumn", GeometryColumn.ToString());
-            xmlWriter.WriteAttributeString("AltType", AltType.ToString());
-            xmlWriter.WriteAttributeString("MarkerMix", MarkerMix.ToString());
-            xmlWriter.WriteAttributeString("ColorMap", ColorMap.ToString());
+            xmlWriter.WriteAttributeString("AltType", Enums.ToXml("AltTypes", (int)AltType));
+            xmlWriter.WriteAttributeString("MarkerMix", Enums.ToXml("MarkerMixes", (int)MarkerMix));
+            xmlWriter.WriteAttributeString("ColorMap", Enums.ToXml("ColorMaps", (int)ColorMap));
             xmlWriter.WriteAttributeString("MarkerColumn", MarkerColumn.ToString());
             xmlWriter.WriteAttributeString("ColorMapColumn", ColorMapColumn.ToString());
-            xmlWriter.WriteAttributeString("PlotType", PlotType.ToString());
+            xmlWriter.WriteAttributeString("PlotType", Enums.ToXml("PlotTypes", (int)PlotType));
             xmlWriter.WriteAttributeString("MarkerIndex", MarkerIndex.ToString());
-            xmlWriter.WriteAttributeString("MarkerScale", MarkerScale.ToString());
+            xmlWriter.WriteAttributeString("MarkerScale", Enums.ToXml("MarkerScales",(int)MarkerScale));
             xmlWriter.WriteAttributeString("AltUnit", AltUnit.ToString());
             xmlWriter.WriteAttributeString("AltColumn", AltColumn.ToString());
             xmlWriter.WriteAttributeString("StartDateColumn", StartDateColumn.ToString());
@@ -1387,9 +1398,9 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("HyperlinkFormat", HyperlinkFormat.ToString());
             xmlWriter.WriteAttributeString("HyperlinkColumn", HyperlinkColumn.ToString());
             xmlWriter.WriteAttributeString("ScaleFactor", ScaleFactor.ToString());
-            xmlWriter.WriteAttributeString("PointScaleType", PointScaleType.ToString());
+            xmlWriter.WriteAttributeString("PointScaleType", Enums.ToXml("PointScaleTypes", (int)PointScaleType));
             xmlWriter.WriteAttributeString("ShowFarSide", ShowFarSide.ToString());
-            xmlWriter.WriteAttributeString("RaUnits", RaUnits.ToString());
+            xmlWriter.WriteAttributeString("RaUnits", Enums.ToXml("RAUnits", (int)RaUnits));
             xmlWriter.WriteAttributeString("HoverTextColumn", NameColumn.ToString());
             xmlWriter.WriteAttributeString("XAxisColumn", XAxisColumn.ToString());
             xmlWriter.WriteAttributeString("XAxisReverse", XAxisReverse.ToString());
@@ -1397,7 +1408,7 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("YAxisReverse", YAxisReverse.ToString());
             xmlWriter.WriteAttributeString("ZAxisColumn", ZAxisColumn.ToString());
             xmlWriter.WriteAttributeString("ZAxisReverse", ZAxisReverse.ToString());
-            xmlWriter.WriteAttributeString("CartesianScale", CartesianScale.ToString());
+            xmlWriter.WriteAttributeString("CartesianScale", Enums.ToXml("AltUnits", (int)CartesianScale));
             xmlWriter.WriteAttributeString("CartesianCustomScale", CartesianCustomScale.ToString());
             xmlWriter.WriteAttributeString("DynamicData", DynamicData.ToString());
             xmlWriter.WriteAttributeString("AutoUpdate", AutoUpdate.ToString());
@@ -1498,21 +1509,8 @@ namespace wwtlib
             BeginRange = new Date(node.Attributes.GetNamedItem("BeginRange").Value);
             EndRange = new Date(node.Attributes.GetNamedItem("EndRange").Value);
             Decay = Single.Parse(node.Attributes.GetNamedItem("Decay").Value);
-
-            switch (node.Attributes.GetNamedItem("CoordinatesType").Value)
-            {
-                case "Spherical":
-                    CoordinatesType = CoordinatesTypes.Spherical;
-                    break;
-                case "Rectangular":
-                    CoordinatesType = CoordinatesTypes.Rectangular;
-                    break;
-                case "Orbital":
-                    CoordinatesType = CoordinatesTypes.Orbital;
-                    break;
-                default:
-                    break;
-            }
+            CoordinatesType = (CoordinatesTypes)Enums.Parse("CoordinatesTypes", node.Attributes.GetNamedItem("CoordinatesType").Value);
+           
 
             if ((int)CoordinatesType < 0)
             {
@@ -1525,118 +1523,18 @@ namespace wwtlib
                 GeometryColumn = int.Parse(node.Attributes.GetNamedItem("GeometryColumn").Value);
             }
 
-            switch (node.Attributes.GetNamedItem("AltType").Value)
-            {
-                case "Depth":
-                    AltType = AltTypes.Depth;
-                    break;
-                case "Altitude":
-                    AltType = AltTypes.Altitude;
-                    break;
-                case "Distance":
-                    AltType = AltTypes.Distance;
-                    break;
-                case "SeaLevel":
-                    AltType = AltTypes.SeaLevel;
-                    break;
-                case "Terrain":
-                    AltType = AltTypes.Terrain;
-                    break;
-                default:
-                    break;
-            }
-
-
-
+            AltType = (AltTypes)Enums.Parse("AltTypes", node.Attributes.GetNamedItem("AltType").Value);
+            
             MarkerMix = MarkerMixes.Same_For_All;
-
-            switch (node.Attributes.GetNamedItem("ColorMap").Value)
-            {
-                case "Same_For_All":
-                    ColorMap = ColorMaps.Same_For_All;
-                    break;
-                case "Group_by_Values":
-                    ColorMap = ColorMaps.Group_by_Values;
-                    break;
-                case "Per_Column_Literal":
-                    ColorMap = ColorMaps.Per_Column_Literal;
-                    break;
-                default:
-                    break;
-            }
-
+            ColorMap = (ColorMaps)Enums.Parse("ColorMaps",node.Attributes.GetNamedItem("ColorMap").Value);
 
             MarkerColumn = int.Parse(node.Attributes.GetNamedItem("MarkerColumn").Value);
             ColorMapColumn = int.Parse(node.Attributes.GetNamedItem("ColorMapColumn").Value);
-
-            switch (node.Attributes.GetNamedItem("PlotType").Value)
-            {
-                case "Gaussian":
-                    PlotType = PlotTypes.Gaussian;
-                    break;
-                case "Point":
-                    PlotType = PlotTypes.Point;
-                    break;
-                case "Circle":
-                    PlotType = PlotTypes.Circle;
-                    break;
-                case "PushPin":
-                    PlotType = PlotTypes.PushPin;
-                    break;
-                default:
-                    break;
-            }
-
+            PlotType = (PlotTypes)Enums.Parse("PlotTypes",node.Attributes.GetNamedItem("PlotType").Value);
+            
             MarkerIndex = int.Parse(node.Attributes.GetNamedItem("MarkerIndex").Value);
-
-            switch (node.Attributes.GetNamedItem("MarkerScale").Value)
-            {
-                case "Screen":
-                    MarkerScale = MarkerScales.Screen;
-                    break;
-                case "World":
-                    MarkerScale = MarkerScales.World;
-                    break;
-                default:
-                    break;
-            }
-
-            switch (node.Attributes.GetNamedItem("AltUnit").Value)
-            {
-                case "Meters":
-                    AltUnit = AltUnits.Meters;
-                    break;
-                case "Feet":
-                    AltUnit = AltUnits.Feet;
-                    break;
-                case "Inches":
-                    AltUnit = AltUnits.Inches;
-                    break;
-                case "Miles":
-                    AltUnit = AltUnits.Miles;
-                    break;
-                case "Kilometers":
-                    AltUnit = AltUnits.Kilometers;
-                    break;
-                case "AstronomicalUnits":
-                    AltUnit = AltUnits.AstronomicalUnits;
-                    break;
-                case "LightYears":
-                    AltUnit = AltUnits.LightYears;
-                    break;
-                case "Parsecs":
-                    AltUnit = AltUnits.Parsecs;
-                    break;
-                case "MegaParsecs":
-                    AltUnit = AltUnits.MegaParsecs;
-                    break;
-                case "Custom":
-                    AltUnit = AltUnits.Custom;
-                    break;
-                default:
-                    break;
-            }
-
+            MarkerScale = (MarkerScales)Enums.Parse("MarkerScales", node.Attributes.GetNamedItem("MarkerScale").Value);
+            AltUnit = (AltUnits)Enums.Parse("AltUnits", node.Attributes.GetNamedItem("AltUnit").Value);
             AltColumn = int.Parse(node.Attributes.GetNamedItem("AltColumn").Value);
             StartDateColumn = int.Parse(node.Attributes.GetNamedItem("StartDateColumn").Value);
             EndDateColumn = int.Parse(node.Attributes.GetNamedItem("EndDateColumn").Value);
@@ -1644,29 +1542,8 @@ namespace wwtlib
             HyperlinkFormat = node.Attributes.GetNamedItem("HyperlinkFormat").Value;
             HyperlinkColumn = int.Parse(node.Attributes.GetNamedItem("HyperlinkColumn").Value);
             ScaleFactor = Single.Parse(node.Attributes.GetNamedItem("ScaleFactor").Value);
-
-            switch (node.Attributes.GetNamedItem("PointScaleType").Value)
-            {
-                case "Linear":
-                    PointScaleType = PointScaleTypes.Linear;
-                    break;
-                case "Power":
-                    PointScaleType = PointScaleTypes.Power;
-                    break;
-                case "Log":
-                    PointScaleType = PointScaleTypes.Log;
-                    break;
-                case "Constant":
-                    PointScaleType = PointScaleTypes.Constant;
-                    break;
-                case "StellarMagnitude":
-                    PointScaleType = PointScaleTypes.StellarMagnitude;
-                    break;
-                default:
-                    break;
-            }
-
-
+            PointScaleType = (PointScaleTypes)Enums.Parse("PointScaleTypes", node.Attributes.GetNamedItem("PointScaleType").Value);
+          
             if (node.Attributes.GetNamedItem("ShowFarSide") != null)
             {
                 ShowFarSide = Boolean.Parse(node.Attributes.GetNamedItem("ShowFarSide").Value);
@@ -1674,24 +1551,13 @@ namespace wwtlib
 
             if (node.Attributes.GetNamedItem("RaUnits") != null)
             {
-                // RaUnits = (RAUnits)Enum.Parse(typeof(RAUnits), node.Attributes["RaUnits"].Value);
-
-                switch (node.Attributes.GetNamedItem("RaUnits").Value)
-                {
-                    case "Hours":
-                        RaUnits = RAUnits.Hours;
-                        break;
-                    case "Degrees":
-                        RaUnits = RAUnits.Degrees;
-                        break;
-                }
+                RaUnits = (RAUnits)Enums.Parse("RAUnits", node.Attributes.GetNamedItem("RaUnits").Value);
             }
 
             if (node.Attributes.GetNamedItem("HoverTextColumn") != null)
             {
                 NameColumn = int.Parse(node.Attributes.GetNamedItem("HoverTextColumn").Value);
             }
-
 
             if (node.Attributes.GetNamedItem("XAxisColumn") != null)
             {
@@ -1701,47 +1567,8 @@ namespace wwtlib
                 YAxisReverse = bool.Parse(node.Attributes.GetNamedItem("YAxisReverse").Value);
                 ZAxisColumn = int.Parse(node.Attributes.GetNamedItem("ZAxisColumn").Value);
                 ZAxisReverse = bool.Parse(node.Attributes.GetNamedItem("ZAxisReverse").Value);
-
-                switch (node.Attributes.GetNamedItem("CartesianScale").Value)
-                {
-                    case "Meters":
-                        CartesianScale = AltUnits.Meters;
-                        break;
-                    case "Feet":
-                        CartesianScale = AltUnits.Feet;
-                        break;
-                    case "Inches":
-                        CartesianScale = AltUnits.Inches;
-                        break;
-                    case "Miles":
-                        CartesianScale = AltUnits.Miles;
-                        break;
-                    case "Kilometers":
-                        CartesianScale = AltUnits.Kilometers;
-                        break;
-                    case "AstronomicalUnits":
-                        CartesianScale = AltUnits.AstronomicalUnits;
-                        break;
-                    case "LightYears":
-                        CartesianScale = AltUnits.LightYears;
-                        break;
-                    case "Parsecs":
-                        CartesianScale = AltUnits.Parsecs;
-                        break;
-                    case "MegaParsecs":
-                        CartesianScale = AltUnits.MegaParsecs;
-                        break;
-                    case "Custom":
-                        CartesianScale = AltUnits.Custom;
-                        break;
-                    default:
-                        break;
-                }
-
-
+                CartesianScale = (AltUnits)Enums.Parse("AltUnits",node.Attributes.GetNamedItem("CartesianScale").Value);
                 CartesianCustomScale = double.Parse(node.Attributes.GetNamedItem("CartesianCustomScale").Value);
-
-
             }
 
             if (node.Attributes.GetNamedItem("DynamicData") != null)
@@ -1750,8 +1577,6 @@ namespace wwtlib
                 AutoUpdate = bool.Parse(node.Attributes.GetNamedItem("AutoUpdate").Value);
                 DataSourceUrl = node.Attributes.GetNamedItem("DataSourceUrl").Value;
             }
-
-
         }
 
 

@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace wwtlib
 {
-    enum TransitionType { Slew=0, CrossFade=1, CrossCut=2, FadeOutIn=3, FadeIn=4, FadeOut=5 };
+    public enum TransitionType { Slew=0, CrossFade=1, CrossCut=2, FadeOutIn=3, FadeIn=4, FadeOut=5 };
     public class TourStop : ISettings
     {
         public const string ClipboardFormat = "WorldWideTelescope.Slide";
@@ -526,182 +526,7 @@ namespace wwtlib
             return writer.Body;
         }
 
-        internal void SaveToXml(XmlTextWriter xmlWriter, bool saveContent)
-        {
-            if (saveContent)
-            {
-                if (thumbnail != null)
-                {
-                    //todo how do we save this?
-                    //thumbnail.Save(TourStopThumbnailFilename, System.Drawing.Imaging.ImageFormat.Png);
-                }
-            }
-
-            xmlWriter.WriteStartElement("TourStop");
-            xmlWriter.WriteAttributeString("Id", id);
-            xmlWriter.WriteAttributeString("Name", name);
-            xmlWriter.WriteAttributeString("Description", description);
-            xmlWriter.WriteAttributeString("Thumbnail", thumbnailString);
-            xmlWriter.WriteAttributeString("Duration", duration.ToString());
-            xmlWriter.WriteAttributeString("Master", masterSlide.ToString());
-            xmlWriter.WriteAttributeString("TransitionType", transition.ToString());
-            xmlWriter.WriteAttributeString("TransitionTime", transitionTime.ToString());
-            xmlWriter.WriteAttributeString("TransitionOutTime", transitionOutTime.ToString());
-            xmlWriter.WriteAttributeString("TransitionHoldTime", transitionHoldTime.ToString());
-            xmlWriter.WriteAttributeString("NextSlide", nextSlide.ToString());
-            xmlWriter.WriteAttributeString("InterpolationType", interpolationType.ToString());
-
-            xmlWriter.WriteAttributeString("HasLocation", hasLocation.ToString());
-            if (hasLocation)
-            {
-                xmlWriter.WriteAttributeString("LocationAltitude", locationAltitude.ToString());
-                xmlWriter.WriteAttributeString("LocationLat", locationLat.ToString());
-                xmlWriter.WriteAttributeString("LocationLng", locationLng.ToString());
-            }
-            xmlWriter.WriteAttributeString("HasTime", hasTime.ToString());
-            if (hasTime)
-            {
-                xmlWriter.WriteAttributeString("StartTime", startTime.ToString());
-                xmlWriter.WriteAttributeString("EndTime", endTime.ToString());
-            }
-            xmlWriter.WriteAttributeString("ActualPlanetScale", actualPlanetScale.ToString());
-            xmlWriter.WriteAttributeString("ShowClouds", showClouds.ToString());
-            xmlWriter.WriteAttributeString("EarthCutawayView", earthCutawayView.ToString());
-            xmlWriter.WriteAttributeString("ShowConstellationBoundries", showConstellationBoundries.ToString());
-            xmlWriter.WriteAttributeString("ShowConstellationFigures", showConstellationFigures.ToString());
-            xmlWriter.WriteAttributeString("ShowConstellationSelection", showConstellationSelection.ToString());
-            xmlWriter.WriteAttributeString("ShowEcliptic", showEcliptic.ToString());
-            xmlWriter.WriteAttributeString("ShowElevationModel", showElevationModel.ToString());
-            showFieldOfView = false;
-            xmlWriter.WriteAttributeString("ShowFieldOfView", showFieldOfView.ToString());
-            xmlWriter.WriteAttributeString("ShowGrid", showGrid.ToString());
-            xmlWriter.WriteAttributeString("ShowHorizon", showHorizon.ToString());
-            xmlWriter.WriteAttributeString("ShowHorizonPanorama", showHorizonPanorama.ToString());
-            xmlWriter.WriteAttributeString("ShowMoonsAsPointSource", showMoonsAsPointSource.ToString());
-            xmlWriter.WriteAttributeString("ShowSolarSystem", showSolarSystem.ToString());
-            xmlWriter.WriteAttributeString("FovTelescope", fovTelescope.ToString());
-            xmlWriter.WriteAttributeString("FovEyepiece", fovEyepiece.ToString());
-            xmlWriter.WriteAttributeString("FovCamera", fovCamera.ToString());
-            xmlWriter.WriteAttributeString("LocalHorizonMode", localHorizonMode.ToString());
-            //xmlWriter.WriteAttributeString("MilkyWayModel", milkyWayModel.ToString());
-            xmlWriter.WriteAttributeString("GalacticMode", galacticMode.ToString());
-            xmlWriter.WriteAttributeString("FadeInOverlays", fadeInOverlays.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemStars", solarSystemStars.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemMilkyWay", solarSystemMilkyWay.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemCosmos", solarSystemCosmos.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemCMB", solarSystemCMB.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemOrbits", solarSystemOrbits.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemMinorOrbits", solarSystemMinorOrbits.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemOverlays", solarSystemOverlays.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemLighting", solarSystemLighting.ToString());
-            xmlWriter.WriteAttributeString("ShowISSModel", showISSModel.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemScale", solarSystemScale.ToString());
-            xmlWriter.WriteAttributeString("MinorPlanetsFilter", minorPlanetsFilter.ToString());
-            xmlWriter.WriteAttributeString("PlanetOrbitsFilter", planetOrbitsFilter.ToString());
-
-            xmlWriter.WriteAttributeString("SolarSystemMultiRes", solarSystemMultiRes.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemMinorPlanets", solarSystemMinorPlanets.ToString());
-            xmlWriter.WriteAttributeString("SolarSystemPlanets", solarSystemPlanets.ToString());
-            xmlWriter.WriteAttributeString("ShowEarthSky", showEarthSky.ToString());
-
-            xmlWriter.WriteAttributeString("ShowEquatorialGridText", ShowEquatorialGridText.ToString());
-            xmlWriter.WriteAttributeString("ShowGalacticGrid", ShowGalacticGrid.ToString());
-            xmlWriter.WriteAttributeString("ShowGalacticGridText", ShowGalacticGridText.ToString());
-            xmlWriter.WriteAttributeString("ShowEclipticGrid", ShowEclipticGrid.ToString());
-            xmlWriter.WriteAttributeString("ShowEclipticGridText", ShowEclipticGridText.ToString());
-            xmlWriter.WriteAttributeString("ShowEclipticOverviewText", ShowEclipticOverviewText.ToString());
-            xmlWriter.WriteAttributeString("ShowAltAzGrid", ShowAltAzGrid.ToString());
-            xmlWriter.WriteAttributeString("ShowAltAzGridText", ShowAltAzGridText.ToString());
-            xmlWriter.WriteAttributeString("ShowPrecessionChart", ShowPrecessionChart.ToString());
-            xmlWriter.WriteAttributeString("ConstellationPictures", ShowConstellationPictures.ToString());
-            xmlWriter.WriteAttributeString("ConstellationsEnabled", ConstellationsEnabled);
-            xmlWriter.WriteAttributeString("ShowConstellationLabels", ShowConstellationLabels.ToString());
-            xmlWriter.WriteAttributeString("ShowSkyOverlays", ShowSkyOverlays.ToString());
-            xmlWriter.WriteAttributeString("ShowConstellations", ShowConstellations.ToString());
-            xmlWriter.WriteAttributeString("ShowSkyNode", ShowSkyNode.ToString());
-            xmlWriter.WriteAttributeString("ShowSkyGrids", ShowSkyGrids.ToString());
-            xmlWriter.WriteAttributeString("SkyOverlaysIn3d", ShowSkyOverlaysIn3d.ToString());
-            xmlWriter.WriteAttributeString("ConstellationFiguresFilter", constellationFiguresFilter.ToString());
-            xmlWriter.WriteAttributeString("ConstellationBoundariesFilter", constellationBoundariesFilter.ToString());
-            xmlWriter.WriteAttributeString("ConstellationNamesFilter", constellationNamesFilter.ToString());
-            xmlWriter.WriteAttributeString("ConstellationArtFilter", constellationArtFilter.ToString());
-
-
-
-            target.SaveToXml(xmlWriter, "Place");
-            if (endTarget != null)
-            {
-                endTarget.SaveToXml(xmlWriter, "EndTarget");
-            }
-
-            xmlWriter.WriteStartElement("Overlays");
-
-            foreach (Overlay overlay in overlays)
-            {
-                overlay.SaveToXml(xmlWriter, false);
-            }
-            xmlWriter.WriteEndElement();
-
-            if (musicTrack != null)
-            {
-                xmlWriter.WriteStartElement("MusicTrack");
-
-                musicTrack.SaveToXml(xmlWriter, false);
-
-                xmlWriter.WriteEndElement();
-            }
-
-            if (voiceTrack != null)
-            {
-                xmlWriter.WriteStartElement("VoiceTrack");
-
-                voiceTrack.SaveToXml(xmlWriter, false);
-
-                xmlWriter.WriteEndElement();
-            }
-
-            //xmlWriter.WriteElementString("Credits", Credits);
-            WriteLayerList(xmlWriter);
-
-            //if (KeyFramed)
-            //{
-            //    xmlWriter.WriteStartElement("AnimationTargets");
-            //    foreach (AnimationTarget aniTarget in AnimationTargets)
-            //    {
-            //        aniTarget.SaveToXml(xmlWriter);
-            //    }
-            //    xmlWriter.WriteEndElement();
-            //}
-
-            xmlWriter.WriteEndElement();
-        }
-
-        private void WriteLayerList(XmlTextWriter xmlWriter)
-        {
-            if (Layers.Count > 0)
-            {
-                xmlWriter.WriteStartElement("VisibleLayers");
-                foreach(Guid key in Layers.Keys)
-                {
-                    LayerInfo info = Layers[key];
-                
-                    xmlWriter.WriteStartElement("Layer");
-                    xmlWriter.WriteAttributeString("StartOpacity", info.StartOpacity.ToString());
-                    xmlWriter.WriteAttributeString("EndOpacity", info.EndOpacity.ToString());
-                    int len = info.StartParams.Length;
-
-                    xmlWriter.WriteAttributeString("ParamCount", len.ToString());
-                    for (int i = 0; i < len; i++)
-                    {
-                        xmlWriter.WriteAttributeString(string.Format("StartParam{0}", i), info.StartParams[i].ToString());
-                        xmlWriter.WriteAttributeString(string.Format("EndParam{0}", i), info.EndParams[i].ToString());
-                    }
-                    xmlWriter.WriteValue(info.ID.ToString());
-                    xmlWriter.WriteEndElement();
-                }
-                xmlWriter.WriteEndElement();
-            }
-        }
+      
 
         public void SyncSettings()
         {
@@ -1158,6 +983,214 @@ namespace wwtlib
             }
         }
 
+        internal void SaveToXml(XmlTextWriter xmlWriter, bool saveContent)
+        {
+            if (saveContent)
+            {
+                if (thumbnail != null)
+                {
+                    //todo how do we save this?
+                    //thumbnail.Save(TourStopThumbnailFilename, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
+
+            xmlWriter.WriteStartElement("TourStop");
+            xmlWriter.WriteAttributeString("Id", id);
+            xmlWriter.WriteAttributeString("Name", name);
+            xmlWriter.WriteAttributeString("Description", description);
+            xmlWriter.WriteAttributeString("Thumbnail", thumbnailString);
+            xmlWriter.WriteAttributeString("Duration", Util.XMLDuration(duration));
+            xmlWriter.WriteAttributeString("Master", masterSlide.ToString());
+            xmlWriter.WriteAttributeString("TransitionType", Enums.ToXml("TransitionType", (int)transition));
+            xmlWriter.WriteAttributeString("TransitionTime", transitionTime.ToString());
+            xmlWriter.WriteAttributeString("TransitionOutTime", transitionOutTime.ToString());
+            xmlWriter.WriteAttributeString("TransitionHoldTime", transitionHoldTime.ToString());
+            xmlWriter.WriteAttributeString("NextSlide", nextSlide.ToString());
+            xmlWriter.WriteAttributeString("InterpolationType", Enums.ToXml("InterpolationType", (int)interpolationType));
+
+            xmlWriter.WriteAttributeString("HasLocation", hasLocation.ToString());
+            if (hasLocation)
+            {
+                xmlWriter.WriteAttributeString("LocationAltitude", locationAltitude.ToString());
+                xmlWriter.WriteAttributeString("LocationLat", locationLat.ToString());
+                xmlWriter.WriteAttributeString("LocationLng", locationLng.ToString());
+            }
+            xmlWriter.WriteAttributeString("HasTime", hasTime.ToString());
+            if (hasTime)
+            {
+                xmlWriter.WriteAttributeString("StartTime", Util.XMLDate(startTime));
+                xmlWriter.WriteAttributeString("EndTime", Util.XMLDate(endTime));
+            }
+            xmlWriter.WriteAttributeString("ActualPlanetScale", actualPlanetScale.ToString());
+            xmlWriter.WriteAttributeString("ShowClouds", showClouds.ToString());
+            xmlWriter.WriteAttributeString("EarthCutawayView", earthCutawayView.ToString());
+            xmlWriter.WriteAttributeString("ShowConstellationBoundries", showConstellationBoundries.ToString());
+            xmlWriter.WriteAttributeString("ShowConstellationFigures", showConstellationFigures.ToString());
+            xmlWriter.WriteAttributeString("ShowConstellationSelection", showConstellationSelection.ToString());
+            xmlWriter.WriteAttributeString("ShowEcliptic", showEcliptic.ToString());
+            xmlWriter.WriteAttributeString("ShowElevationModel", showElevationModel.ToString());
+            showFieldOfView = false;
+            xmlWriter.WriteAttributeString("ShowFieldOfView", showFieldOfView.ToString());
+            xmlWriter.WriteAttributeString("ShowGrid", showGrid.ToString());
+            xmlWriter.WriteAttributeString("ShowHorizon", showHorizon.ToString());
+            xmlWriter.WriteAttributeString("ShowHorizonPanorama", showHorizonPanorama.ToString());
+            xmlWriter.WriteAttributeString("ShowMoonsAsPointSource", showMoonsAsPointSource.ToString());
+            xmlWriter.WriteAttributeString("ShowSolarSystem", showSolarSystem.ToString());
+            xmlWriter.WriteAttributeString("FovTelescope", fovTelescope.ToString());
+            xmlWriter.WriteAttributeString("FovEyepiece", fovEyepiece.ToString());
+            xmlWriter.WriteAttributeString("FovCamera", fovCamera.ToString());
+            xmlWriter.WriteAttributeString("LocalHorizonMode", localHorizonMode.ToString());
+            //xmlWriter.WriteAttributeString("MilkyWayModel", milkyWayModel.ToString());
+            xmlWriter.WriteAttributeString("GalacticMode", galacticMode.ToString());
+            xmlWriter.WriteAttributeString("FadeInOverlays", fadeInOverlays.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemStars", solarSystemStars.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemMilkyWay", solarSystemMilkyWay.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemCosmos", solarSystemCosmos.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemCMB", solarSystemCMB.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemOrbits", solarSystemOrbits.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemMinorOrbits", solarSystemMinorOrbits.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemOverlays", solarSystemOverlays.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemLighting", solarSystemLighting.ToString());
+            xmlWriter.WriteAttributeString("ShowISSModel", showISSModel.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemScale", solarSystemScale.ToString());
+            xmlWriter.WriteAttributeString("MinorPlanetsFilter", minorPlanetsFilter.ToString());
+            xmlWriter.WriteAttributeString("PlanetOrbitsFilter", planetOrbitsFilter.ToString());
+
+            xmlWriter.WriteAttributeString("SolarSystemMultiRes", solarSystemMultiRes.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemMinorPlanets", solarSystemMinorPlanets.ToString());
+            xmlWriter.WriteAttributeString("SolarSystemPlanets", solarSystemPlanets.ToString());
+            xmlWriter.WriteAttributeString("ShowEarthSky", showEarthSky.ToString());
+
+            xmlWriter.WriteAttributeString("ShowEquatorialGridText", ShowEquatorialGridText.ToString());
+            xmlWriter.WriteAttributeString("ShowGalacticGrid", ShowGalacticGrid.ToString());
+            xmlWriter.WriteAttributeString("ShowGalacticGridText", ShowGalacticGridText.ToString());
+            xmlWriter.WriteAttributeString("ShowEclipticGrid", ShowEclipticGrid.ToString());
+            xmlWriter.WriteAttributeString("ShowEclipticGridText", ShowEclipticGridText.ToString());
+            xmlWriter.WriteAttributeString("ShowEclipticOverviewText", ShowEclipticOverviewText.ToString());
+            xmlWriter.WriteAttributeString("ShowAltAzGrid", ShowAltAzGrid.ToString());
+            xmlWriter.WriteAttributeString("ShowAltAzGridText", ShowAltAzGridText.ToString());
+            xmlWriter.WriteAttributeString("ShowPrecessionChart", ShowPrecessionChart.ToString());
+            xmlWriter.WriteAttributeString("ConstellationPictures", ShowConstellationPictures.ToString());
+            xmlWriter.WriteAttributeString("ConstellationsEnabled", ConstellationsEnabled);
+            xmlWriter.WriteAttributeString("ShowConstellationLabels", ShowConstellationLabels.ToString());
+            xmlWriter.WriteAttributeString("ShowSkyOverlays", ShowSkyOverlays.ToString());
+            xmlWriter.WriteAttributeString("ShowConstellations", ShowConstellations.ToString());
+            xmlWriter.WriteAttributeString("ShowSkyNode", ShowSkyNode.ToString());
+            xmlWriter.WriteAttributeString("ShowSkyGrids", ShowSkyGrids.ToString());
+            xmlWriter.WriteAttributeString("SkyOverlaysIn3d", ShowSkyOverlaysIn3d.ToString());
+            xmlWriter.WriteAttributeString("ConstellationFiguresFilter", constellationFiguresFilter.ToString());
+            xmlWriter.WriteAttributeString("ConstellationBoundariesFilter", constellationBoundariesFilter.ToString());
+            xmlWriter.WriteAttributeString("ConstellationNamesFilter", constellationNamesFilter.ToString());
+            xmlWriter.WriteAttributeString("ConstellationArtFilter", constellationArtFilter.ToString());
+
+
+
+            target.SaveToXml(xmlWriter, "Place");
+            if (endTarget != null)
+            {
+                endTarget.SaveToXml(xmlWriter, "EndTarget");
+            }
+
+            xmlWriter.WriteStartElement("Overlays");
+
+            foreach (Overlay overlay in overlays)
+            {
+                overlay.SaveToXml(xmlWriter, false);
+            }
+            xmlWriter.WriteEndElement();
+
+            if (musicTrack != null)
+            {
+                xmlWriter.WriteStartElement("MusicTrack");
+
+                musicTrack.SaveToXml(xmlWriter, false);
+
+                xmlWriter.WriteEndElement();
+            }
+
+            if (voiceTrack != null)
+            {
+                xmlWriter.WriteStartElement("VoiceTrack");
+
+                voiceTrack.SaveToXml(xmlWriter, false);
+
+                xmlWriter.WriteEndElement();
+            }
+
+            //xmlWriter.WriteElementString("Credits", Credits);
+            WriteLayerList(xmlWriter);
+
+            //if (KeyFramed)
+            //{
+            //    xmlWriter.WriteStartElement("AnimationTargets");
+            //    foreach (AnimationTarget aniTarget in AnimationTargets)
+            //    {
+            //        aniTarget.SaveToXml(xmlWriter);
+            //    }
+            //    xmlWriter.WriteEndElement();
+            //}
+
+            xmlWriter.WriteEndElement();
+        }
+
+        private void WriteLayerList(XmlTextWriter xmlWriter)
+        {
+            if (Layers.Count > 0)
+            {
+                xmlWriter.WriteStartElement("VisibleLayers");
+                foreach (Guid key in Layers.Keys)
+                {
+                    LayerInfo info = Layers[key];
+
+                    xmlWriter.WriteStartElement("Layer");
+                    xmlWriter.WriteAttributeString("StartOpacity", info.StartOpacity.ToString());
+                    xmlWriter.WriteAttributeString("EndOpacity", info.EndOpacity.ToString());
+                    int len = info.StartParams.Length;
+
+                    xmlWriter.WriteAttributeString("ParamCount", len.ToString());
+                    for (int i = 0; i < len; i++)
+                    {
+                        xmlWriter.WriteAttributeString(string.Format("StartParam{0}", i), info.StartParams[i].ToString());
+                        xmlWriter.WriteAttributeString(string.Format("EndParam{0}", i), info.EndParams[i].ToString());
+                    }
+                    xmlWriter.WriteValue(info.ID.ToString());
+                    xmlWriter.WriteEndElement();
+                }
+                xmlWriter.WriteEndElement();
+            }
+        }
+
+
+        internal void AddFilesToCabinet(FileCabinet fc, bool excludeAudio)
+        {
+            if (thumbnail != null)
+            {
+
+
+                string filename = string.Format("{0}.thumb.png", id);
+                fc.AddFile(owner.WorkingDirectory + filename, owner.GetFileBlob(filename));
+            }
+
+            if (!excludeAudio)
+            {
+                if (musicTrack != null)
+                {
+                    musicTrack.AddFilesToCabinet(fc);
+                }
+
+                if (voiceTrack != null)
+                {
+                    voiceTrack.AddFilesToCabinet(fc);
+                }
+            }
+
+            foreach (Overlay overlay in overlays)
+            {
+                overlay.AddFilesToCabinet(fc);
+            }
+        }
+
+
 
         internal static TourStop FromXml(TourDocument owner, XmlNode tourStop)
         {
@@ -1183,30 +1216,7 @@ namespace wwtlib
 
             if (tourStop.Attributes.GetNamedItem("InterpolationType") != null)
             {
-                switch (tourStop.Attributes.GetNamedItem("InterpolationType").Value)
-                {
-                    case "Linear":
-                        newTourStop.InterpolationType = InterpolationType.Linear;
-                        break;
-                    case "EaseIn":
-                        newTourStop.InterpolationType = InterpolationType.EaseIn;
-                        break;
-                    case "EaseOut":
-                        newTourStop.InterpolationType = InterpolationType.EaseOut;
-                        break;
-                    case "EaseInOut":
-                        newTourStop.InterpolationType = InterpolationType.EaseInOut;
-                        break;
-                    case "Exponential":
-                        newTourStop.InterpolationType = InterpolationType.Exponential;
-                        break;
-                    case "Default":
-                        newTourStop.InterpolationType = InterpolationType.DefaultV;
-                        break;
-                    default:
-                        newTourStop.InterpolationType = InterpolationType.Linear;
-                        break;
-                }
+                newTourStop.InterpolationType = (InterpolationType) Enums.Parse("InterpolationType", tourStop.Attributes.GetNamedItem("InterpolationType").Value);
             }
 
             newTourStop.fadeInOverlays = true;
@@ -1218,29 +1228,7 @@ namespace wwtlib
 
             if (tourStop.Attributes.GetNamedItem("Transition") != null)
             {
-                switch (tourStop.Attributes.GetNamedItem("Transition").Value)
-                {
-                    case "Slew":
-                        newTourStop.transition = TransitionType.Slew;
-                        break;
-                    case "CrossFade":
-                        newTourStop.transition = TransitionType.CrossFade;
-                        break;
-                    case "CrossCut":
-                        newTourStop.transition = TransitionType.CrossCut;
-                        break;
-                    case "FadeOutIn":
-                        newTourStop.transition = TransitionType.FadeOutIn;
-                        break;
-                    case "FadeIn":
-                        newTourStop.transition = TransitionType.FadeIn;
-                        break;
-                    case "FadeOut":
-                        newTourStop.transition = TransitionType.FadeOut;
-                        break;
-                    default:
-                        break;
-                }
+                newTourStop.transition = (TransitionType)Enums.Parse("TransitionType", tourStop.Attributes.GetNamedItem("Transition").Value);
             }
 
             if (tourStop.Attributes.GetNamedItem("HasLocation") != null)

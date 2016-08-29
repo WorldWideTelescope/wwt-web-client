@@ -114,9 +114,29 @@ namespace wwtlib
             return val;
         }
 
+        // convert duration to HH:MM:SS.S
+        public static string XMLDuration(int duration)
+        {
+            double s = duration / 1000.0;
+
+            int hours = Math.Floor(s / 3600);
+            int min = Math.Floor(s / 60) - (hours * 60);
+            double sec = (s) - ((hours * 3600) + min * 60);
+
+            return string.Format("{0}:{1}:{2}", hours, min, sec);
+        }
+
         public static string GetTourComponent(string url, string name)
         {
             return "http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=" + url.EncodeUriComponent() + "&filename=" + name;
+        }
+
+        public static string XMLDate(Date d)
+        {
+            return (d.GetMonth() + 1).ToString() + '/' +
+                d.GetDate().ToString() + '/' +
+                d.GetFullYear().ToString() + ' ' +
+                d.ToLocaleTimeString();
         }
 
         public static XmlNode SelectSingleNode(XmlNode parent, string name)
@@ -385,6 +405,33 @@ namespace wwtlib
             return temp;
         }
 
+    }
+
+    public class Enums
+    {
+        public static int Parse(string enumType, string value)
+        {
+            if (value == "0")
+            {
+                return 0;
+            }
+
+            string val = value.Substr(0, 1).ToLowerCase() + value.Substr(1);
+
+            return (int)Script.Literal("wwtlib[{0}][{1}]", enumType, val);
+
+            // Script.Literal(" var x; var p = Object.keys(wwtlib[{0}]); for (var i in p)\n {{ if ( p[i].toLowerCase() == {1}.toLowerCase() ) {{\n x = wwtlib[{0}][p[i]]; break; \n}}\n }}", enumType, value);
+
+            // return (int)Script.Literal(" x");
+        }
+
+        public static string ToXml(string enumType, int value)
+        {
+            Script.Literal(" var x = \"0\"; var p = Object.keys(wwtlib[{0}]); for (var i in p)\n {{ if ( wwtlib[{0}][p[i]] == {1} ) {{\n x = p[i]; break; \n}}\n }}", enumType, value);
+            string val = (string)Script.Literal(" x");
+
+            return val.Substr(0, 1).ToUpperCase() + val.Substr(1);
+        }
     }
 
     [ScriptIgnoreNamespace]

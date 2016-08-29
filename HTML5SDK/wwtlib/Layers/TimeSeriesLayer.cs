@@ -122,19 +122,8 @@ namespace wwtlib
             EndRange = new Date(node.Attributes.GetNamedItem("EndRange").Value);
             Decay = Single.Parse(node.Attributes.GetNamedItem("Decay").Value);
 
-            switch (node.Attributes.GetNamedItem("CoordinatesType").Value)
-            {
-                case "Spherical":
-                    CoordinatesType = CoordinatesTypes.Spherical;
-                    break;
-                case "Rectangular": CoordinatesType = CoordinatesTypes.Rectangular;
-                    break;
-                case "Orbital":
-                    CoordinatesType = CoordinatesTypes.Orbital;
-                    break;
-                default:
-                    break;
-            }
+            CoordinatesType = (CoordinatesTypes)Enums.Parse("CoordinatesTypes", node.Attributes.GetNamedItem("CoordinatesType").Value);
+                     
 
             if ((int)CoordinatesType < 0)
             {

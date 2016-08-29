@@ -455,10 +455,10 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("Type", GetTypeName());
             xmlWriter.WriteAttributeString("Name", Name);
             xmlWriter.WriteAttributeString("ReferenceFrame", referenceFrame);
-            xmlWriter.WriteAttributeString("Color", color.ToString());
+            xmlWriter.WriteAttributeString("Color", color.Save());
             xmlWriter.WriteAttributeString("Opacity", opacity.ToString());
-            xmlWriter.WriteAttributeString("StartTime", StartTime.ToString());
-            xmlWriter.WriteAttributeString("EndTime", EndTime.ToString());
+            xmlWriter.WriteAttributeString("StartTime", Util.XMLDate(StartTime));
+            xmlWriter.WriteAttributeString("EndTime", Util.XMLDate(EndTime));
             xmlWriter.WriteAttributeString("FadeSpan", FadeSpan.ToString());
             xmlWriter.WriteAttributeString("FadeType", FadeType.ToString());
 
@@ -563,8 +563,13 @@ namespace wwtlib
         {
             return;
         }
+        
+        public virtual void AddFilesToCabinet(FileCabinet fc)
+        {
+            return;
+        }
 
-       
+
 
     }
     class LayerCollection : Layer

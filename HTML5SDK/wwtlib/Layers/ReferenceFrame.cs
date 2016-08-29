@@ -153,8 +153,8 @@ namespace wwtlib
             xmlWriter.WriteStartElement("ReferenceFrame");
             xmlWriter.WriteAttributeString("Name", Name);
             xmlWriter.WriteAttributeString("Parent", Parent);
-            xmlWriter.WriteAttributeString("ReferenceFrameType", ReferenceFrameType.ToString());
-            xmlWriter.WriteAttributeString("Reference", Reference.ToString());
+            xmlWriter.WriteAttributeString("ReferenceFrameType", Enums.ToXml("ReferenceFrameTypes", (int)ReferenceFrameType));
+            xmlWriter.WriteAttributeString("Reference", Enums.ToXml("ReferenceFrames",(int)Reference));
             xmlWriter.WriteAttributeString("ParentsRoationalBase", ParentsRoationalBase.ToString());
             xmlWriter.WriteAttributeString("MeanRadius", MeanRadius.ToString());
             xmlWriter.WriteAttributeString("Oblateness", Oblateness.ToString());
@@ -172,7 +172,7 @@ namespace wwtlib
             }
             xmlWriter.WriteAttributeString("RotationalPeriod", RotationalPeriod.ToString());
             xmlWriter.WriteAttributeString("ZeroRotationDate", ZeroRotationDate.ToString());
-            xmlWriter.WriteAttributeString("RepresentativeColor", RepresentativeColor.ToString());
+            xmlWriter.WriteAttributeString("RepresentativeColor", RepresentativeColor.Save());
             xmlWriter.WriteAttributeString("ShowAsPoint", ShowAsPoint.ToString());
             xmlWriter.WriteAttributeString("ShowOrbitPath", ShowOrbitPath.ToString());
 
@@ -181,7 +181,7 @@ namespace wwtlib
             if (ReferenceFrameType == ReferenceFrameTypes.Orbital)
             {
                 xmlWriter.WriteAttributeString("SemiMajorAxis", SemiMajorAxis.ToString());
-                xmlWriter.WriteAttributeString("SemiMajorAxisScale", this.SemiMajorAxisUnits.ToString());
+                xmlWriter.WriteAttributeString("SemiMajorAxisScale", Enums.ToXml("AltUnits", (int)SemiMajorAxisUnits));
                 xmlWriter.WriteAttributeString("Eccentricity", Eccentricity.ToString());
                 xmlWriter.WriteAttributeString("Inclination", Inclination.ToString());
                 xmlWriter.WriteAttributeString("ArgumentOfPeriapsis", ArgumentOfPeriapsis.ToString());
@@ -213,89 +213,10 @@ namespace wwtlib
         {
             Name = node.Attributes.GetNamedItem("Name").Value;
             Parent = node.Attributes.GetNamedItem("Parent").Value;
+            ReferenceFrameType = (ReferenceFrameTypes)Enums.Parse("ReferenceFrameTypes", node.Attributes.GetNamedItem("ReferenceFrameType").Value);
 
-            switch (node.Attributes.GetNamedItem("ReferenceFrameType").Value)
-            {
-                case "FixedSherical":
-                    ReferenceFrameType = ReferenceFrameTypes.FixedSherical;
-                    break;
-                case "Orbital":
-                    ReferenceFrameType = ReferenceFrameTypes.Orbital;
-                    break;
-                case "Trajectory":
-                    ReferenceFrameType = ReferenceFrameTypes.Trajectory;
-                    break;
-                default:
-                    break;
-            }
-
-              switch (node.Attributes.GetNamedItem("Reference").Value)
-            {
-                case "Sky":
-                    Reference = ReferenceFrames.Sky;
-                    break;
-                case "Ecliptic":
-                    Reference = ReferenceFrames.Ecliptic;
-                    break;
-                case "Galactic":
-                    Reference = ReferenceFrames.Galactic;
-                    break;
-                case "Sun":
-                    Reference = ReferenceFrames.Sun;
-                    break;
-                case "Mercury":
-                    Reference = ReferenceFrames.Mercury;
-                    break;
-                case "Venus":
-                    Reference = ReferenceFrames.Venus;
-                    break;
-                case "Earth":
-                    Reference = ReferenceFrames.Earth;
-                    break;
-                case "Mars":
-                    Reference = ReferenceFrames.Mars;
-                    break;
-                case "Jupiter":
-                    Reference = ReferenceFrames.Jupiter;
-                    break;
-                case "Saturn":
-                    Reference = ReferenceFrames.Saturn;
-                    break;
-                case "Uranus":
-                    Reference = ReferenceFrames.Uranus;
-                    break;
-                case "Neptune":
-                    Reference = ReferenceFrames.Neptune;
-                    break;
-                case "Pluto":
-                    Reference = ReferenceFrames.Pluto;
-                    break;
-                case "Moon":
-                    Reference = ReferenceFrames.Moon;
-                    break;
-                case "Io":
-                    Reference = ReferenceFrames.Io;
-                    break;
-                case "Europa":
-                    Reference = ReferenceFrames.Europa;
-                    break;
-                case "Ganymede":
-                    Reference = ReferenceFrames.Ganymede;
-                    break;
-                case "Callisto":
-                    Reference = ReferenceFrames.Callisto;
-                    break;
-                case "Custom":
-                    Reference = ReferenceFrames.Custom;
-                    break;
-                case "Identity":
-                    Reference = ReferenceFrames.Identity;
-                    break;
-                default:
-                    break;
-            }
-
-
+            Reference = (ReferenceFrames)Enums.Parse("ReferenceFrames", node.Attributes.GetNamedItem("Reference").Value);
+           
             ParentsRoationalBase = Boolean.Parse(node.Attributes.GetNamedItem("ParentsRoationalBase").Value);
             MeanRadius = Double.Parse(node.Attributes.GetNamedItem("MeanRadius").Value);
             Oblateness = Double.Parse(node.Attributes.GetNamedItem("Oblateness").Value);
@@ -325,43 +246,9 @@ namespace wwtlib
             {
                 ShowOrbitPath = Boolean.Parse(node.Attributes.GetNamedItem("ShowOrbitPath").Value);
                 SemiMajorAxis = Double.Parse(node.Attributes.GetNamedItem("SemiMajorAxis").Value);
-             
-                switch (node.Attributes.GetNamedItem("SemiMajorAxisScale").Value)
-                {
-                    case "Meters":
-                        SemiMajorAxisUnits = AltUnits.Meters;
-                        break;
-                      case "Feet":
-                        SemiMajorAxisUnits = AltUnits.Feet;
-                        break;
-                      case "Inches":
-                        SemiMajorAxisUnits = AltUnits.Inches;
-                        break;
-                      case "Miles":
-                        SemiMajorAxisUnits = AltUnits.Miles;
-                        break;
-                      case "Kilometers":
-                        SemiMajorAxisUnits = AltUnits.Kilometers;
-                        break;
-                      case "AstronomicalUnits":
-                        SemiMajorAxisUnits = AltUnits.AstronomicalUnits;
-                        break;
-                      case "LightYears":
-                        SemiMajorAxisUnits = AltUnits.LightYears;
-                        break;
-                      case "Parsecs":
-                        SemiMajorAxisUnits = AltUnits.Parsecs;
-                        break;
-                      case "MegaParsecs":
-                        SemiMajorAxisUnits = AltUnits.MegaParsecs;
-                        break;
-                      case "Custom":
-                        SemiMajorAxisUnits = AltUnits.Custom;
-                        break;
-                    default:
-                        break;
-                }
 
+                SemiMajorAxisUnits = (AltUnits)Enums.Parse("AltUnits", node.Attributes.GetNamedItem("SemiMajorAxisScale").Value);
+              
                 Eccentricity = Double.Parse(node.Attributes.GetNamedItem("Eccentricity").Value);
                 Inclination = Double.Parse(node.Attributes.GetNamedItem("Inclination").Value);
                 ArgumentOfPeriapsis = Double.Parse(node.Attributes.GetNamedItem("ArgumentOfPeriapsis").Value);

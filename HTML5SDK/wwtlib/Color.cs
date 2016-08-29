@@ -47,6 +47,18 @@ namespace wwtlib
             }
         }
 
+        public string Save()
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                return string.Format("{0}:{1}",
+                    0, Name);
+            }
+            else
+            {
+                return string.Format("{0}:{1}:{2}:{3}:{4}", 1, A, R, G, B);
+            }
+        }
 
         public string ToString()
         {

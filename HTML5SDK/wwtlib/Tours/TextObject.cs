@@ -54,9 +54,9 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("Underline", Underline.ToString());
             xmlWriter.WriteAttributeString("FontSize", FontSize.ToString());
             xmlWriter.WriteAttributeString("FontName", FontName);
-            xmlWriter.WriteAttributeString("ForgroundColor", ForegroundColor.ToString());
-            xmlWriter.WriteAttributeString("BackgroundColor", BackgroundColor.ToString());
-            xmlWriter.WriteAttributeString("BorderStyle", BorderStyle.ToString());
+            xmlWriter.WriteAttributeString("ForgroundColor", ForegroundColor.Save());
+            xmlWriter.WriteAttributeString("BackgroundColor", BackgroundColor.Save());
+            xmlWriter.WriteAttributeString("BorderStyle", Enums.ToXml("TextBorderStyle", (int)BorderStyle));
 
             xmlWriter.WriteString(this.Text);
             xmlWriter.WriteEndElement();
@@ -76,26 +76,7 @@ namespace wwtlib
             newTextObject.BackgroundColor = Color.Load(node.Attributes.GetNamedItem("BackgroundColor").Value);
             if (node.Attributes.GetNamedItem("BorderStyle") != null)
             {
-                switch (node.Attributes.GetNamedItem("BorderStyle").Value)
-                {
-                   case "None":
-                        newTextObject.BorderStyle = TextBorderStyle.None;
-                        break;
-                    case "Tight":
-                        newTextObject.BorderStyle = TextBorderStyle.Tight;
-                        break;
-                    case "Small":
-                        newTextObject.BorderStyle = TextBorderStyle.Small;
-                        break;
-                    case "Medium":
-                        newTextObject.BorderStyle = TextBorderStyle.Medium;
-                        break;
-                    case "Large":
-                        newTextObject.BorderStyle = TextBorderStyle.Large;
-                        break;
-                    default:
-                        break;
-                }
+                newTextObject.BorderStyle = (TextBorderStyle)Enums.Parse("TextBorderStyle",node.Attributes.GetNamedItem("BorderStyle").Value);
             }
             return newTextObject;
         }

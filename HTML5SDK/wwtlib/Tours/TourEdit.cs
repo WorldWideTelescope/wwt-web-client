@@ -964,7 +964,6 @@ namespace wwtlib
                         //player.Dispose();
                     }
                     player = null;
-                    WWTControl.Singleton.uiController = null;
                     WWTControl.Singleton.Mover = null;
                     tourStopList.ShowAddButton = tour.EditMode;
                 }

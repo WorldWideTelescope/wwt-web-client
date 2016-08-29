@@ -305,70 +305,17 @@ namespace wwtlib
             {
                 ImageSetType type = ImageSetType.Sky;
 
-
-
                 ProjectionType projection = ProjectionType.Tangent;
 
                 if (node.Attributes.GetNamedItem("DataSetType") != null)
                 {
-                    switch (node.Attributes.GetNamedItem("DataSetType").Value.ToLowerCase())
-                    {
-                        case "earth":
-                            type = ImageSetType.Earth;
-                            break;
-                        case "planet":
-                            type = ImageSetType.Planet;
-                            break;
-                        case "sky":
-                            type = ImageSetType.Sky;
-                            break;
-                        case "panorama":
-                            type = ImageSetType.Panorama;
-                            break;
-                        case "solarsystem":
-                            type = ImageSetType.SolarSystem;
-                            break;
-                    }
+                    type = (ImageSetType)Enums.Parse("ImageSetType", node.Attributes.GetNamedItem("DataSetType").Value);
                 }
 
                 BandPass bandPass = BandPass.Visible;
 
-
-
-                switch (node.Attributes.GetNamedItem("BandPass").Value)
-                {
-                    case "Gamma":
-                        bandPass = BandPass.Gamma;
-                        break;
-                    case "XRay":
-                        bandPass = BandPass.XRay;
-                        break;
-                    case "Ultraviolet":
-                        bandPass = BandPass.Ultraviolet;
-                        break;
-                    case "Visible":
-                        bandPass = BandPass.Visible;
-                        break;
-                    case "HydrogenAlpha":
-                        bandPass = BandPass.HydrogenAlpha;
-                        break;
-                    case "IR":
-                        bandPass = BandPass.IR;
-                        break;
-                    case "Microwave":
-                        bandPass = BandPass.Microwave;
-                        break;
-                    case "Radio":
-                        bandPass = BandPass.Radio;
-                        break;
-                    case "VisibleNight":
-                        bandPass = BandPass.VisibleNight;
-                        break;
-                    default:
-                        break;
-                }
-
-
+                bandPass = (BandPass)Enums.Parse("BandPass",node.Attributes.GetNamedItem("BandPass").Value);
+                
                 int wf = 1;
                 if (node.Attributes.GetNamedItem("WidthFactor") != null)
                 {
@@ -377,33 +324,8 @@ namespace wwtlib
 
                 if (node.Attributes.GetNamedItem("Generic") == null || !bool.Parse(node.Attributes.GetNamedItem("Generic").Value.ToString()))
                 {
-
-                    switch (node.Attributes.GetNamedItem("Projection").Value.ToString().ToLowerCase())
-                    {
-                        case "tan":
-                        case "tangent":
-                            projection = ProjectionType.Tangent;
-                            break;
-                        case "mercator":
-                            projection = ProjectionType.Mercator;
-                            break;
-                        case "equirectangular":
-                            projection = ProjectionType.Equirectangular;
-                            break;
-                        case "toast":
-                            projection = ProjectionType.Toast;
-                            break;
-                        case "spherical":
-                            projection = ProjectionType.Spherical;
-                            break;
-                        case "plotted":
-                            projection = ProjectionType.Plotted;
-                            break;
-                        case "skyimage":
-                            projection = ProjectionType.SkyImage;
-                            break;
-                    }
-
+                    projection = (ProjectionType)Enums.Parse("ProjectionType", node.Attributes.GetNamedItem("Projection").Value);
+                    
                     string fileType = node.Attributes.GetNamedItem("FileType").Value.ToString();
                     if (!fileType.StartsWith("."))
                     {
@@ -599,8 +521,8 @@ namespace wwtlib
             xmlWriter.WriteStartElement("ImageSet");
 
             xmlWriter.WriteAttributeString("Generic", imageset.Generic.ToString());
-            xmlWriter.WriteAttributeString("DataSetType", imageset.DataSetType.ToString());
-            xmlWriter.WriteAttributeString("BandPass", imageset.BandPass.ToString());
+            xmlWriter.WriteAttributeString("DataSetType", Enums.ToXml("ImageSetType", (int)imageset.DataSetType));
+            xmlWriter.WriteAttributeString("BandPass", Enums.ToXml("BandPass", (int)imageset.BandPass));
             if (!imageset.Generic)
             {
                 xmlWriter.WriteAttributeString("Name", imageset.Name);
@@ -619,7 +541,7 @@ namespace wwtlib
                 xmlWriter.WriteAttributeString("BaseDegreesPerTile", imageset.BaseTileDegrees.ToString());
                 xmlWriter.WriteAttributeString("FileType", imageset.Extension);
                 xmlWriter.WriteAttributeString("BottomsUp", imageset.BottomsUp.ToString());
-                xmlWriter.WriteAttributeString("Projection", imageset.Projection.ToString());
+                xmlWriter.WriteAttributeString("Projection", Enums.ToXml("ProjectionType", (int)imageset.Projection));
                 xmlWriter.WriteAttributeString("QuadTreeMap", imageset.QuadTreeTileMap);
                 xmlWriter.WriteAttributeString("CenterX", imageset.CenterX.ToString());
                 xmlWriter.WriteAttributeString("CenterY", imageset.CenterY.ToString());

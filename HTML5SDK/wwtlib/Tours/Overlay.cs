@@ -148,6 +148,7 @@ namespace wwtlib
             {
                 texture = null;
             }
+            texture2d = null;
         }
 
         virtual public void InitializeTexture()
@@ -274,7 +275,7 @@ namespace wwtlib
         // End Animation Support
 
 
-        OverlayAnchor anchor;
+        OverlayAnchor anchor = OverlayAnchor.Screen;
 
         public OverlayAnchor Anchor
         {
@@ -561,7 +562,7 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("Width", width.ToString());
             xmlWriter.WriteAttributeString("Height", height.ToString());
             xmlWriter.WriteAttributeString("Rotation", rotationAngle.ToString());
-            xmlWriter.WriteAttributeString("Color", color.ToString());
+            xmlWriter.WriteAttributeString("Color", color.Save());
             xmlWriter.WriteAttributeString("Url", url);
             xmlWriter.WriteAttributeString("LinkID", linkID);
             xmlWriter.WriteAttributeString("Animate", animate.ToString());
@@ -572,10 +573,10 @@ namespace wwtlib
                 xmlWriter.WriteAttributeString("EndWidth", endWidth.ToString());
                 xmlWriter.WriteAttributeString("EndHeight", endHeight.ToString());
                 xmlWriter.WriteAttributeString("EndRotation", endRotationAngle.ToString());
-                xmlWriter.WriteAttributeString("EndColor", endColor.ToString());
-                xmlWriter.WriteAttributeString("InterpolationType", interpolationType.ToString());
+                xmlWriter.WriteAttributeString("EndColor", endColor.Save());
+                xmlWriter.WriteAttributeString("InterpolationType", Enums.ToXml("InterpolationType", (int)interpolationType));
             }
-            xmlWriter.WriteAttributeString("Anchor", anchor.ToString());
+            xmlWriter.WriteAttributeString("Anchor", Enums.ToXml("OverlayAnchor", (int)anchor));
 
 
             this.WriteOverlayProperties(xmlWriter);
@@ -596,12 +597,12 @@ namespace wwtlib
 
         public virtual void AddFilesToCabinet(FileCabinet fc)
         {
-            throw new Exception("The method or operation is not implemented.");
+            
         }
 
         public virtual void WriteOverlayProperties(XmlTextWriter xmlWriter)
         {
-            throw new Exception("The method or operation is not implemented.");
+            
         }
 
 
@@ -618,11 +619,9 @@ namespace wwtlib
             }
             string overlayClassName = overlay.Attributes.GetNamedItem("Type").Value.ToString();
 
-            //Type overLayType = Type.GetType(overlayClassName.Replace("TerraViewer.",""));
             string overLayType = overlayClassName.Replace("TerraViewer.", "");
             Overlay newOverlay = null;
 
-            //Overlay newOverlay = (Overlay)System.Activator.CreateInstance(overLayType);
             switch (overLayType)
             {
                 case "AudioOverlay":
@@ -682,29 +681,7 @@ namespace wwtlib
                     endRotationAngle = double.Parse(node.Attributes.GetNamedItem("EndRotation").Value);
                     if (node.Attributes.GetNamedItem("InterpolationType") != null)
                     {
-                        switch (node.Attributes.GetNamedItem("InterpolationType").Value)
-                        {
-                            case "Linear":
-                                InterpolationType = InterpolationType.Linear;
-                                break;
-                            case "EaseIn":
-                                InterpolationType = InterpolationType.EaseIn;
-                                break;
-                            case "EaseOut":
-                                InterpolationType = InterpolationType.EaseOut;
-                                break;
-                            case "EaseInOut":
-                                InterpolationType = InterpolationType.EaseInOut;
-                                break;
-                            case "Exponential":
-                                InterpolationType = InterpolationType.Exponential;
-                                break;
-                            case "Default":
-                                InterpolationType = InterpolationType.DefaultV;
-                                break;
-                            default:
-                                break;
-                        }
+                        InterpolationType = (InterpolationType)Enums.Parse("InterpolationType", node.Attributes.GetNamedItem("InterpolationType").Value);
                     } 
                 }
             }
@@ -863,7 +840,7 @@ namespace wwtlib
 
         public override void AddFilesToCabinet(FileCabinet fc)
         {
-            fc.AddFile(Owner.Owner.WorkingDirectory + filename);
+            fc.AddFile(Owner.Owner.WorkingDirectory + filename, Owner.Owner.GetFileBlob(filename));
         }
 
         public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
@@ -1821,42 +1798,14 @@ namespace wwtlib
         public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
         {
             xmlWriter.WriteStartElement("Shape");
-            xmlWriter.WriteAttributeString("ShapeType", shapeType.ToString());
+            xmlWriter.WriteAttributeString("ShapeType", Enums.ToXml("ShapeType",(int)shapeType));
             xmlWriter.WriteEndElement();
         }
 
         public override void InitializeFromXml(XmlNode node)
         {
             XmlNode shape = Util.SelectSingleNode(node, "Shape");
-            //shapeType = (ShapeType)Enum.Parse(typeof(ShapeType), shape.Attributes.GetNamedItem("ShapeType").Value, true);
-
-            switch (shape.Attributes.GetNamedItem("ShapeType").Value)
-            {
-
-                case "Circle":
-                    shapeType = ShapeType.Circle;
-                    break;
-                case "Rectagle":
-                    shapeType = ShapeType.Rectagle;
-                    break;
-                case "Star":
-                    shapeType = ShapeType.Star;
-                    break;
-                case "Donut":
-                    shapeType = ShapeType.Donut;
-                    break;
-                case "Arrow":
-                    shapeType = ShapeType.Arrow;
-                    break;
-                case "Line":
-                    shapeType = ShapeType.Line;
-                    break;
-                default:
-                case "OpenRectagle":
-                    shapeType = ShapeType.OpenRectagle;
-                    break;
-
-            }
+            shapeType = (ShapeType)Enums.Parse("ShapeType", shape.Attributes.GetNamedItem("ShapeType").Value);
         }
 
         internal static ShapeOverlay Create(TourStop currentTourStop, ShapeType shapeType)
@@ -1917,7 +1866,7 @@ namespace wwtlib
 
         public override void AddFilesToCabinet(FileCabinet fc)
         {
-            fc.AddFile(Owner.Owner.GetFileStream(this.filename));
+            fc.AddFile(Owner.Owner.WorkingDirectory + filename, Owner.Owner.GetFileBlob(this.filename));
         }
 
 
@@ -2051,7 +2000,7 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("Filename", filename);
             xmlWriter.WriteAttributeString("Volume", volume.ToString());
             xmlWriter.WriteAttributeString("Mute", mute.ToString());
-            xmlWriter.WriteAttributeString("TrackType", trackType.ToString());
+            xmlWriter.WriteAttributeString("TrackType", Enums.ToXml("AudioType",(int)trackType));
           //  xmlWriter.WriteAttributeString("Begin", begin.ToString());
           //  xmlWriter.WriteAttributeString("End", end.ToString());
            // xmlWriter.WriteAttributeString("FadeIn", fadeIn.ToString());
@@ -2076,16 +2025,7 @@ namespace wwtlib
 
             if (audio.Attributes.GetNamedItem("TrackType") != null)
             {
-                switch (audio.Attributes.GetNamedItem("TrackType").Value)
-                {
-                    case "Music":
-                        trackType = AudioType.Music;
-                        break;
-                    default:
-                    case "Voice":
-                        trackType = AudioType.Voice;
-                        break;
-                }
+                trackType = (AudioType)Enums.Parse("AudioType", audio.Attributes.GetNamedItem("TrackType").Value);
             }
         }
 
@@ -2289,7 +2229,7 @@ namespace wwtlib
 
         public override void AddFilesToCabinet(FileCabinet fc)
         {
-            fc.AddFile(Owner.Owner.WorkingDirectory + filename);
+            fc.AddFile(Owner.Owner.WorkingDirectory + filename, Owner.Owner.GetFileBlob(filename));
         }
 
         public override void WriteOverlayProperties(XmlTextWriter xmlWriter)
@@ -2297,7 +2237,7 @@ namespace wwtlib
             xmlWriter.WriteStartElement("Flipbook");
             xmlWriter.WriteAttributeString("Filename", filename);
             xmlWriter.WriteAttributeString("Frames", frames.ToString());
-            xmlWriter.WriteAttributeString("Loop", loopType.ToString());
+            xmlWriter.WriteAttributeString("Loop", Enums.ToXml("LoopTypes", (int)loopType));
             xmlWriter.WriteAttributeString("FramesX", framesX.ToString());
             xmlWriter.WriteAttributeString("FramesY", framesY.ToString());
             xmlWriter.WriteAttributeString("StartFrame", startFrame.ToString());
@@ -2313,35 +2253,9 @@ namespace wwtlib
             XmlNode flipbook = Util.SelectSingleNode(node, "Flipbook");
             filename = flipbook.Attributes.GetNamedItem("Filename").Value;
             frames = int.Parse(flipbook.Attributes.GetNamedItem("Frames").Value);
-            switch (flipbook.Attributes.GetNamedItem("Loop").Value)
-            {
 
-                case "Loop":
-                    loopType = LoopTypes.Loop;
-                    break;
-                case "UpDown":
-                    loopType = LoopTypes.UpDown;
-                    break;
-                case "Down":
-                    loopType = LoopTypes.Down;
-                    break;
-                case "UpDownOnce":
-                    loopType = LoopTypes.UpDownOnce;
-                    break;
-                case "Once":
-                    loopType = LoopTypes.Once;
-                    break;
-                case "Begin":
-                    loopType = LoopTypes.Begin;
-                    break;
-                case "End":
-                    loopType = LoopTypes.End;
-                    break;
-                default:
-                    break;
-            }
-
-
+            loopType = (LoopTypes)Enums.Parse("LoopTypes", flipbook.Attributes.GetNamedItem("Loop").Value);
+            
             if (flipbook.Attributes.GetNamedItem("FramesX") != null)
             {
                 FramesX = int.Parse(flipbook.Attributes.GetNamedItem("FramesX").Value);

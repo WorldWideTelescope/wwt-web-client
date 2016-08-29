@@ -396,62 +396,12 @@ namespace wwtlib
             return name;
         }
 
-
-
-        //internal void SaveToXml(System.Xml.XmlTextWriter xmlWriter, string elementName)
-        //{
-
-        //    xmlWriter.WriteStartElement(elementName);
-        //    xmlWriter.WriteAttributeString("Name", name);
-        //    xmlWriter.WriteAttributeString("DataSetType", this.Type.ToString());
-        //    if (this.Type == ImageSetType.Sky)
-        //    {
-        //        xmlWriter.WriteAttributeString("RA", camParams.RA.ToString());
-        //        xmlWriter.WriteAttributeString("Dec", camParams.Dec.ToString());
-        //    }
-        //    else
-        //    {
-        //        xmlWriter.WriteAttributeString("Lat", Lat.ToString());
-        //        xmlWriter.WriteAttributeString("Lng", Lng.ToString());
-        //    }
-
-        //    xmlWriter.WriteAttributeString("Constellation", constellation);
-        //    xmlWriter.WriteAttributeString("Classification", Classification.ToString());
-        //    xmlWriter.WriteAttributeString("Magnitude", magnitude.ToString());
-        //    xmlWriter.WriteAttributeString("Distance", distnace.ToString());
-        //    xmlWriter.WriteAttributeString("AngularSize", AngularSize.ToString());
-        //    xmlWriter.WriteAttributeString("ZoomLevel", ZoomLevel.ToString());
-        //    xmlWriter.WriteAttributeString("Rotation", camParams.Rotation.ToString());
-        //    xmlWriter.WriteAttributeString("Angle", camParams.Angle.ToString());
-        //    xmlWriter.WriteAttributeString("Opacity", camParams.Opacity.ToString());
-        //    xmlWriter.WriteAttributeString("Target", Target.ToString());
-        //    xmlWriter.WriteAttributeString("ViewTarget", camParams.ViewTarget.ToString());
-        //    xmlWriter.WriteAttributeString("TargetReferenceFrame", camParams.TargetReferenceFrame);
-        //    xmlWriter.WriteStartElement("Description");
-        //    xmlWriter.WriteCData(HtmlDescription);
-        //    xmlWriter.WriteEndElement();
-
-
-        //    if (backgroundImageSet != null)
-        //    {
-        //        xmlWriter.WriteStartElement("BackgroundImageSet");
-        //        ImageSetHelper.SaveToXml(xmlWriter, backgroundImageSet, "");
-        //        xmlWriter.WriteEndElement();
-        //    }
-
-        //    if (studyImageset != null)
-        //    {
-        //        ImageSetHelper.SaveToXml(xmlWriter, studyImageset, "");
-        //    }
-        //    xmlWriter.WriteEndElement();
-        //}
-
         internal void SaveToXml(XmlTextWriter xmlWriter, string elementName)
         {
 
             xmlWriter.WriteStartElement(elementName);
             xmlWriter.WriteAttributeString("Name", name);
-            xmlWriter.WriteAttributeString("DataSetType", this.Type.ToString());
+            xmlWriter.WriteAttributeString("DataSetType", Enums.ToXml("ImageSetType", (int) type));
             if (this.Type == ImageSetType.Sky)
             {
                 xmlWriter.WriteAttributeString("RA", camParams.RA.ToString());
@@ -464,7 +414,7 @@ namespace wwtlib
             }
 
             xmlWriter.WriteAttributeString("Constellation", constellation);
-            xmlWriter.WriteAttributeString("Classification", Classification.ToString());
+            xmlWriter.WriteAttributeString("Classification", Enums.ToXml("Classification", (int)classification));
             xmlWriter.WriteAttributeString("Magnitude", magnitude.ToString());
             xmlWriter.WriteAttributeString("Distance", distnace.ToString());
             xmlWriter.WriteAttributeString("AngularSize", AngularSize.ToString());
@@ -472,7 +422,7 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("Rotation", camParams.Rotation.ToString());
             xmlWriter.WriteAttributeString("Angle", camParams.Angle.ToString());
             xmlWriter.WriteAttributeString("Opacity", camParams.Opacity.ToString());
-            xmlWriter.WriteAttributeString("Target", Target.ToString());
+            xmlWriter.WriteAttributeString("Target", Enums.ToXml("SolarSystemObjects", (int)Target));
             xmlWriter.WriteAttributeString("ViewTarget", camParams.ViewTarget.ToString());
             xmlWriter.WriteAttributeString("TargetReferenceFrame", camParams.TargetReferenceFrame);
             //todo what do we do with full dome?
@@ -514,24 +464,7 @@ namespace wwtlib
 
             if (place.Attributes.GetNamedItem("DataSetType") != null)
             {
-                switch (place.Attributes.GetNamedItem("DataSetType").Value.ToLowerCase())
-                {
-                    case "earth":
-                        newPlace.type = ImageSetType.Earth;
-                        break;
-                    case "planet":
-                        newPlace.type = ImageSetType.Planet;
-                        break;
-                    case "sky":
-                        newPlace.type = ImageSetType.Sky;
-                        break;
-                    case "panorama":
-                        newPlace.type = ImageSetType.Panorama;
-                        break;
-                    case "solarsystem":
-                        newPlace.type = ImageSetType.SolarSystem;
-                        break;
-                }
+                newPlace.type = (ImageSetType)Enums.Parse("ImageSetType", place.Attributes.GetNamedItem("DataSetType").Value);
             }
 
             if (newPlace.Type == ImageSetType.Sky)
@@ -549,127 +482,12 @@ namespace wwtlib
             {
                 newPlace.constellation = place.Attributes.GetNamedItem("Constellation").Value;
             }
-            //todo change to switch/case
+        
             if (place.Attributes.GetNamedItem("Classification") != null)
             {
-                switch (place.Attributes.GetNamedItem("Classification").Value)
-                {
-
-                    case "Star":
-                        newPlace.classification = Classification.Star;
-                        break;
-                    case "Supernova":
-                        newPlace.classification = Classification.Supernova;
-                        break;
-                    case "BlackHole":
-                        newPlace.classification = Classification.BlackHole;
-                        break;
-                    case "NeutronStar":
-                        newPlace.classification = Classification.NeutronStar;
-                        break;
-                    case "DoubleStar":
-                        newPlace.classification = Classification.DoubleStar;
-                        break;
-                    case "MultipleStars":
-                        newPlace.classification = Classification.MultipleStars;
-                        break;
-                    case "Asterism":
-                        newPlace.classification = Classification.Asterism;
-                        break;
-                    case "Constellation":
-                        newPlace.classification = Classification.Constellation;
-                        break;
-                    case "OpenCluster":
-                        newPlace.classification = Classification.OpenCluster;
-                        break;
-                    case "GlobularCluster":
-                        newPlace.classification = Classification.GlobularCluster;
-                        break;
-                    case "NebulousCluster":
-                        newPlace.classification = Classification.NebulousCluster;
-                        break;
-                    case "Nebula":
-                        newPlace.classification = Classification.Nebula;
-                        break;
-                    case "EmissionNebula":
-                        newPlace.classification = Classification.EmissionNebula;
-                        break;
-                    case "PlanetaryNebula":
-                        newPlace.classification = Classification.PlanetaryNebula;
-                        break;
-                    case "ReflectionNebula":
-                        newPlace.classification = Classification.ReflectionNebula;
-                        break;
-                    case "DarkNebula":
-                        newPlace.classification = Classification.DarkNebula;
-                        break;
-                    case "GiantMolecularCloud":
-                        newPlace.classification = Classification.GiantMolecularCloud;
-                        break;
-                    case "SupernovaRemnant":
-                        newPlace.classification = Classification.SupernovaRemnant;
-                        break;
-                    case "InterstellarDust":
-                        newPlace.classification = Classification.InterstellarDust;
-                        break;
-                    case "Quasar":
-                        newPlace.classification = Classification.Quasar;
-                        break;
-                    case "Galaxy":
-                        newPlace.classification = Classification.Galaxy;
-                        break;
-                    case "SpiralGalaxy":
-                        newPlace.classification = Classification.SpiralGalaxy;
-                        break;
-                    case "IrregularGalaxy":
-                        newPlace.classification = Classification.IrregularGalaxy;
-                        break;
-                    case "EllipticalGalaxy":
-                        newPlace.classification = Classification.EllipticalGalaxy;
-                        break;
-                    case "Knot":
-                        newPlace.classification = Classification.Knot;
-                        break;
-                    case "PlateDefect":
-                        newPlace.classification = Classification.PlateDefect;
-                        break;
-                    case "ClusterOfGalaxies":
-                        newPlace.classification = Classification.ClusterOfGalaxies;
-                        break;
-                    case "OtherNGC":
-                        newPlace.classification = Classification.OtherNGC;
-                        break;
-                    case "Unidentified":
-                        newPlace.classification = Classification.Unidentified;
-                        break;
-                    case "SolarSystem":
-                        newPlace.classification = Classification.SolarSystem;
-                        break;
-                    case "Unfiltered":
-                        newPlace.classification = Classification.Unfiltered;
-                        break;
-                    case "Stellar":
-                        newPlace.classification = Classification.Stellar;
-                        break;
-                    case "StellarGroupings":
-                        newPlace.classification = Classification.StellarGroupings;
-                        break;
-                    case "Nebulae":
-                        newPlace.classification = Classification.Nebulae;
-                        break;
-                    case "Galactic":
-                        newPlace.classification = Classification.Galactic;
-                        break;
-                    case "Other":
-                        newPlace.classification = Classification.Other;
-                        break;
-
-                    default:
-                        break;
-                }
+                newPlace.classification = (Classification)Enums.Parse("Classification", place.Attributes.GetNamedItem("Classification").Value);
+          
             }
-
-
 
             if (place.Attributes.GetNamedItem("Magnitude") != null)
             {
@@ -710,80 +528,7 @@ namespace wwtlib
 
             if (place.Attributes.GetNamedItem("Target") != null)
             {
-
-                switch (place.Attributes.GetNamedItem("Target").Value)
-                {
-                    case "Sun":
-                        newPlace.Target = SolarSystemObjects.Sun;
-                        break;
-                    case "Mercury":
-                        newPlace.Target = SolarSystemObjects.Mercury;
-                        break;
-                    case "Venus":
-                        newPlace.Target = SolarSystemObjects.Venus;
-                        break;
-                    case "Mars":
-                        newPlace.Target = SolarSystemObjects.Mars;
-                        break;
-                    case "Jupiter":
-                        newPlace.Target = SolarSystemObjects.Jupiter;
-                        break;
-                    case "Saturn":
-                        newPlace.Target = SolarSystemObjects.Saturn;
-                        break;
-                    case "Uranus":
-                        newPlace.Target = SolarSystemObjects.Uranus;
-                        break;
-                    case "Neptune":
-                        newPlace.Target = SolarSystemObjects.Neptune;
-                        break;
-                    case "Pluto":
-                        newPlace.Target = SolarSystemObjects.Pluto;
-                        break;
-                    case "Moon":
-                        newPlace.Target = SolarSystemObjects.Moon;
-                        break;
-                    case "Io":
-                        newPlace.Target = SolarSystemObjects.Io;
-                        break;
-                    case "Europa":
-                        newPlace.Target = SolarSystemObjects.Europa;
-                        break;
-                    case "Ganymede":
-                        newPlace.Target = SolarSystemObjects.Ganymede;
-                        break;
-                    case "Callisto":
-                        newPlace.Target = SolarSystemObjects.Callisto;
-                        break;
-                    case "IoShadow":
-                        newPlace.Target = SolarSystemObjects.IoShadow;
-                        break;
-                    case "EuropaShadow":
-                        newPlace.Target = SolarSystemObjects.EuropaShadow;
-                        break;
-                    case "GanymedeShadow":
-                        newPlace.Target = SolarSystemObjects.GanymedeShadow;
-                        break;
-                    case "CallistoShadow":
-                        newPlace.Target = SolarSystemObjects.CallistoShadow;
-                        break;
-                    case "SunEclipsed":
-                        newPlace.Target = SolarSystemObjects.SunEclipsed;
-                        break;
-                    case "Earth":
-                        newPlace.Target = SolarSystemObjects.Earth;
-                        break;
-                    case "Custom":
-                        newPlace.Target = SolarSystemObjects.Custom;
-                        break;
-                    case "Undefined":
-                        newPlace.Target = SolarSystemObjects.Undefined;
-                        break;
-
-                    default:
-                        
-                        break;
-                }
+                newPlace.Target = (SolarSystemObjects)Enums.Parse("SolarSystemObjects", place.Attributes.GetNamedItem("Target").Value);
             }
 
             if (place.Attributes.GetNamedItem("ViewTarget") != null)

@@ -158,145 +158,11 @@ namespace wwtlib
             
 
             organizationUrl = root.Attributes.GetNamedItem("OrganizationUrl").Value;
- 
-            switch (root.Attributes.GetNamedItem("UserLevel").Value)
-            {
 
-                case "Beginner":
-                    level = UserLevel.Beginner;
-                    break;
-                case "Intermediate":
-                    level = UserLevel.Intermediate;
-                    break;
-                case "Advanced":
-                    level = UserLevel.Advanced;
-                    break;
-                case "Educator":
-                    level = UserLevel.Educator;
-                    break;
-                case "Professional":
-                    level = UserLevel.Professional;
-                    break;
-                default:
-                    break;
-            }
-
-
-            switch (root.Attributes.GetNamedItem("Classification").Value)
-            {
-
-                case "Star":
-                    type = Classification.Star;
-                    break;
-                case "Supernova":
-                    type = Classification.Supernova;
-                    break;
-                case "BlackHole":
-                    type = Classification.BlackHole;
-                    break;
-                case "NeutronStar":
-                    type = Classification.NeutronStar;
-                    break;
-                case "DoubleStar":
-                    type = Classification.DoubleStar;
-                    break;
-                case "MultipleStars":
-                    type = Classification.MultipleStars;
-                    break;
-                case "Asterism":
-                    type = Classification.Asterism;
-                    break;
-                case "Constellation":
-                    type = Classification.Constellation;
-                    break;
-                case "OpenCluster":
-                    type = Classification.OpenCluster;
-                    break;
-                case "GlobularCluster":
-                    type = Classification.GlobularCluster;
-                    break;
-                case "NebulousCluster":
-                    type = Classification.NebulousCluster;
-                    break;
-                case "Nebula":
-                    type = Classification.Nebula;
-                    break;
-                case "EmissionNebula":
-                    type = Classification.EmissionNebula;
-                    break;
-                case "PlanetaryNebula":
-                    type = Classification.PlanetaryNebula;
-                    break;
-                case "ReflectionNebula":
-                    type = Classification.ReflectionNebula;
-                    break;
-                case "DarkNebula":
-                    type = Classification.DarkNebula;
-                    break;
-                case "GiantMolecularCloud":
-                    type = Classification.GiantMolecularCloud;
-                    break;
-                case "SupernovaRemnant":
-                    type = Classification.SupernovaRemnant;
-                    break;
-                case "InterstellarDust":
-                    type = Classification.InterstellarDust;
-                    break;
-                case "Quasar":
-                    type = Classification.Quasar;
-                    break;
-                case "Galaxy":
-                    type = Classification.Galaxy;
-                    break;
-                case "SpiralGalaxy":
-                    type = Classification.SpiralGalaxy;
-                    break;
-                case "IrregularGalaxy":
-                    type = Classification.IrregularGalaxy;
-                    break;
-                case "EllipticalGalaxy":
-                    type = Classification.EllipticalGalaxy;
-                    break;
-                case "Knot":
-                    type = Classification.Knot;
-                    break;
-                case "PlateDefect":
-                    type = Classification.PlateDefect;
-                    break;
-                case "ClusterOfGalaxies":
-                    type = Classification.ClusterOfGalaxies;
-                    break;
-                case "OtherNGC":
-                    type = Classification.OtherNGC;
-                    break;
-                case "Unidentified":
-                    type = Classification.Unidentified;
-                    break;
-                case "SolarSystem":
-                    type = Classification.SolarSystem;
-                    break;
-                case "Unfiltered":
-                    type = Classification.Unfiltered;
-                    break;
-                case "Stellar":
-                    type = Classification.Stellar;
-                    break;
-                case "StellarGroupings":
-                    type = Classification.StellarGroupings;
-                    break;
-                case "Nebulae":
-                    type = Classification.Nebulae;
-                    break;
-                case "Galactic":
-                    type = Classification.Galactic;
-                    break;
-                case "Other":
-                    type = Classification.Other;
-                    break;
-                default:
-                    break;
-            }
-
+            level = (UserLevel)Enums.Parse("UserLevel",root.Attributes.GetNamedItem("UserLevel").Value);
+            
+            type = (Classification)Enums.Parse("Classification", root.Attributes.GetNamedItem("Classification").Value);
+          
             taxonomy = root.Attributes.GetNamedItem("Taxonomy").Value.ToString();
             XmlNode TourStops = Util.SelectSingleNode(root, "TourStops");
             foreach (XmlNode tourStop in TourStops.ChildNodes)
@@ -389,9 +255,45 @@ namespace wwtlib
 
         }
 
-        internal void WriteTourXML(string outFile)
+        public string SaveToFile()
         {
+            bool excludeAudio = false;
+
+            CleanUp();
+
+            string tourXml = GetTourXML();
+            
+            FileCabinet fc = new FileCabinet();
+            fc.PackageID = this.Id;
+           
+
+            fc.AddFile("Tour.wwtxml", new Blob(new object[] { tourXml }));
+
+            if (authorImage != null)
+            {
+                //todo add author image pipeline
+             //   fc.AddFile(WorkingDirectory + "Author.Png");
+            }
+
+            foreach (TourStop stop in TourStops)
+            {
+                stop.AddFilesToCabinet(fc, excludeAudio);
+            }
+
+            List<Guid> masterList = CreateLayerMasterList();
+
+            foreach (Guid id in masterList)
+            {
+                if (LayerManager.LayerList.ContainsKey(id))
+                {
+                    LayerManager.LayerList[id].AddFilesToCabinet(fc);
+                }
+            }
+                        
+            TourDirty = false;
+            return fc.PackageFiles();
         }
+
         public string GetTourXML()
         { 
             XmlTextWriter xmlWriter = new XmlTextWriter();
@@ -410,8 +312,8 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("OrganizationUrl", this.organizationUrl);
             xmlWriter.WriteAttributeString("OrganizationName", this.OrgName);
             xmlWriter.WriteAttributeString("Keywords", this.Keywords);
-            xmlWriter.WriteAttributeString("UserLevel", level.ToString());
-            xmlWriter.WriteAttributeString("Classification", type.ToString());
+            xmlWriter.WriteAttributeString("UserLevel", Enums.ToXml("UserLevel",(int)level));
+            xmlWriter.WriteAttributeString("Classification", Enums.ToXml("Classification", (int)type));
             xmlWriter.WriteAttributeString("Taxonomy", taxonomy.ToString());
             // xmlWriter.WriteAttributeString("DomeMode", DomeMode.ToString());
             bool timeLineTour = IsTimelineTour();
@@ -701,7 +603,7 @@ namespace wwtlib
             }
         }
         
-        ImageElement authorImage;
+        ImageElement authorImage = null;
 
         public ImageElement AuthorImage
         {
@@ -734,7 +636,7 @@ namespace wwtlib
             set { filename = value; }
         }
 
-        UserLevel level;
+        UserLevel level = UserLevel.Beginner;
 
         public UserLevel Level
         {
@@ -746,7 +648,7 @@ namespace wwtlib
             }
         }
 
-        Classification type;
+        Classification type = Classification.Unidentified;
 
         public Classification Type
         {
@@ -1095,22 +997,25 @@ namespace wwtlib
 
         public string GetFileStream(string filename)
         {
+            Blob blob = GetFileBlob(filename);
+            return (string)Script.Literal("URL.createObjectURL({0});", blob); 
+        }
+
+        public Blob GetFileBlob(string filename)
+        {
             if (fileCache.ContainsKey(filename))
             {
-                Blob blob = fileCache[filename];
-
-                return (string)Script.Literal("URL.createObjectURL({0});", blob);
+                return fileCache[filename];
+            }
+            else if (cabinet != null)
+            {
+                return cabinet.GetFileBlob(WorkingDirectory + filename);
             }
             else
             {
-                Blob blob = cabinet.GetFileBlob(WorkingDirectory + filename);
-
-                return (string)Script.Literal("URL.createObjectURL({0});", blob);
+                return null;
             }
-
-            //return Util.GetTourComponent(Url, filename);
         }
-
 
         public TourStop CurrentTourStop
         {
