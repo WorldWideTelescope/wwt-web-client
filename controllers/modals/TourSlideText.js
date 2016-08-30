@@ -12,9 +12,16 @@
             editScope = angular.element('#currentTourPanel').scope();
             if (editScope.editText) {
                 pristineText = editScope.editText.textObject;
+                console.log(pristineText);
                 $.each(editableKeys, function (i, key) {
-                    if (pristineText[key] !== textObject[key])
-                        textObject[key] = pristineText[key];
+                    if (pristineText[key] !== textObject[key]) {
+                        if (key.indexOf('Color') > 0) {
+                            textObject[key] = pristineText[key].a === 0 ? 'transparent' : pristineText[key].toFormat();
+                        }
+                        else{
+                            textObject[key] = pristineText[key];
+                        }
+                    }
                 });
                 
             }
@@ -29,7 +36,7 @@
             underline: 0,
             fontSize: 24,
             fontName: 'Arial',
-            borderStyle:'None'
+            borderStyle:0
         };
         var editableKeys = Object.keys(textObject);
  
@@ -123,6 +130,7 @@
         var fgColorObserver = function (mutation) {
             var newFg = $(fgColor).css('background-color');
             iframeBody.find('*').css('color', newFg);
+            textObject.foregroundColor = newFg;
         };
 
         var colorConfig = {
@@ -178,14 +186,29 @@
                 });
                 console.log(textObject);
                 try {
-                    
+                    function rgb2hex(rgb) {
+                        if (rgb.indexOf('rgb') !== 0) return rgb;
+                        
+                        rgb = rgb.split('(')[1].replace(')','').split(',');
+                        function hex(x) {
+                            return ("0" + parseInt(x).toString(16)).slice(-2);
+                        }
+                        var hexColor = "#" + hex(rgb[0]) + hex(rgb[1]) + hex(rgb[2]);
+                        return hexColor;
+                    }
                     
                     if (editScope.editText) {
                         $.each(editableKeys, function (i, key) {
-                            if(pristineText[key] !== textObject[key])
-                                pristineText[key] = textObject[key];
+                            if (pristineText[key] !== textObject[key])
+                                if (key.indexOf('Color') > 0) {
+                                    pristineText[key] = wwtlib.Color.load(rgb2hex(textObject[key]));
+                                } else {
+                                    pristineText[key] = textObject[key];
+                                }
                         });
-                        editScope.editText.onFinished(textObject);
+                        console.log(pristineText);
+
+                        editScope.editText.onFinished(pristineText);
                         editScope.editText = null;
                     } else {
                         var txtObj = wwtlib.TextObject.create(
@@ -195,12 +218,15 @@
                             textObject.underline,
                             textObject.fontSize,
                             textObject.fontName,
-                            textObject.foregroundColor,
-                            textObject.backgroundColor,
+                            wwtlib.Color.load(rgb2hex(textObject.foregroundColor)),
+                            wwtlib.Color.load(rgb2hex(textObject.backgroundColor)),
                             textObject.borderStyle);
+                        console.log(txtObj);
                         editorUI.addText({}, txtObj);
                     }
-                } catch (ex) { }
+                } catch (ex) {
+                    console.trace(ex);
+                }
                 hideEditor();
             },
             content_css: "css/mcecontent.css"
