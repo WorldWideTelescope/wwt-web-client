@@ -13810,7 +13810,6 @@ window.wwtlib = function(){
       }
       catch ($e2) {
       }
-      this.packageFiles();
     },
     getFileBlob: function(filename) {
       var fe = this.getFileEntry(filename);
@@ -14630,6 +14629,8 @@ window.wwtlib = function(){
     this.implicitTourLinks = [];
     this._tourStops = [];
     this._currentTourstopIndex = -1;
+    this._textureList = {};
+    this._textureList2d = {};
     this._fileCache = {};
     this.dontCleanUpTempFiles = false;
     this._id = Guid.newGuid().toString();
@@ -15224,14 +15225,6 @@ window.wwtlib = function(){
       return -1;
     },
     cleanUp: function() {
-      var $enum1 = ss.enumerate(this.get_tourStops());
-      while ($enum1.moveNext()) {
-        var stop = $enum1.current;
-        stop.cleanUp();
-      }
-      if (this._textureList != null) {
-        ss.clearKeys(this._textureList);
-      }
     },
     getCachedTexture: function(filename, callMe) {
       if (this._textureList == null) {
@@ -15263,6 +15256,12 @@ window.wwtlib = function(){
     },
     addCachedFile: function(filename, file) {
       this._fileCache[filename] = file;
+      if (ss.keyExists(this._textureList2d, filename)) {
+        delete this._textureList2d[filename];
+      }
+      if (ss.keyExists(this._textureList, filename)) {
+        delete this._textureList[filename];
+      }
     },
     getFileStream: function(filename) {
       var blob = this.getFileBlob(filename);
@@ -15294,7 +15293,6 @@ window.wwtlib = function(){
         var stop = $enum1.current;
         if (stop === value) {
           if (this._currentTourstopIndex > -1) {
-            this.get_tourStops()[this._currentTourstopIndex].cleanUp();
           }
           this._currentTourstopIndex = i;
           break;
@@ -15722,9 +15720,19 @@ window.wwtlib = function(){
     },
     _captureThumbnail_Click: function(sender, e) {
       if (this._tour.get_currentTourStop() != null) {
-        this._tour.get_currentTourStop().set_thumbnail(WWTControl.singleton.captureThumbnail());
-        this.tourStopList.refresh();
+        this._captureThumbnail(this._tour.get_currentTourStop());
       }
+    },
+    _captureThumbnail: function(tourStop) {
+      var $this = this;
+
+      WWTControl.singleton.captureThumbnail(function(blob) {
+        var filename = ss.format('{0}.thumb.png', tourStop.get_id());
+        $this._tour.addCachedFile(filename, blob);
+        tourStop.set_thumbnail($this._tour.getCachedTexture(filename, function() {
+          $this.tourStopList.refresh();
+        }));
+      });
     },
     _properties_Click: function(sender, e) {
       throw new Error('The method or operation is not implemented.');
@@ -15763,7 +15771,7 @@ window.wwtlib = function(){
         this.voiceTrack.target = null;
       }
       this._tour.get_currentTourStop().layers = LayerManager._getVisibleLayerList(this._tour.get_currentTourStop().layers);
-      newTourStop.set_thumbnail(newPlace.set_thumbnail(WWTControl.singleton.captureThumbnail()));
+      this._captureThumbnail(newTourStop);
       this.tourStopList.selectedItem = this.tourStopList.findItem(newTourStop);
       this.tourStopList.refresh();
       this.tourEditorUI.clearSelection();
@@ -19177,7 +19185,8 @@ window.wwtlib = function(){
     _addFilesToCabinet: function(fc, excludeAudio) {
       if (this._thumbnail != null) {
         var filename = ss.format('{0}.thumb.png', this._id);
-        fc.addFile(this._owner.get_workingDirectory() + filename, this._owner.getFileBlob(filename));
+        var blob = this._owner.getFileBlob(filename);
+        fc.addFile(this._owner.get_workingDirectory() + filename, blob);
       }
       if (!excludeAudio) {
         if (this._musicTrack != null) {
@@ -20126,6 +20135,9 @@ window.wwtlib = function(){
   function Enums() {
   }
   Enums.parse = function(enumType, value) {
+    if (value === 'Default') {
+      value = 'DefaultV';
+    }
     if (value === '0') {
       return 0;
     }
@@ -20139,7 +20151,11 @@ window.wwtlib = function(){
 }
  };
     var val =  x;
-    return val.substr(0, 1).toUpperCase() + val.substr(1);
+    var enumString = val.substr(0, 1).toUpperCase() + val.substr(1);
+    if (enumString === 'DefaultV') {
+      enumString = 'Default';
+    }
+    return enumString;
   };
   var Enums$ = {
 
@@ -22077,7 +22093,7 @@ window.wwtlib = function(){
       this.tourEdit = new TourEditTab();
       this.tourEdit.set_tour(this.tour);
       this.tour.set_currentTourstopIndex(0);
-      this.tour.set_editMode(false);
+      this.tour.set_editMode(true);
       this.uiController = this.tourEdit.tourEditorUI;
     },
     playTour: function(url) {
@@ -22149,11 +22165,30 @@ window.wwtlib = function(){
         ctx.restore();
       }
     },
-    captureThumbnail: function() {
+    captureThumbnail: function(blobReady) {
       this.render();
       var image = document.createElement('img');
+      image.addEventListener('load', function(e) {
+        var imageAspect = (image.width) / image.height;
+        var clientAspect = 96 / 45;
+        var cw = 96;
+        var ch = 45;
+        if (imageAspect < clientAspect) {
+          ch = ss.truncate((cw / imageAspect));
+        }
+        else {
+          cw = ss.truncate((ch * imageAspect));
+        }
+        var cx = (96 - cw) / 2;
+        var cy = (45 - ch) / 2;
+        var temp = document.createElement('canvas');
+        temp.height = 45;
+        temp.width = 96;
+        var ctx = temp.getContext('2d');
+        ctx.drawImage(image, cx, cy, cw, ch);
+        temp.toBlob(blobReady, 'image/jpeg');
+      }, false);
       image.src = WWTControl.singleton.canvas.toDataURL();
-      return image;
     }
   };
 
@@ -22895,7 +22930,7 @@ window.wwtlib = function(){
       }
     },
     save: function() {
-      if (ss.emptyString(this.name)) {
+      if (!ss.emptyString(this.name)) {
         return ss.format('{0}:{1}', 0, this.name);
       }
       else {

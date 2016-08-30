@@ -49,7 +49,7 @@ namespace wwtlib
 
         public string Save()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 return string.Format("{0}:{1}",
                     0, Name);

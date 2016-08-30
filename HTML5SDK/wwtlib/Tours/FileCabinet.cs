@@ -217,9 +217,6 @@ namespace wwtlib
             {
                 //  UiTools.ShowMessageBox("The data cabinet file was not found. WWT will now download all data from network.");
             }
-
-            PackageFiles();
-
         }
 
         public Blob GetFileBlob(string filename)
