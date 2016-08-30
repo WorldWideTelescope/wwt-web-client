@@ -6750,7 +6750,7 @@ wwt.controllers.controller('TourSlideText', [
             editScope = angular.element('#currentTourPanel').scope();
             if (editScope.editText) {
                 pristineText = editScope.editText.textObject;
-                console.log(pristineText);
+                //console.log(pristineText);
                 $.each(editableKeys, function (i, key) {
                     if (pristineText[key] !== textObject[key]) {
                         if (key.indexOf('Color') > 0) {
@@ -6761,7 +6761,7 @@ wwt.controllers.controller('TourSlideText', [
                         }
                     }
                 });
-                
+
             }
         }
         
@@ -6922,7 +6922,7 @@ wwt.controllers.controller('TourSlideText', [
                     }
                     textObject.text += $(p).text();
                 });
-                console.log(textObject);
+                //console.log(textObject);
                 try {
                     function rgb2hex(rgb) {
                         if (rgb.indexOf('rgb') !== 0) return rgb;
@@ -6944,7 +6944,7 @@ wwt.controllers.controller('TourSlideText', [
                                     pristineText[key] = textObject[key];
                                 }
                         });
-                        console.log(pristineText);
+                        //console.log(pristineText);
 
                         editScope.editText.onFinished(pristineText);
                         editScope.editText = null;
@@ -6959,7 +6959,7 @@ wwt.controllers.controller('TourSlideText', [
                             wwtlib.Color.load(rgb2hex(textObject.foregroundColor)),
                             wwtlib.Color.load(rgb2hex(textObject.backgroundColor)),
                             textObject.borderStyle);
-                        console.log(txtObj);
+                        //console.log(txtObj);
                         editorUI.addText({}, txtObj);
                     }
                 } catch (ex) {
