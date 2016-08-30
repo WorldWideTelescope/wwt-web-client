@@ -928,18 +928,18 @@ namespace wwtlib
 
         public void CleanUp()
         {
-            foreach (TourStop stop in TourStops)
-            {
-                stop.CleanUp();
-            }
-            if (textureList != null)
-            {
+            //foreach (TourStop stop in TourStops)
+            //{
+            //    stop.CleanUp();
+            //}
+            //if (textureList != null)
+            //{
                
-                textureList.Clear();
-            }
+            //    textureList.Clear();
+            //}
            
         }
-        private Dictionary<string, ImageElement> textureList;
+        private Dictionary<string, ImageElement> textureList = new Dictionary<string, ImageElement>();
         public ImageElement GetCachedTexture(string filename, Action callMe)
         {
 
@@ -964,7 +964,7 @@ namespace wwtlib
 
         }
 
-        private Dictionary<string, Texture> textureList2d;
+        private Dictionary<string, Texture> textureList2d = new Dictionary<string, Texture>();
         public Texture GetCachedTexture2d(string filename)
         {
 
@@ -990,9 +990,20 @@ namespace wwtlib
         // This handles new files added while editing a tour
         private Dictionary<string, Blob> fileCache = new Dictionary<string, Blob>();
 
-        public void AddCachedFile( string filename, File file)
+        public void AddCachedFile( string filename, Blob file)
         {
-            fileCache[filename] = (Blob)file;
+            fileCache[filename] = file;
+
+            //Clean up old Cached Textures if they are based on this file.
+            if (textureList2d.ContainsKey(filename))
+            {
+                textureList2d.Remove(filename);
+            }
+
+            if (textureList.ContainsKey(filename))
+            {
+                textureList.Remove(filename);
+            }
         }
 
         public string GetFileStream(string filename)
@@ -1039,7 +1050,7 @@ namespace wwtlib
                     {
                         if (currentTourstopIndex > -1)
                         {
-                            TourStops[currentTourstopIndex].CleanUp();
+                        //    TourStops[currentTourstopIndex].CleanUp();
                         }
                         currentTourstopIndex = i;
                         break;

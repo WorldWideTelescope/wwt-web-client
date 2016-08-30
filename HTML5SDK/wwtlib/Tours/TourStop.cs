@@ -861,6 +861,7 @@ namespace wwtlib
 
         public void CleanUp()
         {
+            // todo this needs to be evaluated. Causes major pain in WebClient
             foreach (Overlay overlay in Overlays)
             {
                 overlay.CleanUp();
@@ -1165,10 +1166,9 @@ namespace wwtlib
         {
             if (thumbnail != null)
             {
-
-
                 string filename = string.Format("{0}.thumb.png", id);
-                fc.AddFile(owner.WorkingDirectory + filename, owner.GetFileBlob(filename));
+                System.Html.Data.Files.Blob blob = owner.GetFileBlob(filename);         
+                fc.AddFile(owner.WorkingDirectory + filename, blob);
             }
 
             if (!excludeAudio)

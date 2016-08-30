@@ -723,13 +723,19 @@ namespace wwtlib
         {
             if (tour.CurrentTourStop != null)
             {
-                //TODO undo issues with image bitmaps. Must serialize images
-                //todo get thumbnal
-
-
-                tour.CurrentTourStop.Thumbnail = WWTControl.Singleton.CaptureThumbnail();
-                tourStopList.Refresh();
+                CaptureThumbnail(tour.CurrentTourStop);
             }
+        }
+
+        private void CaptureThumbnail(TourStop tourStop)
+        {
+            WWTControl.Singleton.CaptureThumbnail(
+                delegate (System.Html.Data.Files.Blob blob)
+                {
+                    string filename = string.Format("{0}.thumb.png", tourStop.Id);
+                    tour.AddCachedFile(filename, blob);
+                    tourStop.Thumbnail = tour.GetCachedTexture(filename, delegate { tourStopList.Refresh(); });
+                });
         }
 
         void properties_Click(object sender, EventArgs e)
@@ -790,10 +796,8 @@ namespace wwtlib
                 VoiceTrack.Target = null;
 
             }
-            tour.CurrentTourStop.Layers = LayerManager.GetVisibleLayerList(tour.CurrentTourStop.Layers);
-            //todo get thumbnail 
-            newTourStop.Thumbnail = newPlace.Thumbnail = WWTControl.Singleton.CaptureThumbnail();
-
+            tour.CurrentTourStop.Layers = LayerManager.GetVisibleLayerList(tour.CurrentTourStop.Layers);    
+            CaptureThumbnail(newTourStop);
             tourStopList.SelectedItem = tourStopList.FindItem(newTourStop);
             tourStopList.Refresh();
             TourEditorUI.ClearSelection();

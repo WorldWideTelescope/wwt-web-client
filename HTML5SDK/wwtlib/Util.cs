@@ -411,6 +411,11 @@ namespace wwtlib
     {
         public static int Parse(string enumType, string value)
         {
+            if (value == "Default")
+            {
+                value = "DefaultV";
+            }
+
             if (value == "0")
             {
                 return 0;
@@ -430,7 +435,13 @@ namespace wwtlib
             Script.Literal(" var x = \"0\"; var p = Object.keys(wwtlib[{0}]); for (var i in p)\n {{ if ( wwtlib[{0}][p[i]] == {1} ) {{\n x = p[i]; break; \n}}\n }}", enumType, value);
             string val = (string)Script.Literal(" x");
 
-            return val.Substr(0, 1).ToUpperCase() + val.Substr(1);
+            string enumString  = val.Substr(0, 1).ToUpperCase() + val.Substr(1);
+            if (enumString == "DefaultV")
+            {
+                enumString = "Default";
+            }
+
+            return enumString;
         }
     }
 

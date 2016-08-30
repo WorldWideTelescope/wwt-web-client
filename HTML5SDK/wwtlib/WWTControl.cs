@@ -2565,47 +2565,49 @@ namespace wwtlib
             }
         }
 
-        public ImageElement CaptureThumbnail()
+ 
+        public void CaptureThumbnail(BlobReady blobReady)
         {
             Render();
+           
             ImageElement image = (ImageElement)Document.CreateElement("img");
+            image.AddEventListener("load", delegate (ElementEvent e)
+            {
+                double imageAspect = ((double)image.Width) / (image.Height);
+
+                double clientAspect = 96 / 45;
+
+                int cw = 96;
+                int ch = 45;
+
+                if (imageAspect < clientAspect)
+                {
+                    ch = (int)((double)cw / imageAspect);
+                }
+                else
+                {
+                 cw = (int)((double)ch * imageAspect);
+                }
+
+                int cx = (96 - cw) / 2;
+                int cy = (45 - ch) / 2;
+
+                CanvasElement temp = (CanvasElement)Document.CreateElement("canvas");
+                temp.Height = 45;
+                temp.Width = 96;
+                CanvasContext2D ctx = (CanvasContext2D)temp.GetContext(Rendering.Render2D);
+                ctx.DrawImage(image, cx, cy, cw, ch);
+                Script.Literal("{0}.toBlob({1}, 'image/jpeg')", temp, blobReady);
+
+
+              //  thumb.Src = temp.GetDataUrl();
+            }, false);
+
             image.Src = Singleton.Canvas.GetDataUrl();
 
-           // Document.Body.AppendChild(image);
-
-            return image;
-
-            //int width = gl.canvas.Width;
-            //int height = gl.canvas.Height;
-            //WebGLTexture texture = gl.createTexture();
-            //// Create a framebuffer backed by the texture
-            //WebGLFramebuffer framebuffer = gl.createFramebuffer();
-            //gl.bindFramebuffer(GL.FRAMEBUFFER, framebuffer);
-            //gl.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0, GL.TEXTURE_2D, texture, 0);
-
-            //// Read the contents of the framebuffer
-            ////byte[] data = new byte[width * height * 4];
-
-            //WebGLArray data = gl.readPixels(0, 0, width, height, GL.RGBA, GL.UNSIGNED_BYTE);
-
-            //gl.deleteFramebuffer(framebuffer);
-
-            //// Create a 2D canvas to store the result 
-            //CanvasElement canvas = Document.CreateElement('canvas');
-            //canvas.Width = width;
-            //canvas.Height = height;
-            //CanvasContext2D context = (CanvasContext2D)canvas.GetContext(Rendering.Render2D);
-
-            //// Copy the pixels to a 2D canvas
-            //ImageData imageData = context.CreateImageData(width, height);
-            //imageData.Data = data;
-            //context.putImageData(imageData, 0, 0);
-
-            //ImageElement img = new ImageElement();
-            //img.Src = canvas.ToDataURL();
-            //return img;
         }
     }
+    public delegate void BlobReady(System.Html.Data.Files.Blob blob);
 
 
     public class WWTElementEvent

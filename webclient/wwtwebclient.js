@@ -6526,8 +6526,9 @@ wwt.controllers.controller('CurrentTourController', [
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-        var xml = tour.getTourXML();
-        console.log(xml);
+        var saveUrl = tour.saveToFile();
+
+        window.location.assign(saveUrl);
         // media.saveTour().then(function (tour) {
         //     console.log(tour);
         //});
