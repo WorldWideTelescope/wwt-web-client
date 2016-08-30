@@ -6,29 +6,37 @@
     var mainScope = angular.element('div.desktop').scope();
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
+
     $scope.init = function (curTour) {
-        $scope.musicFileUrl = false;
-        $scope.voiceOverFileUrl = false;
-        $scope.musicPlaying = false;
-        $scope.voiceOverPlaying = false;
+        tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
-        tourEdit.tourStopList.refreshCallback = mapStops;
-        $scope.editText = null;
         tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
-        } 
-        mapStops(true);
-        
-        //$rootScope.$on('escKey', function () {
-            //$scope.$applyAsync(showTourSlides);
-        //});
-        $rootScope.$watch('editingTour', function () { });
-        if (true){//util.isDebug) {
-            showTourSlides();
-            mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
-            mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers];
+        };
+        tourEdit.tourStopList.refreshCallback = mapStops;
+        $scope.editText = null;
+        mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
+        mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers]; 
+        $rootScope.$on('escKey', showSlides);
+        $rootScope.$on('closeTour', closeTour);
+        $rootScope.$watch('editingTour', initEditMode);
+        if (mainScope.autoEdit) {
+            showSlides();
+            $rootScope.editingTour = true;
         }
+        
+    };
+
+    var showSlides = function () {
+        mapStops(true);
+        $scope.$applyAsync(showTourSlides);
+
+    };
+    
+    var initEditMode = function () {
+        if ($rootScope.editingTour !== true) { return; }
+        tour.editMode = true;
         $('#contextmenu,#popoutmenu').on('click', function () {
             mapStops.apply($scope, []);
         });
@@ -36,6 +44,11 @@
         $('canvas').on('dblclick click', function () {
             mapStops.apply($scope, []);
         });
+    };
+    var closeTour = function () {
+        console.trace('closetour');
+        $scope.tourEdit = tourEdit = null;
+        $rootScope.currentTour = $scope.tour = tour = null;
     };
 
     $scope.showSlideNumbers = function () {
@@ -67,7 +80,6 @@
                     var audio = barEl.attr('id') === 'voiceVol' ? $scope.activeSlide.voice : $scope.activeSlide.music;
                     if (audio) {
                         audio.set_volume(this.css.left);
-                        
                     }
                 },
                 oncomplete: function () {
@@ -118,19 +130,14 @@
     
     var showTourSlides = function () {
         $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
-        //tourEdit.pauseTour();
-        $rootScope.tourPaused = true;
-        $scope.escaped = true;
-        //if (util.isDebug) {
-            $rootScope.editingTour = true;
-        //}
+        console.log(tourEdit.playing);
         setTimeout(function () {
             $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
             $(window).on('resize', function () {
                 
                 $rootScope.stopScroller.reinitialise();
             });
-        }, 200);
+        }, 500);
     };
 
     $scope.showContextMenu = function (index,e) {
@@ -204,32 +211,33 @@
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowEndPosition();
     };
-
+         
     $scope.playButtonClick = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
         else {
             tourEdit.playFromCurrentTourstop();
-        }
-        //else {
-        //    tourEdit.playNow(true);
+        } 
+        //else { 
+        //    tourEdit.playNow(true); 
         //}
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     };
 
     var mapStops = $scope.refreshStops = function (isInit) {
+        
         $scope.$applyAsync(function () {
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
                 s.description = s.get_description();
-                s.thumb = s.get_thumbnail();
+                s.thumb = s.get_thumbnail(); 
                 s.duration = s.get_duration();
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
                 s.atime = s.get__transitionTime();
-                s.btime = s.get__transitionOutTime();;
+                s.btime = s.get__transitionOutTime();
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
                 s.isMaster = s.get_masterSlide();

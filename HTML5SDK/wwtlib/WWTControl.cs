@@ -2453,7 +2453,7 @@ namespace wwtlib
            TourEdit = new TourEditTab();
            TourEdit.Tour = tour;
            tour.CurrentTourstopIndex = 0;
-           tour.EditMode = true;
+           tour.EditMode = false;
            uiController = TourEdit.TourEditorUI;
         }
 

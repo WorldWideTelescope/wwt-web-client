@@ -491,11 +491,11 @@
                     </a>
                 </div>
             </li>
-            <li data-ng-class="activePanel == 'currentTour'  ? 'active' : editingTour ? '' :'hide'">
+            <li data-ng-class="activePanel == 'currentTour'  ? 'active' : currentTour && currentTour._title ? '' :'hide'">
                 <div class="outer">
                     <a href="javascript:void(0)" ng-click="activePanel = 'currentTour'">
                         <span class="label" style="padding-right:22px">{{currentTour._title}}</span>
-                        <span ng-click="finishTour()" class="close-tour"><i class="fa fa-close"></i></span>
+                        <span ng-click="closeTour($event)" class="close-tour"><i class="fa fa-close"></i></span>
                     </a>
                     
                 </div>
@@ -902,11 +902,11 @@
             ng-init="init(tour)"
             >
             
-            <table ng-if="escaped == true">
+            <table>
                 <colgroup>
                     <col style="width:80px"/>
                     <col style="width:100%"/>
-                    <col ng-style="{'width':editingTour?374:1}"/>
+                    <col ng-style="{'width':editingTour ? 374 : 1 }"/>
                 </colgroup>
                 <tr>
                     <td class="play-tour">

@@ -3,7 +3,7 @@
         restrict: 'A',
         link: function(scope, element, attrs) {
             var isDuration = (element.hasClass('duration'));
-
+            var hasFocused = false;
             var isLabel = !isDuration;
             var stop = scope.stop;
             var s = stop;
@@ -57,7 +57,9 @@
                     s.tenths;
                 
                 stop.set_duration(lastGoodValue);
-                angular.element('#currentTourPanel').scope().refreshStops();
+                if (hasFocused) {
+                    angular.element('#currentTourPanel').scope().refreshStops();
+                }
                 element.html(s.durationString);
             }
 
@@ -90,6 +92,7 @@
             
                  
             element.on('focus', function () {
+                hasFocused = true;
                 if (isDuration) {
                     if (incrementing) return;
                     scope.$apply(function () {

@@ -1273,7 +1273,7 @@ wwt.app.directive('contenteditable', [function() {
         restrict: 'A',
         link: function(scope, element, attrs) {
             var isDuration = (element.hasClass('duration'));
-
+            var hasFocused = false;
             var isLabel = !isDuration;
             var stop = scope.stop;
             var s = stop;
@@ -1327,7 +1327,9 @@ wwt.app.directive('contenteditable', [function() {
                     s.tenths;
                 
                 stop.set_duration(lastGoodValue);
-                angular.element('#currentTourPanel').scope().refreshStops();
+                if (hasFocused) {
+                    angular.element('#currentTourPanel').scope().refreshStops();
+                }
                 element.html(s.durationString);
             }
 
@@ -1360,6 +1362,7 @@ wwt.app.directive('contenteditable', [function() {
             
                  
             element.on('focus', function () {
+                hasFocused = true;
                 if (isDuration) {
                     if (incrementing) return;
                     scope.$apply(function () {
@@ -2707,7 +2710,6 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
             size:params.size,
             filename:params.name
         }
-        
     }
 
     function addLocalMedia(mediaKey, file, db) {
@@ -4477,13 +4479,24 @@ wwt.controllers.controller('MainController',
 		    });
 		};
 
-		$rootScope.finishTour = function () {
+		$rootScope.closeTour = function ($event) {
+		    $event.preventDefault();
+		    $event.stopPropagation();
+		    
 		    $rootScope.editingTour = false;
 		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
-		    $rootScope.editingTour = false;
-	        $rootScope.tourPlaying = false;
-	        wwtlib.WWTControl.singleton.stopCurrentTour();
-	        $scope.activePanel = 'Guided Tours'; 
+		    delete $scope.ribbon.tabs[1].menu['Show Slide Overlays'];
+		    delete $scope.ribbon.tabs[1].menu['Show Slide Numbers'];
+		    
+		    wwtlib.WWTControl.singleton.stopCurrentTour();
+		    $rootScope.$broadcast('closeTour');
+		    //wwtlib.WWTControl.singleton.tour.cleanUp();
+		    $scope.$applyAsync(function () {
+		        $scope.activePanel = 'Guided Tours';
+		    });
+	        $rootScope.editingTour = false;
+		    $rootScope.tourPlaying = false;
+		    $rootScope.currentTour = null;
 	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
 	    }
 
@@ -4506,7 +4519,6 @@ wwt.controllers.controller('MainController',
 				$('.context-panel').fadeIn(800);
 			}
 			if (!settings.autoHideTabs) {
-               
 				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
 			}
 			ctl.clearAnnotations();
@@ -4755,8 +4767,9 @@ wwt.controllers.controller('MainController',
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
 		}
-		if (util.getQSParam('playTour')) {
-		    $scope.playTour(decodeURIComponent(util.getQSParam('playTour')))
+		if (util.getQSParam('editTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
+		    $scope.autoEdit = true;
 		}
 	}
 ]);
@@ -6444,29 +6457,37 @@ wwt.controllers.controller('CurrentTourController', [
     var mainScope = angular.element('div.desktop').scope();
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
+
     $scope.init = function (curTour) {
-        $scope.musicFileUrl = false;
-        $scope.voiceOverFileUrl = false;
-        $scope.musicPlaying = false;
-        $scope.voiceOverPlaying = false;
+        tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
-        tourEdit.tourStopList.refreshCallback = mapStops;
-        $scope.editText = null;
         tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
-        } 
-        mapStops(true);
-        
-        //$rootScope.$on('escKey', function () {
-            //$scope.$applyAsync(showTourSlides);
-        //});
-        $rootScope.$watch('editingTour', function () { });
-        if (true){//util.isDebug) {
-            showTourSlides();
-            mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
-            mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers];
+        };
+        tourEdit.tourStopList.refreshCallback = mapStops;
+        $scope.editText = null;
+        mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
+        mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers]; 
+        $rootScope.$on('escKey', showSlides);
+        $rootScope.$on('closeTour', closeTour);
+        $rootScope.$watch('editingTour', initEditMode);
+        if (mainScope.autoEdit) {
+            showSlides();
+            $rootScope.editingTour = true;
         }
+        
+    };
+
+    var showSlides = function () {
+        mapStops(true);
+        $scope.$applyAsync(showTourSlides);
+
+    };
+    
+    var initEditMode = function () {
+        if ($rootScope.editingTour !== true) { return; }
+        tour.editMode = true;
         $('#contextmenu,#popoutmenu').on('click', function () {
             mapStops.apply($scope, []);
         });
@@ -6474,6 +6495,11 @@ wwt.controllers.controller('CurrentTourController', [
         $('canvas').on('dblclick click', function () {
             mapStops.apply($scope, []);
         });
+    };
+    var closeTour = function () {
+        console.trace('closetour');
+        $scope.tourEdit = tourEdit = null;
+        $rootScope.currentTour = $scope.tour = tour = null;
     };
 
     $scope.showSlideNumbers = function () {
@@ -6505,7 +6531,6 @@ wwt.controllers.controller('CurrentTourController', [
                     var audio = barEl.attr('id') === 'voiceVol' ? $scope.activeSlide.voice : $scope.activeSlide.music;
                     if (audio) {
                         audio.set_volume(this.css.left);
-                        
                     }
                 },
                 oncomplete: function () {
@@ -6526,8 +6551,9 @@ wwt.controllers.controller('CurrentTourController', [
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-        var xml = tour.getTourXML();
-        console.log(xml);
+        var saveUrl = tour.saveToFile();
+
+        window.location.assign(saveUrl);
         // media.saveTour().then(function (tour) {
         //     console.log(tour);
         //});
@@ -6555,19 +6581,14 @@ wwt.controllers.controller('CurrentTourController', [
     
     var showTourSlides = function () {
         $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
-        //tourEdit.pauseTour();
-        $rootScope.tourPaused = true;
-        $scope.escaped = true;
-        //if (util.isDebug) {
-            $rootScope.editingTour = true;
-        //}
+        console.log(tourEdit.playing);
         setTimeout(function () {
             $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
             $(window).on('resize', function () {
                 
                 $rootScope.stopScroller.reinitialise();
             });
-        }, 200);
+        }, 500);
     };
 
     $scope.showContextMenu = function (index,e) {
@@ -6641,32 +6662,33 @@ wwt.controllers.controller('CurrentTourController', [
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowEndPosition();
     };
-
+         
     $scope.playButtonClick = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
         else {
             tourEdit.playFromCurrentTourstop();
-        }
-        //else {
-        //    tourEdit.playNow(true);
+        } 
+        //else { 
+        //    tourEdit.playNow(true); 
         //}
         $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
     };
 
     var mapStops = $scope.refreshStops = function (isInit) {
+        
         $scope.$applyAsync(function () {
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
                 s.description = s.get_description();
-                s.thumb = s.get_thumbnail();
+                s.thumb = s.get_thumbnail(); 
                 s.duration = s.get_duration();
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
                 s.atime = s.get__transitionTime();
-                s.btime = s.get__transitionOutTime();;
+                s.btime = s.get__transitionOutTime();
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
                 s.isMaster = s.get_masterSlide();
@@ -6728,9 +6750,16 @@ wwt.controllers.controller('TourSlideText', [
             editScope = angular.element('#currentTourPanel').scope();
             if (editScope.editText) {
                 pristineText = editScope.editText.textObject;
+                console.log(pristineText);
                 $.each(editableKeys, function (i, key) {
-                    if (pristineText[key] !== textObject[key])
-                        textObject[key] = pristineText[key];
+                    if (pristineText[key] !== textObject[key]) {
+                        if (key.indexOf('Color') > 0) {
+                            textObject[key] = pristineText[key].a === 0 ? 'transparent' : pristineText[key].toFormat();
+                        }
+                        else{
+                            textObject[key] = pristineText[key];
+                        }
+                    }
                 });
                 
             }
@@ -6745,7 +6774,7 @@ wwt.controllers.controller('TourSlideText', [
             underline: 0,
             fontSize: 24,
             fontName: 'Arial',
-            borderStyle:'None'
+            borderStyle:0
         };
         var editableKeys = Object.keys(textObject);
  
@@ -6839,6 +6868,7 @@ wwt.controllers.controller('TourSlideText', [
         var fgColorObserver = function (mutation) {
             var newFg = $(fgColor).css('background-color');
             iframeBody.find('*').css('color', newFg);
+            textObject.foregroundColor = newFg;
         };
 
         var colorConfig = {
@@ -6894,14 +6924,29 @@ wwt.controllers.controller('TourSlideText', [
                 });
                 console.log(textObject);
                 try {
-                    
+                    function rgb2hex(rgb) {
+                        if (rgb.indexOf('rgb') !== 0) return rgb;
+                        
+                        rgb = rgb.split('(')[1].replace(')','').split(',');
+                        function hex(x) {
+                            return ("0" + parseInt(x).toString(16)).slice(-2);
+                        }
+                        var hexColor = "#" + hex(rgb[0]) + hex(rgb[1]) + hex(rgb[2]);
+                        return hexColor;
+                    }
                     
                     if (editScope.editText) {
                         $.each(editableKeys, function (i, key) {
-                            if(pristineText[key] !== textObject[key])
-                                pristineText[key] = textObject[key];
+                            if (pristineText[key] !== textObject[key])
+                                if (key.indexOf('Color') > 0) {
+                                    pristineText[key] = wwtlib.Color.load(rgb2hex(textObject[key]));
+                                } else {
+                                    pristineText[key] = textObject[key];
+                                }
                         });
-                        editScope.editText.onFinished(textObject);
+                        console.log(pristineText);
+
+                        editScope.editText.onFinished(pristineText);
                         editScope.editText = null;
                     } else {
                         var txtObj = wwtlib.TextObject.create(
@@ -6911,12 +6956,15 @@ wwt.controllers.controller('TourSlideText', [
                             textObject.underline,
                             textObject.fontSize,
                             textObject.fontName,
-                            textObject.foregroundColor,
-                            textObject.backgroundColor,
+                            wwtlib.Color.load(rgb2hex(textObject.foregroundColor)),
+                            wwtlib.Color.load(rgb2hex(textObject.backgroundColor)),
                             textObject.borderStyle);
+                        console.log(txtObj);
                         editorUI.addText({}, txtObj);
                     }
-                } catch (ex) { }
+                } catch (ex) {
+                    console.trace(ex);
+                }
                 hideEditor();
             },
             content_css: "css/mcecontent.css"

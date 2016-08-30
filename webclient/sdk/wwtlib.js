@@ -321,6 +321,18 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.TransitionType
+
+  var TransitionType = {
+    slew: 0, 
+    crossFade: 1, 
+    crossCut: 2, 
+    fadeOutIn: 3, 
+    fadeIn: 4, 
+    fadeOut: 5
+  };
+
+
   // wwtlib.Keys
 
   var Keys = {
@@ -8137,10 +8149,10 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('Type', this.getTypeName());
       xmlWriter._writeAttributeString('Name', this.get_name());
       xmlWriter._writeAttributeString('ReferenceFrame', this.referenceFrame);
-      xmlWriter._writeAttributeString('Color', this.color.toString());
+      xmlWriter._writeAttributeString('Color', this.color.save());
       xmlWriter._writeAttributeString('Opacity', this.opacity.toString());
-      xmlWriter._writeAttributeString('StartTime', this.get_startTime().toString());
-      xmlWriter._writeAttributeString('EndTime', this.get_endTime().toString());
+      xmlWriter._writeAttributeString('StartTime', Util.xmlDate(this.get_startTime()));
+      xmlWriter._writeAttributeString('EndTime', Util.xmlDate(this.get_endTime()));
       xmlWriter._writeAttributeString('FadeSpan', this.get_fadeSpan().toString());
       xmlWriter._writeAttributeString('FadeType', this.get_fadeType().toString());
       this.writeLayerProperties(xmlWriter);
@@ -8187,6 +8199,9 @@ window.wwtlib = function(){
       this.initializeFromXml(node);
     },
     loadData: function(path) {
+      return;
+    },
+    addFilesToCabinet: function(fc) {
       return;
     }
   };
@@ -9191,8 +9206,8 @@ window.wwtlib = function(){
       xmlWriter._writeStartElement('ReferenceFrame');
       xmlWriter._writeAttributeString('Name', this.name);
       xmlWriter._writeAttributeString('Parent', this.parent);
-      xmlWriter._writeAttributeString('ReferenceFrameType', this.referenceFrameType.toString());
-      xmlWriter._writeAttributeString('Reference', this.reference.toString());
+      xmlWriter._writeAttributeString('ReferenceFrameType', Enums.toXml('ReferenceFrameTypes', this.referenceFrameType));
+      xmlWriter._writeAttributeString('Reference', Enums.toXml('ReferenceFrames', this.reference));
       xmlWriter._writeAttributeString('ParentsRoationalBase', this.parentsRoationalBase.toString());
       xmlWriter._writeAttributeString('MeanRadius', this.meanRadius.toString());
       xmlWriter._writeAttributeString('Oblateness', this.oblateness.toString());
@@ -9209,13 +9224,13 @@ window.wwtlib = function(){
       }
       xmlWriter._writeAttributeString('RotationalPeriod', this.rotationalPeriod.toString());
       xmlWriter._writeAttributeString('ZeroRotationDate', this.zeroRotationDate.toString());
-      xmlWriter._writeAttributeString('RepresentativeColor', this.get_representativeColor().toString());
+      xmlWriter._writeAttributeString('RepresentativeColor', this.get_representativeColor().save());
       xmlWriter._writeAttributeString('ShowAsPoint', this.showAsPoint.toString());
       xmlWriter._writeAttributeString('ShowOrbitPath', this.showOrbitPath.toString());
       xmlWriter._writeAttributeString('StationKeeping', this.stationKeeping.toString());
       if (this.referenceFrameType === 1) {
         xmlWriter._writeAttributeString('SemiMajorAxis', this.semiMajorAxis.toString());
-        xmlWriter._writeAttributeString('SemiMajorAxisScale', this.semiMajorAxisUnits.toString());
+        xmlWriter._writeAttributeString('SemiMajorAxisScale', Enums.toXml('AltUnits', this.semiMajorAxisUnits));
         xmlWriter._writeAttributeString('Eccentricity', this.eccentricity.toString());
         xmlWriter._writeAttributeString('Inclination', this.inclination.toString());
         xmlWriter._writeAttributeString('ArgumentOfPeriapsis', this.argumentOfPeriapsis.toString());
@@ -9229,83 +9244,8 @@ window.wwtlib = function(){
     initializeFromXml: function(node) {
       this.name = node.attributes.getNamedItem('Name').nodeValue;
       this.parent = node.attributes.getNamedItem('Parent').nodeValue;
-      switch (node.attributes.getNamedItem('ReferenceFrameType').nodeValue) {
-        case 'FixedSherical':
-          this.referenceFrameType = 0;
-          break;
-        case 'Orbital':
-          this.referenceFrameType = 1;
-          break;
-        case 'Trajectory':
-          this.referenceFrameType = 2;
-          break;
-        default:
-          break;
-      }
-      switch (node.attributes.getNamedItem('Reference').nodeValue) {
-        case 'Sky':
-          this.reference = 0;
-          break;
-        case 'Ecliptic':
-          this.reference = 1;
-          break;
-        case 'Galactic':
-          this.reference = 2;
-          break;
-        case 'Sun':
-          this.reference = 3;
-          break;
-        case 'Mercury':
-          this.reference = 4;
-          break;
-        case 'Venus':
-          this.reference = 5;
-          break;
-        case 'Earth':
-          this.reference = 6;
-          break;
-        case 'Mars':
-          this.reference = 7;
-          break;
-        case 'Jupiter':
-          this.reference = 8;
-          break;
-        case 'Saturn':
-          this.reference = 9;
-          break;
-        case 'Uranus':
-          this.reference = 10;
-          break;
-        case 'Neptune':
-          this.reference = 11;
-          break;
-        case 'Pluto':
-          this.reference = 12;
-          break;
-        case 'Moon':
-          this.reference = 13;
-          break;
-        case 'Io':
-          this.reference = 14;
-          break;
-        case 'Europa':
-          this.reference = 15;
-          break;
-        case 'Ganymede':
-          this.reference = 16;
-          break;
-        case 'Callisto':
-          this.reference = 17;
-          break;
-        case 'Custom':
-          this.reference = 18;
-          break;
-        case 'Identity':
-          this.reference = 19;
-          break;
-        default:
-          break;
-      }
+      this.referenceFrameType = Enums.parse('ReferenceFrameTypes', node.attributes.getNamedItem('ReferenceFrameType').nodeValue);
+      this.reference = Enums.parse('ReferenceFrames', node.attributes.getNamedItem('Reference').nodeValue);
       this.parentsRoationalBase = ss.boolean(node.attributes.getNamedItem('ParentsRoationalBase').nodeValue);
       this.meanRadius = parseFloat(node.attributes.getNamedItem('MeanRadius').nodeValue);
       this.oblateness = parseFloat(node.attributes.getNamedItem('Oblateness').nodeValue);
@@ -9330,40 +9270,7 @@ window.wwtlib = function(){
       if (this.referenceFrameType === 1) {
         this.showOrbitPath = ss.boolean(node.attributes.getNamedItem('ShowOrbitPath').nodeValue);
         this.semiMajorAxis = parseFloat(node.attributes.getNamedItem('SemiMajorAxis').nodeValue);
-        switch (node.attributes.getNamedItem('SemiMajorAxisScale').nodeValue) {
-          case 'Meters':
-            this.semiMajorAxisUnits = 1;
-            break;
-          case 'Feet':
-            this.semiMajorAxisUnits = 2;
-            break;
-          case 'Inches':
-            this.semiMajorAxisUnits = 3;
-            break;
-          case 'Miles':
-            this.semiMajorAxisUnits = 4;
-            break;
-          case 'Kilometers':
-            this.semiMajorAxisUnits = 5;
-            break;
-          case 'AstronomicalUnits':
-            this.semiMajorAxisUnits = 6;
-            break;
-          case 'LightYears':
-            this.semiMajorAxisUnits = 7;
-            break;
-          case 'Parsecs':
-            this.semiMajorAxisUnits = 8;
-            break;
-          case 'MegaParsecs':
-            this.semiMajorAxisUnits = 9;
-            break;
-          case 'Custom':
-            this.semiMajorAxisUnits = 10;
-            break;
-          default:
-            break;
-        }
+        this.semiMajorAxisUnits = Enums.parse('AltUnits', node.attributes.getNamedItem('SemiMajorAxisScale').nodeValue);
         this.eccentricity = parseFloat(node.attributes.getNamedItem('Eccentricity').nodeValue);
         this.inclination = parseFloat(node.attributes.getNamedItem('Inclination').nodeValue);
         this.argumentOfPeriapsis = parseFloat(node.attributes.getNamedItem('ArgumentOfPeriapsis').nodeValue);
@@ -9512,6 +9419,40 @@ window.wwtlib = function(){
     },
     unlock: function() {
       this.locked = false;
+    },
+    save: function() {
+      var data = '';
+      var first = true;
+      var $enum1 = ss.enumerate(this.header);
+      while ($enum1.moveNext()) {
+        var col = $enum1.current;
+        if (!first) {
+          data += '\t';
+        }
+        else {
+          first = false;
+        }
+        data += col;
+      }
+      data += '\r\n';
+      var $enum2 = ss.enumerate(this.rows);
+      while ($enum2.moveNext()) {
+        var row = $enum2.current;
+        first = true;
+        var $enum3 = ss.enumerate(row);
+        while ($enum3.moveNext()) {
+          var col = $enum3.current;
+          if (!first) {
+            data += '\t';
+          }
+          else {
+            first = false;
+          }
+          data += col;
+        }
+        data += '\r\n';
+      }
+      return data;
     },
     loadFromString: function(data, isUpdate, purge, hasHeader) {
       var count = 0;
@@ -13621,118 +13562,7 @@ window.wwtlib = function(){
       temp.description = child.attributes.getNamedItem('Description').nodeValue;
     }
     if (child.attributes.getNamedItem('Classification') != null) {
-      switch (child.attributes.getNamedItem('Classification').nodeValue) {
-        case 'Star':
-          temp.classification = 1;
-          break;
-        case 'Supernova':
-          temp.classification = 2;
-          break;
-        case 'BlackHole':
-          temp.classification = 4;
-          break;
-        case 'NeutronStar':
-          temp.classification = 8;
-          break;
-        case 'DoubleStar':
-          temp.classification = 16;
-          break;
-        case 'MultipleStars':
-          temp.classification = 32;
-          break;
-        case 'Asterism':
-          temp.classification = 64;
-          break;
-        case 'Constellation':
-          temp.classification = 128;
-          break;
-        case 'OpenCluster':
-          temp.classification = 256;
-          break;
-        case 'GlobularCluster':
-          temp.classification = 512;
-          break;
-        case 'NebulousCluster':
-          temp.classification = 1024;
-          break;
-        case 'Nebula':
-          temp.classification = 2048;
-          break;
-        case 'EmissionNebula':
-          temp.classification = 4096;
-          break;
-        case 'PlanetaryNebula':
-          temp.classification = 8192;
-          break;
-        case 'ReflectionNebula':
-          temp.classification = 16384;
-          break;
-        case 'DarkNebula':
-          temp.classification = 32768;
-          break;
-        case 'GiantMolecularCloud':
-          temp.classification = 65536;
-          break;
-        case 'SupernovaRemnant':
-          temp.classification = 131072;
-          break;
-        case 'InterstellarDust':
-          temp.classification = 262144;
-          break;
-        case 'Quasar':
-          temp.classification = 524288;
-          break;
-        case 'Galaxy':
-          temp.classification = 1048576;
-          break;
-        case 'SpiralGalaxy':
-          temp.classification = 2097152;
-          break;
-        case 'IrregularGalaxy':
-          temp.classification = 4194304;
-          break;
-        case 'EllipticalGalaxy':
-          temp.classification = 8388608;
-          break;
-        case 'Knot':
-          temp.classification = 16777216;
-          break;
-        case 'PlateDefect':
-          temp.classification = 33554432;
-          break;
-        case 'ClusterOfGalaxies':
-          temp.classification = 67108864;
-          break;
-        case 'OtherNGC':
-          temp.classification = 134217728;
-          break;
-        case 'Unidentified':
-          temp.classification = 268435456;
-          break;
-        case 'SolarSystem':
-          temp.classification = 536870912;
-          break;
-        case 'Unfiltered':
-          temp.classification = 1073741823;
-          break;
-        case 'Stellar':
-          temp.classification = 63;
-          break;
-        case 'StellarGroupings':
-          temp.classification = 2032;
-          break;
-        case 'Nebulae':
-          temp.classification = 523264;
-          break;
-        case 'Galactic':
-          temp.classification = 133693440;
-          break;
-        case 'Other':
-          temp.classification = 436207616;
-          break;
-        default:
-          break;
-      }
+      temp.classification = Enums.parse('Classification', child.attributes.getNamedItem('Classification').nodeValue);
     }
     if (child.attributes.getNamedItem('AuthorEmail') != null) {
       temp.authorEmail = child.attributes.getNamedItem('AuthorEmail').nodeValue;
@@ -13873,7 +13703,18 @@ window.wwtlib = function(){
       this._packageID = value;
       return value;
     },
-    addFile: function(filename) {
+    addFile: function(filename, data) {
+      if (data == null) {
+        return;
+      }
+      if (!ss.keyExists(this._fileDirectory, filename)) {
+        var fe = new FileEntry(filename, data.size);
+        fe.offset = this._currentOffset;
+        fe.blob = data;
+        this.fileList.push(fe);
+        this._fileDirectory[filename] = fe;
+        this._currentOffset += fe.size;
+      }
     },
     clearFileList: function() {
       if (this.fileList == null) {
@@ -13915,11 +13756,11 @@ window.wwtlib = function(){
       var $enum2 = ss.enumerate(this.fileList);
       while ($enum2.moveNext()) {
         var entry = $enum2.current;
-        var b = this.getFileBlob(entry.filename);
-        blobs.push(b);
+        blobs.push(entry.blob);
       }
       var cabBlob = new Blob(blobs, {type : 'application/x-wtt'});;
       var bloblUrl = URL.createObjectURL(cabBlob);;
+      return bloblUrl;
     },
     _loadCabinet: function() {
       var $this = this;
@@ -14059,7 +13900,7 @@ window.wwtlib = function(){
     this._endWidth = 0;
     this._endHeight = 0;
     this._endRotationAngle = 0;
-    this._anchor = 0;
+    this._anchor = 1;
     this._x = 0;
     this._y = 0;
     this._width = 0;
@@ -14185,6 +14026,7 @@ window.wwtlib = function(){
       if (this.texture != null) {
         this.texture = null;
       }
+      this.texture2d = null;
     },
     initializeTexture: function() {
     },
@@ -14437,7 +14279,7 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('Width', this._width.toString());
       xmlWriter._writeAttributeString('Height', this._height.toString());
       xmlWriter._writeAttributeString('Rotation', this._rotationAngle.toString());
-      xmlWriter._writeAttributeString('Color', this._color.toString());
+      xmlWriter._writeAttributeString('Color', this._color.save());
       xmlWriter._writeAttributeString('Url', this._url);
       xmlWriter._writeAttributeString('LinkID', this._linkID);
       xmlWriter._writeAttributeString('Animate', this._animate.toString());
@@ -14447,10 +14289,10 @@ window.wwtlib = function(){
         xmlWriter._writeAttributeString('EndWidth', this._endWidth.toString());
         xmlWriter._writeAttributeString('EndHeight', this._endHeight.toString());
         xmlWriter._writeAttributeString('EndRotation', this._endRotationAngle.toString());
-        xmlWriter._writeAttributeString('EndColor', this._endColor.toString());
-        xmlWriter._writeAttributeString('InterpolationType', this._interpolationType.toString());
+        xmlWriter._writeAttributeString('EndColor', this._endColor.save());
+        xmlWriter._writeAttributeString('InterpolationType', Enums.toXml('InterpolationType', this._interpolationType));
       }
-      xmlWriter._writeAttributeString('Anchor', this._anchor.toString());
+      xmlWriter._writeAttributeString('Anchor', Enums.toXml('OverlayAnchor', this._anchor));
       this.writeOverlayProperties(xmlWriter);
       xmlWriter._writeEndElement();
     },
@@ -14458,10 +14300,8 @@ window.wwtlib = function(){
       return 'TerraViewer.Overlay';
     },
     addFilesToCabinet: function(fc) {
-      throw new Error('The method or operation is not implemented.');
     },
     writeOverlayProperties: function(xmlWriter) {
-      throw new Error('The method or operation is not implemented.');
     },
     _initOverlayFromXml: function(node) {
       this.id = node.attributes.getNamedItem('Id').nodeValue;
@@ -14488,28 +14328,7 @@ window.wwtlib = function(){
           this._endHeight = parseFloat(node.attributes.getNamedItem('EndHeight').nodeValue);
           this._endRotationAngle = parseFloat(node.attributes.getNamedItem('EndRotation').nodeValue);
           if (node.attributes.getNamedItem('InterpolationType') != null) {
-            switch (node.attributes.getNamedItem('InterpolationType').nodeValue) {
-              case 'Linear':
-                this.set_interpolationType(0);
-                break;
-              case 'EaseIn':
-                this.set_interpolationType(1);
-                break;
-              case 'EaseOut':
-                this.set_interpolationType(2);
-                break;
-              case 'EaseInOut':
-                this.set_interpolationType(3);
-                break;
-              case 'Exponential':
-                this.set_interpolationType(4);
-                break;
-              case 'Default':
-                this.set_interpolationType(5);
-                break;
-              default:
-                break;
-            }
+            this.set_interpolationType(Enums.parse('InterpolationType', node.attributes.getNamedItem('InterpolationType').nodeValue));
           }
         }
       }
@@ -14751,25 +14570,7 @@ window.wwtlib = function(){
     newTextObject.foregroundColor = Color.load(node.attributes.getNamedItem('ForgroundColor').nodeValue);
     newTextObject.backgroundColor = Color.load(node.attributes.getNamedItem('BackgroundColor').nodeValue);
     if (node.attributes.getNamedItem('BorderStyle') != null) {
-      switch (node.attributes.getNamedItem('BorderStyle').nodeValue) {
-        case 'None':
-          newTextObject.borderStyle = 0;
-          break;
-        case 'Tight':
-          newTextObject.borderStyle = 1;
-          break;
-        case 'Small':
-          newTextObject.borderStyle = 2;
-          break;
-        case 'Medium':
-          newTextObject.borderStyle = 3;
-          break;
-        case 'Large':
-          newTextObject.borderStyle = 4;
-          break;
-        default:
-          break;
-      }
+      newTextObject.borderStyle = Enums.parse('TextBorderStyle', node.attributes.getNamedItem('BorderStyle').nodeValue);
     }
     return newTextObject;
   };
@@ -14784,9 +14585,9 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('Underline', this.underline.toString());
       xmlWriter._writeAttributeString('FontSize', this.fontSize.toString());
       xmlWriter._writeAttributeString('FontName', this.fontName);
-      xmlWriter._writeAttributeString('ForgroundColor', this.foregroundColor.toString());
-      xmlWriter._writeAttributeString('BackgroundColor', this.backgroundColor.toString());
-      xmlWriter._writeAttributeString('BorderStyle', this.borderStyle.toString());
+      xmlWriter._writeAttributeString('ForgroundColor', this.foregroundColor.save());
+      xmlWriter._writeAttributeString('BackgroundColor', this.backgroundColor.save());
+      xmlWriter._writeAttributeString('BorderStyle', Enums.toXml('TextBorderStyle', this.borderStyle));
       xmlWriter._writeString(this.text);
       xmlWriter._writeEndElement();
     }
@@ -14816,10 +14617,11 @@ window.wwtlib = function(){
     this._orgUrl = '';
     this._author = '';
     this._authorImageUrl = '';
+    this._authorImage = null;
     this._organizationUrl = '';
     this._filename = '';
     this._level = 0;
-    this._type = 0;
+    this._type = 268435456;
     this._taxonomy = '';
     this._keywords = '';
     this._objects = '';
@@ -14896,137 +14698,8 @@ window.wwtlib = function(){
         this.set_orgName(root.attributes.getNamedItem('OrganizationName').nodeValue);
       }
       this._organizationUrl = root.attributes.getNamedItem('OrganizationUrl').nodeValue;
-      switch (root.attributes.getNamedItem('UserLevel').nodeValue) {
-        case 'Beginner':
-          this._level = 0;
-          break;
-        case 'Intermediate':
-          this._level = 1;
-          break;
-        case 'Advanced':
-          this._level = 2;
-          break;
-        case 'Educator':
-          this._level = 3;
-          break;
-        case 'Professional':
-          this._level = 4;
-          break;
-        default:
-          break;
-      }
-      switch (root.attributes.getNamedItem('Classification').nodeValue) {
-        case 'Star':
-          this._type = 1;
-          break;
-        case 'Supernova':
-          this._type = 2;
-          break;
-        case 'BlackHole':
-          this._type = 4;
-          break;
-        case 'NeutronStar':
-          this._type = 8;
-          break;
-        case 'DoubleStar':
-          this._type = 16;
-          break;
-        case 'MultipleStars':
-          this._type = 32;
-          break;
-        case 'Asterism':
-          this._type = 64;
-          break;
-        case 'Constellation':
-          this._type = 128;
-          break;
-        case 'OpenCluster':
-          this._type = 256;
-          break;
-        case 'GlobularCluster':
-          this._type = 512;
-          break;
-        case 'NebulousCluster':
-          this._type = 1024;
-          break;
-        case 'Nebula':
-          this._type = 2048;
-          break;
-        case 'EmissionNebula':
-          this._type = 4096;
-          break;
-        case 'PlanetaryNebula':
-          this._type = 8192;
-          break;
-        case 'ReflectionNebula':
-          this._type = 16384;
-          break;
-        case 'DarkNebula':
-          this._type = 32768;
-          break;
-        case 'GiantMolecularCloud':
-          this._type = 65536;
-          break;
-        case 'SupernovaRemnant':
-          this._type = 131072;
-          break;
-        case 'InterstellarDust':
-          this._type = 262144;
-          break;
-        case 'Quasar':
-          this._type = 524288;
-          break;
-        case 'Galaxy':
-          this._type = 1048576;
-          break;
-        case 'SpiralGalaxy':
-          this._type = 2097152;
-          break;
-        case 'IrregularGalaxy':
-          this._type = 4194304;
-          break;
-        case 'EllipticalGalaxy':
-          this._type = 8388608;
-          break;
-        case 'Knot':
-          this._type = 16777216;
-          break;
-        case 'PlateDefect':
-          this._type = 33554432;
-          break;
-        case 'ClusterOfGalaxies':
-          this._type = 67108864;
-          break;
-        case 'OtherNGC':
-          this._type = 134217728;
-          break;
-        case 'Unidentified':
-          this._type = 268435456;
-          break;
-        case 'SolarSystem':
-          this._type = 536870912;
-          break;
-        case 'Unfiltered':
-          this._type = 1073741823;
-          break;
-        case 'Stellar':
-          this._type = 63;
-          break;
-        case 'StellarGroupings':
-          this._type = 2032;
-          break;
-        case 'Nebulae':
-          this._type = 523264;
-          break;
-        case 'Galactic':
-          this._type = 133693440;
-          break;
-        case 'Other':
-          this._type = 436207616;
-          break;
-        default:
-          break;
-      }
+      this._level = Enums.parse('UserLevel', root.attributes.getNamedItem('UserLevel').nodeValue);
+      this._type = Enums.parse('Classification', root.attributes.getNamedItem('Classification').nodeValue);
       this._taxonomy = root.attributes.getNamedItem('Taxonomy').nodeValue;
       var TourStops = Util.selectSingleNode(root, 'TourStops');
       var $enum1 = ss.enumerate(TourStops.childNodes);
@@ -15081,7 +14754,30 @@ window.wwtlib = function(){
       }
       this._tourDirty = 0;
     },
-    _writeTourXML: function(outFile) {
+    saveToFile: function() {
+      var excludeAudio = false;
+      this.cleanUp();
+      var tourXml = this.getTourXML();
+      var fc = new FileCabinet();
+      fc.set_packageID(this.get_id());
+      fc.addFile('Tour.wwtxml', new Blob([ tourXml ]));
+      if (this._authorImage != null) {
+      }
+      var $enum1 = ss.enumerate(this.get_tourStops());
+      while ($enum1.moveNext()) {
+        var stop = $enum1.current;
+        stop._addFilesToCabinet(fc, excludeAudio);
+      }
+      var masterList = this._createLayerMasterList();
+      var $enum2 = ss.enumerate(masterList);
+      while ($enum2.moveNext()) {
+        var id = $enum2.current;
+        if (ss.keyExists(LayerManager.get_layerList(), id)) {
+          LayerManager.get_layerList()[id].addFilesToCabinet(fc);
+        }
+      }
+      this.set_tourDirty(false);
+      return fc.packageFiles();
     },
     getTourXML: function() {
       var xmlWriter = new XmlTextWriter();
@@ -15098,8 +14794,8 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('OrganizationUrl', this._organizationUrl);
       xmlWriter._writeAttributeString('OrganizationName', this.get_orgName());
       xmlWriter._writeAttributeString('Keywords', this.get_keywords());
-      xmlWriter._writeAttributeString('UserLevel', this._level.toString());
-      xmlWriter._writeAttributeString('Classification', this._type.toString());
+      xmlWriter._writeAttributeString('UserLevel', Enums.toXml('UserLevel', this._level));
+      xmlWriter._writeAttributeString('Classification', Enums.toXml('Classification', this._type));
       xmlWriter._writeAttributeString('Taxonomy', this._taxonomy);
       var timeLineTour = this._isTimelineTour();
       xmlWriter._writeAttributeString('TimeLineTour', timeLineTour.toString());
@@ -15569,13 +15265,18 @@ window.wwtlib = function(){
       this._fileCache[filename] = file;
     },
     getFileStream: function(filename) {
+      var blob = this.getFileBlob(filename);
+      return URL.createObjectURL(blob);;
+    },
+    getFileBlob: function(filename) {
       if (ss.keyExists(this._fileCache, filename)) {
-        var blob = this._fileCache[filename];
-        return URL.createObjectURL(blob);;
+        return this._fileCache[filename];
+      }
+      else if (this._cabinet != null) {
+        return this._cabinet.getFileBlob(this.get_workingDirectory() + filename);
       }
       else {
-        var blob = this._cabinet.getFileBlob(this.get_workingDirectory() + filename);
-        return URL.createObjectURL(blob);;
+        return null;
       }
     },
     get_currentTourStop: function() {
@@ -18465,57 +18166,14 @@ window.wwtlib = function(){
       newTourStop._nextSlide = tourStop.attributes.getNamedItem('NextSlide').nodeValue;
     }
     if (tourStop.attributes.getNamedItem('InterpolationType') != null) {
-      switch (tourStop.attributes.getNamedItem('InterpolationType').nodeValue) {
-        case 'Linear':
-          newTourStop.set_interpolationType(0);
-          break;
-        case 'EaseIn':
-          newTourStop.set_interpolationType(1);
-          break;
-        case 'EaseOut':
-          newTourStop.set_interpolationType(2);
-          break;
-        case 'EaseInOut':
-          newTourStop.set_interpolationType(3);
-          break;
-        case 'Exponential':
-          newTourStop.set_interpolationType(4);
-          break;
-        case 'Default':
-          newTourStop.set_interpolationType(5);
-          break;
-        default:
-          newTourStop.set_interpolationType(0);
-          break;
-      }
+      newTourStop.set_interpolationType(Enums.parse('InterpolationType', tourStop.attributes.getNamedItem('InterpolationType').nodeValue));
     }
     newTourStop._fadeInOverlays = true;
     if (tourStop.attributes.getNamedItem('FadeInOverlays') != null) {
       newTourStop._fadeInOverlays = ss.boolean(tourStop.attributes.getNamedItem('FadeInOverlays').nodeValue);
     }
     if (tourStop.attributes.getNamedItem('Transition') != null) {
-      switch (tourStop.attributes.getNamedItem('Transition').nodeValue) {
-        case 'Slew':
-          newTourStop._transition = 0;
-          break;
-        case 'CrossFade':
-          newTourStop._transition = 1;
-          break;
-        case 'CrossCut':
-          newTourStop._transition = 2;
-          break;
-        case 'FadeOutIn':
-          newTourStop._transition = 3;
-          break;
-        case 'FadeIn':
-          newTourStop._transition = 4;
-          break;
-        case 'FadeOut':
-          newTourStop._transition = 5;
-          break;
-        default:
-          break;
-      }
+      newTourStop._transition = Enums.parse('TransitionType', tourStop.attributes.getNamedItem('Transition').nodeValue);
     }
     if (tourStop.attributes.getNamedItem('HasLocation') != null) {
       newTourStop._hasLocation = ss.boolean(tourStop.attributes.getNamedItem('HasLocation').nodeValue);
@@ -19080,139 +18738,6 @@ window.wwtlib = function(){
       this._minorPlanetsFilter = Settings.get_current().get_minorPlanetsFilter();
       this._planetOrbitsFilter = Settings.get_current().get_planetOrbitsFilter();
     },
-    _saveToXml: function(xmlWriter, saveContent) {
-      if (saveContent) {
-        if (this._thumbnail != null) {
-        }
-      }
-      xmlWriter._writeStartElement('TourStop');
-      xmlWriter._writeAttributeString('Id', this._id);
-      xmlWriter._writeAttributeString('Name', this._name);
-      xmlWriter._writeAttributeString('Description', this._description);
-      xmlWriter._writeAttributeString('Thumbnail', this._thumbnailString);
-      xmlWriter._writeAttributeString('Duration', this._duration.toString());
-      xmlWriter._writeAttributeString('Master', this._masterSlide.toString());
-      xmlWriter._writeAttributeString('TransitionType', this._transition.toString());
-      xmlWriter._writeAttributeString('TransitionTime', this._transitionTime.toString());
-      xmlWriter._writeAttributeString('TransitionOutTime', this._transitionOutTime.toString());
-      xmlWriter._writeAttributeString('TransitionHoldTime', this._transitionHoldTime.toString());
-      xmlWriter._writeAttributeString('NextSlide', this._nextSlide);
-      xmlWriter._writeAttributeString('InterpolationType', this._interpolationType.toString());
-      xmlWriter._writeAttributeString('HasLocation', this._hasLocation.toString());
-      if (this._hasLocation) {
-        xmlWriter._writeAttributeString('LocationAltitude', this._locationAltitude.toString());
-        xmlWriter._writeAttributeString('LocationLat', this._locationLat.toString());
-        xmlWriter._writeAttributeString('LocationLng', this._locationLng.toString());
-      }
-      xmlWriter._writeAttributeString('HasTime', this._hasTime.toString());
-      if (this._hasTime) {
-        xmlWriter._writeAttributeString('StartTime', this._startTime.toString());
-        xmlWriter._writeAttributeString('EndTime', this._endTime.toString());
-      }
-      xmlWriter._writeAttributeString('ActualPlanetScale', this._actualPlanetScale.toString());
-      xmlWriter._writeAttributeString('ShowClouds', this._showClouds.toString());
-      xmlWriter._writeAttributeString('EarthCutawayView', this._earthCutawayView.toString());
-      xmlWriter._writeAttributeString('ShowConstellationBoundries', this._showConstellationBoundries.toString());
-      xmlWriter._writeAttributeString('ShowConstellationFigures', this._showConstellationFigures.toString());
-      xmlWriter._writeAttributeString('ShowConstellationSelection', this._showConstellationSelection.toString());
-      xmlWriter._writeAttributeString('ShowEcliptic', this._showEcliptic.toString());
-      xmlWriter._writeAttributeString('ShowElevationModel', this._showElevationModel.toString());
-      this._showFieldOfView = false;
-      xmlWriter._writeAttributeString('ShowFieldOfView', this._showFieldOfView.toString());
-      xmlWriter._writeAttributeString('ShowGrid', this._showGrid.toString());
-      xmlWriter._writeAttributeString('ShowHorizon', this._showHorizon.toString());
-      xmlWriter._writeAttributeString('ShowHorizonPanorama', this._showHorizonPanorama.toString());
-      xmlWriter._writeAttributeString('ShowMoonsAsPointSource', this._showMoonsAsPointSource.toString());
-      xmlWriter._writeAttributeString('ShowSolarSystem', this._showSolarSystem.toString());
-      xmlWriter._writeAttributeString('FovTelescope', this._fovTelescope.toString());
-      xmlWriter._writeAttributeString('FovEyepiece', this._fovEyepiece.toString());
-      xmlWriter._writeAttributeString('FovCamera', this._fovCamera.toString());
-      xmlWriter._writeAttributeString('LocalHorizonMode', this._localHorizonMode.toString());
-      xmlWriter._writeAttributeString('GalacticMode', this._galacticMode.toString());
-      xmlWriter._writeAttributeString('FadeInOverlays', this._fadeInOverlays.toString());
-      xmlWriter._writeAttributeString('SolarSystemStars', this._solarSystemStars.toString());
-      xmlWriter._writeAttributeString('SolarSystemMilkyWay', this._solarSystemMilkyWay.toString());
-      xmlWriter._writeAttributeString('SolarSystemCosmos', this._solarSystemCosmos.toString());
-      xmlWriter._writeAttributeString('SolarSystemCMB', this._solarSystemCMB.toString());
-      xmlWriter._writeAttributeString('SolarSystemOrbits', this._solarSystemOrbits.toString());
-      xmlWriter._writeAttributeString('SolarSystemMinorOrbits', this._solarSystemMinorOrbits.toString());
-      xmlWriter._writeAttributeString('SolarSystemOverlays', this._solarSystemOverlays.toString());
-      xmlWriter._writeAttributeString('SolarSystemLighting', this._solarSystemLighting.toString());
-      xmlWriter._writeAttributeString('ShowISSModel', this._showISSModel.toString());
-      xmlWriter._writeAttributeString('SolarSystemScale', this._solarSystemScale.toString());
-      xmlWriter._writeAttributeString('MinorPlanetsFilter', this._minorPlanetsFilter.toString());
-      xmlWriter._writeAttributeString('PlanetOrbitsFilter', this._planetOrbitsFilter.toString());
-      xmlWriter._writeAttributeString('SolarSystemMultiRes', this._solarSystemMultiRes.toString());
-      xmlWriter._writeAttributeString('SolarSystemMinorPlanets', this._solarSystemMinorPlanets.toString());
-      xmlWriter._writeAttributeString('SolarSystemPlanets', this._solarSystemPlanets.toString());
-      xmlWriter._writeAttributeString('ShowEarthSky', this._showEarthSky.toString());
-      xmlWriter._writeAttributeString('ShowEquatorialGridText', this.get_showEquatorialGridText().toString());
-      xmlWriter._writeAttributeString('ShowGalacticGrid', this.get_showGalacticGrid().toString());
-      xmlWriter._writeAttributeString('ShowGalacticGridText', this.get_showGalacticGridText().toString());
-      xmlWriter._writeAttributeString('ShowEclipticGrid', this.get_showEclipticGrid().toString());
-      xmlWriter._writeAttributeString('ShowEclipticGridText', this.get_showEclipticGridText().toString());
-      xmlWriter._writeAttributeString('ShowEclipticOverviewText', this.get_showEclipticOverviewText().toString());
-      xmlWriter._writeAttributeString('ShowAltAzGrid', this.get_showAltAzGrid().toString());
-      xmlWriter._writeAttributeString('ShowAltAzGridText', this.get_showAltAzGridText().toString());
-      xmlWriter._writeAttributeString('ShowPrecessionChart', this.get_showPrecessionChart().toString());
-      xmlWriter._writeAttributeString('ConstellationPictures', this.get_showConstellationPictures().toString());
-      xmlWriter._writeAttributeString('ConstellationsEnabled', this.get_constellationsEnabled());
-      xmlWriter._writeAttributeString('ShowConstellationLabels', this.get_showConstellationLabels().toString());
-      xmlWriter._writeAttributeString('ShowSkyOverlays', this.get_showSkyOverlays().toString());
-      xmlWriter._writeAttributeString('ShowConstellations', this.get_showConstellations().toString());
-      xmlWriter._writeAttributeString('ShowSkyNode', this.get_showSkyNode().toString());
-      xmlWriter._writeAttributeString('ShowSkyGrids', this.get_showSkyGrids().toString());
-      xmlWriter._writeAttributeString('SkyOverlaysIn3d', this.get_showSkyOverlaysIn3d().toString());
-      xmlWriter._writeAttributeString('ConstellationFiguresFilter', this._constellationFiguresFilter.toString());
-      xmlWriter._writeAttributeString('ConstellationBoundariesFilter', this._constellationBoundariesFilter.toString());
-      xmlWriter._writeAttributeString('ConstellationNamesFilter', this._constellationNamesFilter.toString());
-      xmlWriter._writeAttributeString('ConstellationArtFilter', this._constellationArtFilter.toString());
-      this._target._saveToXml(xmlWriter, 'Place');
-      if (this._endTarget != null) {
-        this._endTarget._saveToXml(xmlWriter, 'EndTarget');
-      }
-      xmlWriter._writeStartElement('Overlays');
-      var $enum1 = ss.enumerate(this._overlays);
-      while ($enum1.moveNext()) {
-        var overlay = $enum1.current;
-        overlay.saveToXml(xmlWriter, false);
-      }
-      xmlWriter._writeEndElement();
-      if (this._musicTrack != null) {
-        xmlWriter._writeStartElement('MusicTrack');
-        this._musicTrack.saveToXml(xmlWriter, false);
-        xmlWriter._writeEndElement();
-      }
-      if (this._voiceTrack != null) {
-        xmlWriter._writeStartElement('VoiceTrack');
-        this._voiceTrack.saveToXml(xmlWriter, false);
-        xmlWriter._writeEndElement();
-      }
-      this._writeLayerList(xmlWriter);
-      xmlWriter._writeEndElement();
-    },
-    _writeLayerList: function(xmlWriter) {
-      if (ss.keyCount(this.layers) > 0) {
-        xmlWriter._writeStartElement('VisibleLayers');
-        var $enum1 = ss.enumerate(ss.keys(this.layers));
-        while ($enum1.moveNext()) {
-          var key = $enum1.current;
-          var info = this.layers[key];
-          xmlWriter._writeStartElement('Layer');
-          xmlWriter._writeAttributeString('StartOpacity', info.startOpacity.toString());
-          xmlWriter._writeAttributeString('EndOpacity', info.endOpacity.toString());
-          var len = info.startParams.length;
-          xmlWriter._writeAttributeString('ParamCount', len.toString());
-          for (var i = 0; i < len; i++) {
-            xmlWriter._writeAttributeString(ss.format('StartParam{0}', i), info.startParams[i].toString());
-            xmlWriter._writeAttributeString(ss.format('EndParam{0}', i), info.endParams[i].toString());
-          }
-          xmlWriter._writeValue(info.id.toString());
-          xmlWriter._writeEndElement();
-        }
-        xmlWriter._writeEndElement();
-      }
-    },
     syncSettings: function() {
       Settings.get_globalSettings().set_actualPlanetScale(this._actualPlanetScale);
       Settings.get_globalSettings().set_locationAltitude(this._locationAltitude);
@@ -19515,6 +19040,158 @@ window.wwtlib = function(){
     },
     get_tourStopThumbnailFilename: function() {
       return ss.format('{0}.thumb.png', this._id);
+    },
+    _saveToXml: function(xmlWriter, saveContent) {
+      if (saveContent) {
+        if (this._thumbnail != null) {
+        }
+      }
+      xmlWriter._writeStartElement('TourStop');
+      xmlWriter._writeAttributeString('Id', this._id);
+      xmlWriter._writeAttributeString('Name', this._name);
+      xmlWriter._writeAttributeString('Description', this._description);
+      xmlWriter._writeAttributeString('Thumbnail', this._thumbnailString);
+      xmlWriter._writeAttributeString('Duration', Util.xmlDuration(this._duration));
+      xmlWriter._writeAttributeString('Master', this._masterSlide.toString());
+      xmlWriter._writeAttributeString('TransitionType', Enums.toXml('TransitionType', this._transition));
+      xmlWriter._writeAttributeString('TransitionTime', this._transitionTime.toString());
+      xmlWriter._writeAttributeString('TransitionOutTime', this._transitionOutTime.toString());
+      xmlWriter._writeAttributeString('TransitionHoldTime', this._transitionHoldTime.toString());
+      xmlWriter._writeAttributeString('NextSlide', this._nextSlide);
+      xmlWriter._writeAttributeString('InterpolationType', Enums.toXml('InterpolationType', this._interpolationType));
+      xmlWriter._writeAttributeString('HasLocation', this._hasLocation.toString());
+      if (this._hasLocation) {
+        xmlWriter._writeAttributeString('LocationAltitude', this._locationAltitude.toString());
+        xmlWriter._writeAttributeString('LocationLat', this._locationLat.toString());
+        xmlWriter._writeAttributeString('LocationLng', this._locationLng.toString());
+      }
+      xmlWriter._writeAttributeString('HasTime', this._hasTime.toString());
+      if (this._hasTime) {
+        xmlWriter._writeAttributeString('StartTime', Util.xmlDate(this._startTime));
+        xmlWriter._writeAttributeString('EndTime', Util.xmlDate(this._endTime));
+      }
+      xmlWriter._writeAttributeString('ActualPlanetScale', this._actualPlanetScale.toString());
+      xmlWriter._writeAttributeString('ShowClouds', this._showClouds.toString());
+      xmlWriter._writeAttributeString('EarthCutawayView', this._earthCutawayView.toString());
+      xmlWriter._writeAttributeString('ShowConstellationBoundries', this._showConstellationBoundries.toString());
+      xmlWriter._writeAttributeString('ShowConstellationFigures', this._showConstellationFigures.toString());
+      xmlWriter._writeAttributeString('ShowConstellationSelection', this._showConstellationSelection.toString());
+      xmlWriter._writeAttributeString('ShowEcliptic', this._showEcliptic.toString());
+      xmlWriter._writeAttributeString('ShowElevationModel', this._showElevationModel.toString());
+      this._showFieldOfView = false;
+      xmlWriter._writeAttributeString('ShowFieldOfView', this._showFieldOfView.toString());
+      xmlWriter._writeAttributeString('ShowGrid', this._showGrid.toString());
+      xmlWriter._writeAttributeString('ShowHorizon', this._showHorizon.toString());
+      xmlWriter._writeAttributeString('ShowHorizonPanorama', this._showHorizonPanorama.toString());
+      xmlWriter._writeAttributeString('ShowMoonsAsPointSource', this._showMoonsAsPointSource.toString());
+      xmlWriter._writeAttributeString('ShowSolarSystem', this._showSolarSystem.toString());
+      xmlWriter._writeAttributeString('FovTelescope', this._fovTelescope.toString());
+      xmlWriter._writeAttributeString('FovEyepiece', this._fovEyepiece.toString());
+      xmlWriter._writeAttributeString('FovCamera', this._fovCamera.toString());
+      xmlWriter._writeAttributeString('LocalHorizonMode', this._localHorizonMode.toString());
+      xmlWriter._writeAttributeString('GalacticMode', this._galacticMode.toString());
+      xmlWriter._writeAttributeString('FadeInOverlays', this._fadeInOverlays.toString());
+      xmlWriter._writeAttributeString('SolarSystemStars', this._solarSystemStars.toString());
+      xmlWriter._writeAttributeString('SolarSystemMilkyWay', this._solarSystemMilkyWay.toString());
+      xmlWriter._writeAttributeString('SolarSystemCosmos', this._solarSystemCosmos.toString());
+      xmlWriter._writeAttributeString('SolarSystemCMB', this._solarSystemCMB.toString());
+      xmlWriter._writeAttributeString('SolarSystemOrbits', this._solarSystemOrbits.toString());
+      xmlWriter._writeAttributeString('SolarSystemMinorOrbits', this._solarSystemMinorOrbits.toString());
+      xmlWriter._writeAttributeString('SolarSystemOverlays', this._solarSystemOverlays.toString());
+      xmlWriter._writeAttributeString('SolarSystemLighting', this._solarSystemLighting.toString());
+      xmlWriter._writeAttributeString('ShowISSModel', this._showISSModel.toString());
+      xmlWriter._writeAttributeString('SolarSystemScale', this._solarSystemScale.toString());
+      xmlWriter._writeAttributeString('MinorPlanetsFilter', this._minorPlanetsFilter.toString());
+      xmlWriter._writeAttributeString('PlanetOrbitsFilter', this._planetOrbitsFilter.toString());
+      xmlWriter._writeAttributeString('SolarSystemMultiRes', this._solarSystemMultiRes.toString());
+      xmlWriter._writeAttributeString('SolarSystemMinorPlanets', this._solarSystemMinorPlanets.toString());
+      xmlWriter._writeAttributeString('SolarSystemPlanets', this._solarSystemPlanets.toString());
+      xmlWriter._writeAttributeString('ShowEarthSky', this._showEarthSky.toString());
+      xmlWriter._writeAttributeString('ShowEquatorialGridText', this.get_showEquatorialGridText().toString());
+      xmlWriter._writeAttributeString('ShowGalacticGrid', this.get_showGalacticGrid().toString());
+      xmlWriter._writeAttributeString('ShowGalacticGridText', this.get_showGalacticGridText().toString());
+      xmlWriter._writeAttributeString('ShowEclipticGrid', this.get_showEclipticGrid().toString());
+      xmlWriter._writeAttributeString('ShowEclipticGridText', this.get_showEclipticGridText().toString());
+      xmlWriter._writeAttributeString('ShowEclipticOverviewText', this.get_showEclipticOverviewText().toString());
+      xmlWriter._writeAttributeString('ShowAltAzGrid', this.get_showAltAzGrid().toString());
+      xmlWriter._writeAttributeString('ShowAltAzGridText', this.get_showAltAzGridText().toString());
+      xmlWriter._writeAttributeString('ShowPrecessionChart', this.get_showPrecessionChart().toString());
+      xmlWriter._writeAttributeString('ConstellationPictures', this.get_showConstellationPictures().toString());
+      xmlWriter._writeAttributeString('ConstellationsEnabled', this.get_constellationsEnabled());
+      xmlWriter._writeAttributeString('ShowConstellationLabels', this.get_showConstellationLabels().toString());
+      xmlWriter._writeAttributeString('ShowSkyOverlays', this.get_showSkyOverlays().toString());
+      xmlWriter._writeAttributeString('ShowConstellations', this.get_showConstellations().toString());
+      xmlWriter._writeAttributeString('ShowSkyNode', this.get_showSkyNode().toString());
+      xmlWriter._writeAttributeString('ShowSkyGrids', this.get_showSkyGrids().toString());
+      xmlWriter._writeAttributeString('SkyOverlaysIn3d', this.get_showSkyOverlaysIn3d().toString());
+      xmlWriter._writeAttributeString('ConstellationFiguresFilter', this._constellationFiguresFilter.toString());
+      xmlWriter._writeAttributeString('ConstellationBoundariesFilter', this._constellationBoundariesFilter.toString());
+      xmlWriter._writeAttributeString('ConstellationNamesFilter', this._constellationNamesFilter.toString());
+      xmlWriter._writeAttributeString('ConstellationArtFilter', this._constellationArtFilter.toString());
+      this._target._saveToXml(xmlWriter, 'Place');
+      if (this._endTarget != null) {
+        this._endTarget._saveToXml(xmlWriter, 'EndTarget');
+      }
+      xmlWriter._writeStartElement('Overlays');
+      var $enum1 = ss.enumerate(this._overlays);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.saveToXml(xmlWriter, false);
+      }
+      xmlWriter._writeEndElement();
+      if (this._musicTrack != null) {
+        xmlWriter._writeStartElement('MusicTrack');
+        this._musicTrack.saveToXml(xmlWriter, false);
+        xmlWriter._writeEndElement();
+      }
+      if (this._voiceTrack != null) {
+        xmlWriter._writeStartElement('VoiceTrack');
+        this._voiceTrack.saveToXml(xmlWriter, false);
+        xmlWriter._writeEndElement();
+      }
+      this._writeLayerList(xmlWriter);
+      xmlWriter._writeEndElement();
+    },
+    _writeLayerList: function(xmlWriter) {
+      if (ss.keyCount(this.layers) > 0) {
+        xmlWriter._writeStartElement('VisibleLayers');
+        var $enum1 = ss.enumerate(ss.keys(this.layers));
+        while ($enum1.moveNext()) {
+          var key = $enum1.current;
+          var info = this.layers[key];
+          xmlWriter._writeStartElement('Layer');
+          xmlWriter._writeAttributeString('StartOpacity', info.startOpacity.toString());
+          xmlWriter._writeAttributeString('EndOpacity', info.endOpacity.toString());
+          var len = info.startParams.length;
+          xmlWriter._writeAttributeString('ParamCount', len.toString());
+          for (var i = 0; i < len; i++) {
+            xmlWriter._writeAttributeString(ss.format('StartParam{0}', i), info.startParams[i].toString());
+            xmlWriter._writeAttributeString(ss.format('EndParam{0}', i), info.endParams[i].toString());
+          }
+          xmlWriter._writeValue(info.id.toString());
+          xmlWriter._writeEndElement();
+        }
+        xmlWriter._writeEndElement();
+      }
+    },
+    _addFilesToCabinet: function(fc, excludeAudio) {
+      if (this._thumbnail != null) {
+        var filename = ss.format('{0}.thumb.png', this._id);
+        fc.addFile(this._owner.get_workingDirectory() + filename, this._owner.getFileBlob(filename));
+      }
+      if (!excludeAudio) {
+        if (this._musicTrack != null) {
+          this._musicTrack.addFilesToCabinet(fc);
+        }
+        if (this._voiceTrack != null) {
+          this._voiceTrack.addFilesToCabinet(fc);
+        }
+      }
+      var $enum1 = ss.enumerate(this._overlays);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.addFilesToCabinet(fc);
+      }
     },
     getNextDefaultName: function(baseName) {
       var suffixId = 1;
@@ -20264,8 +19941,18 @@ window.wwtlib = function(){
     }
     return val;
   };
+  Util.xmlDuration = function(duration) {
+    var s = duration / 1000;
+    var hours = Math.floor(s / 3600);
+    var min = Math.floor(s / 60) - (hours * 60);
+    var sec = s - ((hours * 3600) + min * 60);
+    return ss.format('{0}:{1}:{2}', hours, min, sec);
+  };
   Util.getTourComponent = function(url, name) {
     return 'http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=' + encodeURIComponent(url) + '&filename=' + name;
+  };
+  Util.xmlDate = function(d) {
+    return (d.getMonth() + 1).toString() + '/' + d.getDate().toString() + '/' + d.getFullYear().toString() + ' ' + d.toLocaleTimeString();
   };
   Util.selectSingleNode = function(parent, name) {
     var node = null;
@@ -20431,6 +20118,31 @@ window.wwtlib = function(){
     toString: function() {
       return this._guid;
     }
+  };
+
+
+  // wwtlib.Enums
+
+  function Enums() {
+  }
+  Enums.parse = function(enumType, value) {
+    if (value === '0') {
+      return 0;
+    }
+    var val = value.substr(0, 1).toLowerCase() + value.substr(1);
+    return wwtlib[enumType][val];
+  };
+  Enums.toXml = function(enumType, value) {
+     var x = "0"; var p = Object.keys(wwtlib[enumType]); for (var i in p)
+ { if ( wwtlib[enumType][p[i]] == value ) {
+ x = p[i]; break; 
+}
+ };
+    var val =  x;
+    return val.substr(0, 1).toUpperCase() + val.substr(1);
+  };
+  var Enums$ = {
+
   };
 
 
@@ -22365,7 +22077,7 @@ window.wwtlib = function(){
       this.tourEdit = new TourEditTab();
       this.tourEdit.set_tour(this.tour);
       this.tour.set_currentTourstopIndex(0);
-      this.tour.set_editMode(true);
+      this.tour.set_editMode(false);
       this.uiController = this.tourEdit.tourEditorUI;
     },
     playTour: function(url) {
@@ -23180,6 +22892,14 @@ window.wwtlib = function(){
       }
       else {
         return this.name;
+      }
+    },
+    save: function() {
+      if (ss.emptyString(this.name)) {
+        return ss.format('{0}:{1}', 0, this.name);
+      }
+      else {
+        return ss.format('{0}:{1}:{2}:{3}:{4}', 1, this.a, this.r, this.g, this.b);
       }
     },
     toString: function() {
@@ -26947,85 +26667,16 @@ window.wwtlib = function(){
       var type = 2;
       var projection = 2;
       if (node.attributes.getNamedItem('DataSetType') != null) {
-        switch (node.attributes.getNamedItem('DataSetType').nodeValue.toLowerCase()) {
-          case 'earth':
-            type = 0;
-            break;
-          case 'planet':
-            type = 1;
-            break;
-          case 'sky':
-            type = 2;
-            break;
-          case 'panorama':
-            type = 3;
-            break;
-          case 'solarsystem':
-            type = 4;
-            break;
-        }
+        type = Enums.parse('ImageSetType', node.attributes.getNamedItem('DataSetType').nodeValue);
       }
       var bandPass = 3;
-      switch (node.attributes.getNamedItem('BandPass').nodeValue) {
-        case 'Gamma':
-          bandPass = 0;
-          break;
-        case 'XRay':
-          bandPass = 1;
-          break;
-        case 'Ultraviolet':
-          bandPass = 2;
-          break;
-        case 'Visible':
-          bandPass = 3;
-          break;
-        case 'HydrogenAlpha':
-          bandPass = 4;
-          break;
-        case 'IR':
-          bandPass = 4;
-          break;
-        case 'Microwave':
-          bandPass = 5;
-          break;
-        case 'Radio':
-          bandPass = 6;
-          break;
-        case 'VisibleNight':
-          bandPass = 6;
-          break;
-        default:
-          break;
-      }
+      bandPass = Enums.parse('BandPass', node.attributes.getNamedItem('BandPass').nodeValue);
       var wf = 1;
       if (node.attributes.getNamedItem('WidthFactor') != null) {
         wf = parseInt(node.attributes.getNamedItem('WidthFactor').nodeValue);
       }
       if (node.attributes.getNamedItem('Generic') == null || !ss.boolean(node.attributes.getNamedItem('Generic').nodeValue)) {
-        switch (node.attributes.getNamedItem('Projection').nodeValue.toLowerCase()) {
-          case 'tan':
-          case 'tangent':
-            projection = 2;
-            break;
-          case 'mercator':
-            projection = 0;
-            break;
-          case 'equirectangular':
-            projection = 1;
-            break;
-          case 'toast':
-            projection = 3;
-            break;
-          case 'spherical':
-            projection = 4;
-            break;
-          case 'plotted':
-            projection = 6;
-            break;
-          case 'skyimage':
-            projection = 5;
-            break;
-        }
+        projection = Enums.parse('ProjectionType', node.attributes.getNamedItem('Projection').nodeValue);
         var fileType = node.attributes.getNamedItem('FileType').nodeValue;
         if (!ss.startsWith(fileType, '.')) {
           fileType = '.' + fileType;
@@ -27140,8 +26791,8 @@ window.wwtlib = function(){
   Imageset.saveToXml = function(xmlWriter, imageset, alternateUrl) {
     xmlWriter._writeStartElement('ImageSet');
     xmlWriter._writeAttributeString('Generic', imageset.get_generic().toString());
-    xmlWriter._writeAttributeString('DataSetType', imageset.get_dataSetType().toString());
-    xmlWriter._writeAttributeString('BandPass', imageset.get_bandPass().toString());
+    xmlWriter._writeAttributeString('DataSetType', Enums.toXml('ImageSetType', imageset.get_dataSetType()));
+    xmlWriter._writeAttributeString('BandPass', Enums.toXml('BandPass', imageset.get_bandPass()));
     if (!imageset.get_generic()) {
       xmlWriter._writeAttributeString('Name', imageset.get_name());
       if (ss.emptyString(alternateUrl)) {
@@ -27156,7 +26807,7 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('BaseDegreesPerTile', imageset.get_baseTileDegrees().toString());
       xmlWriter._writeAttributeString('FileType', imageset.get_extension());
       xmlWriter._writeAttributeString('BottomsUp', imageset.get_bottomsUp().toString());
-      xmlWriter._writeAttributeString('Projection', imageset.get_projection().toString());
+      xmlWriter._writeAttributeString('Projection', Enums.toXml('ProjectionType', imageset.get_projection()));
       xmlWriter._writeAttributeString('QuadTreeMap', imageset.get_quadTreeTileMap());
       xmlWriter._writeAttributeString('CenterX', imageset.get_centerX().toString());
       xmlWriter._writeAttributeString('CenterY', imageset.get_centerY().toString());
@@ -27811,23 +27462,7 @@ window.wwtlib = function(){
       return newPlace;
     }
     if (place.attributes.getNamedItem('DataSetType') != null) {
-      switch (place.attributes.getNamedItem('DataSetType').nodeValue.toLowerCase()) {
-        case 'earth':
-          newPlace._type = 0;
-          break;
-        case 'planet':
-          newPlace._type = 1;
-          break;
-        case 'sky':
-          newPlace._type = 2;
-          break;
-        case 'panorama':
-          newPlace._type = 3;
-          break;
-        case 'solarsystem':
-          newPlace._type = 4;
-          break;
-      }
+      newPlace._type = Enums.parse('ImageSetType', place.attributes.getNamedItem('DataSetType').nodeValue);
     }
     if (newPlace.get_type() === 2) {
       newPlace._camParams.set_RA(parseFloat(place.attributes.getNamedItem('RA').nodeValue));
@@ -27841,118 +27476,7 @@ window.wwtlib = function(){
       newPlace._constellation = place.attributes.getNamedItem('Constellation').nodeValue;
     }
     if (place.attributes.getNamedItem('Classification') != null) {
-      switch (place.attributes.getNamedItem('Classification').nodeValue) {
-        case 'Star':
-          newPlace._classification = 1;
-          break;
-        case 'Supernova':
-          newPlace._classification = 2;
-          break;
-        case 'BlackHole':
-          newPlace._classification = 4;
-          break;
-        case 'NeutronStar':
-          newPlace._classification = 8;
-          break;
-        case 'DoubleStar':
-          newPlace._classification = 16;
-          break;
-        case 'MultipleStars':
-          newPlace._classification = 32;
-          break;
-        case 'Asterism':
-          newPlace._classification = 64;
-          break;
-        case 'Constellation':
-          newPlace._classification = 128;
-          break;
-        case 'OpenCluster':
-          newPlace._classification = 256;
-          break;
-        case 'GlobularCluster':
-          newPlace._classification = 512;
-          break;
-        case 'NebulousCluster':
-          newPlace._classification = 1024;
-          break;
-        case 'Nebula':
-          newPlace._classification = 2048;
-          break;
-        case 'EmissionNebula':
-          newPlace._classification = 4096;
-          break;
-        case 'PlanetaryNebula':
-          newPlace._classification = 8192;
-          break;
-        case 'ReflectionNebula':
-          newPlace._classification = 16384;
-          break;
-        case 'DarkNebula':
-          newPlace._classification = 32768;
-          break;
-        case 'GiantMolecularCloud':
-          newPlace._classification = 65536;
-          break;
-        case 'SupernovaRemnant':
-          newPlace._classification = 131072;
-          break;
-        case 'InterstellarDust':
-          newPlace._classification = 262144;
-          break;
-        case 'Quasar':
-          newPlace._classification = 524288;
-          break;
-        case 'Galaxy':
-          newPlace._classification = 1048576;
-          break;
-        case 'SpiralGalaxy':
-          newPlace._classification = 2097152;
-          break;
-        case 'IrregularGalaxy':
-          newPlace._classification = 4194304;
-          break;
-        case 'EllipticalGalaxy':
-          newPlace._classification = 8388608;
-          break;
-        case 'Knot':
-          newPlace._classification = 16777216;
-          break;
-        case 'PlateDefect':
-          newPlace._classification = 33554432;
-          break;
-        case 'ClusterOfGalaxies':
-          newPlace._classification = 67108864;
-          break;
-        case 'OtherNGC':
-          newPlace._classification = 134217728;
-          break;
-        case 'Unidentified':
-          newPlace._classification = 268435456;
-          break;
-        case 'SolarSystem':
-          newPlace._classification = 536870912;
-          break;
-        case 'Unfiltered':
-          newPlace._classification = 1073741823;
-          break;
-        case 'Stellar':
-          newPlace._classification = 63;
-          break;
-        case 'StellarGroupings':
-          newPlace._classification = 2032;
-          break;
-        case 'Nebulae':
-          newPlace._classification = 523264;
-          break;
-        case 'Galactic':
-          newPlace._classification = 133693440;
-          break;
-        case 'Other':
-          newPlace._classification = 436207616;
-          break;
-        default:
-          break;
-      }
+      newPlace._classification = Enums.parse('Classification', place.attributes.getNamedItem('Classification').nodeValue);
     }
     if (place.attributes.getNamedItem('Magnitude') != null) {
       newPlace._magnitude = parseFloat(place.attributes.getNamedItem('Magnitude').nodeValue);
@@ -27977,76 +27501,7 @@ window.wwtlib = function(){
     }
     newPlace.set_target(65536);
     if (place.attributes.getNamedItem('Target') != null) {
-      switch (place.attributes.getNamedItem('Target').nodeValue) {
-        case 'Sun':
-          newPlace.set_target(0);
-          break;
-        case 'Mercury':
-          newPlace.set_target(1);
-          break;
-        case 'Venus':
-          newPlace.set_target(2);
-          break;
-        case 'Mars':
-          newPlace.set_target(3);
-          break;
-        case 'Jupiter':
-          newPlace.set_target(4);
-          break;
-        case 'Saturn':
-          newPlace.set_target(5);
-          break;
-        case 'Uranus':
-          newPlace.set_target(6);
-          break;
-        case 'Neptune':
-          newPlace.set_target(7);
-          break;
-        case 'Pluto':
-          newPlace.set_target(8);
-          break;
-        case 'Moon':
-          newPlace.set_target(9);
-          break;
-        case 'Io':
-          newPlace.set_target(10);
-          break;
-        case 'Europa':
-          newPlace.set_target(11);
-          break;
-        case 'Ganymede':
-          newPlace.set_target(12);
-          break;
-        case 'Callisto':
-          newPlace.set_target(13);
-          break;
-        case 'IoShadow':
-          newPlace.set_target(14);
-          break;
-        case 'EuropaShadow':
-          newPlace.set_target(15);
-          break;
-        case 'GanymedeShadow':
-          newPlace.set_target(16);
-          break;
-        case 'CallistoShadow':
-          newPlace.set_target(17);
-          break;
-        case 'SunEclipsed':
-          newPlace.set_target(18);
-          break;
-        case 'Earth':
-          newPlace.set_target(19);
-          break;
-        case 'Custom':
-          newPlace.set_target(20);
-          break;
-        case 'Undefined':
-          newPlace.set_target(65536);
-          break;
-        default:
-          break;
-      }
+      newPlace.set_target(Enums.parse('SolarSystemObjects', place.attributes.getNamedItem('Target').nodeValue));
     }
     if (place.attributes.getNamedItem('ViewTarget') != null) {
       newPlace._camParams.viewTarget = Vector3d.parse(place.attributes.getNamedItem('ViewTarget').nodeValue);
@@ -28278,7 +27733,7 @@ window.wwtlib = function(){
     _saveToXml: function(xmlWriter, elementName) {
       xmlWriter._writeStartElement(elementName);
       xmlWriter._writeAttributeString('Name', this._name);
-      xmlWriter._writeAttributeString('DataSetType', this.get_type().toString());
+      xmlWriter._writeAttributeString('DataSetType', Enums.toXml('ImageSetType', this._type));
       if (this.get_type() === 2) {
         xmlWriter._writeAttributeString('RA', this._camParams.get_RA().toString());
         xmlWriter._writeAttributeString('Dec', this._camParams.get_dec().toString());
@@ -28288,7 +27743,7 @@ window.wwtlib = function(){
         xmlWriter._writeAttributeString('Lng', this.get_lng().toString());
       }
       xmlWriter._writeAttributeString('Constellation', this._constellation);
-      xmlWriter._writeAttributeString('Classification', this.get_classification().toString());
+      xmlWriter._writeAttributeString('Classification', Enums.toXml('Classification', this._classification));
       xmlWriter._writeAttributeString('Magnitude', this._magnitude.toString());
       xmlWriter._writeAttributeString('Distance', this._distnace.toString());
       xmlWriter._writeAttributeString('AngularSize', this.angularSize.toString());
@@ -28296,7 +27751,7 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('Rotation', this._camParams.rotation.toString());
       xmlWriter._writeAttributeString('Angle', this._camParams.angle.toString());
       xmlWriter._writeAttributeString('Opacity', this._camParams.opacity.toString());
-      xmlWriter._writeAttributeString('Target', this.get_target().toString());
+      xmlWriter._writeAttributeString('Target', Enums.toXml('SolarSystemObjects', this.get_target()));
       xmlWriter._writeAttributeString('ViewTarget', this._camParams.viewTarget.toString());
       xmlWriter._writeAttributeString('TargetReferenceFrame', this._camParams.targetReferenceFrame);
       xmlWriter._writeStartElement('Description');
@@ -28676,6 +28131,14 @@ window.wwtlib = function(){
         }
       };
       xhr.send();
+    },
+    addFilesToCabinet: function(fc) {
+      this._fileName$1 = fc.tempDirectory + ss.format('{0}\\{1}.txt', fc.get_packageID(), this.id.toString());
+      var dir = this._fileName$1.substring(0, this._fileName$1.lastIndexOf('\\'));
+      var data = this._table$1.save();
+      var blob = new Blob([ data ]);
+      fc.addFile(this._fileName$1, blob);
+      Layer.prototype.addFilesToCabinet.call(this, fc);
     },
     guessHeaderAssignments: function() {
       var index = 0;
@@ -29319,21 +28782,21 @@ window.wwtlib = function(){
     },
     writeLayerProperties: function(xmlWriter) {
       xmlWriter._writeAttributeString('TimeSeries', this.get_timeSeries().toString());
-      xmlWriter._writeAttributeString('BeginRange', this.get_beginRange().toString());
-      xmlWriter._writeAttributeString('EndRange', this.get_endRange().toString());
+      xmlWriter._writeAttributeString('BeginRange', Util.xmlDate(this.get_beginRange()));
+      xmlWriter._writeAttributeString('EndRange', Util.xmlDate(this.get_endRange()));
       xmlWriter._writeAttributeString('Decay', this.get_decay().toString());
-      xmlWriter._writeAttributeString('CoordinatesType', this.get_coordinatesType().toString());
+      xmlWriter._writeAttributeString('CoordinatesType', Enums.toXml('CoordinatesTypes', this.get_coordinatesType()));
       xmlWriter._writeAttributeString('LatColumn', this.get_latColumn().toString());
       xmlWriter._writeAttributeString('LngColumn', this.get_lngColumn().toString());
       xmlWriter._writeAttributeString('GeometryColumn', this.get_geometryColumn().toString());
-      xmlWriter._writeAttributeString('AltType', this.get_altType().toString());
-      xmlWriter._writeAttributeString('MarkerMix', this.get_markerMix().toString());
-      xmlWriter._writeAttributeString('ColorMap', this.get__colorMap().toString());
+      xmlWriter._writeAttributeString('AltType', Enums.toXml('AltTypes', this.get_altType()));
+      xmlWriter._writeAttributeString('MarkerMix', Enums.toXml('MarkerMixes', this.get_markerMix()));
+      xmlWriter._writeAttributeString('ColorMap', Enums.toXml('ColorMaps', this.get__colorMap()));
       xmlWriter._writeAttributeString('MarkerColumn', this.get_markerColumn().toString());
       xmlWriter._writeAttributeString('ColorMapColumn', this.get_colorMapColumn().toString());
-      xmlWriter._writeAttributeString('PlotType', this.get_plotType().toString());
+      xmlWriter._writeAttributeString('PlotType', Enums.toXml('PlotTypes', this.get_plotType()));
       xmlWriter._writeAttributeString('MarkerIndex', this.get_markerIndex().toString());
-      xmlWriter._writeAttributeString('MarkerScale', this.get_markerScale().toString());
+      xmlWriter._writeAttributeString('MarkerScale', Enums.toXml('MarkerScales', this.get_markerScale()));
       xmlWriter._writeAttributeString('AltUnit', this.get_altUnit().toString());
       xmlWriter._writeAttributeString('AltColumn', this.get_altColumn().toString());
       xmlWriter._writeAttributeString('StartDateColumn', this.get_startDateColumn().toString());
@@ -29342,9 +28805,9 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('HyperlinkFormat', this.get_hyperlinkFormat());
       xmlWriter._writeAttributeString('HyperlinkColumn', this.get_hyperlinkColumn().toString());
       xmlWriter._writeAttributeString('ScaleFactor', this.get_scaleFactor().toString());
-      xmlWriter._writeAttributeString('PointScaleType', this.get_pointScaleType().toString());
+      xmlWriter._writeAttributeString('PointScaleType', Enums.toXml('PointScaleTypes', this.get_pointScaleType()));
       xmlWriter._writeAttributeString('ShowFarSide', this.get_showFarSide().toString());
-      xmlWriter._writeAttributeString('RaUnits', this.get_raUnits().toString());
+      xmlWriter._writeAttributeString('RaUnits', Enums.toXml('RAUnits', this.get_raUnits()));
       xmlWriter._writeAttributeString('HoverTextColumn', this.get_nameColumn().toString());
       xmlWriter._writeAttributeString('XAxisColumn', this.get_xAxisColumn().toString());
       xmlWriter._writeAttributeString('XAxisReverse', this.get_xAxisReverse().toString());
@@ -29352,7 +28815,7 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('YAxisReverse', this.get_yAxisReverse().toString());
       xmlWriter._writeAttributeString('ZAxisColumn', this.get_zAxisColumn().toString());
       xmlWriter._writeAttributeString('ZAxisReverse', this.get_zAxisReverse().toString());
-      xmlWriter._writeAttributeString('CartesianScale', this.get_cartesianScale().toString());
+      xmlWriter._writeAttributeString('CartesianScale', Enums.toXml('AltUnits', this.get_cartesianScale()));
       xmlWriter._writeAttributeString('CartesianCustomScale', this.get_cartesianCustomScale().toString());
       xmlWriter._writeAttributeString('DynamicData', this.get_dynamicData().toString());
       xmlWriter._writeAttributeString('AutoUpdate', this.get_autoUpdate().toString());
@@ -29414,19 +28877,7 @@ window.wwtlib = function(){
       this.set_beginRange(new Date(node.attributes.getNamedItem('BeginRange').nodeValue));
       this.set_endRange(new Date(node.attributes.getNamedItem('EndRange').nodeValue));
       this.set_decay(parseFloat(node.attributes.getNamedItem('Decay').nodeValue));
-      switch (node.attributes.getNamedItem('CoordinatesType').nodeValue) {
-        case 'Spherical':
-          this.set_coordinatesType(0);
-          break;
-        case 'Rectangular':
-          this.set_coordinatesType(1);
-          break;
-        case 'Orbital':
-          this.set_coordinatesType(2);
-          break;
-        default:
-          break;
-      }
+      this.set_coordinatesType(Enums.parse('CoordinatesTypes', node.attributes.getNamedItem('CoordinatesType').nodeValue));
       if (this.get_coordinatesType() < 0) {
         this.set_coordinatesType(0);
       }
@@ -29435,102 +28886,15 @@ window.wwtlib = function(){
       if (node.attributes.getNamedItem('GeometryColumn') != null) {
         this.set_geometryColumn(parseInt(node.attributes.getNamedItem('GeometryColumn').nodeValue));
       }
-      switch (node.attributes.getNamedItem('AltType').nodeValue) {
-        case 'Depth':
-          this.set_altType(0);
-          break;
-        case 'Altitude':
-          this.set_altType(1);
-          break;
-        case 'Distance':
-          this.set_altType(2);
-          break;
-        case 'SeaLevel':
-          this.set_altType(3);
-          break;
-        case 'Terrain':
-          this.set_altType(4);
-          break;
-        default:
-          break;
-      }
+      this.set_altType(Enums.parse('AltTypes', node.attributes.getNamedItem('AltType').nodeValue));
       this.set_markerMix(0);
-      switch (node.attributes.getNamedItem('ColorMap').nodeValue) {
-        case 'Same_For_All':
-          this.set__colorMap(0);
-          break;
-        case 'Group_by_Values':
-          this.set__colorMap(2);
-          break;
-        case 'Per_Column_Literal':
-          this.set__colorMap(3);
-          break;
-        default:
-          break;
-      }
+      this.set__colorMap(Enums.parse('ColorMaps', node.attributes.getNamedItem('ColorMap').nodeValue));
       this.set_markerColumn(parseInt(node.attributes.getNamedItem('MarkerColumn').nodeValue));
       this.set_colorMapColumn(parseInt(node.attributes.getNamedItem('ColorMapColumn').nodeValue));
-      switch (node.attributes.getNamedItem('PlotType').nodeValue) {
-        case 'Gaussian':
-          this.set_plotType(0);
-          break;
-        case 'Point':
-          this.set_plotType(1);
-          break;
-        case 'Circle':
-          this.set_plotType(2);
-          break;
-        case 'PushPin':
-          this.set_plotType(3);
-          break;
-        default:
-          break;
-      }
+      this.set_plotType(Enums.parse('PlotTypes', node.attributes.getNamedItem('PlotType').nodeValue));
       this.set_markerIndex(parseInt(node.attributes.getNamedItem('MarkerIndex').nodeValue));
-      switch (node.attributes.getNamedItem('MarkerScale').nodeValue) {
-        case 'Screen':
-          this.set_markerScale(0);
-          break;
-        case 'World':
-          this.set_markerScale(1);
-          break;
-        default:
-          break;
-      }
-      switch (node.attributes.getNamedItem('AltUnit').nodeValue) {
-        case 'Meters':
-          this.set_altUnit(1);
-          break;
-        case 'Feet':
-          this.set_altUnit(2);
-          break;
-        case 'Inches':
-          this.set_altUnit(3);
-          break;
-        case 'Miles':
-          this.set_altUnit(4);
-          break;
-        case 'Kilometers':
-          this.set_altUnit(5);
-          break;
-        case 'AstronomicalUnits':
-          this.set_altUnit(6);
-          break;
-        case 'LightYears':
-          this.set_altUnit(7);
-          break;
-        case 'Parsecs':
-          this.set_altUnit(8);
-          break;
-        case 'MegaParsecs':
-          this.set_altUnit(9);
-          break;
-        case 'Custom':
-          this.set_altUnit(10);
-          break;
-        default:
-          break;
-      }
+      this.set_markerScale(Enums.parse('MarkerScales', node.attributes.getNamedItem('MarkerScale').nodeValue));
+      this.set_altUnit(Enums.parse('AltUnits', node.attributes.getNamedItem('AltUnit').nodeValue));
       this.set_altColumn(parseInt(node.attributes.getNamedItem('AltColumn').nodeValue));
       this.set_startDateColumn(parseInt(node.attributes.getNamedItem('StartDateColumn').nodeValue));
       this.set_endDateColumn(parseInt(node.attributes.getNamedItem('EndDateColumn').nodeValue));
@@ -29538,37 +28902,12 @@ window.wwtlib = function(){
       this.set_hyperlinkFormat(node.attributes.getNamedItem('HyperlinkFormat').nodeValue);
       this.set_hyperlinkColumn(parseInt(node.attributes.getNamedItem('HyperlinkColumn').nodeValue));
       this.set_scaleFactor(parseFloat(node.attributes.getNamedItem('ScaleFactor').nodeValue));
-      switch (node.attributes.getNamedItem('PointScaleType').nodeValue) {
-        case 'Linear':
-          this.set_pointScaleType(0);
-          break;
-        case 'Power':
-          this.set_pointScaleType(1);
-          break;
-        case 'Log':
-          this.set_pointScaleType(2);
-          break;
-        case 'Constant':
-          this.set_pointScaleType(3);
-          break;
-        case 'StellarMagnitude':
-          this.set_pointScaleType(4);
-          break;
-        default:
-          break;
-      }
+      this.set_pointScaleType(Enums.parse('PointScaleTypes', node.attributes.getNamedItem('PointScaleType').nodeValue));
       if (node.attributes.getNamedItem('ShowFarSide') != null) {
         this.set_showFarSide(ss.boolean(node.attributes.getNamedItem('ShowFarSide').nodeValue));
       }
       if (node.attributes.getNamedItem('RaUnits') != null) {
-        switch (node.attributes.getNamedItem('RaUnits').nodeValue) {
-          case 'Hours':
-            this.set_raUnits(0);
-            break;
-          case 'Degrees':
-            this.set_raUnits(1);
-            break;
-        }
+        this.set_raUnits(Enums.parse('RAUnits', node.attributes.getNamedItem('RaUnits').nodeValue));
       }
       if (node.attributes.getNamedItem('HoverTextColumn') != null) {
         this.set_nameColumn(parseInt(node.attributes.getNamedItem('HoverTextColumn').nodeValue));
@@ -29580,40 +28919,7 @@ window.wwtlib = function(){
         this.set_yAxisReverse(ss.boolean(node.attributes.getNamedItem('YAxisReverse').nodeValue));
         this.set_zAxisColumn(parseInt(node.attributes.getNamedItem('ZAxisColumn').nodeValue));
         this.set_zAxisReverse(ss.boolean(node.attributes.getNamedItem('ZAxisReverse').nodeValue));
-        switch (node.attributes.getNamedItem('CartesianScale').nodeValue) {
-          case 'Meters':
-            this.set_cartesianScale(1);
-            break;
-          case 'Feet':
-            this.set_cartesianScale(2);
-            break;
-          case 'Inches':
-            this.set_cartesianScale(3);
-            break;
-          case 'Miles':
-            this.set_cartesianScale(4);
-            break;
-          case 'Kilometers':
-            this.set_cartesianScale(5);
-            break;
-          case 'AstronomicalUnits':
-            this.set_cartesianScale(6);
-            break;
-          case 'LightYears':
-            this.set_cartesianScale(7);
-            break;
-          case 'Parsecs':
-            this.set_cartesianScale(8);
-            break;
-          case 'MegaParsecs':
-            this.set_cartesianScale(9);
-            break;
-          case 'Custom':
-            this.set_cartesianScale(10);
-            break;
-          default:
-            break;
-        }
+        this.set_cartesianScale(Enums.parse('AltUnits', node.attributes.getNamedItem('CartesianScale').nodeValue));
         this.set_cartesianCustomScale(parseFloat(node.attributes.getNamedItem('CartesianCustomScale').nodeValue));
       }
       if (node.attributes.getNamedItem('DynamicData') != null) {
@@ -30143,19 +29449,7 @@ window.wwtlib = function(){
       this.set_beginRange(new Date(node.attributes.getNamedItem('BeginRange').nodeValue));
       this.set_endRange(new Date(node.attributes.getNamedItem('EndRange').nodeValue));
       this.set_decay(parseFloat(node.attributes.getNamedItem('Decay').nodeValue));
-      switch (node.attributes.getNamedItem('CoordinatesType').nodeValue) {
-        case 'Spherical':
-          this.set_coordinatesType(0);
-          break;
-        case 'Rectangular':
-          this.set_coordinatesType(1);
-          break;
-        case 'Orbital':
-          this.set_coordinatesType(2);
-          break;
-        default:
-          break;
-      }
+      this.set_coordinatesType(Enums.parse('CoordinatesTypes', node.attributes.getNamedItem('CoordinatesType').nodeValue));
       if (this.get_coordinatesType() < 0) {
         this.set_coordinatesType(0);
       }
@@ -32003,7 +31297,7 @@ window.wwtlib = function(){
       }
     },
     addFilesToCabinet: function(fc) {
-      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
+      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1, this.get_owner().get_owner().getFileBlob(this._filename$1));
     },
     writeOverlayProperties: function(xmlWriter) {
       xmlWriter._writeStartElement('Bitmap');
@@ -32640,35 +31934,12 @@ window.wwtlib = function(){
     },
     writeOverlayProperties: function(xmlWriter) {
       xmlWriter._writeStartElement('Shape');
-      xmlWriter._writeAttributeString('ShapeType', this._shapeType$1.toString());
+      xmlWriter._writeAttributeString('ShapeType', Enums.toXml('ShapeType', this._shapeType$1));
       xmlWriter._writeEndElement();
     },
     initializeFromXml: function(node) {
       var shape = Util.selectSingleNode(node, 'Shape');
-      switch (shape.attributes.getNamedItem('ShapeType').nodeValue) {
-        case 'Circle':
-          this._shapeType$1 = 0;
-          break;
-        case 'Rectagle':
-          this._shapeType$1 = 1;
-          break;
-        case 'Star':
-          this._shapeType$1 = 2;
-          break;
-        case 'Donut':
-          this._shapeType$1 = 3;
-          break;
-        case 'Arrow':
-          this._shapeType$1 = 4;
-          break;
-        case 'Line':
-          this._shapeType$1 = 5;
-          break;
-        case 'OpenRectagle':
-        default:
-          this._shapeType$1 = 6;
-          break;
-      }
+      this._shapeType$1 = Enums.parse('ShapeType', shape.attributes.getNamedItem('ShapeType').nodeValue);
     }
   };
 
@@ -32715,7 +31986,7 @@ window.wwtlib = function(){
       return value;
     },
     addFilesToCabinet: function(fc) {
-      fc.addFile(this.get_owner().get_owner().getFileStream(this._filename$1));
+      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1, this.get_owner().get_owner().getFileBlob(this._filename$1));
     },
     play: function() {
       if (this._audio$1 == null) {
@@ -32793,7 +32064,7 @@ window.wwtlib = function(){
       xmlWriter._writeAttributeString('Filename', this._filename$1);
       xmlWriter._writeAttributeString('Volume', this._volume$1.toString());
       xmlWriter._writeAttributeString('Mute', this._mute$1.toString());
-      xmlWriter._writeAttributeString('TrackType', this._trackType$1.toString());
+      xmlWriter._writeAttributeString('TrackType', Enums.toXml('AudioType', this._trackType$1));
       xmlWriter._writeEndElement();
     },
     initializeFromXml: function(node) {
@@ -32806,15 +32077,7 @@ window.wwtlib = function(){
         this._mute$1 = ss.boolean(audio.attributes.getNamedItem('Mute').nodeValue);
       }
       if (audio.attributes.getNamedItem('TrackType') != null) {
-        switch (audio.attributes.getNamedItem('TrackType').nodeValue) {
-          case 'Music':
-            this._trackType$1 = 0;
-            break;
-          case 'Voice':
-          default:
-            this._trackType$1 = 1;
-            break;
-        }
+        this._trackType$1 = Enums.parse('AudioType', audio.attributes.getNamedItem('TrackType').nodeValue);
       }
     }
   };
@@ -32935,13 +32198,13 @@ window.wwtlib = function(){
       }
     },
     addFilesToCabinet: function(fc) {
-      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1);
+      fc.addFile(this.get_owner().get_owner().get_workingDirectory() + this._filename$1, this.get_owner().get_owner().getFileBlob(this._filename$1));
     },
     writeOverlayProperties: function(xmlWriter) {
       xmlWriter._writeStartElement('Flipbook');
       xmlWriter._writeAttributeString('Filename', this._filename$1);
       xmlWriter._writeAttributeString('Frames', this._frames$1.toString());
-      xmlWriter._writeAttributeString('Loop', this._loopType$1.toString());
+      xmlWriter._writeAttributeString('Loop', Enums.toXml('LoopTypes', this._loopType$1));
       xmlWriter._writeAttributeString('FramesX', this._framesX$1.toString());
       xmlWriter._writeAttributeString('FramesY', this._framesY$1.toString());
       xmlWriter._writeAttributeString('StartFrame', this._startFrame$1.toString());
@@ -32954,31 +32217,7 @@ window.wwtlib = function(){
       var flipbook = Util.selectSingleNode(node, 'Flipbook');
       this._filename$1 = flipbook.attributes.getNamedItem('Filename').nodeValue;
       this._frames$1 = parseInt(flipbook.attributes.getNamedItem('Frames').nodeValue);
-      switch (flipbook.attributes.getNamedItem('Loop').nodeValue) {
-        case 'Loop':
-          this._loopType$1 = 0;
-          break;
-        case 'UpDown':
-          this._loopType$1 = 1;
-          break;
-        case 'Down':
-          this._loopType$1 = 2;
-          break;
-        case 'UpDownOnce':
-          this._loopType$1 = 3;
-          break;
-        case 'Once':
-          this._loopType$1 = 4;
-          break;
-        case 'Begin':
-          this._loopType$1 = 5;
-          break;
-        case 'End':
-          this._loopType$1 = 6;
-          break;
-        default:
-          break;
-      }
+      this._loopType$1 = Enums.parse('LoopTypes', flipbook.attributes.getNamedItem('Loop').nodeValue);
       if (flipbook.attributes.getNamedItem('FramesX') != null) {
         this.set_framesX(parseInt(flipbook.attributes.getNamedItem('FramesX').nodeValue));
       }
@@ -34100,6 +33339,7 @@ window.wwtlib = function(){
       SelectionAnchor: SelectionAnchor,
       TextBorderStyle: TextBorderStyle,
       UserLevel: UserLevel,
+      TransitionType: TransitionType,
       Keys: Keys,
       DialogResult: DialogResult,
       Formatting: Formatting,
@@ -34257,6 +33497,7 @@ window.wwtlib = function(){
       UiTools: [ UiTools, UiTools$, null ],
       Rectangle: [ Rectangle, Rectangle$, null ],
       Guid: [ Guid, Guid$, null ],
+      Enums: [ Enums, Enums$, null ],
       Mouse: [ Mouse, null, null ],
       Language: [ Language, Language$, null ],
       Cursor: [ Cursor, Cursor$, null ],

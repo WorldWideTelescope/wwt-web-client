@@ -16,7 +16,6 @@
             size:params.size,
             filename:params.name
         }
-        
     }
 
     function addLocalMedia(mediaKey, file, db) {

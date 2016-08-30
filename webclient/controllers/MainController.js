@@ -679,13 +679,24 @@ wwt.controllers.controller('MainController',
 		    });
 		};
 
-		$rootScope.finishTour = function () {
+		$rootScope.closeTour = function ($event) {
+		    $event.preventDefault();
+		    $event.stopPropagation();
+		    
 		    $rootScope.editingTour = false;
 		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
-		    $rootScope.editingTour = false;
-	        $rootScope.tourPlaying = false;
-	        wwtlib.WWTControl.singleton.stopCurrentTour();
-	        $scope.activePanel = 'Guided Tours'; 
+		    delete $scope.ribbon.tabs[1].menu['Show Slide Overlays'];
+		    delete $scope.ribbon.tabs[1].menu['Show Slide Numbers'];
+		    
+		    wwtlib.WWTControl.singleton.stopCurrentTour();
+		    $rootScope.$broadcast('closeTour');
+		    //wwtlib.WWTControl.singleton.tour.cleanUp();
+		    $scope.$applyAsync(function () {
+		        $scope.activePanel = 'Guided Tours';
+		    });
+	        $rootScope.editingTour = false;
+		    $rootScope.tourPlaying = false;
+		    $rootScope.currentTour = null;
 	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
 	    }
 
@@ -708,7 +719,6 @@ wwt.controllers.controller('MainController',
 				$('.context-panel').fadeIn(800);
 			}
 			if (!settings.autoHideTabs) {
-               
 				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
 			}
 			ctl.clearAnnotations();
@@ -957,8 +967,9 @@ wwt.controllers.controller('MainController',
 		$scope.contextPagerRight = function() {
 			return /*$scope.fovClass() != 'hide' && */ $scope.showTrackingString() ? 0 : 50;
 		}
-		if (util.getQSParam('playTour')) {
-		    $scope.playTour(decodeURIComponent(util.getQSParam('playTour')))
+		if (util.getQSParam('editTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
+		    $scope.autoEdit = true;
 		}
 	}
 ]);
