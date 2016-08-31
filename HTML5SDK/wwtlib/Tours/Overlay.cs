@@ -1880,6 +1880,7 @@ namespace wwtlib
             {
                 audio.Play();
                 Volume = Volume;
+                audio.CurrentTime = position;
             }
         }
 
@@ -1955,9 +1956,12 @@ namespace wwtlib
                 audio.Src = Owner.Owner.GetFileStream(this.filename);
                 audio.AddEventListener("canplaythrough", delegate
                 {
-                    audioReady = true;
-                    audio_MediaOpened();
-                    audio.Play();
+                    if (!audioReady)
+                    {
+                        audioReady = true;
+                        audio_MediaOpened();
+                        audio.Play();
+                    }
                 }, false);
 
 

@@ -255,7 +255,12 @@ namespace wwtlib
 
         }
 
-        public string SaveToFile()
+        public string SaveToDataUrl()
+        {
+            return  (string)Script.Literal("URL.createObjectURL({0});", SaveToBlob());
+        }
+
+        public Blob SaveToBlob()
         {
             bool excludeAudio = false;
 

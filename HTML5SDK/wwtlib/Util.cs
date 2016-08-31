@@ -133,10 +133,21 @@ namespace wwtlib
 
         public static string XMLDate(Date d)
         {
+            int hours = d.GetHours();
+            string amPm = "AM";
+            if (hours > 12)
+            {
+                hours -= 12;
+                amPm = "PM";
+            }
+
             return (d.GetMonth() + 1).ToString() + '/' +
                 d.GetDate().ToString() + '/' +
                 d.GetFullYear().ToString() + ' ' +
-                d.ToLocaleTimeString();
+                hours.ToString() + ":" +
+                d.GetMinutes().ToString() + ":" +
+                d.GetSeconds().ToString() + " " +
+                amPm;
         }
 
         public static XmlNode SelectSingleNode(XmlNode parent, string name)

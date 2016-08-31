@@ -411,7 +411,7 @@ wwt.controllers.controller('MainController',
 
 		var finderTimer, finderActive = false,finderMoved = true;
 		$scope.showFinderScope = function (event) {
-			if ($scope.lookAt === 'Sky') {
+			if ($scope.lookAt === 'Sky' && !$scope.editingTour) {
 				var finder = $('.finder-scope');
 				finder.toggle(!finder.prop('hidden')).css({
 					top: event ? event.pageY - 88 : 180,
@@ -707,6 +707,9 @@ wwt.controllers.controller('MainController',
 
 		        $scope.activeItem = { label: 'currentTour' };
 		        $scope.activePanel = 'currentTour';
+		        $rootScope.$applyAsync(function () {
+		            $rootScope.editingTour = true;
+		        });
 		    });
 	    };
 

@@ -13759,8 +13759,7 @@ window.wwtlib = function(){
         blobs.push(entry.blob);
       }
       var cabBlob = new Blob(blobs, {type : 'application/x-wtt'});;
-      var bloblUrl = URL.createObjectURL(cabBlob);;
-      return bloblUrl;
+      return cabBlob;
     },
     _loadCabinet: function() {
       var $this = this;
@@ -14755,7 +14754,10 @@ window.wwtlib = function(){
       }
       this._tourDirty = 0;
     },
-    saveToFile: function() {
+    saveToDataUrl: function() {
+      return URL.createObjectURL(this.saveToBlob());;
+    },
+    saveToBlob: function() {
       var excludeAudio = false;
       this.cleanUp();
       var tourXml = this.getTourXML();
@@ -15680,7 +15682,7 @@ window.wwtlib = function(){
     _setEndSkyPosition_Click: function(sender, e) {
       if (this._tour.get_currentTourStop() != null) {
         Undo.push(new UndoTourStopChange(Language.getLocalizedText(435, 'Set End Camera Position'), this._tour));
-        var newPlace = Place.createCameraParams('End Place', WWTControl.singleton.renderContext.viewCamera, 268435456, WWTControl.singleton.constellation, WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType(), WWTControl.singleton.renderContext.get_solarSystemTrack());
+        var newPlace = Place.createCameraParams('End Place', WWTControl.singleton.renderContext.viewCamera.copy(), 268435456, WWTControl.singleton.constellation, WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType(), WWTControl.singleton.renderContext.get_solarSystemTrack());
         this._tour.get_currentTourStop().set_endTarget(newPlace);
         this._tour.get_currentTourStop().get_endTarget().set_constellation(WWTControl.singleton.constellation);
         this._tour.get_currentTourStop().set_endTime(SpaceTimeController.get_now());
@@ -15705,7 +15707,7 @@ window.wwtlib = function(){
         Undo.push(new UndoTourStopChange(Language.getLocalizedText(434, 'Set Start Camera Position'), this._tour));
         this._tour.get_currentTourStop().get_target().set_target(WWTControl.singleton.renderContext.get_solarSystemTrack());
         this._tour.get_currentTourStop().get_target().set_type(WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType());
-        this._tour.get_currentTourStop().get_target().set_camParams(WWTControl.singleton.renderContext.viewCamera);
+        this._tour.get_currentTourStop().get_target().set_camParams(WWTControl.singleton.renderContext.viewCamera.copy());
         this._tour.get_currentTourStop().get_target().set_constellation(WWTControl.singleton.constellation);
         this._tour.get_currentTourStop().get_target().set_studyImageset(WWTControl.singleton.renderContext.get_foregroundImageset());
         this._tour.get_currentTourStop().get_target().set_type(WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType());
@@ -15752,7 +15754,7 @@ window.wwtlib = function(){
       Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(426, 'Add New Slide'), this._tour));
       Cursor.set_current(Cursors.get_waitCursor());
       var placeName = 'Current Screen';
-      var newPlace = Place.createCameraParams(placeName, WWTControl.singleton.renderContext.viewCamera, 268435456, WWTControl.singleton.constellation, WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType(), WWTControl.singleton.renderContext.get_solarSystemTrack());
+      var newPlace = Place.createCameraParams(placeName, WWTControl.singleton.renderContext.viewCamera.copy(), 268435456, WWTControl.singleton.constellation, WWTControl.singleton.renderContext.get_backgroundImageset().get_dataSetType(), WWTControl.singleton.renderContext.get_solarSystemTrack());
       newPlace.set_studyImageset(WWTControl.singleton.renderContext.get_foregroundImageset());
       newPlace.set_backgroundImageset(WWTControl.singleton.renderContext.get_backgroundImageset().get_stockImageSet());
       var newTourStop = TourStop.create(newPlace);
@@ -19961,7 +19963,13 @@ window.wwtlib = function(){
     return 'http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=' + encodeURIComponent(url) + '&filename=' + name;
   };
   Util.xmlDate = function(d) {
-    return (d.getMonth() + 1).toString() + '/' + d.getDate().toString() + '/' + d.getFullYear().toString() + ' ' + d.toLocaleTimeString();
+    var hours = d.getHours();
+    var amPm = 'AM';
+    if (hours > 12) {
+      hours -= 12;
+      amPm = 'PM';
+    }
+    return (d.getMonth() + 1).toString() + '/' + d.getDate().toString() + '/' + d.getFullYear().toString() + ' ' + hours.toString() + ':' + d.getMinutes().toString() + ':' + d.getSeconds().toString() + ' ' + amPm;
   };
   Util.selectSingleNode = function(parent, name) {
     var node = null;
@@ -22086,14 +22094,14 @@ window.wwtlib = function(){
       this.tour = new TourDocument();
       this.tour.set_title(name);
       this.setupTour();
-      this.tourEdit.addSlide(false);
+      this.tour.set_editMode(true);
       return this.tour;
     },
     setupTour: function() {
       this.tourEdit = new TourEditTab();
       this.tourEdit.set_tour(this.tour);
       this.tour.set_currentTourstopIndex(0);
-      this.tour.set_editMode(true);
+      this.tour.set_editMode(false);
       this.uiController = this.tourEdit.tourEditorUI;
     },
     playTour: function(url) {
@@ -22105,6 +22113,7 @@ window.wwtlib = function(){
       }
       this.tour = TourDocument.fromUrl(url, function() {
         $this.setupTour();
+        $this.tourEdit.playNow(true);
         WWTControl.scriptInterface._fireTourReady();
       });
     },
@@ -22186,7 +22195,7 @@ window.wwtlib = function(){
         temp.width = 96;
         var ctx = temp.getContext('2d');
         ctx.drawImage(image, cx, cy, cw, ch);
-        temp.toBlob(blobReady, 'image/jpeg');
+        if ( typeof temp.msToBlob == 'function') { var blob = temp.msToBlob(); blobReady(blob); } else { temp.toBlob(blobReady, 'image/jpeg'); };
       }, false);
       image.src = WWTControl.singleton.canvas.toDataURL();
     }
@@ -32030,6 +32039,7 @@ window.wwtlib = function(){
       if (this._audio$1 != null && this._audioReady$1) {
         this._audio$1.play();
         this.set_volume(this.get_volume());
+        this._audio$1.currentTime = this._position$1;
       }
     },
     pause: function() {
@@ -32069,9 +32079,11 @@ window.wwtlib = function(){
         this._audio$1 = document.createElement('audio');
         this._audio$1.src = this.get_owner().get_owner().getFileStream(this._filename$1);
         this._audio$1.addEventListener('canplaythrough', function() {
-          $this._audioReady$1 = true;
-          $this._audio_MediaOpened$1();
-          $this._audio$1.play();
+          if (!$this._audioReady$1) {
+            $this._audioReady$1 = true;
+            $this._audio_MediaOpened$1();
+            $this._audio$1.play();
+          }
         }, false);
       }
     },

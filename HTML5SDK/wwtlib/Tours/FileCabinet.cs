@@ -85,7 +85,7 @@ namespace wwtlib
             currentOffset = 0;
         }
 
-        public string PackageFiles()
+        public Blob PackageFiles()
         {
             XmlTextWriter xmlWriter = new XmlTextWriter();
            
@@ -129,9 +129,8 @@ namespace wwtlib
             }
 
             Blob cabBlob = (Blob)Script.Literal("new Blob({0}, {{type : 'application/x-wtt'}});", blobs);
-            string bloblUrl = (string)Script.Literal("URL.createObjectURL({0});", cabBlob);
 
-            return bloblUrl;
+            return cabBlob;
         }
 
 

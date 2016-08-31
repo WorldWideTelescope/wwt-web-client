@@ -3779,18 +3779,20 @@ wwt.controllers.controller('ContextPanelController',
 	    };
 
 	    function findNearbyObjects() {
-	        searchUtil.findNearbyObjects({
-	            lookAt: $scope.lookAt,
-	            singleton: $rootScope.singleton
-	        }).then(function (result) {
-	            $scope.currentPage = 0;
-	            $('body').append($('#researchMenu'));
-	            $scope.collection = result;
-	            if (util.isMobile) {
-	                $scope.setNBO($scope.collection);
-	            }
-	            calcPageSize($scope.collection);
-	        });
+	        if ($rootScope.editingTour) {
+	            searchUtil.findNearbyObjects({
+	                lookAt: $scope.lookAt,
+	                singleton: $rootScope.singleton
+	            }).then(function (result) {
+	                $scope.currentPage = 0;
+	                $('body').append($('#researchMenu'));
+	                $scope.collection = result;
+	                if (util.isMobile) {
+	                    $scope.setNBO($scope.collection);
+	                }
+	                calcPageSize($scope.collection);
+	            });
+	        }
 	    }
 
 	    init();
@@ -4211,7 +4213,7 @@ wwt.controllers.controller('MainController',
 
 		var finderTimer, finderActive = false,finderMoved = true;
 		$scope.showFinderScope = function (event) {
-			if ($scope.lookAt === 'Sky') {
+			if ($scope.lookAt === 'Sky' && !$scope.editingTour) {
 				var finder = $('.finder-scope');
 				finder.toggle(!finder.prop('hidden')).css({
 					top: event ? event.pageY - 88 : 180,
@@ -4507,6 +4509,9 @@ wwt.controllers.controller('MainController',
 
 		        $scope.activeItem = { label: 'currentTour' };
 		        $scope.activePanel = 'currentTour';
+		        $rootScope.$applyAsync(function () {
+		            $rootScope.editingTour = true;
+		        });
 		    });
 	    };
 
@@ -6551,9 +6556,17 @@ wwt.controllers.controller('CurrentTourController', [
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-        var saveUrl = tour.saveToFile();
-
-        window.location.assign(saveUrl);
+        
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            var blob = tour.saveToBlob();
+            window.navigator.msSaveOrOpenBlob(blob);
+        }
+        else {
+            // window.open(saveUrl, '_blank');
+            var saveUrl = tour.saveToDataUrl();
+            window.location.assign(saveUrl);
+        }
+        //window.location.assign(saveUrl);
         // media.saveTour().then(function (tour) {
         //     console.log(tour);
         //});

@@ -665,7 +665,7 @@ namespace wwtlib
 
                 Place newPlace = Place.CreateCameraParams(
                         "End Place",
-                        WWTControl.Singleton.RenderContext.ViewCamera,
+                        WWTControl.Singleton.RenderContext.ViewCamera.Copy(),
                         Classification.Unidentified,
                         WWTControl.Singleton.Constellation,
                         WWTControl.Singleton.RenderContext.BackgroundImageset.DataSetType,
@@ -704,7 +704,7 @@ namespace wwtlib
 
                 tour.CurrentTourStop.Target.Target = WWTControl.Singleton.RenderContext.SolarSystemTrack;
                 tour.CurrentTourStop.Target.Type = WWTControl.Singleton.RenderContext.BackgroundImageset.DataSetType;
-                tour.CurrentTourStop.Target.CamParams = WWTControl.Singleton.RenderContext.ViewCamera;
+                tour.CurrentTourStop.Target.CamParams = WWTControl.Singleton.RenderContext.ViewCamera.Copy();
                 tour.CurrentTourStop.Target.Constellation = WWTControl.Singleton.Constellation;
                 tour.CurrentTourStop.Target.StudyImageset = WWTControl.Singleton.RenderContext.ForegroundImageset;
                 tour.CurrentTourStop.Target.Type = WWTControl.Singleton.RenderContext.BackgroundImageset.DataSetType;
@@ -768,7 +768,7 @@ namespace wwtlib
 
             Cursor.Current = Cursors.WaitCursor;
             string placeName = "Current Screen";
-            Place newPlace = Place.CreateCameraParams(placeName, WWTControl.Singleton.RenderContext.ViewCamera, Classification.Unidentified, WWTControl.Singleton.Constellation, WWTControl.Singleton.RenderContext.BackgroundImageset.DataSetType, WWTControl.Singleton.RenderContext.SolarSystemTrack);
+            Place newPlace = Place.CreateCameraParams(placeName, WWTControl.Singleton.RenderContext.ViewCamera.Copy(), Classification.Unidentified, WWTControl.Singleton.Constellation, WWTControl.Singleton.RenderContext.BackgroundImageset.DataSetType, WWTControl.Singleton.RenderContext.SolarSystemTrack);
           //  newPlace.ThumbNail = null;
             newPlace.StudyImageset = WWTControl.Singleton.RenderContext.ForegroundImageset;
             newPlace.BackgroundImageset = WWTControl.Singleton.RenderContext.BackgroundImageset.StockImageSet;

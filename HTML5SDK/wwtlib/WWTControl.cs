@@ -2441,10 +2441,10 @@ namespace wwtlib
 
             tour = new TourDocument();
             tour.Title = name;
+          
             SetupTour();
-
-            TourEdit.AddSlide(false);
-
+            tour.EditMode = true;
+    
             return tour;
         }
 
@@ -2475,6 +2475,7 @@ namespace wwtlib
                         //player.Play();
 
                         SetupTour();
+                        TourEdit.PlayNow(true);
                         WWTControl.scriptInterface.FireTourReady();
                     });
             
@@ -2597,7 +2598,9 @@ namespace wwtlib
                 temp.Width = 96;
                 CanvasContext2D ctx = (CanvasContext2D)temp.GetContext(Rendering.Render2D);
                 ctx.DrawImage(image, cx, cy, cw, ch);
-                Script.Literal("{0}.toBlob({1}, 'image/jpeg')", temp, blobReady);
+                //Script.Literal("{0}.toBlob({1}, 'image/jpeg')", temp, blobReady);
+
+                Script.Literal("if ( typeof {0}.msToBlob == 'function') {{ var blob = {0}.msToBlob(); {1}(blob); }} else {{ {0}.toBlob({1}, 'image/jpeg'); }}", temp, blobReady);
 
 
               //  thumb.Src = temp.GetDataUrl();
