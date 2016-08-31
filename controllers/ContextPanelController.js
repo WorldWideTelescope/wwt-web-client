@@ -64,18 +64,20 @@
 	    };
 
 	    function findNearbyObjects() {
-	        searchUtil.findNearbyObjects({
-	            lookAt: $scope.lookAt,
-	            singleton: $rootScope.singleton
-	        }).then(function (result) {
-	            $scope.currentPage = 0;
-	            $('body').append($('#researchMenu'));
-	            $scope.collection = result;
-	            if (util.isMobile) {
-	                $scope.setNBO($scope.collection);
-	            }
-	            calcPageSize($scope.collection);
-	        });
+	        if ($rootScope.editingTour) {
+	            searchUtil.findNearbyObjects({
+	                lookAt: $scope.lookAt,
+	                singleton: $rootScope.singleton
+	            }).then(function (result) {
+	                $scope.currentPage = 0;
+	                $('body').append($('#researchMenu'));
+	                $scope.collection = result;
+	                if (util.isMobile) {
+	                    $scope.setNBO($scope.collection);
+	                }
+	                calcPageSize($scope.collection);
+	            });
+	        }
 	    }
 
 	    init();

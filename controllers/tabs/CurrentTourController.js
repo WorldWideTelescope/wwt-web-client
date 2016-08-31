@@ -100,9 +100,17 @@
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-        var saveUrl = tour.saveToFile();
-
-        window.location.assign(saveUrl);
+        
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            var blob = tour.saveToBlob();
+            window.navigator.msSaveOrOpenBlob(blob);
+        }
+        else {
+            // window.open(saveUrl, '_blank');
+            var saveUrl = tour.saveToDataUrl();
+            window.location.assign(saveUrl);
+        }
+        //window.location.assign(saveUrl);
         // media.saveTour().then(function (tour) {
         //     console.log(tour);
         //});
