@@ -64,7 +64,7 @@
 	    };
 
 	    function findNearbyObjects() {
-	        if ($rootScope.editingTour) {
+	        if (!$rootScope.editingTour) {
 	            searchUtil.findNearbyObjects({
 	                lookAt: $scope.lookAt,
 	                singleton: $rootScope.singleton
