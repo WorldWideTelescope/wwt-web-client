@@ -64,7 +64,7 @@
 	    };
 
 	    function findNearbyObjects() {
-	        if (!$rootScope.editingTour) {
+	        if (($scope.lookAt === 'Sky' || $scope.lookAt === 'SolarSystem') && !wwt.tourPlaying) {
 	            searchUtil.findNearbyObjects({
 	                lookAt: $scope.lookAt,
 	                singleton: $rootScope.singleton
