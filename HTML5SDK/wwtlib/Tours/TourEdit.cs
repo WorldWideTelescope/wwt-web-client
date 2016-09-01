@@ -67,9 +67,13 @@ namespace wwtlib
             }
         }
 
-        public void tour_CurrentTourstopChanged(object sender, EventArgs e)
+        public void tour_CurrentTourstopChanged()
         {
             OverlayList.UpdateOverlayList(tour.CurrentTourStop, TourEditorUI.Selection);
+            if (TourEditorUI != null)
+            {
+                TourEditorUI.ClearSelection();
+            }
             tourStopList.Refresh();
         }
 

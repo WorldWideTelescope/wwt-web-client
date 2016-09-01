@@ -729,15 +729,13 @@ namespace wwtlib
 
             contextMenu = new ContextMenuStrip();
 
-            //  ToolStripMenuItem pasteMenu = new ToolStripMenuItem(Language.GetLocalizedText(425, "Paste"));
+            ToolStripMenuItem pasteMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(425, "Paste"));
             //   IDataObject data = Clipboard.GetDataObject();
 
-            //   pasteMenu.Enabled = Clipboard.ContainsImage() | Clipboard.ContainsText() | Clipboard.ContainsAudio() | data.GetDataPresent(Overlay.ClipboardFormat);
+            pasteMenu.Enabled = clipboardType == Overlay.ClipboardFormat;
 
-            //  pasteMenu.Click =pasteMenu_Click;
-            //  contextMenu.Items.Add(pasteMenu);
-
-            //    contextMenu = new ContextMenuStrip();
+            pasteMenu.Click =pasteMenu_Click;
+            contextMenu.Items.Add(pasteMenu);
 
             ToolStripMenuItem AddCircle = ToolStripMenuItem.Create(Language.GetLocalizedText(444, "Circle"));
             ToolStripMenuItem AddRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(445, "Rectangle"));
@@ -1465,36 +1463,30 @@ namespace wwtlib
             return sorted;
         }
 
-
-
+        string clipboardData = "";
+        string clipboardType = "";
         void copyMenu_Click(object sender, EventArgs e)
         {
             //todo impliment copy
-            //if (tour == null || tour.CurrentTourStop == null)
-            //{
-            //    return;
-            //}
-            //StringBuilder sb = new StringBuilder();
-            //using (System.IO.StringWriter textWriter = new System.IO.StringWriter(sb))
-            //{
-            //    using (System.Xml.XmlTextWriter writer = new System.Xml.XmlTextWriter(textWriter))
-            //    {
-            //        writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-            //        writer.WriteStartElement("Overlays");
-            //        foreach (Overlay overlay in selection.SelectionSet)
-            //        {
-            //            overlay.SaveToXml(writer, true);
-            //        }
+            if (tour == null || tour.CurrentTourStop == null)
+            {
+                return;
+            }
 
-            //        writer.WriteEndElement();
-            //    }
-            //}
-            //DataFormats.Format format = DataFormats.GetFormat(Overlay.ClipboardFormat);
 
-            //IDataObject dataObject = new DataObject();
-            //dataObject.SetData(format.Name, false, sb.ToString());
+            XmlTextWriter writer = new XmlTextWriter();
+            
+            writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+            writer.WriteStartElement("Overlays");
+            foreach (Overlay overlay in Selection.SelectionSet)
+            {
+                overlay.SaveToXml(writer, true);
+            }
 
-            //Clipboard.SetDataObject(dataObject, false);
+            writer.WriteEndElement();
+
+            clipboardData = writer.Body;
+            clipboardType = Overlay.ClipboardFormat;
         }
 
         void cutMenu_Click(object sender, EventArgs e)
@@ -1520,55 +1512,59 @@ namespace wwtlib
         {
             //todo impliment paste
 
-            //Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(544, "Paste Object"), tour));
+            Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(544, "Paste Object"), tour));
 
-            //IDataObject dataObject = Clipboard.GetDataObject();
+            
+            if (clipboardType == Overlay.ClipboardFormat)
+            {
 
-            //if (dataObject.GetDataPresent(Overlay.ClipboardFormat))
-            //{
-            //    // add try catch block
-            //    string xml = dataObject.GetData(Overlay.ClipboardFormat) as string;
-            //    System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
-            //    doc.LoadXml(xml);
-            //    ClearSelection();
-            //    System.Xml.XmlNode parent = doc["Overlays"];
-            //    foreach (XmlNode child in parent.ChildNodes)
-            //    {
-            //        Overlay copy = Overlay.FromXml(tour.CurrentTourStop, child);
-            //        if (copy.AnimationTarget != null)
-            //        {
-            //            copy.Id = Guid.NewGuid().ToString();
-            //            copy.AnimationTarget.TargetID = copy.Id;
-            //            tour.CurrentTourStop.AnimationTargets.Add(copy.AnimationTarget);
-            //        }
-            //        bool found = false;
-            //        double maxX = 0;
-            //        double maxY = 0;
-            //        foreach (Overlay item in tour.CurrentTourStop.Overlays)
-            //        {
-            //            if (item.Id == copy.Id && item.GetType() == copy.GetType())
-            //            {
-            //                found = true;
-            //                if (maxY < item.Y || maxX < item.X)
-            //                {
-            //                    maxX = item.X;
-            //                    maxY = item.Y;
-            //                }
-            //            }
-            //        }
+                XmlDocumentParser xParser = new XmlDocumentParser();
+                XmlDocument doc = xParser.ParseFromString(clipboardData, "text/xml");
 
-            //        if (found)
-            //        {
-            //            copy.X = maxX + 20;
-            //            copy.Y = maxY + 20;
-            //        }
+               
+                ClearSelection();
+        
+                XmlNode parent = Util.SelectSingleNode(doc, "Overlays");
+                foreach (XmlNode child in parent.ChildNodes)
+                {
+                    if (child.Name == "Overlay")
+                    {
+                        Overlay copy = Overlay.FromXml(tour.CurrentTourStop, child);
+                        //if (copy.AnimationTarget != null)
+                        //{
+                        //    copy.Id = Guid.NewGuid().ToString();
+                        //    copy.AnimationTarget.TargetID = copy.Id;
+                        //    tour.CurrentTourStop.AnimationTargets.Add(copy.AnimationTarget);
+                        //}
+                        bool found = false;
+                        double maxX = 0;
+                        double maxY = 0;
+                        foreach (Overlay item in tour.CurrentTourStop.Overlays)
+                        {
+                            if (item.Id == copy.Id && item.GetType() == copy.GetType())
+                            {
+                                found = true;
+                                if (maxY < item.Y || maxX < item.X)
+                                {
+                                    maxX = item.X;
+                                    maxY = item.Y;
+                                }
+                            }
+                        }
 
-            //        tour.CurrentTourStop.AddOverlay(copy);
-            //        Focus = copy;
-            //        selection.AddSelection(Focus);
-            //        OverlayList.UpdateOverlayList(tour.CurrentTourStop, Selection);
-            //    }
-            //}
+                        if (found)
+                        {
+                            copy.X = maxX + 20;
+                            copy.Y = maxY + 20;
+                        }
+
+                        tour.CurrentTourStop.AddOverlay(copy);
+                        Focus = copy;
+                        Selection.AddSelection(Focus);
+                        OverlayList.UpdateOverlayList(tour.CurrentTourStop, Selection);
+                    }
+                }
+            }
             //else if (UiTools.IsMetaFileAvailable())
             //{
             //    Image img = UiTools.GetMetafileFromClipboard();

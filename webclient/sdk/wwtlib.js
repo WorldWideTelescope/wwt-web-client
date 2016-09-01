@@ -15343,8 +15343,11 @@ window.wwtlib = function(){
       this.setEditMode(this._tour.get_editMode());
       return value;
     },
-    tour_CurrentTourstopChanged: function(sender, e) {
+    tour_CurrentTourstopChanged: function() {
       OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.tourEditorUI.selection);
+      if (this.tourEditorUI != null) {
+        this.tourEditorUI.clearSelection();
+      }
       this.tourStopList.refresh();
     },
     setFocusedChild: function() {
@@ -16023,6 +16026,8 @@ window.wwtlib = function(){
     this._contextPoint = new Vector2d();
     this._dragCopying = false;
     this._brokeThreshold = false;
+    this._clipboardData = '';
+    this._clipboardType = '';
     this.editTextCallback = null;
     this._defaultColor = Colors.get_white();
   }
@@ -16438,6 +16443,10 @@ window.wwtlib = function(){
         return;
       }
       this._contextMenu = new ContextMenuStrip();
+      var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(425, 'Paste'));
+      pasteMenu.enabled = this._clipboardType === 'WorldWideTelescope.Overlay';
+      pasteMenu.click = ss.bind('_pasteMenu_Click', this);
+      this._contextMenu.items.push(pasteMenu);
       var AddCircle = ToolStripMenuItem.create(Language.getLocalizedText(444, 'Circle'));
       var AddRectangle = ToolStripMenuItem.create(Language.getLocalizedText(445, 'Rectangle'));
       var AddOpenRectangle = ToolStripMenuItem.create(Language.getLocalizedText(446, 'Open Rectangle'));
@@ -16903,6 +16912,20 @@ window.wwtlib = function(){
       return sorted;
     },
     _copyMenu_Click: function(sender, e) {
+      if (this._tour == null || this._tour.get_currentTourStop() == null) {
+        return;
+      }
+      var writer = new XmlTextWriter();
+      writer._writeProcessingInstruction('xml', "version='1.0' encoding='UTF-8'");
+      writer._writeStartElement('Overlays');
+      var $enum1 = ss.enumerate(this.selection.selectionSet);
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.saveToXml(writer, true);
+      }
+      writer._writeEndElement();
+      this._clipboardData = writer.body;
+      this._clipboardType = 'WorldWideTelescope.Overlay';
     },
     _cutMenu_Click: function(sender, e) {
       if (this._tour == null || this._tour.get_currentTourStop() == null) {
@@ -16920,6 +16943,42 @@ window.wwtlib = function(){
       OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
     },
     _pasteMenu_Click: function(sender, e) {
+      Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(544, 'Paste Object'), this._tour));
+      if (this._clipboardType === 'WorldWideTelescope.Overlay') {
+        var xParser = new DOMParser();
+        var doc = xParser.parseFromString(this._clipboardData, 'text/xml');
+        this.clearSelection();
+        var parent = Util.selectSingleNode(doc, 'Overlays');
+        var $enum1 = ss.enumerate(parent.childNodes);
+        while ($enum1.moveNext()) {
+          var child = $enum1.current;
+          if (child.nodeName === 'Overlay') {
+            var copy = Overlay._fromXml(this._tour.get_currentTourStop(), child);
+            var found = false;
+            var maxX = 0;
+            var maxY = 0;
+            var $enum2 = ss.enumerate(this._tour.get_currentTourStop().get_overlays());
+            while ($enum2.moveNext()) {
+              var item = $enum2.current;
+              if (item.id === copy.id && ss.typeOf(item) === ss.typeOf(copy)) {
+                found = true;
+                if (maxY < item.get_y() || maxX < item.get_x()) {
+                  maxX = item.get_x();
+                  maxY = item.get_y();
+                }
+              }
+            }
+            if (found) {
+              copy.set_x(maxX + 20);
+              copy.set_y(maxY + 20);
+            }
+            this._tour.get_currentTourStop().addOverlay(copy);
+            this.set_focus(copy);
+            this.selection.addSelection(this.get_focus());
+            OverlayList._updateOverlayList(this._tour.get_currentTourStop(), this.selection);
+          }
+        }
+      }
     },
     mouseClick: function(sender, e) {
       if (TourEditor.currentEditor != null) {
