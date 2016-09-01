@@ -709,6 +709,7 @@ wwt.controllers.controller('MainController',
 		        $scope.activePanel = 'currentTour';
 		        $rootScope.$applyAsync(function () {
 		            $rootScope.editingTour = true;
+		            $rootScope.currentTour._editMode = true;
 		        });
 		    });
 	    };
