@@ -277,10 +277,10 @@
                         .audiofile{
                             width:0;height:17px;
                             margin-right:60px;
-                            position:relative;
+                            position:absolute;
                             display:inline-block;
                             visibility:hidden;
-                            &:after{
+                            /*&:after{
                                 .btn();
                                 .boxGradient();
                                 content:'Browse...';
@@ -290,16 +290,14 @@
                                 top:1px;
 		                        padding: 2px 6px;
                                 visibility:visible;
-                            }
+                            }*/
                         }
                         .audiofile.has-file:after{
                             display:none;
                         }
-                        .remove{
+                        .remove,.browse{
                             font-size: 12px;
 		                    color: lighten(@text-color, 10%);
-		                    position:absolute;
-                            top:26px;
 		                    padding: 2px 6px;
                             visibility:visible;
                         }
