@@ -969,7 +969,7 @@
                                             index="{{$index}}"
                                             ng-click="selectStop($index, $event)" 
                                             ng-dblclick="showStartCameraPosition($index)"
-                                            ng-context-menu="showContextMenu" title="{{stop._tweenPosition}}">
+                                            ng-context-menu="showContextMenu">
                                             <a class="ear stop-start{{tourEdit.playing && activeIndex === $index && stop._tweenPosition < .5 ? ' active' : ''}}" ng-click="showStartCameraPosition($index)" ng-show="(editingTour ||tourEdit.playing) && $index == activeIndex"></a>
                                             <a class="ear stop-end{{tourEdit.playing && activeIndex === $index && stop._tweenPosition >= .5 ? ' active' : ''}}" ng-click="showEndCameraPosition($index)" ng-show="(editingTour ||tourEdit.playing) && $index == activeIndex"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
