@@ -475,14 +475,14 @@ namespace wwtlib
                     contextMenu.Items.Add(captureThumbnail);
                     contextMenu.Items.Add(sep6);
 
-                    if (!tour.CurrentTourStop.KeyFramed)
-                    {
-                        contextMenu.Items.Add(makeTimeline);
-                    }
-                    else
-                    {
-                        contextMenu.Items.Add(showTimeline);
-                    }
+                    //if (!tour.CurrentTourStop.KeyFramed)
+                    //{
+                    //    contextMenu.Items.Add(makeTimeline);
+                    //}
+                    //else
+                    //{
+                    //    contextMenu.Items.Add(showTimeline);
+                    //}
 
                     contextMenu.Items.Add(masterSlide);
                     contextMenu.Items.Add(setNextSlide);

@@ -15601,12 +15601,6 @@ window.wwtlib = function(){
         this._contextMenu.items.push(sep5);
         this._contextMenu.items.push(captureThumbnail);
         this._contextMenu.items.push(sep6);
-        if (!this._tour.get_currentTourStop().get_keyFramed()) {
-          this._contextMenu.items.push(makeTimeline);
-        }
-        else {
-          this._contextMenu.items.push(showTimeline);
-        }
         this._contextMenu.items.push(masterSlide);
         this._contextMenu.items.push(setNextSlide);
         this._contextMenu.items.push(fadeInOverlays);
@@ -31482,6 +31476,9 @@ window.wwtlib = function(){
     },
     initializeTexture: function() {
       if (this.texture2d == null || (this.textObject.text.indexOf('{$') > -1)) {
+        if (!this.get_height() || !this.get_width()) {
+          this._calculateTextSize$1();
+        }
         if (this._ctx$1 == null || this._ce$1 == null) {
           this._ce$1 = document.createElement('canvas');
           this._ce$1.height = ss.truncate(this.get_height());

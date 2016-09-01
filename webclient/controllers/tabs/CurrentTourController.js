@@ -28,15 +28,17 @@
         
     };
 
+
     var showSlides = function () {
         mapStops(true);
         $scope.$applyAsync(showTourSlides);
 
     };
-    
+   
     var initEditMode = function () {
         if ($rootScope.editingTour !== true) { return; }
-        tour.editMode = true;
+        tour._editMode = true;
+        tourEdit.pauseTour();
         $('#contextmenu,#popoutmenu').on('click', function () {
             mapStops.apply($scope, []);
         });

@@ -4511,6 +4511,7 @@ wwt.controllers.controller('MainController',
 		        $scope.activePanel = 'currentTour';
 		        $rootScope.$applyAsync(function () {
 		            $rootScope.editingTour = true;
+		            $rootScope.currentTour._editMode = true;
 		        });
 		    });
 	    };
@@ -6484,15 +6485,17 @@ wwt.controllers.controller('CurrentTourController', [
         
     };
 
+
     var showSlides = function () {
         mapStops(true);
         $scope.$applyAsync(showTourSlides);
 
     };
-    
+   
     var initEditMode = function () {
         if ($rootScope.editingTour !== true) { return; }
-        tour.editMode = true;
+        tour._editMode = true;
+        tourEdit.pauseTour();
         $('#contextmenu,#popoutmenu').on('click', function () {
             mapStops.apply($scope, []);
         });
