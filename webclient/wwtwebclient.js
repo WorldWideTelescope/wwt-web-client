@@ -4484,7 +4484,9 @@ wwt.controllers.controller('MainController',
 		$rootScope.closeTour = function ($event) {
 		    $event.preventDefault();
 		    $event.stopPropagation();
-		    
+		    if (wwtlib.WWTControl.singleton.tourEdit.get_tour().get_tourDirty() && !confirm('You have unsaved changes. Close this tour and lose changes?')) {
+		        return;
+		    }
 		    $rootScope.editingTour = false;
 		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
 		    delete $scope.ribbon.tabs[1].menu['Show Slide Overlays'];
@@ -6470,6 +6472,19 @@ wwt.controllers.controller('CurrentTourController', [
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
         };
+        wwt.wc.add_slideChanged(function () {
+            //console.log(arguments, tour, tourEdit);
+            $scope.$applyAsync(function () {//tween <.5
+                $scope.activeIndex = tour.get_currentTourstopIndex();
+                $scope.activeSlide = tour.get_currentTourStop();
+                tourEdit.tourStopList.selectedItems = {};
+                tourEdit.tourStopList.selectedItems[$scope.activeIndex] = $scope.activeSlide;
+                
+            }); 
+        });
+        
+
+
         tourEdit.tourStopList.refreshCallback = mapStops;
         $scope.editText = null;
         mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
@@ -6479,20 +6494,30 @@ wwt.controllers.controller('CurrentTourController', [
         $rootScope.$watch('editingTour', initEditMode);
         if (mainScope.autoEdit) {
             showSlides();
+            tour._editMode = true;
+            tourEdit.pauseTour();
             $rootScope.editingTour = true;
         }
-        
+        self.addEventListener("beforeunload", function (e) {
+            if (tourEdit.get_tour().get_tourDirty()) {
+                e.returnValue= "You have unsaved changes that will be lost if you proceed. Click cancel to save changes."
+            }
+        });
     };
 
     var showSlides = function () {
+        if (tourEdit.playing) {
+            tourEdit.pauseTour();
+        }
         mapStops(true);
         $scope.$applyAsync(showTourSlides);
-
+        
     };
     
     var initEditMode = function () {
         if ($rootScope.editingTour !== true) { return; }
-        tour.editMode = true;
+        tour._editMode = true;
+        tourEdit.pauseTour();
         $('#contextmenu,#popoutmenu').on('click', function () {
             mapStops.apply($scope, []);
         });
@@ -6612,25 +6637,29 @@ wwt.controllers.controller('CurrentTourController', [
             
         }
     };
+
+
     $scope.selectStop = function (index, e) {
         $scope.$applyAsync(function () { 
             
             $scope.activeSlide = tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
             
             $scope.activeIndex = index;
-            if (e && e.shiftKey) {
-                tourEdit.tourStopList.selectedItems = {};
-                for (var i = Math.min(index, $scope.lastFocused) ; i <= Math.max(index, $scope.lastFocused) ; i++) {
-                    tourEdit.tourStopList.selectedItems[i] = $scope.tourStops[i];
+            if (tour._editMode) {
+                if (e && e.shiftKey) {
+                    tourEdit.tourStopList.selectedItems = {};
+                    for (var i = Math.min(index, $scope.lastFocused) ; i <= Math.max(index, $scope.lastFocused) ; i++) {
+                        tourEdit.tourStopList.selectedItems[i] = $scope.tourStops[i];
+                    }
                 }
-            }
-            else if (e && e.ctrlKey) {
-                var keys = Object.keys(tourEdit.tourStopList.selectedItems);
-                if (tourEdit.tourStopList.selectedItems[index] && keys.length > 1) {
-                    delete tourEdit.tourStopList.selectedItems[index];
-                    $scope.activeIndex = keys[0];//set to first key
-                } else {
-                    tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
+                else if (e && e.ctrlKey) {
+                    var keys = Object.keys(tourEdit.tourStopList.selectedItems);
+                    if (tourEdit.tourStopList.selectedItems[index] && keys.length > 1) {
+                        delete tourEdit.tourStopList.selectedItems[index];
+                        $scope.activeIndex = keys[0];//set to first key
+                    } else {
+                        tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
+                    }
                 }
             }
             else {
@@ -6686,7 +6715,7 @@ wwt.controllers.controller('CurrentTourController', [
         //else { 
         //    tourEdit.playNow(true); 
         //}
-        $rootScope.tourPaused = !wwtlib.WWTControl.singleton.tourEdit.playing;
+        $rootScope.tourPaused = !tourEdit.playing;
     };
 
     var mapStops = $scope.refreshStops = function (isInit) {
@@ -6718,13 +6747,17 @@ wwt.controllers.controller('CurrentTourController', [
                         $('#newTourProps').click();
                     }, 500);
                 }
-                
+                $scope.$watch('activeSlide._tweenPosition', function (e) {
+                    console.log('tweenPos', e);
+                });
             }
             $scope.$broadcast('initSlides');
         });
     };
 
-    
+    $scope.launchFileBrowser = function (inputId) {
+        $('#' + inputId).click();
+    };
 
     $scope.setStopTransition = function (index, transitionType, transTime) {
         if (transitionType || transitionType === 0) {
