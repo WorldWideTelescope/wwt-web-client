@@ -682,7 +682,9 @@ wwt.controllers.controller('MainController',
 		$rootScope.closeTour = function ($event) {
 		    $event.preventDefault();
 		    $event.stopPropagation();
-		    
+		    if (wwtlib.WWTControl.singleton.tourEdit.get_tour().get_tourDirty() && !confirm('You have unsaved changes. Close this tour and lose changes?')) {
+		        return;
+		    }
 		    $rootScope.editingTour = false;
 		    delete $scope.ribbon.tabs[1].menu['Edit Tour'];
 		    delete $scope.ribbon.tabs[1].menu['Show Slide Overlays'];
