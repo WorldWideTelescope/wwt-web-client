@@ -4513,6 +4513,7 @@ wwt.controllers.controller('MainController',
 		        $scope.activePanel = 'currentTour';
 		        $rootScope.$applyAsync(function () {
 		            $rootScope.editingTour = true;
+		            $rootScope.currentTour._editMode = true;
 		        });
 		    });
 	    };
@@ -6505,6 +6506,7 @@ wwt.controllers.controller('CurrentTourController', [
         });
     };
 
+
     var showSlides = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
@@ -6513,7 +6515,7 @@ wwt.controllers.controller('CurrentTourController', [
         $scope.$applyAsync(showTourSlides);
         
     };
-    
+   
     var initEditMode = function () {
         if ($rootScope.editingTour !== true) { return; }
         tour._editMode = true;

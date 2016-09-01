@@ -1062,6 +1062,10 @@ namespace wwtlib
         {
             if (texture2d == null || (TextObject.Text.IndexOf("{$") > -1))
             {
+                if (Height == 0 || Width == 0)
+                {
+                    CalculateTextSize();
+                }
                 if (ctx == null || ce == null)
                 {
                     ce = (CanvasElement) Document.CreateElement("canvas")  ;

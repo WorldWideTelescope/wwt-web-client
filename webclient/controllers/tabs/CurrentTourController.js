@@ -47,6 +47,7 @@
         });
     };
 
+
     var showSlides = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
@@ -55,7 +56,7 @@
         $scope.$applyAsync(showTourSlides);
         
     };
-    
+   
     var initEditMode = function () {
         if ($rootScope.editingTour !== true) { return; }
         tour._editMode = true;
