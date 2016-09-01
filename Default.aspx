@@ -965,13 +965,13 @@
                                     <div class="thumbwrap">
                                         <span class="master-slide" ng-if="stop.isMaster">M</span>
                                         <span class="slide-number" ng-if="slideNumbering">{{$index+1}}</span>
-                                        <div class="stop-thumb thumbnail {{tourEdit.tourStopList.selectedItems[$index] ? 'active':''}}" 
+                                        <div class="stop-thumb thumbnail {{(!tourEdit.playing && tourEdit.tourStopList.selectedItems[$index]) || (tourEdit.playing && activeIndex === $index) ? 'active' : ''}}" 
                                             index="{{$index}}"
                                             ng-click="selectStop($index, $event)" 
                                             ng-dblclick="showStartCameraPosition($index)"
                                             ng-context-menu="showContextMenu">
-                                            <a class="ear stop-start" ng-click="showStartCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
-                                            <a class="ear stop-end" ng-click="showEndCameraPosition($index)" ng-show="editingTour && $index == activeIndex"></a>
+                                            <a class="ear stop-start{{tourEdit.playing && activeIndex === $index && stop._tweenPosition < .5 ? ' active' : ''}}" ng-click="showStartCameraPosition($index)" ng-show="(editingTour ||tourEdit.playing) && $index == activeIndex"></a>
+                                            <a class="ear stop-end{{tourEdit.playing && activeIndex === $index && stop._tweenPosition >= .5 ? ' active' : ''}}" ng-click="showEndCameraPosition($index)" ng-show="(editingTour ||tourEdit.playing) && $index == activeIndex"></a>
                                             <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}"/>
                                             <label class="slide-label" contenteditable="true" bs-tooltip data-title="{{stop.description}}" placement="bottom" container="body"></label>
                                             <label class="duration" contenteditable="true"></label>
@@ -985,7 +985,7 @@
                                     </div>
                                     
                                 </div>
-                                <div class="stop-arrow">
+                                <div class="stop-arrow" ng-if="editingTour">
                                     <div class="transition-choice invisible"></div>
                                     <div class="thumbwrap">
                                         <div class="stop-thumb thumbnail" 
@@ -1037,12 +1037,11 @@
                                         <li><a href="javascript:void(0)" ng-click="addShape(4)">Arrow</a></li>
                                         <li><a href="javascript:void(0)" ng-click="addShape(2)">Star</a></li>
                                     </ul>
-                                    <a class="btn menu-button picture" href="javascript:$('#addPicture').click()">
+                                    <a class="btn menu-button picture" ng-click="launchFileBrowser('addPicture')">
                                         <i class="fa fa-photo"></i>
                                         <label localize="Picture"></label>
-                                        <input type="file" id="addPicture" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" />
                                     </a>
-                                    
+                                    <input type="file" id="addPicture" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" style="position:absolute"/>
                                 </div>
                             </div>
                             <div class="right">
