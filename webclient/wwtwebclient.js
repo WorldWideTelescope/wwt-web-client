@@ -6672,6 +6672,7 @@ wwt.controllers.controller('CurrentTourController', [
             tour.set_currentTourstopIndex($scope.activeIndex);
             $scope.lastFocused = index;
             $scope.selectedSlide = $scope.tourStops[$scope.activeIndex];
+            tourEdit.tour_CurrentTourstopChanged();
             $scope.$broadcast('initSlides');
             $timeout(bindAudio, 500);
         });
