@@ -26,14 +26,14 @@
 
             }
         }
-        
+         
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
             backgroundColor: 'transparent',
-            bold: 0,
-            italic: 0,
-            underline: 0,
+            bold: false,
+            italic: false,
+            underline: false,
             fontSize: 24,
             fontName: 'Arial',
             borderStyle:0
