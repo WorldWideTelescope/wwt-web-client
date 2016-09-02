@@ -184,7 +184,7 @@
 
     $scope.selectStop = function (index, e) {
         $scope.$applyAsync(function () { 
-            
+             
             $scope.activeSlide = tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
             
             $scope.activeIndex = index;
