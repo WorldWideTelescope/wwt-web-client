@@ -6712,12 +6712,12 @@ wwt.controllers.controller('CurrentTourController', [
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        else {
-            tourEdit.playFromCurrentTourstop();
-        } 
-        //else { 
-        //    tourEdit.playNow(true); 
-        //}
+        //else {
+        //    tourEdit.playFromCurrentTourstop();
+        //} 
+        else { 
+            tourEdit.playNow(true); 
+        }
         $rootScope.tourPaused = !tourEdit.playing;
     };
 
@@ -6732,8 +6732,8 @@ wwt.controllers.controller('CurrentTourController', [
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
-                s.atime = s.get__transitionTime();
-                s.btime = s.get__transitionOutTime();
+                s.atime = s.get__transitionOutTime();
+                s.btime = s.get__transitionTime();
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
                 s.isMaster = s.get_masterSlide();
@@ -6769,12 +6769,13 @@ wwt.controllers.controller('CurrentTourController', [
             stop.transitionType = transitionType;
             return;
         } else if (transTime && typeof transTime === 'string') {
+            var stop = $scope.tourStops[index];
             switch (transTime) {
                 case 'atime':
-                    stop.set__transitionTime(stop.atime);
+                    stop.set__transitionOutTime(stop.atime);
                     break;
                 case 'btime':
-                    stop.set__transitionOutTime(stop.btime);
+                    stop.set__transitionTime(stop.btime);
                     break;
                 case 'holdtime':
                     stop.set__transitionHoldTime(stop.holdtime);
@@ -6783,6 +6784,7 @@ wwt.controllers.controller('CurrentTourController', [
         }
     };
 }]);
+
 
     
 wwt.controllers.controller('TourSlideText', [
@@ -6813,14 +6815,14 @@ wwt.controllers.controller('TourSlideText', [
 
             }
         }
-        
+         
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
             backgroundColor: 'transparent',
-            bold: 0,
-            italic: 0,
-            underline: 0,
+            bold: false,
+            italic: false,
+            underline: false,
             fontSize: 24,
             fontName: 'Arial',
             borderStyle:0

@@ -268,8 +268,8 @@ namespace wwtlib
                     contextMenu.Items.Add(sep1);
                     contextMenu.Items.Add(cutMenu);
                     contextMenu.Items.Add(copyMenu);
-                    //todo paste needs help
-                    //pasteMenu.Enabled = dataObject.GetDataPresent(TourStop.ClipboardFormat);
+                  
+                    pasteMenu.Enabled = TourEditorUI.clipboardType == TourStop.ClipboardFormat;
                     contextMenu.Items.Add(pasteMenu);
                     contextMenu.Items.Add(deleteMenu);
                     contextMenu.Show(Cursor.Position);
@@ -296,7 +296,7 @@ namespace wwtlib
 
 
                     // todo check for clibboard format first
-                   // pasteMenu.Enabled = dataObject.GetDataPresent(TourStop.ClipboardFormat);
+                    pasteMenu.Enabled = TourEditorUI.clipboardType == TourStop.ClipboardFormat;
                     contextMenu.Items.Add(selectAllMenu);
                     contextMenu.Items.Add(sep1);
                     contextMenu.Items.Add(pasteMenu);
@@ -460,7 +460,7 @@ namespace wwtlib
                     contextMenu.Items.Add(sep7);
                     contextMenu.Items.Add(cutMenu);
                     contextMenu.Items.Add(copyMenu);
-                    //pasteMenu.Enabled = dataObject.GetDataPresent(TourStop.ClipboardFormat);
+                    pasteMenu.Enabled = TourEditorUI.clipboardType == TourStop.ClipboardFormat;
                     contextMenu.Items.Add(pasteMenu);
                     contextMenu.Items.Add(deleteMenu);
                     contextMenu.Items.Add(sep1);
@@ -533,34 +533,34 @@ namespace wwtlib
 
         void insertDuplicate_Click(object sender, EventArgs e)
         {
-            //Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(530, "Duplicate Slide at End Position"), tour));
+            Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(530, "Duplicate Slide at End Position"), tour));
 
-            //TourStop ts = tour.CurrentTourStop.Copy();
+            TourStop ts = tour.CurrentTourStop.Copy();
 
-            //if (ts == null)
-            //{
-            //    return;
-            //}
+            if (ts == null)
+            {
+                return;
+            }
 
-            //if (ts.EndTarget != null)
-            //{
-            //    ts.EndTarget.BackgroundImageSet = ts.Target.BackgroundImageSet;
-            //    ts.EndTarget.StudyImageset = ts.Target.StudyImageset;
-            //    ts.Target = ts.EndTarget;
-            //    ts.StartTime = ts.EndTime;
-            //    ts.EndTarget = null;
-            //}
+            if (ts.EndTarget != null)
+            {
+                ts.EndTarget.BackgroundImageset = ts.Target.BackgroundImageset;
+                ts.EndTarget.StudyImageset = ts.Target.StudyImageset;
+                ts.Target = ts.EndTarget;
+                ts.StartTime = ts.EndTime;
+                ts.EndTarget = null;
+            }
 
-            //foreach (Overlay overlay in ts.Overlays)
-            //{
-            //    overlay.TweenFactor = 1f;
-            //    overlay.Animate = !overlay.Animate;
-            //    overlay.Animate = !overlay.Animate;
-            //}
-            //ts.TweenPosition = 0f;
-            //ts.FadeInOverlays = false;
-            //tour.InsertAfterTourStop(ts);
-            //tourStopList.Refresh();
+            foreach (Overlay overlay in ts.Overlays)
+            {
+                overlay.TweenFactor = 1f;
+                overlay.Animate = !overlay.Animate;
+                overlay.Animate = !overlay.Animate;
+            }
+            ts.TweenPosition = 0f;
+            ts.FadeInOverlays = false;
+            tour.InsertAfterTourStop(ts);
+            tourStopList.Refresh();
 
         }
 
@@ -834,69 +834,60 @@ namespace wwtlib
 
         void pasteMenu_Click(object sender, EventArgs e)
         {
-            //todo localize
+            if (TourEditorUI.clipboardType == TourStop.ClipboardFormat)
+            { 
+                Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(535, "Paste Slide"), tour));
+                // add try catch block
 
-            //IDataObject dataObject = Clipboard.GetDataObject();
+                XmlDocumentParser xParser = new XmlDocumentParser();
+                XmlDocument doc = xParser.ParseFromString(TourEditorUI.clipboardData, "text/xml");
+                XmlNode node = Util.SelectSingleNode(doc, "TourStops");
 
-            //if (dataObject.GetDataPresent(TourStop.ClipboardFormat))
-            //{
-            //    Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(535, "Paste Slide"), tour));
-            //    // add try catch block
-            //    string xml = dataObject.GetData(TourStop.ClipboardFormat) as string;
-            //    System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
-            //    doc.LoadXml(xml);
-            //    System.Xml.XmlNode node = doc["TourStops"];
+                Stack<TourStop> pasteStack = new Stack<TourStop>();
 
-            //    Stack<TourStop> pasteStack = new Stack<TourStop>();
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    if (child.Name == "TourStop")
+                    {
+                        TourStop ts = TourStop.FromXml(tour, child);
+                        ts.Id = Guid.NewGuid().ToString();
+                        pasteStack.Push(ts);
+                    }
+                }
 
-            //    foreach (System.Xml.XmlNode child in node.ChildNodes)
-            //    {
-            //        TourStop ts = TourStop.FromXml(tour, child);
-            //        ts.Id = Guid.NewGuid().ToString();
-            //        pasteStack.Push(ts);
-            //    }
-            //    tourStopList.SelectedItems.Clear();
-            //    int curIndex = tourStopList.SelectedItem + pasteStack.Count - 1;
+                tourStopList.SelectedItems.Clear();
+                int curIndex = tourStopList.SelectedItem + pasteStack.Count - 1;
 
-            //    while (pasteStack.Count > 0)
-            //    {
-            //        TourStop ts = pasteStack.Pop();
-            //        tour.InsertTourStop(ts);
-            //        tourStopList.SelectedItems.Add(curIndex--, ts);
-            //    }
-            //    tourStopList.Refresh();
-            //    TourEditorUI.ClearSelection();
-            //}
+                while (pasteStack.Count > 0)
+                {
+                    TourStop ts = pasteStack.Pop();
+                    tour.InsertTourStop(ts);
+                    tourStopList.SelectedItems[curIndex--] = ts;
+                }
+                tourStopList.Refresh();
+                TourEditorUI.ClearSelection();
+            }
         }
 
         void copyMenu_Click(object sender, EventArgs e)
         {
-            //StringBuilder sb = new StringBuilder();
-            //using (System.IO.StringWriter textWriter = new System.IO.StringWriter(sb))
-            //{
-            //    using (System.Xml.XmlTextWriter writer = new System.Xml.XmlTextWriter(textWriter))
-            //    {
-            //        writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-            //        writer.WriteStartElement("TourStops");
-            //        foreach (TourStop item in tourStopList.SelectedItems.Values)
-            //        {
-            //            item.SaveToXml(writer, true);
-            //        }
-            //        writer.WriteEndElement();
-            //    }
-            //}
-            //DataFormats.Format format = DataFormats.GetFormat(TourStop.ClipboardFormat);
+            XmlTextWriter writer = new XmlTextWriter();
 
-            //IDataObject dataObject = new DataObject();
-            //dataObject.SetData(format.Name, false, sb.ToString());
+            writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+            writer.WriteStartElement("TourStops");
+            foreach (int key in tourStopList.SelectedItems.Keys)
+            {
+                TourStop item = tourStopList.SelectedItems[key];
+                item.SaveToXml(writer, true);
+            }
+            writer.WriteEndElement();
 
-            //Clipboard.SetDataObject(dataObject, false);
-
+            TourEditorUI.clipboardType = TourStop.ClipboardFormat;
+            TourEditorUI.clipboardData = writer.Body;
         }
 
         void cutMenu_Click(object sender, EventArgs e)
         {
-            //todo localize
             Undo.Push(new UndoTourSlidelistChange(Language.GetLocalizedText(536, "Cut Slide"), tour));
 
             copyMenu_Click(sender, e);
@@ -905,7 +896,6 @@ namespace wwtlib
                 TourStop item = tourStopList.SelectedItems[key];
                 tour.RemoveTourStop(item);
             }
-
 
             tourStopList.SelectedItems.Clear();
             tourStopList.Refresh();

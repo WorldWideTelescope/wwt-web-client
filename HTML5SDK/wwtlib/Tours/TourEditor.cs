@@ -1463,8 +1463,8 @@ namespace wwtlib
             return sorted;
         }
 
-        string clipboardData = "";
-        string clipboardType = "";
+        public string clipboardData = "";
+        public string clipboardType = "";
         void copyMenu_Click(object sender, EventArgs e)
         {
             //todo impliment copy

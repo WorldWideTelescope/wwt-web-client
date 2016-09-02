@@ -484,6 +484,7 @@ namespace wwtlib
         public static WebGLUniformLocation projMatLoc;
         public static WebGLUniformLocation mvMatLoc;
         public static WebGLUniformLocation sampLoc;
+        public static WebGLUniformLocation opacityLoc;
 
         public static bool initialized = false;
         public static void Init(RenderContext renderContext)
@@ -496,9 +497,11 @@ namespace wwtlib
                       "   varying vec2 vTextureCoord;                                                         \n" +
                       "                                                                                       \n" +
                       "   uniform sampler2D uSampler;                                                         \n" +
+                      "   uniform float opacity;                                                              \n" +
                       "                                                                                       \n" +
                       "   void main(void) {                                                                   \n" +
-                      "   gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));         \n" +
+                      "   vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));             \n" +
+                      "   gl_FragColor = col * opacity;                                                       \n" +
                       "   }                                                                                   \n";
 
 
@@ -544,6 +547,7 @@ namespace wwtlib
             projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
             mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
             sampLoc = gl.getUniformLocation(prog, "uSampler");
+            opacityLoc = gl.getUniformLocation(prog, "opacity");
 
             Tile.uvMultiple = 1;
             Tile.DemEnabled = true;
@@ -555,7 +559,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
-        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture)
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity)
         {
             GL gl = renderContext.gl;
             if (gl != null)
@@ -568,7 +572,8 @@ namespace wwtlib
                 gl.useProgram(prog);
 
                 Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
-
+                gl.uniform1f(opacityLoc, opacity);
+ 
                 gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
                 gl.uniform1i(sampLoc, 0);
@@ -704,15 +709,9 @@ namespace wwtlib
                 gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
                 gl.uniform1i(sampLoc, 0);
-                if (renderContext.Space)
-                {
-                    gl.disable(GL.DEPTH_TEST);
-                }
-                else
-                {
-                    gl.enable(GL.DEPTH_TEST);
-                }
-
+               
+                gl.disable(GL.DEPTH_TEST);
+               
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(textureLoc);
                 gl.enableVertexAttribArray(colorLoc);
@@ -806,9 +805,8 @@ namespace wwtlib
             colorLoc = gl.getAttribLocation(prog, "aColor");
             projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
             mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
-  
- 
-            gl.enable(GL.BLEND);
+
+            gl.disable(GL.DEPTH_TEST);
             gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             initialized = true;
         }
@@ -832,15 +830,9 @@ namespace wwtlib
                 gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
                 gl.uniform1i(sampLoc, 0);
-                if (renderContext.Space)
-                {
-                    gl.disable(GL.DEPTH_TEST);
-                }
-                else
-                {
-                    gl.enable(GL.DEPTH_TEST);
-                }
 
+                gl.disable(GL.DEPTH_TEST);
+             
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(textureLoc);
                 gl.enableVertexAttribArray(colorLoc);

@@ -533,6 +533,10 @@ namespace wwtlib
 
         public SettingParameter GetSetting(StockSkyOverlayTypes type)
         {
+            if (type == StockSkyOverlayTypes.FadeToBlack)
+            {
+                return new SettingParameter(true, 0, 0 != 0, null);
+            }
             return new SettingParameter(false, 1, false, null);
         }
     }

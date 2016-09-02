@@ -23,6 +23,20 @@ namespace wwtlib
             return temp;
         }
 
+
+
+        internal static Color FromArgbColor(int a, Color col)
+        {
+            Color temp = new Color();
+            temp.A = a;
+            temp.R = col.R;
+            temp.G = col.G;
+            temp.B = col.B;
+
+            return temp;
+        }
+
+
         public static Color FromName(string name)
         {
             Color temp = new Color();
@@ -462,6 +476,8 @@ namespace wwtlib
             }
             return Color.FromArgb(255, 255, 255, 255);
         }
+
+     
 
         public static Color FromHex(string data)
         {

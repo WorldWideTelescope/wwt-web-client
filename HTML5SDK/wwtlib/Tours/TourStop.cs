@@ -62,6 +62,7 @@ namespace wwtlib
             }
         }
 
+        public double FaderOpacity = 0;
 
         public void UpdateTweenPosition()
         {
@@ -80,6 +81,29 @@ namespace wwtlib
             }
         }
 
+        public TourStop Copy()
+        {
+            XmlTextWriter writer = new XmlTextWriter();
+
+            writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+
+            this.SaveToXml(writer, true);
+  
+            // add try catch block
+            try
+            {
+                XmlDocumentParser xParser = new XmlDocumentParser();
+                XmlDocument doc = xParser.ParseFromString(writer.Body, "text/xml");
+                System.Xml.XmlNode node = Util.SelectSingleNode(doc, "TourStop");
+                TourStop ts = TourStop.FromXml(this.Owner, node);
+                ts.Id = Guid.NewGuid().ToString();
+                return ts;
+            }
+            catch
+            {
+            }
+            return null;
+        }
 
         public TourStop()
         {
@@ -1866,6 +1890,11 @@ namespace wwtlib
 
         public SettingParameter GetSetting(StockSkyOverlayTypes type)
         {
+            if (type == StockSkyOverlayTypes.FadeToBlack)
+            {
+                return new SettingParameter(true, FaderOpacity, FaderOpacity != 0, null);
+            }
+
             return new SettingParameter(false,1,false,null);
         }
     }

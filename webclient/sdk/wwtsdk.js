@@ -8392,7 +8392,7 @@ window.wwtlib = function(){
   }
   TileShader.init = function(renderContext) {
     var gl = renderContext.gl;
-    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '   gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));         \n' + '   }                                                                                   \n';
+    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '   vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));             \n' + '   gl_FragColor = col * opacity;                                                       \n' + '   }                                                                                   \n';
     var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '     }                                                                            \n' + '                                                                                  \n';
     TileShader._frag = gl.createShader(35632);
     gl.shaderSource(TileShader._frag, fragShaderText);
@@ -8413,13 +8413,14 @@ window.wwtlib = function(){
     TileShader.projMatLoc = gl.getUniformLocation(TileShader._prog, 'uPMatrix');
     TileShader.mvMatLoc = gl.getUniformLocation(TileShader._prog, 'uMVMatrix');
     TileShader.sampLoc = gl.getUniformLocation(TileShader._prog, 'uSampler');
+    TileShader.opacityLoc = gl.getUniformLocation(TileShader._prog, 'opacity');
     Tile.uvMultiple = 1;
     Tile.demEnabled = true;
     gl.enable(3042);
     gl.blendFunc(770, 771);
     TileShader.initialized = true;
   };
-  TileShader.use = function(renderContext, vertex, index, texture) {
+  TileShader.use = function(renderContext, vertex, index, texture, opacity) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TileShader.initialized) {
@@ -8427,6 +8428,7 @@ window.wwtlib = function(){
       }
       gl.useProgram(TileShader._prog);
       var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniform1f(TileShader.opacityLoc, opacity);
       gl.uniformMatrix4fv(TileShader.mvMatLoc, false, mvMat.floatArray());
       gl.uniformMatrix4fv(TileShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(TileShader.sampLoc, 0);
@@ -8497,12 +8499,7 @@ window.wwtlib = function(){
       gl.uniformMatrix4fv(SpriteShader.mvMatLoc, false, mvMat.floatArray());
       gl.uniformMatrix4fv(SpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(SpriteShader.sampLoc, 0);
-      if (renderContext.space) {
-        gl.disable(2929);
-      }
-      else {
-        gl.enable(2929);
-      }
+      gl.disable(2929);
       gl.enableVertexAttribArray(SpriteShader.vertLoc);
       gl.enableVertexAttribArray(SpriteShader.textureLoc);
       gl.enableVertexAttribArray(SpriteShader.colorLoc);
@@ -8547,7 +8544,7 @@ window.wwtlib = function(){
     ShapeSpriteShader.colorLoc = gl.getAttribLocation(ShapeSpriteShader._prog, 'aColor');
     ShapeSpriteShader.projMatLoc = gl.getUniformLocation(ShapeSpriteShader._prog, 'uPMatrix');
     ShapeSpriteShader.mvMatLoc = gl.getUniformLocation(ShapeSpriteShader._prog, 'uMVMatrix');
-    gl.enable(3042);
+    gl.disable(2929);
     gl.blendFunc(770, 771);
     ShapeSpriteShader.initialized = true;
   };
@@ -8562,12 +8559,7 @@ window.wwtlib = function(){
       gl.uniformMatrix4fv(ShapeSpriteShader.mvMatLoc, false, mvMat.floatArray());
       gl.uniformMatrix4fv(ShapeSpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(ShapeSpriteShader.sampLoc, 0);
-      if (renderContext.space) {
-        gl.disable(2929);
-      }
-      else {
-        gl.enable(2929);
-      }
+      gl.disable(2929);
       gl.enableVertexAttribArray(ShapeSpriteShader.vertLoc);
       gl.enableVertexAttribArray(ShapeSpriteShader.textureLoc);
       gl.enableVertexAttribArray(ShapeSpriteShader.colorLoc);
@@ -12146,6 +12138,10 @@ window.wwtlib = function(){
       this._frustumDirty = true;
       return value;
     },
+    _getScreenTexture: function() {
+      var tex = null;
+      return tex;
+    },
     get_worldBase: function() {
       return this._worldBase;
     },
@@ -13584,6 +13580,9 @@ window.wwtlib = function(){
       return value;
     },
     getSetting: function(type) {
+      if (type === 17) {
+        return new SettingParameter(true, 0, !!0, null);
+      }
       return new SettingParameter(false, 1, false, null);
     }
   };
@@ -14502,7 +14501,7 @@ window.wwtlib = function(){
         }
       }
       else {
-        TileShader.use(renderContext, this._vertexBuffer, this.getIndexBuffer(part, this.accomidation), this.texture2d);
+        TileShader.use(renderContext, this._vertexBuffer, this.getIndexBuffer(part, this.accomidation), this.texture2d, opacity);
         renderContext.gl.drawElements(4, this.triangleCount * 3, 5123, 0);
       }
     },
@@ -16954,6 +16953,7 @@ window.wwtlib = function(){
         this._contextMenu.items.push(sep1);
         this._contextMenu.items.push(cutMenu);
         this._contextMenu.items.push(copyMenu);
+        pasteMenu.enabled = this.tourEditorUI.clipboardType === 'WorldWideTelescope.Slide';
         this._contextMenu.items.push(pasteMenu);
         this._contextMenu.items.push(deleteMenu);
         this._contextMenu._show(Cursor.get_position());
@@ -16971,6 +16971,7 @@ window.wwtlib = function(){
         pasteMenu.click = ss.bind('_pasteMenu_Click', this);
         selectAllMenu.click = ss.bind('_selectAllMenu_Click', this);
         insertSlide.click = ss.bind('_addNewSlide_Click', this);
+        pasteMenu.enabled = this.tourEditorUI.clipboardType === 'WorldWideTelescope.Slide';
         this._contextMenu.items.push(selectAllMenu);
         this._contextMenu.items.push(sep1);
         this._contextMenu.items.push(pasteMenu);
@@ -17103,6 +17104,7 @@ window.wwtlib = function(){
         this._contextMenu.items.push(sep7);
         this._contextMenu.items.push(cutMenu);
         this._contextMenu.items.push(copyMenu);
+        pasteMenu.enabled = this.tourEditorUI.clipboardType === 'WorldWideTelescope.Slide';
         this._contextMenu.items.push(pasteMenu);
         this._contextMenu.items.push(deleteMenu);
         this._contextMenu.items.push(sep1);
@@ -17138,6 +17140,29 @@ window.wwtlib = function(){
     _setNextSlide_Click: function(sender, e) {
     },
     _insertDuplicate_Click: function(sender, e) {
+      Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(530, 'Duplicate Slide at End Position'), this._tour));
+      var ts = this._tour.get_currentTourStop().copy();
+      if (ts == null) {
+        return;
+      }
+      if (ts.get_endTarget() != null) {
+        ts.get_endTarget().set_backgroundImageset(ts.get_target().get_backgroundImageset());
+        ts.get_endTarget().set_studyImageset(ts.get_target().get_studyImageset());
+        ts.set_target(ts.get_endTarget());
+        ts.set_startTime(ts.get_endTime());
+        ts.set_endTarget(null);
+      }
+      var $enum1 = ss.enumerate(ts.get_overlays());
+      while ($enum1.moveNext()) {
+        var overlay = $enum1.current;
+        overlay.set_tweenFactor(1);
+        overlay.set_animate(!overlay.get_animate());
+        overlay.set_animate(!overlay.get_animate());
+      }
+      ts.set_tweenPosition(0);
+      ts.set_fadeInOverlays(false);
+      this._tour.insertAfterTourStop(ts);
+      this.tourStopList.refresh();
     },
     _fadeInOverlays_Click: function(sender, e) {
       this._tour.get_currentTourStop().set_fadeInOverlays(!this._tour.get_currentTourStop().get_fadeInOverlays());
@@ -17310,8 +17335,45 @@ window.wwtlib = function(){
       this.tourEditorUI.clearSelection();
     },
     _pasteMenu_Click: function(sender, e) {
+      if (this.tourEditorUI.clipboardType === 'WorldWideTelescope.Slide') {
+        Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(535, 'Paste Slide'), this._tour));
+        var xParser = new DOMParser();
+        var doc = xParser.parseFromString(this.tourEditorUI.clipboardData, 'text/xml');
+        var node = Util.selectSingleNode(doc, 'TourStops');
+        var pasteStack = new ss.Stack();
+        var $enum1 = ss.enumerate(node.childNodes);
+        while ($enum1.moveNext()) {
+          var child = $enum1.current;
+          if (child.nodeName === 'TourStop') {
+            var ts = TourStop._fromXml(this._tour, child);
+            ts.set_id(Guid.newGuid().toString());
+            pasteStack.push(ts);
+          }
+        }
+        ss.clearKeys(this.tourStopList.selectedItems);
+        var curIndex = this.tourStopList.selectedItem + pasteStack.count - 1;
+        while (pasteStack.count > 0) {
+          var ts = pasteStack.pop();
+          this._tour.insertTourStop(ts);
+          this.tourStopList.selectedItems[curIndex--] = ts;
+        }
+        this.tourStopList.refresh();
+        this.tourEditorUI.clearSelection();
+      }
     },
     _copyMenu_Click: function(sender, e) {
+      var writer = new XmlTextWriter();
+      writer._writeProcessingInstruction('xml', "version='1.0' encoding='UTF-8'");
+      writer._writeStartElement('TourStops');
+      var $enum1 = ss.enumerate(ss.keys(this.tourStopList.selectedItems));
+      while ($enum1.moveNext()) {
+        var key = $enum1.current;
+        var item = this.tourStopList.selectedItems[key];
+        item._saveToXml(writer, true);
+      }
+      writer._writeEndElement();
+      this.tourEditorUI.clipboardType = 'WorldWideTelescope.Slide';
+      this.tourEditorUI.clipboardData = writer.body;
     },
     _cutMenu_Click: function(sender, e) {
       Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(536, 'Cut Slide'), this._tour));
@@ -17542,8 +17604,8 @@ window.wwtlib = function(){
     this._contextPoint = new Vector2d();
     this._dragCopying = false;
     this._brokeThreshold = false;
-    this._clipboardData = '';
-    this._clipboardType = '';
+    this.clipboardData = '';
+    this.clipboardType = '';
     this.editTextCallback = null;
     this._defaultColor = Colors.get_white();
   }
@@ -17960,7 +18022,7 @@ window.wwtlib = function(){
       }
       this._contextMenu = new ContextMenuStrip();
       var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(425, 'Paste'));
-      pasteMenu.enabled = this._clipboardType === 'WorldWideTelescope.Overlay';
+      pasteMenu.enabled = this.clipboardType === 'WorldWideTelescope.Overlay';
       pasteMenu.click = ss.bind('_pasteMenu_Click', this);
       this._contextMenu.items.push(pasteMenu);
       var AddCircle = ToolStripMenuItem.create(Language.getLocalizedText(444, 'Circle'));
@@ -18440,8 +18502,8 @@ window.wwtlib = function(){
         overlay.saveToXml(writer, true);
       }
       writer._writeEndElement();
-      this._clipboardData = writer.body;
-      this._clipboardType = 'WorldWideTelescope.Overlay';
+      this.clipboardData = writer.body;
+      this.clipboardType = 'WorldWideTelescope.Overlay';
     },
     _cutMenu_Click: function(sender, e) {
       if (this._tour == null || this._tour.get_currentTourStop() == null) {
@@ -18460,9 +18522,9 @@ window.wwtlib = function(){
     },
     _pasteMenu_Click: function(sender, e) {
       Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(544, 'Paste Object'), this._tour));
-      if (this._clipboardType === 'WorldWideTelescope.Overlay') {
+      if (this.clipboardType === 'WorldWideTelescope.Overlay') {
         var xParser = new DOMParser();
-        var doc = xParser.parseFromString(this._clipboardData, 'text/xml');
+        var doc = xParser.parseFromString(this.clipboardData, 'text/xml');
         this.clearSelection();
         var parent = Util.selectSingleNode(doc, 'Overlays');
         var $enum1 = ss.enumerate(parent.childNodes);
@@ -19283,52 +19345,70 @@ window.wwtlib = function(){
           this._currentMasterSlide = this._tour.get_currentTourStop();
         }
       }
-      if (this._tour.get_currentTourstopIndex() < (this._tour.get_tourStops().length - 1)) {
+      if (this._tour.get_currentTourstopIndex() < (this._tour.get_tourStops().length - 1) || this._tour.get_currentTourStop().get_isLinked()) {
         if (this._tour.get_currentTourStop().get_endTarget() != null) {
           WWTControl.singleton.gotoTargetFull(false, true, this._tour.get_currentTourStop().get_endTarget().get_camParams(), this._tour.get_currentTourStop().get_target().get_studyImageset(), this._tour.get_currentTourStop().get_target().get_backgroundImageset());
           WWTControl.singleton.set__mover(null);
         }
         this._onTarget = false;
         if (this._tour.get_currentTourStop().get_isLinked()) {
-          switch (this._tour.get_currentTourStop().get_nextSlide()) {
-            case 'Return':
-              if (this._callStack.count > 0) {
-                this._playFromTourstop(this._tour.get_tourStops()[this._callStack.pop()]);
-              }
-              else {
-                this._tour.set_currentTourstopIndex(this._tour.get_tourStops().length - 1);
-              }
-              break;
-            default:
-              this._playFromTourstop(this._tour.get_tourStops()[this._tour.getTourStopIndexByID(this._tour.get_currentTourStop().get_nextSlide())]);
-              break;
+          try {
+            switch (this._tour.get_currentTourStop().get_nextSlide()) {
+              case 'Return':
+                if (this._callStack.count > 0) {
+                  this._playFromTourstop(this._tour.get_tourStops()[this._callStack.pop()]);
+                }
+                else {
+                  this._tour.set_currentTourstopIndex(this._tour.get_tourStops().length - 1);
+                }
+                break;
+              default:
+                this._playFromTourstop(this._tour.get_tourStops()[this._tour.getTourStopIndexByID(this._tour.get_currentTourStop().get_nextSlide())]);
+                break;
+            }
+          }
+          catch ($e2) {
+            if ((this._tour.get_currentTourstopIndex() < (this._tour.get_tourStops().length - 1))) {
+              this._tour.set_currentTourstopIndex(this._tour.get_currentTourstopIndex() + 1) - 1;
+            }
           }
         }
         else {
           this._tour.set_currentTourstopIndex(this._tour.get_currentTourstopIndex() + 1) - 1;
         }
         if (this._currentMasterSlide != null && this._tour.get_currentTourStop().get_masterSlide()) {
-          if (this._currentMasterSlide.get_musicTrack() != null) {
-            this._currentMasterSlide.get_musicTrack().stop();
-          }
-          if (this._currentMasterSlide.get_voiceTrack() != null) {
-            this._currentMasterSlide.get_voiceTrack().stop();
-          }
-          var $enum2 = ss.enumerate(this._currentMasterSlide.get_overlays());
-          while ($enum2.moveNext()) {
-            var overlay = $enum2.current;
-            overlay.stop();
-          }
-          this._currentMasterSlide = null;
+          this._stopCurrentMaster();
         }
-        WWTControl.singleton.gotoTarget(this._tour.get_currentTourStop().get_target(), false, false, false);
+        var instant = false;
+        switch (this._tour.get_currentTourStop().get__transition()) {
+          case 0:
+            break;
+          case 1:
+            instant = true;
+            break;
+          case 2:
+            instant = true;
+            break;
+          case 3:
+            instant = true;
+            break;
+          case 5:
+            instant = true;
+            break;
+          case 4:
+            instant = true;
+            break;
+          default:
+            break;
+        }
+        WWTControl.singleton.gotoTarget(this._tour.get_currentTourStop().get_target(), false, instant, false);
         this._slideStartTime = ss.now();
         Settings.tourSettings = this._tour.get_currentTourStop();
         SpaceTimeController.set_now(this._tour.get_currentTourStop().get_startTime());
         SpaceTimeController.set_syncToClock(false);
       }
       else {
-        this._stopMaster();
+        this._stopCurrentMaster();
         TourPlayer._playing = false;
         if (Settings.get_current().autoRepeatTour) {
           this._tour.set_currentTourstopIndex(-1);
@@ -19345,7 +19425,7 @@ window.wwtlib = function(){
         }
       }
     },
-    _stopMaster: function() {
+    _stopCurrentMaster: function() {
       if (this._currentMasterSlide != null) {
         if (this._currentMasterSlide.get_musicTrack() != null) {
           this._currentMasterSlide.get_musicTrack().stop();
@@ -19446,12 +19526,75 @@ window.wwtlib = function(){
       WWTControl.scriptInterface._fireTourEnded();
     },
     updateSlideStates: function() {
+      var slideChanging = false;
       var slideElapsedTime = ss.now() - this._slideStartTime;
       if (slideElapsedTime > this._tour.get_currentTourStop().get_duration() && TourPlayer._playing) {
         this.nextSlide();
+        slideChanging = true;
       }
       slideElapsedTime = ss.now() - this._slideStartTime;
-      this._tour.get_currentTourStop().set_tweenPosition((slideElapsedTime / this._tour.get_currentTourStop().get_duration()));
+      if (this._tour.get_currentTourStop() != null) {
+        this._tour.get_currentTourStop().set_tweenPosition(Math.min(1, (slideElapsedTime / this._tour.get_currentTourStop().get_duration())));
+      }
+      if (this._tour.get_currentTourStop() != null) {
+        this._tour.get_currentTourStop().faderOpacity = 0;
+        var elapsedSeconds = this._tour.get_currentTourStop().get_tweenPosition() * this._tour.get_currentTourStop().get_duration() / 1000;
+        if (slideChanging) {
+          WWTControl.singleton.set_crossFadeFrame(false);
+        }
+        switch (this._tour.get_currentTourStop().get__transition()) {
+          case 0:
+            this._tour.get_currentTourStop().faderOpacity = 0;
+            WWTControl.singleton.set_crossFadeFrame(false);
+            break;
+          case 2:
+            if (slideChanging) {
+            }
+            if (elapsedSeconds < (elapsedSeconds - this._tour.get_currentTourStop().get__transitionHoldTime())) {
+              WWTControl.singleton.set_crossFadeFrame(true);
+              this._tour.get_currentTourStop().faderOpacity = 1;
+            }
+            else {
+              this._tour.get_currentTourStop().faderOpacity = 0;
+              WWTControl.singleton.set_crossFadeFrame(false);
+            }
+            break;
+          case 1:
+            WWTControl.singleton.set_crossFadeFrame(true);
+            var opacity = Math.max(0, 1 - Math.min(1, (elapsedSeconds - this._tour.get_currentTourStop().get__transitionHoldTime()) / this._tour.get_currentTourStop().get__transitionTime()));
+            this._tour.get_currentTourStop().faderOpacity = opacity;
+            if (slideChanging) {
+            }
+            break;
+          case 3:
+          case 4:
+            WWTControl.singleton.set_crossFadeFrame(false);
+            var opacity = Math.max(0, 1 - Math.max(0, elapsedSeconds - this._tour.get_currentTourStop().get__transitionHoldTime()) / this._tour.get_currentTourStop().get__transitionTime());
+            this._tour.get_currentTourStop().faderOpacity = opacity;
+            break;
+          case 5:
+            WWTControl.singleton.set_crossFadeFrame(false);
+            break;
+          default:
+            break;
+        }
+        if (!this._tour.get_currentTourStop().get_isLinked() && this._tour.get_currentTourstopIndex() < (this._tour.get_tourStops().length - 1)) {
+          var nextTrans = this._tour.get_tourStops()[this._tour.get_currentTourstopIndex() + 1].get__transition();
+          var nextTransTime = this._tour.get_tourStops()[this._tour.get_currentTourstopIndex() + 1].get__transitionOutTime();
+          switch (nextTrans) {
+            case 5:
+            case 3:
+              if (!this._tour.get_currentTourStop().faderOpacity) {
+                WWTControl.singleton.set_crossFadeFrame(false);
+                var opacity = Math.max(0, 1 - Math.min(1, ((this._tour.get_currentTourStop().get_duration() / 1000) - elapsedSeconds) / nextTransTime));
+                this._tour.get_currentTourStop().faderOpacity = opacity;
+              }
+              break;
+            default:
+              break;
+          }
+        }
+      }
     },
     updateTweenPosition: function(tween) {
       var slideElapsedTime = ss.now() - this._slideStartTime;
@@ -19633,6 +19776,7 @@ window.wwtlib = function(){
     this._tourStopType = 0;
     this._keyFramed = false;
     this._tweenPosition = 0;
+    this.faderOpacity = 0;
     this._owner = null;
     this._transition = 0;
     this._transitionTime = 2;
@@ -20030,6 +20174,22 @@ window.wwtlib = function(){
     updateTweenPosition: function() {
       if (this.get_keyFramed()) {
       }
+    },
+    copy: function() {
+      var writer = new XmlTextWriter();
+      writer._writeProcessingInstruction('xml', "version='1.0' encoding='UTF-8'");
+      this._saveToXml(writer, true);
+      try {
+        var xParser = new DOMParser();
+        var doc = xParser.parseFromString(writer.body, 'text/xml');
+        var node = Util.selectSingleNode(doc, 'TourStop');
+        var ts = TourStop._fromXml(this.get_owner(), node);
+        ts.set_id(Guid.newGuid().toString());
+        return ts;
+      }
+      catch ($e1) {
+      }
+      return null;
     },
     get_owner: function() {
       return this._owner;
@@ -21017,6 +21177,9 @@ window.wwtlib = function(){
       return value;
     },
     getSetting: function(type) {
+      if (type === 17) {
+        return new SettingParameter(true, this.faderOpacity, !!this.faderOpacity, null);
+      }
       return new SettingParameter(false, 1, false, null);
     }
   };
@@ -21328,6 +21491,9 @@ window.wwtlib = function(){
 
   function UiTools() {
   }
+  UiTools.gamma = function(val, gamma) {
+    return Math.min(255, ss.truncate(((255 * Math.pow(val / 255, 1 / gamma)) + 0.5)));
+  };
   UiTools.getNamesStringFromArray = function(array) {
     var names = '';
     var delim = '';
@@ -22445,6 +22611,11 @@ window.wwtlib = function(){
     this._zoomMin = 0.001373291015625;
     this._zoomMinSolarSystem = 0.0001;
     this.constellation = 'UMA';
+    this._fadePoints = null;
+    this.fader = BlendState.create(true, 2000);
+    this._crossFadeFrame = false;
+    this._crossFadeTexture = null;
+    this._sprite = new Sprite2d();
     this.renderType = 2;
     this._milkyWayBackground = null;
     this._foregroundCanvas = null;
@@ -22605,6 +22776,73 @@ window.wwtlib = function(){
       return value;
     },
     _notifyMoveComplete: function() {
+    },
+    get_crossFadeFrame: function() {
+      return this._crossFadeFrame;
+    },
+    set_crossFadeFrame: function(value) {
+      if (value && this._crossFadeFrame !== value) {
+        if (this._crossFadeTexture != null) {
+        }
+        this._crossFadeTexture = this.renderContext._getScreenTexture();
+      }
+      this._crossFadeFrame = value;
+      if (!value) {
+        if (this._crossFadeTexture != null) {
+          this._crossFadeTexture = null;
+        }
+      }
+      return value;
+    },
+    _fadeFrame: function() {
+      if (this.renderContext.gl != null) {
+        var sp = Settings.get_active().getSetting(17);
+        if ((sp.opacity > 0)) {
+          var color = Color._fromArgbColor(255 - UiTools.gamma(255 - ss.truncate((sp.opacity * 255)), 1 / 2.2), Colors.get_black());
+          if (!(sp.opacity > 0)) {
+            color = Color._fromArgbColor(255 - UiTools.gamma(255 - ss.truncate((sp.opacity * 255)), 1 / 2.2), Colors.get_black());
+          }
+          if (this._crossFadeFrame) {
+            color = Color._fromArgbColor(UiTools.gamma(ss.truncate((sp.opacity * 255)), 1 / 2.2), Colors.get_white());
+          }
+          else {
+            if (this._crossFadeTexture != null) {
+              this._crossFadeTexture = null;
+            }
+          }
+          if (this._fadePoints == null) {
+            this._fadePoints = new Array(4);
+            for (var i = 0; i < 4; i++) {
+              this._fadePoints[i] = new PositionColoredTextured();
+            }
+          }
+          this._fadePoints[0].position.x = -this.renderContext.width / 2;
+          this._fadePoints[0].position.y = this.renderContext.height / 2;
+          this._fadePoints[0].position.z = 1347;
+          this._fadePoints[0].tu = 0;
+          this._fadePoints[0].tv = 1;
+          this._fadePoints[0].color = color;
+          this._fadePoints[1].position.x = -this.renderContext.width / 2;
+          this._fadePoints[1].position.y = -this.renderContext.height / 2;
+          this._fadePoints[1].position.z = 1347;
+          this._fadePoints[1].tu = 0;
+          this._fadePoints[1].tv = 0;
+          this._fadePoints[1].color = color;
+          this._fadePoints[2].position.x = this.renderContext.width / 2;
+          this._fadePoints[2].position.y = this.renderContext.height / 2;
+          this._fadePoints[2].position.z = 1347;
+          this._fadePoints[2].tu = 1;
+          this._fadePoints[2].tv = 1;
+          this._fadePoints[2].color = color;
+          this._fadePoints[3].position.x = this.renderContext.width / 2;
+          this._fadePoints[3].position.y = -this.renderContext.height / 2;
+          this._fadePoints[3].position.z = 1347;
+          this._fadePoints[3].tu = 1;
+          this._fadePoints[3].tv = 0;
+          this._fadePoints[3].color = color;
+          this._sprite.draw(this.renderContext, this._fadePoints, 4, this._crossFadeTexture, true, 1);
+        }
+      }
     },
     render: function() {
       var $this = this;
@@ -22773,10 +23011,15 @@ window.wwtlib = function(){
           }
         }
       }
+      this.renderContext.setupMatricesOverlays();
+      this._fadeFrame();
       this._frameCount++;
       TileCache.decimateQueue();
       TileCache.processQueue(this.renderContext);
       Tile.currentRenderGeneration++;
+      if (!TourPlayer.get_playing()) {
+        this.set_crossFadeFrame(false);
+      }
       var now = ss.now();
       var ms = now - this._lastUpdate;
       if (ms > 1000) {
@@ -24097,6 +24340,14 @@ window.wwtlib = function(){
     temp.r = r;
     temp.g = g;
     temp.b = b;
+    return temp;
+  };
+  Color._fromArgbColor = function(a, col) {
+    var temp = new Color();
+    temp.a = a;
+    temp.r = col.r;
+    temp.g = col.g;
+    temp.b = col.b;
     return temp;
   };
   Color.fromName = function(name) {

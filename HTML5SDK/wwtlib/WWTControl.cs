@@ -128,6 +128,114 @@ namespace wwtlib
             //Page.Master.OnArrived();
         }
 
+        PositionColoredTextured[] fadePoints = null;
+        public BlendState Fader = BlendState.Create(true, 2000);
+
+        private bool crossFadeFrame = false;
+
+        private Texture crossFadeTexture = null;
+        public bool CrossFadeFrame
+        {
+            set
+            {
+                if (value && crossFadeFrame != value)
+                {
+                    if (crossFadeTexture != null)
+                    {
+                       // crossFadeTexture.Dispose();
+                    }
+                    crossFadeTexture = RenderContext.GetScreenTexture();
+
+                }
+                crossFadeFrame = value;
+
+                if (!value)
+                {
+                    if (crossFadeTexture != null)
+                    {
+                       // crossFadeTexture.Dispose();
+                        crossFadeTexture = null;
+                    }
+                }
+            }
+            get
+            {
+                return crossFadeFrame;
+            }
+        }
+
+        private Sprite2d sprite = new Sprite2d();
+
+        private void FadeFrame()
+        {
+            if (RenderContext.gl != null)
+            {
+                SettingParameter sp = Settings.Active.GetSetting(StockSkyOverlayTypes.FadeToBlack);
+                if ((sp.Opacity > 0))
+                {
+                    Color color = Color.FromArgbColor(255 - (int)UiTools.Gamma(255 - (int)(sp.Opacity * 255), 1 / 2.2f), Colors.Black);
+
+                    if (!(sp.Opacity > 0))
+                    {
+                        color = Color.FromArgbColor(255 - (int)UiTools.Gamma(255 - (int)(sp.Opacity * 255), 1 / 2.2f), Colors.Black);
+                    }
+
+
+                    if (crossFadeFrame)
+                    {
+                        color = Color.FromArgbColor((int)UiTools.Gamma((int)((sp.Opacity) * 255), 1 / 2.2f), Colors.White);
+                    }
+                    else
+                    {
+                        if (crossFadeTexture != null)
+                        {
+                            // crossFadeTexture.Dispose();
+                            crossFadeTexture = null;
+                        }
+                    }
+                    if (fadePoints == null)
+                    {
+                        fadePoints = new PositionColoredTextured[4];
+                        for(int i=0; i < 4; i++)
+                        {
+                            fadePoints[i] = new PositionColoredTextured();
+                        }
+                    }
+
+
+                    fadePoints[0].Position.X = -RenderContext.Width/2;
+                    fadePoints[0].Position.Y = RenderContext.Height/2;
+                    fadePoints[0].Position.Z = 1347;
+                    fadePoints[0].Tu = 0;
+                    fadePoints[0].Tv = 1;
+                    fadePoints[0].Color = color;
+
+                    fadePoints[1].Position.X = -RenderContext.Width/2;
+                    fadePoints[1].Position.Y = -RenderContext.Height / 2;
+                    fadePoints[1].Position.Z = 1347;
+                    fadePoints[1].Tu = 0;
+                    fadePoints[1].Tv = 0;
+                    fadePoints[1].Color = color;
+
+                    fadePoints[2].Position.X = RenderContext.Width/2;
+                    fadePoints[2].Position.Y = RenderContext.Height/2;
+                    fadePoints[2].Position.Z = 1347;
+                    fadePoints[2].Tu = 1;
+                    fadePoints[2].Tv = 1;
+                    fadePoints[2].Color = color;
+
+                    fadePoints[3].Position.X = RenderContext.Width / 2;
+                    fadePoints[3].Position.Y = -RenderContext.Height / 2;
+                    fadePoints[3].Position.Z = 1347;
+                    fadePoints[3].Tu = 1;
+                    fadePoints[3].Tv = 0;
+                    fadePoints[3].Color = color;
+
+                    sprite.Draw(RenderContext, fadePoints, 4, crossFadeTexture, true, 1);
+                }
+            }
+        }
+
         public ImageSetType RenderType = ImageSetType.Sky;
 
         private Imageset milkyWayBackground = null;
@@ -536,6 +644,10 @@ namespace wwtlib
                     }
                 }
             }
+
+            RenderContext.SetupMatricesOverlays();
+            FadeFrame();
+            //RenderContext.Clear();
             //int tilesInView = Tile.TilesInView;
             //int itlesTouched = Tile.TilesTouched;
 
@@ -546,6 +658,10 @@ namespace wwtlib
             TileCache.ProcessQueue(RenderContext);
             Tile.CurrentRenderGeneration++;
 
+            if (!TourPlayer.Playing)
+            {
+                CrossFadeFrame = false;
+            }
 
 
             Date now = Date.Now;

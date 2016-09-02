@@ -178,6 +178,15 @@ namespace wwtlib
 
         private Matrix3d worldBase;
 
+        internal Texture GetScreenTexture()
+        {
+            //todo add code to capture screen
+            Texture tex = null;
+
+            return tex;
+            
+        }
+
         public Matrix3d WorldBase
         {
             get { return worldBase; }
@@ -688,6 +697,8 @@ namespace wwtlib
 
 
         }
+
+
 
         public void SetupMatricesSolarSystem(bool forStars)
         {

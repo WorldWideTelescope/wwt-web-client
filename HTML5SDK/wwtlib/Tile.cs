@@ -511,16 +511,7 @@ namespace wwtlib
             }
             else
             {
-                TileShader.Use(renderContext, VertexBuffer, GetIndexBuffer(part, accomidation), texture2d);
-                //renderContext.gl.enableVertexAttribArray(renderContext.vertLoc);
-                //renderContext.gl.enableVertexAttribArray(renderContext.textureLoc);
-                //renderContext.gl.bindBuffer(GL.ARRAY_BUFFER, VertexBuffer);
-                //renderContext.gl.vertexAttribPointer(renderContext.vertLoc, 3, GL.FLOAT, false, 20, 0);
-                //renderContext.gl.vertexAttribPointer(renderContext.textureLoc, 2, GL.FLOAT, false, 20, 12);
-                //renderContext.gl.activeTexture(GL.TEXTURE0);
-                //renderContext.gl.bindTexture(GL.TEXTURE_2D, texture2d);
-
-                //renderContext.gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, GetIndexBuffer(part, accomidation));
+                TileShader.Use(renderContext, VertexBuffer, GetIndexBuffer(part, accomidation), texture2d, (float)opacity);
                 renderContext.gl.drawElements(GL.TRIANGLES, TriangleCount * 3 , GL.UNSIGNED_SHORT, 0);
             }
         }

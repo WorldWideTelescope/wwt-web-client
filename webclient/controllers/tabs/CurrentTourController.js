@@ -253,12 +253,12 @@
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        else {
-            tourEdit.playFromCurrentTourstop();
-        } 
-        //else { 
-        //    tourEdit.playNow(true); 
-        //}
+        //else {
+        //    tourEdit.playFromCurrentTourstop();
+        //} 
+        else { 
+            tourEdit.playNow(true); 
+        }
         $rootScope.tourPaused = !tourEdit.playing;
     };
 
@@ -273,8 +273,8 @@
                 tour.duration += s.duration;
 
                 //placeholder values until transition api is there
-                s.atime = s.get__transitionTime();
-                s.btime = s.get__transitionOutTime();
+                s.atime = s.get__transitionOutTime();
+                s.btime = s.get__transitionTime();
                 s.holdtime = s.get__transitionHoldTime();
                 s.transitionType = s.get__transition();
                 s.isMaster = s.get_masterSlide();
@@ -310,12 +310,13 @@
             stop.transitionType = transitionType;
             return;
         } else if (transTime && typeof transTime === 'string') {
+            var stop = $scope.tourStops[index];
             switch (transTime) {
                 case 'atime':
-                    stop.set__transitionTime(stop.atime);
+                    stop.set__transitionOutTime(stop.atime);
                     break;
                 case 'btime':
-                    stop.set__transitionOutTime(stop.btime);
+                    stop.set__transitionTime(stop.btime);
                     break;
                 case 'holdtime':
                     stop.set__transitionHoldTime(stop.holdtime);
@@ -324,5 +325,6 @@
         }
     };
 }]);
+
 
     

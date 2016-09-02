@@ -408,7 +408,7 @@ namespace wwtlib
                 }
             }
 
-            if (tour.CurrentTourstopIndex < (tour.TourStops.Count - 1)) 
+            if (tour.CurrentTourstopIndex < (tour.TourStops.Count - 1) || tour.CurrentTourStop.IsLinked)
             {
                 if (tour.CurrentTourStop.EndTarget != null)
                 {
@@ -418,26 +418,32 @@ namespace wwtlib
                 onTarget = false;
                 if (tour.CurrentTourStop.IsLinked)
                 {
-                    switch (tour.CurrentTourStop.NextSlide)
+                    try
                     {
-                        case "Return":
-                            if (callStack.Count > 0)
-                            {
-                                PlayFromTourstop(tour.TourStops[callStack.Pop()]);
-                            }
-                            else
-                            {
-                                tour.CurrentTourstopIndex = tour.TourStops.Count - 1;
-                            }
-                            break;
-                        default:
-                            PlayFromTourstop(tour.TourStops[tour.GetTourStopIndexByID(tour.CurrentTourStop.NextSlide)]);
-
-                            //tour.CurrentTourstopIndex = tour.GetTourStopIndexByID(tour.CurrentTourStop.NextSlide);
-                            //PlayMasterForCurrent();
-                            break;
+                        switch (tour.CurrentTourStop.NextSlide)
+                        {
+                            case "Return":
+                                if (callStack.Count > 0)
+                                {
+                                    PlayFromTourstop(tour.TourStops[callStack.Pop()]);
+                                }
+                                else
+                                {
+                                    tour.CurrentTourstopIndex = tour.TourStops.Count - 1;
+                                }
+                                break;
+                            default:
+                                PlayFromTourstop(tour.TourStops[tour.GetTourStopIndexByID(tour.CurrentTourStop.NextSlide)]);
+                                break;
+                        }
                     }
-
+                    catch
+                    {
+                        if ((tour.CurrentTourstopIndex < (tour.TourStops.Count - 1)))
+                        {
+                            tour.CurrentTourstopIndex++;
+                        }
+                    }
                 }
                 else
                 {
@@ -446,23 +452,34 @@ namespace wwtlib
 
                 if (currentMasterSlide != null && tour.CurrentTourStop.MasterSlide)
                 {
-                    if (currentMasterSlide.MusicTrack != null)
-                    {
-                        currentMasterSlide.MusicTrack.Stop();
-                    }
-
-                    if (currentMasterSlide.VoiceTrack != null)
-                    {
-                        currentMasterSlide.VoiceTrack.Stop();
-                    }
-
-                    foreach (Overlay overlay in currentMasterSlide.Overlays)
-                    {
-                        overlay.Stop();
-                    }
-                    currentMasterSlide = null;
+                    StopCurrentMaster();
                 }
-                WWTControl.Singleton.GotoTarget(tour.CurrentTourStop.Target, false, false, false);
+
+                bool instant = false;
+                switch (tour.CurrentTourStop.Transition)
+                {
+                    case TransitionType.Slew:
+                        break;
+                    case TransitionType.CrossFade:
+                        instant = true;
+                        break;
+                    case TransitionType.CrossCut:
+                        instant = true;
+                        break;
+                    case TransitionType.FadeOutIn:
+                        instant = true;
+                        break;
+                    case TransitionType.FadeOut:
+                        instant = true;
+                        break;
+                    case TransitionType.FadeIn:
+                        instant = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                WWTControl.Singleton.GotoTarget(tour.CurrentTourStop.Target, false, instant, false);
 
                 slideStartTime = Date.Now;
                 // Move to new settings
@@ -474,7 +491,7 @@ namespace wwtlib
             }
             else
             {
-                StopMaster();
+                StopCurrentMaster();
                 playing = false;
                 if (Settings.Current.AutoRepeatTour)
                 {
@@ -497,7 +514,7 @@ namespace wwtlib
 
         }
 
-        private void StopMaster()
+        private void StopCurrentMaster()
         {
             if (currentMasterSlide != null)
             {
@@ -668,16 +685,115 @@ namespace wwtlib
 
         public void UpdateSlideStates()
         {
+            bool slideChanging = false;
+
             int slideElapsedTime = Date.Now - slideStartTime;
 
             if (slideElapsedTime > tour.CurrentTourStop.Duration && playing)
             {
                 NextSlide();
+                slideChanging = true;
             }
+
             slideElapsedTime = Date.Now - slideStartTime;
 
-            tour.CurrentTourStop.TweenPosition = (float)(slideElapsedTime / tour.CurrentTourStop.Duration);
+            if (tour.CurrentTourStop != null)
+            {
+                tour.CurrentTourStop.TweenPosition = Math.Min(1, (float)(slideElapsedTime / tour.CurrentTourStop.Duration));
+            }
 
+            if (tour.CurrentTourStop != null)
+            {
+                tour.CurrentTourStop.FaderOpacity = 0;
+                //Tile.fastLoad = false;
+                double elapsedSeconds = tour.CurrentTourStop.TweenPosition * tour.CurrentTourStop.Duration / 1000;
+
+                //Document.Title = elapsedSeconds.ToString();
+                if (slideChanging)
+                {
+                    WWTControl.Singleton.CrossFadeFrame = false;
+                }
+
+                switch (tour.CurrentTourStop.Transition)
+                {
+                    case TransitionType.Slew:
+                        tour.CurrentTourStop.FaderOpacity = 0;
+                        WWTControl.Singleton.CrossFadeFrame = false;
+                        break;
+                    case TransitionType.CrossCut:
+                        {
+                            if (slideChanging)
+                            {
+                                //Tile.fastLoad = true;
+                                //Tile.fastLoadAutoReset = false;
+                            }
+                            if (elapsedSeconds < (elapsedSeconds - tour.CurrentTourStop.TransitionHoldTime))
+                            {
+                                WWTControl.Singleton.CrossFadeFrame = true;
+                                tour.CurrentTourStop.FaderOpacity = 1;
+
+                            }
+                            else
+                            {
+                                tour.CurrentTourStop.FaderOpacity = 0;
+                                WWTControl.Singleton.CrossFadeFrame = false;
+                            }
+                        }
+                        break;
+                    case TransitionType.CrossFade:
+                        {
+                            WWTControl.Singleton.CrossFadeFrame = true;
+                            double opacity = Math.Max(0, 1 - Math.Min(1, (elapsedSeconds - tour.CurrentTourStop.TransitionHoldTime) / tour.CurrentTourStop.TransitionTime));
+                            tour.CurrentTourStop.FaderOpacity = (float)opacity;
+                            if (slideChanging)
+                            {
+                                //Tile.fastLoad = true;
+                                //Tile.fastLoadAutoReset = false;
+                            }
+                        }
+                        break;
+                    case TransitionType.FadeOutIn:
+                    case TransitionType.FadeIn:
+                        {
+                            WWTControl.Singleton.CrossFadeFrame = false;
+                            double opacity = Math.Max(0, 1 -  Math.Max(0, elapsedSeconds - tour.CurrentTourStop.TransitionHoldTime) / tour.CurrentTourStop.TransitionTime);
+                            tour.CurrentTourStop.FaderOpacity = (float)opacity;
+                        }
+                        break;
+                    case TransitionType.FadeOut:
+                        WWTControl.Singleton.CrossFadeFrame = false;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (!tour.CurrentTourStop.IsLinked && tour.CurrentTourstopIndex < (tour.TourStops.Count - 1))
+                {
+                    TransitionType nextTrans = tour.TourStops[tour.CurrentTourstopIndex + 1].Transition;
+                    double nextTransTime = tour.TourStops[tour.CurrentTourstopIndex + 1].TransitionOutTime;
+
+
+                    switch (nextTrans)
+                    {
+
+                        case TransitionType.FadeOut:
+                        case TransitionType.FadeOutIn:
+                            {
+                                if (tour.CurrentTourStop.FaderOpacity == 0)
+                                {
+                                    WWTControl.Singleton.CrossFadeFrame = false;
+                                    double opacity = Math.Max(0, 1 - Math.Min(1, ((tour.CurrentTourStop.Duration/1000) - elapsedSeconds) / nextTransTime));
+                                    tour.CurrentTourStop.FaderOpacity = (float)opacity;
+                                }
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         public float UpdateTweenPosition(float tween)

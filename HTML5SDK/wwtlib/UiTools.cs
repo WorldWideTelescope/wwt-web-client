@@ -7,6 +7,11 @@ namespace wwtlib
 {
     public class UiTools
     {
+        public static int Gamma(int val, float gamma)
+        {
+            return (byte)Math.Min(255, (int)((255.0 * Math.Pow(val / 255.0, 1.0 / gamma)) + 0.5));
+        }
+
         static public string GetNamesStringFromArray(string[] array)
         {
             string names = "";
