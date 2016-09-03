@@ -6585,7 +6585,7 @@ window.wwtlib = function(){
         var $enum2 = ss.enumerate(this._pointBuffers);
         while ($enum2.moveNext()) {
           var pointBuffer = $enum2.current;
-          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, this.scale);
+          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
           renderContext.gl.drawArrays(0, 0, pointBuffer.count);
         }
       }
@@ -6792,7 +6792,7 @@ window.wwtlib = function(){
   TimeSeriesPointSpriteShader.init = function(renderContext) {
     var gl = renderContext.gl;
     var fragShaderText = '    precision mediump float;                                                            \n' + '    uniform vec4 lineColor;                                                             \n' + '    varying lowp vec4 vColor;                                                           \n' + '    uniform sampler2D uSampler;                                                         \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        vec4 texColor;                                                                  \n' + '        texColor = texture2D(uSampler, gl_PointCoord);                                  \n' + '                                                                                        \n' + '                                                                                        \n' + '        gl_FragColor = lineColor * vColor * texColor;                                   \n' + '    }                                                                                   \n';
-    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    attribute float aPointSize;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform vec3 cameraPosition;                                                        \n' + '    uniform float decay;                                                                \n' + '    uniform float scale;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        float dist = distance(aVertexPosition, cameraPosition);                                \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '        if (jNow < aTime.x && decay > 0.0)                                              \n' + '        {                                                                               \n' + '            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n' + '        }                                                                               \n' + '        else                                                                            \n' + '        {                                                                               \n' + '           vColor = vec4(1,1,1,1);       \n' + '        }                                                                               \n' + '        gl_PointSize = max(1.0, (scale * ( aPointSize ) / dist));                     \n' + '    }                                                                                   \n' + '                                                                                        \n';
+    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    attribute float aPointSize;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform vec3 cameraPosition;                                                        \n' + '    uniform float decay;                                                                \n' + '    uniform float scale;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        float dist = distance(aVertexPosition, cameraPosition);                                \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '        if (jNow < aTime.x && decay > 0.0)                                              \n' + '        {                                                                               \n' + '            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n' + '        }                                                                               \n' + '        else                                                                            \n' + '        {                                                                               \n' + '           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n' + '        }                                                                               \n' + '        gl_PointSize = max(2.0, (scale * ( aPointSize ) / dist));                     \n' + '    }                                                                                   \n' + '                                                                                        \n';
     TimeSeriesPointSpriteShader._frag = gl.createShader(35632);
     gl.shaderSource(TimeSeriesPointSpriteShader._frag, fragShaderText);
     gl.compileShader(TimeSeriesPointSpriteShader._frag);
@@ -8190,11 +8190,19 @@ window.wwtlib = function(){
       }
       this.initializeFromXml(node);
     },
-    loadData: function(path) {
+    loadData: function(blob) {
       return;
     },
     addFilesToCabinet: function(fc) {
       return;
+    },
+    getStringFromGzipBlob: function(blob, dataReady) {
+      var reader = new FileReader();
+      reader.onloadend = function(e) {
+        var result = pako.inflate(e.target.result, { to: 'string' });
+        dataReady(result);
+      };
+      reader.readAsArrayBuffer(blob);
     }
   };
 
@@ -14741,7 +14749,7 @@ window.wwtlib = function(){
               }
               try {
                 newLayer.loadedFromTour = true;
-                newLayer.loadData(this.getFileStream(fileName));
+                newLayer.loadData(this.getFileBlob(fileName));
                 LayerManager.add(newLayer, false);
               }
               catch ($e4) {
@@ -15235,13 +15243,19 @@ window.wwtlib = function(){
         callMe();
         return this._textureList[filename];
       }
-      var texture = document.createElement('img');
-      texture.src = this.getFileStream(filename);
-      texture.addEventListener('load', function() {
-        callMe();
-      }, false);
-      this._textureList[filename] = texture;
-      return texture;
+      var url = this.getFileStream(filename);
+      if (!ss.whitespace(url)) {
+        var texture = document.createElement('img');
+        texture.src = this.getFileStream(filename);
+        texture.addEventListener('load', function() {
+          callMe();
+        }, false);
+        this._textureList[filename] = texture;
+        return texture;
+      }
+      else {
+        return null;
+      }
     },
     getCachedTexture2d: function(filename) {
       if (this._textureList2d == null) {
@@ -15266,6 +15280,9 @@ window.wwtlib = function(){
     },
     getFileStream: function(filename) {
       var blob = this.getFileBlob(filename);
+      if (blob == null) {
+        return null;
+      }
       return URL.createObjectURL(blob);;
     },
     getFileBlob: function(filename) {
@@ -17624,6 +17641,7 @@ window.wwtlib = function(){
             }
             overlay.play();
           }
+          LayerManager.setVisibleLayerList(this._tour.get_currentTourStop().layers);
           if (this._tour.get_currentTourStop().get_endTarget() != null && this._tour.get_currentTourStop().get_endTarget().get_zoomLevel() !== -1) {
             if (this._tour.get_currentTourStop().get_target().get_type() === 4) {
             }
@@ -18609,7 +18627,9 @@ window.wwtlib = function(){
     var $enum1 = ss.enumerate(overlays.childNodes);
     while ($enum1.moveNext()) {
       var overlay = $enum1.current;
-      newTourStop.addOverlay(Overlay._fromXml(newTourStop, overlay));
+      if (overlay.nodeName === 'Overlay') {
+        newTourStop.addOverlay(Overlay._fromXml(newTourStop, overlay));
+      }
     }
     var musicNode = Util.selectSingleNode(tourStop, 'MusicTrack');
     if (musicNode != null) {
@@ -18618,6 +18638,10 @@ window.wwtlib = function(){
     var voiceNode = Util.selectSingleNode(tourStop, 'VoiceTrack');
     if (voiceNode != null) {
       newTourStop._voiceTrack = Overlay._fromXml(newTourStop, Util.selectSingleNode(voiceNode, 'Overlay'));
+    }
+    var layerNode = Util.selectSingleNode(tourStop, 'VisibleLayers');
+    if (layerNode != null) {
+      newTourStop._loadLayerList(layerNode);
     }
     newTourStop._thumbnail = owner.getCachedTexture(ss.format('{0}.thumb.png', newTourStop._id), function() {
       var c = 0;
@@ -19435,6 +19459,32 @@ window.wwtlib = function(){
         }
       }
       return ss.format('{0} {1}', baseName, suffixId);
+    },
+    _loadLayerList: function(layersNode) {
+      var $enum1 = ss.enumerate(layersNode.childNodes);
+      while ($enum1.moveNext()) {
+        var layer = $enum1.current;
+        if (layer.nodeName === 'Layer') {
+          var info = new LayerInfo();
+          var id = layer.innerHTML;
+          info.id = Guid.fromString(id);
+          info.startOpacity = parseFloat(layer.attributes.getNamedItem('StartOpacity').nodeValue);
+          info.endOpacity = parseFloat(layer.attributes.getNamedItem('EndOpacity').nodeValue);
+          var len = 0;
+          if (layer.attributes.getNamedItem('ParamCount') != null) {
+            len = parseInt(layer.attributes.getNamedItem('ParamCount').nodeValue);
+          }
+          info.startParams = new Array(len);
+          info.endParams = new Array(len);
+          info.frameParams = new Array(len);
+          for (var i = 0; i < len; i++) {
+            info.startParams[i] = parseFloat(layer.attributes.getNamedItem(ss.format('StartParam{0}', i)).nodeValue);
+            info.endParams[i] = parseFloat(layer.attributes.getNamedItem(ss.format('EndParam{0}', i)).nodeValue);
+            info.frameParams[i] = info.startParams[i];
+          }
+          this.layers[info.id] = info;
+        }
+      }
     },
     _updateLayerOpacity: function() {
       if (!this.get_keyFramed()) {
@@ -28461,24 +28511,19 @@ window.wwtlib = function(){
       this._dataDirty$1 = true;
       return true;
     },
-    loadData: function(path) {
+    loadData: function(blob) {
       var $this = this;
 
       this._table$1 = new Table();
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', path);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          $this._table$1.loadFromString(xhr.responseText, false, true, true);
-          $this.computeDateDomainRange(-1, -1);
-          if ($this.get_dynamicData() && $this.get_autoUpdate()) {
-            $this.dynamicUpdate();
-          }
-          $this._dataDirty$1 = true;
-          $this.dirty = true;
+      this.getStringFromGzipBlob(blob, function(data) {
+        $this._table$1.loadFromString(data, false, true, true);
+        $this.computeDateDomainRange(-1, -1);
+        if ($this.get_dynamicData() && $this.get_autoUpdate()) {
+          $this.dynamicUpdate();
         }
-      };
-      xhr.send();
+        $this._dataDirty$1 = true;
+        $this.dirty = true;
+      });
     },
     addFilesToCabinet: function(fc) {
       this._fileName$1 = fc.tempDirectory + ss.format('{0}\\{1}.txt', fc.get_packageID(), this.id.toString());
@@ -28806,7 +28851,8 @@ window.wwtlib = function(){
                 case 1:
                   var size = 0;
                   try {
-                    pointSize = parseFloat(row[this.altColumn]);
+                    pointSize = parseFloat(row[this.sizeColumn]);
+                    pointSize = Math.pow(2, pointSize);
                   }
                   catch ($e3) {
                     pointSize = 0;

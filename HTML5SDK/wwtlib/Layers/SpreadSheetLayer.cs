@@ -178,28 +178,22 @@ namespace wwtlib
             return true;
         }
 
-        public override void LoadData(string path)
+        public override void LoadData(System.Html.Data.Files.Blob blob)
         {
             table = new Table();
 
-            XmlHttpRequest xhr = new XmlHttpRequest();
-            xhr.Open(HttpVerb.Get, path);
-            xhr.OnReadyStateChange = delegate()
+            this.GetStringFromGzipBlob(blob, delegate (string data)
             {
-                if (xhr.ReadyState == ReadyState.Loaded)
-                {
-                    table.LoadFromString(xhr.ResponseText, false, true, true);
-                    ComputeDateDomainRange(-1, -1);
+                table.LoadFromString(data, false, true, true);
+                ComputeDateDomainRange(-1, -1);
 
-                    if (DynamicData && AutoUpdate)
-                    {
-                        DynamicUpdate();
-                    }
-                    dataDirty = true;
-                    dirty = true;
+                if (DynamicData && AutoUpdate)
+                {
+                    DynamicUpdate();
                 }
-            };
-            xhr.Send();
+                dataDirty = true;
+                dirty = true;
+            });
         }
 
 
@@ -766,7 +760,8 @@ namespace wwtlib
 
                                         try
                                         {
-                                            pointSize = (float)double.Parse(row[altColumn]);
+                                            pointSize = (float)double.Parse(row[sizeColumn]);
+                                            pointSize = Math.Pow(2, pointSize);
                                         }
                                         catch
                                         {

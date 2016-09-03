@@ -883,7 +883,12 @@ namespace wwtlib
             {
                 foreach (TimeSeriesPointVertexBuffer pointBuffer in pointBuffers)
                 {
-                    TimeSeriesPointSpriteShader.Use(renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d, Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow), (float)Decay, renderContext.CameraPosition, (float)scale);
+                    TimeSeriesPointSpriteShader.Use(
+                            renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d,
+                            Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow),
+                            (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height/960))
+                        );
+
                     renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
                 }
 

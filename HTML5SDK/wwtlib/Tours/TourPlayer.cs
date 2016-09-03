@@ -58,6 +58,8 @@ namespace wwtlib
                         overlay.Play();
                     }
 
+                    LayerManager.SetVisibleLayerList(tour.CurrentTourStop.Layers);
+
                     if (tour.CurrentTourStop.EndTarget != null && tour.CurrentTourStop.EndTarget.ZoomLevel != -1)
                     {
                         if (tour.CurrentTourStop.Target.Type == ImageSetType.SolarSystem)

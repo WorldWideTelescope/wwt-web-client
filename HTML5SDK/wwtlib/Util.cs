@@ -66,8 +66,7 @@ namespace wwtlib
 
             return "";
         }
-
-
+                
 
         public static string GetProxiedUrl(string url)
         {

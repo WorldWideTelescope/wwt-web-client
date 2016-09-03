@@ -233,7 +233,7 @@ namespace wwtlib
                             try
                             {
                                 newLayer.LoadedFromTour = true;
-                                newLayer.LoadData(GetFileStream(fileName));
+                                newLayer.LoadData(GetFileBlob(fileName));
                                 LayerManager.Add(newLayer, false);
                             }
                             catch
@@ -958,15 +958,23 @@ namespace wwtlib
                 callMe();
                 return textureList[filename];
             }
-            ImageElement texture = (ImageElement)Document.CreateElement("img");
+            string url =  GetFileStream(filename);
 
-            texture.Src = GetFileStream(filename);
-            texture.AddEventListener("load", delegate {callMe();}, false);
-            
-            textureList[filename] = texture;
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                ImageElement texture = (ImageElement)Document.CreateElement("img");
 
-            return texture;
+                texture.Src = GetFileStream(filename);
+                texture.AddEventListener("load", delegate { callMe(); }, false);
 
+                textureList[filename] = texture;
+
+                return texture;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private Dictionary<string, Texture> textureList2d = new Dictionary<string, Texture>();
@@ -1014,6 +1022,11 @@ namespace wwtlib
         public string GetFileStream(string filename)
         {
             Blob blob = GetFileBlob(filename);
+            if (blob == null)
+            {
+                return null;
+            }
+
             return (string)Script.Literal("URL.createObjectURL({0});", blob); 
         }
 

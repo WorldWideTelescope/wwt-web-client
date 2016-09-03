@@ -362,11 +362,11 @@ namespace wwtlib
                     "        }                                                                               \n" +
                     "        else                                                                            \n" +
                     "        {                                                                               \n" +
-                  //  "           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n" +
-                    "           vColor = vec4(1,1,1,1);       \n" +
+                    "           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n" +
+                   // "           vColor = vec4(1,1,1,1);       \n" +
 
                     "        }                                                                               \n" +
-                    "        gl_PointSize = max(1.0, (scale * ( aPointSize ) / dist));                     \n" +
+                    "        gl_PointSize = max(2.0, (scale * ( aPointSize ) / dist));                     \n" +
                     "    }                                                                                   \n" +
                     "                                                                                        \n";
 

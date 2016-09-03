@@ -559,7 +559,7 @@ namespace wwtlib
 
 
 
-        public virtual void LoadData(string path)
+        public virtual void LoadData(System.Html.Data.Files.Blob blob)
         {
             return;
         }
@@ -569,9 +569,22 @@ namespace wwtlib
             return;
         }
 
+        public void GetStringFromGzipBlob(System.Html.Data.Files.Blob blob, GzipStringReady dataReady)
+        {
+            FileReader reader = new FileReader();
+            reader.OnLoadEnd = delegate (System.Html.Data.Files.FileProgressEvent e)
+            {
+                string result = (string)Script.Literal("pako.inflate(e.target.result, { to: 'string' })");
+                dataReady(result);
+            };
+            reader. ReadAsArrayBuffer(blob);
+        }
 
 
     }
+
+    public delegate void GzipStringReady(string data);
+
     class LayerCollection : Layer
     {
         public override bool Draw(RenderContext renderContext, float opacity, bool flat)

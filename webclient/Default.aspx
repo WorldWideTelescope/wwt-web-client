@@ -147,8 +147,7 @@
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
         }
     </style> 
-     
-    <script src="//js.live.net/v5.0/wl.js"></script>
+     <script src="//js.live.net/v5.0/wl.js"></script>
     <script src="sdk/wwtsdk.js"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap<%=DotMin %>"></script>
@@ -161,6 +160,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl<%=DotMin %>"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel<%=DotMin %>"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
     <% if (Debug || DebugChrome) 
        { %>
 
@@ -244,8 +244,8 @@
         }
     </script> 
     <% } %>
-    
-  
+
+
 </head>
 <body 
     class="<%= BodyClass %>" 

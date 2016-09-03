@@ -1619,8 +1619,10 @@ namespace wwtlib
             foreach (XmlNode overlay in overlays.ChildNodes)
             {
                 //todo this might have issuse if all the childeren are not good 
-
-                newTourStop.AddOverlay(Overlay.FromXml(newTourStop, overlay));
+                if (overlay.Name == "Overlay")
+                {
+                    newTourStop.AddOverlay(Overlay.FromXml(newTourStop, overlay));
+                }
             }
 
             XmlNode musicNode = Util.SelectSingleNode(tourStop, "MusicTrack");
@@ -1635,6 +1637,12 @@ namespace wwtlib
             if (voiceNode != null)
             {
                 newTourStop.voiceTrack = (AudioOverlay)Overlay.FromXml(newTourStop,  Util.SelectSingleNode(voiceNode, "Overlay"));
+            }
+
+            XmlNode layerNode = Util.SelectSingleNode(tourStop, "VisibleLayers");
+            if (layerNode != null)
+            {
+                newTourStop.LoadLayerList(layerNode);
             }
 
             //todo fix load thumbnail
@@ -1669,6 +1677,38 @@ namespace wwtlib
             return string.Format("{0} {1}", baseName, suffixId);
         }
 
+        private void LoadLayerList(XmlNode layersNode)
+        {
+            foreach (XmlNode layer in layersNode.ChildNodes)
+            {
+                if (layer.Name == "Layer")
+                {
+                    LayerInfo info = new LayerInfo();
+                    string id = (string)Script.Literal("layer.innerHTML");
+                    info.ID =  Guid.FromString(id);
+                    info.StartOpacity = float.Parse(layer.Attributes.GetNamedItem("StartOpacity").Value);
+                    info.EndOpacity = float.Parse(layer.Attributes.GetNamedItem("EndOpacity").Value);
+
+                    int len = 0;
+                    if (layer.Attributes.GetNamedItem("ParamCount") != null)
+                    {
+                        len = int.Parse(layer.Attributes.GetNamedItem("ParamCount").Value);
+                    }
+                    info.StartParams = new double[len];
+                    info.EndParams = new double[len];
+                    info.FrameParams = new double[len];
+
+                    for (int i = 0; i < len; i++)
+                    {
+                        info.StartParams[i] = double.Parse(layer.Attributes.GetNamedItem(string.Format("StartParam{0}", i)).Value);
+                        info.EndParams[i] = double.Parse(layer.Attributes.GetNamedItem(string.Format("EndParam{0}", i)).Value);
+                        info.FrameParams[i] = info.StartParams[i];
+                    }
+
+                    Layers[info.ID] = info;
+                }
+            }
+        }
 
         internal void UpdateLayerOpacity()
         {
