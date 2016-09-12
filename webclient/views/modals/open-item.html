@@ -12,7 +12,7 @@
                 </div>
                 <div ng-if="openType != 'image'">
                     <p localize="Or"></p>
-                    <a class="btn" localize="Choose local file" href="javascript:$('#addFile').click()" />
+                    <a class="btn" localize="Choose local file" href="#" onclick="$('#addFile')[0].click()" />
                     <input type="file" id="addFile" onchange="angular.element(this).scope().mediaFileChange(event)" />
                 </div>
                 <div ng-show="imageFail">

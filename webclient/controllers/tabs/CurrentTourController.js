@@ -68,8 +68,8 @@
     };
    
     var initEditMode = function () {
-        
-        if (navigator.userAgent.toLowerCase().indexOf('safari')>0) {
+        var ua = navigator.userAgent.toLowerCase()
+        if (ua.indexOf('safari')>0 && ua.indexOf('chrome')===-1) {
             alert('Editing Tours has known issues in Safari. For the best experience, please use Chrome.')
         }
         if ($rootScope.editingTour !== true) { return; }
