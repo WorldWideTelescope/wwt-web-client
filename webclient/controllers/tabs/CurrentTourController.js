@@ -139,20 +139,26 @@
         tour['set_' + prop]($event.target.value);
     };
     $scope.saveTour = function () {
-        
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            var blob = tour.saveToBlob();
-            window.navigator.msSaveOrOpenBlob(blob);
+        var blob = tour.saveToBlob();
+        var filename = tour._title + '.wtt'
+        if (navigator && navigator.msSaveBlob) {
+            navigator.msSaveBlob(blob, filename);
         }
         else {
-            // window.open(saveUrl, '_blank');
-            var saveUrl = tour.saveToDataUrl();
-            window.location.assign(saveUrl);
+            $('#downloadTour').remove();
+            var saveUrl = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.download = filename;
+            a.href = saveUrl;
+            a.innerHTML = '&nbsp;';
+            a.id = 'downloadTour';
+            a.style.position = 'absolute';
+            a.style.top = '-999px';
+            a.dataset.downloadurl = ['application/wtt', a.download, a.href].join(':');
+            document.body.appendChild(a);
+            $('#downloadTour')[0].click();
+            
         }
-        //window.location.assign(saveUrl);
-        // media.saveTour().then(function (tour) {
-        //     console.log(tour);
-        //});
     };
     $scope.addShape = function (type) {
         tourEdit.tourEditorUI.addShape('', type);
@@ -189,10 +195,8 @@
 
     $scope.showContextMenu = function (index,e) {
         if (e) {
-            
             $scope.selectStop(index);
             tourEdit.tourStopList_MouseClick(index, e);
-            
         }
     };
 
