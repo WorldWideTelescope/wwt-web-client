@@ -1000,6 +1000,7 @@ namespace wwtlib
                     tourStopList.ShowAddButton = tour.EditMode;
                 }
             }
+            tourStopList.Refresh();
         }
 
         public void PlayerTimer_Tick(object sender, EventArgs e)

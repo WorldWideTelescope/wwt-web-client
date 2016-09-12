@@ -736,31 +736,31 @@ namespace wwtlib
 
             pasteMenu.Click =pasteMenu_Click;
             contextMenu.Items.Add(pasteMenu);
+            // Hide these menu types. This was for early testing before the UI matching Windows was working
+            //ToolStripMenuItem AddCircle = ToolStripMenuItem.Create(Language.GetLocalizedText(444, "Circle"));
+            //ToolStripMenuItem AddRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(445, "Rectangle"));
+            //ToolStripMenuItem AddOpenRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(446, "Open Rectangle"));
+            //ToolStripMenuItem AddRing = ToolStripMenuItem.Create(Language.GetLocalizedText(447, "Ring"));
+            //ToolStripMenuItem AddLine = ToolStripMenuItem.Create(Language.GetLocalizedText(448, "Line"));
+            //ToolStripMenuItem AddArrow = ToolStripMenuItem.Create(Language.GetLocalizedText(449, "Arrow"));
+            //ToolStripMenuItem AddStar = ToolStripMenuItem.Create(Language.GetLocalizedText(450, "Star"));
 
-            ToolStripMenuItem AddCircle = ToolStripMenuItem.Create(Language.GetLocalizedText(444, "Circle"));
-            ToolStripMenuItem AddRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(445, "Rectangle"));
-            ToolStripMenuItem AddOpenRectangle = ToolStripMenuItem.Create(Language.GetLocalizedText(446, "Open Rectangle"));
-            ToolStripMenuItem AddRing = ToolStripMenuItem.Create(Language.GetLocalizedText(447, "Ring"));
-            ToolStripMenuItem AddLine = ToolStripMenuItem.Create(Language.GetLocalizedText(448, "Line"));
-            ToolStripMenuItem AddArrow = ToolStripMenuItem.Create(Language.GetLocalizedText(449, "Arrow"));
-            ToolStripMenuItem AddStar = ToolStripMenuItem.Create(Language.GetLocalizedText(450, "Star"));
-
-            AddCircle.Click = InsertShapeCircle_Click;
-            AddRectangle.Click = InsertShapeRectangle_Click;
-            AddOpenRectangle.Click = AddOpenRectangle_Click;
-            AddRing.Click = insertDonut_Click;
-            AddLine.Click = InsertShapeLine_Click;
-            AddArrow.Click = AddArrow_Click;
-            AddStar.Click = AddStar_Click;
+            //AddCircle.Click = InsertShapeCircle_Click;
+            //AddRectangle.Click = InsertShapeRectangle_Click;
+            //AddOpenRectangle.Click = AddOpenRectangle_Click;
+            //AddRing.Click = insertDonut_Click;
+            //AddLine.Click = InsertShapeLine_Click;
+            //AddArrow.Click = AddArrow_Click;
+            //AddStar.Click = AddStar_Click;
 
 
-            contextMenu.Items.Add(AddCircle);
-            contextMenu.Items.Add(AddRectangle);
-            contextMenu.Items.Add(AddOpenRectangle);
-            contextMenu.Items.Add(AddRing);
-            contextMenu.Items.Add(AddLine);
-            contextMenu.Items.Add(AddArrow);
-            contextMenu.Items.Add(AddStar);
+            //contextMenu.Items.Add(AddCircle);
+            //contextMenu.Items.Add(AddRectangle);
+            //contextMenu.Items.Add(AddOpenRectangle);
+            //contextMenu.Items.Add(AddRing);
+            //contextMenu.Items.Add(AddLine);
+            //contextMenu.Items.Add(AddArrow);
+            //contextMenu.Items.Add(AddStar);
             contextMenu.Show(position);
         }
 
