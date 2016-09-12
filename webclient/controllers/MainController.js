@@ -657,7 +657,7 @@ wwt.controllers.controller('MainController',
 		};
 
 		$scope.playTour = function (url) {
-		    console.trace('fs');
+		    
 	        util.goFullscreen();
 		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
@@ -686,6 +686,9 @@ wwt.controllers.controller('MainController',
 		        $rootScope.editingTour = true;
 		    });
 		};
+       $scope.initSlides = function(){
+            $rootScope.$broadcast('showingSlides');
+        };
 
 		$rootScope.closeTour = function ($event) {
 		    util.exitFullscreen();
@@ -981,6 +984,10 @@ wwt.controllers.controller('MainController',
 		if (util.getQSParam('editTour')) {
 		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 		    $scope.autoEdit = true;
+		}
+		if (util.getQSParam('playTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
+		    
 		}
 	}
 ]);

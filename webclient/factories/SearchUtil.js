@@ -77,7 +77,7 @@
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
 				var center = wwtlib.Coordinates.raDecTo3d($rootScope.viewport.RA, $rootScope.viewport.Dec);
-				var dist = wwtlib.Vector3d.subtractVectors(corner, center);
+				var dist = wwtlib.Vector3d.subtractVectors(corner, center).length();
 
 				var constellation = args.singleton.constellation;
 				var constellationPlaces, ssPlaces;
@@ -96,12 +96,16 @@
 
 
 				var results = [];
+				//console.log(dist);
 				$.each(searchPlaces, function(i, place) {
 					if (place && place.get_name() !== 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
-							if (dist.length() > placeDist.length()) {
-								results.push(place);
+							if (dist > placeDist.length()) {
+							    results.push(place);
+							    //if (place.get_constellation() === 'SolarSystem') {
+							    //    console.log(place.get_name(), placeDist.length());
+							    //}
 							}
 						} catch (er) {
 							util.log(er, place);
@@ -118,4 +122,5 @@
 	}
 
 	return api;
-}]);
+	}]);
+

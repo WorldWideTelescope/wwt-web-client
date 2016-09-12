@@ -494,7 +494,7 @@
             </li>
             <li data-ng-class="activePanel == 'currentTour'  ? 'active' : currentTour && currentTour._title ? '' :'hide'">
                 <div class="outer">
-                    <a href="javascript:void(0)" ng-click="activePanel = 'currentTour'">
+                    <a href="javascript:void(0)" ng-click="activePanel = 'currentTour';initSlides()">
                         <span class="label" style="padding-right:22px">{{currentTour._title}}</span>
                         <span ng-click="closeTour($event)" class="close-tour"><i class="fa fa-close"></i></span>
                     </a>

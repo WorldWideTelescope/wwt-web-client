@@ -2597,7 +2597,7 @@ wwt.app.factory('SearchUtil', [
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
 				var center = wwtlib.Coordinates.raDecTo3d($rootScope.viewport.RA, $rootScope.viewport.Dec);
-				var dist = wwtlib.Vector3d.subtractVectors(corner, center);
+				var dist = wwtlib.Vector3d.subtractVectors(corner, center).length();
 
 				var constellation = args.singleton.constellation;
 				var constellationPlaces, ssPlaces;
@@ -2616,12 +2616,16 @@ wwt.app.factory('SearchUtil', [
 
 
 				var results = [];
+				//console.log(dist);
 				$.each(searchPlaces, function(i, place) {
 					if (place && place.get_name() !== 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
-							if (dist.length() > placeDist.length()) {
-								results.push(place);
+							if (dist > placeDist.length()) {
+							    results.push(place);
+							    //if (place.get_constellation() === 'SolarSystem') {
+							    //    console.log(place.get_name(), placeDist.length());
+							    //}
 							}
 						} catch (er) {
 							util.log(er, place);
@@ -2638,7 +2642,9 @@ wwt.app.factory('SearchUtil', [
 	}
 
 	return api;
-}]);
+	}]);
+
+
 wwt.app.factory('Skyball',['$rootScope', function ($rootScope) {
 	var api = {
 		init: init
@@ -4637,7 +4643,7 @@ wwt.controllers.controller('MainController',
 		};
 
 		$scope.playTour = function (url) {
-		    console.trace('fs');
+		    
 	        util.goFullscreen();
 		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
@@ -4666,6 +4672,9 @@ wwt.controllers.controller('MainController',
 		        $rootScope.editingTour = true;
 		    });
 		};
+       $scope.initSlides = function(){
+            $rootScope.$broadcast('showingSlides');
+        };
 
 		$rootScope.closeTour = function ($event) {
 		    util.exitFullscreen();
@@ -4961,6 +4970,10 @@ wwt.controllers.controller('MainController',
 		if (util.getQSParam('editTour')) {
 		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 		    $scope.autoEdit = true;
+		}
+		if (util.getQSParam('playTour')) {
+		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
+		    
 		}
 	}
 ]);
