@@ -20,6 +20,8 @@
 		nav: nav,
 		log: log,
 		resetCamera: resetCamera,
+		goFullscreen: goFullscreen,
+		exitFullscreen: exitFullscreen,
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
@@ -271,7 +273,20 @@
         }
         wwt.wc.gotoRaDecZoom(0, 0, 60, true);
 
-	};
+    };
+    function exitFullscreen() {
+        if (fullscreen) {
+            wwt.exitFullScreen();
+            fullscreen = false;
+        }
+    }
+    function goFullscreen() {
+        if (!fullscreen) {
+            wwt.requestFullScreen(document.body);
+            fullscreen = true;
+        }
+    }
+
 	function toggleFullScreen () {
 		if (fullscreen) {
 			wwt.exitFullScreen();
@@ -299,6 +314,7 @@
 	    switch (e.keyCode) {
 	        case 27:
 	            $rootScope.$broadcast('escKey');
+	            fullscreen = false;
 	            break;
 	    }
 	};

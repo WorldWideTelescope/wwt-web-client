@@ -1496,6 +1496,168 @@ wwt.app.factory('AppState', function() {
 	init();
 	return api;
 });  
+wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScope,appState) {
+    var api = {init:init};
+
+    var  tourPlaying = false,
+        editingTour = false,
+        mouseInRegion = { tabs: false, context: false },
+        panelHidden = { tabs: false, context: false },
+        panels = { tabs: null, context: null },
+        hideTimers = { tabs: null, context: null },
+        showingPanels = { tabs: false, context: false },
+        autoHide = { tabs: false, context: false },
+        autoHideHover = { tabs: false, context: false },
+        autoHideClick = { tabs: false, context: false },
+    hideTimeout = 1200;
+
+    function init() {
+        panels = {
+            tabs: $('#topPanel, .layer-manager'),
+            context: $('.context-panel')
+        };
+        if (panels.tabs.length < 2) {
+            setTimeout(init, 200);
+            console.log('init', panels.tabs);
+            return;
+        }
+        context = $('.context-panel');
+        bindEvents();
+        settingChange();
+    };
+
+    var bindEvents = function () {
+        $rootScope.$on('autohideChange', settingChange);
+        $rootScope.$watch('editingTour', tourStateChange);
+        $rootScope.$watch('tourPlaying', function () {
+            if ($rootScope.tourPlaying) {
+                panels.tabs = $('#ribbon, #topPanel, .layer-manager');
+            }
+            tourStateChange();
+        });
+        $(window).on('mousedown', function () {
+            $.each(['tabs', 'context'], function (i,groupKey) {
+                if (tourPlaying && !editingTour && mouseInRegion[groupKey] && panelHidden[groupKey] && !showingPanels[groupKey]) {
+                    regionClicked(groupKey);
+                }
+            });
+
+        });
+
+        $(window).on('mousemove touchstart touchmove touchend', function (event) {
+            var y = event.pageY != undefined ? event.pageY : event.originalEvent.targetTouches[0].pageY;
+
+            var inBottom = $(window).height() - 123 < y;
+            if (inBottom !== mouseInRegion.context) {
+                mouseInRegion.context = inBottom;
+                cursorRegionChange();
+            }
+            var inTop = y < 142;
+            if (inTop !== mouseInRegion.tabs) {
+                mouseInRegion.tabs = inTop;
+                cursorRegionChange();
+            }
+        });
+    }
+
+    var setBoth = function (o, ref) {
+        if (typeof ref == 'object') {
+            o.tabs = ref.tabs;
+            o.context = ref.context;
+        } else {
+            o.tabs = ref;
+            o.context = ref;
+        }
+    };
+    
+
+    var settingChange = function () {
+        var settings = appState.get('settings');
+        if (settings.autoHideTabs !== autoHide.tabs && settings.autoHideTabs == false) {
+            togglePanelGroup(true, 'tabs');
+        }
+        if (settings.autoHideContext !== autoHide.context && settings.autoHideContext == false) {
+            togglePanelGroup(true, 'context');
+        }
+        autoHide.tabs = settings.autoHideTabs;
+        autoHide.context = settings.autoHideContext;
+        
+        if (tourPlaying) {
+            panels.tabs = $('#ribbon, #topPanel, .layer-manager');
+            
+            setBoth(autoHideHover, true);
+            setBoth(autoHideClick, true);
+            hideTimeout = 100;
+        } else /*if (editingTour)*/ {
+            $('#ribbon').fadeIn();
+            setBoth(autoHideClick, false);
+            setBoth(autoHideHover, autoHide);
+            panels.tabs = $('#topPanel, .layer-manager');
+            hideTimeout = 1200;
+        }
+        cursorRegionChange();
+    };
+    
+
+    var tourStateChange = function () {
+        togglePanelGroup(!$rootScope.tourPlaying, 'tabs');
+        togglePanelGroup(!$rootScope.tourPlaying, 'context');
+        editingTour = $rootScope.editingTour;
+        tourPlaying = $rootScope.tourPlaying;
+        settingChange();
+        cursorRegionChange();
+    };
+
+    var togglePanelGroup = function (show, groupKey) {
+        //if (tabs.length < 2) tabs = $('#topPanel, .layer-manager');
+        var panelGroup = panels[groupKey];
+        if (show) {
+            clearTimeout(hideTimers[groupKey]);
+            if (panelHidden[groupKey] && !showingPanels[groupKey]) {
+                panelHidden[groupKey] = false;
+                showingPanels[groupKey] = true;
+                panelGroup.fadeIn(800, function () { showingPanels[groupKey] = false; });
+                if (tourPlaying && mouseInRegion.tabs) {
+                    console.log('showingSlides'); 
+                    $rootScope.$broadcast('showingSlides');
+                }
+            }
+        } else {
+            clearTimeout(hideTimers[groupKey]);
+            hideTimers[groupKey] = setTimeout(function () {
+                panelHidden[groupKey] = true;
+                panelGroup.fadeOut(800);
+            }, hideTimeout);
+        }
+    }
+    
+    
+    var regionClicked = function (key) {
+        console.log('regionClick', { autoHide: autoHide, autoHideClick: autoHideClick, tabs: panels.tabs });
+        togglePanelGroup(true, key);
+        if (key === 'tabs') {
+            $rootScope.$broadcast('showingSlides');
+        }
+    }
+
+    var cursorRegionChange = function () {
+        if (tourPlaying && !editingTour) { return; }
+        //console.trace('regionChange', { autoHide: autoHide, autoHideHover: autoHideHover });
+        $.each(['tabs', 'context'], function (i,groupKey) {
+            if (autoHideHover[groupKey]) {
+                if (mouseInRegion[groupKey]) {
+                    togglePanelGroup(true, groupKey);
+                } else if (!panelHidden[groupKey]) {
+                    togglePanelGroup(false, groupKey);
+                }
+            }
+        });
+    };
+
+    
+    
+    return api;
+}]);
 wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) {
 	var api = {
 		setLanguage: setLanguage,
@@ -1960,6 +2122,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		nav: nav,
 		log: log,
 		resetCamera: resetCamera,
+		goFullscreen: goFullscreen,
+		exitFullscreen: exitFullscreen,
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
@@ -2211,7 +2375,20 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
         }
         wwt.wc.gotoRaDecZoom(0, 0, 60, true);
 
-	};
+    };
+    function exitFullscreen() {
+        if (fullscreen) {
+            wwt.exitFullScreen();
+            fullscreen = false;
+        }
+    }
+    function goFullscreen() {
+        if (!fullscreen) {
+            wwt.requestFullScreen(document.body);
+            fullscreen = true;
+        }
+    }
+
 	function toggleFullScreen () {
 		if (fullscreen) {
 			wwt.exitFullScreen();
@@ -2239,6 +2416,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 	    switch (e.keyCode) {
 	        case 27:
 	            $rootScope.$broadcast('escKey');
+	            fullscreen = false;
 	            break;
 	    }
 	};
@@ -3828,7 +4006,9 @@ wwt.controllers.controller('MainController',
 	'$modal',
     '$element',
     '$cookies',
-	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies) {
+    'AutohidePanels',
+	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies, AutohidePanels) {
+        //TODO - figure out how to clean up lame long list of dependencies injected
 		var ctl;
 		 
 		//#region LookAt/Imagery 
@@ -3865,14 +4045,16 @@ wwt.controllers.controller('MainController',
 					collection.splice(0, 0, '');
 				$scope.surveys = collection;
 				var foundName = false;
+				
+				
 				// HACK ALERT (Mars was hardcoded from Visible Imagery)
 				if (imageryName === 'Mars') {
 					imageryName = 'Visible Imagery';
 				}
 				if (imageryName) {
-					$.each(collection, function () {
-						if (this !== '' && this.get_name() && (this.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(this.get_name()) === 0)) {
-							$scope.backgroundImagery = this;
+					$.each(collection, function (i,item) {
+					    if (item !== '' && item.get_name() && (item.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(item.get_name()) === 0)) {
+					        $scope.backgroundImagery = item;
 							foundName = true;
 						}
 					});
@@ -3895,7 +4077,10 @@ wwt.controllers.controller('MainController',
 			},100);
 		};
 		$scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
-			$scope.lookAt = lookAt;
+		    $scope.lookAt = lookAt;
+		    if (lookAt === 'Planet' && !imageryName) {
+		        imageryName = 'Mars';
+		    }
 			$scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
 			setTimeout(wwt.resize, 1200);
 		};
@@ -3942,6 +4127,7 @@ wwt.controllers.controller('MainController',
 					}
 				};
 				$scope.lookAtChanged();
+				AutohidePanels.init();
 
 			});
 			ctl.settings.set_showConstellationBoundries(false);
@@ -4451,25 +4637,25 @@ wwt.controllers.controller('MainController',
 		};
 
 		$scope.playTour = function (url) {
+		    console.trace('fs');
+	        util.goFullscreen();
 		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
 	        wwtlib.WWTControl.singleton.playTour(url);
-	        wwt.tourPlaying = $rootScope.tourPlaying = true;
-	        $rootScope.tourPaused = false;
-           
+	        $scope.$applyAsync(function () {
+                wwt.tourPlaying = $rootScope.tourPlaying = true;
+	            $rootScope.tourPaused = false;
+            });
 	        wwt.wc.add_tourEnded(tourChangeHandler);
 	        wwt.wc.add_tourReady(function() {	            
-	            $('#ribbon,.top-panel,.context-panel,.layer-manager')
-                    .fadeOut(800, function () {
-	                $scope.$applyAsync(function () {
-	                    $scope.activeItem = { label: 'currentTour' };
-	                    $scope.activePanel = 'currentTour';
+	            
+	            $scope.$applyAsync(function () {
+	                $scope.activeItem = { label: 'currentTour' };
+	                $scope.activePanel = 'currentTour';
+	                $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
 	                    
-	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
-	                    
-	                });
 	            });
-
+	            
 	        });
 	        //wwt.wc.add_tourPaused(tourChangeHandler);
 
@@ -4482,6 +4668,7 @@ wwt.controllers.controller('MainController',
 		};
 
 		$rootScope.closeTour = function ($event) {
+		    util.exitFullscreen();
 		    $event.preventDefault();
 		    $event.stopPropagation();
 		    if (wwtlib.WWTControl.singleton.tourEdit.get_tour().get_tourDirty() && !confirm('You have unsaved changes. Close this tour and lose changes?')) {
@@ -4497,11 +4684,10 @@ wwt.controllers.controller('MainController',
 		    //wwtlib.WWTControl.singleton.tour.cleanUp();
 		    $scope.$applyAsync(function () {
 		        $scope.activePanel = 'Guided Tours';
-		    });
-	        $rootScope.editingTour = false;
-		    $rootScope.tourPlaying = false;
-		    $rootScope.currentTour = null;
-	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
+	            $rootScope.editingTour = false;
+		        $rootScope.tourPlaying = false;
+		        $rootScope.currentTour = null;
+	        });
 	    }
 
 		$scope.createNewTour = function () {
@@ -4518,17 +4704,14 @@ wwt.controllers.controller('MainController',
 		    });
 	    };
 
-	    function tourChangeHandler() {
-			var settings = appState.get('settings') || {};
-			wwt.tourPlaying = $rootScope.tourPlaying = false;
-
+		function tourChangeHandler() {
+		    $rootScope.$broadcast('tourFinished');
+		    var settings = appState.get('settings') || {};
+		    $scope.$applyAsync(function () {
+			    wwt.tourPlaying = $rootScope.tourPlaying = false;
+            });
 			$rootScope.landscapeMessage = false;
-			if (!settings.autoHideContext) {
-				$('.context-panel').fadeIn(800);
-			}
-			if (!settings.autoHideTabs) {
-				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
-			}
+			
 			ctl.clearAnnotations();
 		}
 
@@ -4703,7 +4886,7 @@ wwt.controllers.controller('MainController',
 	            $scope.lookAt !== 'Panorama';
 	    };
 
-	    $scope.displayXFader = function () {
+	    $scope.displayXFader = function () { 
 	        return (
                 $scope.lookAt === 'Sky' &&
 	            $scope.trackingObj &&
@@ -5885,14 +6068,14 @@ wwt.controllers.controller('SettingsController',
 	'$cookies',
 	'Util',
 	'$q',
-	function ($scope, rs, appState, $timeout, $cookies, util,$q) {
+	function ($scope, $rootScope, appState, $timeout, $cookies, util, $q) {
 		//var settings = $scope.settings = wwt.wc.settings;
 		$scope.defaults = {
 			autoHideTabs: false,
 			autoHideContext: false,
 			smoothPanning: !util.isAccelDevice(),
 			version: '5.1.02',
-			crosshairs:true
+			crosshairs: true
 		};
 
 		$q.all([$scope.getFromEn('HTML5'), $scope.getFromEn('Silverlight')]).then(function(arrayLabels) {
@@ -5964,33 +6147,17 @@ wwt.controllers.controller('SettingsController',
 		}
 
 		$scope.saveSettings = function (init) {
-			$timeout(function() {
+		    $timeout(function () {
+		        var broadcast = false;
 				$.each($scope.savedSettings, function (setting, flag) {
 					if ($scope[setting] !== flag || init) {
 						if (init) {
 							$scope[setting] = flag;
 						} else {
-							$scope.savedSettings[setting] = !flag;
+						    $scope.savedSettings[setting] = $scope[setting];
 						}
-						if (setting === 'autoHideContext') {
-							if (!$scope.savedSettings.autoHideContext) {
-								context.fadeIn(800, function () { contextHidden = false; });
-							}else if (init && $scope.autoHideContext) {
-								setTimeout(function () {
-									contextHidden = false;
-									//context.fadeOut(800, function() { contextHidden = true; });
-								},1200);
-							}
-						}
-						if (setting === 'autoHideTabs') {
-							if (!$scope.savedSettings.autoHideTabs) {
-								tabs.fadeIn(800, function () { tabsHidden = false; });
-							}else if (init && $scope.autoHideTabs) {
-								setTimeout(function() {
-									tabsHidden = false;
-									//tabs.fadeOut(800, function() { tabsHidden = true; });
-								},1200);
-							}
+						if (setting.indexOf('autoHide') === 0) {
+						    broadcast = true;
 						}
 						
 					}
@@ -5998,73 +6165,18 @@ wwt.controllers.controller('SettingsController',
 				wwt.wc.settings.set_showCrosshairs($scope.crosshairs);
 				wwt.wc.settings.set_smoothPan($scope.smoothPanning);
 				appState.set('settings', $scope.savedSettings);
+				if (broadcast) {
+				    $rootScope.$broadcast('autohideChange');
+				}
 			}, 10);
 			
 				
 		};
-		var mouseInTopRegion = false;
-		var mouseInBottomRegion = false;
-		var tabsHidden = false;
-		var contextHidden = false;
-		var tabs = $('#topPanel, .layer-manager'), context = $('.context-panel');
-		var hideContextTimer,
-			hideTabsTimer,
-			showingTabs,showingContext;
-
-
-		$(window).on('mousemove touchstart touchmove touchend', function (event) {
-			if (wwt.tourPlaying) {
-				showingTabs = false;
-				showingContext = false;
-				return;
-			}
-			if ($scope.savedSettings.autoHideContext || $scope.savedSettings.autoHideTabs) {
-				if (!context.length) context = $('.context-panel');
-				if (tabs.length < 2) tabs = $('#topPanel, .layer-manager');
-				var y = event.pageY != undefined? event.pageY : event.originalEvent.targetTouches[0].pageY;
-				
-				mouseInBottomRegion = $(window).height() - 123 < y;
-				mouseInTopRegion = y < 142;
-				if ($scope.savedSettings.autoHideTabs) {
-					if (mouseInTopRegion) {
-						clearTimeout(hideTabsTimer);
-						if (tabsHidden && showingTabs != true) {
-							tabsHidden = false;
-							showingTabs = true;
-							tabs.fadeIn(800, function() { showingTabs = false; });
-						}
-					} else if (!tabsHidden) {
-						clearTimeout(hideTabsTimer);
-						hideTabsTimer = setTimeout(function () {
-							tabsHidden = true;
-							tabs.fadeOut(800);
-						}, 1500);
-					}
-				}
-				if ($scope.savedSettings.autoHideContext) {
-					if (mouseInBottomRegion) {
-						clearTimeout(hideContextTimer);
-						if (contextHidden && showingContext != true) {
-							contextHidden = false;
-							showingContext = true;
-							context.fadeIn(800,function() { showingContext = false; });
-						}
-					} else if (!contextHidden) {
-						clearTimeout(hideContextTimer);
-						hideContextTimer = setTimeout(function () {
-							contextHidden = true;
-							context.fadeOut(800);
-						}, 1500);
-					}
-				}
-
-			}
-
-		});
+		
 
 		$scope.retrieveSettings();
 	}
-	]);
+]);
 wwt.controllers.controller('ViewController',
 	['$scope',
 	'AppState',
@@ -6465,6 +6577,7 @@ wwt.controllers.controller('CurrentTourController', [
     var mainScope = angular.element('div.desktop').scope();
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
+    var scrollerInit = false;
 
     $scope.init = function (curTour) {
         tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
@@ -6473,9 +6586,11 @@ wwt.controllers.controller('CurrentTourController', [
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
         };
+        mapStops(true);
         wwt.wc.add_slideChanged(function () {
             //console.log(arguments, tour, tourEdit);
-            $scope.$applyAsync(function () {//tween <.5
+            $scope.$applyAsync(function () {//tween <.5 
+
                 $scope.activeIndex = tour.get_currentTourstopIndex();
                 $scope.activeSlide = tour.get_currentTourStop();
                 tourEdit.tourStopList.selectedItems = {};
@@ -6493,6 +6608,13 @@ wwt.controllers.controller('CurrentTourController', [
         $rootScope.$on('escKey', showSlides);
         $rootScope.$on('closeTour', closeTour);
         $rootScope.$watch('editingTour', initEditMode);
+        $rootScope.$on('tourFinished', finishedPlaying);
+        $rootScope.$on('showingSlides', function () {
+            if (!scrollerInit) {
+                scrollerInit = true;
+                showTourSlides();
+            }
+        });
         if (mainScope.autoEdit) {
             showSlides();
             tour._editMode = true;
@@ -6511,7 +6633,7 @@ wwt.controllers.controller('CurrentTourController', [
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        mapStops(true);
+        
         $scope.$applyAsync(showTourSlides);
         
     };
@@ -6533,7 +6655,12 @@ wwt.controllers.controller('CurrentTourController', [
         $scope.tourEdit = tourEdit = null;
         $rootScope.currentTour = $scope.tour = tour = null;
     };
-
+    var finishedPlaying = function () {
+        if (tour._currentTourstopIndex == tour._tourStops.length -1) {
+            showSlides(true);
+            $scope.selectStop(0, null);
+        }
+    };
     $scope.showSlideNumbers = function () {
         $scope.$applyAsync(function () {
             $scope.slideNumbering = !$scope.slideNumbering;
@@ -6620,7 +6747,7 @@ wwt.controllers.controller('CurrentTourController', [
     };
     
     var showTourSlides = function () {
-        $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
+        //$('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         console.log(tourEdit.playing);
         setTimeout(function () {
             $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
@@ -6662,6 +6789,9 @@ wwt.controllers.controller('CurrentTourController', [
                     } else {
                         tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
                     }
+                } else {
+                    tourEdit.tourStopList.selectedItems = {};
+                    tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
                 }
             }
             else {
@@ -6712,12 +6842,16 @@ wwt.controllers.controller('CurrentTourController', [
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        //else {
-        //    tourEdit.playFromCurrentTourstop();
-        //} 
-        else { 
-            tourEdit.playNow(true); 
-        }
+        else {
+            if (tour._editMode) {
+                $scope.selectStop(0);
+                tourEdit.playNow(true);
+            }
+            else {
+                tourEdit.playFromCurrentTourstop();
+            }
+        } 
+        $rootScope.tourPlaying = tourEdit.playing;
         $rootScope.tourPaused = !tourEdit.playing;
     };
 
@@ -6750,7 +6884,7 @@ wwt.controllers.controller('CurrentTourController', [
                         $('#newTourProps').click();
                     }, 500);
                 }
-                $scope.$watch('activeSlide._tweenPosition', function (e) {
+                $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
                     console.log('tweenPos', e);
                 });
             }

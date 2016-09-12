@@ -178,6 +178,7 @@
     <script src="<%= ResourcesLocation %>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/directives/Movable.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/factories/autohidepanels.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/factories/ThumbList.js?v=<%= ResourcesVersion%>"></script>
@@ -964,8 +965,8 @@
                                     </div>
                                     <div class="thumbwrap">
                                         <span class="master-slide" ng-if="stop.isMaster">M</span>
-                                        <span class="slide-number" ng-if="slideNumbering">{{$index+1}}</span>
-                                        <div class="stop-thumb thumbnail {{(!tourEdit.playing && tourEdit.tourStopList.selectedItems[$index]) || (tourEdit.playing && activeIndex === $index) ? 'active' : ''}}" 
+                                        <span class="slide-number" ng-if="slideNumbering">{{$index}}</span>
+                                        <div class="stop-thumb thumbnail {{(tourEdit.tourStopList.selectedItems[$index]) || (activeIndex == $index) ? 'active' : ''}}" 
                                             index="{{$index}}"
                                             ng-click="selectStop($index, $event)" 
                                             ng-dblclick="showStartCameraPosition($index)"

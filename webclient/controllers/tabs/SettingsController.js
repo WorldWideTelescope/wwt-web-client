@@ -6,14 +6,14 @@
 	'$cookies',
 	'Util',
 	'$q',
-	function ($scope, rs, appState, $timeout, $cookies, util,$q) {
+	function ($scope, $rootScope, appState, $timeout, $cookies, util, $q) {
 		//var settings = $scope.settings = wwt.wc.settings;
 		$scope.defaults = {
 			autoHideTabs: false,
 			autoHideContext: false,
 			smoothPanning: !util.isAccelDevice(),
 			version: '5.1.02',
-			crosshairs:true
+			crosshairs: true
 		};
 
 		$q.all([$scope.getFromEn('HTML5'), $scope.getFromEn('Silverlight')]).then(function(arrayLabels) {
@@ -85,33 +85,17 @@
 		}
 
 		$scope.saveSettings = function (init) {
-			$timeout(function() {
+		    $timeout(function () {
+		        var broadcast = false;
 				$.each($scope.savedSettings, function (setting, flag) {
 					if ($scope[setting] !== flag || init) {
 						if (init) {
 							$scope[setting] = flag;
 						} else {
-							$scope.savedSettings[setting] = !flag;
+						    $scope.savedSettings[setting] = $scope[setting];
 						}
-						if (setting === 'autoHideContext') {
-							if (!$scope.savedSettings.autoHideContext) {
-								context.fadeIn(800, function () { contextHidden = false; });
-							}else if (init && $scope.autoHideContext) {
-								setTimeout(function () {
-									contextHidden = false;
-									//context.fadeOut(800, function() { contextHidden = true; });
-								},1200);
-							}
-						}
-						if (setting === 'autoHideTabs') {
-							if (!$scope.savedSettings.autoHideTabs) {
-								tabs.fadeIn(800, function () { tabsHidden = false; });
-							}else if (init && $scope.autoHideTabs) {
-								setTimeout(function() {
-									tabsHidden = false;
-									//tabs.fadeOut(800, function() { tabsHidden = true; });
-								},1200);
-							}
+						if (setting.indexOf('autoHide') === 0) {
+						    broadcast = true;
 						}
 						
 					}
@@ -119,70 +103,15 @@
 				wwt.wc.settings.set_showCrosshairs($scope.crosshairs);
 				wwt.wc.settings.set_smoothPan($scope.smoothPanning);
 				appState.set('settings', $scope.savedSettings);
+				if (broadcast) {
+				    $rootScope.$broadcast('autohideChange');
+				}
 			}, 10);
 			
 				
 		};
-		var mouseInTopRegion = false;
-		var mouseInBottomRegion = false;
-		var tabsHidden = false;
-		var contextHidden = false;
-		var tabs = $('#topPanel, .layer-manager'), context = $('.context-panel');
-		var hideContextTimer,
-			hideTabsTimer,
-			showingTabs,showingContext;
-
-
-		$(window).on('mousemove touchstart touchmove touchend', function (event) {
-			if (wwt.tourPlaying) {
-				showingTabs = false;
-				showingContext = false;
-				return;
-			}
-			if ($scope.savedSettings.autoHideContext || $scope.savedSettings.autoHideTabs) {
-				if (!context.length) context = $('.context-panel');
-				if (tabs.length < 2) tabs = $('#topPanel, .layer-manager');
-				var y = event.pageY != undefined? event.pageY : event.originalEvent.targetTouches[0].pageY;
-				
-				mouseInBottomRegion = $(window).height() - 123 < y;
-				mouseInTopRegion = y < 142;
-				if ($scope.savedSettings.autoHideTabs) {
-					if (mouseInTopRegion) {
-						clearTimeout(hideTabsTimer);
-						if (tabsHidden && showingTabs != true) {
-							tabsHidden = false;
-							showingTabs = true;
-							tabs.fadeIn(800, function() { showingTabs = false; });
-						}
-					} else if (!tabsHidden) {
-						clearTimeout(hideTabsTimer);
-						hideTabsTimer = setTimeout(function () {
-							tabsHidden = true;
-							tabs.fadeOut(800);
-						}, 1500);
-					}
-				}
-				if ($scope.savedSettings.autoHideContext) {
-					if (mouseInBottomRegion) {
-						clearTimeout(hideContextTimer);
-						if (contextHidden && showingContext != true) {
-							contextHidden = false;
-							showingContext = true;
-							context.fadeIn(800,function() { showingContext = false; });
-						}
-					} else if (!contextHidden) {
-						clearTimeout(hideContextTimer);
-						hideContextTimer = setTimeout(function () {
-							contextHidden = true;
-							context.fadeOut(800);
-						}, 1500);
-					}
-				}
-
-			}
-
-		});
+		
 
 		$scope.retrieveSettings();
 	}
-	]);
+]);
