@@ -6652,6 +6652,10 @@ wwt.controllers.controller('CurrentTourController', [
     };
    
     var initEditMode = function () {
+        
+        if (navigator.userAgent.toLowerCase().indexOf('safari')>0) {
+            alert('Editing Tours has known issues in Safari. For the best experience, please use Chrome.')
+        }
         if ($rootScope.editingTour !== true) { return; }
         tour._editMode = true;
         tourEdit.pauseTour();
