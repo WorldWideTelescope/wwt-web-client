@@ -15945,6 +15945,7 @@ window.wwtlib = function(){
           this.tourStopList.showAddButton = this._tour.get_editMode();
         }
       }
+      this.tourStopList.refresh();
     },
     playerTimer_Tick: function(sender, e) {
       if (this.playing) {
@@ -16526,27 +16527,6 @@ window.wwtlib = function(){
       pasteMenu.enabled = this.clipboardType === 'WorldWideTelescope.Overlay';
       pasteMenu.click = ss.bind('_pasteMenu_Click', this);
       this._contextMenu.items.push(pasteMenu);
-      var AddCircle = ToolStripMenuItem.create(Language.getLocalizedText(444, 'Circle'));
-      var AddRectangle = ToolStripMenuItem.create(Language.getLocalizedText(445, 'Rectangle'));
-      var AddOpenRectangle = ToolStripMenuItem.create(Language.getLocalizedText(446, 'Open Rectangle'));
-      var AddRing = ToolStripMenuItem.create(Language.getLocalizedText(447, 'Ring'));
-      var AddLine = ToolStripMenuItem.create(Language.getLocalizedText(448, 'Line'));
-      var AddArrow = ToolStripMenuItem.create(Language.getLocalizedText(449, 'Arrow'));
-      var AddStar = ToolStripMenuItem.create(Language.getLocalizedText(450, 'Star'));
-      AddCircle.click = ss.bind('_insertShapeCircle_Click', this);
-      AddRectangle.click = ss.bind('_insertShapeRectangle_Click', this);
-      AddOpenRectangle.click = ss.bind('_addOpenRectangle_Click', this);
-      AddRing.click = ss.bind('_insertDonut_Click', this);
-      AddLine.click = ss.bind('_insertShapeLine_Click', this);
-      AddArrow.click = ss.bind('_addArrow_Click', this);
-      AddStar.click = ss.bind('_addStar_Click', this);
-      this._contextMenu.items.push(AddCircle);
-      this._contextMenu.items.push(AddRectangle);
-      this._contextMenu.items.push(AddOpenRectangle);
-      this._contextMenu.items.push(AddRing);
-      this._contextMenu.items.push(AddLine);
-      this._contextMenu.items.push(AddArrow);
-      this._contextMenu.items.push(AddStar);
       this._contextMenu._show(position);
     },
     _addOpenRectangle_Click: function(sender, e) {
