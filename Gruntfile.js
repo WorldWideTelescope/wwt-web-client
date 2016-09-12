@@ -47,6 +47,7 @@ module.exports = function(grunt) {
                     'directives/EditSlideValues.js',
                     'directives/Movable.js',
                     'factories/appstate.js',
+                    'factories/autohidepanels.js',
                     'factories/localization.js',
                     'factories/FinderScope.js',
                     'factories/ThumbList.js',

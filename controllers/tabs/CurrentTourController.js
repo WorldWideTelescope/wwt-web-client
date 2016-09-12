@@ -6,6 +6,7 @@
     var mainScope = angular.element('div.desktop').scope();
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
+    var scrollerInit = false;
 
     $scope.init = function (curTour) {
         tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
@@ -14,9 +15,11 @@
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
         };
+        mapStops(true);
         wwt.wc.add_slideChanged(function () {
             //console.log(arguments, tour, tourEdit);
-            $scope.$applyAsync(function () {//tween <.5
+            $scope.$applyAsync(function () {//tween <.5 
+
                 $scope.activeIndex = tour.get_currentTourstopIndex();
                 $scope.activeSlide = tour.get_currentTourStop();
                 tourEdit.tourStopList.selectedItems = {};
@@ -34,6 +37,13 @@
         $rootScope.$on('escKey', showSlides);
         $rootScope.$on('closeTour', closeTour);
         $rootScope.$watch('editingTour', initEditMode);
+        $rootScope.$on('tourFinished', finishedPlaying);
+        $rootScope.$on('showingSlides', function () {
+            if (!scrollerInit) {
+                scrollerInit = true;
+                showTourSlides();
+            }
+        });
         if (mainScope.autoEdit) {
             showSlides();
             tour._editMode = true;
@@ -52,7 +62,7 @@
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        mapStops(true);
+        
         $scope.$applyAsync(showTourSlides);
         
     };
@@ -74,7 +84,12 @@
         $scope.tourEdit = tourEdit = null;
         $rootScope.currentTour = $scope.tour = tour = null;
     };
-
+    var finishedPlaying = function () {
+        if (tour._currentTourstopIndex == tour._tourStops.length -1) {
+            showSlides(true);
+            $scope.selectStop(0, null);
+        }
+    };
     $scope.showSlideNumbers = function () {
         $scope.$applyAsync(function () {
             $scope.slideNumbering = !$scope.slideNumbering;
@@ -161,7 +176,7 @@
     };
     
     var showTourSlides = function () {
-        $('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
+        //$('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         console.log(tourEdit.playing);
         setTimeout(function () {
             $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
@@ -203,6 +218,9 @@
                     } else {
                         tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
                     }
+                } else {
+                    tourEdit.tourStopList.selectedItems = {};
+                    tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
                 }
             }
             else {
@@ -253,12 +271,16 @@
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        //else {
-        //    tourEdit.playFromCurrentTourstop();
-        //} 
-        else { 
-            tourEdit.playNow(true); 
-        }
+        else {
+            if (tour._editMode) {
+                $scope.selectStop(0);
+                tourEdit.playNow(true);
+            }
+            else {
+                tourEdit.playFromCurrentTourstop();
+            }
+        } 
+        $rootScope.tourPlaying = tourEdit.playing;
         $rootScope.tourPaused = !tourEdit.playing;
     };
 
@@ -291,7 +313,7 @@
                         $('#newTourProps').click();
                     }, 500);
                 }
-                $scope.$watch('activeSlide._tweenPosition', function (e) {
+                $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
                     console.log('tweenPos', e);
                 });
             }

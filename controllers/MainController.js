@@ -26,7 +26,9 @@ wwt.controllers.controller('MainController',
 	'$modal',
     '$element',
     '$cookies',
-	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies) {
+    'AutohidePanels',
+	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies, AutohidePanels) {
+        //TODO - figure out how to clean up lame long list of dependencies injected
 		var ctl;
 		 
 		//#region LookAt/Imagery 
@@ -63,14 +65,16 @@ wwt.controllers.controller('MainController',
 					collection.splice(0, 0, '');
 				$scope.surveys = collection;
 				var foundName = false;
+				
+				
 				// HACK ALERT (Mars was hardcoded from Visible Imagery)
 				if (imageryName === 'Mars') {
 					imageryName = 'Visible Imagery';
 				}
 				if (imageryName) {
-					$.each(collection, function () {
-						if (this !== '' && this.get_name() && (this.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(this.get_name()) === 0)) {
-							$scope.backgroundImagery = this;
+					$.each(collection, function (i,item) {
+					    if (item !== '' && item.get_name() && (item.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(item.get_name()) === 0)) {
+					        $scope.backgroundImagery = item;
 							foundName = true;
 						}
 					});
@@ -93,7 +97,10 @@ wwt.controllers.controller('MainController',
 			},100);
 		};
 		$scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
-			$scope.lookAt = lookAt;
+		    $scope.lookAt = lookAt;
+		    if (lookAt === 'Planet' && !imageryName) {
+		        imageryName = 'Mars';
+		    }
 			$scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
 			setTimeout(wwt.resize, 1200);
 		};
@@ -140,6 +147,7 @@ wwt.controllers.controller('MainController',
 					}
 				};
 				$scope.lookAtChanged();
+				AutohidePanels.init();
 
 			});
 			ctl.settings.set_showConstellationBoundries(false);
@@ -649,25 +657,25 @@ wwt.controllers.controller('MainController',
 		};
 
 		$scope.playTour = function (url) {
+		    console.trace('fs');
+	        util.goFullscreen();
 		    console.log(encodeURIComponent(url));
 	        $('.finder-scope').hide();
 	        wwtlib.WWTControl.singleton.playTour(url);
-	        wwt.tourPlaying = $rootScope.tourPlaying = true;
-	        $rootScope.tourPaused = false;
-           
+	        $scope.$applyAsync(function () {
+                wwt.tourPlaying = $rootScope.tourPlaying = true;
+	            $rootScope.tourPaused = false;
+            });
 	        wwt.wc.add_tourEnded(tourChangeHandler);
 	        wwt.wc.add_tourReady(function() {	            
-	            $('#ribbon,.top-panel,.context-panel,.layer-manager')
-                    .fadeOut(800, function () {
-	                $scope.$applyAsync(function () {
-	                    $scope.activeItem = { label: 'currentTour' };
-	                    $scope.activePanel = 'currentTour';
+	            
+	            $scope.$applyAsync(function () {
+	                $scope.activeItem = { label: 'currentTour' };
+	                $scope.activePanel = 'currentTour';
+	                $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
 	                    
-	                    $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
-	                    
-	                });
 	            });
-
+	            
 	        });
 	        //wwt.wc.add_tourPaused(tourChangeHandler);
 
@@ -680,6 +688,7 @@ wwt.controllers.controller('MainController',
 		};
 
 		$rootScope.closeTour = function ($event) {
+		    util.exitFullscreen();
 		    $event.preventDefault();
 		    $event.stopPropagation();
 		    if (wwtlib.WWTControl.singleton.tourEdit.get_tour().get_tourDirty() && !confirm('You have unsaved changes. Close this tour and lose changes?')) {
@@ -695,11 +704,10 @@ wwt.controllers.controller('MainController',
 		    //wwtlib.WWTControl.singleton.tour.cleanUp();
 		    $scope.$applyAsync(function () {
 		        $scope.activePanel = 'Guided Tours';
-		    });
-	        $rootScope.editingTour = false;
-		    $rootScope.tourPlaying = false;
-		    $rootScope.currentTour = null;
-	        $('#ribbon, .top-panel, .context-panel, .layer-manager').fadeIn(400);
+	            $rootScope.editingTour = false;
+		        $rootScope.tourPlaying = false;
+		        $rootScope.currentTour = null;
+	        });
 	    }
 
 		$scope.createNewTour = function () {
@@ -716,17 +724,14 @@ wwt.controllers.controller('MainController',
 		    });
 	    };
 
-	    function tourChangeHandler() {
-			var settings = appState.get('settings') || {};
-			wwt.tourPlaying = $rootScope.tourPlaying = false;
-
+		function tourChangeHandler() {
+		    $rootScope.$broadcast('tourFinished');
+		    var settings = appState.get('settings') || {};
+		    $scope.$applyAsync(function () {
+			    wwt.tourPlaying = $rootScope.tourPlaying = false;
+            });
 			$rootScope.landscapeMessage = false;
-			if (!settings.autoHideContext) {
-				$('.context-panel').fadeIn(800);
-			}
-			if (!settings.autoHideTabs) {
-				$('#ribbon,.top-panel,.layer-manager').fadeIn(800);
-			}
+			
 			ctl.clearAnnotations();
 		}
 
@@ -901,7 +906,7 @@ wwt.controllers.controller('MainController',
 	            $scope.lookAt !== 'Panorama';
 	    };
 
-	    $scope.displayXFader = function () {
+	    $scope.displayXFader = function () { 
 	        return (
                 $scope.lookAt === 'Sky' &&
 	            $scope.trackingObj &&
