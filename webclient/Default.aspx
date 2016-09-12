@@ -1069,7 +1069,7 @@
                                     <a class="btn remove" localize="Remove" ng-if="activeSlide.voice" ng-click="activeSlide.voice = activeSlide._voiceTrack = null"></a>
                                     
                                     <input type="file" id="voiceFile" class="audiofile" localize="Browse..." onchange="angular.element(this).scope().mediaFileChange(event,'voiceOver')"  />
-                                    <a class="browse btn" localize="Browse..." ng-if="!activeSlide.voice"  ng-click="launchFileBrowser('musicFile')"></a>
+                                    <a class="browse btn" localize="Browse..." ng-if="!activeSlide.voice"  ng-click="launchFileBrowser('voiceFile')"></a>
                                     
                                     <a class="btn{{!activeSlide.voice?' disabled' : ''}}" ng-click="activeSlide.voice.mute(!activeSlide.voice.muted)" ng-disabled="!activeSlide.voice">
                                         <i class="fa fa-volume-up" ng-if="!activeSlide.voice || !activeSlide.voice.muted"></i>

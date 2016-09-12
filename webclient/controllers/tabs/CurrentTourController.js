@@ -176,6 +176,7 @@
             tourEdit.tourEditorUI.addPicture(file);
         }
         else {
+            console.log('addAudio');
             tourEdit.tourEditorUI.addAudio(file, mediaKey === 'music');
             $timeout(bindAudio, 500);
         }
