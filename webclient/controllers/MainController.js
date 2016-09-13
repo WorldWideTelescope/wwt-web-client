@@ -37,6 +37,7 @@ wwt.controllers.controller('MainController',
 		$scope.lookAt = 'Sky';
 		$scope.imagery = [[], [], [], [], []];
 
+        
 		$scope.lookAtDropdownChanged = function (lookAtType) {
 			if (lookAtType) {
 				$scope.lookAt = lookAtType;
@@ -57,12 +58,13 @@ wwt.controllers.controller('MainController',
 				if ($('#lstLookAt').length) {
 					$scope.lookAt = $('#lstLookAt option:selected').text();
 				}
-				if ($scope.lookAt === '') {
+				if ($scope.lookAt === '') { 
 					$scope.lookAt = 'Sky';
 				}
 				var collection = $scope.imagery[$.inArray($scope.lookAt, $scope.lookTypes)];
-				if (collection[0] !== '')
-					collection.splice(0, 0, '');
+				if (collection[0] !== '-')
+				    collection.splice(0, 0, '-');
+				if (imageryName == '') imageryName = '-';
 				$scope.surveys = collection;
 				var foundName = false;
 				
@@ -86,6 +88,7 @@ wwt.controllers.controller('MainController',
 							$scope.setSurveyBg();
 
 						}, 123);
+						return;
 					} else if (!noUpdate) {
 						$scope.backgroundImagery = collection[0];
 						return;
@@ -98,9 +101,9 @@ wwt.controllers.controller('MainController',
 		};
 		$scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
 		    $scope.lookAt = lookAt;
-		    if (lookAt === 'Planet' && !imageryName) {
-		        imageryName = 'Mars';
-		    }
+		    //if (lookAt === 'Planet' && !imageryName) {
+		    //    imageryName = 'Mars';
+		    //}
 			$scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
 			setTimeout(wwt.resize, 1200);
 		};
@@ -502,29 +505,32 @@ wwt.controllers.controller('MainController',
 					return;
 				} 
 			}
-			if ($scope.backgroundImagery && $scope.backgroundImagery !== '?')
-				ctl.setBackgroundImageByName($scope.backgroundImagery.get_name());
-			if (typeof $scope.backgroundImagery != 'string' && $scope.backgroundImagery.get_name() === '3D Solar System View' && !solarSystemInit) {
-				setTimeout(function () {
-					var bar = $('.planetary-scale .btn');
-					var ps = new wwt.Move({
-						el: bar,
-						bounds: {
-							x: [0,66],
-							y: [0, 0]
-						},
-						onstart: function () {
-							bar.addClass('moving');
-						},
-						onmove: function () {
-							ctl.settings.set_solarSystemScale(Math.max(this.css.left * 1.5, 1));
-						},
-						oncomplete: function () {
-							bar.removeClass('moving');
-						}
-					});
-					solarSystemInit = true;
-				}, 10);
+
+			if ($scope.backgroundImagery) {
+			    if ($scope.backgroundImagery !== '?')
+			        ctl.setBackgroundImageByName($scope.backgroundImagery.get_name());
+			    if (typeof $scope.backgroundImagery != 'string' && $scope.backgroundImagery.get_name() === '3D Solar System View' && !solarSystemInit) {
+			        setTimeout(function () {
+			            var bar = $('.planetary-scale .btn');
+			            var ps = new wwt.Move({
+			                el: bar,
+			                bounds: {
+			                    x: [0, 66],
+			                    y: [0, 0]
+			                },
+			                onstart: function () {
+			                    bar.addClass('moving');
+			                },
+			                onmove: function () {
+			                    ctl.settings.set_solarSystemScale(Math.max(this.css.left * 1.5, 1));
+			                },
+			                oncomplete: function () {
+			                    bar.removeClass('moving');
+			                }
+			            });
+			            solarSystemInit = true;
+			        }, 10);
+			    }
 			}
 
 		};
@@ -553,9 +559,11 @@ wwt.controllers.controller('MainController',
 				$('#explorerModal').modal('hide');
 				$('#nboModal').modal('hide');
 			}
+
 			var imageSet = util.getImageset(item);
 			if (imageSet && !item.isEarth) {
-				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
+
+			    wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
 			$scope.setTrackingObj(item);
 

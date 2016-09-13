@@ -369,9 +369,23 @@
 			$rootScope.$broadcast('viewportchange', viewport);
 		}
 	}
+	var browsers = {};
+	var has = function (src, search) {
+	    return src.indexOf(search) >= 0;
+	}
+	var ua = navigator.userAgent.toLowerCase();
+
+	browsers.isEdge = has(ua, 'edge/') > 0;
+	browsers.isFF = has(ua, 'firefox') > 0;
+	browsers.isIE = has(ua, 'msie') || has(ua, 'trident');
+	browsers.isChrome = has(ua, 'chrome');
+	browsers.isSafari = has(ua, 'safari') && !browsers.isChrome && !browsers.isIE && !browsers.isEdge && !browsers.isFF;;
+	browsers.isChrome = has(ua, 'chrome') > 0 && !browsers.isIE && !browsers.isEdge && !browsers.isFF;
+	browsers.isWindows = has(ua, 'windows');
+
+	//console.log(browsers); 
 	
-	
-	return api;
+	return $.extend(api, browsers);
 
 }]);
 

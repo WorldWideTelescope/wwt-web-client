@@ -1317,15 +1317,11 @@ wwt.app.directive('contenteditable', [function() {
                 else
                     s.duration = lastGoodValue;
 
-                s.minDuration = Math.floor(s.duration / 60000);
-                var secs = (s.duration % 60000) / 1000;
-                s.secDuration = Math.floor(secs);
-                s.tenths = secs % 1 === 0 ? '.0' : secs % 1;
-                s.durationString = s.minDuration + ':' +
-                    (s.secDuration < 10 ? '0' : '') +
-                    s.secDuration + 
-                    s.tenths;
+                var min = (s.duration / 60 / 1000) << 0;
+                var secs = ((s.duration / 1000) % 60)<<0;
+                var tenths = ((secs % 1) * 10) << 0;
                 
+                s.durationString = min + ':' + (secs < 10 ? '0' : '') + secs + '.' + tenths;
                 stop.set_duration(lastGoodValue);
                 if (hasFocused) {
                     angular.element('#currentTourPanel').scope().refreshStops();
@@ -1572,16 +1568,19 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
     
 
     var settingChange = function () {
-        var settings = appState.get('settings');
-        if (settings.autoHideTabs !== autoHide.tabs && settings.autoHideTabs == false) {
-            togglePanelGroup(true, 'tabs');
+        var settings = appState.get('settings'); 
+        if (!settings || settings.autoHideTabs === undefined) {
+            setBoth(autoHide, false);
+        } else {
+            if (settings.autoHideTabs !== autoHide.tabs && settings.autoHideTabs == false) {
+                togglePanelGroup(true, 'tabs');
+            }
+            if (settings.autoHideContext !== autoHide.context && settings.autoHideContext == false) {
+                togglePanelGroup(true, 'context');
+            }
+            autoHide.tabs = settings.autoHideTabs;
+            autoHide.context = settings.autoHideContext;
         }
-        if (settings.autoHideContext !== autoHide.context && settings.autoHideContext == false) {
-            togglePanelGroup(true, 'context');
-        }
-        autoHide.tabs = settings.autoHideTabs;
-        autoHide.context = settings.autoHideContext;
-        
         if (tourPlaying) {
             panels.tabs = $('#ribbon, #topPanel, .layer-manager');
             
@@ -1600,6 +1599,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
     
 
     var tourStateChange = function () {
+        console.log('tourstatechange - playing:', $rootScope.tourPlaying);
         togglePanelGroup(!$rootScope.tourPlaying, 'tabs');
         togglePanelGroup(!$rootScope.tourPlaying, 'context');
         editingTour = $rootScope.editingTour;
@@ -2026,7 +2026,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         }
 
         if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
-            scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
+            if (item.guid && item.guid.toLowerCase().indexOf('mars.') == -1) {
+                scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
+            }
             if (item.isSurvey) {
                 scope.setSurveyBg(item.get_name(), item);
             } else {
@@ -2471,9 +2473,23 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			$rootScope.$broadcast('viewportchange', viewport);
 		}
 	}
+	var browsers = {};
+	var has = function (src, search) {
+	    return src.indexOf(search) >= 0;
+	}
+	var ua = navigator.userAgent.toLowerCase();
+
+	browsers.isEdge = has(ua, 'edge/') > 0;
+	browsers.isFF = has(ua, 'firefox') > 0;
+	browsers.isIE = has(ua, 'msie') || has(ua, 'trident');
+	browsers.isChrome = has(ua, 'chrome');
+	browsers.isSafari = has(ua, 'safari') && !browsers.isChrome && !browsers.isIE && !browsers.isEdge && !browsers.isFF;;
+	browsers.isChrome = has(ua, 'chrome') > 0 && !browsers.isIE && !browsers.isEdge && !browsers.isFF;
+	browsers.isWindows = has(ua, 'windows');
+
+	//console.log(browsers); 
 	
-	
-	return api;
+	return $.extend(api, browsers);
 
 }]);
 
@@ -3909,6 +3925,7 @@ wwt.controllers.controller('ContextPanelController',
 	    var lastUpdate = new Date();
 
 	    var init = function () {
+	        $scope.isContextPanel = true;
 	        thumbList.init($scope, 'context');
             
 	        $scope.placesInCone = [];
@@ -4023,6 +4040,7 @@ wwt.controllers.controller('MainController',
 		$scope.lookAt = 'Sky';
 		$scope.imagery = [[], [], [], [], []];
 
+        
 		$scope.lookAtDropdownChanged = function (lookAtType) {
 			if (lookAtType) {
 				$scope.lookAt = lookAtType;
@@ -4043,12 +4061,13 @@ wwt.controllers.controller('MainController',
 				if ($('#lstLookAt').length) {
 					$scope.lookAt = $('#lstLookAt option:selected').text();
 				}
-				if ($scope.lookAt === '') {
+				if ($scope.lookAt === '') { 
 					$scope.lookAt = 'Sky';
 				}
 				var collection = $scope.imagery[$.inArray($scope.lookAt, $scope.lookTypes)];
-				if (collection[0] !== '')
-					collection.splice(0, 0, '');
+				if (collection[0] !== '-')
+				    collection.splice(0, 0, '-');
+				if (imageryName == '') imageryName = '-';
 				$scope.surveys = collection;
 				var foundName = false;
 				
@@ -4072,6 +4091,7 @@ wwt.controllers.controller('MainController',
 							$scope.setSurveyBg();
 
 						}, 123);
+						return;
 					} else if (!noUpdate) {
 						$scope.backgroundImagery = collection[0];
 						return;
@@ -4084,9 +4104,9 @@ wwt.controllers.controller('MainController',
 		};
 		$scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
 		    $scope.lookAt = lookAt;
-		    if (lookAt === 'Planet' && !imageryName) {
-		        imageryName = 'Mars';
-		    }
+		    //if (lookAt === 'Planet' && !imageryName) {
+		    //    imageryName = 'Mars';
+		    //}
 			$scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
 			setTimeout(wwt.resize, 1200);
 		};
@@ -4488,29 +4508,32 @@ wwt.controllers.controller('MainController',
 					return;
 				} 
 			}
-			if ($scope.backgroundImagery && $scope.backgroundImagery !== '?')
-				ctl.setBackgroundImageByName($scope.backgroundImagery.get_name());
-			if (typeof $scope.backgroundImagery != 'string' && $scope.backgroundImagery.get_name() === '3D Solar System View' && !solarSystemInit) {
-				setTimeout(function () {
-					var bar = $('.planetary-scale .btn');
-					var ps = new wwt.Move({
-						el: bar,
-						bounds: {
-							x: [0,66],
-							y: [0, 0]
-						},
-						onstart: function () {
-							bar.addClass('moving');
-						},
-						onmove: function () {
-							ctl.settings.set_solarSystemScale(Math.max(this.css.left * 1.5, 1));
-						},
-						oncomplete: function () {
-							bar.removeClass('moving');
-						}
-					});
-					solarSystemInit = true;
-				}, 10);
+
+			if ($scope.backgroundImagery) {
+			    if ($scope.backgroundImagery !== '?')
+			        ctl.setBackgroundImageByName($scope.backgroundImagery.get_name());
+			    if (typeof $scope.backgroundImagery != 'string' && $scope.backgroundImagery.get_name() === '3D Solar System View' && !solarSystemInit) {
+			        setTimeout(function () {
+			            var bar = $('.planetary-scale .btn');
+			            var ps = new wwt.Move({
+			                el: bar,
+			                bounds: {
+			                    x: [0, 66],
+			                    y: [0, 0]
+			                },
+			                onstart: function () {
+			                    bar.addClass('moving');
+			                },
+			                onmove: function () {
+			                    ctl.settings.set_solarSystemScale(Math.max(this.css.left * 1.5, 1));
+			                },
+			                oncomplete: function () {
+			                    bar.removeClass('moving');
+			                }
+			            });
+			            solarSystemInit = true;
+			        }, 10);
+			    }
 			}
 
 		};
@@ -4539,9 +4562,11 @@ wwt.controllers.controller('MainController',
 				$('#explorerModal').modal('hide');
 				$('#nboModal').modal('hide');
 			}
+
 			var imageSet = util.getImageset(item);
 			if (imageSet && !item.isEarth) {
-				wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
+
+			    wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
 			}
 			$scope.setTrackingObj(item);
 
@@ -6587,6 +6612,7 @@ wwt.controllers.controller('CurrentTourController', [
     function ($scope, $rootScope, util, media,appState,$timeout) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
+    var isNewTour = false;
     var mainScope = angular.element('div.desktop').scope();
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
@@ -6652,9 +6678,9 @@ wwt.controllers.controller('CurrentTourController', [
     };
    
     var initEditMode = function () {
-        var ua = navigator.userAgent.toLowerCase()
-        if (ua.indexOf('safari')>0 && ua.indexOf('chrome')===-1) {
-            alert('Editing Tours has known issues in Safari. For the best experience, please use Chrome.')
+        
+        if (!util.isWindows && !util.isChrome) {
+            alert('Editing Tours requires advanced browser features. For the best experience, please use Chrome. There are known incompatibilities in other browsers.');
         }
         if ($rootScope.editingTour !== true) { return; }
         tour._editMode = true;
@@ -6676,6 +6702,12 @@ wwt.controllers.controller('CurrentTourController', [
         if (tour._currentTourstopIndex == tour._tourStops.length -1) {
             showSlides(true);
             $scope.selectStop(0, null);
+            if (tourEdit.playing) {
+                $scope.playButtonClick();
+            } else {
+                $rootScope.tourPlaying = false;
+                $rootScope.tourPaused = true;
+            }
         }
     };
     $scope.showSlideNumbers = function () {
@@ -6831,6 +6863,7 @@ wwt.controllers.controller('CurrentTourController', [
     };
 
     var bindAudio = function () {
+        if (!$scope.activeSlide) { return;}
         var mapAudioProps = function (audio) {
             if (audio) {
                 audio.muted = audio.get_mute();
@@ -6876,9 +6909,13 @@ wwt.controllers.controller('CurrentTourController', [
         $rootScope.tourPlaying = tourEdit.playing;
         $rootScope.tourPaused = !tourEdit.playing;
     };
-
+    var refreshLoop;
     var mapStops = $scope.refreshStops = function (isInit) {
-        
+        if (refreshLoop) {
+            return;
+        }
+        refreshLoop = true;
+        setTimeout(function () { refreshLoop = false }, 55);
         $scope.$applyAsync(function () {
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
@@ -6895,21 +6932,28 @@ wwt.controllers.controller('CurrentTourController', [
                 s.isMaster = s.get_masterSlide();
                 return s;
             });
-            tour.minuteDuration = Math.floor(tour.duration / 60000);
-            tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
+            tour.minuteDuration = (tour.duration / 60 / 1000) << 0;
+            tour.secDuration = ((tour.duration / 1000) % 60) << 0;
             $scope.tour = tour;
-
-            if (isInit && isInit===true) {
+            if (!isNewTour && !$scope.tourStops.length && tour._title === 'New Tour') {
+                isNewTour = true;
+                setTimeout(function () {
+                    $('#newTourProps').click();
+                }, 500);
+                return;
+            }
+            if ((isNewTour && $scope.tourStops.length) || (isInit && isInit === true)) {
+                isNewTour = false;
                 $scope.selectStop(0);
-                if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
-                    setTimeout(function () {
-                        $('#newTourProps').click();
-                    }, 500);
-                }
+                
                 $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
                     console.log('tweenPos', e);
+                    if (e === 1) {
+                        finishedPlaying();//hack - need tourfinished event
+                    }
                 });
             }
+            
             $scope.$broadcast('initSlides');
         });
     };

@@ -47,15 +47,11 @@
                 else
                     s.duration = lastGoodValue;
 
-                s.minDuration = Math.floor(s.duration / 60000);
-                var secs = (s.duration % 60000) / 1000;
-                s.secDuration = Math.floor(secs);
-                s.tenths = secs % 1 === 0 ? '.0' : secs % 1;
-                s.durationString = s.minDuration + ':' +
-                    (s.secDuration < 10 ? '0' : '') +
-                    s.secDuration + 
-                    s.tenths;
+                var min = (s.duration / 60 / 1000) << 0;
+                var secs = ((s.duration / 1000) % 60)<<0;
+                var tenths = ((secs % 1) * 10) << 0;
                 
+                s.durationString = min + ':' + (secs < 10 ? '0' : '') + secs + '.' + tenths;
                 stop.set_duration(lastGoodValue);
                 if (hasFocused) {
                     angular.element('#currentTourPanel').scope().refreshStops();
