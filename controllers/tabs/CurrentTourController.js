@@ -3,6 +3,7 @@
     function ($scope, $rootScope, util, media,appState,$timeout) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
+    var isNewTour = false;
     var mainScope = angular.element('div.desktop').scope();
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
@@ -68,9 +69,9 @@
     };
    
     var initEditMode = function () {
-        var ua = navigator.userAgent.toLowerCase()
-        if (ua.indexOf('safari')>0 && ua.indexOf('chrome')===-1) {
-            alert('Editing Tours has known issues in Safari. For the best experience, please use Chrome.')
+        
+        if (!util.isWindows && !util.isChrome) {
+            alert('Editing Tours requires advanced browser features. For the best experience, please use Chrome. There are known incompatibilities in other browsers.');
         }
         if ($rootScope.editingTour !== true) { return; }
         tour._editMode = true;
@@ -92,6 +93,12 @@
         if (tour._currentTourstopIndex == tour._tourStops.length -1) {
             showSlides(true);
             $scope.selectStop(0, null);
+            if (tourEdit.playing) {
+                $scope.playButtonClick();
+            } else {
+                $rootScope.tourPlaying = false;
+                $rootScope.tourPaused = true;
+            }
         }
     };
     $scope.showSlideNumbers = function () {
@@ -247,6 +254,7 @@
     };
 
     var bindAudio = function () {
+        if (!$scope.activeSlide) { return;}
         var mapAudioProps = function (audio) {
             if (audio) {
                 audio.muted = audio.get_mute();
@@ -292,9 +300,13 @@
         $rootScope.tourPlaying = tourEdit.playing;
         $rootScope.tourPaused = !tourEdit.playing;
     };
-
+    var refreshLoop;
     var mapStops = $scope.refreshStops = function (isInit) {
-        
+        if (refreshLoop) {
+            return;
+        }
+        refreshLoop = true;
+        setTimeout(function () { refreshLoop = false }, 55);
         $scope.$applyAsync(function () {
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
@@ -311,21 +323,28 @@
                 s.isMaster = s.get_masterSlide();
                 return s;
             });
-            tour.minuteDuration = Math.floor(tour.duration / 60000);
-            tour.secDuration = Math.floor((tour.duration % 60000) / 1000);
+            tour.minuteDuration = (tour.duration / 60 / 1000) << 0;
+            tour.secDuration = ((tour.duration / 1000) % 60) << 0;
             $scope.tour = tour;
-
-            if (isInit && isInit===true) {
+            if (!isNewTour && !$scope.tourStops.length && tour._title === 'New Tour') {
+                isNewTour = true;
+                setTimeout(function () {
+                    $('#newTourProps').click();
+                }, 500);
+                return;
+            }
+            if ((isNewTour && $scope.tourStops.length) || (isInit && isInit === true)) {
+                isNewTour = false;
                 $scope.selectStop(0);
-                if ($scope.tourStops.length < 2 && tour._title ==='New Tour') {
-                    setTimeout(function () {
-                        $('#newTourProps').click();
-                    }, 500);
-                }
+                
                 $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
                     console.log('tweenPos', e);
+                    if (e === 1) {
+                        finishedPlaying();//hack - need tourfinished event
+                    }
                 });
             }
+            
             $scope.$broadcast('initSlides');
         });
     };
