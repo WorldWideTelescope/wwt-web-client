@@ -10,6 +10,7 @@
 	    var lastUpdate = new Date();
 
 	    var init = function () {
+	        $scope.isContextPanel = true;
 	        thumbList.init($scope, 'context');
             
 	        $scope.placesInCone = [];

@@ -74,16 +74,19 @@
     
 
     var settingChange = function () {
-        var settings = appState.get('settings');
-        if (settings.autoHideTabs !== autoHide.tabs && settings.autoHideTabs == false) {
-            togglePanelGroup(true, 'tabs');
+        var settings = appState.get('settings'); 
+        if (!settings || settings.autoHideTabs === undefined) {
+            setBoth(autoHide, false);
+        } else {
+            if (settings.autoHideTabs !== autoHide.tabs && settings.autoHideTabs == false) {
+                togglePanelGroup(true, 'tabs');
+            }
+            if (settings.autoHideContext !== autoHide.context && settings.autoHideContext == false) {
+                togglePanelGroup(true, 'context');
+            }
+            autoHide.tabs = settings.autoHideTabs;
+            autoHide.context = settings.autoHideContext;
         }
-        if (settings.autoHideContext !== autoHide.context && settings.autoHideContext == false) {
-            togglePanelGroup(true, 'context');
-        }
-        autoHide.tabs = settings.autoHideTabs;
-        autoHide.context = settings.autoHideContext;
-        
         if (tourPlaying) {
             panels.tabs = $('#ribbon, #topPanel, .layer-manager');
             
@@ -102,6 +105,7 @@
     
 
     var tourStateChange = function () {
+        console.log('tourstatechange - playing:', $rootScope.tourPlaying);
         togglePanelGroup(!$rootScope.tourPlaying, 'tabs');
         togglePanelGroup(!$rootScope.tourPlaying, 'context');
         editingTour = $rootScope.editingTour;

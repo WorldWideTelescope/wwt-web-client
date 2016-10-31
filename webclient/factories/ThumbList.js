@@ -148,7 +148,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         }
 
         if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
-            scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
+            if (item.guid && item.guid.toLowerCase().indexOf('mars.') == -1) {
+                scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
+            }
             if (item.isSurvey) {
                 scope.setSurveyBg(item.get_name(), item);
             } else {

@@ -919,14 +919,14 @@
                             </div>
                         </a><br/>
                         <div class="small" localize="Run Time"></div>
-                        <div class="small">{{tour.minuteDuration}}:{{tour.secDuration}}</div>
+                        <div class="small">{{ !tour.minuteDuration ? '00' : tour.minuteDuration > 9 ? tour.minuteDuration : '0' + tour.minuteDuration}}:{{ !tour.secDuration ? '00' : tour.secDuration > 9 ? tour.secDuration : '0' + tour.secDuration}}</div>
 
                     </td>
                     <td class="tour-stops">
                         <div class="scroller" data-jquery-scrollbar>
                             <div class="stops-container">
                                 <a class="btn" bs-popover 
-                                    style="position:absolute;top:110px;left:190px"
+                                    style="position:absolute;top:110px;left:190px;visibility:hidden"
                                     template-url="views/popovers/tour-properties.html" 
                                     trigger="click" placement="bottom-left" data-content="{tour}" 
                                     data-container="body" id="newTourProps"></a>
