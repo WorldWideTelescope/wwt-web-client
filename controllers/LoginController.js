@@ -20,6 +20,7 @@
             } else if ($cookies.get('access_token')) {
 
                 $rootScope.loggedIn = true;
+                $rootScope.token = $cookies.get('access_token');
             }
         }
 

@@ -48,8 +48,9 @@
                     s.duration = lastGoodValue;
 
                 var min = (s.duration / 60 / 1000) << 0;
-                var secs = ((s.duration / 1000) % 60)<<0;
-                var tenths = ((secs % 1) * 10) << 0;
+                var secs = ((s.duration / 1000) % 60);
+                var tenths = Math.round((secs % 1) * 10);
+                secs = Math.floor(secs);
                 
                 s.durationString = min + ':' + (secs < 10 ? '0' : '') + secs + '.' + tenths;
                 stop.set_duration(lastGoodValue);
