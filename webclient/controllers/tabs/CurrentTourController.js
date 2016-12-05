@@ -1,10 +1,11 @@
 ﻿wwt.controllers.controller('CurrentTourController', [
-    '$scope', '$rootScope', 'Util', 'MediaFile','AppState','$timeout',
-    function ($scope, $rootScope, util, media,appState,$timeout) {
+    '$scope', '$rootScope', 'Util', 'MediaFile','AppState','$timeout','$modal',
+    function ($scope, $rootScope, util, media,appState,$timeout,$modal) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
     var tour;
     var isNewTour = false;
     var mainScope = angular.element('div.desktop').scope();
+    
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
     var scrollerInit = false;
@@ -149,32 +150,101 @@
     $scope.tourProp = function ($event, prop) {
         tour['set_' + prop]($event.target.value);
     };
+    
+    
+
     $scope.saveTour = function () {
+        var saveRawFile = function () {
+            if (navigator && navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+            }
+            else {
+                $('#downloadTour').remove();
+                var saveUrl = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.download = filename;
+                a.href = saveUrl;
+                a.innerHTML = '&nbsp;';
+                a.id = 'downloadTour';
+                a.style.position = 'absolute';
+                a.style.top = '-999px';
+                a.dataset.downloadurl = ['application/wtt', a.download, a.href].join(':');
+                document.body.appendChild(a);
+                $('#downloadTour')[0].click();
+            }
+        };
         var blob = tour.saveToBlob();
-        var filename = tour._title + '.wtt'
-        if (navigator && navigator.msSaveBlob) {
-            navigator.msSaveBlob(blob, filename);
+        var filename = tour._title + '.wtt';
+        if ($rootScope.loggedIn) {
+            $scope.confirm = function (upload) {
+                if (upload) {
+                    
+                    var uploadingModal = $modal({
+                        scope: $scope,
+                        template: 'views/modals/message.html',
+                        show: true,
+                        content: 'Uploading ' + tour._title + ' to your default community. Please wait...',
+                        placement: 'center'
+                    });
+                    var fd = new FormData();
+                    fd.append('fname', filename);
+                    fd.append('data', blob);
+                    $.ajax('/Resource/Service/Content/PublishTour/' + tour._title, {
+                        type: 'POST',
+                        //url: '/Resource/Service/Content/Publish/' + encodeURIComponent(filename),
+                        data: blob,
+                        processData: false,
+                        beforeSend: function (request) {
+                            request.setRequestHeader("LiveUserToken", $rootScope.token);
+                        },
+                        contentType: 'text/plain'
+                    }).done(function (data) {
+                        //uploadingModal.$hide();
+                        hideModal(uploadingModal);
+                        var message;
+                        if (data && parseInt(data) > 1) {
+                            message = "Tour successfully uploaded. <a href='/Community/Profile' target='wwt'>Click to manage your WWT Community Profile</a>";
+                            
+                        } else {
+                            message = "There was an error uploading your tour. " + data;
+                        }
+                        $scope.showModalButtons = true;
+                        var successModal = $modal({
+                            scope: $scope,
+                            template: 'views/modals/message.html',
+                            show: true,
+                            content: message,
+                            placement: 'center'
+                        });
+                        
+                    });
+                }
+                else {
+                    saveRawFile();
+                    
+                }
+                hideModal(saveTourAsModal);
+            }
+            var saveTourAsModal = $modal({
+                scope: $scope,
+                template: 'views/modals/userconfirm.html',
+                show: true,
+                content: 'Upload this tour to your WWT community profile now? Click cancel to download the tour locally.',
+                placement:'center'
+            });
+           
         }
-        else {
-            $('#downloadTour').remove();
-            var saveUrl = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.download = filename;
-            a.href = saveUrl;
-            a.innerHTML = '&nbsp;';
-            a.id = 'downloadTour';
-            a.style.position = 'absolute';
-            a.style.top = '-999px';
-            a.dataset.downloadurl = ['application/wtt', a.download, a.href].join(':');
-            document.body.appendChild(a);
-            $('#downloadTour')[0].click();
-            
-        }
+
+        var hideModal = function (modal) {
+            modal.$promise.then(modal.hide);
+            $scope.showModalButtons = false;
+        };
     };
     $scope.addShape = function (type) {
         tourEdit.tourEditorUI.addShape('', type);
     }
     
+
     
     $scope.mediaFileChange = function (e, mediaKey, isImage) {
         console.time('storeLocal: ' + mediaKey);

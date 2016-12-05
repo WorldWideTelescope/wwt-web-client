@@ -317,6 +317,8 @@
     <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\finder-scope.html" />
     <Content Include="views\modals\intro.html" />
+    <Content Include="views\modals\message.html" />
+    <Content Include="views\modals\userconfirm.html" />
     <Content Include="views\modals\loading.html" />
     <Content Include="views\modals\mobile-explore.html" />
     <Content Include="views\modals\mobile-layer-manager.html" />
