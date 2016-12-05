@@ -1762,6 +1762,9 @@ namespace wwtlib
         }
         static AstroRaDec[] planetLocations;
 
+        static Sprite2d planetSprite = new Sprite2d();
+
+        static PositionColoredTextured[] planetPoints = null;
         private static void DrawPlanet(RenderContext renderContext, int planetID, double opacity)
         {
 
@@ -1785,28 +1788,28 @@ namespace wwtlib
             //    }
             //}
 
-            ImageElement brush = null;
+            Texture brush = null;
 
             if (planetID < 10 || planetID == 18)
             {
-                brush =  planetTextures[planetID].ImageElement;
+                brush =  planetTextures[planetID];
             }
             else if (planetID < 14)
             {
                 if (planetLocations[planetID].Eclipsed)
                 {
-                    brush = planetTextures[15].ImageElement;
+                    brush = planetTextures[15];
 
                 }
                 else
                 {
                     if (Settings.Active.ShowMoonsAsPointSource)
                     {
-                        brush = planetTextures[14].ImageElement;
+                        brush = planetTextures[14];
                     }
                     else
                     {
-                        brush = planetTextures[planetID].ImageElement;
+                        brush = planetTextures[planetID];
                     }
                 }
             }
@@ -1817,26 +1820,13 @@ namespace wwtlib
                     return;
                 }
                 //Shadows of moons
-                brush = planetTextures[15].ImageElement;
+                brush = planetTextures[15];
             }
 
 
-            Vector3d center = Coordinates.RADecTo3d(planetPosition.RA, planetPosition.Dec);
+         
 
-            double rad = planetScales[planetID] / ( renderContext.FovScale / 3600) / 2;
-
-            Vector3d screenSpacePnt = renderContext.WVP.Transform(center);
-            if (screenSpacePnt.Z < 0)
-            {
-                return;
-            }
-
-            if (Vector3d.Dot((Vector3d)renderContext.ViewPoint, (Vector3d)center) < .55)
-            {
-                return;
-            }
-
-            // Specil Case for Saturn and Eclipse 
+            // Special Case for Saturn and Eclipse 
             //if (planetID == 18 || planetID == 5)
             //{
             //    double Width = rad*2;
@@ -1871,9 +1861,59 @@ namespace wwtlib
                 if (renderContext.gl != null)
                 {
                     //todo draw in WebGL
+                    if (planetPoints == null)
+                    {
+                        planetPoints = new PositionColoredTextured[4];
+                        for (int i = 0; i < 4; i++)
+                        {
+                            planetPoints[i] = new PositionColoredTextured();
+                        }
+                    }
+                    float radius = (float)(planetScales[planetID] / 2.0);
+                    float raRadius = (float)(radius / Math.Cos(planetPosition.Dec / 180.0 * Math.PI));
+
+
+                    planetPoints[0].Position = Coordinates.RADecTo3dAu((planetPosition.RA - (raRadius / 15)), planetPosition.Dec + radius, 1);
+                    planetPoints[0].Tu = 0;
+                    planetPoints[0].Tv = 1;
+                    planetPoints[0].Color = Colors.White;
+
+                    planetPoints[1].Position = Coordinates.RADecTo3dAu((planetPosition.RA - (raRadius / 15)), planetPosition.Dec - radius, 1);
+                    planetPoints[1].Tu = 0;
+                    planetPoints[1].Tv = 0;
+                    planetPoints[1].Color = Colors.White;
+
+                 
+                    planetPoints[2].Position = Coordinates.RADecTo3dAu((planetPosition.RA + (raRadius / 15)), planetPosition.Dec + radius, 1);
+                    planetPoints[2].Tu = 1;
+                    planetPoints[2].Tv = 1;
+                    planetPoints[2].Color = Colors.White;
+
+                    planetPoints[3].Position = Coordinates.RADecTo3dAu((planetPosition.RA + (raRadius / 15)), planetPosition.Dec - radius, 1);
+
+                    planetPoints[3].Tu = 1;
+                    planetPoints[3].Tv = 0;
+                    planetPoints[3].Color = Colors.White;
+
+                    planetSprite.Draw(renderContext, planetPoints, 4, brush, true, 1);
                 }
                 else
                 {
+
+                    Vector3d center = Coordinates.RADecTo3d(planetPosition.RA, planetPosition.Dec);
+
+                    double rad = planetScales[planetID] / (renderContext.FovScale / 3600) / 2;
+
+                    Vector3d screenSpacePnt = renderContext.WVP.Transform(center);
+                    if (screenSpacePnt.Z < 0)
+                    {
+                        return;
+                    }
+
+                    if (Vector3d.Dot((Vector3d)renderContext.ViewPoint, (Vector3d)center) < .55)
+                    {
+                        return;
+                    }
                     CanvasContext2D ctx = renderContext.Device;
                     ctx.Save();
                     ctx.Alpha = opacity;
@@ -1883,16 +1923,9 @@ namespace wwtlib
 
                     ctx.ClosePath();
                     ctx.Clip();
-                    // ctx.FillStyle = Colors.White.ToString();
-
-                    // Draw image here
-                    //     ctx.Fill();
-                    ctx.DrawImage(brush, screenSpacePnt.X - rad, screenSpacePnt.Y - rad, rad * 2, rad * 2);
+                    ctx.DrawImage(brush.ImageElement, screenSpacePnt.X - rad, screenSpacePnt.Y - rad, rad * 2, rad * 2);
 
                     ctx.Alpha = 1.0;
-                    // ctx.StrokeStyle = Colors.White.ToString();
-                    //ctx.Stroke();
-
                     ctx.Restore();
 
 
