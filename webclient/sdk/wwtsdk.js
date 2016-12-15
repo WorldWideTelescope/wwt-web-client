@@ -11884,18 +11884,18 @@ window.wwtlib = function(){
     }
     var brush = null;
     if (planetID < 10 || planetID === 18) {
-      brush = Planets._planetTextures[planetID].imageElement;
+      brush = Planets._planetTextures[planetID];
     }
     else if (planetID < 14) {
       if (Planets._planetLocations[planetID].eclipsed) {
-        brush = Planets._planetTextures[15].imageElement;
+        brush = Planets._planetTextures[15];
       }
       else {
         if (Settings.get_active().get_showMoonsAsPointSource()) {
-          brush = Planets._planetTextures[14].imageElement;
+          brush = Planets._planetTextures[14];
         }
         else {
-          brush = Planets._planetTextures[planetID].imageElement;
+          brush = Planets._planetTextures[planetID];
         }
       }
     }
@@ -11903,20 +11903,45 @@ window.wwtlib = function(){
       if (!Planets._planetLocations[planetID].shadow) {
         return;
       }
-      brush = Planets._planetTextures[15].imageElement;
-    }
-    var center = Coordinates.raDecTo3d(planetPosition.RA, planetPosition.dec);
-    var rad = Planets._planetScales[planetID] / (renderContext.get_fovScale() / 3600) / 2;
-    var screenSpacePnt = renderContext.WVP.transform(center);
-    if (screenSpacePnt.z < 0) {
-      return;
-    }
-    if (Vector3d.dot(renderContext.get_viewPoint(), center) < 0.55) {
-      return;
+      brush = Planets._planetTextures[15];
     }
     if (renderContext.gl != null) {
+      if (Planets._planetPoints == null) {
+        Planets._planetPoints = new Array(4);
+        for (var i = 0; i < 4; i++) {
+          Planets._planetPoints[i] = new PositionColoredTextured();
+        }
+      }
+      var radius = (Planets._planetScales[planetID] / 2);
+      var raRadius = (radius / Math.cos(planetPosition.dec / 180 * Math.PI));
+      Planets._planetPoints[0].position = Coordinates.raDecTo3dAu((planetPosition.RA - (raRadius / 15)), planetPosition.dec + radius, 1);
+      Planets._planetPoints[0].tu = 0;
+      Planets._planetPoints[0].tv = 1;
+      Planets._planetPoints[0].color = Colors.get_white();
+      Planets._planetPoints[1].position = Coordinates.raDecTo3dAu((planetPosition.RA - (raRadius / 15)), planetPosition.dec - radius, 1);
+      Planets._planetPoints[1].tu = 0;
+      Planets._planetPoints[1].tv = 0;
+      Planets._planetPoints[1].color = Colors.get_white();
+      Planets._planetPoints[2].position = Coordinates.raDecTo3dAu((planetPosition.RA + (raRadius / 15)), planetPosition.dec + radius, 1);
+      Planets._planetPoints[2].tu = 1;
+      Planets._planetPoints[2].tv = 1;
+      Planets._planetPoints[2].color = Colors.get_white();
+      Planets._planetPoints[3].position = Coordinates.raDecTo3dAu((planetPosition.RA + (raRadius / 15)), planetPosition.dec - radius, 1);
+      Planets._planetPoints[3].tu = 1;
+      Planets._planetPoints[3].tv = 0;
+      Planets._planetPoints[3].color = Colors.get_white();
+      Planets._planetSprite.draw(renderContext, Planets._planetPoints, 4, brush, true, 1);
     }
     else {
+      var center = Coordinates.raDecTo3d(planetPosition.RA, planetPosition.dec);
+      var rad = Planets._planetScales[planetID] / (renderContext.get_fovScale() / 3600) / 2;
+      var screenSpacePnt = renderContext.WVP.transform(center);
+      if (screenSpacePnt.z < 0) {
+        return;
+      }
+      if (Vector3d.dot(renderContext.get_viewPoint(), center) < 0.55) {
+        return;
+      }
       var ctx = renderContext.device;
       ctx.save();
       ctx.globalAlpha = opacity;
@@ -11925,7 +11950,7 @@ window.wwtlib = function(){
       ctx.lineWidth = 0;
       ctx.closePath();
       ctx.clip();
-      ctx.drawImage(brush, screenSpacePnt.x - rad, screenSpacePnt.y - rad, rad * 2, rad * 2);
+      ctx.drawImage(brush.imageElement, screenSpacePnt.x - rad, screenSpacePnt.y - rad, rad * 2, rad * 2);
       ctx.globalAlpha = 1;
       ctx.restore();
     }
@@ -35681,6 +35706,8 @@ window.wwtlib = function(){
   Planets._lastUpdate = new Date();
   Planets._ringsTriangleLists = new Array(2);
   Planets._ringImage = null;
+  Planets._planetSprite = new Sprite2d();
+  Planets._planetPoints = null;
   RenderContext.useGl = false;
   RenderContext.back = 0;
   RenderTriangle.width = 1024;

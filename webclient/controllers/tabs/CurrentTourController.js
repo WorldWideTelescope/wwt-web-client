@@ -201,7 +201,7 @@
                         $scope.$applyAsync(function () {
                             if (data && data.length > 1) {
                                 $scope.modalData.step = 'success';
-                                var url = 'http://' + location.host + 'file/Download/' + data + '/' + tour._title + '/wtt'
+                                var url = 'http://' + location.host + '/file/Download/' + data + '/' + tour._title + '/wtt'
                                 $scope.modalData.download = {
                                     url: url,
                                     showStatus: false,
