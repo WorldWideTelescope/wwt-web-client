@@ -87,6 +87,7 @@
     <Content Include="css\skin.min.css" />
     <Content Include="dataproxy\Community.js" />
     <Content Include="dataproxy\Places.js" />
+    <Content Include="directives\CopyToClipboard.js" />
     <Content Include="directives\EditSlideValues.js" />
     <Content Include="directives\Movable.js" />
     <Content Include="factories\AutohidePanels.js" />
@@ -314,11 +315,11 @@
     <Content Include="searchdata.min.js" />
     <Content Include="searchdataraw.js" />
     <Content Include="sunCorona.png" />
+    <Content Include="views\copy-to-clipboard.html" />
     <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\finder-scope.html" />
     <Content Include="views\modals\intro.html" />
-    <Content Include="views\modals\message.html" />
-    <Content Include="views\modals\userconfirm.html" />
+    <Content Include="views\modals\tour-uploader.html" />
     <Content Include="views\modals\loading.html" />
     <Content Include="views\modals\mobile-explore.html" />
     <Content Include="views\modals\mobile-layer-manager.html" />

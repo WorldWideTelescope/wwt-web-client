@@ -1,0 +1,41 @@
+﻿<div class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin:100px auto 30px auto">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div ng-if="modalData.step=='save'" localize="Do you want to upload this tour to your WWT community profile or save it your computer.">
+
+                </div>
+                <div ng-if="modalData.step=='progress'">
+                    <p>Uploading {{modalData.tourTitle}} to your default community. Please wait...</p>
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        </div>
+                    </div>
+                </div><div ng-if="modalData.step == 'error'">
+                    <p>
+                        <span localize="There was an error uploading your tour."></span>
+                        {{modalData.error}}
+                    </p>
+                </div>
+                <div ng-if="modalData.step == 'success'">
+                    <p>
+                        <span localize="Tour successfully uploaded."></span>
+                        <a href='/Community/Profile' target='wwt' localize="Click to manage your WWT Community Profile"></a>
+                    </p>
+                    <copyable copy="modalData.share"></copyable>
+                    <copyable copy="modalData.download"></copyable>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer" style="border: none" ng-if="modalData.step=='save' || modalData.step=='success' || modalData.step=='error'">
+                <a class="btn" data-dismiss="modal" ng-click="$hide()" style="width:80px" localize="Close" ng-if="modalData.step=='success' || modalData.step=='error'"></a>
+                <a class="btn" data-dismiss="modal" ng-click="modalData.saveChoice(true);" localize="Upload to Profile" ng-if="modalData.step=='save'"></a>
+                <a class="btn" data-dismiss="modal" ng-click="modalData.saveChoice(false);$hide()" localize="Save to Computer" ng-if="modalData.step=='save'"></a>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -46,6 +46,7 @@ module.exports = function(grunt) {
                     'directives/ContextMenu.js',
                     'directives/EditSlideValues.js',
                     'directives/Movable.js',
+                    'directives/CopyToClipboard.js',
                     'factories/appstate.js',
                     'factories/autohidepanels.js',
                     'factories/localization.js',
