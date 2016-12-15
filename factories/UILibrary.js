@@ -33,6 +33,16 @@
 		return $(window).height() - (168 + $('body.desktop .context-panel').height());
 	};
 	
+	$rootScope.copyLink = function (event) {
+	    var src = $(event.currentTarget);
+	    var input = src.prev();
+	    input[0].select();
+	    document.execCommand('copy');
+	    var flyout = $('<div class=clipboard-status>Copied successfully</div>');
+	    input.parent().css('position', 'relative').append(flyout);
+	    //flyout.fadeIn(200).show();
+	    setTimeout(function () { flyout.fadeOut(1111); }, 3333);
+	}
 	 
 	return true;
 }]);

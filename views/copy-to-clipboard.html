@@ -1,0 +1,10 @@
+﻿<div class="form-group">
+    <label>{{copy.label}}</label>
+    <div class="input-group">
+        <input type="url" class="form-control" ng-model="copy.url">
+        <span class="input-group-addon" bs-tooltip localize-only="title" localize="Copy to clipboard">
+            <i class="fa fa-copy"></i>
+        </span>
+        <div ng-class="{'clipboard-status':true, fadeout: copy.fadeout}" ng-show="copy.showStatus" localize="Copied successfully"></div>
+    </div>
+</div>
