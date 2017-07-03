@@ -297,6 +297,7 @@
     <Content Include="css\fonts\tinymce.json" />
     <Content Include="css\fonts\tinymce.ttf" />
     <Content Include="css\fonts\tinymce.woff" />
+    <Content Include="css\mixins.less" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -319,7 +320,7 @@
     <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\finder-scope.html" />
     <Content Include="views\modals\intro.html" />
-    <Content Include="views\modals\tour-uploader.html" />
+    <Content Include="views\modals\setnextslide.html" />
     <Content Include="views\modals\loading.html" />
     <Content Include="views\modals\mobile-explore.html" />
     <Content Include="views\modals\mobile-layer-manager.html" />
@@ -329,6 +330,7 @@
     <Content Include="views\modals\mobile-tours.html" />
     <Content Include="views\modals\mobile-view.html" />
     <Content Include="views\modals\open-item.html" />
+    <Content Include="views\modals\tour-uploader.html" />
     <Content Include="views\popovers\observing-time.html" />
     <Content Include="views\popovers\property-panel.html" />
     <Content Include="views\popovers\shareplace.html" />
