@@ -519,16 +519,21 @@ namespace wwtlib
             tour.CurrentTourStop.InterpolationType = (InterpolationType)item.Tag;
         }
 
+        
+public SetNextSlideDelegate nextSlideCallback = null;
+        private void NextSlideChosen()
+        {
+            if (selectDialog.OK)
+            {
+                tour.CurrentTourStop.NextSlide = selectDialog.ID;
+            }
+        }
+        private SelectLink selectDialog;
         void setNextSlide_Click(object sender, EventArgs e)
         {
-            //SelectLink selectDialog = new SelectLink();
-            //selectDialog.Owner = Earth3d.MainWindow;
-            //selectDialog.Tour = tour;
-            //selectDialog.ID = tour.CurrentTourStop.NextSlide;
-            //if (selectDialog.ShowDialog() == DialogResult.OK)
-            //{
-            //    tour.CurrentTourStop.NextSlide = selectDialog.ID;
-            //}
+            selectDialog = new SelectLink();
+            nextSlideCallback(selectDialog, NextSlideChosen);
+            
         }
 
         void insertDuplicate_Click(object sender, EventArgs e)
@@ -1457,5 +1462,7 @@ namespace wwtlib
         {
             tourStopList.EnsureSelectedVisible();
         }
+        
+
     }
 }

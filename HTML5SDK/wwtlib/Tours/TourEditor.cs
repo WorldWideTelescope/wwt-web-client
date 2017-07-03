@@ -1252,16 +1252,21 @@ namespace wwtlib
             }
         }
 
-        void linkID_Click(object sender, EventArgs e)
+        public SetNextSlideDelegate nextSlideCallback = null;
+        private void NextSlideChosen()
         {
-            SelectLink selectDialog = new SelectLink();
-            //selectDialog.Owner = Earth3d.MainWindow;
-            selectDialog.Tour = tour;
-            selectDialog.ID = Focus.LinkID;
-            if (selectDialog.ShowDialog() == DialogResult.OK)
+            if (selectDialog.OK)
             {
                 Focus.LinkID = selectDialog.ID;
             }
+        }
+        private SelectLink selectDialog;
+        void linkID_Click(object sender, EventArgs e)
+        {
+            SelectLink selectDialog = new SelectLink();
+            selectDialog.ID = Focus.LinkID;
+            nextSlideCallback(selectDialog, NextSlideChosen);
+            
         }
 
         void flipbookProperties_Click(object sender, EventArgs e)
@@ -2354,4 +2359,6 @@ namespace wwtlib
         }
     }
     public delegate void TextEditorDelegate(TextObject item, Action done);
+    public delegate void SetNextSlideDelegate(SelectLink nextObj, Action done);
+    
 }

@@ -1,3 +1,5 @@
+﻿@import 'mixins.less';
+
 @brand-primary:         rgb(3,20,34);
 @brand-success:         #3CB521;
 @brand-warning:         #D47500;
@@ -36,17 +38,6 @@
 
 
 // our own custom mixin to make the ribbon look like the windows client ribbon
-#gradient{
-    
-  .vertical-four-colors(@start-color: #00b3ee; @second-color: #7a43b6; @color-stop2: 33%; @third-color: #7a43b6; @color-stop3: 66.6%; @end-color: #c3325f) {
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@start-color), color-stop(@color-stop2, @second-color),color-stop(@color-stop3, @third-color), to(@end-color));
-    background-image: -webkit-linear-gradient(@start-color, @second-color @color-stop2, @third-color @color-stop3, @end-color);
-    background-image: -moz-linear-gradient(top, @start-color, @second-color @color-stop2, @third-color @color-stop3, @end-color);
-    background-image: linear-gradient(@start-color, @second-color @color-stop2, @third-color @color-stop3, @end-color);
-    background-repeat: no-repeat;
-    
-    } 
-}
 
 input[type=file]{
     visibility:collapse;height:0;width:0;
@@ -70,8 +61,8 @@ input[type=file]{
 }
 
 .boxhilite {
-	box-shadow: inset 0 1px 4px lighten(#394558, 10%), 0 0 8px lighten(#18526b, 15%);
-	border-color: #62779d;
+  box-shadow: inset 0 1px 4px lighten(#394558, 10%), 0 0 8px rgba(62,157,206,1);
+  border-color: rgba(128,168,220,.99);
 }
 
 .indent{

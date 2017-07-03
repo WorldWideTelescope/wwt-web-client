@@ -1646,14 +1646,62 @@ namespace wwtlib
 
     public class SelectLink
     {
-        public string ID = new string();
-
-        public TourDocument Tour = null;
-
-        internal DialogResult ShowDialog()
+        private bool _return = false;
+        public bool ReturnCaller
         {
-
-            return DialogResult.OK;
+            set
+            {
+                if (value)
+                {
+                    _slide = "Return";
+                }
+                _return = value;
+            }
+            get { return _return; }
+        }
+        private bool _next = true;
+        public bool Next
+        {
+            set
+            {
+                if (value)
+                {
+                    _slide = "Next";
+                    
+                }
+                _next = value;
+            }
+            get { return _next; }
+        }
+        private bool _linkSlide = false;
+        public bool LinkToSlide
+        {
+            set
+            {
+                if (value) {
+                    _slide = "Next";
+                }
+                _linkSlide = value;
+            }
+            get { return _linkSlide; }
+        }
+        private string _slide = null;
+        public string ID
+        {
+            set
+            {
+                _return = false;
+                _next = false;
+                _linkSlide = true;
+                _slide = value;
+            }
+            get { return _slide; }
+        }
+        private bool _ok = false;
+        public bool OK
+        {
+            set { _ok = value; }
+            get { return _ok; }
         }
     }
 

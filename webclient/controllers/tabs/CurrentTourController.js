@@ -13,6 +13,8 @@
     $scope.init = function (curTour) {
         tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
         $rootScope.currentTour = $scope.tour = tour = tourEdit.get_tour();
+        console.log('looking for a nextSlideCallback!', tourEdit);
+        initSetNextSlideModal();
         tourEdit.tourEditorUI.editTextCallback = function (textObject, onFinished) {
             $scope.editText = { textObject: textObject, onFinished: onFinished };
             $('#editTourText').click();
@@ -46,7 +48,7 @@
                 showTourSlides();
             }
         });
-        if (mainScope.autoEdit) {
+        if (mainScope.autoEdit || (util.getQSParam('edit') && !!util.getQSParam('debug'))) {
             showSlides();
             tour._editMode = true;
             tourEdit.pauseTour();
@@ -57,6 +59,7 @@
                 e.returnValue= "You have unsaved changes that will be lost if you proceed. Click cancel to save changes."
             }
         });
+        
     };
 
 
@@ -272,7 +275,9 @@
         //$('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         console.log(tourEdit.playing);
         setTimeout(function () {
-            $rootScope.stopScroller = $('.scroller').jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
+          $rootScope.stopScroller = $('.scroller')
+            .css('overflow-x','auto')
+            .jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
             $(window).on('resize', function () {
                 
                 $rootScope.stopScroller.reinitialise();
@@ -448,6 +453,64 @@
                     break;
             }
         }
+    };
+    var initSetNextSlideModal = function () {
+      tourEdit.nextSlideCallback = tourEdit.tourEditorUI.nextSlideCallback = function (selectDialog, onFinished) {
+        
+        var okbutton = function (ok) {
+          var dialog = nextSlideModal.dialog;
+          console.log(dialog, selectDialog);
+          if (ok) {            
+            if (dialog._next) {
+              dialog.set_id('Next');
+            }
+            onFinished(selectDialog);
+          } 
+        }
+
+        var nextSlideModal = $scope.$new({});
+        nextSlideModal.dialog= selectDialog;
+        nextSlideModal.dialog_ok = okbutton;
+        nextSlideModal.selectedNextSlide = null;
+        nextSlideModal.tourStops = $scope.tourStops;
+        nextSlideModal.slideClick = function (id) {
+          nextSlideModal.selectedNextSlide = id;
+          nextSlideModal.dialog.set_id(id);
+          nextSlideModal.dialog._linkSlide = true;
+          nextSlideModal.dialog._return = false;
+          nextSlideModal.dialog._next = false;
+        }
+        nextSlideModal.checkChange = function (key) {
+          var setters = {
+            _linkSlide: 'linkToSlide',
+            _next: 'next',
+            _return: 'returnCaller'
+          };
+          console.log(nextSlideModal.tourStops);
+          var v = selectDialog[key];
+          //nextSlideModal.$applyAsync(function () {
+            selectDialog._next = false;
+            selectDialog._return = false;
+            selectDialog._linkSlide = false;
+            selectDialog['set_' + setters[key]](v);
+          
+          //});
+          console.log(key, selectDialog);
+        }
+        var nsModal = $modal({
+          scope: nextSlideModal,
+          templateUrl: 'views/modals/setnextslide.html',
+          show: true,
+          content:'',
+          placement: 'center'
+        });
+        setTimeout(function () {
+          console.log(nextSlideModal);
+          $('.scroller.next-slide').
+            css('overflow-x', 'auto').
+            jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
+        }, 400);
+      };
     };
 }]);
 

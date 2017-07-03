@@ -15358,6 +15358,7 @@ window.wwtlib = function(){
     this.tourStopList = new TourStopList();
     this.tourEditorUI = new TourEditor();
     this._contextMenu = new ContextMenuStrip();
+    this.nextSlideCallback = null;
     this.playing = false;
     this._player = null;
     this._defultColor = Colors.get_white();
@@ -15663,7 +15664,14 @@ window.wwtlib = function(){
       var item = sender;
       this._tour.get_currentTourStop().set_interpolationType(item.tag);
     },
+    _nextSlideChosen: function() {
+      if (this._selectDialog.get_OK()) {
+        this._tour.get_currentTourStop().set_nextSlide(this._selectDialog.get_id());
+      }
+    },
     _setNextSlide_Click: function(sender, e) {
+      this._selectDialog = new SelectLink();
+      this.nextSlideCallback(this._selectDialog, ss.bind('_nextSlideChosen', this));
     },
     _insertDuplicate_Click: function(sender, e) {
       Undo.push(new UndoTourSlidelistChange(Language.getLocalizedText(530, 'Duplicate Slide at End Position'), this._tour));
@@ -16131,6 +16139,7 @@ window.wwtlib = function(){
     this._contextPoint = new Vector2d();
     this._dragCopying = false;
     this._brokeThreshold = false;
+    this.nextSlideCallback = null;
     this.clipboardData = '';
     this.clipboardType = '';
     this.editTextCallback = null;
@@ -16855,13 +16864,15 @@ window.wwtlib = function(){
         }
       }
     },
+    _nextSlideChosen: function() {
+      if (this._selectDialog.get_OK()) {
+        this.get_focus().set_linkID(this._selectDialog.get_id());
+      }
+    },
     _linkID_Click: function(sender, e) {
       var selectDialog = new SelectLink();
-      selectDialog.tour = this._tour;
-      selectDialog.id = this.get_focus().get_linkID();
-      if (selectDialog._showDialog() === 1) {
-        this.get_focus().set_linkID(selectDialog.id);
-      }
+      selectDialog.set_id(this.get_focus().get_linkID());
+      this.nextSlideCallback(selectDialog, ss.bind('_nextSlideChosen', this));
     },
     _flipbookProperties_Click: function(sender, e) {
     },
@@ -20580,12 +20591,59 @@ window.wwtlib = function(){
   // wwtlib.SelectLink
 
   function SelectLink() {
-    this.id = new String();
-    this.tour = null;
+    this._return = false;
+    this._next = true;
+    this._linkSlide = false;
+    this._slide = null;
+    this._ok = false;
   }
   var SelectLink$ = {
-    _showDialog: function() {
-      return 1;
+    get_returnCaller: function() {
+      return this._return;
+    },
+    set_returnCaller: function(value) {
+      if (value) {
+        this._slide = 'Return';
+      }
+      this._return = value;
+      return value;
+    },
+    get_next: function() {
+      return this._next;
+    },
+    set_next: function(value) {
+      if (value) {
+        this._slide = 'Next';
+      }
+      this._next = value;
+      return value;
+    },
+    get_linkToSlide: function() {
+      return this._linkSlide;
+    },
+    set_linkToSlide: function(value) {
+      if (value) {
+        this._slide = 'Next';
+      }
+      this._linkSlide = value;
+      return value;
+    },
+    get_id: function() {
+      return this._slide;
+    },
+    set_id: function(value) {
+      this._return = false;
+      this._next = false;
+      this._linkSlide = true;
+      this._slide = value;
+      return value;
+    },
+    get_OK: function() {
+      return this._ok;
+    },
+    set_OK: function(value) {
+      this._ok = value;
+      return value;
     }
   };
 
