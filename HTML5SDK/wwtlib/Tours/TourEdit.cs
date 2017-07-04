@@ -518,9 +518,9 @@ namespace wwtlib
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             tour.CurrentTourStop.InterpolationType = (InterpolationType)item.Tag;
         }
+                
+        public SetNextSlideDelegate nextSlideCallback = null;
 
-        
-public SetNextSlideDelegate nextSlideCallback = null;
         private void NextSlideChosen()
         {
             if (selectDialog.OK)
@@ -529,9 +529,10 @@ public SetNextSlideDelegate nextSlideCallback = null;
             }
         }
         private SelectLink selectDialog;
+
         void setNextSlide_Click(object sender, EventArgs e)
         {
-            selectDialog = new SelectLink();
+            selectDialog = new SelectLink(null);
             nextSlideCallback(selectDialog, NextSlideChosen);
             
         }

@@ -15670,7 +15670,7 @@ window.wwtlib = function(){
       }
     },
     _setNextSlide_Click: function(sender, e) {
-      this._selectDialog = new SelectLink();
+      this._selectDialog = new SelectLink(null);
       this.nextSlideCallback(this._selectDialog, ss.bind('_nextSlideChosen', this));
     },
     _insertDuplicate_Click: function(sender, e) {
@@ -16864,15 +16864,14 @@ window.wwtlib = function(){
         }
       }
     },
-    _nextSlideChosen: function() {
-      if (this._selectDialog.get_OK()) {
-        this.get_focus().set_linkID(this._selectDialog.get_id());
+    _linkSlideChosen: function() {
+      if (this.selectDialog.get_OK()) {
+        this.get_focus().set_linkID(this.selectDialog.get_id());
       }
     },
     _linkID_Click: function(sender, e) {
-      var selectDialog = new SelectLink();
-      selectDialog.set_id(this.get_focus().get_linkID());
-      this.nextSlideCallback(selectDialog, ss.bind('_nextSlideChosen', this));
+      this.selectDialog = new SelectLink(this.get_focus().get_linkID());
+      this.nextSlideCallback(this.selectDialog, ss.bind('_linkSlideChosen', this));
     },
     _flipbookProperties_Click: function(sender, e) {
     },
@@ -20590,12 +20589,18 @@ window.wwtlib = function(){
 
   // wwtlib.SelectLink
 
-  function SelectLink() {
+  function SelectLink(id) {
     this._return = false;
     this._next = true;
     this._linkSlide = false;
     this._slide = null;
     this._ok = false;
+    if (id != null) {
+      this.set_id(id);
+    }
+    else {
+      this.set_next(true);
+    }
   }
   var SelectLink$ = {
     get_returnCaller: function() {

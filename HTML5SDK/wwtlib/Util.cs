@@ -1646,6 +1646,18 @@ namespace wwtlib
 
     public class SelectLink
     {
+        public SelectLink(string id)
+        {
+            if (id != null)
+            {
+                this.ID = id;
+            }
+            else
+            {
+                this.Next = true;
+            }
+        }
+        
         private bool _return = false;
         public bool ReturnCaller
         {
@@ -1666,8 +1678,7 @@ namespace wwtlib
             {
                 if (value)
                 {
-                    _slide = "Next";
-                    
+                    _slide = "Next";                    
                 }
                 _next = value;
             }

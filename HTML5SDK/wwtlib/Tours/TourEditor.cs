@@ -1253,20 +1253,20 @@ namespace wwtlib
         }
 
         public SetNextSlideDelegate nextSlideCallback = null;
-        private void NextSlideChosen()
+        private void LinkSlideChosen()
         {
+            
             if (selectDialog.OK)
             {
                 Focus.LinkID = selectDialog.ID;
             }
         }
-        private SelectLink selectDialog;
-        void linkID_Click(object sender, EventArgs e)
+        public SelectLink selectDialog;
+        private void linkID_Click(object sender, EventArgs e)
         {
-            SelectLink selectDialog = new SelectLink();
-            selectDialog.ID = Focus.LinkID;
-            nextSlideCallback(selectDialog, NextSlideChosen);
+            this.selectDialog = new SelectLink(Focus.LinkID);
             
+            nextSlideCallback(selectDialog, LinkSlideChosen);
         }
 
         void flipbookProperties_Click(object sender, EventArgs e)
