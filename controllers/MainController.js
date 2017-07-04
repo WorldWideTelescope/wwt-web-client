@@ -329,7 +329,6 @@ wwt.controllers.controller('MainController',
 					ctl.zoom(1.5);
 				}
 			});
-			
 		};
 
         var changePanel = function(panel) {
