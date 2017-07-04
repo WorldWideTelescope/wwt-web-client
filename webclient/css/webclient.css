@@ -6777,8 +6777,8 @@ input[type=file] {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d9b9b9b', endColorstr='#99000000', GradientType=0);
 }
 .boxhilite {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 .indent {
@@ -7650,8 +7650,8 @@ body.wwt-webclient-wrapper.mobile .mobile .thumbwrap label {
 body.wwt-webclient-wrapper.mobile .mobile #nboModal .modal-dialog {
   bottom: 78px;
   position: absolute;
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 body.wwt-webclient-wrapper.mobile .mobile .nearby-objects {
@@ -8671,8 +8671,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d9b9b9b', endColorstr='#99000000', GradientType=0);
 }
 .wwt-webclient-wrapper div.checkbox label:hover::before {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 .wwt-webclient-wrapper div.checkbox label.checked::before {
@@ -8749,8 +8749,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   font-size: 12px;
 }
 .wwt-webclient-wrapper select:hover {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 .wwt-webclient-wrapper #lstImagery {
@@ -8780,13 +8780,13 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 }
 .wwt-webclient-wrapper .btn:hover,
 .wwt-webclient-wrapper .btn.active {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 .wwt-webclient-wrapper .btn.moving {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 .wwt-webclient-wrapper .introjs-disabled,
@@ -8857,8 +8857,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper input[type=search]:focus,
 .wwt-webclient-wrapper input[type=number]:focus,
 .wwt-webclient-wrapper input[type=text]:focus {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
 }
 .wwt-webclient-wrapper .nearby-objects a.yellow-arrow,
@@ -8978,8 +8978,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   opacity: 1;
 }
 .wwt-webclient-wrapper a.thumbnail.active {
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
-          box-shadow: inset 0 1px 4px #4d5d77, 0 0 8px #3e9dce;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce;
   border-color: rgba(128, 168, 220, 0.99);
   opacity: 1;
 }

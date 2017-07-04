@@ -7103,13 +7103,14 @@ wwt.controllers.controller('CurrentTourController', [
         var okbutton = function (ok) {
           var dialog = nextSlideModal.dialog;
           console.log(dialog, selectDialog);
-          if (ok) {            
-            if (dialog._next) {
-              dialog.set_id('Next');
-            }
-            onFinished(selectDialog);
-          } 
-        }
+          dialog._ok = ok;
+
+          if (dialog._next) {
+            dialog.set_id('Next');
+          }
+          onFinished(selectDialog);
+
+        };
 
         var nextSlideModal = $scope.$new({});
         nextSlideModal.dialog= selectDialog;
