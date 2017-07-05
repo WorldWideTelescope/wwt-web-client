@@ -11,6 +11,119 @@ namespace wwtlib
 {
     public class Grids
     {
+        public static void DrawStars3D(RenderContext renderContext, float opacity)
+        {
+            double zoom = renderContext.ViewCamera.Zoom;
+ 
+            double distAlpha = Math.Max(Math.Min(255, (Math.Log(zoom) - 15.5) * 40.8), 0);
+
+            int alpha = Math.Min(255, Math.Max(0, (int)distAlpha));
+            if (alpha > 254)
+            {
+                return;
+            }
+
+    
+            alpha = (int)((255 - alpha) * opacity);
+
+            if (starSprites == null)
+            {
+                InitStarVertexBuffer(renderContext);
+            }
+
+            if (starSprites != null)
+            {
+                starSprites.Draw(renderContext, alpha / 255.0f, false);
+            }
+        }
+
+        static PointList starSprites = null;
+
+        static int starCount = 0;
+        static bool starsDownloading = false;
+
+        public static void InitStarVertexBuffer(RenderContext renderContext)
+        {
+            if (!starsDownloading)
+            {
+                GetFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos");
+                starsDownloading = true;
+            }
+
+            if (starSprites == null && starCount > 0)
+            {
+                double ecliptic = Coordinates.MeanObliquityOfEcliptic(SpaceTimeController.JNow) / 180.0 * Math.PI;
+
+                int count = stars.Count;
+                starCount = count;
+
+                starSprites = new PointList(renderContext);
+                starSprites.DepthBuffered = false;
+                foreach (Star star in stars)
+                {
+                    Vector3d pos = Coordinates.RADecTo3dAu(star.RA, star.Dec, star.Distance);
+                    pos.RotateX(ecliptic);
+                    star.Position = pos;
+                    double radDec = (1200000) / Math.Pow(1.6, star.AbsoluteMagnitude);
+                    starSprites.AddPoint(pos, star.Col, new Dates(0, 1), (float)radDec*100);      
+                }
+            }
+        }
+
+        static List<Star> stars = null;
+        static Dictionary<int, Star> hipparcosIndex = new Dictionary<int, Star>();
+        static double limitingMagnitude = 16;
+        static public void InitializeStarDB(string text)
+        {
+
+            if (stars == null)
+            {
+                if (stars == null)
+                {
+                    stars = new List<Star>();
+                    string[] rows = text.Split("\r\n");
+                    Star star;
+                    foreach (string row in rows)
+                    {
+                        string line = row;
+
+                        star = new Star(line);
+                        if (star.Magnitude < limitingMagnitude && star.Par > .001)
+                        {
+                            stars.Add(star);
+                            hipparcosIndex[star.ID] =  star;
+                        }
+                    }
+
+                    //// Write Binary file
+                    //DumpStarBinaryFile(@"c:\hip.bin");
+                    starCount = stars.Count;
+                }
+            }
+        }
+
+        static WebFile webFile;
+
+        public static void GetFile(string url)
+        {
+            webFile = new WebFile(url);
+            webFile.OnStateChange = FileStateChange;
+            webFile.Send();
+        }
+
+        public static void FileStateChange()
+        {
+            if (webFile.State == StateType.Error)
+            {
+                Script.Literal("alert({0})", webFile.Message);
+            }
+            else if (webFile.State == StateType.Received)
+            {
+                InitializeStarDB(webFile.GetText());
+            }
+
+        }
+
 
         static SimpleLineList equLineList;
         public static bool DrawEquitorialGrid(RenderContext renderContext, float opacity, Color drawColor)

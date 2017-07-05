@@ -7389,6 +7389,76 @@ window.wwtlib = function(){
 
   function Grids() {
   }
+  Grids.drawStars3D = function(renderContext, opacity) {
+    var zoom = renderContext.viewCamera.zoom;
+    var distAlpha = Math.max(Math.min(255, (Math.log(zoom) - 15.5) * 40.8), 0);
+    var alpha = Math.min(255, Math.max(0, ss.truncate(distAlpha)));
+    if (alpha > 254) {
+      return;
+    }
+    alpha = ((255 - alpha) * opacity);
+    if (Grids._starSprites == null) {
+      Grids.initStarVertexBuffer(renderContext);
+    }
+    if (Grids._starSprites != null) {
+      Grids._starSprites.draw(renderContext, alpha / 255, false);
+    }
+  };
+  Grids.initStarVertexBuffer = function(renderContext) {
+    if (!Grids._starsDownloading) {
+      Grids.getFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos');
+      Grids._starsDownloading = true;
+    }
+    if (Grids._starSprites == null && Grids._starCount > 0) {
+      var ecliptic = Coordinates.meanObliquityOfEcliptic(SpaceTimeController.get_jNow()) / 180 * Math.PI;
+      var count = Grids._stars.length;
+      Grids._starCount = count;
+      Grids._starSprites = new PointList(renderContext);
+      Grids._starSprites.depthBuffered = false;
+      var $enum1 = ss.enumerate(Grids._stars);
+      while ($enum1.moveNext()) {
+        var star = $enum1.current;
+        var pos = Coordinates.raDecTo3dAu(star.RA, star.dec, star.distance);
+        pos.rotateX(ecliptic);
+        star.position = pos;
+        var radDec = (1200000) / Math.pow(1.6, star.absoluteMagnitude);
+        Grids._starSprites.addPoint(pos, star.col, new Dates(0, 1), radDec * 100);
+      }
+    }
+  };
+  Grids.initializeStarDB = function(text) {
+    if (Grids._stars == null) {
+      if (Grids._stars == null) {
+        Grids._stars = [];
+        var rows = text.split('\r\n');
+        var star;
+        var $enum1 = ss.enumerate(rows);
+        while ($enum1.moveNext()) {
+          var row = $enum1.current;
+          var line = row;
+          star = new Star(line);
+          if (star.magnitude < Grids._limitingMagnitude && star.par > 0.001) {
+            Grids._stars.push(star);
+            Grids._hipparcosIndex[star.id] = star;
+          }
+        }
+        Grids._starCount = Grids._stars.length;
+      }
+    }
+  };
+  Grids.getFile = function(url) {
+    Grids._webFile = new WebFile(url);
+    Grids._webFile.onStateChange = Grids.fileStateChange;
+    Grids._webFile.send();
+  };
+  Grids.fileStateChange = function() {
+    if (Grids._webFile.get_state() === 2) {
+      alert(Grids._webFile.get_message());
+    }
+    else if (Grids._webFile.get_state() === 1) {
+      Grids.initializeStarDB(Grids._webFile.getText());
+    }
+  };
   Grids.drawEquitorialGrid = function(renderContext, opacity, drawColor) {
     if (Grids._equLineList == null) {
       Grids._equLineList = new SimpleLineList();
@@ -12644,31 +12714,39 @@ window.wwtlib = function(){
     this.RA = 0;
     this.dec = 0;
     this.BMV = 0;
+    this.id = 0;
     this.absoluteMagnitude = 0;
     this.par = 0;
     this.distance = 0;
-    var sa = input.split(',');
-    this.id = sa[0];
-    this.RA = parseFloat(sa[1]) / 15;
-    this.dec = parseFloat(sa[2]);
-    if (sa.length > 3) {
+    var sa = input.split('\t');
+    this.id = parseInt(ss.replaceString(sa[0], 'HIP', ''));
+    this.dec = parseFloat(sa[3]);
+    this.RA = parseFloat(sa[2]) / 15;
+    if (sa.length > 4) {
       try {
-        this.magnitude = parseFloat(sa[3]);
+        if (sa[4].toUpperCase() !== 'NULL' && !!sa[4]) {
+          this.magnitude = parseFloat(sa[4]);
+        }
       }
       catch ($e1) {
       }
     }
-    if (sa.length > 4) {
+    if (sa.length > 5) {
       try {
-        this.col = Color.load(sa[4]);
+        this.BMV = parseFloat(sa[5]);
+        this._makeColor(this.BMV);
       }
       catch ($e2) {
       }
     }
+    if (sa.length > 6) {
+      this.par = parseFloat(sa[6]);
+      this._makeDistanceAndMagnitude();
+    }
   }
   var Star$ = {
     get_name: function() {
-      return 'HIP' + this.id;
+      return 'HIP' + this.id.toString();
     },
     get_coordinates: function() {
       return Coordinates.fromRaDec(this.RA, this.dec);
@@ -12678,6 +12756,149 @@ window.wwtlib = function(){
       place.set_magnitude(this.magnitude);
       place.set_distance(this.distance);
       return place;
+    },
+    stars: function(input, newish) {
+      var sa = input.split('\t');
+      this.id = parseInt(sa[0]);
+      this.RA = parseFloat(sa[1]) / 15;
+      this.dec = parseFloat(sa[2]);
+      if (sa.length > 3) {
+        try {
+          this.magnitude = parseFloat(sa[3]);
+        }
+        catch ($e1) {
+        }
+      }
+      if (sa.length > 4) {
+        try {
+          this.col = Color.load(sa[4]);
+        }
+        catch ($e2) {
+        }
+      }
+    },
+    _makeDistanceAndMagnitude: function() {
+      this.distance = 1 / (this.par / 1000);
+      this.absoluteMagnitude = this.magnitude - 5 * (Util.logN(this.distance, 10) - 1);
+      this.distance *= 206264.806;
+    },
+    _makeColor: function(bmv) {
+      var c = 4294967295;
+      if (bmv <= -0.32) {
+        c = 4288854271;
+      }
+      else if (bmv <= -0.31) {
+        c = 4288919807;
+      }
+      else if (bmv <= -0.3) {
+        c = 4288985855;
+      }
+      else if (bmv <= -0.3) {
+        c = 4289051391;
+      }
+      else if (bmv <= -0.28) {
+        c = 4289182975;
+      }
+      else if (bmv <= -0.26) {
+        c = 4289314303;
+      }
+      else if (bmv <= -0.24) {
+        c = 4289445887;
+      }
+      else if (bmv <= -0.2) {
+        c = 4289708799;
+      }
+      else if (bmv <= -0.16) {
+        c = 4290037503;
+      }
+      else if (bmv <= -0.14) {
+        c = 4290169087;
+      }
+      else if (bmv <= -0.12) {
+        c = 4290366207;
+      }
+      else if (bmv <= -0.09) {
+        c = 4290563583;
+      }
+      else if (bmv <= -0.06) {
+        c = 4290892031;
+      }
+      else if (bmv <= 0) {
+        c = 4291483391;
+      }
+      else if (bmv <= 0.06) {
+        c = 4292009215;
+      }
+      else if (bmv <= 0.14) {
+        c = 4292732159;
+      }
+      else if (bmv <= 0.19) {
+        c = 4293126399;
+      }
+      else if (bmv <= 0.31) {
+        c = 4294111999;
+      }
+      else if (bmv <= 0.36) {
+        c = 4294571775;
+      }
+      else if (bmv <= 0.43) {
+        c = 4294965756;
+      }
+      else if (bmv <= 0.54) {
+        c = 4294964979;
+      }
+      else if (bmv <= 0.59) {
+        c = 4294964203;
+      }
+      else if (bmv <= 0.63) {
+        c = 4294963687;
+      }
+      else if (bmv <= 0.66) {
+        c = 4294963169;
+      }
+      else if (bmv <= 0.74) {
+        c = 4294962909;
+      }
+      else if (bmv <= 0.82) {
+        c = 4294961877;
+      }
+      else if (bmv <= 0.92) {
+        c = 4294960324;
+      }
+      else if (bmv <= 1.15) {
+        c = 4294959032;
+      }
+      else if (bmv <= 1.3) {
+        c = 4294958516;
+      }
+      else if (bmv <= 1.41) {
+        c = 4294955933;
+      }
+      else if (bmv <= 1.48) {
+        c = 4294954385;
+      }
+      else if (bmv <= 1.52) {
+        c = 4294953351;
+      }
+      else if (bmv <= 1.55) {
+        c = 4294952319;
+      }
+      else if (bmv <= 1.56) {
+        c = 4294951287;
+      }
+      else if (bmv <= 1.61) {
+        c = 4294950257;
+      }
+      else if (bmv <= 1.72) {
+        c = 4294948966;
+      }
+      else if (bmv <= 1.84) {
+        c = 4294947419;
+      }
+      else if (bmv <= 2) {
+        c = 4294946129;
+      }
+      this.col = Color.fromInt(c);
     }
   };
 
@@ -21547,6 +21768,9 @@ window.wwtlib = function(){
         this.renderContext.set_world(matOldMW);
         this.renderContext.set_worldBase(matOldMW);
         this.renderContext.makeFrustum();
+        if (Settings.get_active().get_solarSystemStars()) {
+          Grids.drawStars3D(this.renderContext, 1);
+        }
         if (this.renderContext.get_solarSystemCameraDistance() < 15000) {
           this.renderContext.setupMatricesSolarSystem(false);
           Planets.drawPlanets3D(this.renderContext, 1, this.renderContext.viewCamera.viewTarget);
@@ -21589,28 +21813,28 @@ window.wwtlib = function(){
         if (!this.renderType) {
           LayerManager._draw(this.renderContext, 1, false, 'Earth', false, false);
         }
-        if (Settings.get_current().get_showCrosshairs()) {
-          this._drawCrosshairs(this.renderContext);
+      }
+      if (Settings.get_current().get_showCrosshairs()) {
+        this._drawCrosshairs(this.renderContext);
+      }
+      if (this.uiController != null) {
+        this.uiController.render(this.renderContext);
+      }
+      else {
+        var index = 0;
+        var $enum1 = ss.enumerate(this._annotations);
+        while ($enum1.moveNext()) {
+          var item = $enum1.current;
+          item.draw(this.renderContext);
+          index++;
         }
-        if (this.uiController != null) {
-          this.uiController.render(this.renderContext);
+        if ((ss.now() - this._lastMouseMove) > 400) {
+          var raDecDown = this.getCoordinatesForScreenPoint(this._hoverTextPoint.x, this._hoverTextPoint.y);
+          this._annotationHover(raDecDown.x, raDecDown.y, this._hoverTextPoint.x, this._hoverTextPoint.y);
+          this._lastMouseMove = new Date(2100, 1, 1);
         }
-        else {
-          var index = 0;
-          var $enum1 = ss.enumerate(this._annotations);
-          while ($enum1.moveNext()) {
-            var item = $enum1.current;
-            item.draw(this.renderContext);
-            index++;
-          }
-          if ((ss.now() - this._lastMouseMove) > 400) {
-            var raDecDown = this.getCoordinatesForScreenPoint(this._hoverTextPoint.x, this._hoverTextPoint.y);
-            this._annotationHover(raDecDown.x, raDecDown.y, this._hoverTextPoint.x, this._hoverTextPoint.y);
-            this._lastMouseMove = new Date(2100, 1, 1);
-          }
-          if (!ss.emptyString(this._hoverText)) {
-            this._drawHoverText(this.renderContext);
-          }
+        if (!ss.emptyString(this._hoverText)) {
+          this._drawHoverText(this.renderContext);
         }
       }
       this.renderContext.setupMatricesOverlays();
@@ -21816,8 +22040,8 @@ window.wwtlib = function(){
     },
     zoom: function(factor) {
       this.renderContext.targetCamera.zoom *= factor;
-      if (this.renderContext.targetCamera.zoom > 360) {
-        this.renderContext.targetCamera.zoom = 360;
+      if (this.renderContext.targetCamera.zoom > this.get__zoomMax()) {
+        this.renderContext.targetCamera.zoom = this.get__zoomMax();
       }
       if (!Settings.get_globalSettings().get_smoothPan()) {
         this.renderContext.viewCamera = this.renderContext.targetCamera.copy();
@@ -23349,6 +23573,13 @@ window.wwtlib = function(){
     var r = Util.fromHex(data.substr(2, 2));
     var g = Util.fromHex(data.substr(4, 2));
     var b = Util.fromHex(data.substr(6, 2));
+    return Color.fromArgb(a, r, g, b);
+  };
+  Color.fromInt = function(color) {
+    var r = (color & 4278190080) >>> 24;
+    var g = (color & 16711680) >>> 16;
+    var b = (color & 65280) >>> 8;
+    var a = (color & 255);
     return Color.fromArgb(a, r, g, b);
   };
   var Color$ = {
@@ -34225,6 +34456,12 @@ window.wwtlib = function(){
   TextShader.textureLoc = 0;
   TextShader.initialized = false;
   TextShader._prog = null;
+  Grids._starSprites = null;
+  Grids._starCount = 0;
+  Grids._starsDownloading = false;
+  Grids._stars = null;
+  Grids._hipparcosIndex = {};
+  Grids._limitingMagnitude = 16;
   Grids._eclipticCount = 0;
   Grids._eclipticYear = 0;
   Grids._monthDays = [ 31, 28.2421, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];

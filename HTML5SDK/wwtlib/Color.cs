@@ -498,6 +498,14 @@ namespace wwtlib
             return Color.FromArgb(a, r, g, b);
         }
 
+        public static Color FromInt(UInt32 color)
+        {
+            UInt32 r = (color & 0xFF000000) >> 24;
+            UInt32 g = (color & 0x00FF0000) >> 16;
+            UInt32 b = (color & 0x0000FF00) >> 8;
+            UInt32 a = (color & 0x00000FF);
+            return Color.FromArgb(a, r, g, b);
+        }
 
 
 

@@ -86,7 +86,7 @@ namespace wwtlib
 
 
 
-            Lineset lineSet = null;
+            Lineset lineSet = null; 
 
 
             try

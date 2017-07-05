@@ -284,7 +284,7 @@ namespace wwtlib
 
 
             Tile.lastDeepestLevel = Tile.deepestLevel;
-   
+
             RenderTriangle.Width = RenderContext.Width = Canvas.Width;
             RenderTriangle.Height = RenderContext.Height = Canvas.Height;
             Tile.TilesInView = 0;
@@ -296,7 +296,7 @@ namespace wwtlib
                 SpaceTimeController.Now = Mover.CurrentDateTime;
 
                 Planets.UpdatePlanetLocations(SolarSystemMode);
-          
+
                 if (Mover != null)
                 {
                     CameraParameters newCam = Mover.CurrentPosition;
@@ -332,7 +332,7 @@ namespace wwtlib
             else
             {
                 SpaceTimeController.UpdateClock();
-  
+
                 Planets.UpdatePlanetLocations(SolarSystemMode);
 
                 UpdateViewParameters();
@@ -352,21 +352,21 @@ namespace wwtlib
 
             if (RenderType == ImageSetType.SolarSystem)
             {
-             {
+                {
                     if ((int)SolarSystemTrack < (int)SolarSystemObjects.Custom)
                     {
                         double radius = Planets.GetAdjustedPlanetRadius((int)SolarSystemTrack);
                         double distance = RenderContext.SolarSystemCameraDistance;
                         double camAngle = RenderContext.FovLocal;
                         //double distrad = distance / (radius * Math.Tan(.5 * camAngle));
-                        
+
                     }
 
 
 
                     if (trackingObject == null)
                     {
-                 //todo fix this       trackingObject = Search.FindCatalogObject("Sun");
+                        //todo fix this       trackingObject = Search.FindCatalogObject("Sun");
                     }
 
                     RenderContext.SetupMatricesSolarSystem(true);
@@ -408,18 +408,18 @@ namespace wwtlib
                             {
                                 RenderTriangle.CullInside = true;
                                 float c = ((1 - milkyWayBlend)) / 2;
-                                                    
-                                
-                                RenderContext.DrawImageSet( milkyWayBackground, 100 );
-                               
+
+
+                                RenderContext.DrawImageSet(milkyWayBackground, 100);
+
                                 RenderTriangle.CullInside = false;
                             }
                         }
                     }
 
-                    DrawSkyOverlays(); 
+                    DrawSkyOverlays();
                     RenderContext.Lighting = lighting;
-                              
+
                     RenderContext.Space = false;
                     RenderContext.World = matOldMW;
                     RenderContext.WorldBase = matOldMW;
@@ -499,10 +499,10 @@ namespace wwtlib
                     //    }
 
 
-                    //    if (Properties.Settings.Default.SolarSystemStars.State)
-                    //    {
-                    //        Grids.DrawStars3D(RenderContext11, Properties.Settings.Default.SolarSystemStars.Opacity * skyOpacity);
-                    //    }
+                    if (Settings.Active.SolarSystemStars)
+                    {
+                        Grids.DrawStars3D(RenderContext, 1);
+                    }
 
 
                     //    matLocal = matOld;
@@ -546,7 +546,7 @@ namespace wwtlib
                     //}
                 }
 
-                
+
             }
             else
             {
@@ -591,8 +591,8 @@ namespace wwtlib
 
                 }
 
-                
-  
+
+
                 if (RenderType == ImageSetType.Sky)
                 {
                     Planets.DrawPlanets(RenderContext, 1);
@@ -600,7 +600,7 @@ namespace wwtlib
                     Constellation = Constellations.Containment.FindConstellationForPoint(RenderContext.ViewCamera.RA, RenderContext.ViewCamera.Dec);
 
                     DrawSkyOverlays();
-                    
+
                     LayerManager.Draw(RenderContext, 1.0f, true, "Sky", true, true);
                 }
 
@@ -609,41 +609,41 @@ namespace wwtlib
 
                     LayerManager.Draw(RenderContext, 1.0f, false, "Earth", false, false);
                 }
-                
 
 
+            }
 
-                if (Settings.Current.ShowCrosshairs)
+            if (Settings.Current.ShowCrosshairs)
+            {
+                DrawCrosshairs(RenderContext);
+            }
+
+            if (uiController != null)
+            {
+                uiController.Render(RenderContext);
+            }
+            else
+            {
+                int index = 0;
+                foreach (Annotation item in annotations)
                 {
-                    DrawCrosshairs(RenderContext);
+                    item.Draw(RenderContext);
+                    index++;
                 }
 
-                if (uiController != null)
+                if ((Date.Now - lastMouseMove) > 400)
                 {
-                    uiController.Render(RenderContext);
+                    Vector2d raDecDown = GetCoordinatesForScreenPoint(hoverTextPoint.X, hoverTextPoint.Y);
+                    this.AnnotationHover(raDecDown.X, raDecDown.Y, hoverTextPoint.X, hoverTextPoint.Y);
+                    lastMouseMove = new Date(2100, 1, 1);
                 }
-                else
+
+                if (!string.IsNullOrEmpty(hoverText))
                 {
-                    int index = 0;
-                    foreach (Annotation item in annotations)
-                    {
-                        item.Draw(RenderContext);
-                        index++;
-                    }
-
-                    if ((Date.Now - lastMouseMove) > 400)
-                    {
-                        Vector2d raDecDown = GetCoordinatesForScreenPoint(hoverTextPoint.X, hoverTextPoint.Y);
-                        this.AnnotationHover(raDecDown.X, raDecDown.Y, hoverTextPoint.X, hoverTextPoint.Y);
-                        lastMouseMove = new Date(2100, 1, 1);
-                    }
-
-                    if (!string.IsNullOrEmpty(hoverText))
-                    {
-                        DrawHoverText(RenderContext);
-                    }
+                    DrawHoverText(RenderContext);
                 }
             }
+
 
             RenderContext.SetupMatricesOverlays();
             FadeFrame();
@@ -666,22 +666,22 @@ namespace wwtlib
 
             Date now = Date.Now;
 
-            int ms = now-lastUpdate;
+            int ms = now - lastUpdate;
             if (ms > 1000)
             {
-                
+
                 lastUpdate = now;
                 frameCount = 0;
                 RenderTriangle.TrianglesRendered = 0;
                 RenderTriangle.TrianglesCulled = 0;
-                     
+
             }
 
-          //  Script.Literal("requestAnimationFrame(this.render);");
+            //  Script.Literal("requestAnimationFrame(this.render);");
 
 
             //TileCache.PurgeLRU();
-            Script.SetTimeout(delegate() { Render(); }, 10);
+            Script.SetTimeout(delegate () { Render(); }, 10);
         }
 
         private void DrawSkyOverlays()
@@ -1226,9 +1226,9 @@ namespace wwtlib
 
             RenderContext.TargetCamera.Zoom *= factor;
 
-            if (RenderContext.TargetCamera.Zoom > 360)
+            if (RenderContext.TargetCamera.Zoom > ZoomMax)
             {
-                RenderContext.TargetCamera.Zoom = 360;
+                RenderContext.TargetCamera.Zoom = ZoomMax;
             }
 
             if (!Settings.GlobalSettings.SmoothPan)
