@@ -5522,7 +5522,7 @@ wwt.controllers.controller('LayerManagerController',
 	'$timeout',
 	'Util',
 	function($scope, appState, $timeout,util) {
-		var version = 5;
+		var version = 6;
 		function treeNode(args) {
 			this.name = args.name;
 			this.checked = args.checked === undefined ? true : args.checked;
@@ -5690,11 +5690,15 @@ wwt.controllers.controller('LayerManagerController',
 								name: $scope.getFromEn('Milky Way (Dr. R. Hurt)'),
 								checked: true,
 								action: 'solarSystemMilkyWay'
-							}), new treeNode({
-								name: $scope.getFromEn('Planets (NASA, ETAL)'),
-								checked: true,
-								action: 'solarSystemPlanets'
-							}), new treeNode({
+                            }), new treeNode({
+                                name: $scope.getFromEn('Stars (Hipparcos, ESA)'),
+                                checked: true,
+                                action: 'solarSystemStars'
+                            }), new treeNode({
+                                name: $scope.getFromEn('Planets (NASA, ETAL)'),
+                                checked: true,
+                                action: 'solarSystemPlanets'
+                            }), new treeNode({
 								name: $scope.getFromEn('Planetary Orbits'),
 								checked: true,
 								action: 'solarSystemOrbits'
