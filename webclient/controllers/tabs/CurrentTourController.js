@@ -78,6 +78,33 @@
             alert('Editing Tours requires advanced browser features. For the best experience, please use Chrome. There are known incompatibilities in other browsers.');
         }
         if ($rootScope.editingTour !== true) { return; }
+        console.log('logged in state:', $rootScope.loggedIn);
+        if (!$rootScope.loggedIn) {
+          var loginModalData = $scope.$new({});
+          loginModalData.canLogin = location.href.indexOf('localhost') < 0;
+          if (appState.get('remindEditTourLogin') !== false) {
+            appState.set('remindEditTourLogin', true);
+          }
+          loginModalData.remindEditTourLogin = appState.get('remindEditTourLogin');
+          
+          loginModalData.remindPrefChange = function () {
+            appState.set(!appState.get('remindEditTourLogin'));
+          }
+
+          loginModalData.loginThenEdit = function () {
+            appState.set('editTourOnLogin', tour.url);
+            $rootScope.login();
+          }
+
+          $modal({
+            scope: loginModalData,
+            templateUrl: 'views/modals/centered-modal-template.html',
+            contentTemplate:'views/modals/login-before-edit.html',
+            show: true,
+            placement: 'center'
+          });
+
+        }
         tour._editMode = true;
         tourEdit.pauseTour();
         $('#contextmenu,#popoutmenu').on('click', function () {
@@ -276,7 +303,7 @@
         console.log(tourEdit.playing);
         setTimeout(function () {
           $rootScope.stopScroller = $('.scroller')
-            .css('overflow-x','auto')
+            //.css('overflow-x','auto')
             .jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
             $(window).on('resize', function () {
                 
@@ -500,7 +527,8 @@
         }
         var nsModal = $modal({
           scope: nextSlideModal,
-          templateUrl: 'views/modals/setnextslide.html',
+          templateUrl: 'views/modals/centered-modal-template.html',
+          contentTemplate:'views/modals/set-next-slide.html',
           show: true,
           content:'',
           placement: 'center'
@@ -508,7 +536,7 @@
         setTimeout(function () {
           console.log(nextSlideModal);
           $('.scroller.next-slide').
-            css('overflow-x', 'auto').
+            //css('overflow-x', 'auto').
             jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
         }, 400);
       };

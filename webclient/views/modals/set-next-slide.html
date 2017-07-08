@@ -1,0 +1,83 @@
+﻿
+  <div class="modal-header">
+    <h5 localize="Select Link Navigation"></h5>
+  </div>
+    <div class="modal-body">
+      <div class="row" style="margin:5px 0">
+        <div class="col-md-4 checkbox">
+          <label data-ng-class="{checked:dialog._linkSlide}">
+            <input type="checkbox" ng-model="dialog._linkSlide" ng-change="checkChange('_linkSlide')" />
+            <span localize="Link to Slide (select below)"></span>
+          </label>
+        </div>
+        <div class="col-md-4 checkbox">
+          <label data-ng-class="{checked:dialog._next}">
+            <input type="checkbox" ng-model="dialog._next" ng-change="checkChange('_next')" />
+            <span localize="Link to Next Slide"></span>
+          </label>
+        </div>
+        <div class="col-md-3 checkbox">
+          <label data-ng-class="{checked:dialog._return}">
+            <input type="checkbox" ng-model="dialog._return" ng-change="checkChange('_return')" />
+            <span localize="Return to Caller"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="padding:15px 0 0 0">
+
+          <div class="tour-stops">
+            <div class="scroller next-slide" data-jquery-scrollbar>
+              <div class="stops-container">
+                <div class="stop-arrow" ng-repeat="stop in tourStops">
+                  <div class="transition-choice {{stop.transHover ? 'active' : ''}}">
+                            
+                    <div class="right-arrow choice" ng-if="stop.transitionType==0">
+                      <i class="arrow-line"></i><i class="arrow-head"></i>
+                    </div>
+                           
+                    <div class="crossfade choice" ng-if="stop.transitionType==1">
+                      <span class="shape"></span>
+                    </div>
+                            
+                    <div class="abrupt choice" ng-if="stop.transitionType==2">
+                      <span class="shape"></span>
+                    </div>
+                            
+                    <div class="fadeout-in choice" ng-if="stop.transitionType==3">
+                      <span class="shape left"></span>
+                      <span class="shape right"></span>
+                    </div>
+                            
+                    <div class="fadein choice" ng-if="stop.transitionType==4">
+                      <span class="shape"></span>
+                    </div>
+                            
+                    <div class="fadeout choice" ng-if="stop.transitionType==5">
+                      <span class="shape"></span>
+                    </div>
+
+                  </div>
+                  <div class="thumbwrap">
+                    <span class="master-slide" ng-if="stop.isMaster">M</span>
+                    <span class="slide-number">{{$index}}</span>
+                    <div class="stop-thumb thumbnail {{dialog._linkSlide && stop._id == selectedNextSlide ? 'active':''}}" ng-click="slideClick(stop._id)">
+                      <img ng-src="{{stop.thumb.src}}" alt="{{stop.description}}" />
+                      <label class="slide-label" data-title="{{stop.description}}" placement="bottom" container="body"></label>
+                      <label class="duration" contenteditable="false"></label>                              
+                    </div>
+                  </div>
+                </div>
+                <div class="stop-arrow">
+                  <div class="transition-choice invisible"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border: none">
+        <a class="btn {{dialog._linkSlide && !selectedNextSlide? 'disabled':''}}" ng-click="dialog_ok(true);$hide()" localize="OK" ></a>
+        <a class="btn" ng-click="dialog_ok(false);$hide()" localize="Cancel"></a>
+    </div>

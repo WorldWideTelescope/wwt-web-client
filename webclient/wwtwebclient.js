@@ -1493,8 +1493,12 @@ wwt.app.factory('AppState', function() {
 	var data;
 
 	function setKey(key, val) {
-	    try {
-	        data[key] = val;
+        try {
+            if (val === null && data[key]) {
+                delete data[key]
+            } else {
+                data[key] = val;
+            }
 	        if (localStorage) {
 	            localStorage.setItem('appState', JSON.stringify(data));
 	        }
@@ -5028,7 +5032,12 @@ wwt.controllers.controller('MainController',
 		if (util.getQSParam('editTour')) {
 		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 		    $scope.autoEdit = true;
-		}
+        }
+        else if (appState.get('editTourOnLogin') && !util.getQSParam('code')){
+            $scope.playTour(appState.get('editTourOnLogin'));
+            appState.set('editTourOnLogin', false);
+		    $scope.autoEdit = true;
+        }
 		if (util.getQSParam('playTour')) {
 		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 		    
@@ -6724,6 +6733,33 @@ wwt.controllers.controller('CurrentTourController', [
             alert('Editing Tours requires advanced browser features. For the best experience, please use Chrome. There are known incompatibilities in other browsers.');
         }
         if ($rootScope.editingTour !== true) { return; }
+        console.log('logged in state:', $rootScope.loggedIn);
+        if (!$rootScope.loggedIn) {
+          var loginModalData = $scope.$new({});
+          loginModalData.canLogin = location.href.indexOf('localhost') < 0;
+          if (appState.get('remindEditTourLogin') !== false) {
+            appState.set('remindEditTourLogin', true);
+          }
+          loginModalData.remindEditTourLogin = appState.get('remindEditTourLogin');
+          
+          loginModalData.remindPrefChange = function () {
+            appState.set(!appState.get('remindEditTourLogin'));
+          }
+
+          loginModalData.loginThenEdit = function () {
+            appState.set('editTourOnLogin', tour.url);
+            $rootScope.login();
+          }
+
+          $modal({
+            scope: loginModalData,
+            templateUrl: 'views/modals/centered-modal-template.html',
+            contentTemplate:'views/modals/login-before-edit.html',
+            show: true,
+            placement: 'center'
+          });
+
+        }
         tour._editMode = true;
         tourEdit.pauseTour();
         $('#contextmenu,#popoutmenu').on('click', function () {
@@ -6922,7 +6958,7 @@ wwt.controllers.controller('CurrentTourController', [
         console.log(tourEdit.playing);
         setTimeout(function () {
           $rootScope.stopScroller = $('.scroller')
-            .css('overflow-x','auto')
+            //.css('overflow-x','auto')
             .jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
             $(window).on('resize', function () {
                 
@@ -7146,7 +7182,8 @@ wwt.controllers.controller('CurrentTourController', [
         }
         var nsModal = $modal({
           scope: nextSlideModal,
-          templateUrl: 'views/modals/setnextslide.html',
+          templateUrl: 'views/modals/centered-modal-template.html',
+          contentTemplate:'views/modals/set-next-slide.html',
           show: true,
           content:'',
           placement: 'center'
@@ -7154,7 +7191,7 @@ wwt.controllers.controller('CurrentTourController', [
         setTimeout(function () {
           console.log(nextSlideModal);
           $('.scroller.next-slide').
-            css('overflow-x', 'auto').
+            //css('overflow-x', 'auto').
             jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
         }, 400);
       };
@@ -7689,7 +7726,7 @@ wwt.controllers.controller('LoginController',
             console.log(response, arguments);
         }
 
-        $scope.login = function () {
+        $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
             var redir = 'http://' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +

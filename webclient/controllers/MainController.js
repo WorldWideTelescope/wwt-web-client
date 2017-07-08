@@ -991,7 +991,12 @@ wwt.controllers.controller('MainController',
 		if (util.getQSParam('editTour')) {
 		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 		    $scope.autoEdit = true;
-		}
+        }
+        else if (appState.get('editTourOnLogin') && !util.getQSParam('code')){
+            $scope.playTour(appState.get('editTourOnLogin'));
+            appState.set('editTourOnLogin', false);
+		    $scope.autoEdit = true;
+        }
 		if (util.getQSParam('playTour')) {
 		    $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 		    
