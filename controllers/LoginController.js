@@ -35,7 +35,7 @@
             console.log(response, arguments);
         }
 
-        $scope.login = function () {
+        $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
             var redir = 'http://' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +

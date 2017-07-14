@@ -1,0 +1,17 @@
+﻿<div class="modal-header">
+  <h5 localize="Login before editing"></h5>
+</div>
+<div class="modal-body">
+  <p>In order to save this tour to your wwt community, you need to be logged in before making any changes to this tour. If you do not log in, you will still be able to save this file to your your computer.</p>
+  <p ng-if="!canLogin">You are running the web client locally. To test webclient login locally, create a virtual directory in IIS called /webclient that points to the folder that default.aspx lives in. Then add an entry to your hosts file 127.0.0.1 wwtstaging.azurewebsites.net</p>
+  <div class="checkbox">
+    <label data-ng-class="{checked:remindEditTourLogin}">
+      <input type="checkbox" ng-model="remindEditTourLogin" ng-change="remindPrefChange(remindEditTourLogin)"/>
+      <span localize="Remind me to log in when I create or edit a tour"></span>
+    </label>
+  </div>
+</div>
+<div class="modal-footer" style="border: none">
+  <a class="btn" ng-click="loginThenEdit()" localize="Log in"></a>
+  <a class="btn" ng-click="$hide()" localize="Close"></a>
+</div>
