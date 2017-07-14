@@ -7461,19 +7461,19 @@ body.wwt-webclient-wrapper .popover.slide-overlays .popover-content div.checkbox
 body.wwt-webclient-wrapper .popover.slide-overlays .popover-content div.checkbox label:before {
   text-align: right;
 }
-body.wwt-webclient-wrapper #nextSlideModal .modal-dialog {
+body.wwt-webclient-wrapper .wwt-modal .modal-dialog {
   margin: 200px auto 30px auto;
 }
-body.wwt-webclient-wrapper #nextSlideModal .modal-header {
+body.wwt-webclient-wrapper .wwt-modal .modal-header {
   border-bottom-color: #4d5d77;
 }
-body.wwt-webclient-wrapper #nextSlideModal .modal-header h5 {
+body.wwt-webclient-wrapper .wwt-modal .modal-header h5 {
   margin: 0;
 }
-body.wwt-webclient-wrapper #nextSlideModal .row {
+body.wwt-webclient-wrapper .wwt-modal .row {
   margin: 0 8px;
 }
-body.wwt-webclient-wrapper #nextSlideModal .modal-footer .btn {
+body.wwt-webclient-wrapper .wwt-modal .modal-footer .btn {
   width: 80px;
 }
 html,

@@ -318,9 +318,11 @@
     <Content Include="sunCorona.png" />
     <Content Include="views\copy-to-clipboard.html" />
     <Content Include="views\layer-manager.html" />
+    <Content Include="views\modals\centered-modal-template.html" />
     <Content Include="views\modals\finder-scope.html" />
+    <Content Include="views\modals\login-before-edit.html" />
     <Content Include="views\modals\intro.html" />
-    <Content Include="views\modals\setnextslide.html" />
+    <Content Include="views\modals\set-next-slide.html" />
     <Content Include="views\modals\loading.html" />
     <Content Include="views\modals\mobile-explore.html" />
     <Content Include="views\modals\mobile-layer-manager.html" />
@@ -372,10 +374,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="login.aspx.cs">
       <DependentUpon>login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

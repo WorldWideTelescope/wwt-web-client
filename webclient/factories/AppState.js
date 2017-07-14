@@ -8,8 +8,12 @@
 	var data;
 
 	function setKey(key, val) {
-	    try {
-	        data[key] = val;
+        try {
+            if (val === null && data[key]) {
+                delete data[key]
+            } else {
+                data[key] = val;
+            }
 	        if (localStorage) {
 	            localStorage.setItem('appState', JSON.stringify(data));
 	        }
