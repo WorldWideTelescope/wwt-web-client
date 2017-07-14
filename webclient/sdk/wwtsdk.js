@@ -8220,6 +8220,7 @@ window.wwtlib = function(){
       gl.bindBuffer(34963, null);
       gl.vertexAttribPointer(SimpleLineShader.vertLoc, 3, 5126, false, 0, 0);
       gl.lineWidth(1);
+      gl.enable(3042);
       gl.blendFunc(770, 771);
     }
   };
@@ -8293,6 +8294,7 @@ window.wwtlib = function(){
       gl.vertexAttribPointer(LineShaderNormalDates.colorLoc, 4, 5126, false, 36, 12);
       gl.vertexAttribPointer(LineShaderNormalDates.timeLoc, 2, 5126, false, 36, 28);
       gl.lineWidth(1);
+      gl.enable(3042);
       gl.blendFunc(770, 771);
     }
   };
@@ -8378,6 +8380,7 @@ window.wwtlib = function(){
       gl.activeTexture(33984);
       gl.bindTexture(3553, texture);
       gl.lineWidth(1);
+      gl.enable(3042);
       gl.blendFunc(770, 1);
     }
   };
@@ -8446,6 +8449,7 @@ window.wwtlib = function(){
       gl.activeTexture(33984);
       gl.bindTexture(3553, texture);
       gl.bindBuffer(34963, index);
+      gl.enable(3042);
       gl.blendFunc(770, 771);
     }
   };
@@ -8510,6 +8514,7 @@ window.wwtlib = function(){
       gl.activeTexture(33984);
       gl.bindTexture(3553, texture);
       gl.bindBuffer(34963, null);
+      gl.enable(3042);
       gl.blendFunc(770, 771);
     }
   };
@@ -8545,6 +8550,7 @@ window.wwtlib = function(){
     ShapeSpriteShader.projMatLoc = gl.getUniformLocation(ShapeSpriteShader._prog, 'uPMatrix');
     ShapeSpriteShader.mvMatLoc = gl.getUniformLocation(ShapeSpriteShader._prog, 'uMVMatrix');
     gl.disable(2929);
+    gl.enable(3042);
     gl.blendFunc(770, 771);
     ShapeSpriteShader.initialized = true;
   };
@@ -8567,6 +8573,7 @@ window.wwtlib = function(){
       gl.vertexAttribPointer(ShapeSpriteShader.vertLoc, 3, 5126, false, 36, 0);
       gl.vertexAttribPointer(ShapeSpriteShader.colorLoc, 4, 5126, false, 36, 12);
       gl.bindBuffer(34963, null);
+      gl.enable(3042);
       gl.blendFunc(770, 771);
     }
   };
@@ -8632,6 +8639,7 @@ window.wwtlib = function(){
       gl.vertexAttribPointer(TextShader.textureLoc, 2, 5126, false, 20, 12);
       gl.activeTexture(33984);
       gl.bindTexture(3553, texture);
+      gl.enable(3042);
       gl.blendFunc(770, 771);
     }
   };
@@ -11447,7 +11455,8 @@ window.wwtlib = function(){
       Planets._planetDrawOrder[finalDistance] = i;
     }
     Planets._planetLocations[18] = Planets._planetLocations[0];
-    Planets._planetScales[18] = Planets._planetScales[0] * 2;
+    Planets._planetScales[0] *= 2;
+    Planets._planetScales[18] = Planets._planetScales[0];
     Planets._planetScales[5] = Planets._planetScales[5] * 2;
     Planets._lastUpdate = SpaceTimeController.get_now();
   };
@@ -11566,28 +11575,28 @@ window.wwtlib = function(){
     return true;
   };
   Planets._loadPlanetTextures = function() {
-    var baseUrl = 'http://cdn.worldwidetelescope.org/webclient/images/';
+    var baseUrl = 'http://localhost:26993/webclient/images/';
     Planets._planetTextures = new Array(20);
-    Planets._planetTextures[0] = Planets.loadPlanetTexture(baseUrl + 'sun.jpg');
-    Planets._planetTextures[1] = Planets.loadPlanetTexture(baseUrl + 'mercury.jpg');
-    Planets._planetTextures[2] = Planets.loadPlanetTexture(baseUrl + 'venus.jpg');
-    Planets._planetTextures[3] = Planets.loadPlanetTexture(baseUrl + 'mars.jpg');
-    Planets._planetTextures[4] = Planets.loadPlanetTexture(baseUrl + 'jupiter.jpg');
+    Planets._planetTextures[0] = Planets.loadPlanetTexture(baseUrl + 'sun.png');
+    Planets._planetTextures[1] = Planets.loadPlanetTexture(baseUrl + 'mercury.png');
+    Planets._planetTextures[2] = Planets.loadPlanetTexture(baseUrl + 'venus.png');
+    Planets._planetTextures[3] = Planets.loadPlanetTexture(baseUrl + 'mars.png');
+    Planets._planetTextures[4] = Planets.loadPlanetTexture(baseUrl + 'jupiter.png');
     Planets._planetTextures[5] = Planets.loadPlanetTexture(baseUrl + 'saturn.png');
-    Planets._planetTextures[6] = Planets.loadPlanetTexture(baseUrl + 'uranus.jpg');
-    Planets._planetTextures[7] = Planets.loadPlanetTexture(baseUrl + 'neptune.jpg');
-    Planets._planetTextures[8] = Planets.loadPlanetTexture(baseUrl + 'pluto.jpg');
-    Planets._planetTextures[9] = Planets.loadPlanetTexture(baseUrl + 'moon.jpg');
-    Planets._planetTextures[10] = Planets.loadPlanetTexture(baseUrl + 'io.jpg');
-    Planets._planetTextures[11] = Planets.loadPlanetTexture(baseUrl + 'europa.jpg');
-    Planets._planetTextures[12] = Planets.loadPlanetTexture(baseUrl + 'ganymede.jpg');
-    Planets._planetTextures[13] = Planets.loadPlanetTexture(baseUrl + 'callisto.jpg');
-    Planets._planetTextures[14] = Planets.loadPlanetTexture(baseUrl + 'sun.jpg');
-    Planets._planetTextures[15] = Planets.loadPlanetTexture(baseUrl + 'sun.jpg');
-    Planets._planetTextures[16] = Planets.loadPlanetTexture(baseUrl + 'sun.jpg');
-    Planets._planetTextures[17] = Planets.loadPlanetTexture(baseUrl + 'sun.jpg');
-    Planets._planetTextures[18] = Planets.loadPlanetTexture('sunCorona.png');
-    Planets._planetTextures[19] = Planets.loadPlanetTexture('earth.jpg');
+    Planets._planetTextures[6] = Planets.loadPlanetTexture(baseUrl + 'uranus.png');
+    Planets._planetTextures[7] = Planets.loadPlanetTexture(baseUrl + 'neptune.png');
+    Planets._planetTextures[8] = Planets.loadPlanetTexture(baseUrl + 'pluto.png');
+    Planets._planetTextures[9] = Planets.loadPlanetTexture(baseUrl + 'moon.png');
+    Planets._planetTextures[10] = Planets.loadPlanetTexture(baseUrl + 'io.png');
+    Planets._planetTextures[11] = Planets.loadPlanetTexture(baseUrl + 'europa.png');
+    Planets._planetTextures[12] = Planets.loadPlanetTexture(baseUrl + 'ganymede.png');
+    Planets._planetTextures[13] = Planets.loadPlanetTexture(baseUrl + 'callisto.png');
+    Planets._planetTextures[14] = Planets.loadPlanetTexture(baseUrl + 'moonshadow.png');
+    Planets._planetTextures[15] = Planets.loadPlanetTexture(baseUrl + 'moonshadow.png');
+    Planets._planetTextures[16] = Planets.loadPlanetTexture(baseUrl + 'moonshadow.png');
+    Planets._planetTextures[17] = Planets.loadPlanetTexture(baseUrl + 'moonshadow.png');
+    Planets._planetTextures[18] = Planets.loadPlanetTexture(baseUrl + 'sunCorona.png');
+    Planets._planetTextures[19] = Planets.loadPlanetTexture(baseUrl + 'earth.png');
   };
   Planets.drawPlanets3D = function(renderContext, opacity, centerPoint) {
     Planets.initPlanetResources(renderContext);
@@ -20825,7 +20834,7 @@ window.wwtlib = function(){
       return this._fovTelescope;
     },
     get_locationAltitude: function() {
-      if (this._hasTime) {
+      if (this._hasLocation) {
         return this._locationAltitude;
       }
       else {
@@ -20833,7 +20842,7 @@ window.wwtlib = function(){
       }
     },
     get_locationLat: function() {
-      if (this._hasTime) {
+      if (this._hasLocation) {
         return this._locationLat;
       }
       else {
@@ -20841,7 +20850,7 @@ window.wwtlib = function(){
       }
     },
     get_locationLng: function() {
-      if (this._hasTime) {
+      if (this._hasLocation) {
         return this._locationLng;
       }
       else {
@@ -23273,7 +23282,7 @@ window.wwtlib = function(){
             if (this._milkyWayBackground != null) {
               RenderTriangle.cullInside = true;
               var c = (1 - milkyWayBlend) / 2;
-              this.renderContext.drawImageSet(this._milkyWayBackground, 100);
+              this.renderContext.drawImageSet(this._milkyWayBackground, c * 100);
               RenderTriangle.cullInside = false;
             }
           }

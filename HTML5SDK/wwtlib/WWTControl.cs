@@ -410,7 +410,7 @@ namespace wwtlib
                                 float c = ((1 - milkyWayBlend)) / 2;
 
 
-                                RenderContext.DrawImageSet(milkyWayBackground, 100);
+                                RenderContext.DrawImageSet(milkyWayBackground, c * 100);
 
                                 RenderTriangle.CullInside = false;
                             }

@@ -119,6 +119,7 @@ namespace wwtlib
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 0, 0);
                 gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
         }
@@ -279,6 +280,7 @@ namespace wwtlib
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
                 gl.vertexAttribPointer(timeLoc, 2, GL.FLOAT, false, 36, 28);
                 gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
         }
@@ -463,6 +465,7 @@ namespace wwtlib
                 gl.activeTexture(GL.TEXTURE0);
                 gl.bindTexture(GL.TEXTURE_2D, texture);
                 gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE);
             }
         }
@@ -594,6 +597,7 @@ namespace wwtlib
                 gl.activeTexture(GL.TEXTURE0);
                 gl.bindTexture(GL.TEXTURE_2D, texture);
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, index);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
         }
@@ -722,6 +726,7 @@ namespace wwtlib
                 gl.activeTexture(GL.TEXTURE0);
                 gl.bindTexture(GL.TEXTURE_2D, texture);
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
         }
@@ -807,6 +812,7 @@ namespace wwtlib
             mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
 
             gl.disable(GL.DEPTH_TEST);
+            gl.enable(GL.BLEND);
             gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             initialized = true;
         }
@@ -840,6 +846,7 @@ namespace wwtlib
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 36, 0);
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
         }
@@ -971,6 +978,7 @@ namespace wwtlib
                 gl.activeTexture(GL.TEXTURE0);
                 gl.bindTexture(GL.TEXTURE_2D, texture);
                 //gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.enable(GL.BLEND);
                 gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
             }
         }

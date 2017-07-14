@@ -541,7 +541,8 @@ namespace wwtlib
 
 
             planetLocations[18] = planetLocations[0];
-            planetScales[18] = planetScales[0]*2;
+            planetScales[0] *= 2;
+            planetScales[18] = planetScales[0];
             planetScales[5] = planetScales[5]*2;
 
             lastUpdate = SpaceTimeController.Now;
@@ -816,29 +817,30 @@ namespace wwtlib
 
         private static void LoadPlanetTextures()
         {
-            string baseUrl = "http://cdn.worldwidetelescope.org/webclient/images/";
+            //string baseUrl = "http://cdn.worldwidetelescope.org/webclient/images/";
+            string baseUrl = "http://localhost:26993/webclient/images/";
 
             planetTextures = new Texture[20];
-            planetTextures[0] = LoadPlanetTexture(baseUrl + @"sun.jpg");
-            planetTextures[1] = LoadPlanetTexture(baseUrl + @"mercury.jpg");
-            planetTextures[2] = LoadPlanetTexture(baseUrl + @"venus.jpg");
-            planetTextures[3] = LoadPlanetTexture(baseUrl + @"mars.jpg");
-            planetTextures[4] = LoadPlanetTexture(baseUrl + @"jupiter.jpg");
+            planetTextures[0] = LoadPlanetTexture(baseUrl + @"sun.png");
+            planetTextures[1] = LoadPlanetTexture(baseUrl + @"mercury.png");
+            planetTextures[2] = LoadPlanetTexture(baseUrl + @"venus.png");
+            planetTextures[3] = LoadPlanetTexture(baseUrl + @"mars.png");
+            planetTextures[4] = LoadPlanetTexture(baseUrl + @"jupiter.png");
             planetTextures[5] = LoadPlanetTexture(baseUrl + @"saturn.png");
-            planetTextures[6] = LoadPlanetTexture(baseUrl + @"uranus.jpg");
-            planetTextures[7] = LoadPlanetTexture(baseUrl + @"neptune.jpg");
-            planetTextures[8] = LoadPlanetTexture(baseUrl + @"pluto.jpg");
-            planetTextures[9] = LoadPlanetTexture(baseUrl + @"moon.jpg");
-            planetTextures[10] = LoadPlanetTexture(baseUrl + @"io.jpg");
-            planetTextures[11] = LoadPlanetTexture(baseUrl + @"europa.jpg");
-            planetTextures[12] = LoadPlanetTexture(baseUrl + @"ganymede.jpg");
-            planetTextures[13] = LoadPlanetTexture(baseUrl + @"callisto.jpg");
-            planetTextures[14] = LoadPlanetTexture(baseUrl + @"sun.jpg"); //todo fix these to shadows
-            planetTextures[15] = LoadPlanetTexture(baseUrl + @"sun.jpg");
-            planetTextures[16] = LoadPlanetTexture(baseUrl + @"sun.jpg");
-            planetTextures[17] = LoadPlanetTexture(baseUrl + @"sun.jpg");
-            planetTextures[18] = LoadPlanetTexture(@"sunCorona.png");
-            planetTextures[19] = LoadPlanetTexture(@"earth.jpg");
+            planetTextures[6] = LoadPlanetTexture(baseUrl + @"uranus.png");
+            planetTextures[7] = LoadPlanetTexture(baseUrl + @"neptune.png");
+            planetTextures[8] = LoadPlanetTexture(baseUrl + @"pluto.png");
+            planetTextures[9] = LoadPlanetTexture(baseUrl + @"moon.png");
+            planetTextures[10] = LoadPlanetTexture(baseUrl + @"io.png");
+            planetTextures[11] = LoadPlanetTexture(baseUrl + @"europa.png");
+            planetTextures[12] = LoadPlanetTexture(baseUrl + @"ganymede.png");
+            planetTextures[13] = LoadPlanetTexture(baseUrl + @"callisto.png");
+            planetTextures[14] = LoadPlanetTexture(baseUrl + @"moonshadow.png"); //todo fix these to shadows
+            planetTextures[15] = LoadPlanetTexture(baseUrl + @"moonshadow.png");
+            planetTextures[16] = LoadPlanetTexture(baseUrl + @"moonshadow.png");
+            planetTextures[17] = LoadPlanetTexture(baseUrl + @"moonshadow.png");
+            planetTextures[18] = LoadPlanetTexture(baseUrl + @"sunCorona.png");
+            planetTextures[19] = LoadPlanetTexture(baseUrl + @"earth.png");
         }
 
 
