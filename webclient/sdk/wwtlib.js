@@ -10049,7 +10049,7 @@ window.wwtlib = function(){
     return true;
   };
   Planets._loadPlanetTextures = function() {
-    var baseUrl = 'http://localhost:26993/webclient/images/';
+    var baseUrl = 'http://cdn.worldwidetelescope.org/webclient/images/';
     Planets._planetTextures = new Array(20);
     Planets._planetTextures[0] = Planets.loadPlanetTexture(baseUrl + 'sun.png');
     Planets._planetTextures[1] = Planets.loadPlanetTexture(baseUrl + 'mercury.png');

@@ -817,8 +817,7 @@ namespace wwtlib
 
         private static void LoadPlanetTextures()
         {
-            //string baseUrl = "http://cdn.worldwidetelescope.org/webclient/images/";
-            string baseUrl = "http://localhost:26993/webclient/images/";
+            string baseUrl = "http://cdn.worldwidetelescope.org/webclient/images/";
 
             planetTextures = new Texture[20];
             planetTextures[0] = LoadPlanetTexture(baseUrl + @"sun.png");
