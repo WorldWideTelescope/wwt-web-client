@@ -8095,6 +8095,15 @@ window.wwtlib = function(){
           renderContext.gl.drawArrays(0, 0, pointBuffer.count);
         }
       }
+    },
+    _drawTextured: function(renderContext, texture, v) {
+      this._initBuffer(renderContext);
+      var $enum1 = ss.enumerate(this._pointBuffers);
+      while ($enum1.moveNext()) {
+        var pointBuffer = $enum1.current;
+        TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, texture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
+        renderContext.gl.drawArrays(0, 0, pointBuffer.count);
+      }
     }
   };
 
@@ -8920,7 +8929,7 @@ window.wwtlib = function(){
   };
   Grids.initStarVertexBuffer = function(renderContext) {
     if (!Grids._starsDownloading) {
-      Grids.getFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos');
+      Grids.getStarFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos');
       Grids._starsDownloading = true;
     }
     if (Grids._starSprites == null && Grids._starCount > 0) {
@@ -8960,18 +8969,135 @@ window.wwtlib = function(){
       }
     }
   };
-  Grids.getFile = function(url) {
-    Grids._webFile = new WebFile(url);
-    Grids._webFile.onStateChange = Grids.fileStateChange;
-    Grids._webFile.send();
+  Grids.getStarFile = function(url) {
+    Grids._webFileStar = new WebFile(url);
+    Grids._webFileStar.onStateChange = Grids.starFileStateChange;
+    Grids._webFileStar.send();
   };
-  Grids.fileStateChange = function() {
-    if (Grids._webFile.get_state() === 2) {
-      alert(Grids._webFile.get_message());
+  Grids.starFileStateChange = function() {
+    if (Grids._webFileStar.get_state() === 2) {
+      alert(Grids._webFileStar.get_message());
     }
-    else if (Grids._webFile.get_state() === 1) {
-      Grids.initializeStarDB(Grids._webFile.getText());
+    else if (Grids._webFileStar.get_state() === 1) {
+      Grids.initializeStarDB(Grids._webFileStar.getText());
     }
+  };
+  Grids.getGalaxyFile = function(url) {
+    Grids._webFileGalaxy = new WebFile(url);
+    Grids._webFileGalaxy.responseType = 'blob';
+    Grids._webFileGalaxy.onStateChange = Grids.galaxyFileStateChange;
+    Grids._webFileGalaxy.send();
+  };
+  Grids.galaxyFileStateChange = function() {
+    if (Grids._webFileGalaxy.get_state() === 2) {
+      alert(Grids._webFileGalaxy.get_message());
+    }
+    else if (Grids._webFileGalaxy.get_state() === 1) {
+      var mainBlob = Grids._webFileGalaxy.getBlob();
+      var chunck = new FileReader();
+      chunck.onloadend = function(e) {
+        var br = new BinaryReader(new Uint8Array(chunck.result));
+        Grids.initializeCosmos(br);
+      };
+      chunck.readAsArrayBuffer(mainBlob);
+    }
+  };
+  Grids.drawCosmos3D = function(renderContext, opacity) {
+    var device = renderContext.gl;
+    var zoom = renderContext.viewCamera.zoom;
+    var distAlpha = 255;
+    var alpha = Math.min(255, Math.max(0, ss.truncate(distAlpha)));
+    if (alpha < 3) {
+      return;
+    }
+    Grids.initCosmosVertexBuffer();
+    if (Grids._galaxyTextures == null) {
+      if (Grids._largeSet) {
+        Grids._galaxyTextures = new Array(256);
+        for (var i = 0; i < 256; i++) {
+          var num = i.toString();
+          while (num.length < 4) {
+            num = '0' + num;
+          }
+          var name = ss.format('http://cdn.worldwidetelescope.org/webclient/images/gal_{0}.jpg', num);
+          Grids._galaxyTextures[i] = Planets.loadPlanetTexture(name);
+        }
+      }
+    }
+    if (Grids._cosmosReady) {
+      var count = 256;
+      for (var i = 0; i < count; i++) {
+        Grids._cosmosSprites[i]._drawTextured(renderContext, Grids._galaxyTextures[i], (alpha * opacity) / 255);
+      }
+    }
+  };
+  Grids.initCosmosVertexBuffer = function() {
+    if (Grids._cosmosSprites == null) {
+      Grids._downloadCosmosFile();
+    }
+  };
+  Grids._createCosmosVertexBuffer = function(renderContext) {
+    var device = Tile.prepDevice;
+    var bucketCount = 256;
+    if (Grids._cosmosSprites != null) {
+      for (var ij = 0; ij < bucketCount; ij++) {
+        if (Grids._cosmosSprites[ij] != null) {
+          Grids._cosmosSprites[ij] = null;
+        }
+      }
+    }
+    Grids._cosmosSprites = null;
+    var ecliptic = Coordinates.meanObliquityOfEcliptic(SpaceTimeController.get_jNow()) / 180 * Math.PI;
+    Grids._cosmosSprites = new Array(bucketCount);
+    var indexList = new Array(bucketCount);
+    for (var i = 0; i < bucketCount; i++) {
+      var count = Grids._galaxyVertexCounts[i];
+      Grids._cosmosSprites[i] = new PointList(renderContext);
+      Grids._cosmosSprites[i].depthBuffered = false;
+      indexList[i] = 0;
+    }
+    var $enum1 = ss.enumerate(Grids._cosmos);
+    while ($enum1.moveNext()) {
+      var galaxy = $enum1.current;
+      var bucket = galaxy.eTypeBucket;
+      var index = indexList[bucket];
+      var pos = Coordinates.raDecTo3dAu(galaxy.RA, galaxy.dec, (galaxy.distance * 206264.806 * 1000000) / 0.73);
+      pos.rotateX(ecliptic);
+      galaxy.position = pos;
+      Grids._cosmosSprites[bucket].addPoint(pos, Colors.get_white(), new Dates(0, 1), (1E+09 * galaxy.size * 100));
+      indexList[bucket]++;
+    }
+    Grids._cosmosReady = true;
+  };
+  Grids.initializeCosmos = function(br) {
+    var max = Math.pow(100, 2.849485002);
+    if (Grids._cosmos == null) {
+      Grids._galaxyVertexCounts = new Array((Grids._largeSet) ? 256 : 20);
+      if (Grids._cosmos == null) {
+        Grids._cosmos = [];
+        var galaxy;
+        try {
+          var count = 0;
+          while (br.get_position() < br.get_length()) {
+            galaxy = new Galaxy(br);
+            Grids._cosmos.push(galaxy);
+            Grids._galaxyVertexCounts[galaxy.eTypeBucket]++;
+            count++;
+          }
+        }
+        catch ($e1) {
+        }
+        br.close();
+      }
+      Grids._createCosmosVertexBuffer(WWTControl.singleton.renderContext);
+    }
+  };
+  Grids._downloadCosmosFile = function() {
+    if (!Grids._downloadingGalaxy) {
+      Grids.getGalaxyFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=cosmosnewbin');
+      Grids._downloadingGalaxy = true;
+    }
+    return false;
   };
   Grids.drawEquitorialGrid = function(renderContext, opacity, drawColor) {
     if (Grids._equLineList == null) {
@@ -14415,6 +14541,42 @@ window.wwtlib = function(){
       }
       this.col = Color.fromInt(c);
     }
+  };
+
+
+  // wwtlib.Galaxy
+
+  function Galaxy(br) {
+    this.RA = 0;
+    this.dec = 0;
+    this.distance = 0;
+    this.type = 0;
+    this.eTypeBucket = 0;
+    this.size = 5;
+    this.sdssID = 0;
+    this.sdssID = br.readInt64();
+    this.RA = br.readSingle();
+    this.dec = br.readSingle();
+    this.distance = br.readSingle();
+    this.eTypeBucket = br.readByte();
+    this.size = br.readSingle();
+  }
+  Galaxy.getEType = function(value) {
+    var a = 0;
+    var b = Galaxy._eTypeBuckets.length - 1;
+    while (b - a > 1) {
+      var m = (a + b) / 2;
+      if (value > Galaxy._eTypeBuckets[m]) {
+        a = m;
+      }
+      else {
+        b = m;
+      }
+    }
+    return a;
+  };
+  var Galaxy$ = {
+
   };
 
 
@@ -22429,6 +22591,65 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.BinaryReader
+
+  function BinaryReader(arraybuf) {
+    this.position = 0;
+    this._data = null;
+    this._data = arraybuf;
+  }
+  var BinaryReader$ = {
+    get_position: function() {
+      return this.position;
+    },
+    get_length: function() {
+      return this._data.length;
+    },
+    readByte: function() {
+      var result;
+      result = this._data[this.position];
+      this.position += 1;
+      return result;
+    },
+    readBytes: function(count) {
+      var buf = new Array(count);
+      for (var i = 0; i < count; i++) {
+        buf[i] = this._data[this.position + i];
+      }
+      this.position += count;
+      return buf;
+    },
+    readSingle: function() {
+      var tmp = new Uint8Array(4);
+      tmp[0] = this._data[this.position];
+      tmp[1] = this._data[this.position + 1];
+      tmp[2] = this._data[this.position + 2];
+      tmp[3] = this._data[this.position + 3];
+      var result = new Float32Array(tmp.buffer, 0, 1)[0];
+      this.position += 4;
+      return result;
+    },
+    readUint32: function() {
+      var result = (this._data[this.position] + (this._data[this.position + 1] << 8) + (this._data[this.position + 2] << 16) + (this._data[this.position + 3] << 24));
+      this.position += 4;
+      return result;
+    },
+    readInt32: function() {
+      var result = this.readUint32();
+      if (!!(result & 2147483648)) {
+        return (-((result - 1) ^ 4294967295));
+      }
+      return result;
+    },
+    readInt64: function() {
+      this.position += 8;
+      return BinaryReader.id++;
+    },
+    close: function() {
+    }
+  };
+
+
   // wwtlib.ColorPicker
 
   function ColorPicker() {
@@ -22882,7 +23103,7 @@ window.wwtlib = function(){
       return this._data;
     },
     getBlob: function() {
-      return ss.safeCast(this._blobdata, Blob);
+      return this._blobdata;
     },
     getXml: function() {
       var xParser = new DOMParser();
@@ -23283,9 +23504,29 @@ window.wwtlib = function(){
         this.renderContext.set_world(matOldMW);
         this.renderContext.set_worldBase(matOldMW);
         this.renderContext.makeFrustum();
+        var oldCamera = this.renderContext.cameraPosition;
+        var matOld = this.renderContext.get_world();
+        var matLocal = this.renderContext.get_world();
+        matLocal._multiply(Matrix3d.translation(this.renderContext.viewCamera.viewTarget));
+        this.renderContext.cameraPosition = Vector3d.subtractVectors(this.renderContext.cameraPosition, this.renderContext.viewCamera.viewTarget);
+        this.renderContext.set_world(matLocal);
+        this.renderContext.makeFrustum();
+        if (Settings.get_current().get_solarSystemCosmos()) {
+          Grids.drawCosmos3D(this.renderContext, 1);
+        }
         if (Settings.get_active().get_solarSystemStars()) {
           Grids.drawStars3D(this.renderContext, 1);
         }
+        matLocal = matOld;
+        var pnt = this.renderContext.viewCamera.viewTarget;
+        var vt = Vector3d.create(-pnt.x, -pnt.y, -pnt.z);
+        this.renderContext.cameraPosition = oldCamera;
+        matLocal._multiply(Matrix3d.translation(vt));
+        this.renderContext.set_world(matLocal);
+        this.renderContext.makeFrustum();
+        LayerManager._draw(this.renderContext, 1, true, 'Sky', true, false);
+        this.renderContext.set_world(matOld);
+        this.renderContext.makeFrustum();
         if (this.renderContext.get_solarSystemCameraDistance() < 15000) {
           this.renderContext.setupMatricesSolarSystem(false);
           Planets.drawPlanets3D(this.renderContext, 1, this.renderContext.viewCamera.viewTarget);
@@ -25253,12 +25494,16 @@ window.wwtlib = function(){
     var $enum1 = ss.enumerate(Constellations.artwork);
     while ($enum1.moveNext()) {
       var place = $enum1.current;
-      var reverse = false;
-      var centroid = Constellations.constellationCentroids[place.get_constellation()];
-      if (centroid != null) {
-        var pos = Coordinates.raDecTo3d((reverse) ? -centroid.get_RA() - 6 : centroid.get_RA(), (reverse) ? centroid.get_dec() : centroid.get_dec());
-        if (Vector3d.dot(renderContext.get_viewPoint(), pos) > Constellations._maxSeperation) {
-          renderContext.drawImageSet(place.get_studyImageset(), 100);
+      var bs = Constellations.pictureBlendStates[place.get_constellation()];
+      bs.set_targetState(Settings.get_active().get_constellationArtFilter().isSet(place.get_constellation()));
+      if (bs.get_state()) {
+        var reverse = false;
+        var centroid = Constellations.constellationCentroids[place.get_constellation()];
+        if (centroid != null) {
+          var pos = Coordinates.raDecTo3d((reverse) ? -centroid.get_RA() - 6 : centroid.get_RA(), (reverse) ? centroid.get_dec() : centroid.get_dec());
+          if (Vector3d.dot(renderContext.get_viewPoint(), pos) > Constellations._maxSeperation) {
+            renderContext.drawImageSet(place.get_studyImageset(), 100);
+          }
         }
       }
     }
@@ -25293,6 +25538,7 @@ window.wwtlib = function(){
       Constellations.fullNames[data[1]] = data[0];
       Constellations.abbreviations[data[0]] = data[1];
       Constellations.bitIDs[data[1]] = id++;
+      Constellations.pictureBlendStates[data[1]] = BlendState.create(true, 1000);
       Constellations.constellationCentroids[data[1]] = Place.create(data[0], parseFloat(data[3]), parseFloat(data[2]), 128, data[1], 2, 360);
     }
     WWTControl.set_renderNeeded(true);
@@ -25817,7 +26063,7 @@ window.wwtlib = function(){
     isSet: function(abbrev) {
       this._saveBits();
       var bitID = Constellations.bitIDs[abbrev];
-      var index = bitID / 32;
+      var index = ss.truncate((bitID / 32));
       bitID = bitID % 32;
       return !!((1 << bitID) & this.bits[index]);
     },
@@ -35683,6 +35929,7 @@ window.wwtlib = function(){
       Text3d: [ Text3d, Text3d$, null ],
       SpaceTimeController: [ SpaceTimeController, SpaceTimeController$, null ],
       Star: [ Star, Star$, null ],
+      Galaxy: [ Galaxy, Galaxy$, null ],
       Tile: [ Tile, Tile$, null ],
       Tour: [ Tour, Tour$, null, IThumbnail ],
       FileEntry: [ FileEntry, FileEntry$, null ],
@@ -35721,6 +35968,7 @@ window.wwtlib = function(){
       PopupVolume: [ PopupVolume, PopupVolume$, null ],
       PopupColorPicker: [ PopupColorPicker, PopupColorPicker$, null ],
       OverlayProperties: [ OverlayProperties, OverlayProperties$, null ],
+      BinaryReader: [ BinaryReader, BinaryReader$, null ],
       ColorPicker: [ ColorPicker, ColorPicker$, null ],
       ContextMenuStrip: [ ContextMenuStrip, ContextMenuStrip$, null ],
       ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
@@ -35977,6 +36225,12 @@ window.wwtlib = function(){
   Grids._stars = null;
   Grids._hipparcosIndex = {};
   Grids._limitingMagnitude = 16;
+  Grids._galaxyTextures = null;
+  Grids._galaxyVertexCounts = null;
+  Grids._largeSet = true;
+  Grids._cosmosReady = false;
+  Grids._cosmos = null;
+  Grids._downloadingGalaxy = false;
   Grids._eclipticCount = 0;
   Grids._eclipticYear = 0;
   Grids._monthDays = [ 31, 28.2421, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
@@ -36031,6 +36285,7 @@ window.wwtlib = function(){
   SpaceTimeController._syncToClock = true;
   SpaceTimeController._timeRate = 1;
   SpaceTimeController._altitude = 0;
+  Galaxy._eTypeBuckets = [ -3, -0.186, -0.168, -0.158, -0.15, -0.143, -0.137, -0.13, -0.123, -0.115, -0.104, -0.089, -0.068, -0.042, -0.011, 0.024, 0.064, 0.111, 0.169, 0.252, 3 ];
   Tile.currentRenderGeneration = 0;
   Tile.tileTargetX = -1;
   Tile.tileTargetY = -1;
@@ -36076,6 +36331,7 @@ window.wwtlib = function(){
   UiTools.auPerLightYear = 63239.6717;
   UiTools.ssmUnitConversion = 370;
   Guid._nextId = 11232;
+  BinaryReader.id = 1;
   VizLayer.earthRadius = 6371000;
   WWTControl.imageSets = [];
   WWTControl.exploreRoot = new Folder();
@@ -36100,6 +36356,7 @@ window.wwtlib = function(){
   Constellations._artFile = null;
   Constellations.artwork = null;
   Constellations.boundries = null;
+  Constellations.pictureBlendStates = {};
   (function() {
     var url = 'http://www.worldwidetelescope.org/wwtweb/catalog.aspx?q=ConstellationNamePositions_EN';
     Constellations._webFileConstNames = new WebFile(url);

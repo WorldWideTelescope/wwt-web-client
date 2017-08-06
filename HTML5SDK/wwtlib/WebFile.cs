@@ -89,7 +89,7 @@ namespace wwtlib
         {
             xdr = new XDomainRequest();
             xdr.OnLoad = delegate()
-            {
+            { 
                 LoadData(xdr.ResponseText);
             };
             xdr.OnTimeout = Error;
@@ -142,7 +142,7 @@ namespace wwtlib
 
         public Blob GetBlob()
         {
-            return _blobdata as Blob;
+            return (Blob)_blobdata;
         }
 
         public XmlDocument GetXml()

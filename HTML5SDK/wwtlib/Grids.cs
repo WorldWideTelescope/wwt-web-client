@@ -46,7 +46,7 @@ namespace wwtlib
         {
             if (!starsDownloading)
             {
-                GetFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos");
+                GetStarFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos");
                 starsDownloading = true;
             }
 
@@ -102,26 +102,218 @@ namespace wwtlib
             }
         }
 
-        static WebFile webFile;
+        static WebFile webFileStar;
 
-        public static void GetFile(string url)
+        public static void GetStarFile(string url)
         {
-            webFile = new WebFile(url);
-            webFile.OnStateChange = FileStateChange;
-            webFile.Send();
+            webFileStar = new WebFile(url);
+            webFileStar.OnStateChange = StarFileStateChange;
+            webFileStar.Send();
         }
 
-        public static void FileStateChange()
+        public static void StarFileStateChange()
         {
-            if (webFile.State == StateType.Error)
+            if (webFileStar.State == StateType.Error)
             {
-                Script.Literal("alert({0})", webFile.Message);
+                Script.Literal("alert({0})", webFileStar.Message);
             }
-            else if (webFile.State == StateType.Received)
+            else if (webFileStar.State == StateType.Received)
             {
-                InitializeStarDB(webFile.GetText());
+                InitializeStarDB(webFileStar.GetText());   
             }
 
+        }
+
+        static WebFile webFileGalaxy;
+
+        public static void GetGalaxyFile(string url)
+        {
+            webFileGalaxy = new WebFile(url);
+            webFileGalaxy.ResponseType = "blob";
+            webFileGalaxy.OnStateChange = GalaxyFileStateChange;
+            webFileGalaxy.Send();
+        }
+
+        public static void GalaxyFileStateChange()
+        {
+            if (webFileGalaxy.State == StateType.Error)
+            {
+                Script.Literal("alert({0})", webFileGalaxy.Message);
+            }
+            else if (webFileGalaxy.State == StateType.Received)
+            {
+                System.Html.Data.Files.Blob mainBlob = (System.Html.Data.Files.Blob)webFileGalaxy.GetBlob();
+                FileReader chunck = new FileReader();
+                chunck.OnLoadEnd = delegate (System.Html.Data.Files.FileProgressEvent e)
+                {
+                    BinaryReader br = new BinaryReader(new Uint8Array(chunck.Result));
+
+
+                    InitializeCosmos(br);
+                };
+                chunck.ReadAsArrayBuffer(mainBlob);
+            }
+        }
+
+
+        static PointList[] cosmosSprites;
+        static Texture[] galaxyTextures = null;
+        static int[] galaxyVertexCounts = null;
+        static bool largeSet = true;
+        static bool cosmosReady = false;
+        public static void DrawCosmos3D(RenderContext renderContext, float opacity)
+        {
+            GL device = renderContext.gl;
+            double zoom = renderContext.ViewCamera.Zoom;
+            //double distAlpha = ((Util.Log10(Math.Max(1, zoom), 4)) - 15.5) * 90;
+            double distAlpha = 255;
+
+            int alpha = Math.Min(255, Math.Max(0, (int)distAlpha));
+
+            if (alpha < 3)
+            {
+                return;
+            }
+
+            InitCosmosVertexBuffer();
+
+            if (galaxyTextures == null)
+            {
+                if (largeSet)
+                {
+                    galaxyTextures = new Texture[256];
+                    for (int i = 0; i < 256; i++)
+                    {
+                        string num = i.ToString();
+
+                        while (num.Length < 4)
+                        {
+                            num = "0" + num;
+                        }
+
+
+                        string name = string.Format("http://cdn.worldwidetelescope.org/webclient/images/gal_{0}.jpg", num);
+
+                        galaxyTextures[i] = Planets.LoadPlanetTexture(name);
+
+                    }
+                }
+            }
+
+            if (cosmosReady)
+            {
+                int count = 256;
+                for (int i = 0; i < count; i++)
+                {
+
+                    //cosmosSprites[i].MinPointSize = 1;
+                    cosmosSprites[i].DrawTextured(renderContext, galaxyTextures[i], (alpha * opacity) / 255.0f);
+                   // cosmosSprites[i].Draw(renderContext,  (alpha * opacity) / 255.0f, false);
+                }
+            }
+
+        }
+
+
+        public static void InitCosmosVertexBuffer()
+        {
+
+            if (cosmosSprites == null)
+            {
+                DownloadCosmosFile();
+            }
+
+        }
+
+        private static void CreateCosmosVertexBuffer(RenderContext renderContext)
+        {
+            GL device = Tile.PrepDevice;
+
+            int bucketCount = 256;
+
+            if (cosmosSprites != null)
+            {
+                for (int ij = 0; ij < bucketCount; ij++)
+                {
+                    if (cosmosSprites[ij] != null)
+                    {
+                       cosmosSprites[ij] = null;
+                    }
+                }
+            }
+            cosmosSprites = null;
+            double ecliptic = Coordinates.MeanObliquityOfEcliptic(SpaceTimeController.JNow) / 180.0 * Math.PI;
+            cosmosSprites = new PointList[bucketCount];
+
+            int[] indexList = new int[bucketCount];
+            for (int i = 0; i < bucketCount; i++)
+            {
+                int count = galaxyVertexCounts[i];
+                cosmosSprites[i] = new PointList(renderContext);
+                cosmosSprites[i].DepthBuffered = false;
+                indexList[i] = 0;
+            }
+
+            foreach (Galaxy galaxy in cosmos)
+            {
+                int bucket = galaxy.eTypeBucket;
+                int index = indexList[bucket];
+
+                Vector3d pos = Coordinates.RADecTo3dAu(galaxy.RA, galaxy.Dec, (galaxy.Distance * UiTools.AuPerParsec * 1000000.0) / .73);
+                pos.RotateX(ecliptic);
+                galaxy.Position = pos;
+                cosmosSprites[bucket].AddPoint(pos, Colors.White, new Dates(0, 1), (float)(1000000000f * galaxy.Size*100));
+                indexList[bucket]++;
+            }
+
+            cosmosReady = true;
+        }
+
+
+        static List<Galaxy> cosmos = null;
+        public static void InitializeCosmos(BinaryReader br)
+        {
+            int max = (int)Math.Pow(100, 2.849485002);
+
+            if (cosmos == null)
+            {
+                galaxyVertexCounts = new int[largeSet ? 256 : 20];
+                if (cosmos == null)
+                {
+                    cosmos = new List<Galaxy>();
+
+                    Galaxy galaxy;
+                    try
+                    {
+                        int count = 0;
+                        while (br.Position < br.Length )
+                        {
+                            galaxy = new Galaxy(br);
+                            cosmos.Add(galaxy);
+                            galaxyVertexCounts[galaxy.eTypeBucket]++;
+                            count++;
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    br.Close();
+                }
+
+                CreateCosmosVertexBuffer(WWTControl.Singleton.RenderContext);
+            }
+        }
+
+        static bool downloadingGalaxy = false;
+
+        internal static bool DownloadCosmosFile()
+        {
+            if (!downloadingGalaxy)
+            {
+                GetGalaxyFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=cosmosnewbin");
+                downloadingGalaxy = true;
+            }
+            return false;
         }
 
 

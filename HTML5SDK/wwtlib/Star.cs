@@ -182,4 +182,97 @@ namespace wwtlib
         }
 
     }
+
+
+    public class Galaxy
+    {
+        public float RA;
+        public float Dec;
+        public float Distance;
+        public float Type;
+        public int eTypeBucket;
+        public float Size = 5;
+        public long SdssID = 0;
+        //public Galaxy(string line, bool largeSet)
+        //{
+        //    line = line.Replace("  ", " ");
+        //    string[] values = line.Split(new char[] { '\t', ' ', ',' });
+        //    SdssID = Convert.ToInt64(values[0]);
+        //    RA = Convert.ToSingle(values[1]) / 15;
+        //    Dec = Convert.ToSingle(values[2]);
+        //    Distance = Convert.ToSingle(values[3]);
+        //    if (largeSet)
+        //    {
+        //        Type = Convert.ToSingle(values[4]);
+        //        eTypeBucket = GetEType(Type);
+        //    }
+        //    else
+        //    {
+        //        Size = Convert.ToSingle(values[4]) * 30;
+        //        Type = Convert.ToSingle(values[6]);
+        //        eTypeBucket = Convert.ToInt32(values[7]);
+        //    }
+
+        //}
+
+        //public Galaxy(string line)
+        //{
+        //    line = line.Replace("  ", " ");
+        //    string[] values = line.Split(new char[] { '\t', ' ', ',' });
+        //    SdssID = Convert.ToInt64(values[0]);
+        //    RA = Convert.ToSingle(values[1]) / 15;
+        //    Dec = Convert.ToSingle(values[2]);
+        //    Distance = Convert.ToSingle(values[3]);
+        //    this.Size = 500;
+        //    Type = Convert.ToSingle(values[4]);
+
+        //}
+
+        //public IPlace Place
+        //{
+        //    get
+        //    {
+        //        TourPlace place = new TourPlace("SDSS " + SdssID.ToString(), Dec, RA, Classification.Galaxy, Earth3d.MainWindow.ConstellationCheck.FindConstellationForPoint(RA, Dec), ImageSetType.SolarSystem, -1);
+        //        place.Magnitude = 0;
+        //        place.Distance = (this.Distance * UiTools.AuPerParsec * 1000000.0) / .73;
+        //        return place;
+        //    }
+        //}
+
+
+        public Galaxy(BinaryReader br)
+        {
+            SdssID = br.ReadInt64();
+            RA = br.ReadSingle();
+            Dec = br.ReadSingle();
+            Distance = br.ReadSingle();
+            //Type = br.ReadSingle();
+            eTypeBucket = br.ReadByte();
+            Size = br.ReadSingle();
+        }
+
+        public Vector3d Position;
+
+        static float[] eTypeBuckets = new float[] { -3, -0.1860f, -0.1680f, -0.1580f, -0.1500f, -0.1430f, -0.1370f, -0.1300f, -0.1230f, -0.1150f, -0.1040f, -0.0890f, -0.0680f, -0.0420f, -0.0110f, 0.0240f, 0.0640f, 0.1110f, 0.1690f, 0.2520f, 3 };
+        public static int GetEType(float value)
+        {
+            int a = 0;
+            int b = eTypeBuckets.Length - 1;
+
+            while (b - a > 1)
+            {
+                int m = (a + b) / 2;
+                if (value > eTypeBuckets[m])
+                {
+                    a = m;
+                }
+                else
+                {
+                    b = m;
+                }
+            }
+            return a;
+        }
+    }
+
 }

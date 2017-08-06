@@ -507,22 +507,24 @@ namespace wwtlib
 
             foreach (Place place in Artwork)
             {
-                //BlendState bs = PictureBlendStates[imageset.Name];
-                //bs.TargetState = Settings.Active.ConstellationArtFilter.IsSet(imageset.Name);
+                BlendState bs = PictureBlendStates[place.Constellation];
+                bs.TargetState = Settings.Active.ConstellationArtFilter.IsSet(place.Constellation);
 
-                //if (bs.State)
-                bool reverse = false;
-                Place centroid = ConstellationCentroids[place.Constellation];
-                if (centroid != null)
+                if (bs.State)
                 {
-                    Vector3d pos = Coordinates.RADecTo3d(reverse ? -centroid.RA - 6 : centroid.RA, reverse ? centroid.Dec : centroid.Dec);
-
-                    if (Vector3d.Dot(renderContext.ViewPoint, pos) > maxSeperation)
+                    bool reverse = false;
+                    Place centroid = ConstellationCentroids[place.Constellation];
+                    if (centroid != null)
                     {
+                        Vector3d pos = Coordinates.RADecTo3d(reverse ? -centroid.RA - 6 : centroid.RA, reverse ? centroid.Dec : centroid.Dec);
 
-                        renderContext.DrawImageSet(place.StudyImageset, 100);
+                        if (Vector3d.Dot(renderContext.ViewPoint, pos) > maxSeperation)
+                        {
+
+                            renderContext.DrawImageSet(place.StudyImageset, 100);
+                        }
+
                     }
-
                 }
             }
         }
@@ -541,7 +543,7 @@ namespace wwtlib
         public static Dictionary<String, String> FullNames;
         public static Dictionary<String, String> Abbreviations;
         public static Dictionary<string, Place> ConstellationCentroids;
-
+        public static Dictionary<string, BlendState> PictureBlendStates = new Dictionary<string, BlendState>();
 
 
         static Constellations()
@@ -583,6 +585,7 @@ namespace wwtlib
                 FullNames[data[1]] = data[0];
                 Abbreviations[data[0]] = data[1];
                 BitIDs[data[1]] =  id++;
+                PictureBlendStates[data[1]] = BlendState.Create(true, 1000);
                 ConstellationCentroids[data[1]] = Place.Create(data[0], double.Parse(data[3]), double.Parse(data[2]), Classification.Constellation, data[1], ImageSetType.Sky, 360);
             }
             WWTControl.RenderNeeded = true;
@@ -721,7 +724,7 @@ namespace wwtlib
 
             Int32 bitID = Constellations.BitIDs[abbrev];
 
-            int index = bitID / 32;
+            int index = (int) (bitID / 32);
             bitID = bitID % 32;
 
             return ((1 << (bitID)) & Bits[index]) != 0;

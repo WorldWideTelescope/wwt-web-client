@@ -159,6 +159,7 @@
     <Compile Include="Triangle.cs" />
     <Compile Include="UiTools.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="Utilities\BinaryReader.cs" />
     <Compile Include="Utilities\ColorPicker.cs" />
     <Compile Include="Utilities\ContextMenuStrip.cs" />
     <Compile Include="Utilities\FileReader.cs" />

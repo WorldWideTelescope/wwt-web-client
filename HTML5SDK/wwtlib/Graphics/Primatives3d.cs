@@ -745,7 +745,7 @@ namespace wwtlib
                 if (renderContext.gl == null)
                 {
                     starProfile = (ImageElement)Document.CreateElement("img");
-                    starProfile.AddEventListener("load", delegate(ElementEvent e)
+                    starProfile.AddEventListener("load", delegate (ElementEvent e)
                     {
                         imageReady = true;
                     }, false);
@@ -809,8 +809,8 @@ namespace wwtlib
                             pointList[counter] = new TimeSeriesPointVertex();
                             pointList[counter].Position = point;
                             pointList[counter].PointSize = sizes[index];
-                            pointList[counter].Tu = (float)(dates[index].StartDate );
-                            pointList[counter].Tv = (float)(dates[index].EndDate );
+                            pointList[counter].Tu = (float)(dates[index].StartDate);
+                            pointList[counter].Tv = (float)(dates[index].EndDate);
                             pointList[counter].Color = colors[index];
                             index++;
                             counter++;
@@ -886,14 +886,30 @@ namespace wwtlib
                     TimeSeriesPointSpriteShader.Use(
                             renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d,
                             Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow),
-                            (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height/960))
+                            (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960))
                         );
 
                     renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
                 }
 
-               // renderContext.gl.disable(0x8642);
+                // renderContext.gl.disable(0x8642);
             }
+        }
+
+        internal void DrawTextured(RenderContext renderContext, Texture texture, float v)
+        {
+            InitBuffer(renderContext);
+
+            foreach (TimeSeriesPointVertexBuffer pointBuffer in pointBuffers)
+            {
+                TimeSeriesPointSpriteShader.Use(
+                        renderContext, pointBuffer.VertexBuffer, texture.Texture2d,
+                        Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow),
+                        (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960))
+                    );
+
+                renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
+            }     
         }
     }
 

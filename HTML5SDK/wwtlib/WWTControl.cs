@@ -468,53 +468,59 @@ namespace wwtlib
 
 
 
-                    //{
-                    //    Matrix3d matOld = RenderContext11.World;
-
-                    //    Matrix3d matLocal = RenderContext11.World;
-                    //    matLocal.Multiply(Matrix3d.Translation(viewCamera.ViewTarget));
-                    //    RenderContext11.World = matLocal;
-                    //    Earth3d.MainWindow.MakeFrustum();
-
-                    //    if (Properties.Settings.Default.SolarSystemCosmos.State)
-                    //    {
-                    //        RenderContext11.DepthStencilMode = DepthStencilMode.Off;
-                    //        Grids.DrawCosmos3D(RenderContext11, Properties.Settings.Default.SolarSystemCosmos.Opacity * skyOpacity);
-                    //        RenderContext11.DepthStencilMode = DepthStencilMode.ZReadWrite;
-                    //    }
-
-                    //    if (true)
-                    //    {
-                    //        RenderContext11.DepthStencilMode = DepthStencilMode.Off;
-
-                    //        Grids.DrawCustomCosmos3D(RenderContext11, skyOpacity);
-
-                    //        RenderContext11.DepthStencilMode = DepthStencilMode.ZReadWrite;
-                    //    }
-
-
-                    //    if (Properties.Settings.Default.SolarSystemMilkyWay.State && milkyWayBlendIn > 0)
-                    //    {
-                    //        Grids.DrawGalaxy3D(RenderContext11, Properties.Settings.Default.SolarSystemMilkyWay.Opacity * skyOpacity * milkyWayBlendIn);
-                    //    }
-
-
-                    if (Settings.Active.SolarSystemStars)
                     {
-                        Grids.DrawStars3D(RenderContext, 1);
+                        Vector3d oldCamera = RenderContext.CameraPosition;
+                        Matrix3d matOld = RenderContext.World;
+
+                        Matrix3d matLocal = RenderContext.World;
+                        matLocal.Multiply(Matrix3d.Translation(RenderContext.ViewCamera.ViewTarget));
+                        RenderContext.CameraPosition = Vector3d.SubtractVectors(RenderContext.CameraPosition, RenderContext.ViewCamera.ViewTarget);
+                        RenderContext.World = matLocal;
+                        RenderContext.MakeFrustum();
+
+                        if (Settings.Current.SolarSystemCosmos)
+                        {
+                            // RenderContext11.DepthStencilMode = DepthStencilMode.Off;
+                            // Grids.DrawCosmos3D(RenderContext, Properties.Settings.Default.SolarSystemCosmos.Opacity * skyOpacity);
+                            Grids.DrawCosmos3D(RenderContext, 1.0f);
+                            //  RenderContext11.DepthStencilMode = DepthStencilMode.ZReadWrite;
+                        }
+
+                        //    if (true)
+                        //    {
+                        //        RenderContext11.DepthStencilMode = DepthStencilMode.Off;
+
+                        //        Grids.DrawCustomCosmos3D(RenderContext11, skyOpacity);
+
+                        //        RenderContext11.DepthStencilMode = DepthStencilMode.ZReadWrite;
+                        //    }
+
+
+                        //    if (Properties.Settings.Default.SolarSystemMilkyWay.State && milkyWayBlendIn > 0)
+                        //    {
+                        //        Grids.DrawGalaxy3D(RenderContext11, Properties.Settings.Default.SolarSystemMilkyWay.Opacity * skyOpacity * milkyWayBlendIn);
+                        //    }
+
+
+                        if (Settings.Active.SolarSystemStars)
+                        {
+                            Grids.DrawStars3D(RenderContext, 1);
+                        }
+
+
+                        matLocal = matOld;
+                        Vector3d pnt = RenderContext.ViewCamera.ViewTarget;
+                        Vector3d vt = Vector3d.Create(-pnt.X, -pnt.Y, -pnt.Z);
+                        RenderContext.CameraPosition = oldCamera;
+                        matLocal.Multiply(Matrix3d.Translation(vt));
+                        RenderContext.World = matLocal;
+                        RenderContext.MakeFrustum();
+
+                        LayerManager.Draw(RenderContext, 1.0f, true, "Sky", true, false);
+
+                        RenderContext.World = matOld;
+                        RenderContext.MakeFrustum();
                     }
-
-
-                    //    matLocal = matOld;
-                    //    matLocal.Multiply(Matrix3d.Translation(-viewCamera.ViewTarget));
-                    //    RenderContext11.World = matLocal;
-                    //    Earth3d.MainWindow.MakeFrustum();
-
-                    //    LayerManager.Draw(RenderContext11, 1.0f, true, "Sky", true, false);
-
-                    //    RenderContext11.World = matOld;
-                    //    Earth3d.MainWindow.MakeFrustum();
-                    //}
 
 
                     if (RenderContext.SolarSystemCameraDistance < 15000)
@@ -545,8 +551,6 @@ namespace wwtlib
                     //    label.Draw(RenderContext11, true);
                     //}
                 }
-
-
             }
             else
             {

@@ -803,11 +803,37 @@ namespace System.Html
     public class Float32Array
     {
         public Float32Array(object data) { }
+        public Float32Array(object data, int a, int b) { }
         [ScriptField]
         public int length { get { return 0; } }
 
-    } 
-    
+        [ScriptField]
+        public float this[int key]
+        {
+            get { return 0; }
+        }
+    }
+
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
+    public class Uint8Array
+    {
+        public Uint8Array(object data) { }
+        public Uint8Array(int size) { }
+        [ScriptField]
+        public int length { get { return 0; } }
+
+        [ScriptField]
+        public byte this[int key]
+        {
+            get { return 0; }
+            set { }
+        }
+
+        [ScriptField]
+        public object buffer { get { return null; } }
+    }
+
     [ScriptIgnoreNamespace]
     [ScriptImport]
     public class Uint16Array
