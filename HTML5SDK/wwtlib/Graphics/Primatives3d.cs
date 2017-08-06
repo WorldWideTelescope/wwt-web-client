@@ -885,7 +885,7 @@ namespace wwtlib
                 {
                     TimeSeriesPointSpriteShader.Use(
                             renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d,
-                            Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow),
+                            Color.FromArgb(255 * opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
                             (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960))
                         );
 
@@ -896,7 +896,7 @@ namespace wwtlib
             }
         }
 
-        internal void DrawTextured(RenderContext renderContext, Texture texture, float v)
+        internal void DrawTextured(RenderContext renderContext, Texture texture, float opacity)
         {
             InitBuffer(renderContext);
 
@@ -904,7 +904,7 @@ namespace wwtlib
             {
                 TimeSeriesPointSpriteShader.Use(
                         renderContext, pointBuffer.VertexBuffer, texture.Texture2d,
-                        Color.FromArgb(255, 255, 255, 255), DepthBuffered, (float)(this.JNow),
+                        Color.FromArgb(255*opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
                         (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960))
                     );
 

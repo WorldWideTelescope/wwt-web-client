@@ -165,8 +165,7 @@ namespace wwtlib
         {
             GL device = renderContext.gl;
             double zoom = renderContext.ViewCamera.Zoom;
-            //double distAlpha = ((Util.Log10(Math.Max(1, zoom), 4)) - 15.5) * 90;
-            double distAlpha = 255;
+            double distAlpha = ((Math.Log(Math.Max(1, zoom))/Math.Log(4)) - 15.5) * 90;
 
             int alpha = Math.Min(255, Math.Max(0, (int)distAlpha));
 

@@ -433,7 +433,7 @@ namespace wwtlib
                 gl.uniform1i(sampLoc, 0);
                 gl.uniform1f(jNowLoc, jNow);
                 gl.uniform1f(decayLoc, decay);
-                gl.uniform4f(lineColorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, 1f);
+                gl.uniform4f(lineColorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, lineColor.A/255f);
                 gl.uniform3f(cameraPosLoc, (float)camera.X, (float)camera.Y, (float)camera.Z);
                 gl.uniform1f(scaleLoc, scale );
                 if (zBuffer)

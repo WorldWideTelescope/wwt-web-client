@@ -8091,17 +8091,17 @@ window.wwtlib = function(){
         var $enum2 = ss.enumerate(this._pointBuffers);
         while ($enum2.moveNext()) {
           var pointBuffer = $enum2.current;
-          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
+          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
           renderContext.gl.drawArrays(0, 0, pointBuffer.count);
         }
       }
     },
-    _drawTextured: function(renderContext, texture, v) {
+    _drawTextured: function(renderContext, texture, opacity) {
       this._initBuffer(renderContext);
       var $enum1 = ss.enumerate(this._pointBuffers);
       while ($enum1.moveNext()) {
         var pointBuffer = $enum1.current;
-        TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, texture.texture2d, Color.fromArgb(255, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
+        TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, texture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
         renderContext.gl.drawArrays(0, 0, pointBuffer.count);
       }
     }
@@ -8353,7 +8353,7 @@ window.wwtlib = function(){
       gl.uniform1i(TimeSeriesPointSpriteShader.sampLoc, 0);
       gl.uniform1f(TimeSeriesPointSpriteShader.jNowLoc, jNow);
       gl.uniform1f(TimeSeriesPointSpriteShader.decayLoc, decay);
-      gl.uniform4f(TimeSeriesPointSpriteShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, 1);
+      gl.uniform4f(TimeSeriesPointSpriteShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, lineColor.a / 255);
       gl.uniform3f(TimeSeriesPointSpriteShader.cameraPosLoc, camera.x, camera.y, camera.z);
       gl.uniform1f(TimeSeriesPointSpriteShader.scaleLoc, scale);
       if (zBuffer) {
@@ -9005,7 +9005,7 @@ window.wwtlib = function(){
   Grids.drawCosmos3D = function(renderContext, opacity) {
     var device = renderContext.gl;
     var zoom = renderContext.viewCamera.zoom;
-    var distAlpha = 255;
+    var distAlpha = ((Math.log(Math.max(1, zoom)) / Math.log(4)) - 15.5) * 90;
     var alpha = Math.min(255, Math.max(0, ss.truncate(distAlpha)));
     if (alpha < 3) {
       return;
