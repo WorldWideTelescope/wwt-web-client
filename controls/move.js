@@ -26,7 +26,7 @@
 		oncomplete = args.oncomplete;
 		setBounds();
 		//  IE (sigh)
-		if (window.PointerEvent || window.MSPointerEvent) {
+		if (window.PointerEvent || window.MSPointerEvent) { 
 		    
 			target.css('touch-action', 'none');
 			var pointerDownName = window.PointerEvent ? 'pointerdown' : 'MSPointerDown';
