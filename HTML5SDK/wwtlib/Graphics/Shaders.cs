@@ -125,6 +125,133 @@ namespace wwtlib
         }
     }
 
+    public class OrbitLineShader
+    {
+        public OrbitLineShader()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+
+        public static int vertLoc;
+        public static int colorLoc;
+        public static WebGLUniformLocation lineColorLoc;
+        public static WebGLUniformLocation projMatLoc;
+        public static WebGLUniformLocation mvMatLoc;
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                      " precision highp float;                                                              \n" +
+                      " uniform vec4 lineColor;                                                               \n" +
+                      "    varying lowp vec4 vColor;                                                           \n" +
+                      "                                                                                       \n" +
+                      "   void main(void) {                                                                   \n" +
+                      "   gl_FragColor = lineColor * vColor;                                                   \n" +
+                      "   }                                                                                   \n";
+
+
+            String vertexShaderText =
+                    "     attribute vec3 aVertexPosition;                                              \n" +
+                    "     attribute vec4 aVertexColor;                                                 \n" +
+                    "                                                                                  \n" +
+                    "     uniform mat4 uMVMatrix;                                                      \n" +
+                    "     uniform mat4 uPMatrix;                                                       \n" +
+                    "     varying lowp vec4 vColor;                                                    \n" +
+                    "                                                                                  \n" +
+                    "                                                                                  \n" +
+                    "                                                                                  \n" +
+                    "     void main(void) {                                                            \n" +
+                    "         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n" +
+                    "         vColor = aVertexColor;                                                    \n" +
+                    "     }                                                                            \n" +
+                    "                                                                                  \n";
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            vertLoc = gl.getAttribLocation(prog, "aVertexPosition");
+            colorLoc = gl.getAttribLocation(prog, "aVertexColor");
+            lineColorLoc = gl.getUniformLocation(prog, "lineColor");
+            projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
+            mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
+
+            gl.enable(GL.BLEND);
+            gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, Color lineColor)
+        {
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+
+                gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
+                gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
+                gl.uniform4f(lineColorLoc, lineColor.R / 255, lineColor.G / 255, lineColor.B / 255, 1);
+                if (renderContext.Space)
+                {
+                    gl.disable(GL.DEPTH_TEST);
+                }
+                else
+                {
+                    gl.enable(GL.DEPTH_TEST);
+                }
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.enableVertexAttribArray(vertLoc);
+                gl.enableVertexAttribArray(colorLoc);
+                gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 28, 0);
+                gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 28, 12);
+                gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
+                gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            }
+        }
+    }
+
 
     public class LineShaderNormalDates
     {
@@ -271,11 +398,11 @@ namespace wwtlib
                 gl.disableVertexAttribArray(3);
 
 
-                gl.enableVertexAttribArray(vertLoc);
-                gl.enableVertexAttribArray(colorLoc);
 
                 gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.enableVertexAttribArray(vertLoc);
+                gl.enableVertexAttribArray(colorLoc);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 36, 0);
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
                 gl.vertexAttribPointer(timeLoc, 2, GL.FLOAT, false, 36, 28);
@@ -310,6 +437,7 @@ namespace wwtlib
         public static WebGLUniformLocation lineColorLoc;
         public static WebGLUniformLocation cameraPosLoc;
         public static WebGLUniformLocation scaleLoc;
+        public static WebGLUniformLocation minSizeLoc;
 
         public static bool initialized = false;
         public static void Init(RenderContext renderContext)
@@ -342,6 +470,7 @@ namespace wwtlib
                     "    uniform vec3 cameraPosition;                                                        \n" +
                     "    uniform float decay;                                                                \n" +
                     "    uniform float scale;                                                                \n" +
+                    "    uniform float minSize;                                                                \n" +
                     "                                                                                        \n" +
                     "    varying lowp vec4 vColor;                                                           \n" +
                     "                                                                                        \n" +
@@ -368,7 +497,7 @@ namespace wwtlib
                    // "           vColor = vec4(1,1,1,1);       \n" +
 
                     "        }                                                                               \n" +
-                    "        gl_PointSize = max(2.0, (scale * ( aPointSize ) / dist));                     \n" +
+                    "        gl_PointSize = max(minSize, (scale * ( aPointSize ) / dist));                     \n" +
                     "    }                                                                                   \n" +
                     "                                                                                        \n";
 
@@ -407,6 +536,7 @@ namespace wwtlib
             lineColorLoc = gl.getUniformLocation(prog, "lineColor");
             cameraPosLoc = gl.getUniformLocation(prog, "cameraPosition");
             scaleLoc = gl.getUniformLocation(prog, "scale");
+            minSizeLoc = gl.getUniformLocation(prog, "minSize");
             gl.enable(GL.BLEND);
            
             initialized = true;
@@ -414,7 +544,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
-        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay, Vector3d camera, float scale)
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay, Vector3d camera, float scale, float minSize)
         {
             GL gl = renderContext.gl;
             if (gl != null)
@@ -433,9 +563,10 @@ namespace wwtlib
                 gl.uniform1i(sampLoc, 0);
                 gl.uniform1f(jNowLoc, jNow);
                 gl.uniform1f(decayLoc, decay);
-                gl.uniform4f(lineColorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, lineColor.A/255f);
+                gl.uniform4f(lineColorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, lineColor.A / 255f);
                 gl.uniform3f(cameraPosLoc, (float)camera.X, (float)camera.Y, (float)camera.Z);
-                gl.uniform1f(scaleLoc, scale );
+                gl.uniform1f(scaleLoc, scale);
+                gl.uniform1f(minSizeLoc, minSize);
                 if (zBuffer)
                 {
                     gl.enable(GL.DEPTH_TEST);
@@ -450,14 +581,14 @@ namespace wwtlib
                 gl.disableVertexAttribArray(2);
                 gl.disableVertexAttribArray(3);
 
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
 
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(colorLoc);
                 gl.enableVertexAttribArray(pointSizeLoc);
                 gl.enableVertexAttribArray(timeLoc);
 
-                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
-                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 40, 0);
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 40, 12);
                 gl.vertexAttribPointer(pointSizeLoc, 1, GL.FLOAT, false, 40, 36);
@@ -562,7 +693,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
-        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity)
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity, bool noDepth)
         {
             GL gl = renderContext.gl;
             if (gl != null)
@@ -580,7 +711,7 @@ namespace wwtlib
                 gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
                 gl.uniform1i(sampLoc, 0);
-                if (renderContext.Space)
+                if (renderContext.Space || noDepth)
                 {
                     gl.disable(GL.DEPTH_TEST);
                 }
@@ -588,17 +719,30 @@ namespace wwtlib
                 {
                     gl.enable(GL.DEPTH_TEST);
                 }
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
 
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(textureLoc);
-                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 20, 0);
                 gl.vertexAttribPointer(textureLoc, 2, GL.FLOAT, false, 20, 12);
                 gl.activeTexture(GL.TEXTURE0);
                 gl.bindTexture(GL.TEXTURE_2D, texture);
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, index);
                 gl.enable(GL.BLEND);
-                gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+
+                if (noDepth)
+                {
+                    gl.blendFunc(GL.SRC_ALPHA, GL.ONE);
+                }
+                else
+                {
+                    gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+                }
             }
         }
     }
@@ -713,13 +857,18 @@ namespace wwtlib
                 gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
                 gl.uniform1i(sampLoc, 0);
-               
+
                 gl.disable(GL.DEPTH_TEST);
-               
+
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(textureLoc);
                 gl.enableVertexAttribArray(colorLoc);
-                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 36, 0);
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
                 gl.vertexAttribPointer(textureLoc, 2, GL.FLOAT, false, 36, 28);
@@ -838,11 +987,16 @@ namespace wwtlib
                 gl.uniform1i(sampLoc, 0);
 
                 gl.disable(GL.DEPTH_TEST);
+
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
              
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(textureLoc);
                 gl.enableVertexAttribArray(colorLoc);
-                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 36, 0);
                 gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 36, 12);
                 gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
@@ -965,14 +1119,17 @@ namespace wwtlib
                 {
                     gl.enable(GL.DEPTH_TEST);
                 }
-                //gl.disableVertexAttribArray(0);
-                //gl.disableVertexAttribArray(1);
-                //gl.disableVertexAttribArray(2);
-                //gl.disableVertexAttribArray(3);
+
+
+
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
 
                 gl.enableVertexAttribArray(vertLoc);
                 gl.enableVertexAttribArray(textureLoc);
-                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 20, 0);
                 gl.vertexAttribPointer(textureLoc, 2, GL.FLOAT, false, 20, 12);
                 gl.activeTexture(GL.TEXTURE0);

@@ -955,7 +955,7 @@ namespace wwtlib
             {
                 int count = orbitalSampleRate;
                 bool planetDropped = false;
-                
+
                 Vector3d viewPoint = renderContext.ViewPoint;
 
 
@@ -974,7 +974,7 @@ namespace wwtlib
                 Matrix3d mat = Matrix3d.MultiplyMatrix(translate, renderContext.WVP);
                 Matrix3d matWV = Matrix3d.MultiplyMatrix(translate, renderContext.WV);
 
-                for (int i = 0; i < count; i ++)
+                for (int i = 0; i < count; i++)
                 {
                     Vector3d pnt = orbits[id][i];
 
@@ -996,7 +996,7 @@ namespace wwtlib
 
                     if (pointTest.Z > 0)
                     {
-                        
+
 
                         if (firstPoint)
                         {
@@ -1018,8 +1018,8 @@ namespace wwtlib
 
                     lastPoint = point;
                 }
-                
-                
+
+
                 ctx.Restore();
             }
             else
@@ -1028,63 +1028,57 @@ namespace wwtlib
                 bool planetDropped = false;
 
                 Vector3d viewPoint = renderContext.ViewPoint;
-
-
-                //CanvasContext2D ctx = renderContext.Device;
-                //ctx.Save();
-
-                //ctx.StrokeStyle = eclipticColor.ToString();
-                //ctx.LineWidth = 2;
-                //ctx.Alpha = 1;
                 Vector3d point = new Vector3d();
                 Vector3d pointTest = new Vector3d();
 
                 Vector3d lastPoint = new Vector3d();
+                Color lastColor = new Color();
                 bool firstPoint = true;
-             //   Matrix3d translate = Matrix3d.Translation(Vector3d.Negate(centerPoint));
-             //   Matrix3d mat = Matrix3d.MultiplyMatrix(translate, renderContext.WVP);
-             //   Matrix3d matWV = Matrix3d.MultiplyMatrix(translate, renderContext.WV);
-                SimpleLineList list = new SimpleLineList();
-               
+                OrbitLineList list = new OrbitLineList();
 
                 for (int i = 0; i < count; i++)
                 {
-                    Vector3d pnt = orbits[id][i];
+                    Vector3d pnt = orbits[id][i].Copy();
 
-                    double angle = (Math.Atan2(orbits[id][i].Z, orbits[id][i].X) + Math.PI * 2 - startAngle) % (Math.PI * 2);
+                    double angle = (Math.Atan2(pnt.Z, pnt.X) + Math.PI * 2 - startAngle) % (Math.PI * 2);
                     int alpha = (int)((angle) / (Math.PI * 2) * 255);
 
                     double alphaD = (double)alpha / 255.0;
+                    Color color = Color.FromArgb(alpha, eclipticColor.R, eclipticColor.G, eclipticColor.B);
 
-                    if (alpha < 2 && !planetDropped)
+                    if (alpha < 2 && !planetDropped && !firstPoint)
                     {
-                        pnt = planetNow;
+                        pnt = Vector3d.SubtractVectors(planetNow, centerPoint);
                         alphaD = 1.0;
+                        alpha = 255;
 
+                        color.A = 255;
+                        lastColor.A = 255;
+                        list.AddLine(lastPoint, pnt.Copy(), lastColor.Clone(), color.Clone());
+                        lastColor.A = 0;
+                        color.A = 0;
+                        pnt = orbits[id][i].Copy();
+                        planetDropped = true;
                     }
-// pointTest = matWV.Transform(pnt);
-            //        point = mat.Transform(pnt);
-
-                    //if (pointTest.Z > 0)
+                  
+                    pnt = Vector3d.SubtractVectors(pnt, centerPoint);
+                 
+  
+                    if (firstPoint)
                     {
 
-
-                        if (firstPoint)
-                        {
-
-                            firstPoint = false;
-                        }
-                        else
-                        {
-                            list.AddLine(lastPoint, pnt);
-                        }
+                        firstPoint = false;
                     }
-
+                    else
+                    {
+                       list.AddLine(lastPoint, pnt, lastColor, color);
+                    }
                     lastPoint = pnt;
+                    lastColor = color.Clone();
                 }
-
                 list.DrawLines(renderContext, 1.0f, Colors.White);
-            }      
+                list.Clear();
+            }
         }
 
 
@@ -1582,26 +1576,34 @@ namespace wwtlib
 
             Vector3d center = (Vector3d)location;
 
-            double rad = size/2;
+            double rad = size / 2;
 
-            Vector3d screenSpacePnt = renderContext.WVP.Transform(center);
-            if (screenSpacePnt.Z < 0)
-            {
-                return;
-            }
-            if (!zOrder)
-            {
-                if (Vector3d.Dot((Vector3d)renderContext.ViewPoint, (Vector3d)center) < .55)
-                {
-                    return;
-                }
-            }
+
             if (renderContext.gl != null)
             {
-                //todo draw in WebGL
+                PointList ppList = new PointList(renderContext);
+                ppList.MinSize = 20;
+                ppList.AddPoint(location.Copy(), color.Clone(), new Dates(0, 1), (float)size*10);
+                // ppList.ShowFarSide = true;
+                ppList.DepthBuffered = false;
+                ppList.Draw(renderContext, 1, false);
+                //  ppList.Clear();
+
             }
             else
             {
+                Vector3d screenSpacePnt = renderContext.WVP.Transform(center);
+                if (screenSpacePnt.Z < 0)
+                {
+                    return;
+                }
+                if (!zOrder)
+                {
+                    if (Vector3d.Dot((Vector3d)renderContext.ViewPoint, (Vector3d)center) < .55)
+                    {
+                        return;
+                    }
+                }
                 CanvasContext2D ctx = renderContext.Device;
                 ctx.Save();
                 //ctx.Alpha = opacity;

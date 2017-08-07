@@ -336,11 +336,36 @@ namespace wwtlib
 
     }
 
+    public class PositionColored
+    {
+
+     
+        public PositionColored (Vector3d pos, Color color)
+        {     
+               
+            Color = color.Clone();
+            Position = pos.Copy();
+        }
+ 
+        public Color Color = new Color();
+        public Vector3d Position;
+
+        public PositionColored Copy()
+        {
+            PositionColored temp = new PositionColored(this.Position, this.Color);
+            return temp;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0}, {1}, {2}, {3}", Position.X, Position.Y, Position.Z, Color.ToString());
+        }
+    }
 
 
     // Summary:
     //     Describes and manipulates a vector in three-dimensional (3-D) space.
-   
+
     public class Vector3d
     {
         // Summary:

@@ -6019,6 +6019,50 @@ window.wwtlib = function(){
         buffer[index++] = pt.pointSize;
       }
       Tile.prepDevice.bufferData(34962, f32array, 35044);
+    },
+    dispose: function() {
+      Tile.prepDevice.bindBuffer(34962, null);
+      Tile.prepDevice.deleteBuffer(this.vertexBuffer);
+      this.vertexBuffer = null;
+    }
+  };
+
+
+  // wwtlib.PositionColoredVertexBuffer
+
+  function PositionColoredVertexBuffer(count) {
+    this.count = 0;
+    this._verts = null;
+    this.count = count;
+  }
+  var PositionColoredVertexBuffer$ = {
+    lock: function() {
+      this._verts = new Array(this.count);
+      return this._verts;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 7);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    },
+    dispose: function() {
+      Tile.prepDevice.bindBuffer(34962, null);
+      Tile.prepDevice.deleteBuffer(this.vertexBuffer);
+      this.vertexBuffer = null;
     }
   };
 
@@ -6193,6 +6237,114 @@ window.wwtlib = function(){
       }
     },
     _emptyLineBuffer: function() {
+    }
+  };
+
+
+  // wwtlib.OrbitLineList
+
+  function OrbitLineList() {
+    this._zBuffer = true;
+    this._linePoints = [];
+    this._lineColors = [];
+    this.sky = true;
+    this.aaFix = true;
+    this.viewTransform = Matrix3d.get_identity();
+    this._lineBuffers = [];
+    this._lineBufferCounts = [];
+    this.useLocalCenters = false;
+  }
+  var OrbitLineList$ = {
+    get_depthBuffered: function() {
+      return this._zBuffer;
+    },
+    set_depthBuffered: function(value) {
+      this._zBuffer = value;
+      return value;
+    },
+    addLine: function(v1, v2, c1, c2) {
+      this._linePoints.push(v1);
+      this._lineColors.push(c1);
+      this._linePoints.push(v2);
+      this._lineColors.push(c2);
+      this._emptyLineBuffer();
+    },
+    clear: function() {
+      this._linePoints.length = 0;
+      this._emptyLineBuffer();
+    },
+    drawLines: function(renderContext, opacity, color) {
+      if (this._linePoints.length < 2) {
+        return;
+      }
+      this._initLineBuffer(renderContext);
+      var count = this._linePoints.length;
+      var $enum1 = ss.enumerate(this._lineBuffers);
+      while ($enum1.moveNext()) {
+        var lineBuffer = $enum1.current;
+        OrbitLineShader.use(renderContext, lineBuffer.vertexBuffer, color);
+        renderContext.gl.drawArrays(1, 0, lineBuffer.count);
+      }
+    },
+    _initLineBuffer: function(renderContext) {
+      if (renderContext.gl != null) {
+        if (!this._lineBuffers.length) {
+          var count = this._linePoints.length;
+          var lineBuffer = null;
+          var linePointList = null;
+          this._localCenter = new Vector3d();
+          if (this.get_depthBuffered()) {
+            var $enum1 = ss.enumerate(this._linePoints);
+            while ($enum1.moveNext()) {
+              var point = $enum1.current;
+              this._localCenter.add(point);
+            }
+            this._localCenter.x /= count;
+            this._localCenter.y /= count;
+            this._localCenter.z /= count;
+          }
+          var countLeft = count;
+          var index = 0;
+          var counter = 0;
+          var temp;
+          var $enum2 = ss.enumerate(this._linePoints);
+          while ($enum2.moveNext()) {
+            var point = $enum2.current;
+            if (counter >= 100000 || linePointList == null) {
+              if (lineBuffer != null) {
+                lineBuffer.unlock();
+              }
+              var thisCount = Math.min(100000, countLeft);
+              countLeft -= thisCount;
+              lineBuffer = new PositionColoredVertexBuffer(thisCount);
+              linePointList = lineBuffer.lock();
+              this._lineBuffers.push(lineBuffer);
+              this._lineBufferCounts.push(thisCount);
+              counter = 0;
+            }
+            if (this.useLocalCenters) {
+              temp = Vector3d.subtractVectors(point, this._localCenter);
+              linePointList[counter] = new PositionColored(temp, this._lineColors[index]);
+            }
+            else {
+              linePointList[counter] = new PositionColored(point, this._lineColors[index]);
+            }
+            index++;
+            counter++;
+          }
+          if (lineBuffer != null) {
+            lineBuffer.unlock();
+          }
+        }
+      }
+    },
+    _emptyLineBuffer: function() {
+      var $enum1 = ss.enumerate(this._lineBuffers);
+      while ($enum1.moveNext()) {
+        var lineBuffer = $enum1.current;
+        lineBuffer.dispose();
+      }
+      this._lineBuffers.length = 0;
     }
   };
 
@@ -6448,6 +6600,7 @@ window.wwtlib = function(){
     this.items = [];
     this._imageReady = false;
     this._init = false;
+    this.minSize = 2;
     this._pointBuffers = [];
     this._pointBufferCounts = [];
     this._device = device;
@@ -6467,6 +6620,12 @@ window.wwtlib = function(){
       this._emptyPointBuffer();
     },
     _emptyPointBuffer: function() {
+      var $enum1 = ss.enumerate(this._pointBuffers);
+      while ($enum1.moveNext()) {
+        var pointBuffer = $enum1.current;
+        pointBuffer.dispose();
+      }
+      this._pointBuffers.length = 0;
       this._init = false;
     },
     _initBuffer: function(renderContext) {
@@ -6498,8 +6657,8 @@ window.wwtlib = function(){
         }
         else {
           if (!this._pointBuffers.length) {
-            if (this._starTexture == null) {
-              this._starTexture = Planets.loadPlanetTexture('/images/starProfile.png');
+            if (PointList.starTexture == null) {
+              PointList.starTexture = Planets.loadPlanetTexture('/images/starProfile.png');
             }
             var count = this._points.length;
             var pointBuffer = null;
@@ -6575,7 +6734,7 @@ window.wwtlib = function(){
         var $enum2 = ss.enumerate(this._pointBuffers);
         while ($enum2.moveNext()) {
           var pointBuffer = $enum2.current;
-          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, this._starTexture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
+          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, PointList.starTexture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)), this.minSize);
           renderContext.gl.drawArrays(0, 0, pointBuffer.count);
         }
       }
@@ -6585,7 +6744,7 @@ window.wwtlib = function(){
       var $enum1 = ss.enumerate(this._pointBuffers);
       while ($enum1.moveNext()) {
         var pointBuffer = $enum1.current;
-        TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, texture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)));
+        TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, texture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)), this.minSize);
         renderContext.gl.drawArrays(0, 0, pointBuffer.count);
       }
     }
@@ -6712,6 +6871,74 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.OrbitLineShader
+
+  function OrbitLineShader() {
+  }
+  OrbitLineShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision highp float;                                                              \n' + ' uniform vec4 lineColor;                                                               \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '   gl_FragColor = lineColor * vColor;                                                   \n' + '   }                                                                                   \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec4 aVertexColor;                                                 \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '     varying lowp vec4 vColor;                                                    \n' + '                                                                                  \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vColor = aVertexColor;                                                    \n' + '     }                                                                            \n' + '                                                                                  \n';
+    OrbitLineShader._frag = gl.createShader(35632);
+    gl.shaderSource(OrbitLineShader._frag, fragShaderText);
+    gl.compileShader(OrbitLineShader._frag);
+    var stat = gl.getShaderParameter(OrbitLineShader._frag, 35713);
+    OrbitLineShader._vert = gl.createShader(35633);
+    gl.shaderSource(OrbitLineShader._vert, vertexShaderText);
+    gl.compileShader(OrbitLineShader._vert);
+    var stat1 = gl.getShaderParameter(OrbitLineShader._vert, 35713);
+    OrbitLineShader._prog = gl.createProgram();
+    gl.attachShader(OrbitLineShader._prog, OrbitLineShader._vert);
+    gl.attachShader(OrbitLineShader._prog, OrbitLineShader._frag);
+    gl.linkProgram(OrbitLineShader._prog);
+    var errcode = gl.getProgramParameter(OrbitLineShader._prog, 35714);
+    gl.useProgram(OrbitLineShader._prog);
+    OrbitLineShader.vertLoc = gl.getAttribLocation(OrbitLineShader._prog, 'aVertexPosition');
+    OrbitLineShader.colorLoc = gl.getAttribLocation(OrbitLineShader._prog, 'aVertexColor');
+    OrbitLineShader.lineColorLoc = gl.getUniformLocation(OrbitLineShader._prog, 'lineColor');
+    OrbitLineShader.projMatLoc = gl.getUniformLocation(OrbitLineShader._prog, 'uPMatrix');
+    OrbitLineShader.mvMatLoc = gl.getUniformLocation(OrbitLineShader._prog, 'uMVMatrix');
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    OrbitLineShader.initialized = true;
+  };
+  OrbitLineShader.use = function(renderContext, vertex, lineColor) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!OrbitLineShader.initialized) {
+        OrbitLineShader.init(renderContext);
+      }
+      gl.useProgram(OrbitLineShader._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniformMatrix4fv(OrbitLineShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(OrbitLineShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      gl.uniform4f(OrbitLineShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, 1);
+      if (renderContext.space) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.bindBuffer(34963, null);
+      gl.enableVertexAttribArray(OrbitLineShader.vertLoc);
+      gl.enableVertexAttribArray(OrbitLineShader.colorLoc);
+      gl.vertexAttribPointer(OrbitLineShader.vertLoc, 3, 5126, false, 28, 0);
+      gl.vertexAttribPointer(OrbitLineShader.colorLoc, 4, 5126, false, 28, 12);
+      gl.lineWidth(1);
+      gl.enable(3042);
+      gl.blendFunc(770, 771);
+    }
+  };
+  var OrbitLineShader$ = {
+
+  };
+
+
   // wwtlib.LineShaderNormalDates
 
   function LineShaderNormalDates() {
@@ -6769,10 +6996,10 @@ window.wwtlib = function(){
       gl.disableVertexAttribArray(1);
       gl.disableVertexAttribArray(2);
       gl.disableVertexAttribArray(3);
-      gl.enableVertexAttribArray(LineShaderNormalDates.vertLoc);
-      gl.enableVertexAttribArray(LineShaderNormalDates.colorLoc);
       gl.bindBuffer(34962, vertex);
       gl.bindBuffer(34963, null);
+      gl.enableVertexAttribArray(LineShaderNormalDates.vertLoc);
+      gl.enableVertexAttribArray(LineShaderNormalDates.colorLoc);
       gl.vertexAttribPointer(LineShaderNormalDates.vertLoc, 3, 5126, false, 36, 0);
       gl.vertexAttribPointer(LineShaderNormalDates.colorLoc, 4, 5126, false, 36, 12);
       gl.vertexAttribPointer(LineShaderNormalDates.timeLoc, 2, 5126, false, 36, 28);
@@ -6793,7 +7020,7 @@ window.wwtlib = function(){
   TimeSeriesPointSpriteShader.init = function(renderContext) {
     var gl = renderContext.gl;
     var fragShaderText = '    precision mediump float;                                                            \n' + '    uniform vec4 lineColor;                                                             \n' + '    varying lowp vec4 vColor;                                                           \n' + '    uniform sampler2D uSampler;                                                         \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        vec4 texColor;                                                                  \n' + '        texColor = texture2D(uSampler, gl_PointCoord);                                  \n' + '                                                                                        \n' + '                                                                                        \n' + '        gl_FragColor = lineColor * vColor * texColor;                                   \n' + '    }                                                                                   \n';
-    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    attribute float aPointSize;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform vec3 cameraPosition;                                                        \n' + '    uniform float decay;                                                                \n' + '    uniform float scale;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        float dist = distance(aVertexPosition, cameraPosition);                                \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '        if (jNow < aTime.x && decay > 0.0)                                              \n' + '        {                                                                               \n' + '            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n' + '        }                                                                               \n' + '        else                                                                            \n' + '        {                                                                               \n' + '           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n' + '        }                                                                               \n' + '        gl_PointSize = max(2.0, (scale * ( aPointSize ) / dist));                     \n' + '    }                                                                                   \n' + '                                                                                        \n';
+    var vertexShaderText = '    attribute vec3 aVertexPosition;                                                     \n' + '    attribute vec4 aVertexColor;                                                        \n' + '    attribute vec2 aTime;                                                               \n' + '    attribute float aPointSize;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform vec3 cameraPosition;                                                        \n' + '    uniform float decay;                                                                \n' + '    uniform float scale;                                                                \n' + '    uniform float minSize;                                                                \n' + '                                                                                        \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        float dist = distance(aVertexPosition, cameraPosition);                                \n' + '        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n' + '        float dAlpha = 1.0;                                                             \n' + '        if ( decay > 0.0)                                                               \n' + '        {                                                                               \n' + '             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n ' + '             if (dAlpha > 1.0 )                                                         \n' + '             {                                                                          \n' + '                  dAlpha = 1.0;                                                         \n' + '             }                                                                          \n' + '        }                                                                               \n' + '        if (jNow < aTime.x && decay > 0.0)                                              \n' + '        {                                                                               \n' + '            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n' + '        }                                                                               \n' + '        else                                                                            \n' + '        {                                                                               \n' + '           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n' + '        }                                                                               \n' + '        gl_PointSize = max(minSize, (scale * ( aPointSize ) / dist));                     \n' + '    }                                                                                   \n' + '                                                                                        \n';
     TimeSeriesPointSpriteShader._frag = gl.createShader(35632);
     gl.shaderSource(TimeSeriesPointSpriteShader._frag, fragShaderText);
     gl.compileShader(TimeSeriesPointSpriteShader._frag);
@@ -6821,10 +7048,11 @@ window.wwtlib = function(){
     TimeSeriesPointSpriteShader.lineColorLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'lineColor');
     TimeSeriesPointSpriteShader.cameraPosLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'cameraPosition');
     TimeSeriesPointSpriteShader.scaleLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'scale');
+    TimeSeriesPointSpriteShader.minSizeLoc = gl.getUniformLocation(TimeSeriesPointSpriteShader._prog, 'minSize');
     gl.enable(3042);
     TimeSeriesPointSpriteShader.initialized = true;
   };
-  TimeSeriesPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, zBuffer, jNow, decay, camera, scale) {
+  TimeSeriesPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, zBuffer, jNow, decay, camera, scale, minSize) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TimeSeriesPointSpriteShader.initialized) {
@@ -6840,6 +7068,7 @@ window.wwtlib = function(){
       gl.uniform4f(TimeSeriesPointSpriteShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, lineColor.a / 255);
       gl.uniform3f(TimeSeriesPointSpriteShader.cameraPosLoc, camera.x, camera.y, camera.z);
       gl.uniform1f(TimeSeriesPointSpriteShader.scaleLoc, scale);
+      gl.uniform1f(TimeSeriesPointSpriteShader.minSizeLoc, minSize);
       if (zBuffer) {
         gl.enable(2929);
       }
@@ -6850,12 +7079,12 @@ window.wwtlib = function(){
       gl.disableVertexAttribArray(1);
       gl.disableVertexAttribArray(2);
       gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.bindBuffer(34963, null);
       gl.enableVertexAttribArray(TimeSeriesPointSpriteShader.vertLoc);
       gl.enableVertexAttribArray(TimeSeriesPointSpriteShader.colorLoc);
       gl.enableVertexAttribArray(TimeSeriesPointSpriteShader.pointSizeLoc);
       gl.enableVertexAttribArray(TimeSeriesPointSpriteShader.timeLoc);
-      gl.bindBuffer(34962, vertex);
-      gl.bindBuffer(34963, null);
       gl.vertexAttribPointer(TimeSeriesPointSpriteShader.vertLoc, 3, 5126, false, 40, 0);
       gl.vertexAttribPointer(TimeSeriesPointSpriteShader.colorLoc, 4, 5126, false, 40, 12);
       gl.vertexAttribPointer(TimeSeriesPointSpriteShader.pointSizeLoc, 1, 5126, false, 40, 36);
@@ -6906,7 +7135,7 @@ window.wwtlib = function(){
     gl.blendFunc(770, 771);
     TileShader.initialized = true;
   };
-  TileShader.use = function(renderContext, vertex, index, texture, opacity) {
+  TileShader.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TileShader.initialized) {
@@ -6918,22 +7147,31 @@ window.wwtlib = function(){
       gl.uniformMatrix4fv(TileShader.mvMatLoc, false, mvMat.floatArray());
       gl.uniformMatrix4fv(TileShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(TileShader.sampLoc, 0);
-      if (renderContext.space) {
+      if (renderContext.space || noDepth) {
         gl.disable(2929);
       }
       else {
         gl.enable(2929);
       }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
       gl.enableVertexAttribArray(TileShader.vertLoc);
       gl.enableVertexAttribArray(TileShader.textureLoc);
-      gl.bindBuffer(34962, vertex);
       gl.vertexAttribPointer(TileShader.vertLoc, 3, 5126, false, 20, 0);
       gl.vertexAttribPointer(TileShader.textureLoc, 2, 5126, false, 20, 12);
       gl.activeTexture(33984);
       gl.bindTexture(3553, texture);
       gl.bindBuffer(34963, index);
       gl.enable(3042);
-      gl.blendFunc(770, 771);
+      if (noDepth) {
+        gl.blendFunc(770, 1);
+      }
+      else {
+        gl.blendFunc(770, 771);
+      }
     }
   };
   var TileShader$ = {
@@ -6987,10 +7225,14 @@ window.wwtlib = function(){
       gl.uniformMatrix4fv(SpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(SpriteShader.sampLoc, 0);
       gl.disable(2929);
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
       gl.enableVertexAttribArray(SpriteShader.vertLoc);
       gl.enableVertexAttribArray(SpriteShader.textureLoc);
       gl.enableVertexAttribArray(SpriteShader.colorLoc);
-      gl.bindBuffer(34962, vertex);
       gl.vertexAttribPointer(SpriteShader.vertLoc, 3, 5126, false, 36, 0);
       gl.vertexAttribPointer(SpriteShader.colorLoc, 4, 5126, false, 36, 12);
       gl.vertexAttribPointer(SpriteShader.textureLoc, 2, 5126, false, 36, 28);
@@ -7049,10 +7291,14 @@ window.wwtlib = function(){
       gl.uniformMatrix4fv(ShapeSpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(ShapeSpriteShader.sampLoc, 0);
       gl.disable(2929);
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
       gl.enableVertexAttribArray(ShapeSpriteShader.vertLoc);
       gl.enableVertexAttribArray(ShapeSpriteShader.textureLoc);
       gl.enableVertexAttribArray(ShapeSpriteShader.colorLoc);
-      gl.bindBuffer(34962, vertex);
       gl.vertexAttribPointer(ShapeSpriteShader.vertLoc, 3, 5126, false, 36, 0);
       gl.vertexAttribPointer(ShapeSpriteShader.colorLoc, 4, 5126, false, 36, 12);
       gl.bindBuffer(34963, null);
@@ -7115,9 +7361,13 @@ window.wwtlib = function(){
       else {
         gl.enable(2929);
       }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
       gl.enableVertexAttribArray(TextShader.vertLoc);
       gl.enableVertexAttribArray(TextShader.textureLoc);
-      gl.bindBuffer(34962, vertex);
       gl.vertexAttribPointer(TextShader.vertLoc, 3, 5126, false, 20, 0);
       gl.vertexAttribPointer(TextShader.textureLoc, 2, 5126, false, 20, 12);
       gl.activeTexture(33984);
@@ -7396,6 +7646,80 @@ window.wwtlib = function(){
 
   function Grids() {
   }
+  Grids._createGalaxyImage = function(renderContext) {
+    if (Grids._milkyWayImage == null) {
+      Grids._milkyWayImage = Planets.loadPlanetTexture('http://cdn.worldwidetelescope.org/webclient/images/milkywaybar.jpg');
+    }
+    var subdivs = 50;
+    var lat, lng;
+    var index = 0;
+    var latMin = 64;
+    var latMax = -64;
+    var lngMin = -64;
+    var lngMax = 64;
+    Grids._galaxyImageVertexBuffer = new PositionTextureVertexBuffer((subdivs + 1) * (subdivs + 1));
+    var verts = Grids._galaxyImageVertexBuffer.lock();
+    var x1, y1;
+    var latDegrees = latMax - latMin;
+    var lngDegrees = lngMax - lngMin;
+    var scaleFactor = 60800000;
+    var ecliptic = Coordinates.meanObliquityOfEcliptic(SpaceTimeController.get_jNow()) / 180 * Math.PI;
+    var point;
+    var textureStepX = 1 / subdivs;
+    var textureStepY = 1 / subdivs;
+    for (y1 = 0; y1 <= subdivs; y1++) {
+      if (y1 !== subdivs) {
+        lat = latMax - (textureStepY * latDegrees * y1);
+      }
+      else {
+        lat = latMin;
+      }
+      for (x1 = 0; x1 <= subdivs; x1++) {
+        if (x1 !== subdivs) {
+          lng = lngMin + (textureStepX * lngDegrees * x1);
+        }
+        else {
+          lng = lngMax;
+        }
+        index = y1 * (subdivs + 1) + x1;
+        point = Vector3d.create(lng * scaleFactor, 0, (lat - 28) * scaleFactor);
+        point.rotateY(213 / 180 * Math.PI);
+        point.rotateZ((-62.87175) / 180 * Math.PI);
+        point.rotateY((-192.8595083) / 180 * Math.PI);
+        point.rotateX(ecliptic);
+        verts[index] = PositionTexture.createPosRaw(point, (1 - x1 * textureStepX), (y1 * textureStepY));
+      }
+    }
+    Grids._galaxyImageVertexBuffer.unlock();
+    Grids._galaxyImageTriangleCount = subdivs * subdivs * 2;
+    var ui16array = new Uint16Array(subdivs * subdivs * 6);
+    var indexArray = ui16array;
+    for (y1 = 0; y1 < subdivs; y1++) {
+      for (x1 = 0; x1 < subdivs; x1++) {
+        index = (y1 * subdivs * 6) + 6 * x1;
+        indexArray[index] = (y1 * (subdivs + 1) + x1);
+        indexArray[index + 2] = ((y1 + 1) * (subdivs + 1) + x1);
+        indexArray[index + 1] = (y1 * (subdivs + 1) + (x1 + 1));
+        indexArray[index + 3] = (y1 * (subdivs + 1) + (x1 + 1));
+        indexArray[index + 5] = ((y1 + 1) * (subdivs + 1) + x1);
+        indexArray[index + 4] = ((y1 + 1) * (subdivs + 1) + (x1 + 1));
+      }
+    }
+    Grids._galaxyImageIndexBuffer = Tile.prepDevice.createBuffer();
+    Tile.prepDevice.bindBuffer(34963, Grids._galaxyImageIndexBuffer);
+    Tile.prepDevice.bufferData(34963, ui16array, 35044);
+  };
+  Grids.drawGalaxyImage = function(renderContext, opacity) {
+    if (Grids._galaxyImageIndexBuffer == null) {
+      Grids._createGalaxyImage(renderContext);
+    }
+    var zoom = renderContext.viewCamera.zoom;
+    var log = Math.log(Math.max(1, zoom)) / Math.log(4);
+    var distAlpha = (log - 14) * 128;
+    var alpha = (Math.min(255, Math.max(0, distAlpha)) * opacity);
+    TileShader.use(renderContext, Grids._galaxyImageVertexBuffer.vertexBuffer, Grids._galaxyImageIndexBuffer, Grids._milkyWayImage.texture2d, opacity, true);
+    renderContext.gl.drawElements(4, Grids._galaxyImageTriangleCount * 3, 5123, 0);
+  };
   Grids.drawStars3D = function(renderContext, opacity) {
     var zoom = renderContext.viewCamera.zoom;
     var distAlpha = Math.max(Math.min(255, (Math.log(zoom) - 15.5) * 40.8), 0);
@@ -10291,26 +10615,39 @@ window.wwtlib = function(){
       var point = new Vector3d();
       var pointTest = new Vector3d();
       var lastPoint = new Vector3d();
+      var lastColor = new Color();
       var firstPoint = true;
-      var list = new SimpleLineList();
+      var list = new OrbitLineList();
       for (var i = 0; i < count; i++) {
-        var pnt = Planets._orbits[id][i];
-        var angle = (Math.atan2(Planets._orbits[id][i].z, Planets._orbits[id][i].x) + Math.PI * 2 - startAngle) % (Math.PI * 2);
+        var pnt = Planets._orbits[id][i].copy();
+        var angle = (Math.atan2(pnt.z, pnt.x) + Math.PI * 2 - startAngle) % (Math.PI * 2);
         var alpha = ss.truncate((angle / (Math.PI * 2) * 255));
         var alphaD = alpha / 255;
-        if (alpha < 2 && !planetDropped) {
-          pnt = planetNow;
+        var color = Color.fromArgb(alpha, eclipticColor.r, eclipticColor.g, eclipticColor.b);
+        if (alpha < 2 && !planetDropped && !firstPoint) {
+          pnt = Vector3d.subtractVectors(planetNow, centerPoint);
           alphaD = 1;
+          alpha = 255;
+          color.a = 255;
+          lastColor.a = 255;
+          list.addLine(lastPoint, pnt.copy(), lastColor._clone(), color._clone());
+          lastColor.a = 0;
+          color.a = 0;
+          pnt = Planets._orbits[id][i].copy();
+          planetDropped = true;
         }
+        pnt = Vector3d.subtractVectors(pnt, centerPoint);
         if (firstPoint) {
           firstPoint = false;
         }
         else {
-          list.addLine(lastPoint, pnt);
+          list.addLine(lastPoint, pnt, lastColor, color);
         }
         lastPoint = pnt;
+        lastColor = color._clone();
       }
       list.drawLines(renderContext, 1, Colors.get_white());
+      list.clear();
     }
   };
   Planets.isPlanetInFrustum = function(renderContext, rad) {
@@ -10511,18 +10848,23 @@ window.wwtlib = function(){
     size = Math.max(2, size);
     var center = location;
     var rad = size / 2;
-    var screenSpacePnt = renderContext.WVP.transform(center);
-    if (screenSpacePnt.z < 0) {
-      return;
-    }
-    if (!zOrder) {
-      if (Vector3d.dot(renderContext.get_viewPoint(), center) < 0.55) {
-        return;
-      }
-    }
     if (renderContext.gl != null) {
+      var ppList = new PointList(renderContext);
+      ppList.minSize = 20;
+      ppList.addPoint(location.copy(), color._clone(), new Dates(0, 1), size * 10);
+      ppList.depthBuffered = false;
+      ppList.draw(renderContext, 1, false);
     }
     else {
+      var screenSpacePnt = renderContext.WVP.transform(center);
+      if (screenSpacePnt.z < 0) {
+        return;
+      }
+      if (!zOrder) {
+        if (Vector3d.dot(renderContext.get_viewPoint(), center) < 0.55) {
+          return;
+        }
+      }
       var ctx = renderContext.device;
       ctx.save();
       ctx.beginPath();
@@ -13400,7 +13742,7 @@ window.wwtlib = function(){
         }
       }
       else {
-        TileShader.use(renderContext, this._vertexBuffer, this.getIndexBuffer(part, this.accomidation), this.texture2d, opacity);
+        TileShader.use(renderContext, this._vertexBuffer, this.getIndexBuffer(part, this.accomidation), this.texture2d, opacity, false);
         renderContext.gl.drawElements(4, this.triangleCount * 3, 5123, 0);
       }
     },
@@ -21995,8 +22337,11 @@ window.wwtlib = function(){
         this.renderContext.cameraPosition = Vector3d.subtractVectors(this.renderContext.cameraPosition, this.renderContext.viewCamera.viewTarget);
         this.renderContext.set_world(matLocal);
         this.renderContext.makeFrustum();
-        if (Settings.get_current().get_solarSystemCosmos()) {
+        if (Settings.get_active().get_solarSystemCosmos()) {
           Grids.drawCosmos3D(this.renderContext, 1);
+        }
+        if (Settings.get_active().get_solarSystemMilkyWay() && milkyWayBlendIn > 0) {
+          Grids.drawGalaxyImage(this.renderContext, milkyWayBlendIn);
         }
         if (Settings.get_active().get_solarSystemStars()) {
           Grids.drawStars3D(this.renderContext, 1);
@@ -25163,6 +25508,24 @@ window.wwtlib = function(){
     },
     toString: function() {
       return ss.format('{0}, {1}, {2}, {3}, {4}', this.position.x, this.position.y, this.position.z, this.tu, this.tv);
+    }
+  };
+
+
+  // wwtlib.PositionColored
+
+  function PositionColored(pos, color) {
+    this.color = new Color();
+    this.color = color._clone();
+    this.position = pos.copy();
+  }
+  var PositionColored$ = {
+    copy: function() {
+      var temp = new PositionColored(this.position, this.color);
+      return temp;
+    },
+    toString: function() {
+      return ss.format('{0}, {1}, {2}, {3}', this.position.x, this.position.y, this.position.z, this.color.toString());
     }
   };
 
@@ -34244,6 +34607,7 @@ window.wwtlib = function(){
       PositionTextureVertexBuffer: [ PositionTextureVertexBuffer, PositionTextureVertexBuffer$, null ],
       TimeSeriesLineVertexBuffer: [ TimeSeriesLineVertexBuffer, TimeSeriesLineVertexBuffer$, null ],
       TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, null ],
+      PositionColoredVertexBuffer: [ PositionColoredVertexBuffer, PositionColoredVertexBuffer$, null ],
       PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, null ],
       Sprite2d: [ Sprite2d, Sprite2d$, null ],
       Table: [ Table, Table$, null ],
@@ -34376,12 +34740,14 @@ window.wwtlib = function(){
       AstroCalc: [ AstroCalc, AstroCalc$, null ],
       Dates: [ Dates, Dates$, null ],
       SimpleLineList: [ SimpleLineList, SimpleLineList$, null ],
+      OrbitLineList: [ OrbitLineList, OrbitLineList$, null ],
       LineList: [ LineList, LineList$, null ],
       TriangleList: [ TriangleList, TriangleList$, null ],
       PointList: [ PointList, PointList$, null ],
       TimeSeriesLineVertex: [ TimeSeriesLineVertex, TimeSeriesLineVertex$, null ],
       TimeSeriesPointVertex: [ TimeSeriesPointVertex, TimeSeriesPointVertex$, null ],
       SimpleLineShader: [ SimpleLineShader, SimpleLineShader$, null ],
+      OrbitLineShader: [ OrbitLineShader, OrbitLineShader$, null ],
       LineShaderNormalDates: [ LineShaderNormalDates, LineShaderNormalDates$, null ],
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
@@ -34475,6 +34841,7 @@ window.wwtlib = function(){
       Coordinates: [ Coordinates, Coordinates$, null ],
       PositionTexture: [ PositionTexture, PositionTexture$, null ],
       PositionColoredTextured: [ PositionColoredTextured, PositionColoredTextured$, null ],
+      PositionColored: [ PositionColored, PositionColored$, null ],
       Vector3d: [ Vector3d, Vector3d$, null ],
       Vector2d: [ Vector2d, Vector2d$, null ],
       Matrix3d: [ Matrix3d, Matrix3d$, null ],
@@ -34671,9 +35038,14 @@ window.wwtlib = function(){
   AstroCalc._jupDetails = new EPD();
   AstroCalc._jupPhisical = new CAAPhysicalJupiterDetails();
   AstroCalc._jDateLast = 0;
+  PointList.starTexture = null;
   SimpleLineShader.vertLoc = 0;
   SimpleLineShader.initialized = false;
   SimpleLineShader._prog = null;
+  OrbitLineShader.vertLoc = 0;
+  OrbitLineShader.colorLoc = 0;
+  OrbitLineShader.initialized = false;
+  OrbitLineShader._prog = null;
   LineShaderNormalDates.vertLoc = 0;
   LineShaderNormalDates.colorLoc = 0;
   LineShaderNormalDates.timeLoc = 0;
@@ -34703,6 +35075,9 @@ window.wwtlib = function(){
   TextShader.textureLoc = 0;
   TextShader.initialized = false;
   TextShader._prog = null;
+  Grids._galaxyImageIndexBuffer = null;
+  Grids._galaxyImageTriangleCount = 0;
+  Grids._milkyWayImage = null;
   Grids._starSprites = null;
   Grids._starCount = 0;
   Grids._starsDownloading = false;

@@ -11,6 +11,143 @@ namespace wwtlib
 {
     public class Grids
     {
+
+        static PositionTextureVertexBuffer galaxyImageVertexBuffer;
+        static WebGLBuffer galaxyImageIndexBuffer = null;
+        static int galaxyImageTriangleCount = 0;
+        static Texture milkyWayImage = null;
+
+        private static void CreateGalaxyImage(RenderContext renderContext)
+        {
+            if (milkyWayImage == null)
+            {
+                milkyWayImage = Planets.LoadPlanetTexture("http://cdn.worldwidetelescope.org/webclient/images/milkywaybar.jpg");
+            }
+
+  
+            int subdivs = 50;
+            
+            double lat, lng;
+
+            int index = 0;
+            double latMin = 64;
+            double latMax = -64;
+            double lngMin = -64;
+            double lngMax = 64;
+
+            //// Create a vertex buffer 
+            galaxyImageVertexBuffer = new PositionTextureVertexBuffer((subdivs + 1) * (subdivs + 1));
+            PositionTexture[] verts = (PositionTexture[])galaxyImageVertexBuffer.Lock();
+
+            int x1, y1;
+            double latDegrees = latMax - latMin;
+            double lngDegrees = lngMax - lngMin;
+            double scaleFactor = 60800000.0;
+            double ecliptic = Coordinates.MeanObliquityOfEcliptic(SpaceTimeController.JNow) / 180.0 * Math.PI;
+            Vector3d point;
+
+            double textureStepX = 1.0f / subdivs;
+            double textureStepY = 1.0f / subdivs;
+            for (y1 = 0; y1 <= subdivs; y1++)
+            {
+
+                if (y1 != subdivs)
+                {
+                    lat = latMax - (textureStepY * latDegrees * (double)y1);
+                }
+                else
+                {
+                    lat = latMin;
+                }
+
+                for (x1 = 0; x1 <= subdivs; x1++)
+                {
+                    if (x1 != subdivs)
+                    {
+                        lng = lngMin + (textureStepX * lngDegrees * (double)x1);
+                    }
+                    else
+                    {
+                        lng = lngMax;
+                    }
+                    index = y1 * (subdivs + 1) + x1;
+                    point = Vector3d.Create(lng * scaleFactor, 0, (lat - 28) * scaleFactor);
+                    point.RotateY(213.0 / 180 * Math.PI);
+                    point.RotateZ((-62.87175) / 180 * Math.PI);
+                    point.RotateY((-192.8595083) / 180 * Math.PI);
+                    point.RotateX(ecliptic);
+                    verts[index] = PositionTexture.CreatePosRaw(point, (float)(1f - x1 * textureStepX), (float)(/*1f - */(y1 * textureStepY)));
+                    //verts[index].Position = point;
+                    //verts[index].Tu = (float)(1f - x1 * textureStepX);
+                    //verts[index].Tv = (float)(/*1f - */(y1 * textureStepY));
+                }
+            }
+            galaxyImageVertexBuffer.Unlock();
+            galaxyImageTriangleCount = (subdivs) * (subdivs) * 2;
+            Uint16Array ui16array = new Uint16Array(subdivs * subdivs * 6);
+
+            UInt16[] indexArray = (UInt16[])(object)ui16array;
+
+            for (y1 = 0; y1 < subdivs; y1++)
+            {
+                for (x1 = 0; x1 < subdivs; x1++)
+                {
+                    index = (y1 * subdivs * 6) + 6 * x1;
+                    // First triangle in quad
+                    indexArray[index] = (ushort)(y1 * (subdivs + 1) + x1);
+                    indexArray[index + 2] = (ushort)((y1 + 1) * (subdivs + 1) + x1);
+                    indexArray[index + 1] = (ushort)(y1 * (subdivs + 1) + (x1 + 1));
+
+                    // Second triangle in quad
+                    indexArray[index + 3] = (ushort)(y1 * (subdivs + 1) + (x1 + 1));
+                    indexArray[index + 5] = (ushort)((y1 + 1) * (subdivs + 1) + x1);
+                    indexArray[index + 4] = (ushort)((y1 + 1) * (subdivs + 1) + (x1 + 1));
+                }
+            }
+            galaxyImageIndexBuffer = Tile.PrepDevice.createBuffer();
+            Tile.PrepDevice.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, galaxyImageIndexBuffer);
+            Tile.PrepDevice.bufferData(GL.ELEMENT_ARRAY_BUFFER, ui16array, GL.STATIC_DRAW);
+        }
+
+        public static void DrawGalaxyImage(RenderContext renderContext, float opacity)
+        {
+            if (galaxyImageIndexBuffer == null)
+            {
+                CreateGalaxyImage(renderContext);
+            }
+
+ //           renderContext.setRasterizerState(TriangleCullMode.Off);
+//            renderContext.BlendMode = BlendMode.Additive;
+
+            double zoom = renderContext.ViewCamera.Zoom;
+            double log = Math.Log(Math.Max(1, zoom)) / Math.Log(4);
+            double distAlpha = ((log) - 14) * 128;
+
+            int alpha = (int)(Math.Min(255, (int)Math.Max(0, distAlpha)) * opacity);
+
+            //           renderContext.Device.ImmediateContext.PixelShader.SetShaderResource(0, milkyWayImage.ResourceView);
+            //renderContext.SetupBasicEffect(BasicEffect.TextureColorOpacity, opacity, Color.FromArgb(alpha, alpha, alpha, alpha));
+            //if (galaxyImageInputLayout == null)
+            //{
+            //    galaxyImageInputLayout = new SharpDX.Direct3D11.InputLayout(device, renderContext.Shader.InputSignature, new[]
+            //    {
+            //        new SharpDX.Direct3D11.InputElement("POSITION", 0, SharpDX.DXGI.Format.R32G32B32_Float,     0, 0),
+            //        new SharpDX.Direct3D11.InputElement("TEXCOORD", 0, SharpDX.DXGI.Format.R32G32_Float,       12, 0),
+            //    });
+            //}
+
+            //renderContext.Device.ImmediateContext.InputAssembler.InputLayout = galaxyImageInputLayout;
+            //renderContext.SetVertexBuffer(galaxyImageVertexBuffer);
+            //renderContext.SetIndexBuffer(galaxyImageIndexBuffer);
+            //device.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
+            //renderContext.PreDraw();
+            //device.ImmediateContext.DrawIndexed(galaxyImageTriangleCount * 3, 0, 0);
+
+
+            TileShader.Use(renderContext, galaxyImageVertexBuffer.VertexBuffer, galaxyImageIndexBuffer, milkyWayImage.Texture2d, (float)opacity, true);
+            renderContext.gl.drawElements(GL.TRIANGLES, galaxyImageTriangleCount * 3, GL.UNSIGNED_SHORT, 0);
+        }
+
         public static void DrawStars3D(RenderContext renderContext, float opacity)
         {
             double zoom = renderContext.ViewCamera.Zoom;

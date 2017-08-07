@@ -511,7 +511,7 @@ namespace wwtlib
             }
             else
             {
-                TileShader.Use(renderContext, VertexBuffer, GetIndexBuffer(part, accomidation), texture2d, (float)opacity);
+                TileShader.Use(renderContext, VertexBuffer, GetIndexBuffer(part, accomidation), texture2d, (float)opacity, false);
                 renderContext.gl.drawElements(GL.TRIANGLES, TriangleCount * 3 , GL.UNSIGNED_SHORT, 0);
             }
         }

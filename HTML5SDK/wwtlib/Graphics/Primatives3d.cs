@@ -208,6 +208,152 @@ namespace wwtlib
 
     }
 
+    public class OrbitLineList
+    {
+        public OrbitLineList()
+        {
+        }
+
+
+        bool zBuffer = true;
+
+        public bool DepthBuffered
+        {
+            get { return zBuffer; }
+            set { zBuffer = value; }
+        }
+
+        List<Vector3d> linePoints = new List<Vector3d>();
+        List<Color> lineColors = new List<Color>();
+        public void AddLine(Vector3d v1, Vector3d v2, Color c1, Color c2)
+        {
+
+            linePoints.Add(v1);
+            lineColors.Add(c1);
+            linePoints.Add(v2);
+            lineColors.Add(c2);
+            EmptyLineBuffer();
+
+        }
+
+        public void Clear()
+        {
+            linePoints.Clear();
+            EmptyLineBuffer();
+        }
+
+        Vector3d localCenter;
+        public bool Sky = true;
+        public bool aaFix = true;
+
+        public Matrix3d ViewTransform = Matrix3d.Identity;
+
+        public void DrawLines(RenderContext renderContext, float opacity, Color color)
+        {
+            if (linePoints.Count < 2)
+            {
+                return;
+            }
+
+            InitLineBuffer(renderContext);
+
+            int count = linePoints.Count;
+
+
+            foreach (PositionColoredVertexBuffer lineBuffer in lineBuffers)
+            {
+                OrbitLineShader.Use(renderContext, lineBuffer.VertexBuffer, color);
+                renderContext.gl.drawArrays(GL.LINES, 0, lineBuffer.Count);
+            }
+        }
+
+        List<PositionColoredVertexBuffer> lineBuffers = new List<PositionColoredVertexBuffer>();
+        List<int> lineBufferCounts = new List<int>();
+
+
+        public bool UseLocalCenters = false;
+        void InitLineBuffer(RenderContext renderContext)
+        {
+            if (renderContext.gl != null)
+            {
+                if (lineBuffers.Count == 0)
+                {
+                    int count = linePoints.Count;
+
+                    PositionColoredVertexBuffer lineBuffer = null;
+
+
+                    PositionColored[] linePointList = null;
+                    localCenter = new Vector3d();
+                    if (DepthBuffered)
+                    {
+                        // compute the local center..
+                        foreach (Vector3d point in linePoints)
+                        {
+                            localCenter.Add(point);
+
+                        }
+                        localCenter.X /= count;
+                        localCenter.Y /= count;
+                        localCenter.Z /= count;
+                    }
+
+                    int countLeft = count;
+                    int index = 0;
+                    int counter = 0;
+                    Vector3d temp;
+
+                    foreach (Vector3d point in linePoints)
+                    {
+                        if (counter >= 100000 || linePointList == null)
+                        {
+                            if (lineBuffer != null)
+                            {
+                                lineBuffer.Unlock();
+                            }
+                            int thisCount = Math.Min(100000, countLeft);
+
+                            countLeft -= thisCount;
+                            lineBuffer = new PositionColoredVertexBuffer(thisCount);
+
+                            linePointList = lineBuffer.Lock(); // Lock the buffer (which will return our structs)
+
+                            lineBuffers.Add(lineBuffer);
+                            lineBufferCounts.Add(thisCount);
+                            counter = 0;
+                        }
+
+                        if (UseLocalCenters)
+                        {
+                            temp = Vector3d.SubtractVectors(point, localCenter);
+                            linePointList[counter] = new PositionColored(temp, lineColors[index]);
+                        }
+                        else
+                        {
+                            linePointList[counter] = new PositionColored(point, lineColors[index]);
+                        }
+                        index++;
+                        counter++;
+                    }
+
+                    if (lineBuffer != null)
+                    {
+                        lineBuffer.Unlock();
+                    }
+                }
+            }
+        }
+
+        void EmptyLineBuffer()
+        {
+            foreach (PositionColoredVertexBuffer lineBuffer in lineBuffers)
+            {
+                lineBuffer.Dispose();
+            }
+            lineBuffers.Clear();
+        }
+    }
+
 
     public class LineList
     {
@@ -723,7 +869,11 @@ namespace wwtlib
 
         void EmptyPointBuffer()
         {
-
+            foreach (TimeSeriesPointVertexBuffer pointBuffer in pointBuffers)
+            {
+                pointBuffer.Dispose();
+            }
+            pointBuffers.Clear();
             init = false;
         }
 
@@ -731,10 +881,10 @@ namespace wwtlib
 
         ImageElement starProfile;
 
-        Texture starTexture;
+        public static Texture starTexture = null;
         bool imageReady = false;
         bool init = false;
-
+        public float MinSize = 2.0f;
         List<TimeSeriesPointVertexBuffer> pointBuffers = new List<TimeSeriesPointVertexBuffer>();
         List<int> pointBufferCounts = new List<int>();
         //const double jBase = 2455198.0;
@@ -886,7 +1036,7 @@ namespace wwtlib
                     TimeSeriesPointSpriteShader.Use(
                             renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d,
                             Color.FromArgb(255 * opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
-                            (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960))
+                            (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960)), MinSize
                         );
 
                     renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
@@ -905,7 +1055,7 @@ namespace wwtlib
                 TimeSeriesPointSpriteShader.Use(
                         renderContext, pointBuffer.VertexBuffer, texture.Texture2d,
                         Color.FromArgb(255*opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
-                        (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960))
+                        (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960)), MinSize
                     );
 
                 renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);

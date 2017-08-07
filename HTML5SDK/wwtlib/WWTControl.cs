@@ -478,7 +478,7 @@ namespace wwtlib
                         RenderContext.World = matLocal;
                         RenderContext.MakeFrustum();
 
-                        if (Settings.Current.SolarSystemCosmos)
+                        if (Settings.Active.SolarSystemCosmos)
                         {
                             // RenderContext11.DepthStencilMode = DepthStencilMode.Off;
                             // Grids.DrawCosmos3D(RenderContext, Properties.Settings.Default.SolarSystemCosmos.Opacity * skyOpacity);
@@ -496,10 +496,12 @@ namespace wwtlib
                         //    }
 
 
-                        //    if (Properties.Settings.Default.SolarSystemMilkyWay.State && milkyWayBlendIn > 0)
-                        //    {
-                        //        Grids.DrawGalaxy3D(RenderContext11, Properties.Settings.Default.SolarSystemMilkyWay.Opacity * skyOpacity * milkyWayBlendIn);
-                        //    }
+                        if (Settings.Active.SolarSystemMilkyWay && milkyWayBlendIn > 0)
+                        {
+                            //Grids.DrawGalaxy3D(RenderContext11, Properties.Settings.Default.SolarSystemMilkyWay.Opacity * skyOpacity * milkyWayBlendIn);
+
+                            Grids.DrawGalaxyImage(RenderContext, milkyWayBlendIn);
+                        }
 
 
                         if (Settings.Active.SolarSystemStars)
