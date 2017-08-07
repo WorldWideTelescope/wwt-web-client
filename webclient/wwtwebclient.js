@@ -5531,7 +5531,7 @@ wwt.controllers.controller('LayerManagerController',
 	'$timeout',
 	'Util',
 	function($scope, appState, $timeout,util) {
-		var version = 6;
+		var version = 8;
 		function treeNode(args) {
 			this.name = args.name;
 			this.checked = args.checked === undefined ? true : args.checked;
@@ -5708,14 +5708,26 @@ wwt.controllers.controller('LayerManagerController',
                                 checked: true,
                                 action: 'solarSystemPlanets'
                             }), new treeNode({
-								name: $scope.getFromEn('Planetary Orbits'),
-								checked: true,
-								action: 'solarSystemOrbits'
-							}), new treeNode({
-								name: $scope.getFromEn('Lighting and Shadows'),
-								checked: true,
-								action: 'solarSystemLighting'
-							})
+                                name: $scope.getFromEn('Planetary Orbits'),
+                                checked: true,
+                                action: 'solarSystemOrbits'
+                            }), new treeNode({
+                                name: $scope.getFromEn('Moon & Satellite Orbits'),
+                                checked: false,
+                                action: 'solarSystemMinorOrbits'
+                            }), new treeNode({
+                                name: $scope.getFromEn('Asteroids (IAU MPC)'),
+                                checked: true,
+                                action: 'solarSystemMinorPlanets'
+                            }), new treeNode({
+                                name: $scope.getFromEn('Lighting and Shadows'),
+                                checked: true,
+                                action: 'solarSystemLighting'
+                            }), new treeNode({
+                                name: $scope.getFromEn('Multi-Res Solar System Bodies'),
+                                checked: true,
+                                action: 'solarSystemMultiRes'
+                            })
 						]
 					})
 				]
@@ -7776,7 +7788,7 @@ wwt.Move = function (createArgs) {
 		oncomplete = args.oncomplete;
 		setBounds();
 		//  IE (sigh)
-		if (window.PointerEvent || window.MSPointerEvent) {
+		if (window.PointerEvent || window.MSPointerEvent) { 
 		    
 			target.css('touch-action', 'none');
 			var pointerDownName = window.PointerEvent ? 'pointerdown' : 'MSPointerDown';
