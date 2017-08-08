@@ -11834,7 +11834,7 @@ window.wwtlib = function(){
       for (var i = 0; i < 7; i++) {
         MinorPlanets._mpcBlendStates[i].set_targetState(true);
         if (MinorPlanets._mpcBlendStates[i].get_state()) {
-          KeplerPointSpriteShader.use(renderContext, MinorPlanets._mpcVertexBuffer[i].vertexBuffer, MinorPlanets.starTexture.texture2d, Colors.get_white(), opacity * MinorPlanets._mpcBlendStates[i].get_opacity(), false, (SpaceTimeController.get_jNow() - KeplerVertex.baseDate), 0, renderContext.cameraPosition, 200, 0.5);
+          KeplerPointSpriteShader.use(renderContext, MinorPlanets._mpcVertexBuffer[i].vertexBuffer, MinorPlanets.starTexture.texture2d, Colors.get_white(), opacity * MinorPlanets._mpcBlendStates[i].get_opacity(), false, (SpaceTimeController.get_jNow() - KeplerVertex.baseDate), 0, renderContext.cameraPosition, 200, 0.1);
           renderContext.gl.drawArrays(0, 0, MinorPlanets._mpcVertexBuffer[i].count);
         }
       }

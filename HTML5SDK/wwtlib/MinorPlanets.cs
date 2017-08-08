@@ -123,7 +123,7 @@ namespace wwtlib
 
                         KeplerPointSpriteShader.Use(renderContext, mpcVertexBuffer[i].VertexBuffer, starTexture.Texture2d, Colors.White,
                             opacity * mpcBlendStates[i].Opacity, false,
-                            (float)(SpaceTimeController.JNow - KeplerVertex.baseDate), 0, renderContext.CameraPosition, 200f, .5f);
+                            (float)(SpaceTimeController.JNow - KeplerVertex.baseDate), 0, renderContext.CameraPosition, 200f, .1f);
                      
                         renderContext.gl.drawArrays(GL.POINTS, 0, mpcVertexBuffer[i].Count);
                     }
