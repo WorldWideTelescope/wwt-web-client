@@ -3698,6 +3698,17 @@ window.wwtlib = function(){
     this.jdEquinox = 0;
     this.t = 0;
   }
+  EOE._create = function(br) {
+    var tmp = new EOE();
+    tmp.a = br.readSingle();
+    tmp.e = br.readSingle();
+    tmp.i = br.readSingle();
+    tmp.w = br.readSingle();
+    tmp.omega = br.readSingle();
+    tmp.jdEquinox = br.readSingle();
+    tmp.t = br.readSingle();
+    return tmp;
+  };
   var EOE$ = {
 
   };
@@ -7466,6 +7477,57 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.KeplerVertexBuffer
+
+  function KeplerVertexBuffer(count) {
+    this.count = 0;
+    this._verts = null;
+    this.count = count;
+  }
+  KeplerVertexBuffer.create = function(items) {
+    var tmp = new KeplerVertexBuffer(items.length);
+    tmp._verts = items;
+    return tmp;
+  };
+  var KeplerVertexBuffer$ = {
+    lock: function() {
+      this._verts = new Array(this.count);
+      return this._verts;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 19);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.ABC.x;
+        buffer[index++] = pt.ABC.y;
+        buffer[index++] = pt.ABC.z;
+        buffer[index++] = pt.abc1.x;
+        buffer[index++] = pt.abc1.y;
+        buffer[index++] = pt.abc1.z;
+        buffer[index++] = pt.pointSize;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+        buffer[index++] = pt.w;
+        buffer[index++] = pt.e;
+        buffer[index++] = pt.n;
+        buffer[index++] = pt.t;
+        buffer[index++] = pt.a;
+        buffer[index++] = pt.z;
+        buffer[index++] = pt.orbitPos;
+        buffer[index++] = pt.orbits;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
   // wwtlib.TimeSeriesLineVertexBuffer
 
   function TimeSeriesLineVertexBuffer(count) {
@@ -8613,6 +8675,109 @@ window.wwtlib = function(){
     }
   };
   var TimeSeriesPointSpriteShader$ = {
+
+  };
+
+
+  // wwtlib.KeplerPointSpriteShader
+
+  function KeplerPointSpriteShader() {
+  }
+  KeplerPointSpriteShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = '    precision mediump float;                                                            \n' + '    uniform vec4 lineColor;                                                             \n' + '    varying lowp vec4 vColor;                                                           \n' + '    uniform sampler2D uSampler;                                                         \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        vec4 texColor;                                                                  \n' + '        texColor = texture2D(uSampler, gl_PointCoord);                                  \n' + '                                                                                        \n' + '                                                                                        \n' + '        gl_FragColor = lineColor * vColor * texColor;                                   \n' + '    }                                                                                   \n';
+    var vertexShaderText = '    attribute vec3 ABC;                                                     \n' + '    attribute vec3 abc;                                                     \n' + '    attribute float PointSize;                                                         \n' + '    attribute vec4 Color;                                                        \n' + '    attribute vec2 we;                                                         \n' + '    attribute vec2 nT;                                                         \n' + '    attribute vec2 az;                                                         \n' + '    attribute vec2 orbit;                                                         \n' + '    uniform mat4 uMVMatrix;                                                             \n' + '    uniform mat4 uPMatrix;                                                              \n' + '    uniform float jNow;                                                                 \n' + '    uniform vec3 cameraPosition;                                                        \n' + '    uniform float MM;                                                                \n' + '    uniform float scaling;                                                                \n' + '    uniform float minSize;                                                                \n' + '    uniform float opacity;                                                                                    \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '     float M = nT.x * (jNow - nT.y) * 0.01745329251994;                              \n' + '     float e = we.y;                                                                    \n' + '     float a = az.x;                                                                    \n' + '     float PI = 3.1415926535897932384;                                                     \n' + '     float w = we.x* 0.01745329251994;                                                  \n' + '     float F = 1.0;                                                                          \n' + '     if (M < 0.0)                                                                            \n' + '       F = -1.0;                                                                             \n' + '     M = abs(M) / (2.0 * PI);                                                                \n' + '     M = (M - float(int(M)))*2.0 *PI *F;                                                         \n' + '     if (MM != 0.0)                                                                          \n' + '     {                                                                                     \n' + '       M = MM + (1.0- orbit.x) *2.0 *PI;                                                    \n' + '       if (M > (2.0*PI))                                                                     \n' + '           M = M - (2.0*PI);                                                                 \n' + '     }                                                                                     \n' + '                                                                                                           \n' + '     if (M < 0.0)                                                                   \n' + '       M += 2.0 *PI;                                                                \n' + '     F = 1.0;                                                                       \n' + '     if (M > PI)                                                                  \n' + '        F = -1.0;                                                                   \n' + '     if (M > PI)                                                                  \n' + '       M = 2.0 *PI - M;                                                             \n' + '                                                                                  \n' + '     float E = PI / 2.0;                                                            \n' + '     float scale = PI / 4.0;                                                        \n' + '     for (int i =0; i<23; i++)                                                    \n' + '     {                                                                            \n' + '       float R = E - e *sin(E);                                                   \n' + '       if (M > R)                                                                 \n' + '      \tE += scale;                                                                \n' + '       else                                                                       \n' + '     \tE -= scale;                                                                \n' + '       scale /= 2.0;                                                                \n' + '     }                                                                            \n' + '      E = E * F;                                                                  \n' + '                                                                                  \n' + '     float v = 2.0 * atan(sqrt((1.0 + e) / (1.0 -e )) * tan(E/2.0));                      \n' + '     float r = a * (1.0-e * cos(E));                                                \n' + '                                                                                  \n' + '     vec4 pnt;                                                                    \n' + '     pnt.x = r * abc.x * sin(ABC.x + w + v);                                \n' + '     pnt.z = r * abc.y * sin(ABC.y + w + v);                                \n' + '     pnt.y = r * abc.z * sin(ABC.z + w + v);                                \n' + '     pnt.w = 1.0;                                                                   \n' + '                                                                                  \n' + '     float dist = distance(pnt.xyz, cameraPosition.xyz);                              \n' + '     gl_Position = uPMatrix * uMVMatrix * pnt;                                    \n' + '     vColor.a = opacity * (1.0-(orbit.x));                                       \n' + '     vColor.r = Color.r;                                                       \n' + '     vColor.g = Color.g;                                                       \n' + '     vColor.b = Color.b;                                                       \n' + '     gl_PointSize = max(minSize, scaling * (PointSize / dist));   \n' + ' }                                                                \n';
+    KeplerPointSpriteShader._frag = gl.createShader(35632);
+    gl.shaderSource(KeplerPointSpriteShader._frag, fragShaderText);
+    gl.compileShader(KeplerPointSpriteShader._frag);
+    var stat = gl.getShaderParameter(KeplerPointSpriteShader._frag, 35713);
+    KeplerPointSpriteShader._vert = gl.createShader(35633);
+    gl.shaderSource(KeplerPointSpriteShader._vert, vertexShaderText);
+    gl.compileShader(KeplerPointSpriteShader._vert);
+    var stat1 = gl.getShaderParameter(KeplerPointSpriteShader._vert, 35713);
+    var compilationLog = gl.getShaderInfoLog(KeplerPointSpriteShader._vert);
+    KeplerPointSpriteShader._prog = gl.createProgram();
+    gl.attachShader(KeplerPointSpriteShader._prog, KeplerPointSpriteShader._vert);
+    gl.attachShader(KeplerPointSpriteShader._prog, KeplerPointSpriteShader._frag);
+    gl.linkProgram(KeplerPointSpriteShader._prog);
+    var errcode = gl.getProgramParameter(KeplerPointSpriteShader._prog, 35714);
+    gl.useProgram(KeplerPointSpriteShader._prog);
+    KeplerPointSpriteShader.abcLoc1 = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'abc');
+    KeplerPointSpriteShader.abcLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'ABC');
+    KeplerPointSpriteShader.pointSizeLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'PointSize');
+    KeplerPointSpriteShader.colorLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'Color');
+    KeplerPointSpriteShader.weLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'we');
+    KeplerPointSpriteShader.nTLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'nT');
+    KeplerPointSpriteShader.azLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'az');
+    KeplerPointSpriteShader.orbitLoc = gl.getAttribLocation(KeplerPointSpriteShader._prog, 'orbit');
+    KeplerPointSpriteShader.projMatLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'uPMatrix');
+    KeplerPointSpriteShader.mvMatLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'uMVMatrix');
+    KeplerPointSpriteShader.jNowLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'jNow');
+    KeplerPointSpriteShader.cameraPosLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'cameraPosition');
+    KeplerPointSpriteShader.mmLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'MM');
+    KeplerPointSpriteShader.scaleLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'scaling');
+    KeplerPointSpriteShader.minSizeLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'minSize');
+    KeplerPointSpriteShader.lineColorLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'lineColor');
+    KeplerPointSpriteShader.opacityLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'opacity');
+    KeplerPointSpriteShader.sampLoc = gl.getUniformLocation(KeplerPointSpriteShader._prog, 'uSampler');
+    gl.enable(3042);
+    KeplerPointSpriteShader.initialized = true;
+  };
+  KeplerPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, opacity, zBuffer, jNow, MM, camera, scale, minSize) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!KeplerPointSpriteShader.initialized) {
+        KeplerPointSpriteShader.init(renderContext);
+      }
+      gl.useProgram(KeplerPointSpriteShader._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniformMatrix4fv(KeplerPointSpriteShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(KeplerPointSpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      gl.uniform1i(KeplerPointSpriteShader.sampLoc, 0);
+      gl.uniform1f(KeplerPointSpriteShader.jNowLoc, jNow);
+      gl.uniform1f(KeplerPointSpriteShader.mmLoc, MM);
+      gl.uniform4f(KeplerPointSpriteShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, lineColor.a / 255);
+      gl.uniform1f(KeplerPointSpriteShader.opacityLoc, opacity);
+      gl.uniform3f(KeplerPointSpriteShader.cameraPosLoc, camera.x, camera.y, camera.z);
+      gl.uniform1f(KeplerPointSpriteShader.scaleLoc, scale);
+      gl.uniform1f(KeplerPointSpriteShader.minSizeLoc, minSize);
+      if (zBuffer) {
+        gl.enable(2929);
+      }
+      else {
+        gl.disable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.bindBuffer(34963, null);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.abcLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.abcLoc1);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.colorLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.pointSizeLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.weLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.nTLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.azLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.orbitLoc);
+      gl.enableVertexAttribArray(KeplerPointSpriteShader.weLoc);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.abcLoc, 3, 5126, false, 76, 0);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.abcLoc1, 3, 5126, false, 76, 12);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.pointSizeLoc, 1, 5126, false, 76, 24);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.colorLoc, 4, 5126, false, 76, 28);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.weLoc, 2, 5126, false, 76, 44);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.nTLoc, 2, 5126, false, 76, 52);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.azLoc, 2, 5126, false, 76, 60);
+      gl.vertexAttribPointer(KeplerPointSpriteShader.orbitLoc, 2, 5126, false, 76, 68);
+      gl.activeTexture(33984);
+      gl.bindTexture(3553, texture);
+      gl.lineWidth(1);
+      gl.enable(3042);
+      gl.blendFunc(770, 1);
+    }
+  };
+  var KeplerPointSpriteShader$ = {
 
   };
 
@@ -9956,6 +10121,81 @@ window.wwtlib = function(){
   };
   var Grids$ = {
 
+  };
+
+
+  // wwtlib.KeplerVertex
+
+  function KeplerVertex() {
+    this.ABC = new Vector3d();
+    this.abc1 = new Vector3d();
+    this.pointSize = 0;
+    this.w = 0;
+    this.e = 0;
+    this.n = 0;
+    this.t = 0;
+    this.a = 0;
+    this.z = 0;
+    this.orbitPos = 0;
+    this.orbits = 0;
+  }
+  var KeplerVertex$ = {
+    fill: function(ee) {
+      var F = Math.cos(ee.omega * KeplerVertex._degrad);
+      var sinOmega = Math.sin(ee.omega * KeplerVertex._degrad);
+      var cosi = Math.cos(ee.i * KeplerVertex._degrad);
+      var sini = Math.sin(ee.i * KeplerVertex._degrad);
+      var G = sinOmega * KeplerVertex._cose;
+      var H = sinOmega * KeplerVertex._sine;
+      var P = -sinOmega * cosi;
+      var Q = (F * cosi * KeplerVertex._cose) - (sini * KeplerVertex._sine);
+      var R = (F * cosi * KeplerVertex._sine) + (sini * KeplerVertex._cose);
+      var checkA = (F * F) + (G * G) + (H * H);
+      var checkB = (P * P) + (Q * Q) + (R * R);
+      this.ABC.x = Math.atan2(F, P);
+      this.ABC.y = Math.atan2(G, Q);
+      this.ABC.z = Math.atan2(H, R);
+      this.abc1.x = Math.sqrt((F * F) + (P * P));
+      this.abc1.y = Math.sqrt((G * G) + (Q * Q));
+      this.abc1.z = Math.sqrt((H * H) + (R * R));
+      this.pointSize = 0.1;
+      if (ee.a < 2.5) {
+        this.color = Colors.get_white();
+      }
+      else if (ee.a < 2.83) {
+        this.color = Colors.get_red();
+      }
+      else if (ee.a < 2.96) {
+        this.color = Colors.get_green();
+      }
+      else if (ee.a < 3.3) {
+        this.color = Colors.get_magenta();
+      }
+      else if (ee.a < 5) {
+        this.color = Colors.get_cyan();
+      }
+      else if (ee.a < 10) {
+        this.color = Colors.get_yellow();
+        this.pointSize = 0.9;
+      }
+      else {
+        this.color = Colors.get_white();
+        this.pointSize = 8;
+      }
+      this.w = ee.w;
+      this.e = ee.e;
+      if (!ee.n) {
+        this.n = (0.9856076686 / (ee.a * Math.sqrt(ee.a)));
+      }
+      else {
+        this.n = ee.n;
+      }
+      this.t = (ee.t - KeplerVertex.baseDate);
+      this.a = ee.a;
+      this.z = 0;
+      this.orbitPos = 0;
+      this.orbits = 0;
+    }
   };
 
 
@@ -11524,6 +11764,135 @@ window.wwtlib = function(){
         this.rows = temp;
       }
     }
+  };
+
+
+  // wwtlib.MinorPlanets
+
+  function MinorPlanets() {
+  }
+  MinorPlanets.getMpcFile = function(url) {
+    MinorPlanets._webMpcFile = new WebFile(url);
+    MinorPlanets._webMpcFile.responseType = 'blob';
+    MinorPlanets._webMpcFile.onStateChange = MinorPlanets.starFileStateChange;
+    MinorPlanets._webMpcFile.send();
+  };
+  MinorPlanets.starFileStateChange = function() {
+    if (MinorPlanets._webMpcFile.get_state() === 2) {
+      alert(MinorPlanets._webMpcFile.get_message());
+    }
+    else if (MinorPlanets._webMpcFile.get_state() === 1) {
+      var mainBlob = MinorPlanets._webMpcFile.getBlob();
+      var chunck = new FileReader();
+      chunck.onloadend = function(e) {
+        MinorPlanets._readFromBin(new BinaryReader(new Uint8Array(chunck.result)));
+        MinorPlanets.initMPCVertexBuffer();
+      };
+      chunck.readAsArrayBuffer(mainBlob);
+    }
+  };
+  MinorPlanets._readFromBin = function(br) {
+    MinorPlanets.mpcList = [];
+    var len = br.get_length();
+    var ee;
+    try {
+      while (br.get_position() < len) {
+        ee = EOE._create(br);
+        MinorPlanets.mpcList.push(ee);
+      }
+    }
+    catch ($e1) {
+    }
+    br.close();
+  };
+  MinorPlanets.drawMPC3D = function(renderContext, opacity, centerPoint) {
+    var zoom = renderContext.viewCamera.zoom;
+    var distAlpha = ((Math.log(Math.max(1, zoom)) / Math.log(4)) - 15.5) * 90;
+    var alpha = Math.min(255, Math.max(0, ss.truncate(distAlpha)));
+    if (alpha > 254) {
+      return;
+    }
+    if (MinorPlanets._mpcVertexBuffer == null) {
+      if (MinorPlanets.starTexture == null) {
+        MinorPlanets.starTexture = Planets.loadPlanetTexture('/images/starProfile.png');
+      }
+      for (var i = 0; i < 7; i++) {
+        MinorPlanets._mpcBlendStates[i] = BlendState.create(false, 1000);
+      }
+      if (!MinorPlanets._initBegun) {
+        MinorPlanets._startInit();
+        MinorPlanets._initBegun = true;
+      }
+      return;
+    }
+    var offset = Matrix3d.translation(Vector3d.negate(centerPoint));
+    var world = Matrix3d.multiplyMatrix(renderContext.get_world(), offset);
+    var matrixWVP = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(world, renderContext.get_view()), renderContext.get_projection());
+    matrixWVP.transpose();
+    var cam = Vector3d._transformCoordinate(renderContext.cameraPosition, Matrix3d.invertMatrix(renderContext.get_world()));
+    if (MinorPlanets._mpcVertexBuffer != null) {
+      for (var i = 0; i < 7; i++) {
+        MinorPlanets._mpcBlendStates[i].set_targetState(true);
+        if (MinorPlanets._mpcBlendStates[i].get_state()) {
+          KeplerPointSpriteShader.use(renderContext, MinorPlanets._mpcVertexBuffer[i].vertexBuffer, MinorPlanets.starTexture.texture2d, Colors.get_white(), opacity * MinorPlanets._mpcBlendStates[i].get_opacity(), false, (SpaceTimeController.get_jNow() - KeplerVertex.baseDate), 0, renderContext.cameraPosition, 200, 0.5);
+          renderContext.gl.drawArrays(0, 0, MinorPlanets._mpcVertexBuffer[i].count);
+        }
+      }
+    }
+  };
+  MinorPlanets._startInit = function() {
+    MinorPlanets.getMpcFile('http://cdn.worldwidetelescope.org/wwtweb/catalog.aspx?Q=mpcbin');
+  };
+  MinorPlanets.initMPCVertexBuffer = function() {
+    try {
+      if (MinorPlanets._mpcVertexBuffer == null) {
+        var mpcVertexBufferTemp = new Array(7);
+        MinorPlanets._mpcCount = MinorPlanets.mpcList.length;
+        var lists = new Array(7);
+        for (var i = 0; i < 7; i++) {
+          lists[i] = [];
+        }
+        var $enum1 = ss.enumerate(MinorPlanets.mpcList);
+        while ($enum1.moveNext()) {
+          var ee = $enum1.current;
+          var listID = 0;
+          if (ee.a < 2.5) {
+            listID = 0;
+          }
+          else if (ee.a < 2.83) {
+            listID = 1;
+          }
+          else if (ee.a < 2.96) {
+            listID = 2;
+          }
+          else if (ee.a < 3.3) {
+            listID = 3;
+          }
+          else if (ee.a < 5) {
+            listID = 4;
+          }
+          else if (ee.a < 10) {
+            listID = 5;
+          }
+          else {
+            listID = 6;
+          }
+          var vert = new KeplerVertex();
+          vert.fill(ee);
+          lists[listID].push(vert);
+        }
+        for (var i = 0; i < 7; i++) {
+          mpcVertexBufferTemp[i] = KeplerVertexBuffer.create(lists[i]);
+          mpcVertexBufferTemp[i].unlock();
+        }
+        MinorPlanets._mpcVertexBuffer = mpcVertexBufferTemp;
+      }
+    }
+    finally {
+    }
+  };
+  var MinorPlanets$ = {
+
   };
 
 
@@ -23874,7 +24243,12 @@ window.wwtlib = function(){
         this.renderContext.makeFrustum();
         if (this.renderContext.get_solarSystemCameraDistance() < 15000) {
           this.renderContext.setupMatricesSolarSystem(false);
-          Planets.drawPlanets3D(this.renderContext, 1, this.renderContext.viewCamera.viewTarget);
+          if (Settings.get_active().get_solarSystemMinorPlanets()) {
+            MinorPlanets.drawMPC3D(this.renderContext, 1, this.renderContext.viewCamera.viewTarget);
+          }
+          if (Settings.get_active().get_solarSystemPlanets()) {
+            Planets.drawPlanets3D(this.renderContext, 1, this.renderContext.viewCamera.viewTarget);
+          }
         }
       }
       else {
@@ -36121,12 +36495,14 @@ window.wwtlib = function(){
       IFolder: [ IFolder ],
       PositionVertexBuffer: [ PositionVertexBuffer, PositionVertexBuffer$, null ],
       PositionTextureVertexBuffer: [ PositionTextureVertexBuffer, PositionTextureVertexBuffer$, null ],
+      KeplerVertexBuffer: [ KeplerVertexBuffer, KeplerVertexBuffer$, null ],
       TimeSeriesLineVertexBuffer: [ TimeSeriesLineVertexBuffer, TimeSeriesLineVertexBuffer$, null ],
       TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, null ],
       PositionColoredVertexBuffer: [ PositionColoredVertexBuffer, PositionColoredVertexBuffer$, null ],
       PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, null ],
       Sprite2d: [ Sprite2d, Sprite2d$, null ],
       Table: [ Table, Table$, null ],
+      MinorPlanets: [ MinorPlanets, MinorPlanets$, null ],
       TileCache: [ TileCache, TileCache$, null ],
       DistanceCalc: [ DistanceCalc, DistanceCalc$, null ],
       Triangle: [ Triangle, Triangle$, null ],
@@ -36266,6 +36642,7 @@ window.wwtlib = function(){
       OrbitLineShader: [ OrbitLineShader, OrbitLineShader$, null ],
       LineShaderNormalDates: [ LineShaderNormalDates, LineShaderNormalDates$, null ],
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
+      KeplerPointSpriteShader: [ KeplerPointSpriteShader, KeplerPointSpriteShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
       SpriteShader: [ SpriteShader, SpriteShader$, null ],
       ShapeSpriteShader: [ ShapeSpriteShader, ShapeSpriteShader$, null ],
@@ -36273,6 +36650,7 @@ window.wwtlib = function(){
       Tessellator: [ Tessellator, Tessellator$, null ],
       Texture: [ Texture, Texture$, null ],
       Grids: [ Grids, Grids$, null ],
+      KeplerVertex: [ KeplerVertex, KeplerVertex$, null ],
       Layer: [ Layer, Layer$, null ],
       DomainValue: [ DomainValue, DomainValue$, null ],
       LayerManager: [ LayerManager, LayerManager$, null ],
@@ -36573,6 +36951,16 @@ window.wwtlib = function(){
   TimeSeriesPointSpriteShader.timeLoc = 0;
   TimeSeriesPointSpriteShader.initialized = false;
   TimeSeriesPointSpriteShader._prog = null;
+  KeplerPointSpriteShader.abcLoc = 0;
+  KeplerPointSpriteShader.abcLoc1 = 0;
+  KeplerPointSpriteShader.pointSizeLoc = 0;
+  KeplerPointSpriteShader.colorLoc = 0;
+  KeplerPointSpriteShader.weLoc = 0;
+  KeplerPointSpriteShader.nTLoc = 0;
+  KeplerPointSpriteShader.azLoc = 0;
+  KeplerPointSpriteShader.orbitLoc = 0;
+  KeplerPointSpriteShader.initialized = false;
+  KeplerPointSpriteShader._prog = null;
   TileShader.vertLoc = 0;
   TileShader.textureLoc = 0;
   TileShader.initialized = false;
@@ -36611,6 +36999,10 @@ window.wwtlib = function(){
   Grids._monthDays = [ 31, 28.2421, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
   Grids._monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
   Grids._eclipticTextYear = 0;
+  KeplerVertex._sine = 0;
+  KeplerVertex._cose = 1;
+  KeplerVertex._degrad = Math.PI / 180;
+  KeplerVertex.baseDate = ss.truncate(SpaceTimeController.utcToJulian(ss.now()));
   LayerManager._version = 0;
   LayerManager._tourLayers = false;
   LayerManager._layerMaps = {};
@@ -36623,6 +37015,12 @@ window.wwtlib = function(){
   LayerManager.initLayers();
   LayerUI._type = null;
   Orbit._initBegun = false;
+  MinorPlanets.mpcList = [];
+  MinorPlanets._initBegun = false;
+  MinorPlanets._mpcBlendStates = new Array(7);
+  MinorPlanets.starTexture = null;
+  MinorPlanets._mpcVertexBuffer = null;
+  MinorPlanets._mpcCount = 0;
   Planets.highPercision = true;
   Planets.showActualSize = Settings.get_active().get_actualPlanetScale();
   Planets.RC = (Math.PI / 180);

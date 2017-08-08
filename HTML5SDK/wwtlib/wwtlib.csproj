@@ -96,6 +96,7 @@
     <Compile Include="Graphics\Tessellator.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Grids.cs" />
+    <Compile Include="KeplerVertex.cs" />
     <Compile Include="Layers\GreatCircleRouteLayer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +127,7 @@
     <Compile Include="Layers\TimeSeriesLayer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MinorPlanets.cs" />
     <Compile Include="Planets.cs" />
     <Compile Include="PlotTile.cs" />
     <Compile Include="RenderContext.cs" />

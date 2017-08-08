@@ -69,6 +69,20 @@ public class EOE // was CAAEllipticalObjectElements
         T = 0;
     }
 
+    internal static EOE Create(BinaryReader br)
+    {
+        EOE tmp = new EOE();
+
+        tmp.a = br.ReadSingle();
+        tmp.e = br.ReadSingle();
+        tmp.i = br.ReadSingle();
+        tmp.w = br.ReadSingle();
+        tmp.omega = br.ReadSingle();
+        tmp.JDEquinox = br.ReadSingle();
+        tmp.T = br.ReadSingle();
+        return tmp;
+    }
+
     //public CAAEllipticalObjectElements(BinaryReader br)
     //{
     //    a = br.ReadSingle();
@@ -119,6 +133,8 @@ public class EOE // was CAAEllipticalObjectElements
     public double n;
 
     public double meanAnnomolyOut;
+
+   
 }
 
 public class  EPD // was CAAEllipticalPlanetaryDetails

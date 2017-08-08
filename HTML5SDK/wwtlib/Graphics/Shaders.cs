@@ -602,6 +602,286 @@ namespace wwtlib
         }
     }
 
+    public class KeplerPointSpriteShader
+    {
+        public KeplerPointSpriteShader()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+        public static int ABCLoc;
+        public static int abcLoc1;
+        public static int pointSizeLoc;
+        public static int colorLoc;
+        public static int weLoc;
+        public static int nTLoc;
+        public static int azLoc;
+        public static int orbitLoc;
+
+        public static WebGLUniformLocation projMatLoc;
+        public static WebGLUniformLocation mvMatLoc;
+        public static WebGLUniformLocation jNowLoc;
+        public static WebGLUniformLocation cameraPosLoc;
+        public static WebGLUniformLocation mmLoc;
+        public static WebGLUniformLocation lineColorLoc;
+        public static WebGLUniformLocation scaleLoc;
+        public static WebGLUniformLocation minSizeLoc;
+        public static WebGLUniformLocation sampLoc;
+        public static WebGLUniformLocation opacityLoc;
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                    "    precision mediump float;                                                            \n" +
+                    "    uniform vec4 lineColor;                                                             \n" +
+                    "    varying lowp vec4 vColor;                                                           \n" +
+                    "    uniform sampler2D uSampler;                                                         \n" +
+                    "    void main(void)                                                                     \n" +
+                    "    {                                                                                   \n" +
+                    "        vec4 texColor;                                                                  \n" +
+                    "        texColor = texture2D(uSampler, gl_PointCoord);                                  \n" +
+                    "                                                                                        \n" +
+                    "                                                                                        \n" +
+                    "        gl_FragColor = lineColor * vColor * texColor;                                   \n" +
+                    "    }                                                                                   \n";
+
+
+            String vertexShaderText =
+                    "    attribute vec3 ABC;                                                     \n" +
+                    "    attribute vec3 abc;                                                     \n" +
+                    "    attribute float PointSize;                                                         \n" +
+                    "    attribute vec4 Color;                                                        \n" +
+                    "    attribute vec2 we;                                                         \n" +
+                    "    attribute vec2 nT;                                                         \n" +
+                    "    attribute vec2 az;                                                         \n" +
+                    "    attribute vec2 orbit;                                                         \n" +
+
+                    "    uniform mat4 uMVMatrix;                                                             \n" +
+                    "    uniform mat4 uPMatrix;                                                              \n" +
+                    "    uniform float jNow;                                                                 \n" +
+                    "    uniform vec3 cameraPosition;                                                        \n" +
+                    "    uniform float MM;                                                                \n" +
+                    "    uniform float scaling;                                                                \n" +
+                    "    uniform float minSize;                                                                \n" +
+                    "    uniform float opacity;                                                                                    \n" +
+                    "    varying lowp vec4 vColor;                                                           \n" +
+                    "                                                                                        \n" +
+                    "    void main(void)                                                                     \n" +
+                    "    {                                                                                   \n" +
+                    "     float M = nT.x * (jNow - nT.y) * 0.01745329251994;                              \n" +
+                    "     float e = we.y;                                                                    \n" +
+                    "     float a = az.x;                                                                    \n" +
+                    "     float PI = 3.1415926535897932384;                                                     \n" +
+                    "     float w = we.x* 0.01745329251994;                                                  \n" +
+                    "     float F = 1.0;                                                                          \n" +
+                    "     if (M < 0.0)                                                                            \n" +
+                    "       F = -1.0;                                                                             \n" +
+                    "     M = abs(M) / (2.0 * PI);                                                                \n" +
+                    "     M = (M - float(int(M)))*2.0 *PI *F;                                                         \n" +
+                    "     if (MM != 0.0)                                                                          \n" +
+                    "     {                                                                                     \n" +
+                    "       M = MM + (1.0- orbit.x) *2.0 *PI;                                                    \n" +
+                    "       if (M > (2.0*PI))                                                                     \n" +
+                    "           M = M - (2.0*PI);                                                                 \n" +
+                    "     }                                                                                     \n" +
+                    "                                                                                                           \n" +
+                    "     if (M < 0.0)                                                                   \n" +
+                    "       M += 2.0 *PI;                                                                \n" +
+                    "     F = 1.0;                                                                       \n" +
+                    "     if (M > PI)                                                                  \n" +
+                    "        F = -1.0;                                                                   \n" +
+                    "     if (M > PI)                                                                  \n" +
+                    "       M = 2.0 *PI - M;                                                             \n" +
+                    "                                                                                  \n" +
+                    "     float E = PI / 2.0;                                                            \n" +
+                    "     float scale = PI / 4.0;                                                        \n" +
+                    "     for (int i =0; i<23; i++)                                                    \n" +
+                    "     {                                                                            \n" +
+                    "       float R = E - e *sin(E);                                                   \n" +
+                    "       if (M > R)                                                                 \n" +
+                    "      	E += scale;                                                                \n" +
+                    "       else                                                                       \n" +
+                    "     	E -= scale;                                                                \n" +
+                    "       scale /= 2.0;                                                                \n" +
+                    "     }                                                                            \n" +
+                    "      E = E * F;                                                                  \n" +
+
+
+                    "                                                                                  \n" +
+                    "     float v = 2.0 * atan(sqrt((1.0 + e) / (1.0 -e )) * tan(E/2.0));                      \n" +
+                    "     float r = a * (1.0-e * cos(E));                                                \n" +
+                    "                                                                                  \n" +
+                    "     vec4 pnt;                                                                    \n" +
+                    "     pnt.x = r * abc.x * sin(ABC.x + w + v);                                \n" +
+                    "     pnt.z = r * abc.y * sin(ABC.y + w + v);                                \n" +
+                    "     pnt.y = r * abc.z * sin(ABC.z + w + v);                                \n" +
+                    "     pnt.w = 1.0;                                                                   \n" +
+                    "                                                                                  \n" +
+                    "     float dist = distance(pnt.xyz, cameraPosition.xyz);                              \n" +
+                    "     gl_Position = uPMatrix * uMVMatrix * pnt;                                    \n" + // Transform vertex into
+                    "     vColor.a = opacity * (1.0-(orbit.x));                                       \n" +
+                    "     vColor.r = Color.r;                                                       \n" +
+                    "     vColor.g = Color.g;                                                       \n" +
+                    "     vColor.b = Color.b;                                                       \n" +
+                    "     gl_PointSize = max(minSize, scaling * (PointSize / dist));   \n" +
+                    " }                                                                \n";
+
+
+
+
+
+
+            //"    void main(void)                                                                     \n" +
+            //"    {                                                                                   \n" +
+            //"        float dist = distance(aVertexPosition, cameraPosition);                                \n" +
+            //"        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n" +
+            //"        float dAlpha = 1.0;                                                             \n" +
+            //"        if ( decay > 0.0)                                                               \n" +
+            //"        {                                                                               \n" +
+            //"             dAlpha = 1.0 - ((jNow - aTime.y) / decay);                                 \n " +
+            //"             if (dAlpha > 1.0 )                                                         \n" +
+            //"             {                                                                          \n" +
+            //"                  dAlpha = 1.0;                                                         \n" +
+            //"             }                                                                          \n" +
+            //"        }                                                                               \n" +
+            //"        if (jNow < aTime.x && decay > 0.0)                                              \n" +
+            //"        {                                                                               \n" +
+            //"            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n" +
+            //"        }                                                                               \n" +
+            //"        else                                                                            \n" +
+            //"        {                                                                               \n" +
+            //"           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n" +
+            //// "           vColor = vec4(1,1,1,1);       \n" +
+
+            //"        }                                                                               \n" +
+            //"        gl_PointSize = max(minSize, (scale * ( aPointSize ) / dist));                     \n" +
+            //"    }                                                                                   \n" +
+            //"                                                                                        \n";
+
+
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+            object compilationLog = gl.getShaderInfoLog(vert);
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            abcLoc1 = gl.getAttribLocation(prog, "abc");
+            ABCLoc = gl.getAttribLocation(prog, "ABC");
+            pointSizeLoc = gl.getAttribLocation(prog, "PointSize");
+            colorLoc = gl.getAttribLocation(prog, "Color");
+            weLoc = gl.getAttribLocation(prog, "we");
+            nTLoc = gl.getAttribLocation(prog, "nT");
+            azLoc = gl.getAttribLocation(prog, "az");
+            orbitLoc = gl.getAttribLocation(prog, "orbit");
+
+
+            projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
+            mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
+            jNowLoc = gl.getUniformLocation(prog, "jNow");
+            cameraPosLoc = gl.getUniformLocation(prog, "cameraPosition");
+            mmLoc = gl.getUniformLocation(prog, "MM");
+            scaleLoc = gl.getUniformLocation(prog, "scaling");
+            minSizeLoc = gl.getUniformLocation(prog, "minSize");
+            lineColorLoc = gl.getUniformLocation(prog, "lineColor");
+            opacityLoc = gl.getUniformLocation(prog, "opacity");
+            sampLoc = gl.getUniformLocation(prog, "uSampler");
+            gl.enable(GL.BLEND);
+
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, float opacity, bool zBuffer, float jNow, float MM, Vector3d camera, float scale, float minSize)
+        {
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+
+                gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
+                gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
+                gl.uniform1i(sampLoc, 0);
+                gl.uniform1f(jNowLoc, jNow);
+                gl.uniform1f(mmLoc, MM);
+                gl.uniform4f(lineColorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, lineColor.A / 255f);
+                gl.uniform1f(opacityLoc, opacity);
+                gl.uniform3f(cameraPosLoc, (float)camera.X, (float)camera.Y, (float)camera.Z);
+                gl.uniform1f(scaleLoc, scale);
+                gl.uniform1f(minSizeLoc, minSize);
+                if (zBuffer)
+                {
+                    gl.enable(GL.DEPTH_TEST);
+                }
+                else
+                {
+                    gl.disable(GL.DEPTH_TEST);
+                }
+                //gl.enable(0x8642);
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+
+                gl.enableVertexAttribArray(ABCLoc);
+                gl.enableVertexAttribArray(abcLoc1);
+                gl.enableVertexAttribArray(colorLoc);
+                gl.enableVertexAttribArray(pointSizeLoc);
+                gl.enableVertexAttribArray(weLoc);
+                gl.enableVertexAttribArray(nTLoc);
+                gl.enableVertexAttribArray(azLoc);
+                gl.enableVertexAttribArray(orbitLoc);
+
+                gl.enableVertexAttribArray(weLoc);
+                gl.vertexAttribPointer(ABCLoc, 3, GL.FLOAT, false, 76, 0);
+                gl.vertexAttribPointer(abcLoc1, 3, GL.FLOAT, false, 76, 12);
+                gl.vertexAttribPointer(pointSizeLoc, 1, GL.FLOAT, false, 76, 24);
+                gl.vertexAttribPointer(colorLoc, 4, GL.FLOAT, false, 76, 28);
+                gl.vertexAttribPointer(weLoc, 2, GL.FLOAT, false, 76, 44);
+                gl.vertexAttribPointer(nTLoc, 2, GL.FLOAT, false, 76, 52);
+                gl.vertexAttribPointer(azLoc, 2, GL.FLOAT, false, 76, 60);
+                gl.vertexAttribPointer(orbitLoc, 2, GL.FLOAT, false, 76, 68);
+                gl.activeTexture(GL.TEXTURE0);
+                gl.bindTexture(GL.TEXTURE_2D, texture);
+                gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
+                gl.blendFunc(GL.SRC_ALPHA, GL.ONE);
+            }
+        }
+    }
+
     public class TileShader
     {
         public TileShader()

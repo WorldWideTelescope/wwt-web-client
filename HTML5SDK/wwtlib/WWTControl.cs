@@ -529,13 +529,15 @@ namespace wwtlib
                     {
                         RenderContext.SetupMatricesSolarSystem(false);
 
+                        if (Settings.Active.SolarSystemMinorPlanets)
+                        {
+                            MinorPlanets.DrawMPC3D(RenderContext, 1, RenderContext.ViewCamera.ViewTarget);
+                        }
 
-                        //if (Properties.Settings.Default.SolarSystemMinorPlanets.State)// && !RenderContext11.Downlevel)
-                        //{
-                        //    MinorPlanets.DrawMPC3D(RenderContext11, Properties.Settings.Default.SolarSystemMinorPlanets.Opacity, viewCamera.ViewTarget);
-                        //}
-
-                        Planets.DrawPlanets3D(RenderContext, 1, RenderContext.ViewCamera.ViewTarget);
+                        if (Settings.Active.SolarSystemPlanets)
+                        {
+                            Planets.DrawPlanets3D(RenderContext, 1, RenderContext.ViewCamera.ViewTarget);
+                        }
                     }
 
                     //double p = Math.Log(zoom);
