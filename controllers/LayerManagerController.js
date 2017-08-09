@@ -4,7 +4,7 @@
 	'$timeout',
 	'Util',
 	function($scope, appState, $timeout,util) {
-		var version = 8;
+		var version = 9;
 		function treeNode(args) {
 			this.name = args.name;
 			this.checked = args.checked === undefined ? true : args.checked;
@@ -88,7 +88,7 @@
 												checked: true,
 												action: 'showEquatorialGridText'
 											})
-										]
+										] 
 									}), new treeNode({
 										name: $scope.getFromEn('Galactic Grid'),
 										checked: false,
@@ -190,7 +190,7 @@
                                 action: 'solarSystemMinorOrbits'
                             }), new treeNode({
                                 name: $scope.getFromEn('Asteroids (IAU MPC)'),
-                                checked: true,
+                                checked: false,
                                 action: 'solarSystemMinorPlanets'
                             }), new treeNode({
                                 name: $scope.getFromEn('Lighting and Shadows'),

@@ -9,217 +9,236 @@ This file is too large and needs to be componentized a bit more. This is an ongo
 cleanup process.
 */
 wwt.controllers.controller('MainController',
-	['$scope',
-	'$rootScope',
-	'UILibrary',
-	'$q',
-	'AppState', 
-	'Localization',
-	'$timeout',
-	'FinderScope',
-	'SearchData',
-	'Places',
-	'Util',
-	'HashManager',
-	'Skyball',
-	'SearchUtil',
-	'$modal',
-    '$element',
-    '$cookies',
-    'AutohidePanels',
-	function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies, AutohidePanels) {
-        //TODO - figure out how to clean up lame long list of dependencies injected
-		var ctl;
-		 
-		//#region LookAt/Imagery 
-		var initialPass = true;
-		$scope.lookTypes = ['Earth', 'Planet', 'Sky', 'Panorama', 'SolarSystem'];
-		$scope.lookAt = 'Sky';
-		$scope.imagery = [[], [], [], [], []];
+    ['$scope',
+        '$rootScope',
+        'UILibrary',
+        '$q',
+        'AppState',
+        'Localization',
+        '$timeout',
+        'FinderScope',
+        'SearchData',
+        'Places',
+        'Util',
+        'HashManager',
+        'Skyball',
+        'SearchUtil',
+        '$modal',
+        '$element',
+        '$cookies',
+        'AutohidePanels',
+        function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies, AutohidePanels) {
+            //TODO - figure out how to clean up lame long list of dependencies injected
+            var ctl;
 
-        
-		$scope.lookAtDropdownChanged = function (lookAtType) {
-			if (lookAtType) {
-				$scope.lookAt = lookAtType;
-			}
-			setTimeout(function() {
-				$scope.lookAtChanged(null, true);
-				$scope.setTrackingObj(false);
-				
-			}, 1);
-		};
+            //#region LookAt/Imagery 
+            var initialPass = true;
+            $scope.lookTypes = ['Earth', 'Planet', 'Sky', 'Panorama', 'SolarSystem'];
+            $scope.lookAt = 'Sky';
+            $scope.imagery = [[], [], [], [], []];
 
-		$scope.lookAtChanged = function (imageryName, dropdownInvoked, noUpdate, keepCamera) {
-			setTimeout(wwt.resize, 120);
-			if (!keepCamera) {
-				util.resetCamera(true);
-			}
-			$timeout(function () {
-				if ($('#lstLookAt').length) {
-					$scope.lookAt = $('#lstLookAt option:selected').text();
-				}
-				if ($scope.lookAt === '') { 
-					$scope.lookAt = 'Sky';
-				}
-				var collection = $scope.imagery[$.inArray($scope.lookAt, $scope.lookTypes)];
-				if (collection[0] !== '-')
-				    collection.splice(0, 0, '-');
-				if (imageryName == '') imageryName = '-';
-				$scope.surveys = collection;
-				var foundName = false;
-				
-				
-				// HACK ALERT (Mars was hardcoded from Visible Imagery)
-				if (imageryName === 'Mars') {
-					imageryName = 'Visible Imagery';
-				}
-				if (imageryName) {
-					$.each(collection, function (i,item) {
-					    if (item !== '' && item.get_name() && (item.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(item.get_name()) === 0)) {
-					        $scope.backgroundImagery = item;
-							foundName = true;
-						}
-					});
-				} if (!foundName) {
-					if (initialPass || dropdownInvoked) {
-						setTimeout(function() { initialPass = false; }, 500);
-						$timeout(function() {
-							$scope.backgroundImagery = collection[1];
-							$scope.setSurveyBg();
 
-						}, 123);
-						return;
-					} else if (!noUpdate) {
-						$scope.backgroundImagery = collection[0];
-						return;
-					} else {
-						return;
-					}
-				}
-				$scope.setSurveyBg();
-			},100);
-		};
-		$scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
-		    $scope.lookAt = lookAt;
-		    //if (lookAt === 'Planet' && !imageryName) {
-		    //    imageryName = 'Mars';
-		    //}
-			$scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
-			setTimeout(wwt.resize, 1200);
-		};
-		//#endregion
+            $scope.lookAtDropdownChanged = function (lookAtType) {
+                if (lookAtType) {
+                    $scope.lookAt = lookAtType;
+                }
+                setTimeout(function () {
+                    $scope.lookAtChanged(null, true);
+                    $scope.setTrackingObj(false);
 
-		//#region initialization
-		var initCanvas = function() {
-		    ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
+                }, 1);
+            };
 
-		    // The .8 release of scriptsharp changed the location of the canCast function
-		    // This logic exists to ensure backwards compatibility when testing an older version
-            // of the framework.
-			if (window.Type && Type.canCast) {
-			    if (window.ss) {
-			        window.ss.canCast = Type.canCast;
-			    } else {
-			        window.ss = { canCast: Type.canCast };
-			    
-			    }
-		    }
-		    wwt.wc = ctl;
-			wwt.resize();
-			ctl.add_ready(function() {
-				var imageSets = wwtlib.WWTControl.imageSets;
-				$scope.surveys = [];
-				$.each(imageSets, function () {
-					var typeIndex = this.get_dataSetType();
-					this.name = this.get_name() === 'Visible Imagery' ? 'Mars' : this.get_name();
-					if (typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1) {//hipparcos is broken :(
-						$scope.surveys.push(this);
-					}
-					try {
-						if (!(typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1)) {//hipparcos is broken :(
-							$scope.imagery[typeIndex].push(this);
-						}
-					} catch (er) {
-						util.log(typeIndex,this);
-					}
-				});
-				$scope.backgroundImagery = {
-					name: 'Digitized Sky Survey (Color)',
-					get_name: function() {
-						return 'Digitized Sky Survey (Color)';
-					}
-				};
-				$scope.lookAtChanged();
-				AutohidePanels.init();
+            $scope.lookAtChanged = function (imageryName, dropdownInvoked, noUpdate, keepCamera) {
+                setTimeout(wwt.resize, 120);
+                if (!keepCamera) {
+                    util.resetCamera(true);
+                }
+                $timeout(function () {
+                    if ($('#lstLookAt').length) {
+                        $scope.lookAt = $('#lstLookAt option:selected').text();
+                    }
+                    if ($scope.lookAt === '') {
+                        $scope.lookAt = 'Sky';
+                    }
+                    var collection = $scope.imagery[$.inArray($scope.lookAt, $scope.lookTypes)];
+                    if (collection[0] !== '-')
+                        collection.splice(0, 0, '-');
+                    if (imageryName == '') imageryName = '-';
+                    $scope.surveys = collection;
+                    var foundName = false;
 
-			});
-			ctl.settings.set_showConstellationBoundries(false);
-			
-			util.resetCamera(true);
-			$(window).on('resize', wwt.resize);
-			ctl.endInit();
-			$rootScope.singleton = wwtlib.WWTControl.singleton;
-			initContext();
-			$rootScope.$on('hashChange', hashChange);
-			
-			$timeout(function () {
-				var hash = hashManager.getHashObject();
-				$rootScope.$broadcast('hashChange', hash);
-			}, 100);
-			
-			//hashChange(null, hashManager.getHashObject());
-		};
 
-		var hashChange = function (e, obj) {
-		    var goto = function () {
-		        ctl.gotoRaDecZoom(
-					parseFloat(obj['ra']) * 15,
-					parseFloat(obj['dec']),
-					parseFloat(obj['fov']),
-					false
-				);
-		    }
+                    // HACK ALERT (Mars was hardcoded from Visible Imagery)
+                    if (imageryName === 'Mars') {
+                        imageryName = 'Visible Imagery';
+                    }
+                    if (imageryName) {
+                        $.each(collection, function (i, item) {
+                            if (item !== '' && item.get_name && (item.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(item.get_name()) === 0)) {
+                                $scope.backgroundImagery = item;
+                                foundName = true;
+                            }
+                        });
+                    } if (!foundName) {
+                        if (initialPass || dropdownInvoked) {
+                            setTimeout(function () { initialPass = false; }, 500);
+                            $timeout(function () {
+                                $scope.backgroundImagery = collection[1];
+                                $scope.setSurveyBg();
+
+                            }, 123);
+                            return;
+                        } else if (!noUpdate) {
+                            $scope.backgroundImagery = collection[0];
+                            return;
+                        } else {
+                            return;
+                        }
+                    }
+                    $scope.setSurveyBg();
+                }, 100);
+            };
+            $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
+                $scope.lookAt = lookAt;
+                //if (lookAt === 'Planet' && !imageryName) {
+                //    imageryName = 'Mars';
+                //}
+                $scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
+                setTimeout(wwt.resize, 1200);
+            };
+            //#endregion
+
+            //#region initialization
+            var initCanvas = function () {
+                ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
+
+                // The .8 release of scriptsharp changed the location of the canCast function
+                // This logic exists to ensure backwards compatibility when testing an older version
+                // of the framework.
+                if (window.Type && Type.canCast) {
+                    if (window.ss) {
+                        window.ss.canCast = Type.canCast;
+                    } else {
+                        window.ss = { canCast: Type.canCast };
+
+                    }
+                }
+                wwt.wc = ctl;
+                wwt.resize();
+                ctl.add_ready(function () {
+                    var imageSets = wwtlib.WWTControl.imageSets;
+                    $scope.surveys = [];
+                    $.each(imageSets, function () {
+                        var typeIndex = this.get_dataSetType();
+                        this.name = this.get_name() === 'Visible Imagery' ? 'Mars' : this.get_name();
+                        if (typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1) {//hipparcos is broken :(
+                            $scope.surveys.push(this);
+                        }
+                        try {
+                            if (!(typeIndex === 2 && this.name.toLowerCase().indexOf('hipparcos') !== -1)) {//hipparcos is broken :(
+                                $scope.imagery[typeIndex].push(this);
+                            }
+                        } catch (er) {
+                            util.log(typeIndex, this);
+                        }
+                    });
+                    $scope.backgroundImagery = {
+                        name: 'Digitized Sky Survey (Color)',
+                        get_name: function () {
+                            return 'Digitized Sky Survey (Color)';
+                        }
+                    };
+                    $scope.lookAtChanged();
+                    AutohidePanels.init();
+
+                });
+                ctl.settings.set_showConstellationBoundries(false);
+
+                util.resetCamera(true);
+                $(window).on('resize', wwt.resize);
+                ctl.endInit();
+                $rootScope.singleton = wwtlib.WWTControl.singleton;
+                initContext();
+                $rootScope.$on('hashChange', hashChange);
+
+                $timeout(function () {
+                    var hash = hashManager.getHashObject();
+                    $rootScope.$broadcast('hashChange', hash);
+                }, 100);
+
+                //hashChange(null, hashManager.getHashObject());
+            };
+
+          var hashChange = function (e, obj) {
+              var goto = function () {
+                  ctl.gotoRaDecZoom(
+                      parseFloat(obj['ra']) * 15,
+                      parseFloat(obj['dec']),
+                      parseFloat(obj['fov']),
+                      false
+                  );
+              }
+              var setLookAtHash = function (cb) {
+                  $timeout(function () {
+                      $scope.setLookAt(obj['lookAt'], obj['imagery'] && obj['imagery'].split('_').join(' '));
+                      if (cb) { cb(); }
+                      else if (obj['ra'] && (obj['lookAt'] === 'Earth' || obj.lookAt === 'Planet')) {
+                          setTimeout(goto, 2220);
+                      }
+
+                  }, 2000);
+              }
+              var loadPlace = function (openPlace) {
+                  $('#loadingModal').modal('show');
+                  var goPlace = function (place,delay) {
+                      $scope.setForegroundImage(place);
+                      $('#loadingModal').modal('hide');
+                      if (delay === -1) return;
+                      if (obj['ra']) {
+                          setTimeout(function () {
+                              goto();
+                              if (obj['cf']) {
+                                  $('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
+
+                                  var ensureProperOpacity = function () {
+                                      ctl.setForegroundOpacity(parseFloat(obj['cf']));
+                                  };
+                                  for (var i = 1; i < 6; i++) {
+                                      setTimeout(ensureProperOpacity, i * 1000);
+                                  }
+                              }
+
+                          }, delay || 3333);
+                      }
+                     
+
+                  };
+                  if (obj['lookAt'] && obj['lookAt'] == 'SolarSystem') {
+                      //obj['imagery'] = undefined;
+                      setLookAtHash(function () {
+                          searchUtil.getPlaceById(openPlace).then(function (p) {
+                              console.log(p);
+                              setTimeout(function () { goPlace(p,-1);},2222);
+                          });
+                      });
+                  } else {
+                      searchUtil.getPlaceById(openPlace).then(goPlace);
+                  }
+              };
+            
 
 		    if (obj['place']) {
 		        var openPlace = obj['place'];
 		        if (!isNaN(parseInt(openPlace.charAt(0)))) {
-		            $('#loadingModal').modal('show');
-		            searchUtil.getPlaceById(openPlace).then(function (place) {
-		                $scope.setForegroundImage(place);
-		                if (obj['ra']) {
-		                    setTimeout(function () {
-		                        goto();
-		                        if (obj['cf']) {
-		                            $('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
-
-		                            var ensureProperOpacity = function () {
-		                                ctl.setForegroundOpacity(parseFloat(obj['cf']));
-		                            };
-		                            for (var i = 1; i < 6; i++) {
-		                                setTimeout(ensureProperOpacity, i * 1000);
-		                            }
-		                        }
-
-		                    }, 3333);
-		                }
-		                $('#loadingModal').modal('hide');
-		                
-		            });
+                    loadPlace(openPlace)
 		        }
 		    }
 		    else if (obj['ra'] !== undefined) {
 		        goto();
 		    }
 		    if (obj['lookAt']) {
-		        $timeout(function () {
-		            $scope.setLookAt(obj['lookAt'], obj['imagery']);
-		            if (obj['ra'] && (obj['lookAt'] === 'Earth' || obj.lookAt === 'Planet')) {
-
-		                setTimeout(goto, 2220);
-
-		            }
-		            
-		        }, 2000);
+                setLookAtHash();
 
 		    }
 		    else if (obj['imagery']) {
