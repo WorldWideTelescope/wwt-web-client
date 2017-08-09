@@ -1329,22 +1329,24 @@ namespace wwtlib
 
                 if (sizeIndex < 3)
                 {
-                     bool oldLighting = renderContext.Lighting;
-                   //double planetDistance = Vector3d.SubtractVectors(planet3dLocations[planetID], renderContext.CameraPosition).Length();
+                    bool oldLighting = renderContext.Lighting;
+                    //double planetDistance = Vector3d.SubtractVectors(planet3dLocations[planetID], renderContext.CameraPosition).Length();
                     if (planetID == 5)
                     {
-                        renderContext.Lighting = false;
-                        // DRAW BACK HALF OF RINGS
-                        DrawSaturnsRings(renderContext, false, dist);
-                        renderContext.Lighting = oldLighting;
-                        //if (Settings.Active.SolarSystemLighting)
-                        //{
-                        //    SetupRingShadow(device, centerPoint, SolarSystemObjects.Saturn, rotationCurrent);
-                        //}
-                        // todo saturns rings DrawRings(device);
-
+                        if (renderContext.gl == null)
+                        {
+                            renderContext.Lighting = false;
+                            // DRAW BACK HALF OF RINGS
+                            DrawSaturnsRings(renderContext, false, dist);
+                            renderContext.Lighting = oldLighting;
+                            //if (Settings.Active.SolarSystemLighting)
+                            //{
+                            //    SetupRingShadow(device, centerPoint, SolarSystemObjects.Saturn, rotationCurrent);
+                            //}
+                            // todo saturns rings DrawRings(device);
+                        }
+                        
                     }
-
 
                     if (planetID == 0)
                     {
@@ -1353,20 +1355,25 @@ namespace wwtlib
 
                     DrawSphere(renderContext, planetID);
 
- 
                     if (planetID == 5)
-                    { 
-                        renderContext.Lighting = false;
-                        DrawSaturnsRings(renderContext, true, dist);
-                        // DRAW FRONT HALF OF RINGS 
-                        //if (Settings.Active.SolarSystemLighting)
-                        //{
-                        //    SetupRingShadow(device, centerPoint, SolarSystemObjects.Saturn, rotationCurrent);
-                        //}
-                       // todo saturns rings DrawRings(device);
-                    
-                    }  
-                    
+                    {
+                        if (renderContext.gl == null)
+                        {
+                            renderContext.Lighting = false;
+                            DrawSaturnsRings(renderContext, true, dist);
+                            // DRAW FRONT HALF OF RINGS 
+                            //if (Settings.Active.SolarSystemLighting)
+                            //{
+                            //    SetupRingShadow(device, centerPoint, SolarSystemObjects.Saturn, rotationCurrent);
+                            //}
+                            // todo saturns rings DrawRings(device);
+                        }
+                        else
+                        {
+                            DrawRings(renderContext);
+                        }
+                    }
+
                     renderContext.Lighting = oldLighting;
 
                 }
@@ -1569,6 +1576,71 @@ namespace wwtlib
                 //renderContext.gl.drawElements(GL.TRIANGLES, TriangleCount * 3, GL.UNSIGNED_SHORT, 0);
             }
         }
+        const int subDivisionsRings = 192;
+
+        static int triangleCountRings = subDivisionsRings +1 * 2;
+        static PositionTextureVertexBuffer ringsVertexBuffer = null;
+        static Texture ringsTexture;
+
+        // Various input layouts used in 3D solar system mode
+        // TODO Replace with an input layout cache
+
+        static void DrawRings(RenderContext renderContext)
+        {
+            InitRings();
+
+            TileShader.Use(renderContext, ringsVertexBuffer.VertexBuffer, null, ringsTexture.Texture2d, 1.0f, false);
+            renderContext.gl.drawArrays(GL.TRIANGLE_STRIP, 0, triangleCountRings);
+        }
+
+
+
+        static void InitRings()
+        {
+            if (ringsVertexBuffer != null)
+            {
+                return;
+            }
+            ringsTexture = Planets.LoadPlanetTexture("http://cdn.worldwidetelescope.org/webclient/images/SaturnRingsStrip.png");
+            double inner = 1.113;
+            double outer = 2.25;
+
+            ringsVertexBuffer = new PositionTextureVertexBuffer(((subDivisionsRings + 1) * 2));
+
+            triangleCountRings = (subDivisionsRings+1) * 2;
+            PositionTexture[] verts = (PositionTexture[])ringsVertexBuffer.Lock(); // Lock the buffer (which will return our structs)
+
+            double radStep = Math.PI * 2.0 / (double)subDivisionsRings;
+            int index = 0;
+            for (int x = 0; x <= subDivisionsRings; x += 2)
+            {
+                double rads1 = x * radStep;
+                double rads2 = (x + 1) * radStep;
+                verts[index] = new PositionTexture();
+                verts[index].Position = Vector3d.Create((Math.Cos(rads1) * inner), 0, (Math.Sin(rads1) * inner));
+                verts[index].Tu = 1;
+                verts[index].Tv = 0;
+                index++;
+                verts[index] = new PositionTexture();
+                verts[index].Position = Vector3d.Create((Math.Cos(rads1) * outer), 0, (Math.Sin(rads1) * outer));
+                verts[index].Tu = 0;
+                verts[index].Tv = 0;
+                index++;
+                verts[index] = new PositionTexture();
+                verts[index].Position = Vector3d.Create((Math.Cos(rads2) * inner), 0, (Math.Sin(rads2) * inner));
+                verts[index].Tu = 1;
+                verts[index].Tv = 1;
+                index++;
+                verts[index] = new PositionTexture();
+                verts[index].Position = Vector3d.Create((Math.Cos(rads2) * outer), 0, (Math.Sin(rads2) * outer));
+                verts[index].Tu = 0;
+                verts[index].Tv = 1;
+                index++;
+
+            }
+            ringsVertexBuffer.Unlock();
+        }
+    
 
         public static void DrawPointPlanet(RenderContext renderContext, Vector3d location, double size, Color color, bool zOrder)
         {

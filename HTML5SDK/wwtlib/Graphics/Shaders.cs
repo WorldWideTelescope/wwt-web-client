@@ -814,7 +814,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
-        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, float opacity, bool zBuffer, float jNow, float MM, Vector3d camera, float scale, float minSize)
+        public static void Use(RenderContext renderContext, Matrix3d worldView, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, float opacity, bool zBuffer, float jNow, float MM, Vector3d camera, float scale, float minSize)
         {
             GL gl = renderContext.gl;
             if (gl != null)
@@ -826,9 +826,9 @@ namespace wwtlib
 
                 gl.useProgram(prog);
 
-                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+                //Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
 
-                gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
+                gl.uniformMatrix4fv(mvMatLoc, false, worldView.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
                 gl.uniform1i(sampLoc, 0);
                 gl.uniform1f(jNowLoc, jNow);

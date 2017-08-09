@@ -102,10 +102,7 @@ namespace wwtlib
 
             Matrix3d offset = Matrix3d.Translation(Vector3d.Negate(centerPoint));
             Matrix3d world = Matrix3d.MultiplyMatrix(renderContext.World, offset);
-            Matrix3d matrixWVP = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(world, renderContext.View), renderContext.Projection);
-
-            matrixWVP.Transpose();
-
+            Matrix3d matrixWV = Matrix3d.MultiplyMatrix(world, renderContext.View);
 
             Vector3d cam = Vector3d.TransformCoordinate(renderContext.CameraPosition, Matrix3d.InvertMatrix(renderContext.World));
 
@@ -121,7 +118,7 @@ namespace wwtlib
                     if (mpcBlendStates[i].State)
                     {
 
-                        KeplerPointSpriteShader.Use(renderContext, mpcVertexBuffer[i].VertexBuffer, starTexture.Texture2d, Colors.White,
+                        KeplerPointSpriteShader.Use(renderContext, matrixWV, mpcVertexBuffer[i].VertexBuffer, starTexture.Texture2d, Colors.White,
                             opacity * mpcBlendStates[i].Opacity, false,
                             (float)(SpaceTimeController.JNow - KeplerVertex.baseDate), 0, renderContext.CameraPosition, 200f, .1f);
                      

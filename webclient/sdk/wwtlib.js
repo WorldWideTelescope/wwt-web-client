@@ -7207,15 +7207,14 @@ window.wwtlib = function(){
     gl.enable(3042);
     KeplerPointSpriteShader.initialized = true;
   };
-  KeplerPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, opacity, zBuffer, jNow, MM, camera, scale, minSize) {
+  KeplerPointSpriteShader.use = function(renderContext, worldView, vertex, texture, lineColor, opacity, zBuffer, jNow, MM, camera, scale, minSize) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!KeplerPointSpriteShader.initialized) {
         KeplerPointSpriteShader.init(renderContext);
       }
       gl.useProgram(KeplerPointSpriteShader._prog);
-      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
-      gl.uniformMatrix4fv(KeplerPointSpriteShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(KeplerPointSpriteShader.mvMatLoc, false, worldView.floatArray());
       gl.uniformMatrix4fv(KeplerPointSpriteShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform1i(KeplerPointSpriteShader.sampLoc, 0);
       gl.uniform1f(KeplerPointSpriteShader.jNowLoc, jNow);
@@ -10311,14 +10310,13 @@ window.wwtlib = function(){
     }
     var offset = Matrix3d.translation(Vector3d.negate(centerPoint));
     var world = Matrix3d.multiplyMatrix(renderContext.get_world(), offset);
-    var matrixWVP = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(world, renderContext.get_view()), renderContext.get_projection());
-    matrixWVP.transpose();
+    var matrixWV = Matrix3d.multiplyMatrix(world, renderContext.get_view());
     var cam = Vector3d._transformCoordinate(renderContext.cameraPosition, Matrix3d.invertMatrix(renderContext.get_world()));
     if (MinorPlanets._mpcVertexBuffer != null) {
       for (var i = 0; i < 7; i++) {
         MinorPlanets._mpcBlendStates[i].set_targetState(true);
         if (MinorPlanets._mpcBlendStates[i].get_state()) {
-          KeplerPointSpriteShader.use(renderContext, MinorPlanets._mpcVertexBuffer[i].vertexBuffer, MinorPlanets.starTexture.texture2d, Colors.get_white(), opacity * MinorPlanets._mpcBlendStates[i].get_opacity(), false, (SpaceTimeController.get_jNow() - KeplerVertex.baseDate), 0, renderContext.cameraPosition, 200, 0.1);
+          KeplerPointSpriteShader.use(renderContext, matrixWV, MinorPlanets._mpcVertexBuffer[i].vertexBuffer, MinorPlanets.starTexture.texture2d, Colors.get_white(), opacity * MinorPlanets._mpcBlendStates[i].get_opacity(), false, (SpaceTimeController.get_jNow() - KeplerVertex.baseDate), 0, renderContext.cameraPosition, 200, 0.1);
           renderContext.gl.drawArrays(0, 0, MinorPlanets._mpcVertexBuffer[i].count);
         }
       }
@@ -11098,17 +11096,24 @@ window.wwtlib = function(){
       if (sizeIndex < 3) {
         var oldLighting = renderContext.lighting;
         if (planetID === 5) {
-          renderContext.lighting = false;
-          Planets.drawSaturnsRings(renderContext, false, dist);
-          renderContext.lighting = oldLighting;
+          if (renderContext.gl == null) {
+            renderContext.lighting = false;
+            Planets.drawSaturnsRings(renderContext, false, dist);
+            renderContext.lighting = oldLighting;
+          }
         }
         if (!planetID) {
           renderContext.lighting = false;
         }
         Planets._drawSphere(renderContext, planetID);
         if (planetID === 5) {
-          renderContext.lighting = false;
-          Planets.drawSaturnsRings(renderContext, true, dist);
+          if (renderContext.gl == null) {
+            renderContext.lighting = false;
+            Planets.drawSaturnsRings(renderContext, true, dist);
+          }
+          else {
+            Planets._drawRings(renderContext);
+          }
         }
         renderContext.lighting = oldLighting;
       }
@@ -11212,6 +11217,49 @@ window.wwtlib = function(){
     }
     else {
     }
+  };
+  Planets._drawRings = function(renderContext) {
+    Planets._initRings();
+    TileShader.use(renderContext, Planets._ringsVertexBuffer.vertexBuffer, null, Planets._ringsTexture.texture2d, 1, false);
+    renderContext.gl.drawArrays(5, 0, Planets._triangleCountRings);
+  };
+  Planets._initRings = function() {
+    if (Planets._ringsVertexBuffer != null) {
+      return;
+    }
+    Planets._ringsTexture = Planets.loadPlanetTexture('http://cdn.worldwidetelescope.org/webclient/images/SaturnRingsStrip.png');
+    var inner = 1.113;
+    var outer = 2.25;
+    Planets._ringsVertexBuffer = new PositionTextureVertexBuffer(((192 + 1) * 2));
+    Planets._triangleCountRings = (192 + 1) * 2;
+    var verts = Planets._ringsVertexBuffer.lock();
+    var radStep = Math.PI * 2 / 192;
+    var index = 0;
+    for (var x = 0; x <= 192; x += 2) {
+      var rads1 = x * radStep;
+      var rads2 = (x + 1) * radStep;
+      verts[index] = new PositionTexture();
+      verts[index].position = Vector3d.create((Math.cos(rads1) * inner), 0, (Math.sin(rads1) * inner));
+      verts[index].tu = 1;
+      verts[index].tv = 0;
+      index++;
+      verts[index] = new PositionTexture();
+      verts[index].position = Vector3d.create((Math.cos(rads1) * outer), 0, (Math.sin(rads1) * outer));
+      verts[index].tu = 0;
+      verts[index].tv = 0;
+      index++;
+      verts[index] = new PositionTexture();
+      verts[index].position = Vector3d.create((Math.cos(rads2) * inner), 0, (Math.sin(rads2) * inner));
+      verts[index].tu = 1;
+      verts[index].tv = 1;
+      index++;
+      verts[index] = new PositionTexture();
+      verts[index].position = Vector3d.create((Math.cos(rads2) * outer), 0, (Math.sin(rads2) * outer));
+      verts[index].tu = 0;
+      verts[index].tv = 1;
+      index++;
+    }
+    Planets._ringsVertexBuffer.unlock();
   };
   Planets.drawPointPlanet = function(renderContext, location, size, color, zOrder) {
     size = Math.max(2, size);
@@ -35516,6 +35564,8 @@ window.wwtlib = function(){
   Planets._lastUpdate = new Date();
   Planets._ringsTriangleLists = new Array(2);
   Planets._ringImage = null;
+  Planets._triangleCountRings = 192 + 1 * 2;
+  Planets._ringsVertexBuffer = null;
   Planets._planetSprite = new Sprite2d();
   Planets._planetPoints = null;
   RenderContext.useGl = false;
