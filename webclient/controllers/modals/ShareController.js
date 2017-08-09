@@ -49,9 +49,11 @@
 		};
 
 		var selectUrl = function(delay) {
-			setTimeout(function() {
-				$('#shareUrl')[0].focus();
-				$('#shareUrl')[0].select();
+            setTimeout(function () {
+                if ($('#shareUrl').length) {
+                    $('#shareUrl')[0].focus();
+                    $('#shareUrl')[0].select();
+                }
 			}, delay);
 		}
 
