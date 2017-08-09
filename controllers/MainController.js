@@ -191,13 +191,14 @@ wwt.controllers.controller('MainController',
               }
               var loadPlace = function (openPlace) {
                   $('#loadingModal').modal('show');
-                  var goPlace = function (place,delay) {
+                  var goPlace = function (place, delay) {
+                      if (obj['ra']) { wwt.wc.add_arrived(goto); }
                       $scope.setForegroundImage(place);
                       $('#loadingModal').modal('hide');
                       if (delay === -1) return;
-                      if (obj['ra']) {
+                      if (obj['cf']) {
                           setTimeout(function () {
-                              goto();
+                              
                               if (obj['cf']) {
                                   $('.cross-fader a.btn').css('left', parseFloat(obj['cf']));
 
@@ -219,7 +220,7 @@ wwt.controllers.controller('MainController',
                       setLookAtHash(function () {
                           searchUtil.getPlaceById(openPlace).then(function (p) {
                               console.log(p);
-                              setTimeout(function () { goPlace(p,-1);},2222);
+                              setTimeout(function () { goPlace(p);},2222);
                           });
                       });
                   } else {
