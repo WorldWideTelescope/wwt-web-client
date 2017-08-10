@@ -1268,11 +1268,11 @@ namespace wwtlib
                 }
                 if (tourStop.Attributes.GetNamedItem("LocationLat") != null)
                 {
-                    newTourStop.locationLat = double.Parse(tourStop.Attributes.GetNamedItem("LocationLat").Value);
+                    newTourStop.locationLat = double.Parse(tourStop.Attributes.GetNamedItem("LocationLat").Value );
                 }
                 if (tourStop.Attributes.GetNamedItem("LocationLng") != null)
                 {
-                    newTourStop.locationLng = double.Parse(tourStop.Attributes.GetNamedItem("LocationLng").Value);
+                    newTourStop.locationLng = double.Parse(tourStop.Attributes.GetNamedItem("LocationLng").Value );
                 }
             }
 
@@ -1284,11 +1284,11 @@ namespace wwtlib
                 {                
                     if (tourStop.Attributes.GetNamedItem("StartTime") != null)
                     {
-                        newTourStop.startTime = Date.Parse(tourStop.Attributes.GetNamedItem("StartTime").Value);
+                        newTourStop.startTime = Date.Parse(tourStop.Attributes.GetNamedItem("StartTime").Value + " UTC");
                     }
                     if (tourStop.Attributes.GetNamedItem("EndTime") != null)
                     {
-                        newTourStop.endTime = Date.Parse(tourStop.Attributes.GetNamedItem("EndTime").Value);
+                        newTourStop.endTime = Date.Parse(tourStop.Attributes.GetNamedItem("EndTime").Value + " UTC");
                     }
                 }
             }

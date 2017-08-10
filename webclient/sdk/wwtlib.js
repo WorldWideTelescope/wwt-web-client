@@ -19574,10 +19574,10 @@ window.wwtlib = function(){
       newTourStop._hasTime = ss.boolean(tourStop.attributes.getNamedItem('HasTime').nodeValue);
       if (newTourStop._hasTime) {
         if (tourStop.attributes.getNamedItem('StartTime') != null) {
-          newTourStop._startTime = ss.date(tourStop.attributes.getNamedItem('StartTime').nodeValue);
+          newTourStop._startTime = ss.date(tourStop.attributes.getNamedItem('StartTime').nodeValue + ' UTC');
         }
         if (tourStop.attributes.getNamedItem('EndTime') != null) {
-          newTourStop._endTime = ss.date(tourStop.attributes.getNamedItem('EndTime').nodeValue);
+          newTourStop._endTime = ss.date(tourStop.attributes.getNamedItem('EndTime').nodeValue + ' UTC');
         }
       }
     }
