@@ -12,6 +12,11 @@ namespace wwtlib
     public enum ReferenceFrameTypes { FixedSherical=0, Orbital=1, Trajectory = 2 /*,FixedRectangular*/ };
     public class ReferenceFrame
     {
+        public ReferenceFrame()
+        {
+            WorldMatrix = new Matrix3d();
+            WorldMatrix = Matrix3d.Identity;
+        }
 
         internal bool SystemGenerated = false;
         // Calclulated
@@ -502,85 +507,84 @@ namespace wwtlib
 
         private void ComputeOrbital(RenderContext renderContext)
         {
-            //CAAEllipticalObjectElements ee = Elements;
-            //Vector3d point = CAAElliptical.CalculateRectangular(SpaceTimeController.JNow, ee, out MeanAnomoly);
+            EOE ee = Elements;
+            Vector3d point = ELL.CalculateRectangularJD(SpaceTimeController.JNow, ee);
 
-            //Vector3d pointInstantLater = CAAElliptical.CalculateRectangular(ee, MeanAnomoly+.001);
+            Vector3d pointInstantLater = ELL.CalculateRectangular(ee, MeanAnomoly+.001);
 
-            //Vector3d direction =  point- pointInstantLater;
+            Vector3d direction =  Vector3d.SubtractVectors(point, pointInstantLater);
 
-            //direction.Normalize();
-            //Vector3d up = point;
-            //up.Normalize();
-            //direction.Normalize();
+            direction.Normalize();
+            Vector3d up = point;
+            up.Normalize();
+            direction.Normalize();
 
-            //double dist = point.Length();
-            //double scaleFactor = 1.0;
-            //switch (SemiMajorAxisUnits)
-            //{
-            //    case AltUnits.Meters:
-            //        scaleFactor = 1.0;
-            //        break;
-            //    case AltUnits.Feet:
-            //        scaleFactor = 1.0 / 3.2808399;
-            //        break;
-            //    case AltUnits.Inches:
-            //        scaleFactor = (1.0 / 3.2808399) / 12;
-            //        break;
-            //    case AltUnits.Miles:
-            //        scaleFactor = 1609.344;
-            //        break;
-            //    case AltUnits.Kilometers:
-            //        scaleFactor = 1000;
-            //        break;
-            //    case AltUnits.AstronomicalUnits:
-            //        scaleFactor = UiTools.KilometersPerAu * 1000;
-            //        break;
-            //    case AltUnits.LightYears:
-            //        scaleFactor = UiTools.AuPerLightYear * UiTools.KilometersPerAu * 1000;
-            //        break;
-            //    case AltUnits.Parsecs:
-            //        scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000;
-            //        break;
-            //    case AltUnits.MegaParsecs:
-            //        scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000 * 1000000;
-            //        break;
-            //    case AltUnits.Custom:
-            //        scaleFactor = 1;
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //scaleFactor *= 1/renderContext.NominalRadius;
+            double dist = point.Length();
+            double scaleFactor = 1.0;
+            switch (SemiMajorAxisUnits)
+            {
+                case AltUnits.Meters:
+                    scaleFactor = 1.0;
+                    break;
+                case AltUnits.Feet:
+                    scaleFactor = 1.0 / 3.2808399;
+                    break;
+                case AltUnits.Inches:
+                    scaleFactor = (1.0 / 3.2808399) / 12;
+                    break;
+                case AltUnits.Miles:
+                    scaleFactor = 1609.344;
+                    break;
+                case AltUnits.Kilometers:
+                    scaleFactor = 1000;
+                    break;
+                case AltUnits.AstronomicalUnits:
+                    scaleFactor = UiTools.KilometersPerAu * 1000;
+                    break;
+                case AltUnits.LightYears:
+                    scaleFactor = UiTools.AuPerLightYear * UiTools.KilometersPerAu * 1000;
+                    break;
+                case AltUnits.Parsecs:
+                    scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000;
+                    break;
+                case AltUnits.MegaParsecs:
+                    scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000 * 1000000;
+                    break;
+                case AltUnits.Custom:
+                    scaleFactor = 1;
+                    break;
+                default:
+                    break;
+            }
+            scaleFactor *= 1/renderContext.NominalRadius;
 
  
-            //WorldMatrix = Matrix3d.Identity ;
-            //Matrix3d look = Matrix3d.LookAtLH(new Vector3d(0,0,0), direction, up);
-            //look.Invert();
+            WorldMatrix = Matrix3d.Identity ;
+            Matrix3d look = Matrix3d.LookAtLH(Vector3d.Create(0,0,0), direction, up);
+            look.Invert();
 
-            //WorldMatrix = Matrix3d.Identity;
+            WorldMatrix = Matrix3d.Identity;
             
 
-            //double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
-            //WorldMatrix.Scale(new Vector3d(localScale, localScale, localScale));
-            //WorldMatrix.Rotate(Quaternion.RotationYawPitchRoll((float)Heading, (float)Pitch, (float)Roll));
-            //if (RotationalPeriod != 0)
-            //{
-            //    double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
-            //    WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
-            //}
+            double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
+            WorldMatrix.Scale(Vector3d.Create(localScale, localScale, localScale));
 
-            //point = Vector3d.Scale(point, scaleFactor);
+            Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading), Matrix3d.RotationX(Pitch)),Matrix3d.RotationZ(Roll));
+            if (RotationalPeriod != 0)
+            {
+                double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
+                WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
+            }
 
-            //WorldMatrix.Translate(point);
+            point = Vector3d.Scale(point, scaleFactor);
 
-            //if (StationKeeping)
-            //{
-            //    WorldMatrix = look * WorldMatrix;
-            //}
-            
+            WorldMatrix.Translate(point);
+
+            if (StationKeeping)
+            {
+                WorldMatrix = Matrix3d.MultiplyMatrix(look, WorldMatrix);
+            }       
         }
-
     }
 
     //public class TrajectorySample

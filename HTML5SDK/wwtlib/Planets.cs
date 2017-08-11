@@ -1246,7 +1246,6 @@ namespace wwtlib
 
             Matrix3d matLocal = renderContext.World.Clone();
             Matrix3d matLocalNR = renderContext.World.Clone();
-
             Vector3d translation = Vector3d.SubtractVectors(planet3dLocations[planetID], centerPoint);
             
             matLocal.Scale(Vector3d.Create(radius, radius, radius));
@@ -1327,7 +1326,7 @@ namespace wwtlib
                 }
                 //ShadowStuff end
 
-                if (sizeIndex < 3)
+                if (sizeIndex < 4)
                 {
                     bool oldLighting = renderContext.Lighting;
                     //double planetDistance = Vector3d.SubtractVectors(planet3dLocations[planetID], renderContext.CameraPosition).Length();
@@ -1400,7 +1399,6 @@ namespace wwtlib
             }
 
             LayerManager.Draw(renderContext, 1.0f, false, GetNameFrom3dId(planetID), true, false);
-
             renderContext.World = matOld;
             renderContext.WorldBase = matOldBase;
             renderContext.WorldBaseNonRotating = matOldNonRotating;
@@ -1644,7 +1642,7 @@ namespace wwtlib
 
         public static void DrawPointPlanet(RenderContext renderContext, Vector3d location, double size, Color color, bool zOrder)
         {
-            size = Math.Max(2, size);
+            //size = Math.Max(2, size);
 
             Vector3d center = (Vector3d)location;
 
@@ -1655,9 +1653,9 @@ namespace wwtlib
             {
                 PointList ppList = new PointList(renderContext);
                 ppList.MinSize = 20;
-                ppList.AddPoint(location.Copy(), color.Clone(), new Dates(0, 1), (float)size*10);
+                ppList.AddPoint(location.Copy(), color.Clone(), new Dates(0, 1), (float)size);
                 // ppList.ShowFarSide = true;
-                ppList.DepthBuffered = false;
+                ppList.DepthBuffered = true;
                 ppList.Draw(renderContext, 1, false);
                 //  ppList.Clear();
 

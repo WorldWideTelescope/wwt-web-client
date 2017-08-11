@@ -641,64 +641,66 @@ namespace wwtlib
 
         virtual public bool IsTileBigEnough(RenderContext renderContext)
         {
-            Matrix3d wvp = renderContext.WVP;
-
-
-            //// Test for tile scale in view..
-            //topLeftScreen = wvp.ProjectToScreen(TopLeft, renderContext.Width, renderContext.Height);
-            //bottomRightScreen = wvp.ProjectToScreen(BottomRight, renderContext.Width, renderContext.Height);
-            //topRightScreen = wvp.ProjectToScreen(TopRight, renderContext.Width, renderContext.Height);
-            //bottomLeftScreen = wvp.ProjectToScreen(BottomLeft, renderContext.Width, renderContext.Height);
-
-            //Vector3d top = topLeftScreen;
-            //top.Subtract(topRightScreen);
-            //double topLength = top.Length();
-
-            //Vector3d bottom = bottomLeftScreen;
-            //bottom.Subtract(bottomRightScreen);
-            //double bottomLength = bottom.Length();
-
-            //Vector3d left = bottomLeftScreen;
-            //left.Subtract(topLeftScreen);
-            //double leftLength = left.Length();
-
-            //Vector3d right = bottomRightScreen;
-            //right.Subtract(topRightScreen);
-            //double rightLength = right.Length();
-
-            // Test for tile scale in view..
-            wvp.TransformTo(TopLeft, topLeftScreen);
-            wvp.TransformTo(BottomRight, bottomRightScreen);
-            wvp.TransformTo(TopRight, topRightScreen);
-            wvp.TransformTo(BottomLeft, bottomLeftScreen);
-        
-            Vector3d top = topLeftScreen;
-            top.Subtract(topRightScreen);
-            double topLength = top.Length();
-
-            Vector3d bottom = bottomLeftScreen;
-            bottom.Subtract(bottomRightScreen);
-            double bottomLength = bottom.Length();
-
-            Vector3d left = bottomLeftScreen;
-            left.Subtract(topLeftScreen);
-            double leftLength = left.Length();
-
-            Vector3d right = bottomRightScreen;
-            right.Subtract(topRightScreen);
-            double rightLength = right.Length();
-
-
-            float lengthMax = Math.Max(Math.Max(rightLength, leftLength), Math.Max(bottomLength, topLength));
-            if (lengthMax < 300) // was 220
+            if (Level > 1)
             {
-                return false;
-            }
-            else
-            {
-                deepestLevel = Level > deepestLevel ? Level : deepestLevel;
-            }
+                Matrix3d wvp = renderContext.WVP;
 
+
+                //// Test for tile scale in view..
+                //topLeftScreen = wvp.ProjectToScreen(TopLeft, renderContext.Width, renderContext.Height);
+                //bottomRightScreen = wvp.ProjectToScreen(BottomRight, renderContext.Width, renderContext.Height);
+                //topRightScreen = wvp.ProjectToScreen(TopRight, renderContext.Width, renderContext.Height);
+                //bottomLeftScreen = wvp.ProjectToScreen(BottomLeft, renderContext.Width, renderContext.Height);
+
+                //Vector3d top = topLeftScreen;
+                //top.Subtract(topRightScreen);
+                //double topLength = top.Length();
+
+                //Vector3d bottom = bottomLeftScreen;
+                //bottom.Subtract(bottomRightScreen);
+                //double bottomLength = bottom.Length();
+
+                //Vector3d left = bottomLeftScreen;
+                //left.Subtract(topLeftScreen);
+                //double leftLength = left.Length();
+
+                //Vector3d right = bottomRightScreen;
+                //right.Subtract(topRightScreen);
+                //double rightLength = right.Length();
+
+                // Test for tile scale in view..
+                wvp.TransformTo(TopLeft, topLeftScreen);
+                wvp.TransformTo(BottomRight, bottomRightScreen);
+                wvp.TransformTo(TopRight, topRightScreen);
+                wvp.TransformTo(BottomLeft, bottomLeftScreen);
+
+                Vector3d top = topLeftScreen;
+                top.Subtract(topRightScreen);
+                double topLength = top.Length();
+
+                Vector3d bottom = bottomLeftScreen;
+                bottom.Subtract(bottomRightScreen);
+                double bottomLength = bottom.Length();
+
+                Vector3d left = bottomLeftScreen;
+                left.Subtract(topLeftScreen);
+                double leftLength = left.Length();
+
+                Vector3d right = bottomRightScreen;
+                right.Subtract(topRightScreen);
+                double rightLength = right.Length();
+
+
+                float lengthMax = Math.Max(Math.Max(rightLength, leftLength), Math.Max(bottomLength, topLength));
+                if (lengthMax < 300) // was 220
+                {
+                    return false;
+                }
+                else
+                {
+                    deepestLevel = Level > deepestLevel ? Level : deepestLevel;
+                }
+            }
 
             return true;
         }

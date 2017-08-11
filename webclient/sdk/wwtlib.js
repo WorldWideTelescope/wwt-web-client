@@ -9080,6 +9080,7 @@ window.wwtlib = function(){
     LayerManager.get_layerMaps()['Sun'].childMaps['Uranus'] = new LayerMap('Uranus', 10);
     LayerManager.get_layerMaps()['Sun'].childMaps['Neptune'] = new LayerMap('Neptune', 11);
     LayerManager.get_layerMaps()['Sun'].childMaps['Pluto'] = new LayerMap('Pluto', 12);
+    LayerManager._addMoons(LayerManager._moonfile);
     LayerManager.get_layerMaps()['Sky'] = new LayerMap('Sky', 0);
     LayerManager.get_layerMaps()['Sun'].open = true;
     ss.clearKeys(LayerManager.get_allMaps());
@@ -9106,6 +9107,56 @@ window.wwtlib = function(){
     }
     ss.clearKeys(LayerManager.get_layerList());
     ss.clearKeys(LayerManager.get_layerMaps());
+  };
+  LayerManager.getMoonFile = function(url) {
+    LayerManager._webFileMoons = new WebFile(url);
+    LayerManager._webFileMoons.onStateChange = LayerManager.moonFileStateChange;
+    LayerManager._webFileMoons.send();
+  };
+  LayerManager.moonFileStateChange = function() {
+    if (LayerManager._webFileMoons.get_state() === 2) {
+      alert(LayerManager._webFileMoons.get_message());
+    }
+    else if (LayerManager._webFileMoons.get_state() === 1) {
+      LayerManager._moonfile = LayerManager._webFileMoons.getText();
+      LayerManager.initLayers();
+    }
+  };
+  LayerManager._addMoons = function(file) {
+    var data = file.split('\r\n');
+    var first = true;
+    var $enum1 = ss.enumerate(data);
+    while ($enum1.moveNext()) {
+      var line = $enum1.current;
+      if (first) {
+        first = false;
+        continue;
+      }
+      var parts = line.split('\t');
+      var planet = parts[0];
+      var frame = new LayerMap(parts[2], 18);
+      frame.frame._systemGenerated = true;
+      frame.frame.epoch = parseFloat(parts[1]);
+      frame.frame.semiMajorAxis = parseFloat(parts[3]) * 1000;
+      frame.frame.referenceFrameType = 1;
+      frame.frame.inclination = parseFloat(parts[7]);
+      frame.frame.longitudeOfAscendingNode = parseFloat(parts[8]);
+      frame.frame.eccentricity = parseFloat(parts[4]);
+      frame.frame.meanAnomolyAtEpoch = parseFloat(parts[6]);
+      frame.frame.meanDailyMotion = parseFloat(parts[9]);
+      frame.frame.argumentOfPeriapsis = parseFloat(parts[5]);
+      frame.frame.scale = 1;
+      frame.frame.semiMajorAxisUnits = 1;
+      frame.frame.meanRadius = parseFloat(parts[16]) * 1000;
+      frame.frame.rotationalPeriod = parseFloat(parts[17]);
+      frame.frame.showAsPoint = false;
+      frame.frame.showOrbitPath = true;
+      frame.frame.set_representativeColor(Color.fromArgb(255, 144, 238, 144));
+      frame.frame.oblateness = 0;
+      LayerManager.get_layerMaps()['Sun'].childMaps[planet] = frame;
+      ss.clearKeys(LayerManager.get_allMaps());
+      LayerManager._addAllMaps(LayerManager.get_layerMaps(), null);
+    }
   };
   LayerManager._closeAllTourLoadedLayers = function() {
     var purgeTargets = [];
@@ -9897,6 +9948,8 @@ window.wwtlib = function(){
     this.epoch = 0;
     this._orbit = null;
     this._elements = new EOE();
+    this.worldMatrix = new Matrix3d();
+    this.worldMatrix = Matrix3d.get_identity();
   }
   ReferenceFrame.isTLECheckSumGood = function(line) {
     if (line.length !== 69) {
@@ -10092,6 +10145,67 @@ window.wwtlib = function(){
     _computeFrameTrajectory: function(renderContext) {
     },
     _computeOrbital: function(renderContext) {
+      var ee = this.get_elements();
+      var point = ELL.calculateRectangularJD(SpaceTimeController.get_jNow(), ee);
+      var pointInstantLater = ELL.calculateRectangular(ee, this.meanAnomoly + 0.001);
+      var direction = Vector3d.subtractVectors(point, pointInstantLater);
+      direction.normalize();
+      var up = point;
+      up.normalize();
+      direction.normalize();
+      var dist = point.length();
+      var scaleFactor = 1;
+      switch (this.semiMajorAxisUnits) {
+        case 1:
+          scaleFactor = 1;
+          break;
+        case 2:
+          scaleFactor = 1 / 3.2808399;
+          break;
+        case 3:
+          scaleFactor = (1 / 3.2808399) / 12;
+          break;
+        case 4:
+          scaleFactor = 1609.344;
+          break;
+        case 5:
+          scaleFactor = 1000;
+          break;
+        case 6:
+          scaleFactor = 149598000 * 1000;
+          break;
+        case 7:
+          scaleFactor = 63239.6717 * 149598000 * 1000;
+          break;
+        case 8:
+          scaleFactor = 206264.806 * 149598000 * 1000;
+          break;
+        case 9:
+          scaleFactor = 206264.806 * 149598000 * 1000 * 1000000;
+          break;
+        case 10:
+          scaleFactor = 1;
+          break;
+        default:
+          break;
+      }
+      scaleFactor *= 1 / renderContext.get_nominalRadius();
+      this.worldMatrix = Matrix3d.get_identity();
+      var look = Matrix3d.lookAtLH(Vector3d.create(0, 0, 0), direction, up);
+      look.invert();
+      this.worldMatrix = Matrix3d.get_identity();
+      var localScale = (1 / renderContext.get_nominalRadius()) * this.scale * this.meanRadius;
+      this.worldMatrix.scale(Vector3d.create(localScale, localScale, localScale));
+      var mat = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationY(this.heading), Matrix3d._rotationX(this.pitch)), Matrix3d._rotationZ(this.roll));
+      if (!!this.rotationalPeriod) {
+        var rotationCurrent = (((SpaceTimeController.get_jNow() - this.zeroRotationDate) / this.rotationalPeriod) * 360) % (360);
+        this.worldMatrix._multiply(Matrix3d._rotationX(-rotationCurrent));
+      }
+      point = Vector3d.scale(point, scaleFactor);
+      this.worldMatrix.translate(point);
+      if (this.stationKeeping) {
+        this.worldMatrix = Matrix3d.multiplyMatrix(look, this.worldMatrix);
+      }
     }
   };
 
@@ -11093,7 +11207,7 @@ window.wwtlib = function(){
       if (planetID === 19 && sizeIndex < 2) {
         var width = Settings.get_active().get_solarSystemScale() * 1E-05;
       }
-      if (sizeIndex < 3) {
+      if (sizeIndex < 4) {
         var oldLighting = renderContext.lighting;
         if (planetID === 5) {
           if (renderContext.gl == null) {
@@ -11262,14 +11376,13 @@ window.wwtlib = function(){
     Planets._ringsVertexBuffer.unlock();
   };
   Planets.drawPointPlanet = function(renderContext, location, size, color, zOrder) {
-    size = Math.max(2, size);
     var center = location;
     var rad = size / 2;
     if (renderContext.gl != null) {
       var ppList = new PointList(renderContext);
       ppList.minSize = 20;
-      ppList.addPoint(location.copy(), color._clone(), new Dates(0, 1), size * 10);
-      ppList.depthBuffered = false;
+      ppList.addPoint(location.copy(), color._clone(), new Dates(0, 1), size);
+      ppList.depthBuffered = true;
       ppList.draw(renderContext, 1, false);
     }
     else {
@@ -14228,29 +14341,31 @@ window.wwtlib = function(){
       this.sphereRadius = result.radius;
     },
     isTileBigEnough: function(renderContext) {
-      var wvp = renderContext.WVP;
-      wvp._transformTo(this.topLeft, this._topLeftScreen);
-      wvp._transformTo(this.bottomRight, this._bottomRightScreen);
-      wvp._transformTo(this.topRight, this._topRightScreen);
-      wvp._transformTo(this.bottomLeft, this._bottomLeftScreen);
-      var top = this._topLeftScreen;
-      top.subtract(this._topRightScreen);
-      var topLength = top.length();
-      var bottom = this._bottomLeftScreen;
-      bottom.subtract(this._bottomRightScreen);
-      var bottomLength = bottom.length();
-      var left = this._bottomLeftScreen;
-      left.subtract(this._topLeftScreen);
-      var leftLength = left.length();
-      var right = this._bottomRightScreen;
-      right.subtract(this._topRightScreen);
-      var rightLength = right.length();
-      var lengthMax = Math.max(Math.max(rightLength, leftLength), Math.max(bottomLength, topLength));
-      if (lengthMax < 300) {
-        return false;
-      }
-      else {
-        Tile.deepestLevel = (this.level > Tile.deepestLevel) ? this.level : Tile.deepestLevel;
+      if (this.level > 1) {
+        var wvp = renderContext.WVP;
+        wvp._transformTo(this.topLeft, this._topLeftScreen);
+        wvp._transformTo(this.bottomRight, this._bottomRightScreen);
+        wvp._transformTo(this.topRight, this._topRightScreen);
+        wvp._transformTo(this.bottomLeft, this._bottomLeftScreen);
+        var top = this._topLeftScreen;
+        top.subtract(this._topRightScreen);
+        var topLength = top.length();
+        var bottom = this._bottomLeftScreen;
+        bottom.subtract(this._bottomRightScreen);
+        var bottomLength = bottom.length();
+        var left = this._bottomLeftScreen;
+        left.subtract(this._topLeftScreen);
+        var leftLength = left.length();
+        var right = this._bottomRightScreen;
+        right.subtract(this._topRightScreen);
+        var rightLength = right.length();
+        var lengthMax = Math.max(Math.max(rightLength, leftLength), Math.max(bottomLength, topLength));
+        if (lengthMax < 300) {
+          return false;
+        }
+        else {
+          Tile.deepestLevel = (this.level > Tile.deepestLevel) ? this.level : Tile.deepestLevel;
+        }
       }
       return true;
     },
@@ -35544,7 +35659,8 @@ window.wwtlib = function(){
   LayerManager._currentMap = 'Earth';
   LayerManager._layerList = {};
   LayerManager._layerListTours = {};
-  LayerManager.initLayers();
+  LayerManager._moonfile = '';
+  LayerManager.getMoonFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons');
   LayerUI._type = null;
   Orbit._initBegun = false;
   MinorPlanets.mpcList = [];

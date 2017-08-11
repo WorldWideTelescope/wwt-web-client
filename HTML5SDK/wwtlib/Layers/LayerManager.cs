@@ -147,8 +147,10 @@ namespace wwtlib
         //static List<Layer> layers = new List<Layer>();
         static LayerManager()
         {
-            InitLayers();
+            GetMoonFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons");
+            //InitLayers();
         }
+        static string moonfile = "";
         static public void InitLayers()
         {
             ClearLayers();
@@ -212,7 +214,8 @@ namespace wwtlib
             LayerMaps["Sun"].ChildMaps["Neptune"] = new LayerMap("Neptune", ReferenceFrames.Neptune);
             LayerMaps["Sun"].ChildMaps["Pluto"] = new LayerMap("Pluto", ReferenceFrames.Pluto);
 
-            // AddMoons();
+            
+            AddMoons(moonfile);
 
             LayerMaps["Sky"] = new LayerMap("Sky", ReferenceFrames.Sky);
             LayerMaps["Sun"].Open = true;
@@ -246,6 +249,73 @@ namespace wwtlib
 
             LayerList.Clear();
             LayerMaps.Clear();
+        }
+
+
+        static WebFile webFileMoons;
+
+        public static void GetMoonFile(string url)
+        {
+            webFileMoons = new WebFile(url);
+            webFileMoons.OnStateChange = MoonFileStateChange;
+            webFileMoons.Send();
+        }
+
+        public static void MoonFileStateChange()
+        {
+            if (webFileMoons.State == StateType.Error)
+            {
+                Script.Literal("alert({0})", webFileMoons.Message);
+            }
+            else if (webFileMoons.State == StateType.Received)
+            {
+                moonfile = webFileMoons.GetText();
+                InitLayers();
+            }
+
+        }
+       
+        private static void AddMoons(string file)
+        {
+            
+            string[] data = file.Split("\r\n");
+
+            bool first = true;
+            foreach (string line in data)
+            {
+                if (first)
+                {
+                    first = false;
+                    continue;
+                }
+                string[] parts = line.Split("\t");
+                string planet = parts[0];
+                LayerMap frame = new LayerMap(parts[2], ReferenceFrames.Custom);
+                frame.Frame.SystemGenerated = true;
+                frame.Frame.Epoch = double.Parse(parts[1]);
+                frame.Frame.SemiMajorAxis = double.Parse(parts[3]) * 1000;
+                frame.Frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
+                frame.Frame.Inclination = double.Parse(parts[7]);
+                frame.Frame.LongitudeOfAscendingNode = double.Parse(parts[8]);
+                frame.Frame.Eccentricity = double.Parse(parts[4]);
+                frame.Frame.MeanAnomolyAtEpoch = double.Parse(parts[6]);
+                frame.Frame.MeanDailyMotion = double.Parse(parts[9]);
+                frame.Frame.ArgumentOfPeriapsis = double.Parse(parts[5]);
+                frame.Frame.Scale = 1;
+                frame.Frame.SemiMajorAxisUnits = AltUnits.Meters;
+                frame.Frame.MeanRadius = double.Parse(parts[16]) * 1000;
+                frame.Frame.RotationalPeriod = double.Parse(parts[17]);
+                frame.Frame.ShowAsPoint = false;
+                frame.Frame.ShowOrbitPath = true;
+                frame.Frame.RepresentativeColor = Color.FromArgb(255, 144, 238, 144);
+                frame.Frame.Oblateness = 0;
+
+                LayerMaps["Sun"].ChildMaps[planet] = frame;
+
+                AllMaps.Clear();
+
+                AddAllMaps(LayerMaps, null);
+            }
         }
 
         internal static void CloseAllTourLoadedLayers()
