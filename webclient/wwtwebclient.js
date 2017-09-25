@@ -4482,7 +4482,7 @@ wwt.controllers.controller('MainController',
 
 		var finderTimer, finderActive = false,finderMoved = true;
 		$scope.showFinderScope = function (event) {
-			if ($scope.lookAt === 'Sky' && !$scope.editingTour) {
+		    if (($scope.lookAt === 'Sky' || $scope.lookAt === 'SolarSystem') && !$scope.editingTour) {
 				var finder = $('.finder-scope');
 				finder.toggle(!finder.prop('hidden')).css({
 					top: event ? event.pageY - 88 : 180,

@@ -22578,7 +22578,7 @@ window.wwtlib = function(){
       WWTControl.scriptInterface = new ScriptInterface();
       WWTControl.scriptInterface.settings = Settings.get_current();
       var canvas = WWTControl._createCanvasElement(DivId);
-      var webgltext = 'experimental-webgl';
+      var webgltext = 'webgl';
       var gl = null;
       webGL = true;
       if (webGL) {
@@ -22936,6 +22936,10 @@ window.wwtlib = function(){
           LayerManager._draw(this.renderContext, 1, false, 'Earth', false, false);
         }
       }
+      var worldSave = this.renderContext.get_world();
+      var viewSave = this.renderContext.get_view();
+      var projSave = this.renderContext.get_projection();
+      var raDecDownDown = this.getCoordinatesForScreenPoint(this.renderContext.width / 2, this.renderContext.height / 2);
       if (Settings.get_current().get_showCrosshairs()) {
         this._drawCrosshairs(this.renderContext);
       }
@@ -22968,6 +22972,9 @@ window.wwtlib = function(){
       if (!TourPlayer.get_playing()) {
         this.set_crossFadeFrame(false);
       }
+      this.renderContext.set_world(worldSave);
+      this.renderContext.set_view(viewSave);
+      this.renderContext.set_projection(projSave);
       var now = ss.now();
       var ms = now - this._lastUpdate;
       if (ms > 1000) {

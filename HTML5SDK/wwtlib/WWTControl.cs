@@ -621,6 +621,12 @@ namespace wwtlib
 
             }
 
+            Matrix3d worldSave = RenderContext.World;
+            Matrix3d viewSave = RenderContext.View;
+            Matrix3d projSave = RenderContext.Projection;
+
+            Vector2d raDecDownDown = GetCoordinatesForScreenPoint(RenderContext.Width / 2, RenderContext.Height / 2);
+
             if (Settings.Current.ShowCrosshairs)
             {
                 DrawCrosshairs(RenderContext);
@@ -670,6 +676,11 @@ namespace wwtlib
             {
                 CrossFadeFrame = false;
             }
+            // Restore Matrixies for Finder Scope and such to map points
+
+            RenderContext.World = worldSave;
+            RenderContext.View = viewSave;
+            RenderContext.Projection = projSave;
 
 
             Date now = Date.Now;
@@ -677,12 +688,10 @@ namespace wwtlib
             int ms = now - lastUpdate;
             if (ms > 1000)
             {
-
                 lastUpdate = now;
                 frameCount = 0;
                 RenderTriangle.TrianglesRendered = 0;
                 RenderTriangle.TrianglesCulled = 0;
-
             }
 
             //  Script.Literal("requestAnimationFrame(this.render);");
@@ -1909,7 +1918,7 @@ namespace wwtlib
                 CanvasElement canvas = CreateCanvasElement(DivId);
 
 
-                String webgltext = "experimental-webgl";
+                String webgltext = "webgl";
                 GL gl = null;
 
 
