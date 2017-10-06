@@ -1,6 +1,6 @@
 "use strict";
 
-window.wwtlib = function(){
+define('wwtlib', ['ss'], function(ss) {
   var $global = this;
 
   // DAY_OF_WEEK
@@ -7733,6 +7733,16 @@ window.wwtlib = function(){
     tex.load(url);
     return tex;
   };
+  Texture.isPowerOfTwo = function(val) {
+    return !(val & (val - 1));
+  };
+  Texture.fitPowerOfTwo = function(val) {
+    val--;
+    for (var i = 1; i < 32; i <<= 1) {
+      val = val | val >> i;
+    }
+    return val + 1;
+  };
   var Texture$ = {
     cleanUp: function() {
       this.imageElement = null;
@@ -7773,10 +7783,10 @@ window.wwtlib = function(){
           this.texture2d = Tile.prepDevice.createTexture();
           Tile.prepDevice.bindTexture(3553, this.texture2d);
           var image = this.imageElement;
-          if ((!this._isPowerOfTwo(this.imageElement.height) | !this._isPowerOfTwo(this.imageElement.width)) === 1) {
+          if ((!Texture.isPowerOfTwo(this.imageElement.height) | !Texture.isPowerOfTwo(this.imageElement.width)) === 1) {
             var temp = document.createElement('canvas');
-            temp.height = this._fitPowerOfTwo(image.height);
-            temp.width = this._fitPowerOfTwo(image.width);
+            temp.height = Texture.fitPowerOfTwo(image.height);
+            temp.width = Texture.fitPowerOfTwo(image.width);
             var ctx = temp.getContext('2d');
             ctx.drawImage(image, 0, 0, temp.width, temp.height);
             image = temp;
@@ -7792,16 +7802,6 @@ window.wwtlib = function(){
           this._errored = true;
         }
       }
-    },
-    _isPowerOfTwo: function(val) {
-      return !(val & (val - 1));
-    },
-    _fitPowerOfTwo: function(val) {
-      val--;
-      for (var i = 1; i < 32; i <<= 1) {
-        val = val | val >> i;
-      }
-      return val + 1;
     }
   };
 
@@ -14010,10 +14010,19 @@ window.wwtlib = function(){
       if (Tile.prepDevice != null) {
         try {
           this.texture2d = Tile.prepDevice.createTexture();
+          var image = this.texture;
+          if ((!Texture.isPowerOfTwo(this.texture.height) | !Texture.isPowerOfTwo(this.texture.width)) === 1) {
+            var temp = document.createElement('canvas');
+            temp.height = Texture.fitPowerOfTwo(image.height);
+            temp.width = Texture.fitPowerOfTwo(image.width);
+            var ctx = temp.getContext('2d');
+            ctx.drawImage(image, 0, 0, temp.width, temp.height);
+            image = temp;
+          }
           Tile.prepDevice.bindTexture(3553, this.texture2d);
           Tile.prepDevice.texParameteri(3553, 10242, 33071);
           Tile.prepDevice.texParameteri(3553, 10243, 33071);
-          Tile.prepDevice.texImage2D(3553, 0, 6408, 6408, 5121, this.texture);
+          Tile.prepDevice.texImage2D(3553, 0, 6408, 6408, 5121, image);
           Tile.prepDevice.texParameteri(3553, 10241, 9985);
           Tile.prepDevice.generateMipmap(3553);
           Tile.prepDevice.bindTexture(3553, null);
@@ -35812,4 +35821,4 @@ window.wwtlib = function(){
   ToastTile.rootIndexBuffer = new Array(4);
 
   return $exports;
-}();
+});

@@ -2710,7 +2710,7 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
     //console.log({ viewport: viewport, event: event });
     if (!viewport.isDirty) {
       return;
-    } 
+    }
 
     ctx.clearRect(0, 0, 100, 100);
     var sphereSize = $('#skyball').height();

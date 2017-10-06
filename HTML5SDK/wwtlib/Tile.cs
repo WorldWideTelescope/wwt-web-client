@@ -89,10 +89,25 @@ namespace wwtlib
                 {
                     texture2d = PrepDevice.createTexture();
 
+
+                    ImageElement image = texture;
+
+                    // Before we bind resize to a power of two if nessesary so we can MIPMAP
+                    if (!Texture.IsPowerOfTwo(texture.Height) | !Texture.IsPowerOfTwo(texture.Width))
+                    {
+                        CanvasElement temp = (CanvasElement)Document.CreateElement("canvas");
+                        temp.Height = Texture.FitPowerOfTwo(image.Height);
+                        temp.Width = Texture.FitPowerOfTwo(image.Width);
+                        CanvasContext2D ctx = (CanvasContext2D)temp.GetContext(Rendering.Render2D);
+                        ctx.DrawImage(image, 0, 0, temp.Width, temp.Height);
+                        //Substitute the resized image
+                        image = (ImageElement)(Element)temp;
+                    }
+
                     PrepDevice.bindTexture(GL.TEXTURE_2D, texture2d);
                     PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
                     PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-                    PrepDevice.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, texture);
+                    PrepDevice.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, image);
                     PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR_MIPMAP_NEAREST);
                     PrepDevice.generateMipmap(GL.TEXTURE_2D);
 

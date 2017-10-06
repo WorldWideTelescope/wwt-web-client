@@ -121,12 +121,12 @@ namespace wwtlib
             }
         }
 
-        private bool IsPowerOfTwo(int val)
+        public static bool IsPowerOfTwo(int val)
         {
             return (val & (val - 1)) == 0;
         }
 
-        private int FitPowerOfTwo(int val)
+        public static int FitPowerOfTwo(int val)
         {
             val--;
 
