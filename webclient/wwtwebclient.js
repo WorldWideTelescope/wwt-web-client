@@ -2703,7 +2703,7 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
   var api = {
     init: init
   };
-  var canvas, ctx;
+  var canvas, ctx; 
 
   function draw() {
     var viewport = arguments[1];
@@ -6224,9 +6224,6 @@ wwt.controllers.controller('SettingsController',
 			];
 		});
 
-		
-		
-
 		var redirTimer;
 		$scope.setClientPref = function() {
 			util.log($scope.preferredClient);
@@ -6300,14 +6297,12 @@ wwt.controllers.controller('SettingsController',
 				    $rootScope.$broadcast('autohideChange');
 				}
 			}, 10);
-			
-				
 		};
-		
 
 		$scope.retrieveSettings();
 	}
 ]);
+
 wwt.controllers.controller('ViewController',
 	['$scope',
 	'AppState',
@@ -6907,11 +6902,12 @@ wwt.controllers.controller('CurrentTourController', [
         };
         var blob = tour.saveToBlob();
         var filename = tour._title + '.wtt';
-        if ($rootScope.loggedIn) {
+        
             $scope.modalData = {
                 step: 'save',
                 tourTitle:tour._title
-            };
+        };
+        if ($rootScope.loggedIn) {
             $scope.modalData.saveChoice = function (upload) {
                 $scope.$applyAsync(function () {
                 if (upload) {
@@ -6962,6 +6958,7 @@ wwt.controllers.controller('CurrentTourController', [
                 }
                 });
             }
+           
             var saveTourAsModal = $modal({
                 scope: $scope,
                 templateUrl: 'views/modals/tour-uploader.html',
@@ -6970,6 +6967,9 @@ wwt.controllers.controller('CurrentTourController', [
                 placement:'center'
             });
            
+        } else {
+            saveRawFile();
+
         }
 
         var hideModal = function (modal) {
@@ -7246,7 +7246,7 @@ wwt.controllers.controller('CurrentTourController', [
 }]);
 
 
-    
+
 wwt.controllers.controller('TourSlideText', [
 	'$scope',
 	'$rootScope',

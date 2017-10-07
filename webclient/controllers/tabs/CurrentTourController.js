@@ -1,4 +1,4 @@
-﻿wwt.controllers.controller('CurrentTourController', [
+wwt.controllers.controller('CurrentTourController', [
     '$scope', '$rootScope', 'Util', 'MediaFile','AppState','$timeout','$modal',
     function ($scope, $rootScope, util, media,appState,$timeout,$modal) {
     var tourEdit = $scope.tourEdit = wwtlib.WWTControl.singleton.tourEdit;
@@ -205,11 +205,12 @@
         };
         var blob = tour.saveToBlob();
         var filename = tour._title + '.wtt';
-        if ($rootScope.loggedIn) {
+        
             $scope.modalData = {
                 step: 'save',
                 tourTitle:tour._title
-            };
+        };
+        if ($rootScope.loggedIn) {
             $scope.modalData.saveChoice = function (upload) {
                 $scope.$applyAsync(function () {
                 if (upload) {
@@ -260,6 +261,7 @@
                 }
                 });
             }
+           
             var saveTourAsModal = $modal({
                 scope: $scope,
                 templateUrl: 'views/modals/tour-uploader.html',
@@ -268,6 +270,9 @@
                 placement:'center'
             });
            
+        } else {
+            saveRawFile();
+
         }
 
         var hideModal = function (modal) {
@@ -544,4 +549,3 @@
 }]);
 
 
-    
