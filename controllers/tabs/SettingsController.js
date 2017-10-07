@@ -1,4 +1,4 @@
-﻿wwt.controllers.controller('SettingsController',
+wwt.controllers.controller('SettingsController',
 	['$scope',
 	'$rootScope',	
 	'AppState',
@@ -30,9 +30,6 @@
 			}*/
 			];
 		});
-
-		
-		
 
 		var redirTimer;
 		$scope.setClientPref = function() {
@@ -107,10 +104,7 @@
 				    $rootScope.$broadcast('autohideChange');
 				}
 			}, 10);
-			
-				
 		};
-		
 
 		$scope.retrieveSettings();
 	}

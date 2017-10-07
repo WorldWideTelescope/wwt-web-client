@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" %>
+<%@ Page Language="C#" %>
 <%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="System.Security.Cryptography.X509Certificates" %>
 <%@ Import Namespace="WURFL" %>
@@ -139,15 +139,21 @@
         %>
     <%=css%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/style/jquery.jscrollpane.css" rel="stylesheet"/>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
-
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107473046-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments) };
+    gtag('js', new Date());
+    gtag('config', 'UA-107473046-1');
+</script>
     <style> 
-        
-    body  .finder-scope {
+      body .finder-scope {
             background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
-        }
+      }
     </style> 
-     <script src="//js.live.net/v5.0/wl.js"></script>
+    <script src="//js.live.net/v5.0/wl.js"></script>
     <script src="sdk/wwtsdk.js"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap<%=DotMin %>"></script>

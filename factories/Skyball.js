@@ -2,7 +2,7 @@
   var api = {
     init: init
   };
-  var canvas, ctx;
+  var canvas, ctx; 
 
   function draw() {
     var viewport = arguments[1];
