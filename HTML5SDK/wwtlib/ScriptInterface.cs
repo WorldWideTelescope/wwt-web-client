@@ -20,6 +20,25 @@ namespace wwtlib
             {
                 missedReady = true;
             }
+
+            // This is to 
+            //TestVoTable();
+        }
+
+        public void TestVoTable()
+        {
+            // This is to 
+            table = VoTable.LoadFromUrl("http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365", CallMeMaybe);
+
+        }
+
+        VoTable table = null;
+
+        private void CallMeMaybe()
+        {
+            //table is loaded now
+
+            string name = table.Column[0].Name;
         }
 
         public event EventHandler<CollectionLoadedEventArgs> CollectionLoaded;
@@ -192,7 +211,11 @@ namespace wwtlib
             {
                 WWTControl.Singleton.PlayTour(url);
             }
+
         }
+
+
+
 
         public bool hideTourFeedback = false;
         public bool HideTourFeedback

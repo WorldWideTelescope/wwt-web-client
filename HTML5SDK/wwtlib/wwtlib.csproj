@@ -127,6 +127,7 @@
     <Compile Include="Layers\TimeSeriesLayer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\VOTable.cs" />
     <Compile Include="MinorPlanets.cs" />
     <Compile Include="Planets.cs" />
     <Compile Include="PlotTile.cs" />
