@@ -1,0 +1,105 @@
+<div class="modal-header">
+  <h5 localize="VO Cone Search / Registry Browser"></h5>
+</div>
+<div class="modal-body vo-cone-search" ng-controller="voConeSearch">
+
+  <div class="row" style="margin-bottom:5px">
+    <div class="col-md-4 form-group-sm">
+      <label localize="Base URL"></label>
+      <input type="search" class="form-control" ng-class="{disabled:fromRegistry}" ng-model="searchBaseURL">
+      <div class="checkbox">
+        <label data-ng-class="{checked:fromRegistry}">
+          <input type="checkbox" ng-model="fromRegistry"/>&nbsp;
+          <span localize="From Registry"></span>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="row nested">
+        <div class="col-md-3 form-group-sm">
+          <label localize="RA"></label>
+          <input type="number" class="form-control" ng-model="RA">
+        </div>
+        <div class="col-md-3 form-group-sm">
+          <label localize="Dec"></label>
+          <input type="number" class="form-control" ng-model="dec">
+        </div>
+        <div class="col-md-3 form-group-sm">
+          <label localize="Search Radius"></label>
+          <input type="number" class="form-control">
+        </div>
+        <div class="col-md-3 form-group-sm">
+          <label localize="Verbosity"></label>
+          <select class="form-control">
+            <option value="low" localize="Low"></option>
+            <option value="med" localize="Medium"></option>
+            <option value="hi" localize="High"></option>
+          </select>
+        </div>
+        <div class="col-md-12" style="margin-top:-3px;">
+          <div class="checkbox">
+            <label data-ng-class="{checked:fromView}">
+              <input type="checkbox" ng-model="fromView"/>&nbsp;
+              <span localize="From View"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="checkbox">
+        <label data-ng-class="{checked:catalogPref}">
+          <input type="checkbox" ng-model="catalogPref"/>&nbsp;
+          <span localize="Catalog (VO Cone Search)"></span>
+        </label>
+      </div>
+      <div class="checkbox">
+        <label data-ng-class="{checked:siapImages}">
+          <input type="checkbox" ng-model="siapImages"/>&nbsp;
+          <span localize="Images (VO SIAP)"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 form-group-sm">
+      <label localize="NVO Registry Title Like"></label>
+      <input type="text" class="form-control" ng-model="regTitle">
+    </div>
+    <div class="col-md-6">
+      <label>&nbsp;</label><br>
+      <a class="btn" localize="NVO Registry Search" ng-click="nope()"></a>
+    </div>
+    <div class="col-md-2 search-buttons">
+      <a class="btn" localize="Search" ng-click="nope()"></a><br>
+      <a class="btn" localize="Close" ng-click="$hide()"></a>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th localize="Title"></th>
+      <th localize="ServiceType"></th>
+      <th localize="Type"></th>
+      <th localize="Publisher"></th>
+      <th localize="Wave Band"></th>
+      <th localize="Identifier"></th>
+      <th localize="Max Radius"></th>
+      <th localize="Max Rows"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
