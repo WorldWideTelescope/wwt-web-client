@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,6 +75,7 @@
     <Content Include="controllers\LoginController.js" />
     <Content Include="controllers\modals\SlideSelectionController.js" />
     <Content Include="controllers\modals\TourSlideText.js" />
+    <Content Include="controllers\modals\VoConeSearchController.js" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\tabs\CommunityController.js" />
     <Content Include="controllers\tabs\CurrentTourController.js" />
@@ -333,6 +335,7 @@
     <Content Include="views\modals\mobile-view.html" />
     <Content Include="views\modals\open-item.html" />
     <Content Include="views\modals\tour-uploader.html" />
+    <Content Include="views\modals\vo-cone-search.html" />
     <Content Include="views\popovers\observing-time.html" />
     <Content Include="views\popovers\property-panel.html" />
     <Content Include="views\popovers\shareplace.html" />

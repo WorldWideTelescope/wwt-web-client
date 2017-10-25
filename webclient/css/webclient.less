@@ -3,6 +3,7 @@
 @import 'variables.less';
 @import 'tours.less';
 @import 'contextmenu.less';
+@import 'conesearch.less';
 html {
     -ms-content-zooming: none;
     .desktop{position:relative;}
@@ -10,7 +11,7 @@ html {
 
 body.wwt-webclient-wrapper.modal-open, .wwt-webclient-wrapper.modal-open .navbar-fixed-top, .wwt-webclient-wrapper.modal-open .navbar-fixed-bottom{
 	margin-right:0;
-} 
+}
 
 body.wwt-webclient-wrapper.mobile{
 	#WorldWideTelescopeControlHost{
@@ -21,7 +22,7 @@ body.wwt-webclient-wrapper.mobile{
 		bottom:-1px;
 		height:auto;
 		width:auto;
-	} 
+  }
 	.mobile{
         .share-button {
             position:absolute;
@@ -97,13 +98,13 @@ body.wwt-webclient-wrapper.mobile{
 				overflow:hidden;
 			}
 		}
-		
-		#nboModal .modal-dialog{
+
+    #nboModal .modal-dialog{
 			bottom:78px;
 			position:absolute;
 			.boxhilite();
-			
-		}
+
+    }
 		.nearby-objects{
 			position:absolute;
 			bottom:3px;
@@ -141,9 +142,8 @@ body.wwt-webclient-wrapper.mobile{
 		}
 
 		.control .cross-fader {
-			
 
-			a.btn {
+      a.btn {
 				position: absolute;
 				left: 100px;
 				margin: -8px -8px;
@@ -187,8 +187,8 @@ body.wwt-webclient-wrapper.mobile{
 				}
 				.modal-content.thumbnails{
 					padding:5px;
-					
-				}
+
+        }
 			}
 		}
 }
@@ -305,7 +305,7 @@ body.wwt-webclient-wrapper.mobile{
   .popover {
     /*width:470px;
         overflow:hidden;
-        
+
         .modal-header,.modal-footer{
             display:none;
         }*/
@@ -1176,11 +1176,11 @@ body.wwt-webclient-wrapper.mobile{
     color: lighten( @text-color, 10%);
     .boxGradient();
     padding: 2px 6px;
-    
+
   }
 
   .btn:hover, .btn.active {
-    
+
     .boxhilite();
   }
 

@@ -1,6 +1,6 @@
 wwt.controllers.controller('SettingsController',
 	['$scope',
-	'$rootScope',	
+	'$rootScope',
 	'AppState',
 	'$timeout',
 	'$cookies',
@@ -64,8 +64,8 @@ wwt.controllers.controller('SettingsController',
 		});
 
 		$scope.retrieveSettings = function () {
-		   
-			$scope.savedSettings = appState.get('settings');
+
+      $scope.savedSettings = appState.get('settings');
 			if (!$scope.savedSettings || !$scope.savedSettings.version || $scope.savedSettings.version != $scope.defaults.version) {
 				$scope.savedSettings = $scope.defaults;
 			}
@@ -75,7 +75,7 @@ wwt.controllers.controller('SettingsController',
 			$scope.saveSettings(true);
 		};
 
-		$scope.WebGl = appState.get('WebGl') ? true : false;
+    $scope.WebGl = appState.get('WebGl') ? true : false;
 		$scope.setWebGl = function() {
 			appState.set('WebGl', $scope.WebGl);
 			location.reload();
@@ -94,7 +94,7 @@ wwt.controllers.controller('SettingsController',
 						if (setting.indexOf('autoHide') === 0) {
 						    broadcast = true;
 						}
-						
+
 					}
 				});
 				wwt.wc.settings.set_showCrosshairs($scope.crosshairs);

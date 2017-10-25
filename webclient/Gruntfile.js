@@ -80,7 +80,8 @@ module.exports = function(grunt) {
                     'controllers/modals/ShareController.js',
                     'controllers/modals/OpenItemController.js',
                     'controllers/modals/ObservingTimeController.js',
-                    'controllers/modals/SlideSelectionController.js',
+                  'controllers/modals/SlideSelectionController.js',
+                  'controllers/modals/VoConeSearchController.js',
                     'controllers/LoginController.js',
                     'controls/move.js',
                     'controls/util.js'

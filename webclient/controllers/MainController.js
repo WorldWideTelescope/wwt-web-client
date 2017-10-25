@@ -3,7 +3,7 @@ This controller is the hub of the web client - with all the shared functionality
 that needs to live at the top of the scope chain residing here.
 
 UIManager was created to add some functions to the rootScope that could be removed
-from the main controller to reduce its weight. 
+from the main controller to reduce its weight.
 
 This file is too large and needs to be componentized a bit more. This is an ongoing
 cleanup process.
@@ -31,7 +31,7 @@ wwt.controllers.controller('MainController',
             //TODO - figure out how to clean up lame long list of dependencies injected
             var ctl;
 
-            //#region LookAt/Imagery 
+          //#region LookAt/Imagery
             var initialPass = true;
             $scope.lookTypes = ['Earth', 'Planet', 'Sky', 'Panorama', 'SolarSystem'];
             $scope.lookAt = 'Sky';
@@ -300,7 +300,20 @@ wwt.controllers.controller('MainController',
                             label: 'Search',
                             button: 'rbnSearch',
                             menu: {
-                                'Search Now': [function () { $timeout(function () { changePanel('Search'); }); }]
+                              'Search Now': [function () {
+                                $timeout(function () {
+                                  changePanel('Search');
+                                });
+                              }],
+                              'VO Cone Search': [function () {
+                                var coneSearchModal = $modal({
+                                  scope: $scope,
+                                  templateUrl: 'views/modals/centered-modal-template.html',
+                                  contentTemplate: 'views/modals/vo-cone-search.html',
+                                  show: true,
+                                  placement: 'center'
+                                });
+                              }]
                             }
                         },
                         {
@@ -392,7 +405,7 @@ wwt.controllers.controller('MainController',
                     $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
                 }
             };
-            //#endregion 
+          //#endregion
 
 
             //#region viewport/finderscope
