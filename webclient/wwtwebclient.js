@@ -301,7 +301,7 @@
   function _previousStep() {
       return;
     this._direction = 'backward';
-    
+
     if (this._currentStep === 0) {
       return false;
     }
@@ -324,7 +324,7 @@
   function _exitIntro(targetElement) {
     //remove overlay layer from the page
     var overlayLayer = targetElement.querySelector('.introjs-overlay');
-    
+
     //return if intro already completed or skipped
     if (overlayLayer == null) {
       return;
@@ -370,7 +370,7 @@
     } else if (document.detachEvent) { //IE
       document.detachEvent('onkeydown', this._onKeyDown);
     }
-    
+
     //set the step to zero
     this._currentStep = undefined;
   }
@@ -430,7 +430,7 @@
         arrowLayer.className = 'introjs-arrow left';
         break;
       case 'left':
-        if (this._options.showStepNumbers == true) {  
+        if (this._options.showStepNumbers == true) {
           tooltipLayer.style.top = '15px';
         }
         tooltipLayer.style.right = (_getOffset(targetElement).width + 20) + 'px';
@@ -722,14 +722,14 @@
     while (parentElm != null) {
       if (parentElm.tagName.toLowerCase() === 'body') break;
 
-      //fix The Stacking Contenxt problem. 
+      //fix The Stacking Contenxt problem.
       //More detail: https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context
       var zIndex = _getPropValue(parentElm, 'z-index');
       var opacity = parseFloat(_getPropValue(parentElm, 'opacity'));
       if (/[0-9]+/.test(zIndex) || opacity < 1) {
         parentElm.className += ' introjs-fixParent';
       }
-    
+
       parentElm = parentElm.parentNode;
     }
 
@@ -748,7 +748,7 @@
         window.scrollBy(0, bottom + 100); // 70px + 30px padding from edge to look nice
       }
     }
-    
+
     if (typeof (this._introAfterChangeCallback) !== 'undefined') {
         this._introAfterChangeCallback.call(this, targetElement.element);
     }
@@ -1072,7 +1072,7 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
                         intro.start();
                     }
                 //}, 1);
-                
+
             };
 
             if (attrs.ngIntroAutostart == 'true') {
@@ -1083,7 +1083,7 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
         }
     };
 }]);
-/** 
+/**
 * Copyright 2014, 2015  Microsoft Research
 *
 * Permission is hereby granted, free of charge, to any person
@@ -1093,10 +1093,10 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
 * modify, merge, publish, distribute, sublicense, and/or sell copies
 * of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be
 * included in all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -1106,17 +1106,17 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 **/
-var wwt = { 
+var wwt = {
 	app: angular.module('wwtApp', [
 		'mgcrea.ngStrap',
-		'ngTouch',  
-		'ngAnimate', 
+		'ngTouch',
+		'ngAnimate',
 		'ngRoute',
 		'wwtControllers',
 		'ngCookies',
 		'angular-intro'
 	]),
-	controllers: angular.module('wwtControllers', []), 
+	controllers: angular.module('wwtControllers', []),
 	triggerResize: function () { },
 	resize: function () {
 		$('body.mobile #WWTCanvas')
@@ -1124,7 +1124,7 @@ var wwt = {
 			.width($('#WorldWideTelescopeControlHost').width());
 		$('body.desktop #WWTCanvas')
 			.height($(window).height())
-			.width($(window).width());	
+			.width($(window).width());
 	}
 };
 
@@ -1156,17 +1156,17 @@ wwt.app.directive("scrollBuffer", ['$window',function ($window) {
 			if (scope.scrollDepth < totalItems) {
 				scope.scrollDepth = totalItems;
 				scope.$apply();
-				
+
 			}
-			
+
 		});
-		
+
 	};
 }]);
 
 wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootScope,$window) {
     return function ($scope, element, attrs) {
-        
+
         var scope = $scope;
         var movable = $(element).find('.jspPane');
         $(element).on('mousewheel', function (event) {
@@ -1175,7 +1175,7 @@ wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootSco
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
             var curLeft = Math.abs(Math.floor(movable.position().left));
             var increment = 155;
-            var newLeft;            
+            var newLeft;
             if (delta < 0) {//scrolling down/right
                 console.log('down')
                 newLeft = Math.floor((curLeft + increment) / increment) * increment;
@@ -1185,7 +1185,7 @@ wwt.app.directive("jqueryScrollbar", ['$rootScope','$window', function ($rootSco
                 newLeft = Math.floor((curLeft - increment) / increment) * increment;
                 newLeft = Math.min(curLeft, Math.abs(newLeft));
             }
-            
+
             $(element).data('jsp').scrollToX(Math.abs(newLeft));
         })
 
@@ -1199,7 +1199,7 @@ wwt.app.directive("localize", ['Localization', '$rootScope', 'AppState','Util', 
 				$rootScope.languagePromise.then(function() {
 					replaceText(false);
 				});
-			//} 
+			//}
 		} else {
 			replaceText(true);
 		}
@@ -1281,13 +1281,13 @@ wwt.app.directive('contenteditable', [function() {
             var el = $(element)[0];
             function validate() {
                 var val = element.html();
-                
+
                 var minSec = val.split(':');
                 var sec, min,tenths = 0,secString;
                 if (minSec.length === 2) {
                     min = parseInt(minSec[0].replace(/\D/g, ''));
                     secString = minSec[1].split('.');
-                    
+
                 } else if (minSec.length === 1) {
                     min = 0;
                     secString = minSec[0].split('.');
@@ -1301,16 +1301,16 @@ wwt.app.directive('contenteditable', [function() {
                     tenths = parseInt(secString[1].replace(/\D/g, ''));
                 }
                 s.duration = (min * 60000) + (sec * 1000) + (tenths * 100);
-                
+
             }
 
-            
+
             if (isDuration) {
                 renderDuration();
             } else {
                 element.html(s.description);
             }
-            
+
             function renderDuration() {
                 if (s.duration > 100)
                     lastGoodValue = s.duration;
@@ -1321,7 +1321,7 @@ wwt.app.directive('contenteditable', [function() {
                 var secs = ((s.duration / 1000) % 60);
                 var tenths = Math.round((secs % 1) * 10);
                 secs = Math.floor(secs);
-                
+
                 s.durationString = min + ':' + (secs < 10 ? '0' : '') + secs + '.' + tenths;
                 stop.set_duration(lastGoodValue);
                 if (hasFocused) {
@@ -1352,12 +1352,12 @@ wwt.app.directive('contenteditable', [function() {
                             validate();
                             break;
                     }
-                    
+
                 }
             });
             var incrementing = false;
-            
-                 
+
+
             element.on('focus', function () {
                 hasFocused = true;
                 if (isDuration) {
@@ -1385,12 +1385,12 @@ wwt.app.directive('contenteditable', [function() {
                     select();
                 }
             });
-            
+
             element.on('blur', function () {
                 if (incrementing) return;
                 scope.$applyAsync(function () {
                     if (isDuration) {
-                        
+
                         validate();
                         renderDuration();
                         stop.set_duration(lastGoodValue);
@@ -1404,7 +1404,7 @@ wwt.app.directive('contenteditable', [function() {
             });
             function select() {
                 setTimeout(function () {
-                    
+
                     var txt = element.text();
                     var range = document.createRange();
                     var start = 0, end = txt.length;
@@ -1420,7 +1420,7 @@ wwt.app.directive('contenteditable', [function() {
                 }, 10);
 
             }
-            
+
         }
     };
 }]);
@@ -1476,7 +1476,7 @@ wwt.app.directive('copyable', ['$timeout',function ($timeout) {
                     scope.copy.fadeout = false;
                     input.blur();
                 }, 0);
-                $timeout(function () { 
+                $timeout(function () {
                     scope.copy.fadeout = true;
                 }, 3333);
             })
@@ -1519,7 +1519,7 @@ wwt.app.factory('AppState', function() {
 	};
 	init();
 	return api;
-});  
+});
 wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScope,appState) {
     var api = {init:init};
 
@@ -1593,10 +1593,10 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
             o.context = ref;
         }
     };
-    
+
 
     var settingChange = function () {
-        var settings = appState.get('settings'); 
+        var settings = appState.get('settings');
         if (!settings || settings.autoHideTabs === undefined) {
             setBoth(autoHide, false);
         } else {
@@ -1611,7 +1611,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
         }
         if (tourPlaying) {
             panels.tabs = $('#ribbon, #topPanel, .layer-manager');
-            
+
             setBoth(autoHideHover, true);
             setBoth(autoHideClick, true);
             hideTimeout = 100;
@@ -1624,7 +1624,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
         }
         cursorRegionChange();
     };
-    
+
 
     var tourStateChange = function () {
         console.log('tourstatechange - playing:', $rootScope.tourPlaying);
@@ -1646,7 +1646,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
                 showingPanels[groupKey] = true;
                 panelGroup.fadeIn(800, function () { showingPanels[groupKey] = false; });
                 if (tourPlaying && mouseInRegion.tabs) {
-                    console.log('showingSlides'); 
+                    console.log('showingSlides');
                     $rootScope.$broadcast('showingSlides');
                 }
             }
@@ -1658,8 +1658,8 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
             }, hideTimeout);
         }
     }
-    
-    
+
+
     var regionClicked = function (key) {
         console.log('regionClick', { autoHide: autoHide, autoHideClick: autoHideClick, tabs: panels.tabs });
         togglePanelGroup(true, key);
@@ -1682,8 +1682,8 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
         });
     };
 
-    
-    
+
+
     return api;
 }]);
 wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) {
@@ -1750,7 +1750,7 @@ wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) 
 			lpacks.find('languagepack').each(function(i, pack) {
 				langArray.push({ label: $(pack).attr('name'), code: $(pack).attr('code') });
 			});
-			
+
 			deferred.resolve(langArray);
 		});
 		return deferred.promise;
@@ -1784,8 +1784,8 @@ wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) 
 					});
 					deferred.resolve(true);
 				});
-		});      
-		
+		});
+
 		return deferred.promise;
 	}
 	var init = function () {
@@ -1803,7 +1803,7 @@ wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) 
 				data = transformLanguagePack(data);
 				englishData = data;
 				var dsplit = data.split('\n');
-				
+
 				englishArray = [];
 				$.each(dsplit, function () {
 					var s1 = this.split('\t')[1];
@@ -1859,11 +1859,11 @@ wwt.app.factory('FinderScope',
             var pos = $('.finder-scope').position();
             var offsetX = 301;
             var offsetY = 87;
-            
+
             var scopeCoords = wwtlib.WWTControl.singleton.getCoordinatesForScreenPoint(pos.left + offsetX, pos.top + offsetY);
             scopeCoords.x = (scopeCoords.x + 720) % 360;
             var scope = wwtlib.Coordinates.raDecTo3d(scopeCoords.x, scopeCoords.y);
-            
+
             var constellation = wwtlib.Constellations.containment.findConstellationForPoint(scopeCoords.x, scopeCoords.y);
             var closestDist, closestPlace;
             var constellationPlaces,ssPlaces;
@@ -1882,8 +1882,8 @@ wwt.app.factory('FinderScope',
                         closestPlace = place;
                         closestDist = placeDist;
                     }
-                    
-                    
+
+
                 } catch (er) {
                     if (place && place.get_name()!='Earth')
                     util.log(er);
@@ -1900,12 +1900,12 @@ wwt.app.factory('FinderScope',
             return closestPlace;
         }
 
-        
+
         return api;
     }
     ]);
-// Includes shared functions for ExploreController, SearchController, and 
-// ContextPanelController - handles thumbnail click, right-click, and paging 
+// Includes shared functions for ExploreController, SearchController, and
+// ContextPanelController - handles thumbnail click, right-click, and paging
 // behavior
 
 // ToursController does not use this factory
@@ -1919,14 +1919,14 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         goFwd: goFwd,
         goBack: goBack
     };
-    
+
     // Each controller calls init and passes in the controller
     // scope
     function init(scope, name) {
-        scope.pageCount = 1; 
+        scope.pageCount = 1;
         scope.pageSize = 1;
         scope.currentPage = 0;
-        
+
         scope.preventClickBubble = function (event) {
             event.stopImmediatePropagation();
         };
@@ -1935,7 +1935,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         };
         scope.goFwd = function () {
             goFwd(scope);
-        }; 
+        };
         scope.showMenu = function (i) {
             var item = scope.collectionPage[i];
             item.contextMenuEvent = true;
@@ -1945,7 +1945,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
                 if (util.isMobile) {
                     menuContainer = $('#' + name + 'Container #menuContainer' + i);
                 }
-                menuContainer.append($('#researchMenu')); 
+                menuContainer.append($('#researchMenu'));
                 setTimeout(function () {
                     $('.popover-content .close-btn').click();
                     menuContainer.find('#researchMenu')
@@ -1977,7 +1977,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
             scope.currentPage = 0;
             scope.expanded = flag != undefined ? flag : !scope.expanded;
             scope.expandTop(scope.expanded,name);
-            calcPageSize(scope, name === 'context'); 
+            calcPageSize(scope, name === 'context');
         };
         scope.dropdownClass = name === 'context' && !util.isMobile ? 'dropup menu-container' : 'dropdown menu-container';
         scope.popupPosition = name === 'context' && !util.isMobile ? 'top' : 'bottom';
@@ -1988,7 +1988,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
             return outParams;
         }
         if (!outParams) {
-            outParams = {}; 
+            outParams = {};
         }
         scope.activeItem = item.get_thumbnailUrl() + item.get_name();
         scope.setActiveItem(item);
@@ -2061,9 +2061,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
                 scope.setSurveyBg(item.get_name(), item);
             } else {
                 scope.setForegroundImage(item);
-            } 
+            }
             if (scope.$hide) {
-                scope.$hide(); 
+                scope.$hide();
                 $rootScope.searchModal = false;
             }
             return outParams;
@@ -2083,7 +2083,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         if (ss.canCast(item, wwtlib.Tour)) {
             scope.playTour(item.get_tourUrl());
         }
-        return outParams;  
+        return outParams;
     };
 
     function calcPageSize(scope, isContextPanel) {
@@ -2158,7 +2158,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
 		parseHms: parseHms
-		
+
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -2286,7 +2286,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			var circle = wwt.wc.createCircle();
 			circle.set_center(place.get_location3d());
 			circle.set_skyRelative(false);
-			
+
 			wwt.wc.addAnnotation(circle);
 		}
 	}
@@ -2354,9 +2354,9 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			return '';
 		}
 	}
-	
-	var accelDevice = false; 
-	
+
+	var accelDevice = false;
+
 	function redirectClient(val) {
 		return;
 		var qs = location.search.substr(1);
@@ -2376,7 +2376,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		}
 		newQs += 'client=' + val;
 		location.href = '/webclient' + newQs + location.hash;
-		
+
 	}
 
 	function isAccelDevice() {
@@ -2439,7 +2439,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			});
 		}
 		return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
-		
+
 	}
 
 	var keyHandler = function (e) {
@@ -2488,8 +2488,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		});
 	}
 
-	
-	
+
+
 	var dirtyViewport = function () {
 		var wasDirty = viewport.isDirty;
 		viewport.isDirty = wwt.wc.getRA() !== viewport.RA || wwt.wc.getDec() !== viewport.Dec || wwt.wc.get_fov() !== viewport.Fov;
@@ -2515,8 +2515,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 	browsers.isChrome = has(ua, 'chrome') > 0 && !browsers.isIE && !browsers.isEdge && !browsers.isFF;
 	browsers.isWindows = has(ua, 'windows');
 
-	//console.log(browsers); 
-	
+	//console.log(browsers);
+
 	return $.extend(api, browsers);
 
 }]);
@@ -2529,10 +2529,10 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 	$rootScope.toggleLayerManager = function () {
 		$rootScope.layerManagerHidden = !$rootScope.layerManagerHidden;
 		appState.set('layerManagerHidden', $rootScope.layerManagerHidden);
-	} 
+	}
 
 	$rootScope.getCreditsText = function (place) {
-		return util.getCreditsText(place); 
+		return util.getCreditsText(place);
 	}
 	$rootScope.getCreditsUrl = function (place) {
 		return util.getCreditsUrl(place);
@@ -2556,7 +2556,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 	$rootScope.layerManagerHeight = function() {
 		return $(window).height() - (168 + $('body.desktop .context-panel').height());
 	};
-	
+
 	$rootScope.copyLink = function (event) {
 	    var src = $(event.currentTarget);
 	    var input = src.prev();
@@ -2567,7 +2567,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization', fu
 	    //flyout.fadeIn(200).show();
 	    setTimeout(function () { flyout.fadeOut(1111); }, 3333);
 	}
-	 
+
 	return true;
 }]);
 
@@ -2578,7 +2578,7 @@ wwt.app.factory('SearchUtil', [
     'Util',
     '$rootScope',
 	function (searchDataService, $q, util, $rootScope) {
-	
+
 	var api = {
 		runSearch: runSearch,
 		findNearbyObjects: findNearbyObjects,
@@ -2640,14 +2640,14 @@ wwt.app.factory('SearchUtil', [
 
 		return deferred.promise;
 	}
-		
+
 	function findNearbyObjects(args) {
 		var deferred = $q.defer();
 
 		searchDataService.getData().then(function(d) {
 			var searchData = wwt.searchData;
 			if ($rootScope.viewport && (args.lookAt === 'Sky' || args.lookAt === 'SolarSystem')) {
-				
+
 				var ulCoords = args.singleton.getCoordinatesForScreenPoint(0, 0);
 				var corner = wwtlib.Coordinates.raDecTo3d(ulCoords.x, ulCoords.y);
 				var center = wwtlib.Coordinates.raDecTo3d($rootScope.viewport.RA, $rootScope.viewport.Dec);
@@ -2703,7 +2703,7 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
   var api = {
     init: init
   };
-  var canvas, ctx; 
+  var canvas, ctx;
 
   function draw() {
     var viewport = arguments[1];
@@ -2804,7 +2804,7 @@ wwt.app.factory('HashManager', [
 			removeHashVal: removeHashVal,
 			getHashObject: getHashObj
 		};
-		
+
 		var privateHash = '#/';
 
 		function setHashVal(key, v, privateOnly, reset) {
@@ -2902,7 +2902,7 @@ wwt.app.factory('HashManager', [
 					value = hash.split('=')[1];
 				}
 			}
-			return value;*/ 
+			return value;*/
 			return getHashObj(privateOnly)[key];
 		}
 
@@ -2919,7 +2919,7 @@ wwt.app.factory('HashManager', [
 						}
 					});
 				}
-				
+
 			}
 			return obj;
 		}
@@ -2930,7 +2930,7 @@ wwt.app.factory('HashManager', [
 			setTimeout(function() {
 				$rootScope.$broadcast('hashChange', getHashObj());
 			}, 10);
-			
+
 		}
 
 		window.onhashchange = hashChange;
@@ -2943,12 +2943,12 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
         addLocalMedia: addLocalMedia,
         flushStore: flushStore,
         getBinaryData: getBinaryData,
-        
+
     };
     var mediaCache = [];
 
     function Media(params) {
-        
+
         return{
             url:params.url,
             key:params.key,
@@ -2959,7 +2959,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
     }
 
     function addLocalMedia(mediaKey, file, db) {
-        
+
         var deferred = $q.defer();
         var keys = ['collection', 'tour', 'image'];
         var req = indexedDB.open('tempblob');
@@ -2972,7 +2972,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
             var db = req.result;
 
             var key = keys.indexOf(mediaKey);
-            
+
             var tx = db.transaction('files', 'readwrite');
             var store = tx.objectStore('files');
             var addFile = function () {
@@ -2991,16 +2991,16 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
                         name: file.name
                     });
                     deferred.resolve(media);
-                    mediaCache[key] = media;                    
+                    mediaCache[key] = media;
                 };
             };
             addFile();
-           
+
         }
         return deferred.promise;
     }
 
-    
+
 
     function flushStore(db) {
         var deferred = $q.defer();
@@ -3027,7 +3027,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
                 deferred.resolve(this.response);
             }
             else if (asUIntArray) {
-                var uInt8Array = new Uint8Array(this.response); 
+                var uInt8Array = new Uint8Array(this.response);
                 for (var i = 0, len = uInt8Array.length; i < len; ++i) {
                     uInt8Array[i] = this.response[i];
                 }
@@ -3045,7 +3045,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
         }
         req.send(null);
         return deferred.promise;
-    
+
     }
 
     var appendBuffer = function (buffer1, buffer2) {
@@ -3078,7 +3078,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
 }]);
 wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	function ($http, $q, $timeout, util) {
-		
+
 	var api = {
 		getRoot: getRoot,
 		getSolarSystemPlaces:getSolarSystemPlaces,
@@ -3115,7 +3115,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 
 	    function getChildren(obj) {
 		var deferred = $q.defer();
-		
+
 		obj.childLoadCallback(function () {
 			var children = obj.get_children();
 			$.each(children, function (i, item) {
@@ -3126,7 +3126,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 			});
 			deferred.resolve(transformData(children));
 		});
-		
+
 		return deferred.promise;
 	}
 
@@ -3158,7 +3158,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 				util.log(item, er);
 			}
 		});
-		return items; 
+		return items;
 	};
 
 	var init = function () {
@@ -3170,7 +3170,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 				return;
 			}
 			root = wwt.wc.createFolder();
-		
+
 			root.loadFromUrl('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot', function () {
 				var collection;
 				if (util.getQSParam('wtml') != null) {
@@ -3198,7 +3198,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		}
 
 		tryInit();
-		
+
 		return deferred.promise;
 	};
 
@@ -3230,7 +3230,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	    vampFolder.guid = '0v0';
 	    vampFolder.set_url('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
 	    root.addChildFolder(vampFolder);
-	    
+
 	}
 
 	function importImage(url, manualData) {
@@ -3241,10 +3241,10 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 			root.addChildFolder(openCollectionsFolder);
 		}
 		var collection = wwt.wc.createFolder();
-		
+
 		collection.set_name("Imported image");
 		//collection.url = url;
-		
+
 		var encodedUrl = url.indexOf('%2F%2F') != -1 ? url : encodeURIComponent(url);
 		if (manualData) {
 			encodedUrl += manualData;
@@ -3482,7 +3482,7 @@ wwt.app.factory('SearchData', [
 			wwt.searchDataIndexed = [];
 			data = wwt.searchData;
 			var start = new Date();
-			
+
 			$.each(data.Constellations, function (i, item) {
 				/*if (item.name === 'SolarSystem') {
 					item.places = ssData;
@@ -3494,7 +3494,7 @@ wwt.app.factory('SearchData', [
 						imgSet;
 					if (fgi) {
 						isId++;
-						
+
 						imgSet = wwtlib.Imageset.create(
 							fgi.n,//name
 							fgi.u,//url
@@ -3545,7 +3545,7 @@ wwt.app.factory('SearchData', [
 							}
 						});
 					}
-					
+
 					pl.guid = i + "." + j;
 					//re-place js data with place obj
 					item.places[j] = pl;
@@ -3563,14 +3563,14 @@ wwt.app.factory('SearchData', [
 			        importWtml('ESO.wtml').then(function () {
 			            console.log('eso loaded');
 			            importWtml('Chandra.wtml').then(function () {
-			                console.log('chandra loaded'); 
+			                console.log('chandra loaded');
 			            });
 			        });
 			    });
 		        deferredInit.resolve(data);
 		    });
-			
-			
+
+
 		} else {
 			setTimeout(init, 333);
 		}
@@ -3610,7 +3610,7 @@ wwt.app.factory('SearchData', [
 
 	function importWtml(wtmlPath) {
 	    var deferred = $q.defer();
-		
+
 		$.ajax({
 			url: wtmlPath
 		}).done(function() {
@@ -3619,8 +3619,8 @@ wwt.app.factory('SearchData', [
 				place = $(place);
 				var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
 				if (ra !== 0 || dec !== 0) {
-					constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec); 
-						
+					constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec);
+
 					var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
 					var wwtPlace = wwtlib.Place.create(
 						place.attr('Name'),
@@ -3677,14 +3677,14 @@ wwt.app.factory('SearchData', [
 			});
 			deferred.resolve(true);
 		});
-		
+
 	    return deferred.promise;
 	}
 
-	
+
 
 	initPromise = init();
-	
+
 	return api;
 }]);
 wwt.app.factory('Astrometry', [
@@ -3704,7 +3704,7 @@ wwt.app.factory('Astrometry', [
 		};
 
     var statusTypes = {
-        connecting: 'Connecting', 
+        connecting: 'Connecting',
         connected: 'Connect Success',
         connectFail: 'Connection Failed',
         uploading: 'Uploading Image',
@@ -3723,7 +3723,7 @@ wwt.app.factory('Astrometry', [
 			statusCallback,
 			sessionId = null,
 			submissionId = null,
-			jobId = null, 
+			jobId = null,
 			calibration = null,
 			jobStatus = null,
 			errorData = null,
@@ -3780,7 +3780,7 @@ wwt.app.factory('Astrometry', [
 			}).fail(function (xhr, ajaxOptions, error) {
 				errorData = error;
 				showStatus(statusTypes.uploadFail);
-			}); 
+			});
 		}
 
 		function checkStatus() {
@@ -3827,7 +3827,7 @@ wwt.app.factory('Astrometry', [
 					if (debug) {
 						calibration = {};
 						calibration.ra = 202.45355674088898;
-						calibration.dec = 47.20018130592933; 
+						calibration.dec = 47.20018130592933;
 						calibration.rotation = 122.97953942448784;
 						calibration.scale = 0.3413275776344843;
 						calibration.parity = 1;
@@ -3892,11 +3892,11 @@ wwt.app.factory('Astrometry', [
 	}]);
 wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 	function ($http, $q, $timeout, util) {
-		
+
 	var api = {
 		getRoot: getRoot,
 		getChildren: getChildren
-		
+
 	};
 	var root,
 		rootFolders,
@@ -3918,7 +3918,7 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 
 	function getChildren(obj) {
 		var deferred = $q.defer();
-		
+
 		obj.childLoadCallback(function () {
 			var children = obj.get_children();
 			$.each(children, function (i, item) {
@@ -3926,11 +3926,11 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 			});
 			deferred.resolve(transformData(children));
 		});
-		
+
 		return deferred.promise;
 	}
 
-	
+
 
 	var init = function () {
 		var deferred = $q.defer();
@@ -3941,18 +3941,18 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 				return;
 			}
 			root = wwt.wc.createFolder();
-		
+
 			root.loadFromUrl('http://worldwidetelescope.org/Resource/Service/Payload', function () {
 				deferred.resolve(root.get_children());
 			});
 		}
 
 		tryInit();
-		
+
 		return deferred.promise;
 	};
 
-	
+
 	var initPromise = init();
 
 	return api;
@@ -3962,18 +3962,18 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 wwt.controllers.controller('ContextPanelController',
 	['$scope',
 	'$rootScope',
-	'$timeout', 
-	'Util', 
+	'$timeout',
+	'Util',
 	'SearchUtil',
 	'ThumbList',
 	function ($scope, $rootScope, $timeout, util, searchUtil, thumbList) {
-	    
+
 	    var lastUpdate = new Date();
 
 	    var init = function () {
 	        $scope.isContextPanel = true;
 	        thumbList.init($scope, 'context');
-            
+
 	        $scope.placesInCone = [];
 	        $scope.scrollDepth = 40;
 	        $rootScope.$on('viewportchange', function (event, viewport) {
@@ -4000,7 +4000,7 @@ wwt.controllers.controller('ContextPanelController',
 	    $(window).on('resize', function () {
 	        $scope.currentPage = 0;
 	        calcPageSize();
-	        
+
 	    });
 
 	    $scope.moveNboMenu = function (i) {
@@ -5116,7 +5116,7 @@ wwt.app.controller('IntroController',['$rootScope','$scope','$timeout','Localiza
 				step.before();
 			}, 10);
 		}
-		
+
 		setTimeout(function() {
 			$('.introjs-nextbutton').addClass('disabled').prop('disabled', true);
 		}, 100);
@@ -5173,7 +5173,7 @@ wwt.app.controller('IntroController',['$rootScope','$scope','$timeout','Localiza
 						.parent().removeClass('hover')
 						.parent().removeClass('hover')
 						.parent().removeClass('hover');
-					
+
 				}
 			}, {
 				element: $('#topPanel')[0],
@@ -5359,7 +5359,7 @@ wwt.app.controller('IntroController',['$rootScope','$scope','$timeout','Localiza
 					setTimeout(function() {
 						$('#lstLookAt').val(0).trigger('change');
 					}, 10);
-					
+
 					setTimeout(function() {
 						wwt.wc.zoom(.3);
 					}, 1200);
@@ -5383,7 +5383,7 @@ wwt.app.controller('IntroController',['$rootScope','$scope','$timeout','Localiza
 				position: 'top',
 				before: function () {
 					$('#lstLookAt').val(3).trigger('change');
-					
+
 				},
 				enableMs: 2000
 			}, {
@@ -5463,8 +5463,8 @@ wwt.app.controller('IntroController',['$rootScope','$scope','$timeout','Localiza
 			doneLabel: 'Close'
 		};
 	}, 3333);
-	
-	
+
+
 }]);
 wwt.controllers.controller('MobileNavController',
 ['$rootScope',
@@ -5474,7 +5474,7 @@ wwt.controllers.controller('MobileNavController',
 	'Localization',
 	function ($rootScope, $scope, util, $modal,loc) {
 
-		
+
 
 		$scope.showModal = function (modalButton) {
 			$scope.hideMenu();
@@ -5564,7 +5564,7 @@ wwt.controllers.controller('MobileNavController',
 		$scope.menuAction = function (action) {
 			util.log(action);
 		}
-		
+
 		$scope.$on('searchModal.show.before', function () {
 			$rootScope.searchModal = true;
 		});
@@ -5589,7 +5589,7 @@ wwt.controllers.controller('LayerManagerController',
 		    this.disabled = false;
 			if (args.v) this.v = args.v;
 		}
-         
+
 		var constellations = [];
 		$scope.initLayerManager = function() {
 			if (!wwtlib.Constellations.abbreviations) {
@@ -5663,7 +5663,7 @@ wwt.controllers.controller('LayerManagerController',
 												checked: true,
 												action: 'showEquatorialGridText'
 											})
-										] 
+										]
 									}), new treeNode({
 										name: $scope.getFromEn('Galactic Grid'),
 										checked: false,
@@ -5834,9 +5834,9 @@ wwt.controllers.controller('ADSController',
     'Util',
     '$timeout',
     function ($scope, util, $timeout) {
-       
+
         $scope.adsFilter = 'All';
-        
+
         var years = ["date-pre1800_512", "date-1800_1850_512", "date-1850_1900_512", "date-1900_1910_512",
     "date-1910_1920_512", "date-1920_1930_512", "date-1930_1940_512", "date-1940_1945_512", "date-1945_1950_512",
     "date-1950_1955_512", "date-1955_1960_512", "date-1960_1965_512", "date-1965_1970_512", "date-1970_1975_512",
@@ -5846,7 +5846,7 @@ wwt.controllers.controller('ADSController',
     "date-2004_512", "date-2005_512", "date-2006_512", "date-2007_512", "date-2008_512", "date-2009_512",
     "date-2010_512", "date-2011_512", "date-2012_512", "date-2013_512"
         ];
-        
+
         var collections = [{
                 label: 'GLIMPSE',
                 name: 'GLIMPSE/MIPSGAL'
@@ -5913,7 +5913,7 @@ wwt.controllers.controller('ADSController',
                 }
             });
         }
-       
+
         var setYear = function () {
             $timeout(function () {
                 $scope.fgImagery = 'year';
@@ -5971,13 +5971,13 @@ wwt.controllers.controller('ADSController',
                 $scope.fgImagery = 'All';
                 $scope.bgImagery = 'WISE All Sky (Infrared)';
                 $scope.bgChange();
-                
+
                 $scope.setSurveyBg('WISE All Sky (Infrared)');
-                
-                
+
+
             }, 1300);
         }
-        
+
     }
 ]);
 wwt.controllers.controller('ExploreController',
@@ -5987,14 +5987,14 @@ wwt.controllers.controller('ExploreController',
 	'Places',
 	'$timeout',
 	'Util',
-	
+
 	'ThumbList',
 	function ($scope, $rootScope, appState, places, $timeout, util,  thumbList) {
 	    var exploreRoot;
 	    var depth = 1;
 	    var bc;
 	    var cache = [];
-	    
+
 	    var openCollection,
 			collectionPlace,
 			collectionPlaceIndex,
@@ -6013,7 +6013,7 @@ wwt.controllers.controller('ExploreController',
 	                $scope.collection = exploreRoot;
 	                findCollectionChild();
 	            });
-	        } 
+	        }
 	    });
 
 	    $scope.initExploreView = function (hashChange) {
@@ -6040,7 +6040,7 @@ wwt.controllers.controller('ExploreController',
 	                        if (item.get_name() === 'Open Collections') {
 	                            openCollection = true;
 	                            $scope.clickThumb(item);
-	                        } 
+	                        }
 	                    }
 	                });
 
@@ -6061,7 +6061,7 @@ wwt.controllers.controller('ExploreController',
 	                $scope.loadingUrlPlace = false;
 	                $scope.clickThumb(child);
 	                $('#loadingModal').modal('hide');
-                      
+
 	                if (hashObj['ra']) {
 	                    var timer = hashObj['place'].toLowerCase().indexOf('hirise') !== -1 ? 6666 : 3333;
 	                    setTimeout(function () {
@@ -6111,7 +6111,7 @@ wwt.controllers.controller('ExploreController',
 	    };
 
 	    $scope.expanded = false;
-	    
+
 
 	    $scope.breadCrumbClick = function (index) {
 	        $scope.collection = cache[index];
@@ -6130,7 +6130,7 @@ wwt.controllers.controller('ExploreController',
 	        calcPageSize();
 	    });
 
-	    
+
 	    $scope.preventClickBubble = function (event) {
 	        event.stopImmediatePropagation();
 	    };
@@ -6145,11 +6145,11 @@ wwt.controllers.controller('SearchController',
 	'$timeout',
 	'Util',
 	'SearchUtil',
-	'ThumbList', 
+	'ThumbList',
 	function ($scope, $rootScope, $timeout, util, searchUtil, thumbList) {
 
 	    $scope.goto = { RA: '', Dec: '' };
-	    
+
 
 	    var init = function () {
 	        thumbList.init($scope, 'search');
@@ -6164,12 +6164,12 @@ wwt.controllers.controller('SearchController',
 
 	    $scope.clickThumb = function (item) {
 	        thumbList.clickThumb(item, $scope);
-	    }; 
-         
+	    };
+
         var calcPageSize = function () {
 	        thumbList.calcPageSize($scope, false);
 	    };
-	    
+
 	    $scope.expanded = false;
 	    $scope.expandThumbnails = function (flag) {
 	        $scope.currentPage = 0;
@@ -6183,7 +6183,7 @@ wwt.controllers.controller('SearchController',
 	        calcPageSize();
 	    });
 
-	    
+
 	    $scope.gotoCoord = function () {
 	        var tempPlace = wwtlib.Place.create('tmp', util.parseHms($scope.goto.Dec), util.parseHms($scope.goto.RA), null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
 	        $rootScope.singleton.gotoTarget(tempPlace, false, false, true);
@@ -6360,7 +6360,7 @@ wwt.controllers.controller('ViewController',
 				});
 			}
 		};
-		
+
 
 		$scope.fastBack_Click = function() {
 			var tr = stc.get_timeRate();
@@ -6428,7 +6428,7 @@ wwt.controllers.controller('ViewController',
 				$scope.TimeMode = "X " + tr;
 			} if (!stc.get_syncToClock()) {
 				$scope.TimeMode = $scope.TimeMode + " : " + $scope.loc.paused;
-			}   
+			}
 		}
 
 		$scope.timeNow_Click = function() {
@@ -6474,7 +6474,7 @@ wwt.controllers.controller('ToursController',
 		});
 
 		$scope.clickThumb = function (item) {
-            
+
 			$scope.activeItem = item.get_thumbnailUrl() + item.get_name();
 			if (item.get_name() === 'Up Level') {
 				$scope.currentPage = 0;
@@ -6496,10 +6496,10 @@ wwt.controllers.controller('ToursController',
 					cache.push(result);
 					calcPageSize();
 				});
-				
+
 			}
-			
-			
+
+
 			if (ss.canCast(item, wwtlib.Tour)) {
 				$scope.playTour(item.get_tourUrl());
 				if (util.isMobile) {
@@ -6530,7 +6530,7 @@ wwt.controllers.controller('ToursController',
 				$scope.pageSize = Math.floor(winWid / tnWid);
 				$scope.pageCount = Math.ceil($scope.tourList.length / $scope.pageSize);
 			}, 1);
-			
+
 		};
 
 	    var popover = null;
@@ -6550,7 +6550,7 @@ wwt.controllers.controller('ToursController',
                     background:'#fff',
                     position: 'fixed',
                     zIndex:2
-                    
+
 	            }).on('mouseleave',hideMask);
 	            $('body').append(mask);
 	        }
@@ -6567,14 +6567,14 @@ wwt.controllers.controller('ToursController',
 		        scope: $scope,
 		        trigger:'manual'
 		    };
-		    
+
 		    popover = $popover($(event.currentTarget),options);
 		    popover.$promise.then(function () {
 		        popover.show();
 		        var thumb = $(event.currentTarget);
 		        var pos = thumb.offset();
 		        mask.css({
-		            top: pos.top - 2, 
+		            top: pos.top - 2,
 		            left: pos.left - 2,
 		            opacity: .01
 		        });
@@ -6588,8 +6588,8 @@ wwt.controllers.controller('ToursController',
 		                    });
 		                    //console.log('fixed?', this.naturalHeight, $(this).height());
 		                }
-		                
-		                
+
+
 		            });
 		        }
 		        $('.tour-info img').off('load');
@@ -6607,7 +6607,7 @@ wwt.controllers.controller('ToursController',
 
 	    //var fixPop = function() {
         //    $('.popover').removeClass('modal').css('top', '8px').removeAttr('tabindex')
-            
+
         //    /*$('.popover').find('.modal-dialog,.modal-content,.modal-body')
         //        .css({ margin: 0, padding: 0,width:470 })
         //        .removeClass('modal-dialog modal-content modal-body');*/
@@ -6630,7 +6630,7 @@ wwt.controllers.controller('ToursController',
 
 	    $(window).on('resize', calcPageSize);
 
-		
+
 	}
 ]);
 wwt.controllers.controller('CommunityController',
@@ -6643,7 +6643,7 @@ wwt.controllers.controller('CommunityController',
         var cache = [];
         $scope.initCommunityView = function () {
             thumbList.init($scope, 'communities');
-            
+
                 community.getRoot().then(function (result) {
                     $('body').append($('#researchMenu'));
                     $scope.collection = result;
@@ -6655,13 +6655,13 @@ wwt.controllers.controller('CommunityController',
                         });
                     } else {
                         $scope.breadCrumb = bc = [collectionsString];
-                    } 
+                    }
 
                     cache = [result];
                     calcPageSize();
 
                 });
-            
+
 
         };
         var calcPageSize = function () {
@@ -6705,7 +6705,7 @@ wwt.controllers.controller('CommunityController',
         };
 
         $scope.initCommunityView();
-        
+
     }
 ]);
 wwt.controllers.controller('CurrentTourController', [
@@ -6715,7 +6715,7 @@ wwt.controllers.controller('CurrentTourController', [
     var tour;
     var isNewTour = false;
     var mainScope = angular.element('div.desktop').scope();
-    
+
     $scope.slideNumbering = appState.get('slideNumbering');
     $scope.overlayList = appState.get('overlayList');
     var scrollerInit = false;
@@ -6732,22 +6732,22 @@ wwt.controllers.controller('CurrentTourController', [
         mapStops(true);
         wwt.wc.add_slideChanged(function () {
             //console.log(arguments, tour, tourEdit);
-            $scope.$applyAsync(function () {//tween <.5 
+            $scope.$applyAsync(function () {//tween <.5
 
                 $scope.activeIndex = tour.get_currentTourstopIndex();
                 $scope.activeSlide = tour.get_currentTourStop();
                 tourEdit.tourStopList.selectedItems = {};
                 tourEdit.tourStopList.selectedItems[$scope.activeIndex] = $scope.activeSlide;
-                
-            }); 
+
+            });
         });
-        
+
 
 
         tourEdit.tourStopList.refreshCallback = mapStops;
         $scope.editText = null;
         mainScope.ribbon.tabs[1].menu['Show Slide Overlays'] = [$scope.showOverlayList];
-        mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers]; 
+        mainScope.ribbon.tabs[1].menu['Show Slide Numbers'] = [$scope.showSlideNumbers];
         $rootScope.$on('escKey', showSlides);
         $rootScope.$on('closeTour', closeTour);
         $rootScope.$watch('editingTour', initEditMode);
@@ -6769,7 +6769,7 @@ wwt.controllers.controller('CurrentTourController', [
                 e.returnValue= "You have unsaved changes that will be lost if you proceed. Click cancel to save changes."
             }
         });
-        
+
     };
 
 
@@ -6777,13 +6777,13 @@ wwt.controllers.controller('CurrentTourController', [
         if (tourEdit.playing) {
             tourEdit.pauseTour();
         }
-        
+
         $scope.$applyAsync(showTourSlides);
-        
+
     };
-   
+
     var initEditMode = function () {
-        
+
         if (!util.isWindows && !util.isChrome) {
             alert('Editing Tours requires advanced browser features. For the best experience, please use Chrome. There are known incompatibilities in other browsers.');
         }
@@ -6796,7 +6796,7 @@ wwt.controllers.controller('CurrentTourController', [
             appState.set('remindEditTourLogin', true);
           }
           loginModalData.remindEditTourLogin = appState.get('remindEditTourLogin');
-          
+
           loginModalData.remindPrefChange = function () {
             appState.set(!appState.get('remindEditTourLogin'));
           }
@@ -6857,7 +6857,7 @@ wwt.controllers.controller('CurrentTourController', [
 
     var initVolumeSliders = function () {
         var volumeOpts = function (barEl) {
-            
+
             return {
                 el: barEl,
                 bounds: {
@@ -6890,8 +6890,8 @@ wwt.controllers.controller('CurrentTourController', [
     $scope.tourProp = function ($event, prop) {
         tour['set_' + prop]($event.target.value);
     };
-    
-    
+
+
 
     $scope.saveTour = function () {
         var saveRawFile = function () {
@@ -6915,7 +6915,7 @@ wwt.controllers.controller('CurrentTourController', [
         };
         var blob = tour.saveToBlob();
         var filename = tour._title + '.wtt';
-        
+
             $scope.modalData = {
                 step: 'save',
                 tourTitle:tour._title
@@ -6938,7 +6938,7 @@ wwt.controllers.controller('CurrentTourController', [
                         },
                         contentType: 'text/plain'
                     }).done(function (data) {
-                        
+
                         $scope.$applyAsync(function () {
                             if (data && data.length > 1) {
                                 $scope.modalData.step = 'success';
@@ -6961,17 +6961,17 @@ wwt.controllers.controller('CurrentTourController', [
 
                             }
                         });
-                        
-                        
+
+
                     });
                 }
                 else {
                     saveRawFile();
-                    
+
                 }
                 });
             }
-           
+
             var saveTourAsModal = $modal({
                 scope: $scope,
                 templateUrl: 'views/modals/tour-uploader.html',
@@ -6979,7 +6979,7 @@ wwt.controllers.controller('CurrentTourController', [
                 content: '',
                 placement:'center'
             });
-           
+
         } else {
             saveRawFile();
 
@@ -6993,9 +6993,9 @@ wwt.controllers.controller('CurrentTourController', [
     $scope.addShape = function (type) {
         tourEdit.tourEditorUI.addShape('', type);
     }
-    
 
-    
+
+
     $scope.mediaFileChange = function (e, mediaKey, isImage) {
         console.time('storeLocal: ' + mediaKey);
         var file = e.target.files[0];
@@ -7012,7 +7012,7 @@ wwt.controllers.controller('CurrentTourController', [
             $timeout(bindAudio, 500);
         }
     };
-    
+
     var showTourSlides = function () {
         //$('#ribbon,.top-panel,.context-panel,.layer-manager').removeClass('hide').fadeIn(400);
         console.log(tourEdit.playing);
@@ -7021,7 +7021,7 @@ wwt.controllers.controller('CurrentTourController', [
             //.css('overflow-x','auto')
             .jScrollPane({ scrollByY: 155, horizontalDragMinWidth: 155 }).data('jsp');
             $(window).on('resize', function () {
-                
+
                 $rootScope.stopScroller.reinitialise();
             });
         }, 500);
@@ -7036,10 +7036,10 @@ wwt.controllers.controller('CurrentTourController', [
 
 
     $scope.selectStop = function (index, e) {
-        $scope.$applyAsync(function () { 
-             
+        $scope.$applyAsync(function () {
+
             $scope.activeSlide = tourEdit.tourStopList.selectedItem = $scope.tourStops[index];
-            
+
             $scope.activeIndex = index;
             if (tour._editMode) {
                 if (e && e.shiftKey) {
@@ -7065,7 +7065,7 @@ wwt.controllers.controller('CurrentTourController', [
                 tourEdit.tourStopList.selectedItems = {};
                 tourEdit.tourStopList.selectedItems[index] = $scope.tourStops[index];
             }
-            
+
             tour.set_currentTourstopIndex($scope.activeIndex);
             $scope.lastFocused = index;
             $scope.selectedSlide = $scope.tourStops[$scope.activeIndex];
@@ -7105,7 +7105,7 @@ wwt.controllers.controller('CurrentTourController', [
         tour.set_currentTourstopIndex(index);
         tourEdit.tourStopList_ShowEndPosition();
     };
-         
+
     $scope.playButtonClick = function () {
         if (tourEdit.playing) {
             tourEdit.pauseTour();
@@ -7118,7 +7118,7 @@ wwt.controllers.controller('CurrentTourController', [
             else {
                 tourEdit.playFromCurrentTourstop();
             }
-        } 
+        }
         $rootScope.tourPlaying = tourEdit.playing;
         $rootScope.tourPaused = !tourEdit.playing;
     };
@@ -7133,7 +7133,7 @@ wwt.controllers.controller('CurrentTourController', [
             tour.duration = 0;
             $scope.tourStops = tour.get_tourStops().map(function (s) {
                 s.description = s.get_description();
-                s.thumb = s.get_thumbnail(); 
+                s.thumb = s.get_thumbnail();
                 s.duration = s.get_duration();
                 tour.duration += s.duration;
 
@@ -7158,7 +7158,7 @@ wwt.controllers.controller('CurrentTourController', [
             if ((isNewTour && $scope.tourStops.length) || (isInit && isInit === true)) {
                 isNewTour = false;
                 $scope.selectStop(0);
-                
+
                 $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
                     console.log('tweenPos', e);
                     if (e === 1) {
@@ -7166,7 +7166,7 @@ wwt.controllers.controller('CurrentTourController', [
                     }
                 });
             }
-            
+
             $scope.$broadcast('initSlides');
         });
     };
@@ -7198,7 +7198,7 @@ wwt.controllers.controller('CurrentTourController', [
     };
     var initSetNextSlideModal = function () {
       tourEdit.nextSlideCallback = tourEdit.tourEditorUI.nextSlideCallback = function (selectDialog, onFinished) {
-        
+
         var okbutton = function (ok) {
           var dialog = nextSlideModal.dialog;
           console.log(dialog, selectDialog);
@@ -7236,7 +7236,7 @@ wwt.controllers.controller('CurrentTourController', [
             selectDialog._return = false;
             selectDialog._linkSlide = false;
             selectDialog['set_' + setters[key]](v);
-          
+
           //});
           console.log(key, selectDialog);
         }
@@ -7288,7 +7288,7 @@ wwt.controllers.controller('TourSlideText', [
 
             }
         }
-         
+
         var textObject = {
             text: '',
             foregroundColor: '#ffffff',
@@ -7301,7 +7301,7 @@ wwt.controllers.controller('TourSlideText', [
             borderStyle:0
         };
         var editableKeys = Object.keys(textObject);
- 
+
     var saving = false;
     function initEditorObserver() {
 
@@ -7450,7 +7450,7 @@ wwt.controllers.controller('TourSlideText', [
                 try {
                     function rgb2hex(rgb) {
                         if (rgb.indexOf('rgb') !== 0) return rgb;
-                        
+
                         rgb = rgb.split('(')[1].replace(')','').split(',');
                         function hex(x) {
                             return ("0" + parseInt(x).toString(16)).slice(-2);
@@ -7458,7 +7458,7 @@ wwt.controllers.controller('TourSlideText', [
                         var hexColor = "#" + hex(rgb[0]) + hex(rgb[1]) + hex(rgb[2]);
                         return hexColor;
                     }
-                    
+
                     if (editScope.editText) {
                         $.each(editableKeys, function (i, key) {
                             if (pristineText[key] !== textObject[key])
@@ -7498,7 +7498,7 @@ wwt.controllers.controller('TourSlideText', [
     init();
     }]
 );
-    
+
 wwt.controllers.controller('ShareController',
 [
 	'$scope',
@@ -7587,7 +7587,7 @@ wwt.controllers.controller('OpenItemController',
 	'Astrometry',
     'MediaFile',
 	function ($rootScope, $scope, appState, places, util, astrometry, media) {
-	    
+
 	    $rootScope.$on('openItem', function () {
 	        $scope.openItemUrl = '';
 	        setTimeout(function () {
@@ -7622,7 +7622,7 @@ wwt.controllers.controller('OpenItemController',
 	                    $scope.imageFail = true;
 	                }
 	            });
-	        } 
+	        }
 	    };
 
 	    $scope.mediaFileChange = function (e) {
@@ -7667,7 +7667,7 @@ wwt.controllers.controller('OpenItemController',
 				}
 
 				places.importImage($scope.openItemUrl, qs).then(function (folder) {
-							
+
 					$rootScope.newFolder = folder;
 					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
 					$scope.imageFail = false;
@@ -7678,7 +7678,7 @@ wwt.controllers.controller('OpenItemController',
 			}
 			if (data.status.toLowerCase().indexOf('fail') != -1) {
 				$scope.importState = 'astrometryFail';
-					
+
 			}
 		}
 
@@ -7686,7 +7686,7 @@ wwt.controllers.controller('OpenItemController',
 		    $scope.importState = 'astrometryProgress';
 		    astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
 		};
-			
+
 	}
 ]);
 
@@ -7721,7 +7721,7 @@ wwt.controllers.controller('SlideSelectionController', ['$scope', '$timeout', fu
     var init = $scope.init = function () {
         selection = tourScope.tourEdit.tourEditorUI.selection;
         selectionSet = $scope.selectionSet = selection.selectionSet;
-        
+
         overlays = $scope.overlays = tourScope.selectedSlide._overlays;
 
         $scope.$applyAsync(function () {
@@ -7768,7 +7768,45 @@ wwt.controllers.controller('voConeSearch',
           $('#WorldWideTelescopeControlHost').html('');
         }
       }
-      $scope.searchBaseURL = 'http://vizier.u-strasbg.fr/viz-bin/votable/-A?-source=J/AJ/138/598&';
+      $scope.searchRegistry = function () {
+        var searchUrl = "http://nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
+          $scope.regTitle
+          + "%25'%20or%20shortname%20like%20'%25" +
+          $scope.regTitle
+          + "%25')&capability=" + ($scope.catalogPref ? 'ConeSearch' : 'SIAP');
+        console.log(searchUrl);
+        wwtlib.VoTable.loadFromUrl(searchUrl, function () {
+          $scope.table = this;
+          $scope.$applyAsync(function () {
+          });
+          Object.keys(this.columns).forEach(function (c, i) {
+            console.log($scope.table.columns[c].index + ':' + c + '(' + $scope.table.rows[5].columnData[$scope.table.columns[c].index] + ')');
+
+          })
+          console.log(this);
+        })
+      };
+      $scope.displayColumns = [
+        'title'
+        , 'type'
+        , 'capabilityClass'
+        , 'publisher'
+        , 'waveband'
+        , 'identifier'
+        , 'maxSearchRadius'
+        , 'maxRecords'
+      ];
+      $scope.getData = function (row, columnKey) {
+        return row.columnData[$scope.table.columns[columnKey].index] || '-';
+      };
+      $scope.hilite = function (row, $index) {
+        $scope.hiliteIndex = $index;
+        $scope.searchBaseURL = $scope.getData(row, 'accessURL');
+      }
+      $scope.hiliteIndex = 0;
+
+      $scope.regTitle = 'hubble';
+      $scope.searchBaseURL = '';
       $scope.fromRegistry = true;
       $scope.fromView = true;
       $scope.catalogPref = true;
@@ -7778,6 +7816,8 @@ wwt.controllers.controller('voConeSearch',
       };
       $scope.RA = $rootScope.viewport.RA;
       $scope.Dec = $rootScope.viewport.Dec;
+      $scope.Fov = $rootScope.viewport.Fov;
+      console.log($rootScope.viewport);
       setTimeout(init, 444);
     }]);
 
@@ -7841,7 +7881,7 @@ wwt.controllers.controller('LoginController',
 
     }]);
 wwt.Move = function (createArgs) {
-	
+
 	//#region initialization
 	var el,
 		grid,
@@ -7868,8 +7908,8 @@ wwt.Move = function (createArgs) {
 		oncomplete = args.oncomplete;
 		setBounds();
 		//  IE (sigh)
-		if (window.PointerEvent || window.MSPointerEvent) { 
-		    
+		if (window.PointerEvent || window.MSPointerEvent) {
+
 			target.css('touch-action', 'none');
 			var pointerDownName = window.PointerEvent ? 'pointerdown' : 'MSPointerDown';
 			var pointerUpName = window.PointerEvent ? 'pointerup' : 'MSPointerUp';
@@ -7893,19 +7933,19 @@ wwt.Move = function (createArgs) {
 				if (event.pointerId) {
 					pointerId = event.pointerId;
 				}
-				
+
 				moveInit(event);
 
 				document.body.addEventListener(pointerUpName, unbind, false);
 				document.body.addEventListener(pointerMoveName, function (evt) {
 					if (pointerId && evt.pointerId === pointerId) {
 						motionHandler(evt);
-					} 
+					}
 				}, false);
 			}, false);
-			
+
 		} else {
-		    
+
 		    target.on('mousedown touchstart', function (event) {
 		        if (target.hasClass('disabled')) {
 		            return;
@@ -7915,7 +7955,7 @@ wwt.Move = function (createArgs) {
 				moveInit(event);
 				$(document).on('mouseup touchend', unbind);
 				$(document).on('mousemove touchmove', motionHandler);
-				
+
 			});
 		}
 		el.css({ position: 'absolute' });
@@ -7981,25 +8021,25 @@ wwt.Move = function (createArgs) {
 			x: moveObj.totalDist.x + moveObj.moveDist.x,
 			y: moveObj.totalDist.y + moveObj.moveDist.y
 		};
-			
+
 		moveObj.gridCss = {
 			left: (Math.round(moveObj.totalDist.x / grid) * grid) + moveObj.startCoord.x,
 			top: (Math.round(moveObj.totalDist.y / grid) * grid) + moveObj.startCoord.y
 		};
 		moveObj.css = moveObj.gridCss;
-		
+
 
 		moveObj.css.top = Math.min(Math.max(actualBounds.top[0], moveObj.css.top), actualBounds.top[1]);
 		moveObj.css.left = Math.min(Math.max(actualBounds.left[0], moveObj.css.left), actualBounds.left[1]);
 		moveObj.pctX = Math.max(actualBounds.left[0], moveObj.css.left) / moveObj.maxX;
 		moveObj.pctY = Math.max(actualBounds.top[0], moveObj.css.top) / moveObj.maxY;
 		el.css(moveObj.css);
-			
+
 		if (onmove) {
 			//el.trigger('dragmove');
 			onmove.call(moveObj);
 		}
-		
+
 	};
 
 	var unbind = function (evt) {
@@ -8083,8 +8123,8 @@ wwt.getRGBArray = function (colorString) {
 		var value = max,
 				saturation,
 				hue;
-			
-		// Hue  
+
+		// Hue
 		if (max == min)
 			hue = 0;
 		else if (max == r)
@@ -8097,7 +8137,7 @@ wwt.getRGBArray = function (colorString) {
 		if (hue < 0)
 			hue += 360;
 
-		// Saturation  
+		// Saturation
 		if (max == 0)
 			saturation = 0;
 		else
@@ -8180,7 +8220,7 @@ wwt.getRGBArray = function (colorString) {
 		},
 		wwt.rnd=function (high) {
 			var r = Math.random();
-			var noise = 16180339; 
+			var noise = 16180339;
 			r = r * noise % 1;
 			r = Math.floor(r * high + 1);
 			return r;
@@ -8230,8 +8270,8 @@ wwt.getRGBArray = function (colorString) {
 		wwt.pct= function (v) {
 			return Math.round(v * 1000) / 10 + '%';
 		},
-		
-		
+
+
 		// Robert Penner Easing Equations
 		wwt.tweenStep= function (vFrom, vTo, curStep, steps, transition, easing) {
 			var b = vFrom;
@@ -8304,7 +8344,7 @@ wwt.getRGBArray = function (colorString) {
 							return c / 2 * ((t -= 2) * t * t + 2) + b;
 					}
 				case 5: // transitions.elastic
-					// ReSharper disable AssignedValueIsNeverUsed 
+					// ReSharper disable AssignedValueIsNeverUsed
 					// this looks like a resharper glitch since s definitely IS used below
 					s = (d * .3) / 4;
 					// ReSharper restore AssignedValueIsNeverUsed

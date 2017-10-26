@@ -7591,24 +7591,50 @@ div.wwt-modal div.modal-content div.vo-cone-search .row .search-buttons {
 div.wwt-modal div.modal-content div.vo-cone-search .row .search-buttons .btn {
   margin: -10px 0 13px;
 }
-div.wwt-modal div.modal-content div.vo-cone-search table.table {
-  margin: 8px -28px 0 -10px;
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 8px -28px -8px -10px;
   width: 1120px;
 }
-div.wwt-modal div.modal-content div.vo-cone-search thead {
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results table.table {
+  table-layout: fixed;
+}
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results thead {
   background-color: #fff;
 }
-div.wwt-modal div.modal-content div.vo-cone-search thead th {
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results thead th {
   padding: 2px 3px;
   color: #333;
   font-size: 12px;
   font-weight: 400;
   border-right: inset 1px #444;
 }
-div.wwt-modal div.modal-content div.vo-cone-search tbody td {
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results tbody tr.hilite {
+  background-color: #1f4ca4;
+}
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td {
+  cursor: pointer;
   border: solid 1px #f7f7f7;
   border-collapse: collapse;
   padding: 2px 3px;
+  font-size: 12px;
+  color: #eee;
+  height: 20px;
+}
+
+div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td div.ellipsize {
+  max-height: 20px;
+  text-overflow: clip ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 html {
   -ms-content-zooming: none;

@@ -22,11 +22,11 @@
         </div>
         <div class="col-md-3 form-group-sm">
           <label localize="Dec"></label>
-          <input type="number" class="form-control" ng-model="dec">
+          <input type="number" class="form-control" ng-model="Dec"/>
         </div>
         <div class="col-md-3 form-group-sm">
           <label localize="Search Radius"></label>
-          <input type="number" class="form-control">
+          <input type="number" class="form-control" ng-model="Fov"/>
         </div>
         <div class="col-md-3 form-group-sm">
           <label localize="Verbosity"></label>
@@ -68,38 +68,38 @@
     </div>
     <div class="col-md-6">
       <label>&nbsp;</label><br>
-      <a class="btn" localize="NVO Registry Search" ng-click="nope()"></a>
+      <a class="btn" localize="NVO Registry Search" ng-click="searchRegistry()"></a>
     </div>
     <div class="col-md-2 search-buttons">
       <a class="btn" localize="Search" ng-click="nope()"></a><br>
       <a class="btn" localize="Close" ng-click="$hide()"></a>
     </div>
   </div>
-  <table class="table">
-    <thead>
-    <tr>
-      <th localize="Title"></th>
-      <th localize="ServiceType"></th>
-      <th localize="Type"></th>
-      <th localize="Publisher"></th>
-      <th localize="Wave Band"></th>
-      <th localize="Identifier"></th>
-      <th localize="Max Radius"></th>
-      <th localize="Max Rows"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    </tbody>
-  </table>
-
+  <div class="results">
+    <table class="table">
+      <thead>
+      <tr>
+        <th localize="Title" style="width:30%"></th>
+        <th localize="ServiceType" style="width:12%"></th>
+        <th localize="Type" style="width:11%"></th>
+        <th localize="Publisher" style="width:15%"></th>
+        <th localize="Wave Band" style="width:15%"></th>
+        <th localize="Identifier" style="width:15%"></th>
+        <th localize="Max Radius" style="width:10%"></th>
+        <th localize="Max Rows" style="width:10%"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-if="!table">
+        <td ng-repeat="c in displayColumns">-</td>
+      </tr>
+      <tr ng-if="table.rows" ng-repeat="r in table.rows track by $index" ng-click="hilite(r,$index)"
+          ng-class="{hilite:$index==hiliteIndex}">
+        <td ng-repeat="c in displayColumns">
+          <div class="ellipsize" title="{{getData(r,c)}}">{{getData(r,c)}}</div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
