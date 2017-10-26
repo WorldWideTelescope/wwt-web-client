@@ -15,7 +15,45 @@ wwt.controllers.controller('voConeSearch',
           $('#WorldWideTelescopeControlHost').html('');
         }
       }
-      $scope.searchBaseURL = 'http://vizier.u-strasbg.fr/viz-bin/votable/-A?-source=J/AJ/138/598&';
+      $scope.searchRegistry = function () {
+        var searchUrl = "http://nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
+          $scope.regTitle
+          + "%25'%20or%20shortname%20like%20'%25" +
+          $scope.regTitle
+          + "%25')&capability=" + ($scope.catalogPref ? 'ConeSearch' : 'SIAP');
+        console.log(searchUrl);
+        wwtlib.VoTable.loadFromUrl(searchUrl, function () {
+          $scope.table = this;
+          $scope.$applyAsync(function () {
+          });
+          Object.keys(this.columns).forEach(function (c, i) {
+            console.log($scope.table.columns[c].index + ':' + c + '(' + $scope.table.rows[5].columnData[$scope.table.columns[c].index] + ')');
+
+          })
+          console.log(this);
+        })
+      };
+      $scope.displayColumns = [
+        'title'
+        , 'type'
+        , 'capabilityClass'
+        , 'publisher'
+        , 'waveband'
+        , 'identifier'
+        , 'maxSearchRadius'
+        , 'maxRecords'
+      ];
+      $scope.getData = function (row, columnKey) {
+        return row.columnData[$scope.table.columns[columnKey].index] || '-';
+      };
+      $scope.hilite = function (row, $index) {
+        $scope.hiliteIndex = $index;
+        $scope.searchBaseURL = $scope.getData(row, 'accessURL');
+      }
+      $scope.hiliteIndex = 0;
+
+      $scope.regTitle = 'hubble';
+      $scope.searchBaseURL = '';
       $scope.fromRegistry = true;
       $scope.fromView = true;
       $scope.catalogPref = true;
@@ -25,5 +63,7 @@ wwt.controllers.controller('voConeSearch',
       };
       $scope.RA = $rootScope.viewport.RA;
       $scope.Dec = $rootScope.viewport.Dec;
+      $scope.Fov = $rootScope.viewport.Fov;
+      console.log($rootScope.viewport);
       setTimeout(init, 444);
     }]);

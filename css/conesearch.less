@@ -35,25 +35,48 @@ div.wwt-modal div.modal-content {
 
       }
     }
-    table.table {
-      margin: 8px -28px 0 -10px;
+    div.results {
+
+      max-height: 400px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 8px -28px -8px -10px;
       width: 1120px;
-    }
-    thead {
-      background-color: #fff;
-      th {
-        padding: 2px 3px;
-        color: #333;
-        font-size: 12px;
-        font-weight: 400;
-        border-right: inset 1px #444;
+      table.table {
+
+        table-layout: fixed;
+
       }
-    }
-    tbody {
-      td {
-        border: solid 1px #f7f7f7;
-        border-collapse: collapse;
-        padding: 2px 3px;
+      thead {
+        background-color: #fff;
+        th {
+          padding: 2px 3px;
+          color: #333;
+          font-size: 12px;
+          font-weight: 400;
+          border-right: inset 1px #444;
+        }
+      }
+      tbody {
+        tr.hilite {
+          background-color: #1f4ca4;
+        }
+        td {
+          cursor: pointer;
+          border: solid 1px #f7f7f7;
+          border-collapse: collapse;
+          padding: 2px 3px;
+          font-size: 12px;
+          color: #eee;
+          height: 20px;
+
+          div.ellipsize {
+            max-height: 20px;
+            text-overflow: clip ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
+        }
       }
     }
   }
