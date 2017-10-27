@@ -179,6 +179,12 @@ namespace wwtlib
             }
         }
 
+        // Call this to add a VOTable to layers
+        public void AddVoTableLayer(VoTable table)
+        {
+            return;
+        }
+
         public void SetForegroundImageByName(string name)
         {
             if (WWTControl.Singleton != null)
