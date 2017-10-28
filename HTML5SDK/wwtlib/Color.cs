@@ -74,7 +74,7 @@ namespace wwtlib
             }
         }
 
-        public string ToString()
+        public override string ToString()
         {
             if (string.IsNullOrEmpty(Name))
             {

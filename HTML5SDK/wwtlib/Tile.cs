@@ -175,6 +175,17 @@ namespace wwtlib
 
         public virtual void RequestImage()
         {
+            if(Dataset.WcsImage != null)
+            {
+                texReady = true;
+                Downloading = false;
+                errored = false;
+                ReadyToRender = true;
+                RequestPending = false;
+                TileCache.RemoveFromQueue(this.Key, true);
+                return;
+            }
+
             if (!Downloading && !ReadyToRender)
             {
                 Downloading = true;

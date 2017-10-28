@@ -116,6 +116,16 @@ namespace wwtlib
             {
                 return true;
             }
+
+            Bitmap bmp = null; ;
+
+            if (dataset.WcsImage != null)
+            {
+                WcsImage wcsImage = dataset.WcsImage as WcsImage;
+                bmp = wcsImage.GetBitmap();
+                texture2d = bmp.GetTexture();
+            }
+            
             GeometryCreated = true;
 
             for (int i = 0; i < 4; i++)
@@ -125,9 +135,17 @@ namespace wwtlib
 
 
             ComputeMatrix();
-            Height = texture.NaturalHeight;
-            Width = texture.NaturalWidth;
 
+            if (renderContext.gl != null)
+            {
+                Height = bmp.Height;
+                Width = bmp.Width;
+            }
+            else
+            {
+                Height = texture.NaturalHeight;
+                Width = texture.NaturalWidth;
+            }
             double latMin = 0 + (ScaleY * (Height - PixelCenterY));
             double latMax = 0 - (ScaleY * PixelCenterY);
             double lngMin = 0 + (ScaleX * PixelCenterX);
@@ -147,37 +165,10 @@ namespace wwtlib
             Vector3d rightCenter = Vector3d.Lerp(TopRight, BottomRight, .5f);
             Vector3d leftCenter = Vector3d.Lerp(TopLeft, BottomLeft, .5f);
 
-            //Vector3d center = Vector3d.MidPoint(TopLeft, BottomRight);
-            //Vector3d leftCenter = Vector3d.MidPoint(TopLeft, BottomLeft);
-            //Vector3d rightCenter = Vector3d.MidPoint(TopRight, BottomRight);
-            //Vector3d topCenter = Vector3d.MidPoint(TopLeft, TopRight);
-            //Vector3d bottomCenter = Vector3d.MidPoint(BottomLeft, BottomRight);
-      
-
-
-            //verts[0].Position = TopLeft;
-            //verts[0].Normal = TopLeft;
-            //verts[0].Tu = 0;
-            //verts[0].Tv = 0;
-            //verts[1].Position = TopRight;
-            //verts[1].Normal = TopRight;
-            //verts[1].Tu = 1;
-            //verts[1].Tv = 0;
-            //verts[2].Position = BottomRight;
-            //verts[2].Normal = BottomRight;
-            //verts[2].Tu = 1;
-            //verts[2].Tv = 1;
-            //verts[3].Position = BottomLeft;
-            //verts[3].Normal = BottomLeft;
-            //verts[3].Tu = 0;
-            //verts[3].Tv = 1;
-
 
             if (renderContext.gl == null)
             {
-                //RenderTriangleLists[0].Add(RenderTriangle.Create(PositionTexture.CreatePosSize(TopLeft, 0, 0, Width, Height), PositionTexture.CreatePosSize(BottomLeft, 0, 1, Width, Height), PositionTexture.CreatePosSize(TopRight, 1, 0, Width, Height), texture, Level));
-                //RenderTriangleLists[0].Add(RenderTriangle.Create(PositionTexture.CreatePosSize(BottomLeft, 0, 1, Width, Height), PositionTexture.CreatePosSize(BottomRight, 1, 1, Width, Height), PositionTexture.CreatePosSize(TopRight, 1, 0, Width, Height), texture, Level));
-                vertexList = new List<PositionTexture>();
+                 vertexList = new List<PositionTexture>();
 
                 vertexList.Add(PositionTexture.CreatePosSize(TopLeft, 0, 0, Width, Height));
                 vertexList.Add(PositionTexture.CreatePosSize(TopRight, 1, 0, Width, Height));

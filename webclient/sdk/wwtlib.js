@@ -51,6 +51,29 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.DataTypes
+
+  var DataTypes = {
+    byteT: 0, 
+    int16T: 1, 
+    int32T: 2, 
+    floatT: 3, 
+    doubleT: 4, 
+    none: 5
+  };
+
+
+  // wwtlib.ScaleTypes
+
+  var ScaleTypes = {
+    linear: 0, 
+    log: 1, 
+    power: 2, 
+    squareRoot: 3, 
+    histogramEqualization: 4
+  };
+
+
   // wwtlib.AltUnits
 
   var AltUnits = {
@@ -8711,6 +8734,15 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ScaleMap
+
+  function ScaleMap() {
+  }
+  var ScaleMap$ = {
+
+  };
+
+
   // wwtlib.Layer
 
   function Layer() {
@@ -10705,6 +10737,199 @@ window.wwtlib = function(){
   var VoColumn$ = {
     toString: function() {
       return this.name;
+    }
+  };
+
+
+  // wwtlib.WcsImage
+
+  function WcsImage() {
+    this._validWcs = false;
+    this.keywords = [];
+    this.scaleX = 0;
+    this.scaleY = 0;
+    this.centerX = 0;
+    this.centerY = 0;
+    this.rotation = 0;
+    this.referenceX = 0;
+    this.referenceY = 0;
+    this.sizeX = 0;
+    this.sizeY = 0;
+    this.cd1_1 = 0;
+    this.cd1_2 = 0;
+    this.cd2_1 = 0;
+    this.cd2_2 = 0;
+    this.hasRotation = false;
+    this.hasSize = false;
+    this.hasScale = false;
+    this.hasLocation = false;
+    this.hasPixel = false;
+    this._colorCombine = false;
+  }
+  var WcsImage$ = {
+    get_copyright: function() {
+      return this.copyright;
+    },
+    set_copyright: function(value) {
+      this.copyright = value;
+      return value;
+    },
+    get_creditsUrl: function() {
+      return this.creditsUrl;
+    },
+    set_creditsUrl: function(value) {
+      this.creditsUrl = value;
+      return value;
+    },
+    get_validWcs: function() {
+      return this._validWcs;
+    },
+    set_validWcs: function(value) {
+      this._validWcs = value;
+      return value;
+    },
+    get_keywords: function() {
+      if (!this.keywords.length) {
+        this.keywords.push('Image File');
+      }
+      return this.keywords;
+    },
+    set_keywords: function(value) {
+      this.keywords = value;
+      return value;
+    },
+    get_description: function() {
+      return this.description;
+    },
+    set_description: function(value) {
+      this.description = value;
+      return value;
+    },
+    get_scaleX: function() {
+      return this.scaleX;
+    },
+    set_scaleX: function(value) {
+      this.scaleX = value;
+      return value;
+    },
+    get_scaleY: function() {
+      return this.scaleY;
+    },
+    set_scaleY: function(value) {
+      this.scaleY = value;
+      return value;
+    },
+    get_centerX: function() {
+      return this.centerX;
+    },
+    set_centerX: function(value) {
+      this.centerX = value;
+      return value;
+    },
+    get_centerY: function() {
+      return this.centerY;
+    },
+    set_centerY: function(value) {
+      this.centerY = value;
+      return value;
+    },
+    get_rotation: function() {
+      return this.rotation;
+    },
+    set_rotation: function(value) {
+      this.rotation = value;
+      return value;
+    },
+    get_referenceX: function() {
+      return this.referenceX;
+    },
+    set_referenceX: function(value) {
+      this.referenceX = value;
+      return value;
+    },
+    get_referenceY: function() {
+      return this.referenceY;
+    },
+    set_referenceY: function(value) {
+      this.referenceY = value;
+      return value;
+    },
+    get_sizeX: function() {
+      return this.sizeX;
+    },
+    set_sizeX: function(value) {
+      this.sizeX = value;
+      return value;
+    },
+    get_sizeY: function() {
+      return this.sizeY;
+    },
+    set_sizeY: function(value) {
+      this.sizeY = value;
+      return value;
+    },
+    get_cd1_1: function() {
+      return this.cd1_1;
+    },
+    set_cd1_1: function(value) {
+      this.cd1_1 = value;
+      return value;
+    },
+    get_cd1_2: function() {
+      return this.cd1_2;
+    },
+    set_cd1_2: function(value) {
+      this.cd1_2 = value;
+      return value;
+    },
+    get_cd2_1: function() {
+      return this.cd2_1;
+    },
+    set_cd2_1: function(value) {
+      this.cd2_1 = value;
+      return value;
+    },
+    get_cd2_2: function() {
+      return this.cd2_2;
+    },
+    set_cd2_2: function(value) {
+      this.cd2_2 = value;
+      return value;
+    },
+    adjustScale: function(width, height) {
+      if (width !== this.sizeX) {
+        this.scaleX *= (this.sizeX / width);
+        this.referenceX /= (this.sizeX / width);
+        this.sizeX = width;
+      }
+      if (height !== this.sizeY) {
+        this.scaleY *= (this.sizeY / height);
+        this.referenceY /= (this.sizeY / height);
+        this.sizeY = height;
+      }
+    },
+    calculateScaleFromCD: function() {
+      this.scaleX = (Math.sqrt(this.cd1_1 * this.cd1_1 + this.cd2_1 * this.cd2_1) * (this.cd1_1 * this.cd2_2 - this.cd1_2 * this.cd2_1) < 0) ? -1 : 1;
+      this.scaleY = Math.sqrt(this.cd1_2 * this.cd1_2 + this.cd2_2 * this.cd2_2);
+    },
+    calculateRotationFromCD: function() {
+      var sign = ((this.cd1_1 * this.cd2_2 - this.cd1_2 * this.cd2_1) < 0) ? -1 : 1;
+      var rot2 = Math.atan2((-sign * this.cd1_2), this.cd2_2);
+      this.rotation = rot2 / Math.PI * 180;
+    },
+    get_filename: function() {
+      return this.filename;
+    },
+    set_filename: function(value) {
+      this.filename = value;
+      return value;
+    },
+    get_colorCombine: function() {
+      return this._colorCombine;
+    },
+    set_colorCombine: function(value) {
+      this._colorCombine = value;
+      return value;
     }
   };
 
@@ -14426,6 +14651,15 @@ window.wwtlib = function(){
     requestImage: function() {
       var $this = this;
 
+      if (this.get_dataset().get_wcsImage() != null) {
+        this.texReady = true;
+        this.downloading = false;
+        this.errored = false;
+        this.readyToRender = true;
+        this.requestPending = false;
+        TileCache.removeFromQueue(this.get_key(), true);
+        return;
+      }
       if (!this.downloading && !this.readyToRender) {
         this.downloading = true;
         this.texture = document.createElement('img');
@@ -22324,10 +22558,22 @@ window.wwtlib = function(){
     get_position: function() {
       return this.position;
     },
+    seek: function(pos) {
+      this.position = pos;
+    },
+    seekRelative: function(pos) {
+      this.position += pos;
+    },
     get_length: function() {
       return this._data.length;
     },
     readByte: function() {
+      var result;
+      result = this._data[this.position];
+      this.position += 1;
+      return result;
+    },
+    readSByte: function() {
       var result;
       result = this._data[this.position];
       this.position += 1;
@@ -22340,6 +22586,14 @@ window.wwtlib = function(){
       }
       this.position += count;
       return buf;
+    },
+    readByteString: function(count) {
+      var data = '';
+      for (var i = 0; i < count; i++) {
+        data += String.fromCharCode(this._data[this.position + i]);
+      }
+      this.position += count;
+      return data;
     },
     readSingle: function() {
       var tmp = new Uint8Array(4);
@@ -22368,6 +22622,43 @@ window.wwtlib = function(){
       return BinaryReader.id++;
     },
     close: function() {
+    }
+  };
+
+
+  // wwtlib.Bitmap
+
+  function Bitmap() {
+    this.width = 0;
+    this.height = 0;
+  }
+  Bitmap.create = function(width, height) {
+    height = 1024;
+    width = 1024;
+    var bmp = new Bitmap();
+    bmp.height = height;
+    bmp.width = width;
+    bmp._buffer = new Uint8Array(width * height * 4);
+    return bmp;
+  };
+  var Bitmap$ = {
+    setPixel: function(x, y, r, g, b, a) {
+      var index = (x + y * this.width) * 4;
+      this._buffer[index++] = r;
+      this._buffer[index++] = g;
+      this._buffer[index++] = b;
+      this._buffer[index++] = a;
+    },
+    getTexture: function() {
+      var tex = Tile.prepDevice.createTexture();
+      Tile.prepDevice.bindTexture(3553, tex);
+      Tile.prepDevice.texParameteri(3553, 10242, 33071);
+      Tile.prepDevice.texParameteri(3553, 10243, 33071);
+      Tile.prepDevice.texImage2D(3553, 0, 6408, this.height, this.width, 0, 6408, 5121, this._buffer);
+      Tile.prepDevice.texParameteri(3553, 10241, 9985);
+      Tile.prepDevice.generateMipmap(3553);
+      Tile.prepDevice.bindTexture(3553, null);
+      return tex;
     }
   };
 
@@ -22899,6 +23190,7 @@ window.wwtlib = function(){
     this._sprite = new Sprite2d();
     this.renderType = 2;
     this._milkyWayBackground = null;
+    this._fitsLoading = false;
     this._foregroundCanvas = null;
     this._fgDevice = null;
     this._beginZoom = 1;
@@ -23124,6 +23416,11 @@ window.wwtlib = function(){
           this._sprite.draw(this.renderContext, this._fadePoints, 4, this._crossFadeTexture, true, 1);
         }
       }
+    },
+    _onWcsLoad: function(wcsImage) {
+      this.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
+      this.renderContext.get_foregroundImageset().set_wcsImage(wcsImage);
+      this._fitsLoading = false;
     },
     render: function() {
       var $this = this;
@@ -29104,6 +29401,13 @@ window.wwtlib = function(){
     return temp;
   };
   var Imageset$ = {
+    get_wcsImage: function() {
+      return this._wcsImage;
+    },
+    set_wcsImage: function(value) {
+      this._wcsImage = value;
+      return value;
+    },
     get_projection: function() {
       return this._projection;
     },
@@ -30021,6 +30325,743 @@ window.wwtlib = function(){
   }
   var Class1$ = {
 
+  };
+
+
+  // wwtlib.FitsImage
+
+  function FitsImage(file, callMeBack) {
+    this._header$1 = {};
+    this.histogramMaxCount = 0;
+    this.width = 0;
+    this.height = 0;
+    this.numAxis = 0;
+    this.bZero = 0;
+    this.dataType = 5;
+    this.containsBlanks = false;
+    this.blankValue = Number.MIN_VALUE;
+    this.maxVal = Number.MIN_VALUE;
+    this.minVal = Number.MAX_VALUE;
+    this.lastMin = 0;
+    this.lastMax = 255;
+    this._color$1 = false;
+    this._bufferSize$1 = 1;
+    this.lastScale = 0;
+    this.lastBitmapMin = 0;
+    this.lastBitmapMax = 0;
+    WcsImage.call(this);
+    this._callBack$1 = callMeBack;
+    this.filename = file;
+    this.getFile(file);
+  }
+  FitsImage.isGzip = function(br) {
+    var line = br.readBytes(2);
+    br.seek(0);
+    if (line[0] === 31 && line[1] === 139) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };
+  var FitsImage$ = {
+    getFile: function(url) {
+      this._webFile$1 = new WebFile(url);
+      this._webFile$1.responseType = 'blob';
+      this._webFile$1.onStateChange = ss.bind('fileStateChange', this);
+      this._webFile$1.send();
+    },
+    fileStateChange: function() {
+      var $this = this;
+
+      if (this._webFile$1.get_state() === 2) {
+        alert(this._webFile$1.get_message());
+      }
+      else if (this._webFile$1.get_state() === 1) {
+        var mainBlob = this._webFile$1.getBlob();
+        var chunck = new FileReader();
+        chunck.onloadend = function(e) {
+          $this._readFromBin$1(new BinaryReader(new Uint8Array(chunck.result)));
+          $this._callBack$1($this);
+        };
+        chunck.readAsArrayBuffer(mainBlob);
+      }
+    },
+    _readFromBin$1: function(br) {
+      this.parseHeader(br);
+    },
+    parseHeader: function(br) {
+      var foundEnd = false;
+      while (!foundEnd) {
+        for (var i = 0; i < 36; i++) {
+          var data = br.readByteString(80);
+          if (!foundEnd) {
+            var keyword = ss.trimEnd(data.substring(0, 8));
+            var values = data.substring(10).split('/');
+            if (keyword.toUpperCase() === 'END') {
+              foundEnd = true;
+              i++;
+              data = br.readByteString(80);
+              while (ss.whitespace(data)) {
+                i++;
+                data = br.readByteString(80);
+              }
+              keyword = ss.trimEnd(data.substring(0, 8));
+              values = data.substring(10).split('/');
+              if (keyword.toUpperCase() === 'XTENSION') {
+                foundEnd = false;
+              }
+              else {
+                br.seekRelative(-80);
+              }
+            }
+            else {
+              this._addKeyword$1(keyword, values);
+            }
+          }
+        }
+      }
+      this.numAxis = parseInt(this._header$1['NAXIS']);
+      this.containsBlanks = ss.keyExists(this._header$1, 'BLANK');
+      if (this.containsBlanks) {
+        this.blankValue = parseFloat(this._header$1['BLANK']);
+      }
+      if (ss.keyExists(this._header$1, 'BZERO')) {
+        this.bZero = parseFloat(this._header$1['BZERO']);
+      }
+      this.axisSize = new Array(this.numAxis);
+      for (var axis = 0; axis < this.numAxis; axis++) {
+        this.axisSize[axis] = parseInt(this._header$1[ss.format('NAXIS{0}', axis + 1)]);
+        this._bufferSize$1 *= this.axisSize[axis];
+      }
+      var bitsPix = parseInt(this._header$1['BITPIX']);
+      switch (bitsPix) {
+        case 8:
+          this.dataType = 0;
+          this._initDataBytes$1(br);
+          break;
+        case 16:
+          this.dataType = 1;
+          this._initDataShort$1(br);
+          break;
+        case 32:
+          this.dataType = 2;
+          this._initDataInt$1(br);
+          break;
+        case -32:
+          this.dataType = 3;
+          this._initDataFloat$1(br);
+          break;
+        case -64:
+          this.dataType = 4;
+          this._initDataDouble$1(br);
+          break;
+        default:
+          this.dataType = 5;
+          break;
+      }
+      if (this.numAxis > 1) {
+        if (this.numAxis === 3) {
+          if (this.axisSize[2] === 3) {
+            this._color$1 = true;
+          }
+        }
+        this.sizeX = this.width = this.axisSize[0];
+        this.sizeY = this.height = this.axisSize[1];
+        this._computeWcs$1();
+        this.histogram = this.computeHistogram(256);
+        this.histogramMaxCount = this.histogram[256];
+      }
+    },
+    _addKeyword$1: function(keyword, values) {
+      if (keyword !== 'CONTINUE' && keyword !== 'COMMENT' && keyword !== 'HISTORY' && !ss.emptyString(keyword)) {
+        try {
+          if (ss.keyExists(this._header$1, keyword)) {
+            this._header$1[keyword] = ss.trim(values[0]);
+          }
+          else {
+            this._header$1[keyword.toUpperCase()] = ss.trim(values[0]);
+          }
+        }
+        catch ($e1) {
+        }
+      }
+    },
+    _computeWcs$1: function() {
+      if (ss.keyExists(this._header$1, 'CROTA2')) {
+        this.rotation = parseFloat(ss.trim(this._header$1['CROTA2']));
+        this.hasRotation = true;
+      }
+      if (ss.keyExists(this._header$1, 'CDELT1')) {
+        this.scaleX = parseFloat(ss.trim(this._header$1['CDELT1']));
+        if (ss.keyExists(this._header$1, 'CDELT2')) {
+          this.scaleY = parseFloat(ss.trim(this._header$1['CDELT2']));
+          this.hasScale = true;
+        }
+      }
+      if (ss.keyExists(this._header$1, 'CRPIX1')) {
+        this.referenceX = parseFloat(ss.trim(this._header$1['CRPIX1'])) - 1;
+        if (ss.keyExists(this._header$1, 'CRPIX2')) {
+          this.referenceY = parseFloat(ss.trim(this._header$1['CRPIX2'])) - 1;
+          this.hasPixel = true;
+        }
+      }
+      var galactic = false;
+      var tan = false;
+      if (ss.keyExists(this._header$1, 'CTYPE1')) {
+        if (this._header$1['CTYPE1'].indexOf('GLON-') > -1) {
+          galactic = true;
+          tan = true;
+        }
+        if (this._header$1['CTYPE2'].indexOf('GLAT-') > -1) {
+          galactic = true;
+          tan = true;
+        }
+        if (this._header$1['CTYPE1'].indexOf('-TAN') > -1) {
+          tan = true;
+        }
+        if (this._header$1['CTYPE1'].indexOf('-SIN') > -1) {
+          tan = true;
+        }
+      }
+      if (!tan) {
+        throw new Error('Only TAN projected images are supported: ');
+      }
+      this.hasSize = true;
+      if (ss.keyExists(this._header$1, 'CRVAL1')) {
+        this.centerX = parseFloat(ss.trim(this._header$1['CRVAL1']));
+        if (ss.keyExists(this._header$1, 'CRVAL2')) {
+          this.centerY = parseFloat(ss.trim(this._header$1['CRVAL2']));
+          this.hasLocation = true;
+        }
+      }
+      if (galactic) {
+        var result = Coordinates.galactictoJ2000(this.centerX, this.centerY);
+        this.centerX = result[0];
+        this.centerY = result[1];
+      }
+      if (ss.keyExists(this._header$1, 'CD1_1') && ss.keyExists(this._header$1, 'CD1_2') && ss.keyExists(this._header$1, 'CD2_1') && ss.keyExists(this._header$1, 'CD2_2')) {
+        this.cd1_1 = parseFloat(ss.trim(this._header$1['CD1_1']));
+        this.cd1_2 = parseFloat(ss.trim(this._header$1['CD1_2']));
+        this.cd2_1 = parseFloat(ss.trim(this._header$1['CD2_1']));
+        this.cd2_2 = parseFloat(ss.trim(this._header$1['CD2_2']));
+        if (!this.hasRotation) {
+          this.calculateRotationFromCD();
+        }
+        if (!this.hasScale) {
+          this.calculateScaleFromCD();
+        }
+        this.hasScale = true;
+        this.hasRotation = true;
+      }
+      this.set_validWcs(this.hasScale && this.hasRotation && this.hasPixel && this.hasLocation);
+    },
+    getHistogramBitmap: function(max) {
+      var bmp = Bitmap.create(this.histogram.length, 150);
+      return bmp;
+    },
+    computeHistogram: function(count) {
+      var histogram = new Array(count + 1);
+      switch (this.dataType) {
+        case 0:
+          this._computeHistogramByte$1(histogram);
+          break;
+        case 1:
+          this._computeHistogramInt16$1(histogram);
+          break;
+        case 2:
+          this._computeHistogramInt32$1(histogram);
+          break;
+        case 3:
+          this._computeHistogramFloat$1(histogram);
+          break;
+        case 4:
+          this._computeHistogramDouble$1(histogram);
+          break;
+        case 5:
+        default:
+          break;
+      }
+      var maxCounter = 1;
+      var $enum1 = ss.enumerate(histogram);
+      while ($enum1.moveNext()) {
+        var val = $enum1.current;
+        if (val > maxCounter) {
+          maxCounter = val;
+        }
+      }
+      histogram[count] = maxCounter;
+      return histogram;
+    },
+    _computeHistogramDouble$1: function(histogram) {
+      var buckets = histogram.length;
+      var buf = this.dataBuffer;
+      var factor = (this.maxVal - this.minVal) / buckets;
+      var $enum1 = ss.enumerate(buf);
+      while ($enum1.moveNext()) {
+        var val = $enum1.current;
+        if (!(val === Number.NaN)) {
+          histogram[Math.min(buckets - 1, ss.truncate(((val - this.minVal) / factor)))]++;
+        }
+      }
+    },
+    _computeHistogramFloat$1: function(histogram) {
+      var buckets = histogram.length;
+      var buf = this.dataBuffer;
+      var factor = (this.maxVal - this.minVal) / buckets;
+      var $enum1 = ss.enumerate(buf);
+      while ($enum1.moveNext()) {
+        var val = $enum1.current;
+        if (!(val === FitsImage._naN$1)) {
+          histogram[Math.min(buckets - 1, ss.truncate(((val - this.minVal) / factor)))]++;
+        }
+      }
+    },
+    _computeHistogramInt32$1: function(histogram) {
+      var buckets = histogram.length;
+      var buf = this.dataBuffer;
+      var factor = (this.maxVal - this.minVal) / buckets;
+      var $enum1 = ss.enumerate(buf);
+      while ($enum1.moveNext()) {
+        var val = $enum1.current;
+        histogram[Math.min(buckets - 1, ss.truncate(((val - this.minVal) / factor)))]++;
+      }
+    },
+    _computeHistogramInt16$1: function(histogram) {
+      var buckets = histogram.length;
+      var buf = this.dataBuffer;
+      var factor = (this.maxVal - this.minVal) / buckets;
+      var $enum1 = ss.enumerate(buf);
+      while ($enum1.moveNext()) {
+        var val = $enum1.current;
+        histogram[Math.min(buckets - 1, ss.truncate(((val - this.minVal) / factor)))]++;
+      }
+    },
+    _computeHistogramByte$1: function(histogram) {
+      var buckets = histogram.length;
+      var buf = this.dataBuffer;
+      var factor = (this.maxVal - this.minVal) / buckets;
+      var $enum1 = ss.enumerate(buf);
+      while ($enum1.moveNext()) {
+        var val = $enum1.current;
+        histogram[Math.min(buckets - 1, ss.truncate(((val - this.minVal) / factor)))]++;
+      }
+    },
+    _initDataBytes$1: function(br) {
+      var buffer = new Array(this._bufferSize$1);
+      this.dataBuffer = buffer;
+      for (var i = 0; i < this._bufferSize$1; i++) {
+        buffer[i] = br.readByte();
+        if (this.minVal > buffer[i]) {
+          this.minVal = buffer[i];
+        }
+        if (this.maxVal < buffer[i]) {
+          this.maxVal = buffer[i];
+        }
+      }
+    },
+    _initDataShort$1: function(br) {
+      var buffer = new Array(this._bufferSize$1);
+      this.dataBuffer = buffer;
+      for (var i = 0; i < this._bufferSize$1; i++) {
+        buffer[i] = ((br.readSByte() * 256) + br.readByte());
+        if (this.minVal > buffer[i]) {
+          this.minVal = buffer[i];
+        }
+        if (this.maxVal < buffer[i]) {
+          this.maxVal = buffer[i];
+        }
+      }
+    },
+    _initDataUnsignedShort$1: function(br) {
+      var buffer = new Array(this._bufferSize$1);
+      this.dataBuffer = buffer;
+      for (var i = 0; i < this._bufferSize$1; i++) {
+        buffer[i] = (((br.readSByte() * 256) + br.readByte()) + 32768);
+        if (this.minVal > buffer[i]) {
+          this.minVal = buffer[i];
+        }
+        if (this.maxVal < buffer[i]) {
+          this.maxVal = buffer[i];
+        }
+      }
+    },
+    _initDataInt$1: function(br) {
+      var buffer = new Array(this._bufferSize$1);
+      this.dataBuffer = buffer;
+      for (var i = 0; i < this._bufferSize$1; i++) {
+        buffer[i] = (br.readSByte() << 24) + (br.readSByte() << 16) + (br.readSByte() << 8) + br.readByte();
+        if (this.minVal > buffer[i]) {
+          this.minVal = buffer[i];
+        }
+        if (this.maxVal < buffer[i]) {
+          this.maxVal = buffer[i];
+        }
+      }
+    },
+    _initDataFloat$1: function(br) {
+      var buffer = new Array(this._bufferSize$1);
+      this.dataBuffer = buffer;
+      var part = new Uint8Array(4);
+      for (var i = 0; i < this._bufferSize$1; i++) {
+        part[3] = br.readByte();
+        part[2] = br.readByte();
+        part[1] = br.readByte();
+        part[0] = br.readByte();
+        buffer[i] = new Float32Array(part.buffer, 0, 1)[0];
+        if (this.minVal > buffer[i]) {
+          this.minVal = buffer[i];
+        }
+        if (this.maxVal < buffer[i]) {
+          this.maxVal = buffer[i];
+        }
+      }
+    },
+    _initDataDouble$1: function(br) {
+    },
+    getBitmap: function() {
+      if (!this.lastBitmapMax && !this.lastBitmapMin) {
+        this.lastBitmapMin = this.minVal;
+        this.lastBitmapMax = this.maxVal;
+      }
+      return this.getScaledBitmap(this.lastBitmapMin, this.lastBitmapMax, this.lastScale);
+    },
+    getScaledBitmap: function(min, max, scaleType) {
+      var scale;
+      this.lastScale = scaleType;
+      this.lastBitmapMin = min;
+      this.lastBitmapMax = max;
+      switch (scaleType) {
+        case 0:
+        default:
+          scale = new ScaleLinear(min, max);
+          break;
+        case 1:
+          scale = new ScaleLog(min, max);
+          break;
+        case 2:
+          scale = new ScalePow(min, max);
+          break;
+        case 3:
+          scale = new ScaleSqrt(min, max);
+          break;
+        case 4:
+          scale = new HistogramEqualization(this, min, max);
+          break;
+      }
+      try {
+        switch (this.dataType) {
+          case 0:
+            return this._getBitmapByte$1(min, max, scale);
+          case 1:
+            return this.getBitmapShort(min, max, scale);
+          case 2:
+            return this._getBitmapInt$1(min, max, scale);
+          case 3:
+            return this._getBitmapFloat$1(min, max, scale);
+          case 4:
+            return this._getBitmapDouble$1(min, max, scale);
+          case 5:
+          default:
+            return Bitmap.create(100, 100);
+        }
+      }
+      catch ($e1) {
+        return Bitmap.create(10, 10);
+      }
+    },
+    _getBitmapByte$1: function(min, max, scale) {
+      var buf = this.dataBuffer;
+      var factor = max - min;
+      var stride = this.axisSize[0];
+      var page = this.axisSize[0] * this.axisSize[1];
+      var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
+      for (var y = 0; y < this.axisSize[1]; y++) {
+        var indexY = ((this.axisSize[1] - 1) - y);
+        for (var x = 0; x < this.axisSize[0]; x++) {
+          if (this._color$1) {
+            var datR = buf[(x + indexY * stride)];
+            var datG = buf[(x + indexY * stride) + page];
+            var datB = buf[(x + indexY * stride) + page * 2];
+            if (this.containsBlanks && datR === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var r = scale.map(datR);
+              var g = scale.map(datG);
+              var b = scale.map(datB);
+              bmp.setPixel(x, y, r, g, b, 255);
+            }
+          }
+          else {
+            var dataValue = buf[x + indexY * stride];
+            if (this.containsBlanks && dataValue === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var val = scale.map(dataValue);
+              bmp.setPixel(x, y, val, val, val, 255);
+            }
+          }
+        }
+      }
+      return bmp;
+    },
+    _getBitmapDouble$1: function(min, max, scale) {
+      var buf = this.dataBuffer;
+      var factor = max - min;
+      var stride = this.axisSize[0];
+      var page = this.axisSize[0] * this.axisSize[1];
+      var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
+      for (var y = 0; y < this.axisSize[1]; y++) {
+        var indexY = ((this.axisSize[1] - 1) - y);
+        for (var x = 0; x < this.axisSize[0]; x++) {
+          if (this._color$1) {
+            var datR = buf[(x + indexY * stride)];
+            var datG = buf[(x + indexY * stride) + page];
+            var datB = buf[(x + indexY * stride) + page * 2];
+            if (this.containsBlanks && datR === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var r = scale.map(datR);
+              var g = scale.map(datG);
+              var b = scale.map(datB);
+              bmp.setPixel(x, y, r, g, b, 255);
+            }
+          }
+          else {
+            var dataValue = buf[x + indexY * stride];
+            if (this.containsBlanks && dataValue === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var val = scale.map(dataValue);
+              bmp.setPixel(x, y, val, val, val, 255);
+            }
+          }
+        }
+      }
+      return bmp;
+    },
+    _getBitmapFloat$1: function(min, max, scale) {
+      var buf = this.dataBuffer;
+      var factor = max - min;
+      var stride = this.axisSize[0];
+      var page = this.axisSize[0] * this.axisSize[1];
+      var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
+      for (var y = 0; y < this.axisSize[1]; y++) {
+        var indexY = ((this.axisSize[1] - 1) - y);
+        for (var x = 0; x < this.axisSize[0]; x++) {
+          if (this._color$1) {
+            var datR = buf[(x + indexY * stride)];
+            var datG = buf[(x + indexY * stride) + page];
+            var datB = buf[(x + indexY * stride) + page * 2];
+            if (this.containsBlanks && datR === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var r = scale.map(datR);
+              var g = scale.map(datG);
+              var b = scale.map(datB);
+              bmp.setPixel(x, y, r, g, b, 255);
+            }
+          }
+          else {
+            var dataValue = buf[x + indexY * stride];
+            if (this.containsBlanks && dataValue === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var val = scale.map(dataValue);
+              bmp.setPixel(x, y, val, val, val, 255);
+            }
+          }
+        }
+      }
+      return bmp;
+    },
+    _getBitmapInt$1: function(min, max, scale) {
+      var buf = this.dataBuffer;
+      var factor = max - min;
+      var stride = this.axisSize[0];
+      var page = this.axisSize[0] * this.axisSize[1];
+      var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
+      for (var y = 0; y < this.axisSize[1]; y++) {
+        var indexY = ((this.axisSize[1] - 1) - y);
+        for (var x = 0; x < this.axisSize[0]; x++) {
+          if (this._color$1) {
+            var datR = buf[(x + indexY * stride)];
+            var datG = buf[(x + indexY * stride) + page];
+            var datB = buf[(x + indexY * stride) + page * 2];
+            if (this.containsBlanks && datR === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var r = scale.map(datR);
+              var g = scale.map(datG);
+              var b = scale.map(datB);
+              bmp.setPixel(x, y, r, g, b, 255);
+            }
+          }
+          else {
+            var dataValue = buf[x + indexY * stride];
+            if (this.containsBlanks && dataValue === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var val = scale.map(dataValue);
+              bmp.setPixel(x, y, val, val, val, 255);
+            }
+          }
+        }
+      }
+      return bmp;
+    },
+    getBitmapShort: function(min, max, scale) {
+      var buf = this.dataBuffer;
+      var factor = max - min;
+      var stride = this.axisSize[0];
+      var page = this.axisSize[0] * this.axisSize[1];
+      var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
+      for (var y = 0; y < this.axisSize[1]; y++) {
+        var indexY = ((this.axisSize[1] - 1) - y);
+        for (var x = 0; x < this.axisSize[0]; x++) {
+          if (this._color$1) {
+            var datR = buf[(x + indexY * stride)];
+            var datG = buf[(x + indexY * stride) + page];
+            var datB = buf[(x + indexY * stride) + page * 2];
+            if (this.containsBlanks && datR === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var r = scale.map(datR);
+              var g = scale.map(datG);
+              var b = scale.map(datB);
+              bmp.setPixel(x, y, r, g, b, 255);
+            }
+          }
+          else {
+            var dataValue = buf[x + indexY * stride];
+            if (this.containsBlanks && dataValue === this.blankValue) {
+              bmp.setPixel(x, y, 0, 0, 0, 0);
+            }
+            else {
+              var val = scale.map(dataValue);
+              bmp.setPixel(x, y, val, val, val, 255);
+            }
+          }
+        }
+      }
+      return bmp;
+    }
+  };
+
+
+  // wwtlib.ScaleLinear
+
+  function ScaleLinear(min, max) {
+    this._min$1 = 0;
+    this._max$1 = 0;
+    this._factor$1 = 0;
+    this._logFactor$1 = 0;
+    ScaleMap.call(this);
+    this._min$1 = min;
+    this._max$1 = max;
+    this._factor$1 = max - min;
+  }
+  var ScaleLinear$ = {
+    map: function(val) {
+      return Math.min(255, Math.max(0, ss.truncate(((val - this._min$1) / this._factor$1 * 255))));
+    }
+  };
+
+
+  // wwtlib.ScaleLog
+
+  function ScaleLog(min, max) {
+    this._min$1 = 0;
+    this._max$1 = 0;
+    this._factor$1 = 0;
+    this._logFactor$1 = 0;
+    ScaleMap.call(this);
+    this._min$1 = min;
+    this._max$1 = max;
+    this._factor$1 = max - min;
+    this._logFactor$1 = 255 / Math.log(255);
+  }
+  var ScaleLog$ = {
+    map: function(val) {
+      return Math.min(255, Math.max(0, ss.truncate((Math.log((val - this._min$1) / this._factor$1 * 255) * this._logFactor$1))));
+    }
+  };
+
+
+  // wwtlib.ScalePow
+
+  function ScalePow(min, max) {
+    this._min$1 = 0;
+    this._max$1 = 0;
+    this._factor$1 = 0;
+    this._powFactor$1 = 0;
+    ScaleMap.call(this);
+    this._min$1 = min;
+    this._max$1 = max;
+    this._factor$1 = max - min;
+    this._powFactor$1 = 255 / Math.pow(255, 2);
+  }
+  var ScalePow$ = {
+    map: function(val) {
+      return Math.min(255, Math.max(0, ss.truncate((Math.pow((val - this._min$1) / this._factor$1 * 255, 2) * this._powFactor$1))));
+    }
+  };
+
+
+  // wwtlib.ScaleSqrt
+
+  function ScaleSqrt(min, max) {
+    this._min$1 = 0;
+    this._max$1 = 0;
+    this._factor$1 = 0;
+    this._sqrtFactor$1 = 0;
+    ScaleMap.call(this);
+    this._min$1 = min;
+    this._max$1 = max;
+    this._factor$1 = max - min;
+    this._sqrtFactor$1 = 255 / Math.sqrt(255);
+  }
+  var ScaleSqrt$ = {
+    map: function(val) {
+      return Math.min(255, Math.max(0, ss.truncate((Math.sqrt((val - this._min$1) / this._factor$1 * 255) * this._sqrtFactor$1))));
+    }
+  };
+
+
+  // wwtlib.HistogramEqualization
+
+  function HistogramEqualization(image, min, max) {
+    this._min$1 = 0;
+    this._max$1 = 0;
+    this._factor$1 = 0;
+    this._maxHistogramValue$1 = 1;
+    ScaleMap.call(this);
+    this._min$1 = min;
+    this._max$1 = max;
+    this._factor$1 = max - min;
+    this._histogram$1 = image.computeHistogram(10000);
+    this._maxHistogramValue$1 = this._histogram$1[10000];
+    this._lookup$1 = new Array(10000);
+    var totalCounts = image.width * image.height;
+    var sum = 0;
+    for (var i = 0; i < 10000; i++) {
+      sum += this._histogram$1[i];
+      this._lookup$1[i] = (Math.min(255, (sum * 255) / totalCounts) + 0.5);
+    }
+  }
+  var HistogramEqualization$ = {
+    map: function(val) {
+      return this._lookup$1[Math.min(10000 - 1, Math.max(0, ss.truncate(((val - this._min$1) / this._factor$1 * (10000 - 1)))))];
+    }
   };
 
 
@@ -32569,13 +33610,25 @@ window.wwtlib = function(){
       if (this.geometryCreated) {
         return true;
       }
+      var bmp = null;
+      if (this.dataset.get_wcsImage() != null) {
+        var wcsImage = ss.safeCast(this.dataset.get_wcsImage(), WcsImage);
+        bmp = wcsImage.getBitmap();
+        this.texture2d = bmp.getTexture();
+      }
       this.geometryCreated = true;
       for (var i = 0; i < 4; i++) {
         this._renderTriangleLists[i] = [];
       }
       this.computeMatrix();
-      this.height = this.texture.naturalHeight;
-      this.width = this.texture.naturalWidth;
+      if (renderContext.gl != null) {
+        this.height = bmp.height;
+        this.width = bmp.width;
+      }
+      else {
+        this.height = this.texture.naturalHeight;
+        this.width = this.texture.naturalWidth;
+      }
       var latMin = 0 + (this.scaleY * (this.height - this.pixelCenterY));
       var latMax = 0 - (this.scaleY * this.pixelCenterY);
       var lngMin = 0 + (this.scaleX * this.pixelCenterX);
@@ -35537,6 +36590,8 @@ window.wwtlib = function(){
       EO: EO,
       CullMode: CullMode,
       PointScaleTypes: PointScaleTypes,
+      DataTypes: DataTypes,
+      ScaleTypes: ScaleTypes,
       AltUnits: AltUnits,
       FadeType: FadeType,
       ReferenceFrames: ReferenceFrames,
@@ -35670,6 +36725,7 @@ window.wwtlib = function(){
       Texture: [ Texture, Texture$, null ],
       Grids: [ Grids, Grids$, null ],
       KeplerVertex: [ KeplerVertex, KeplerVertex$, null ],
+      ScaleMap: [ ScaleMap, ScaleMap$, null ],
       Layer: [ Layer, Layer$, null ],
       DomainValue: [ DomainValue, DomainValue$, null ],
       LayerManager: [ LayerManager, LayerManager$, null ],
@@ -35684,6 +36740,7 @@ window.wwtlib = function(){
       VoTable: [ VoTable, VoTable$, null ],
       VoRow: [ VoRow, VoRow$, null ],
       VoColumn: [ VoColumn, VoColumn$, null ],
+      WcsImage: [ WcsImage, WcsImage$, null ],
       Planets: [ Planets, Planets$, null ],
       RenderContext: [ RenderContext, RenderContext$, null ],
       RenderTriangle: [ RenderTriangle, RenderTriangle$, null ],
@@ -35735,6 +36792,7 @@ window.wwtlib = function(){
       PopupColorPicker: [ PopupColorPicker, PopupColorPicker$, null ],
       OverlayProperties: [ OverlayProperties, OverlayProperties$, null ],
       BinaryReader: [ BinaryReader, BinaryReader$, null ],
+      Bitmap: [ Bitmap, Bitmap$, null ],
       ColorPicker: [ ColorPicker, ColorPicker$, null ],
       ContextMenuStrip: [ ContextMenuStrip, ContextMenuStrip$, null ],
       ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
@@ -35774,6 +36832,12 @@ window.wwtlib = function(){
       ViewMoverKenBurnsStyle: [ ViewMoverKenBurnsStyle, ViewMoverKenBurnsStyle$, null, IViewMover ],
       Place: [ Place, Place$, null, IThumbnail, IPlace ],
       Class1: [ Class1, Class1$, null ],
+      FitsImage: [ FitsImage, FitsImage$, WcsImage ],
+      ScaleLinear: [ ScaleLinear, ScaleLinear$, ScaleMap ],
+      ScaleLog: [ ScaleLog, ScaleLog$, ScaleMap ],
+      ScalePow: [ ScalePow, ScalePow$, ScaleMap ],
+      ScaleSqrt: [ ScaleSqrt, ScaleSqrt$, ScaleMap ],
+      HistogramEqualization: [ HistogramEqualization, HistogramEqualization$, ScaleMap ],
       GreatCirlceRouteLayer: [ GreatCirlceRouteLayer, GreatCirlceRouteLayer$, Layer ],
       ImageSetLayer: [ ImageSetLayer, ImageSetLayer$, Layer ],
       TimeSeriesLayer: [ TimeSeriesLayer, TimeSeriesLayer$, Layer ],
@@ -36173,6 +37237,7 @@ window.wwtlib = function(){
   (function() {
     var canvas = document.getElementById('canvas');
   })();
+  FitsImage._naN$1 = 0 / 0;
   SpreadSheetLayer._circleTexture$1 = null;
   TimeSeriesLayer._circleTexture$1 = null;
   ToastTile.slashIndexBuffer = new Array(64);

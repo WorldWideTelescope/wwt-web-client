@@ -16,6 +16,16 @@ namespace wwtlib
             get { return position; }
         }
 
+        public void Seek(int pos)
+        {
+            position = pos;
+        }
+
+        public void SeekRelative(int pos)
+        {
+            position += pos;
+        }
+
         public int Length
         {
             get { return data.length; }
@@ -28,13 +38,6 @@ namespace wwtlib
 
         public byte ReadByte()
         {
-            //if (this.data.length < this.position + 1)
-            //{
-
-            //    throw 'range error';
-
-            //}
-
             byte result;
             result = this.data[this.position];
             this.position += 1;
@@ -42,12 +45,17 @@ namespace wwtlib
             return result;
         }
 
+        public sbyte ReadSByte()
+        {
+            sbyte result;
+            result = (sbyte)this.data[this.position];
+            this.position += 1;
+
+            return result;
+        }
+
         public byte[] ReadBytes(int count)
         {
-            //if (this.data.length < this.position + length)
-            //{
-            //    throw 'range error';
-            //}
 
             byte[] buf = new byte[count];
 
@@ -59,6 +67,20 @@ namespace wwtlib
             this.position += count;
 
             return buf;
+        }
+
+        public string ReadByteString(int count)
+        {
+            string data = "";
+
+            for (int i = 0; i < count; i++)
+            {
+                data += string.FromCharCode(this.data[this.position + i]);
+            }
+
+            this.position += count;
+
+            return data;
         }
 
         public float ReadSingle()

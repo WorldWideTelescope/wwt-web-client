@@ -8,7 +8,13 @@ namespace wwtlib
 {
     public class Imageset :  IThumbnail
     {
+        private object wcsImage;
 
+        public object WcsImage
+        {
+            get { return wcsImage; }
+            set { wcsImage = value; }
+        }
 
         public static string GetTileKey(Imageset imageset, int level, int x, int y)
         {
