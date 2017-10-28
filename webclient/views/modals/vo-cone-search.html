@@ -30,10 +30,10 @@
         </div>
         <div class="col-md-3 form-group-sm">
           <label localize="Verbosity"></label>
-          <select class="form-control">
-            <option value="low" localize="Low"></option>
-            <option value="med" localize="Medium"></option>
-            <option value="hi" localize="High"></option>
+          <select class="form-control" ng-value="verbosity">
+            <option value="1" localize="Low"></option>
+            <option value="2" localize="Medium"></option>
+            <option value="3" localize="High"></option>
           </select>
         </div>
         <div class="col-md-12" style="margin-top:-3px;">
@@ -48,8 +48,8 @@
     </div>
     <div class="col-md-3">
       <div class="checkbox">
-        <label data-ng-class="{checked:catalogPref}">
-          <input type="checkbox" ng-model="catalogPref"/>&nbsp;
+        <label data-ng-class="{checked:coneSearch}">
+          <input type="checkbox" ng-model="coneSearch"/>&nbsp;
           <span localize="Catalog (VO Cone Search)"></span>
         </label>
       </div>
@@ -71,7 +71,7 @@
       <a class="btn" localize="NVO Registry Search" ng-click="searchRegistry()"></a>
     </div>
     <div class="col-md-2 search-buttons">
-      <a class="btn" localize="Search" ng-click="nope()"></a><br>
+      <a class="btn" ng-class="{disabled:hiliteIndex==-2}" localize="Search" ng-click="search()"></a><br>
       <a class="btn" localize="Close" ng-click="$hide()"></a>
     </div>
   </div>

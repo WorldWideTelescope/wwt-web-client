@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <h5>
+    <span localize="VO Table Viewer:"></span>
+    {{votable.rows.length}}
+    <span localize="Rows"></span>
+  </h5>
+</div>
+<div class="modal-body vo-cone-search vo-table-viewer" ng-controller="voTableViewer" ng-init="init(votable)">
+
+  <div class="row" style="margin-bottom:5px">
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-2 form-group-sm">
+          <label localize="Marker Type"></label>
+          <select class="form-control">
+            <option localize="Gaussian"></option>
+            <option localize="Point"></option>
+            <option localize="Circle"></option>
+            <option localize="Square"></option>
+            <option localize="PushPin"></option>
+            <option localize="Target1"></option>
+            <option localize="Target2"></option>
+            <option localize="Column"></option>
+            <option localize="Cylinder"></option>
+          </select>
+        </div>
+        <div class="col-md-2 form-group-sm">
+          <label localize="RA Source"></label>
+          <select class="form-control">
+            <option ng-repeat="c in votable.columns track by $index" selected="{{c.id == 'RA'}}">{{c.id}}</option>
+          </select>
+        </div>
+        <div class="col-md-2 form-group-sm">
+          <label localize="Dec Source"></label>
+          <select class="form-control">
+            <option ng-repeat="c in votable.columns track by $index" selected="{{c.id == 'DEC'}}">{{c.id}}</option>
+          </select>
+        </div>
+        <div class="col-md-2 form-group-sm">
+          <label localize="Distance Source"></label>
+          <select class="form-control">
+            <option ng-repeat="c in votable.columns track by $index">{{c.id}}</option>
+          </select>
+        </div>
+        <div class="col-md-2 form-group-sm">
+          <label localize="Type Source"></label>
+          <select class="form-control">
+            <option ng-repeat="c in votable.columns track by $index">{{c.id}}</option>
+          </select>
+        </div>
+        <div class="col-md-2 form-group-sm">
+          <label localize="Size/Mag Source"></label>
+          <select class="form-control">
+            <option ng-repeat="c in votable.columns track by $index">{{c.id}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 search-buttons">
+      <a class="btn" localize="Save As..."></a><br>
+      <a class="btn" localize="Broadcast" ng-click="$hide()"></a>
+    </div>
+  </div>
+  <div class="results">
+    <table class="table">
+      <thead>
+      <tr>
+        <th ng-repeat="c in votable.columns">
+          <div class="ellipsize" title="{{c.id}}">{{c.id}}</div></th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr ng-repeat="r in votable.rows track by $index" ng-click="hilite(r,$index)"
+          ng-class="{hilite:$index==hiliteIndex}" ng-if="$index &lt; 100">
+        <td ng-repeat="v in r.columnData track by $index">
+          <div class="ellipsize" title="{{v}}">{{v}}</div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
