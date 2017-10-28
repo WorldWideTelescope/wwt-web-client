@@ -96,8 +96,10 @@ wwt.controllers.controller('voConeSearch',
         }
         wwtlib.VoTable.loadFromUrl(searchUrl, function () {
           var table = this;
-          table.rows = table.rows.slice(0,99);
+          table.pagedRows = table.rows.slice(0,99);
           $rootScope.loadVOTableModal(this);
+          //var layer = new wwtlib.VoTable();
+          wwt.wc.addVoTableLayer(table);
           $scope.$parent.$hide();
         })
 

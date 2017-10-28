@@ -15,7 +15,6 @@ wwt.controllers.controller('voTableViewer',
             }
           });
         }
-
       }
 
 

@@ -71,7 +71,7 @@
       </thead>
       <tbody>
 
-      <tr ng-repeat="r in votable.rows track by $index" ng-click="hilite(r,$index)"
+      <tr ng-repeat="r in votable.pagedRows track by $index" ng-click="hilite(r,$index)"
           ng-class="{hilite:$index==hiliteIndex}" ng-if="$index &lt; 100">
         <td ng-repeat="v in r.columnData track by $index">
           <div class="ellipsize" title="{{v}}">{{v}}</div>
