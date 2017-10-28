@@ -8,7 +8,7 @@
 <div class="modal-body vo-cone-search vo-table-viewer" ng-controller="voTableViewer" ng-init="init(votable)">
 
   <div class="row" style="margin-bottom:5px">
-    <div class="col-md-10">
+    <div class="col-md-9">
       <div class="row">
         <div class="col-md-2 form-group-sm">
           <label localize="Marker Type"></label>
@@ -26,14 +26,12 @@
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="RA Source"></label>
-          <select class="form-control">
-            <option ng-repeat="c in votable.columns track by $index" selected="{{c.id == 'RA'}}">{{c.id}}</option>
+          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="RASource">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Dec Source"></label>
-          <select class="form-control">
-            <option ng-repeat="c in votable.columns track by $index" selected="{{c.id == 'DEC'}}">{{c.id}}</option>
+          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="DecSource">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
@@ -56,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-2 search-buttons">
+    <div class="col-md-3 search-buttons">
       <a class="btn" localize="Save As..."></a><br>
       <a class="btn" localize="Broadcast" ng-click="$hide()"></a>
     </div>
