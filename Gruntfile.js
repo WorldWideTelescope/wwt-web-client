@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        
+
         pkg: grunt.file.readJSON('package.json'),
         banner: '/**\n' +
             '* WorldWide Telescope Web Client\n' +
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
             '**/\n',
 
         // Task configuration.
-        
+
         concat: {
             options: {
                 banner: '<%= banner %>'
@@ -82,6 +82,7 @@ module.exports = function(grunt) {
                     'controllers/modals/ObservingTimeController.js',
                   'controllers/modals/SlideSelectionController.js',
                   'controllers/modals/VoConeSearchController.js',
+                  'controllers/modals/VOTableViewerController.js',
                     'controllers/LoginController.js',
                     'controls/move.js',
                     'controls/util.js'
@@ -197,10 +198,10 @@ module.exports = function(grunt) {
                 dest: 'css/'
             }
         },
-        
+
         watch: {
             sdk: {
-                files: 'sdk/wwtlib.js', 
+                files: 'sdk/wwtlib.js',
                 tasks: ['sdk']
             },
 
@@ -217,9 +218,9 @@ module.exports = function(grunt) {
                     'app.js'],
                 tasks: ['dist-js']
             },
-            
 
-            
+
+
             less: {
                 files: 'css/*.less',
                 tasks: ['dist-css']
@@ -230,7 +231,7 @@ module.exports = function(grunt) {
 
     // Dependencies
     require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
-    
+
     // JS concatenation and minification
     grunt.registerTask('dist-js', ['concat:webclient', 'uglify:webclient']);
 

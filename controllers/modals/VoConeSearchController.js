@@ -16,11 +16,12 @@ wwt.controllers.controller('voConeSearch',
         }
       }
       $scope.searchRegistry = function () {
+        $scope.hiliteIndex = -1;
         var searchUrl = "http://nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
           $scope.regTitle
           + "%25'%20or%20shortname%20like%20'%25" +
           $scope.regTitle
-          + "%25')&capability=" + ($scope.catalogPref ? 'ConeSearch' : 'SIAP');
+          + "%25')&capability=" + ($scope.coneSearch ? 'ConeSearch' : 'SIAP');
         console.log(searchUrl);
         wwtlib.VoTable.loadFromUrl(searchUrl, function () {
           $scope.table = this;
@@ -49,21 +50,62 @@ wwt.controllers.controller('voConeSearch',
       $scope.hilite = function (row, $index) {
         $scope.hiliteIndex = $index;
         $scope.searchBaseURL = $scope.getData(row, 'accessURL');
-      }
-      $scope.hiliteIndex = 0;
+      };
+
+      $scope.hiliteIndex = -1;
 
       $scope.regTitle = 'hubble';
       $scope.searchBaseURL = '';
       $scope.fromRegistry = true;
       $scope.fromView = true;
-      $scope.catalogPref = true;
+      $scope.coneSearch = true;
       $scope.siapImages = false;
-      $scope.nope = function () {
-        alert('not yet. soon...');
+      $scope.search = function () {
+        var searchUrl;
+        if ($scope.hiliteIndex < 0){
+          //known good url for results
+          searchUrl = "http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
+        }
+        else {
+          var url = $scope.searchBaseURL.replace('&amp;', '&');
+          var lastIndex = url.length - 1;
+          if (url.lastIndexOf('?') !== lastIndex && url.lastIndexOf('&') !== lastIndex) {
+            if (url.indexOf('?') > 0) {
+              url += '&';
+            } else {
+              url += '?';
+            }
+          }
+
+          var qObj = $scope.coneSearch ? {
+            RA: $scope.RA,
+            Dec: $scope.Dec,
+            SR: $scope.Fov,
+            VERB: $scope.verbosity
+          } : {
+            POS: $scope.RA + ',' + $scope.Dec,
+            SIZE: $scope.Fov,
+            VERB: $scope.verbosity
+          };
+
+          var params = [];
+          Object.keys(qObj).forEach(function (k) {
+            params.push(k + '=' + qObj[k]);
+          });
+          searchUrl = url + params.join('&');
+        }
+        wwtlib.VoTable.loadFromUrl(searchUrl, function () {
+          var table = this;
+          table.rows = table.rows.slice(0,99);
+          $rootScope.loadVOTableModal(this);
+          $scope.$parent.$hide();
+        })
+
       };
       $scope.RA = $rootScope.viewport.RA;
       $scope.Dec = $rootScope.viewport.Dec;
       $scope.Fov = $rootScope.viewport.Fov;
+      $scope.verbosity = 1;
       console.log($rootScope.viewport);
       setTimeout(init, 444);
     }]);

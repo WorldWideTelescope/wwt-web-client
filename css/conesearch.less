@@ -35,6 +35,13 @@ div.wwt-modal div.modal-content {
 
       }
     }
+    &.vo-table-viewer div.results{
+      overflow-x:auto;
+      thead tr th{
+        min-width: 65px;
+        max-width:80px;
+      }
+    }
     div.results {
 
       max-height: 400px;
@@ -72,6 +79,7 @@ div.wwt-modal div.modal-content {
 
           div.ellipsize {
             max-height: 20px;
+            max-width:100%;
             text-overflow: clip ellipsis;
             overflow: hidden;
             white-space: nowrap;
