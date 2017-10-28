@@ -38,8 +38,8 @@ div.wwt-modal div.modal-content {
     &.vo-table-viewer div.results{
       overflow-x:auto;
       thead tr th{
-        min-width: 65px;
-        max-width:80px;
+        min-width: 85px;
+        max-width: 85px;
       }
     }
     div.results {
@@ -52,7 +52,13 @@ div.wwt-modal div.modal-content {
       table.table {
 
         table-layout: fixed;
-
+        div.ellipsize {
+          max-height: 20px;
+          max-width:100%;
+          text-overflow: clip ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
       }
       thead {
         background-color: #fff;
@@ -77,13 +83,7 @@ div.wwt-modal div.modal-content {
           color: #eee;
           height: 20px;
 
-          div.ellipsize {
-            max-height: 20px;
-            max-width:100%;
-            text-overflow: clip ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-          }
+
         }
       }
     }
