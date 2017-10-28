@@ -7591,7 +7591,13 @@ div.wwt-modal div.modal-content div.vo-cone-search .row .search-buttons {
 div.wwt-modal div.modal-content div.vo-cone-search .row .search-buttons .btn {
   margin: -10px 0 13px;
 }
-
+div.wwt-modal div.modal-content div.vo-cone-search.vo-table-viewer div.results {
+  overflow-x: auto;
+}
+div.wwt-modal div.modal-content div.vo-cone-search.vo-table-viewer div.results thead tr th {
+  min-width: 65px;
+  max-width: 80px;
+}
 div.wwt-modal div.modal-content div.vo-cone-search div.results {
   max-height: 400px;
   overflow-y: auto;
@@ -7599,15 +7605,12 @@ div.wwt-modal div.modal-content div.vo-cone-search div.results {
   margin: 8px -28px -8px -10px;
   width: 1120px;
 }
-
 div.wwt-modal div.modal-content div.vo-cone-search div.results table.table {
   table-layout: fixed;
 }
-
 div.wwt-modal div.modal-content div.vo-cone-search div.results thead {
   background-color: #fff;
 }
-
 div.wwt-modal div.modal-content div.vo-cone-search div.results thead th {
   padding: 2px 3px;
   color: #333;
@@ -7615,11 +7618,9 @@ div.wwt-modal div.modal-content div.vo-cone-search div.results thead th {
   font-weight: 400;
   border-right: inset 1px #444;
 }
-
 div.wwt-modal div.modal-content div.vo-cone-search div.results tbody tr.hilite {
   background-color: #1f4ca4;
 }
-
 div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td {
   cursor: pointer;
   border: solid 1px #f7f7f7;
@@ -7629,9 +7630,9 @@ div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td {
   color: #eee;
   height: 20px;
 }
-
 div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td div.ellipsize {
   max-height: 20px;
+  max-width: 100%;
   text-overflow: clip ellipsis;
   overflow: hidden;
   white-space: nowrap;

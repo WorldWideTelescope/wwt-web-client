@@ -206,6 +206,7 @@
     <script src="<%= ResourcesLocation %>/controllers/modals/TourSlideText.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/modals/SlideSelectionController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/modals/VoConeSearchController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/modals/VOTableViewerController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/AdsController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ExploreController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/SearchController.js?v=<%= ResourcesVersion%>"></script>
