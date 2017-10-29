@@ -2578,6 +2578,20 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
       show: true,
       placement: 'center'
     });
+  };
+	var loadingModal;
+	$rootScope.loading = function(flag,content){
+	  if (loadingModal){
+	    loadingModal.hide();
+	    loadingModal = null;
+    }if (flag){
+      loadingModal = $modal({
+        templateUrl: 'views/modals/loading-content.html',
+        show: true,
+        content:content || 'Content Loading. Please Wait...',
+        placement: 'center'
+      });
+    }
   }
 
 	return true;
@@ -7796,13 +7810,16 @@ wwt.controllers.controller('voConeSearch',
       }
       $scope.searchRegistry = function () {
         $scope.hiliteIndex = -1;
+        $scope.searchBaseURL = '';
         var searchUrl = "http://nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
           $scope.regTitle
           + "%25'%20or%20shortname%20like%20'%25" +
           $scope.regTitle
           + "%25')&capability=" + ($scope.coneSearch ? 'ConeSearch' : 'SIAP');
         console.log(searchUrl);
+        $rootScope.loading(true, 'Loading NVO Registry Data. Please wait...');
         wwtlib.VoTable.loadFromUrl(searchUrl, function () {
+          $rootScope.loading(false);
           $scope.table = this;
           $scope.$applyAsync(function () {
           });
@@ -7823,12 +7840,14 @@ wwt.controllers.controller('voConeSearch',
         , 'maxSearchRadius'
         , 'maxRecords'
       ];
+
       $scope.getData = function (row, columnKey) {
         return row.columnData[$scope.table.columns[columnKey].index] || '-';
       };
       $scope.hilite = function (row, $index) {
         $scope.hiliteIndex = $index;
         $scope.searchBaseURL = $scope.getData(row, 'accessURL');
+        $scope.searchBaseTitle = $scope.getData(row, 'title');
       };
 
       $scope.hiliteIndex = -1;
@@ -7841,8 +7860,9 @@ wwt.controllers.controller('voConeSearch',
       $scope.siapImages = false;
       $scope.search = function () {
         var searchUrl;
-        if ($scope.hiliteIndex < 0){
+        if ($scope.hiliteIndex < 0) {
           //known good url for results
+          $scope.searchBaseTitle = "known good casjobs.sdss.org"
           searchUrl = "http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
         }
         else {
@@ -7874,15 +7894,27 @@ wwt.controllers.controller('voConeSearch',
           searchUrl = url + params.join('&');
         }
         wwtlib.VoTable.loadFromUrl(searchUrl, function () {
+
+          $rootScope.loading(false);
           var table = this;
-          table.pagedRows = table.rows.slice(0,99);
-          $rootScope.loadVOTableModal(this);
-          //var layer = new wwtlib.VoTable();
-          wwt.wc.addVoTableLayer(table);
-          $scope.$parent.$hide();
-        })
+          if (table.rows.length) {
+            table.pagedRows = table.rows.slice(0, 100);
+            $rootScope.loadVOTableModal(this);
+            //var layer = new wwtlib.VoTable();
+            wwt.wc.addVoTableLayer(table);
+            $scope.$parent.$hide();
+          } else {
+            $scope.noResults = true;
+          }
+        });
+
+        $rootScope.loading(true, "Loading " + $scope.searchBaseTitle + " result. Please wait...");
 
       };
+
+      $scope.hideBanner = function () {
+        $scope.noResults = false;
+      }
       $scope.RA = $rootScope.viewport.RA;
       $scope.Dec = $rootScope.viewport.Dec;
       $scope.Fov = $rootScope.viewport.Fov;
@@ -7901,18 +7933,34 @@ wwt.controllers.controller('voTableViewer',
         var colArray = [];
         if ($scope.votable && $scope.votable.columns) {
           Object.keys($scope.votable.columns).forEach(function (c, i) {
-            var col = $scope.votable.columns[c]
+            var col = $scope.votable.columns[c];
+            col.id = col.id || c;
             colArray.push(col);
-            if (c === 'RA') {
+            if (c.toUpperCase() === 'RA') {
               $scope.RASource = col.id;
               $scope.RAIndex = col.index;
 
             }
-            if (c === 'DEC') {
+            if (c.toUpperCase() === 'DEC') {
               $scope.DecSource = col.id;
               $scope.DecIndex = col.index;
             }
           });
+
+
+          $('.modal-content div.results').on('scroll',function(e){
+            var div = e.currentTarget;
+            var rows = $scope.votable.rows;
+            var paged = $scope.votable.pagedRows;
+            if (paged.length < rows.length && div.scrollHeight - div.scrollTop < 800){
+              $scope.$applyAsync(function(){
+                paged = paged.concat(rows.slice(paged.length, Math.min(rows.length, paged.length + 100)));
+                $scope.votable.pagedRows = paged;
+                //console.log({div:e.currentTarget,displayed:$scope.votable.pagedRows,total:$scope.votable.rows});
+              });
+            }
+
+          })
         }
         $scope.colArray = colArray;
       }
@@ -7921,7 +7969,7 @@ wwt.controllers.controller('voTableViewer',
       $scope.hilite = function (row, $index) {
         var ra = parseFloat(row.columnData[$scope.RAIndex]);
         var dec = parseFloat(row.columnData[$scope.DecIndex]);
-        wwt.wc.gotoRaDecZoom(ra,dec,60, true);
+        wwt.wc.gotoRaDecZoom(ra,dec,$rootScope.viewport.Fov, true);
         $scope.hiliteIndex = $index;
       };
 

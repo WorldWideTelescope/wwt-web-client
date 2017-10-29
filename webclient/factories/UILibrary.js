@@ -54,6 +54,20 @@
       show: true,
       placement: 'center'
     });
+  };
+	var loadingModal;
+	$rootScope.loading = function(flag,content){
+	  if (loadingModal){
+	    loadingModal.hide();
+	    loadingModal = null;
+    }if (flag){
+      loadingModal = $modal({
+        templateUrl: 'views/modals/loading-content.html',
+        show: true,
+        content:content || 'Content Loading. Please Wait...',
+        placement: 'center'
+      });
+    }
   }
 
 	return true;
