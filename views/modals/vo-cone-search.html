@@ -2,7 +2,12 @@
   <h5 localize="VO Cone Search / Registry Browser"></h5>
 </div>
 <div class="modal-body vo-cone-search" ng-controller="voConeSearch">
-
+  <div class="row message" ng-if="noResults">
+    <div class="col-md-12 no-results">
+      <a class="pull-right" ng-click="hideBanner()" localize="Close message" localize-only="title"><i class="fa fa-close"></i> </a>
+      <span  localize="No results found using the search criteria"></span>
+    </div>
+  </div>
   <div class="row" style="margin-bottom:5px">
     <div class="col-md-4 form-group-sm">
       <label localize="Base URL"></label>
@@ -26,7 +31,7 @@
         </div>
         <div class="col-md-3 form-group-sm">
           <label localize="Search Radius"></label>
-          <input type="number" class="form-control" ng-model="Fov"/>
+          <input type="number" class="form-control" ng-model="Fov" max="60" min="0"/>
         </div>
         <div class="col-md-3 form-group-sm">
           <label localize="Verbosity"></label>
@@ -71,7 +76,7 @@
       <a class="btn" localize="NVO Registry Search" ng-click="searchRegistry()"></a>
     </div>
     <div class="col-md-2 search-buttons">
-      <a class="btn" ng-class="{disabled:hiliteIndex==-2}" localize="Search" ng-click="search()"></a><br>
+      <a class="btn" ng-class="{disabled:hiliteIndex < -1}" localize="Search" ng-click="search()"></a><br>
       <a class="btn" localize="Close" ng-click="$hide()"></a>
     </div>
   </div>
@@ -96,7 +101,7 @@
       <tr ng-if="table.rows" ng-repeat="r in table.rows track by $index" ng-click="hilite(r,$index)"
           ng-class="{hilite:$index==hiliteIndex}">
         <td ng-repeat="c in displayColumns">
-          <div class="ellipsize" title="{{getData(r,c)}}">{{getData(r,c)}}</div>
+          <div class="ellipsize" title="{{c}}: {{getData(r,c)}}">{{getData(r,c)}}</div>
         </td>
       </tr>
       </tbody>

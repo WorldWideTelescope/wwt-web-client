@@ -1,11 +1,13 @@
 <div class="modal-header">
   <h5>
     <span localize="VO Table Viewer:"></span>
+    {{votable.pagedRows.length}}
+    <span localize="of"></span>
     {{votable.rows.length}}
     <span localize="Rows"></span>
   </h5>
 </div>
-<div class="modal-body vo-cone-search vo-table-viewer" ng-controller="voTableViewer" ng-init="init(votable)">
+<div class="modal-body vo-cone-search vo-table-viewer" ng-controller="voTableViewer">
 
   <div class="row" style="margin-bottom:5px">
     <div class="col-md-9">
@@ -36,20 +38,17 @@
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Distance Source"></label>
-          <select class="form-control">
-            <option ng-repeat="c in votable.columns track by $index">{{c.id}}</option>
+          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="DistSource">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Type Source"></label>
-          <select class="form-control">
-            <option ng-repeat="c in votable.columns track by $index">{{c.id}}</option>
+          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="TypeSource">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Size/Mag Source"></label>
-          <select class="form-control">
-            <option ng-repeat="c in votable.columns track by $index">{{c.id}}</option>
+          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="SizeSource">
           </select>
         </div>
       </div>
@@ -70,9 +69,9 @@
       <tbody>
 
       <tr ng-repeat="r in votable.pagedRows track by $index" ng-click="hilite(r,$index)"
-          ng-class="{hilite:$index==hiliteIndex}" ng-if="$index &lt; 100">
+          ng-class="{hilite:$index==hiliteIndex}">
         <td ng-repeat="v in r.columnData track by $index">
-          <div class="ellipsize" title="{{v}}">{{v}}</div>
+          <div class="ellipsize" title="{{colArray[$index].id}}: {{v}}">{{v}}</div>
         </td>
       </tr>
       </tbody>
