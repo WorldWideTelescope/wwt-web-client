@@ -38,7 +38,7 @@ wwt.controllers.controller('voTableViewer',
           })
         }
         $scope.colArray = colArray;
-      }
+      };
 
 
       $scope.hilite = function (row, $index) {

@@ -52,7 +52,8 @@
       templateUrl: 'views/modals/centered-modal-template.html',
       contentTemplate: 'views/modals/vo-table-viewer.html',
       show: true,
-      placement: 'center'
+      placement: 'center',
+      backdrop: 'static'
     });
   };
 	var loadingModal;
