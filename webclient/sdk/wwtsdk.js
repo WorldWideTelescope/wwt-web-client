@@ -14605,6 +14605,8 @@ window.wwtlib = function(){
         WWTControl.singleton.playTour(url);
       }
     },
+    loadFits: function(url) {
+    },
     get_hideTourFeedback: function() {
       return this.hideTourFeedback;
     },
@@ -24744,6 +24746,10 @@ window.wwtlib = function(){
       var gl = null;
       webGL = true;
       if (webGL) {
+        gl = canvas.getContext(webgltext);
+      }
+      if (gl == null) {
+        webgltext = 'experimental-webgl';
         gl = canvas.getContext(webgltext);
       }
       if (gl == null) {

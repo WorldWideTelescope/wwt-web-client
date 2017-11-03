@@ -1976,7 +1976,11 @@ namespace wwtlib
                 {
                     gl = (GL)(Object)canvas.GetContext((Rendering)(object)webgltext);
                 }
-                
+                if (gl == null)
+                {
+                    webgltext = "experimental-webgl";
+                    gl = (GL)(Object)canvas.GetContext((Rendering)(object)webgltext);
+                }
 
                 if (gl == null)
                 {
