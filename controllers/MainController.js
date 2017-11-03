@@ -322,7 +322,8 @@ wwt.controllers.controller('MainController',
                     templateUrl: 'views/modals/centered-modal-template.html',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,
-                    placement: 'center'
+                    placement: 'center',
+                    backdrop: 'static'
                   });
                 }]
               }

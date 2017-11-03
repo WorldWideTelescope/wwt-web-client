@@ -5,9 +5,11 @@
             var el = $(element);
             var target = el;
             var stickyCoords;
+          var tSel = target.data('movable-target')
             var oncomplete = function () { };
-            if (target.data('movable-target')) {
-                el = $(target.data('movable-target'));
+          if (tSel) {
+            el = target.parentsUntil(tSel).parent();
+            //find(target.data('movable-target'));
             }
             if (target.data('sticky')) {
                 var stickyCss = appState.get(target.data('sticky'))
@@ -25,12 +27,31 @@
                     appState.set(target.data('sticky'), stickyCss);
                 };
             }
+          if (tSel && tSel.indexOf('modal') > -1) {
+
+            setTimeout(function () {
+              if (target.width() < 222) {
+                return;
+              }
+              el.css({
+                position: 'absolute',
+                left: ($(document.body).width() - el.width()) / 2
+              });
+
+              console.log({w: el.width()});
+              Object.create(wwt.Move({
+                el: el,
+                target: target,
+                oncomplete: oncomplete
+              }));
+            }, 1234);
+          } else {
             var move = Object.create(wwt.Move({
                 el: el,
                 target: target,
-                oncomplete:oncomplete
+              oncomplete: oncomplete
             }));
-
+          }
         }
     };
 }]);
