@@ -220,6 +220,10 @@ namespace wwtlib
 
         }
 
+        public void LoadFits(string url)
+        {
+
+        }
 
 
 
