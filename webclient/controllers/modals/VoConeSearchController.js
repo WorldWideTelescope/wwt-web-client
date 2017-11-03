@@ -122,7 +122,7 @@ wwt.controllers.controller('voConeSearch',
       $scope.hideBanner = function () {
         $scope.noResults = false;
       }
-      $scope.RA = $rootScope.viewport.RA;
+      $scope.RA = $rootScope.viewport.RA * 15;
       $scope.Dec = $rootScope.viewport.Dec;
       $scope.Fov = $rootScope.viewport.Fov;
       $scope.verbosity = 1;
