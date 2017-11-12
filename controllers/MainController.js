@@ -1,4 +1,4 @@
-﻿/*
+/*
 This controller is the hub of the web client - with all the shared functionality
 that needs to live at the top of the scope chain residing here.
 
@@ -315,7 +315,7 @@ wwt.controllers.controller('MainController',
                   $timeout(function () {
                     changePanel('Search');
                   });
-                }]/*,
+                }],
                 'VO Cone Search': [function () {
                   var coneSearchModal = $modal({
                     scope: $scope,
@@ -323,9 +323,9 @@ wwt.controllers.controller('MainController',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,
                     placement: 'center',
-                    backdrop: 'static'
+                    backdrop: 'static' 
                   });
-                }]*/
+                }]
               }
             },
             {
