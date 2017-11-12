@@ -282,7 +282,8 @@ wwt.controllers.controller('MainController',
                 Open: {
                   'Tour...': [$scope.openItem, 'tour'],
                   'Collection...': [$scope.openItem, 'collection'],
-                  'Image...': [$scope.openItem, 'image']
+                  'Image...': [$scope.openItem, 'image'],
+                  'FITS Image...': [$scope.openItem, 'FITS image']
                 },
                 sep1: null,
                 'Tour WWT Features': [$scope.tourFeatures],
@@ -323,7 +324,7 @@ wwt.controllers.controller('MainController',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,
                     placement: 'center',
-                    backdrop: 'static' 
+                    backdrop: 'static'
                   });
                 }]
               }
