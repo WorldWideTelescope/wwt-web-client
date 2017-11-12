@@ -33617,7 +33617,7 @@ window.wwtlib = function(){
         this._renderTriangleLists[i] = [];
       }
       this.computeMatrix();
-      if (renderContext.gl != null) {
+      if (bmp != null && renderContext.gl != null) {
         this.height = bmp.height;
         this.width = bmp.width;
       }

@@ -117,7 +117,7 @@ namespace wwtlib
                 return true;
             }
 
-            Bitmap bmp = null; ;
+            Bitmap bmp = null; 
 
             if (dataset.WcsImage != null)
             {
@@ -136,7 +136,7 @@ namespace wwtlib
 
             ComputeMatrix();
 
-            if (renderContext.gl != null)
+            if (bmp != null && renderContext.gl != null)
             {
                 Height = bmp.Height;
                 Width = bmp.Width;
