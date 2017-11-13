@@ -33,21 +33,25 @@
 
           appState.set('layerManager', $scope.tree);
         }
-        var sunTree = wwtlib.LayerManager.get_allMaps().Sun;
-        sunTree.collapsed = false;
 
-        $.each(sunTree.childMaps, function (name, node) {
-          node.collapsed = false;
-          //node.name = name;
-          $.each(node.childMaps, function (childName, child) {
-            child.collapsed = true;
-            //child.name = childName;
-          });
-        });
-        $scope.sunTree = sunTree;
 
         $timeout(function () {
           initTreeNode(0, $scope.tree);
+          $timeout(function () {
+            var sunTree = wwtlib.LayerManager.get_allMaps().Sun;
+
+            sunTree.collapsed = false;
+
+            $.each(sunTree.childMaps, function (name, node) {
+              node.collapsed = false;
+              //node.name = name;
+              $.each(node.childMaps, function (childName, child) {
+                child.collapsed = true;
+                //child.name = childName;
+              });
+            });
+            $scope.sunTree = sunTree;
+          }, 123);
         });
         wwt.resize();
 
@@ -228,9 +232,9 @@
         node.enabled = !node.enabled;
       };
 
-      $scope.showMenu = function (layerMap) {
-        console.log('invoke context menu on node', layerMap);
-        wwtlib.LayerManager.showLayerMenu(layerMap);
+      $scope.showMenu = function (layerMap, event) {
+        console.log('invoke context menu on node', event, layerMap);
+        wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       }
 
       $scope.hasChildren = function (node) {

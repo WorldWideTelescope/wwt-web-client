@@ -7,13 +7,7 @@ wwt.controllers.controller('voConeSearch',
       var init = function () {
         $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
 
-        if (util.getQSParam('debug') === 'disable') {
-          wwtlib.WWTControl.singleton.render = function () {
-            console.log('fixed render loop :)')
-          }
-          //testing only:
-          $('#WorldWideTelescopeControlHost').html('');
-        }
+
       }
       $scope.searchRegistry = function () {
         $scope.hiliteIndex = -1;

@@ -1107,7 +1107,7 @@
         <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">x</button>
         <h5 localize="Layers"></h5>
          <div class="tree" ng-class="tree.collapsed?'collapsed':''" ng-style="{height:  layerManagerHeight() + 'px' }">
-            <div class="checkbox" ng-right-click="showMenu(sunTree)">
+            <div class="checkbox" ng-right-click="showMenu(sunTree, $event)">
               <i ng-class="sunTree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="sunTree.collapsed = !sunTree.collapsed;sunNodeChange(sunTree)"></i>
               <label data-ng-class="sunTree.enabled ? 'checked' : ''">
                 <input type="checkbox" ng-model="sunTree.enabled" />

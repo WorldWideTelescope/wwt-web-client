@@ -70,6 +70,16 @@
       });
     }
   }
+  if (util.getQSParam('debug') === 'disable') {
+    setTimeout(function () {
+      wwtlib.WWTControl.singleton.render = function () {
+        console.log('fixed render loop :)');
+      }
+      //testing only:
+      $('#WorldWideTelescopeControlHost').html('');
+    }, 888)
+
+  }
 
 	return true;
 }]);
