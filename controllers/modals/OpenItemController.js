@@ -7,7 +7,7 @@
 	'Astrometry',
     'MediaFile',
 	function ($rootScope, $scope, appState, places, util, astrometry, media) {
-	    
+
 	    $rootScope.$on('openItem', function () {
 	        $scope.openItemUrl = '';
 	        setTimeout(function () {
@@ -25,9 +25,12 @@
 	                $('#openModal').modal('hide');
 	            });
 	        } else if (itemType === 'tour') {
-	            $scope.playTour($scope.openItemUrl);
-	            $('#openModal').modal('hide');
-	        } else {
+            $scope.playTour($scope.openItemUrl);
+            $('#openModal').modal('hide');
+          } else if (itemType === 'FITS image') {
+            wwt.wc.loadFits($scope.openItemUrl);
+            $('#openModal').modal('hide');
+          } else {
 	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
 	            //$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
 	            places.importImage($scope.openItemUrl).then(function (folder) {
@@ -42,7 +45,7 @@
 	                    $scope.imageFail = true;
 	                }
 	            });
-	        } 
+          }
 	    };
 
 	    $scope.mediaFileChange = function (e) {
@@ -87,8 +90,8 @@
 				}
 
 				places.importImage($scope.openItemUrl, qs).then(function (folder) {
-							
-					$rootScope.newFolder = folder;
+
+          $rootScope.newFolder = folder;
 					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
 					$scope.imageFail = false;
 					$scope.importState = '';
@@ -98,15 +101,15 @@
 			}
 			if (data.status.toLowerCase().indexOf('fail') != -1) {
 				$scope.importState = 'astrometryFail';
-					
-			}
+
+      }
 		}
 
 		$scope.solveAstrometry = function () {
 		    $scope.importState = 'astrometryProgress';
 		    astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
 		};
-			
-	}
+
+  }
 ]);
 

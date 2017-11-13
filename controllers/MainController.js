@@ -1,4 +1,4 @@
-﻿/*
+/*
 This controller is the hub of the web client - with all the shared functionality
 that needs to live at the top of the scope chain residing here.
 
@@ -282,7 +282,8 @@ wwt.controllers.controller('MainController',
                 Open: {
                   'Tour...': [$scope.openItem, 'tour'],
                   'Collection...': [$scope.openItem, 'collection'],
-                  'Image...': [$scope.openItem, 'image']
+                  'Image...': [$scope.openItem, 'image'],
+                  'FITS Image...': [$scope.openItem, 'FITS image']
                 },
                 sep1: null,
                 'Tour WWT Features': [$scope.tourFeatures],
