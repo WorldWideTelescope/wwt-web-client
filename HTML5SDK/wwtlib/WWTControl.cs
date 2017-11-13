@@ -240,54 +240,9 @@ namespace wwtlib
 
         private Imageset milkyWayBackground = null;
 
-    
 
-        private void OnWcsLoad(WcsImage wcsImage)
-        {
-            
-            RenderContext.ForegroundImageset = Imageset.Create(
-                        wcsImage.Description,
-                        "m51",
-                        ImageSetType.Sky,
-                        BandPass.Visible,
-                        ProjectionType.SkyImage,
-                        54123,
-                        0,
-                        0,
-                        256,
-                        wcsImage.ScaleY,
-                        ".tif",
-                        wcsImage.ScaleX > 0,
-                        "",
-                        wcsImage.CenterX,
-                        wcsImage.CenterY,
-                        wcsImage.Rotation,
-                        false,
-                        "",
-                        false,
-                        false,
-                        1,
-                        wcsImage.ReferenceX,
-                        wcsImage.ReferenceY,
-                        wcsImage.Copyright,
-                        wcsImage.CreditsUrl,
-                        "",
-                        "",
-                        0,
-                        ""
-                        );
-            RenderContext.ForegroundImageset.WcsImage = wcsImage;
-            fitsLoading = false;
-        }
-        bool fitsLoading = false;
         public void Render()
         {
-            //if (RenderContext.ForegroundImageset == null && !fitsLoading)
-            //{
-            //    fitsLoading = true;
-            //    string url = "/m51.txt";
-            //    FitsImage img = new FitsImage(url, OnWcsLoad);
-            //}
 
             if (RenderContext.BackgroundImageset != null)
             {
@@ -297,16 +252,6 @@ namespace wwtlib
             {
                 RenderType = ImageSetType.Sky;
             }
-
-            //Date date = Date.Now;
-
-            //int hour = date.GetHours();
-
-            //Date date2 = new Date(Date.UTC(0,0,0,0,0,0,date.GetTime()));
-            //int hour1 = date.GetHours();
-
-            //int hour3 = date.GetUTCHours();
-
 
             bool sizeChange = false;
             if (Canvas.Width != int.Parse(Canvas.ParentNode.Style.Width))
@@ -390,12 +335,6 @@ namespace wwtlib
 
 
             RenderContext.Clear();
-
-            //if (RenderContext.gl != null)
-            //{
-            //    Window.SetTimeout(delegate() { Render(); }, 0);
-            //    return;
-            //}
 
             if (RenderType == ImageSetType.SolarSystem)
             {

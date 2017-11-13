@@ -13110,6 +13110,11 @@ window.wwtlib = function(){
       }
     },
     loadFits: function(url) {
+      var img = new FitsImage(url, ss.bind('_onWcsLoad', this));
+    },
+    _onWcsLoad: function(wcsImage) {
+      WWTControl.singleton.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
+      WWTControl.singleton.renderContext.get_foregroundImageset().set_wcsImage(wcsImage);
     },
     get_hideTourFeedback: function() {
       return this.hideTourFeedback;
@@ -23237,7 +23242,6 @@ window.wwtlib = function(){
     this._sprite = new Sprite2d();
     this.renderType = 2;
     this._milkyWayBackground = null;
-    this._fitsLoading = false;
     this._foregroundCanvas = null;
     this._fgDevice = null;
     this._beginZoom = 1;
@@ -23467,11 +23471,6 @@ window.wwtlib = function(){
           this._sprite.draw(this.renderContext, this._fadePoints, 4, this._crossFadeTexture, true, 1);
         }
       }
-    },
-    _onWcsLoad: function(wcsImage) {
-      this.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
-      this.renderContext.get_foregroundImageset().set_wcsImage(wcsImage);
-      this._fitsLoading = false;
     },
     render: function() {
       var $this = this;

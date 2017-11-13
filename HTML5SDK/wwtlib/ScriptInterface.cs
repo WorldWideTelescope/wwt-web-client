@@ -222,10 +222,46 @@ namespace wwtlib
 
         public void LoadFits(string url)
         {
-
+            FitsImage img = new FitsImage(url, OnWcsLoad);
         }
 
+        private void OnWcsLoad(WcsImage wcsImage)
+        {
 
+            WWTControl.Singleton.RenderContext.ForegroundImageset = Imageset.Create(
+                        wcsImage.Description,
+                        "m51",
+                        ImageSetType.Sky,
+                        BandPass.Visible,
+                        ProjectionType.SkyImage,
+                        54123,
+                        0,
+                        0,
+                        256,
+                        wcsImage.ScaleY,
+                        ".tif",
+                        wcsImage.ScaleX > 0,
+                        "",
+                        wcsImage.CenterX,
+                        wcsImage.CenterY,
+                        wcsImage.Rotation,
+                        false,
+                        "",
+                        false,
+                        false,
+                        1,
+                        wcsImage.ReferenceX,
+                        wcsImage.ReferenceY,
+                        wcsImage.Copyright,
+                        wcsImage.CreditsUrl,
+                        "",
+                        "",
+                        0,
+                        ""
+                        );
+            WWTControl.Singleton.RenderContext.ForegroundImageset.WcsImage = wcsImage;
+          
+        }
 
         public bool hideTourFeedback = false;
         public bool HideTourFeedback
