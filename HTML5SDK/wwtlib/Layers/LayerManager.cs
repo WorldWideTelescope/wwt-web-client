@@ -142,7 +142,7 @@ namespace wwtlib
             }
         }
 
-
+        static public void showLayerMenu(LayerMap layer) { }
 
         //static List<Layer> layers = new List<Layer>();
         static LayerManager()

@@ -9114,6 +9114,8 @@ window.wwtlib = function(){
     }
     return value;
   };
+  LayerManager.showLayerMenu = function(layer) {
+  };
   LayerManager.initLayers = function() {
     LayerManager._clearLayers();
     LayerManager.get_layerMaps()['Sun'] = new LayerMap('Sun', 3);
