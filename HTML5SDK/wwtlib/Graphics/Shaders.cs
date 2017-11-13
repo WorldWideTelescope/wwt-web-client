@@ -494,10 +494,14 @@ namespace wwtlib
                     "        else                                                                            \n" +
                     "        {                                                                               \n" +
                     "           vColor = vec4(aVertexColor.r, aVertexColor.g, aVertexColor.b, dAlpha);       \n" +
-                   // "           vColor = vec4(1,1,1,1);       \n" +
-
                     "        }                                                                               \n" +
-                    "        gl_PointSize = max(minSize, (scale * ( aPointSize ) / dist));                     \n" +
+                    "        float lSize = scale;                                                              \n" +
+                    "        if (scale < 0.0)                                                                  \n" +
+                    "        {                                                                               \n" +
+                    "           lSize = -scale;                                                              \n" +
+                    "           dist = 1.0;                                                                   \n" +
+                    "        }                                                                               \n" +
+                    "           gl_PointSize = max(minSize, (lSize * ( aPointSize ) / dist));                       \n" +
                     "    }                                                                                   \n" +
                     "                                                                                        \n";
 

@@ -69,7 +69,7 @@ namespace wwtlib
             }
         }
 
-        private Date startTime = Date.Parse("01/01/2100");
+        private Date startTime = Date.Parse("01/01/1900");
         
         public Date StartTime
         {
@@ -83,7 +83,7 @@ namespace wwtlib
                 }
             }
         }
-        private Date endTime = Date.Parse("01/01/1900");
+        private Date endTime = Date.Parse("01/01/2100");
 
         
         

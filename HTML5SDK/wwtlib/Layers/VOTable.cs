@@ -85,6 +85,18 @@ namespace wwtlib
             }
         }
 
+        public static VoTable LoadFromString(string data)
+        {
+            XmlDocumentParser xParser = new XmlDocumentParser();
+            XmlDocument doc = xParser.ParseFromString(data, "text/xml");
+
+            VoTable table = new VoTable();
+
+            table.LoadFromXML(doc);
+
+            return table;
+        }
+
 
         public bool error = false;
         public string errorText = "";

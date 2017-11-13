@@ -238,6 +238,9 @@ namespace wwtlib
                     case ".mp3":
                         type = "audio/mpeg3";
                         break;
+                    case ".txt":
+                        type = "text/plain";
+                        break;
                 }
 
 

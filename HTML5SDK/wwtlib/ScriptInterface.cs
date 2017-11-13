@@ -182,7 +182,7 @@ namespace wwtlib
         // Call this to add a VOTable to layers
         public void AddVoTableLayer(VoTable table)
         {
-            return;
+            LayerManager.AddVoTableLayer(table, "Vo Table");
         }
 
         public void SetForegroundImageByName(string name)

@@ -10,6 +10,55 @@ namespace wwtlib
 {
     class Util
     {
+        public static string[] SplitString(string target, char[] split)
+        {
+            List<string> parts = new List<string>();
+            int start = 0;
+            int end = 0;
+
+            for(int i =0; i < target.Length; i++)
+            {
+                bool found = false;
+
+                for(int j = 0; j < split.Length; j++)
+                {
+                    if (target[i] == split[j])
+                    {
+                        parts.Add(target.Substring(start, end - start));
+                        found = true;
+                        continue;
+                    }
+                    start = i + 1;
+                    end = i + 1;
+                }
+
+                if (!found)
+                {
+                    end++;
+                }
+            }
+
+            if (end > start)
+            {
+                parts.Add(target.Substring(start, end - start));
+            }
+
+            return parts;
+        }
+
+        public static bool StringContains(string target, char[] chars)
+        {
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if (target.IndexOf(chars[i].ToString()) > -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static int GetHashCode(string target)
         {
             int hash = 0;
@@ -307,8 +356,6 @@ namespace wwtlib
             return 1;
         }
     }
-
-
 
     public class Rectangle
     {

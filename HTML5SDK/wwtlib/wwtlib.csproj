@@ -129,6 +129,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Layers\VOTable.cs" />
+    <Compile Include="Layers\VoTableLayer.cs" />
     <Compile Include="Layers\WcsImage.cs" />
     <Compile Include="MinorPlanets.cs" />
     <Compile Include="Planets.cs" />

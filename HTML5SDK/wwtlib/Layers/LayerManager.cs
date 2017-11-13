@@ -318,6 +318,24 @@ namespace wwtlib
             }
         }
 
+        public static VoTableLayer AddVoTableLayer(VoTable table, string title)
+        {
+
+            VoTableLayer layer = VoTableLayer.Create(table);
+            layer.Name = title;
+            layer.Astronomical = true;
+            layer.ReferenceFrame = "Sky";
+            LayerList[layer.ID] = layer;
+            AllMaps["Sky"].Layers.Add(layer);
+            AllMaps["Sky"].Open = true;
+            layer.Enabled = true;
+            version++;
+            LoadTree();
+
+            return layer;
+        }
+
+
         internal static void CloseAllTourLoadedLayers()
         {
             List<Guid> purgeTargets = new List<Guid>();

@@ -662,25 +662,25 @@ namespace wwtlib
             }
         }
 
-        //static public double ParseRA(string data, bool degrees)
-        //{
+        static public double ParseRA(string data, bool degrees)
+        {
 
-        //    data = data.Trim().ToLower();
+            data = data.Trim().ToLowerCase();
 
 
-        //    if (data.Contains("d") || data.Contains("°"))
-        //    {
-        //        degrees = true;
-        //    }
-        //    if (data.Contains("h") || data.Contains(":"))
-        //    {
-        //        degrees = false;
-        //    }
-        //    double ra = Parse(data) / (degrees ? 15 : 1);
+            if (data.IndexOf("d") > -1 || data.IndexOf("°")> -1)
+            {
+                degrees = true;
+            }
+            if (data.IndexOf("h") > -1 || data.IndexOf(":") > -1)
+            {
+                degrees = false;
+            }
+            double ra = Parse(data) / (degrees ? 15 : 1);
 
-        //    return Math.Max(Math.Min(ra, 24.00), 0);
+            return Math.Max(Math.Min(ra, 24.00), 0);
 
-        //}
+        }
 
 
         //static public bool ValidateRA(string data)
@@ -820,13 +820,13 @@ namespace wwtlib
 
         //}
 
-        //static public double ParseDec(string data)
-        //{
-            
-        //    double dec = Parse(data);
-        //    return Math.Max(Math.Min(dec, 90.00), -90);
-            
-        //}
+        static public double ParseDec(string data)
+        {
+          
+            double dec = Parse(data);
+            return Math.Max(Math.Min(dec, 90.00), -90);
+          
+        }
 
         //static public bool ValidateDec(string data)
         //{
@@ -888,71 +888,75 @@ namespace wwtlib
         //    }
         //} 
 
-        //static public double Parse(string data)
-        //{
-        //    try
-        //    {
-        //        data = data.Trim().ToLowerCase();
+        static public double Parse(string data)
+        {
+            try
+            {
+                data = data.Trim().ToLowerCase();
 
-        //        data = data.Replace("d ", "d").Replace("h ", "h").Replace("m ", "m").Replace("s ", "s").Replace("\' ", "\'").Replace("\" ", "\"");
+                data = data.Replace("d ", "d").Replace("h ", "h").Replace("m ", "m").Replace("s ", "s").Replace("\' ", "\'").Replace("\" ", "\"");
 
-        //        if (data.IndexOfAny(new char[] { ':', ' ', 'd', 'h', 'm', 's', '\'', '\"', '°' }) > -1)
-        //        {
-        //            double hours = 0;
-        //            double minutes = 0;
-        //            double seconds = 0;
-        //            double sign = 0;
-        //            string[] parts = data.Split(new char[] { ':', ' ', 'd', 'h', 'm', 's', '\'', '\"', '°' });
-        //            if (parts.GetLength(0) > 0)
-        //            {
-        //                if (!String.IsNullOrEmpty(parts[0]))
-        //                {
-        //                    hours = Math.Abs(Convert.ToDouble(parts[0]));
-        //                    sign = Math.Sign(Convert.ToDouble(parts[0]));
-        //                    if (parts[0].Contains("-"))
-        //                    {
-        //                        sign = -1;
-        //                    }
-        //                }
-        //            }
+                if (Util.StringContains(data, new char[] { ':', ' ', 'd', 'h', 'm', 's', '\'', '\"', '°' }))
+                {
+                    double hours = 0;
+                    double minutes = 0;
+                    double seconds = 0;
+                    double sign = 0;
+                    string[] parts = Util.SplitString(data, new char[] { ':', ' ', 'd', 'h', 'm', 's', '\'', '\"', '°' });
+                    if (parts.Length > 0)
+                    {
+                        if (!String.IsNullOrEmpty(parts[0]))
+                        {
+                            hours = Math.Abs(double.Parse(parts[0]));
+                            sign = double.Parse(parts[0]) < 0 ? -1 : 1;
+                            if (parts[0].IndexOf("-") > -1)
+                            {
+                                sign = -1;
+                            }
+                        }
+                    }
 
-        //            if (parts.GetLength(0) > 1)
-        //            {
-        //                if (!String.IsNullOrEmpty(parts[1]))
-        //                {
-        //                    minutes = Convert.ToDouble(parts[1]);
-        //                }
-        //            }
+                    if (parts.Length > 1)
+                    {
+                        if (!String.IsNullOrEmpty(parts[1]))
+                        {
+                            minutes = double.Parse(parts[1]);
+                        }
+                    }
 
-        //            if (parts.GetLength(0) > 2)
-        //            {
-        //                if (!String.IsNullOrEmpty(parts[2]))
-        //                {
-        //                    seconds = Convert.ToDouble(parts[2]);
-        //                }
-        //            }
-        //            if (sign == 0)
-        //            {
-        //                sign = 1;
-        //            }
+                    if (parts.Length > 2)
+                    {
+                        if (!String.IsNullOrEmpty(parts[2]))
+                        {
+                            seconds = double.Parse(parts[2]);
+                        }
+                    }
+                    if (sign == 0)
+                    {
+                        sign = 1;
+                    }
 
-        //            return sign * (hours + minutes / 60 + seconds / 3600);
-        //        }
-        //        else
-        //        {
-        //            bool sucsess = false;
-        //            double val = 0;
-        //            sucsess = double.TryParse(data, out val);
-
-        //            return val;
-
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return 0;
-        //    }
-        //}   
+                    return sign * (hours + minutes / 60 + seconds / 3600);
+                }
+                else
+                {
+                    double val = 0;
+                    try
+                    {
+                        val = double.Parse(data);
+                    }
+                    catch
+                    {
+                        val = 0;
+                    }
+                    return val;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }   
         
         //public static bool operator == (Coordinates one, Coordinates two)
         //{
