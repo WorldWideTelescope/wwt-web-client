@@ -1102,10 +1102,27 @@
 
         </div>
     </div>
-    <div class="layer-manager desktop" ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block'}" ng-init="initLayerManager()">
-        <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">×</button>
+    <div class="layer-manager desktop"
+     ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block'}" ng-init="initLayerManager()">
+        <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">x</button>
         <h5 localize="Layers"></h5>
-        <div class="tree" ng-class="tree.collapsed?'collapsed':''" ng-style="{height:  layerManagerHeight() + 'px' }">
+         <div class="tree" ng-class="tree.collapsed?'collapsed':''" ng-style="{height:  layerManagerHeight() + 'px' }">
+            <div class="checkbox" ng-right-click="showMenu(sunTree)">
+              <i ng-class="sunTree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="sunTree.collapsed = !sunTree.collapsed;sunNodeChange(sunTree)"></i>
+              <label data-ng-class="sunTree.enabled ? 'checked' : ''">
+                <input type="checkbox" ng-model="sunTree.enabled" />
+                <span data-localize="Sun"></span>
+
+              </label>
+            </div>
+            <div class="indent" ng-class="node.collapsed?'collapsed': ''" ng-repeat="(name,node) in sunTree.childMaps">
+              <ng-include src="'views/sun-tree-node.html'"></ng-include>
+              <div class="indent" ng-class="node.collapsed?'collapsed': ''" ng-repeat="(name,node) in node.childMaps">
+                <ng-include src="'views/sun-tree-node.html'"></ng-include>
+
+              </div>
+            </div>
+
             <div class="checkbox">
                 <i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
                 <label data-ng-class="tree.checked ? 'checked' : ''">
