@@ -282,7 +282,45 @@
     <div id="colorpicker" class="colorpicker">
         <img id="colorhex" src="images\ColorPickerHex.png" width="189" height="208" />
     </div>
-
+    <!--Layer Manager Recursive Tree Template (shared)-->
+    <script type="text/ng-template" id="tree-node">
+     <div ng-show="name" ng-if="node.childMaps">
+       <i ng-if="hasChildren(node)"
+          ng-class="node.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'"
+          ng-click="node.collapsed = !node.collapsed;"></i>
+       <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
+       <div class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
+         <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}"
+                localize-only="title">
+           <input type="checkbox" ng-model="node.enabled"/>
+           <span localize="{{name}}"></span>
+         </label>
+       </div>
+       <!--Recursion-->
+       <div class="indent"
+            ng-class="node.collapsed ? ' collapsed' : ''"
+            ng-repeat="(name,node) in node.childMaps"
+            ng-include="'tree-node'">
+       </div>
+     </div>
+     <div ng-if="!node.childMaps">
+         <i ng-if="node.children.length > 0" ng-class="node.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="node.collapsed = !node.collapsed;nodeChange(node)"></i>
+         <i ng-if="node.children.length == 0" class="fa">&nbsp;&nbsp;&nbsp;</i>
+         <div class="checkbox">
+           <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title">
+             <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  data-ng-change="nodeChange(node)" />
+             <span localize="{{node.name}}"></span>
+           </label>
+         </div>
+         <!--Recursion-->
+         <div
+           class="indent"
+           ng-class="node.collapsed ? 'collapsed' : ''"
+           ng-repeat="node in node.children"
+           ng-include="'tree-node'">
+         </div>
+       </div>
+     </script>
 
 <% if (Client == Clients.Mobile)
    { %>
@@ -1104,49 +1142,21 @@
     </div>
     <div class="layer-manager desktop"
      ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block'}" ng-init="initLayerManager()">
-        <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">x</button>
-        <h5 localize="Layers"></h5>
-         <div class="tree" ng-class="tree.collapsed?'collapsed':''" ng-style="{height:  layerManagerHeight() + 'px' }">
-            <div class="checkbox" ng-right-click="showMenu(sunTree, $event)">
-              <i ng-class="sunTree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="sunTree.collapsed = !sunTree.collapsed;sunNodeChange(sunTree)"></i>
-              <label data-ng-class="sunTree.enabled ? 'checked' : ''">
-                <input type="checkbox" ng-model="sunTree.enabled" />
-                <span data-localize="Sun"></span>
 
-              </label>
-            </div>
-            <div class="indent" ng-class="node.collapsed?'collapsed': ''" ng-repeat="(name,node) in sunTree.childMaps">
-              <ng-include src="'views/sun-tree-node.html'"></ng-include>
-              <div class="indent" ng-class="node.collapsed?'collapsed': ''" ng-repeat="(name,node) in node.childMaps">
-                <ng-include src="'views/sun-tree-node.html'"></ng-include>
-
-              </div>
-            </div>
-
-            <div class="checkbox">
-                <i ng-class="tree.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="tree.collapsed = !tree.collapsed;nodeChange(tree)"></i>
-                <label data-ng-class="tree.checked ? 'checked' : ''">
-                    <input type="checkbox" ng-model="tree.checked" data-ng-change="nodeChange(tree)" />
-                    <span localize="{{tree.name}}"></span>
-
-                </label>
-            </div>
-            <div class="indent" ng-class="node.collapsed ? 'collapsed' : ''" ng-repeat="node in tree.children">
-                <ng-include src="'views/tree-node.html'"></ng-include>
-                <div class="indent" ng-class="node.collapsed ? 'collapsed' : ''" ng-repeat="node in node.children">
-                    <ng-include src="'views/tree-node.html'"></ng-include>
-                    <div class="indent" ng-class="node.collapsed ? 'collapsed' : ''" ng-repeat="node in node.children">
-                        <ng-include src="'views/tree-node.html'"></ng-include>
-                        <div class="indent" ng-class="node.collapsed ? 'collapsed' : ''" ng-repeat="node in node.children">
-                            <ng-include src="'views/tree-node.html'"></ng-include>
-                            <div class="indent" ng-class="node.collapsed ? 'collapsed' : ''" ng-repeat="node in node.children">
-                                <ng-include src="'views/tree-node.html'"></ng-include>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">x</button>
+      <h5 localize="Layers"></h5>
+       <div class="tree" ng-style="{height:  layerManagerHeight() + 'px' }">
+         <div
+            ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
+            ng-repeat="(name,node) in sunTree"
+            ng-include="'tree-node'">
+           </div>
+          <div
+            ng-class="tree.collapsed ? 'collapsed' : ''"
+            ng-repeat="node in [tree]"
+            ng-include="'tree-node'">
+          </div>
+      </div>
     </div>
 
 
