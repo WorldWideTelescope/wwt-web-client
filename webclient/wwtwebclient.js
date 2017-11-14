@@ -1255,7 +1255,7 @@ wwt.app.directive('ngContextMenu', ['$dropdown', function ($dropdown) {
     };
 }]);
 
-wwt.app.directive('ngRightClick', function ($parse) {
+wwt.app.directive('ngRightClick', ['$parse', function ($parse) {
     return function (scope, element, attrs) {
         var fn = $parse(attrs.ngRightClick);
         element.bind('contextmenu', function (event) {
@@ -1265,7 +1265,7 @@ wwt.app.directive('ngRightClick', function ($parse) {
             });
         });
     };
-});
+}]);
 
 
 wwt.app.directive('contenteditable', [function() {
@@ -5688,11 +5688,11 @@ wwt.controllers.controller('LayerManagerController',
         $timeout(function () {
           initTreeNode(0, $scope.tree);
           $timeout(function () {
-            var sunTree = wwtlib.LayerManager.get_allMaps().Sun;
+            var sunTree = {Sun: (wwtlib.LayerManager.get_allMaps().Sun)};
 
-            sunTree.collapsed = false;
+            sunTree.Sun.collapsed = false;
 
-            $.each(sunTree.childMaps, function (name, node) {
+            $.each(sunTree.Sun.childMaps, function (name, node) {
               node.collapsed = false;
               //node.name = name;
               $.each(node.childMaps, function (childName, child) {
@@ -5704,7 +5704,6 @@ wwt.controllers.controller('LayerManagerController',
           }, 123);
         });
         wwt.resize();
-
       }
 
       var initTree = function () {
@@ -5883,6 +5882,14 @@ wwt.controllers.controller('LayerManagerController',
       };
 
       $scope.showMenu = function (layerMap, event) {
+        if ($scope.activeLayer) {
+          $scope.activeLayer.active = false;
+        }
+        $scope.$applyAsync(function () {
+          layerMap.active = true;
+          $scope.activeLayer = layerMap;
+        });
+
         console.log('invoke context menu on node', event, layerMap);
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       }
