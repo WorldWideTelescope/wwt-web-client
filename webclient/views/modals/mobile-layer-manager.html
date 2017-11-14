@@ -1,4 +1,5 @@
 ﻿<div class="layer-manager mobile" ng-controller="LayerManagerController" ng-hide="layerManagerHidden" ng-init="initLayerManager()">
+
 	<button aria-hidden="true" class="close pull-right" type="button" ng-click="$hide()" style="margin-right:10px;">×</button>
 	<h5 localize="Layers"></h5>
 	<div class="tree" ng-class="tree.collapsed?'collapsed':''">
@@ -10,20 +11,10 @@
 
 			</label>
 		</div>
-		<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in tree.children">
-			<ng-include src="'views/tree-node.html'"></ng-include>
-			<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-				<ng-include src="'views/tree-node.html'"></ng-include>
-				<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-					<ng-include src="'views/tree-node.html'"></ng-include>
-					<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-						<ng-include src="'views/tree-node.html'"></ng-include>
-						<div class="indent" ng-class="node.collapsed?'collapsed':''" ng-repeat="node in node.children">
-							<ng-include src="'views/tree-node.html'"></ng-include>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="indent"
+         ng-class="node.collapsed ? 'collapsed' : ''"
+         ng-repeat="node in tree.children"
+         ng-include="'tree-node'">
+    </div>
+  </div>
 </div>

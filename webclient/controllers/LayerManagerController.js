@@ -38,11 +38,11 @@
         $timeout(function () {
           initTreeNode(0, $scope.tree);
           $timeout(function () {
-            var sunTree = wwtlib.LayerManager.get_allMaps().Sun;
+            var sunTree = {Sun: (wwtlib.LayerManager.get_allMaps().Sun)};
 
-            sunTree.collapsed = false;
+            sunTree.Sun.collapsed = false;
 
-            $.each(sunTree.childMaps, function (name, node) {
+            $.each(sunTree.Sun.childMaps, function (name, node) {
               node.collapsed = false;
               //node.name = name;
               $.each(node.childMaps, function (childName, child) {
