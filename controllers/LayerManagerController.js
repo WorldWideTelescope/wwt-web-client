@@ -54,7 +54,6 @@
           }, 123);
         });
         wwt.resize();
-
       }
 
       var initTree = function () {
@@ -233,6 +232,14 @@
       };
 
       $scope.showMenu = function (layerMap, event) {
+        if ($scope.activeLayer) {
+          $scope.activeLayer.active = false;
+        }
+        $scope.$applyAsync(function () {
+          layerMap.active = true;
+          $scope.activeLayer = layerMap;
+        });
+
         console.log('invoke context menu on node', event, layerMap);
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       }

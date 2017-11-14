@@ -1,0 +1,100 @@
+body {
+
+  .layer-manager-toggle {
+    .iblock();
+    text-align: center;
+    width: 150px;
+    padding-top: 6px;
+
+    .layer-manager-icon {
+      .iblock();
+      background-image: url(../Images/layersButton.png);
+      width: 75px;
+      height: 39px;
+      margin-top: 6px;
+    }
+
+    .layer-manager-icon:hover {
+      background-image: url(../Images/layersButtonHover.png);
+    }
+  }
+
+  .context-panel .layer-manager-toggle {
+    width: auto;
+    vertical-align: top;
+    padding-top: 0;
+    padding-left: 6px;
+    position: relative;
+    top: -1px;
+  }
+
+  .layer-manager.desktop {
+    position: fixed;
+    width: 266px;
+    top: 144px;
+    left: 0;
+    z-index: 1;
+    background-color: @wc_bg;
+    padding: 0 4px 6px;
+    box-sizing: border-box;
+
+    .tree {
+      border: solid 1px rgba(105, 115, 150, .7);
+      div.checkbox.activelayer span[localize] {
+        background: rgba(255, 255, 255, .85);
+        color: #333;
+      }
+      div.checkbox label {
+        max-width: 180px;
+        overflow: hidden;
+        display: inline-block;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+      }
+    }
+  }
+
+  .layer-manager {
+    div.collapsed {
+      div.indent i, div.indent .checkbox {
+        display: none;
+      }
+    }
+
+    .tree {
+      width: 100%;
+
+      div.checkbox {
+        display: inline-block;
+        height: 18px;
+        overflow: hidden;
+        position: relative;
+        top: -1px;
+
+        label {
+          height: 18px;
+        }
+      }
+
+      i.fa {
+        cursor: pointer;
+        position: relative;
+        top: -8px;
+      }
+
+      overflow: auto;
+    }
+
+    .close {
+      color: @text-color;
+      margin-top: -2px;
+    }
+
+    h5 {
+      margin: 1px 0 4px;
+    }
+  }
+}
