@@ -17,7 +17,7 @@
     };
 }]);
 
-wwt.app.directive('ngRightClick', function ($parse) {
+wwt.app.directive('ngRightClick', ['$parse', function ($parse) {
     return function (scope, element, attrs) {
         var fn = $parse(attrs.ngRightClick);
         element.bind('contextmenu', function (event) {
@@ -27,5 +27,5 @@ wwt.app.directive('ngRightClick', function ($parse) {
             });
         });
     };
-});
+}]);
 
