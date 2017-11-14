@@ -142,7 +142,30 @@ namespace wwtlib
             }
         }
 
-        static public void showLayerMenu(LayerMap layer, int x, int y) { }
+        static ContextMenuStrip contextMenu;
+
+        static public void showLayerMenu(LayerMap layer, int x, int y)
+        {
+
+            contextMenu = new ContextMenuStrip();
+
+            ToolStripMenuItem cutMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(427, "Cut"));
+            ToolStripMenuItem copyMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(428, "Copy"));
+            ToolStripMenuItem pasteMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(425, "Paste"));
+            ToolStripMenuItem deleteMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(167, "Delete"));
+            ToolStripSeparator sep1 = new ToolStripSeparator();
+          
+
+
+            contextMenu.Items.Add(cutMenu);
+            contextMenu.Items.Add(copyMenu);
+            contextMenu.Items.Add(pasteMenu);
+               contextMenu.Items.Add(sep1);
+          contextMenu.Items.Add(deleteMenu);
+          
+
+            contextMenu.Show(Vector2d.Create(x,y));
+        }
 
         //static List<Layer> layers = new List<Layer>();
         static LayerManager()
