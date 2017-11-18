@@ -617,15 +617,16 @@ wwt.controllers.controller('MainController',
         if (imageSet && !item.isEarth) {
 
           wwtlib.WWTControl.singleton.renderContext.set_foregroundImageset(imageSet);
+
         }
         $scope.setTrackingObj(item);
 
-        if (!item.isSurvey && ss.canCast(item, wwtlib.Place)) {
+        if (!item.isSurvey && !util.getIsPlanet(item) && ss.canCast(item, wwtlib.Place)) {
           $('.finder-scope').hide();
           //$('.cross-fader').parent().toggle(imageSet!=null);
-          $rootScope.singleton.gotoTarget(item, util.getIsPlanet(item), false, true);
+          $rootScope.singleton.gotoTarget(item, false, false, true);
 
-          return;
+
         } else if (!item.isEarth) {
           ctl.setForegroundImageByName(imageSet.get_name());
         } else {

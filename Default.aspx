@@ -283,12 +283,15 @@
         <img id="colorhex" src="images\ColorPickerHex.png" width="189" height="208" />
     </div>
     <!--Layer Manager Recursive Tree Template (shared)-->
+    <script type="text/ng-template" id="tree-toggle">
+      <i class="fa" ng-if="hasChildren(node)"
+        ng-class="node.collapsed ? 'fa-plus-square-o' : 'fa-minus-square-o'"
+        ng-click="node.collapsed = !node.collapsed;"></i>
+      <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
+    </script>
     <script type="text/ng-template" id="tree-node">
      <div ng-show="name" ng-if="node.childMaps">
-       <i ng-if="hasChildren(node)"
-          ng-class="node.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'"
-          ng-click="node.collapsed = !node.collapsed;"></i>
-       <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
+       <ng-include src="'tree-toggle'"></ng-include>
        <div class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
          <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}"
                 localize-only="title">
@@ -296,7 +299,6 @@
            <span localize="{{name}}"></span>
          </label>
        </div>
-       <!--Recursion-->
        <div class="indent"
             ng-class="node.collapsed ? ' collapsed' : ''"
             ng-repeat="(name,node) in node.childMaps"
@@ -304,20 +306,17 @@
        </div>
      </div>
      <div ng-if="!node.childMaps">
-         <i ng-if="node.children.length > 0" ng-class="node.collapsed ? 'fa fa-plus-square-o' : 'fa fa-minus-square-o'" ng-click="node.collapsed = !node.collapsed;nodeChange(node)"></i>
-         <i ng-if="node.children.length == 0" class="fa">&nbsp;&nbsp;&nbsp;</i>
+         <ng-include src="'tree-toggle'"></ng-include>
          <div class="checkbox">
            <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title">
              <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  data-ng-change="nodeChange(node)" />
              <span localize="{{node.name}}"></span>
            </label>
          </div>
-         <!--Recursion-->
          <div
-           class="indent"
+           class="indent" ng-include="'tree-node'"
            ng-class="node.collapsed ? 'collapsed' : ''"
-           ng-repeat="node in node.children"
-           ng-include="'tree-node'">
+           ng-repeat="node in node.children">
          </div>
        </div>
      </script>
@@ -1241,7 +1240,9 @@
                     <option value="?">&nbsp;</option>
                 </select>
             </div>
-            <%--<div class="control" ng-click="setSurveyProperties()">
+            <%--
+
+            <div class="control" ng-click="setSurveyProperties()">
                 <label localize="Info"></label>
                 <a class="btn"
                    bs-popover

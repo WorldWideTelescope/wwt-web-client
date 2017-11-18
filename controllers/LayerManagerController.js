@@ -54,7 +54,7 @@
           }, 123);
         });
         wwt.resize();
-      }
+      };
 
       var initTree = function () {
         return new treeNode({
@@ -227,9 +227,7 @@
         });
       }
 
-      $scope.sunNodeChange = function (node) {
-        node.enabled = !node.enabled;
-      };
+
 
       $scope.showMenu = function (layerMap, event) {
         if ($scope.activeLayer) {
@@ -245,7 +243,7 @@
       }
 
       $scope.hasChildren = function (node) {
-        return node.childMaps && Object.keys(node.childMaps).length > 0;
+        return (node.children && node.children.length) || (node.childMaps && Object.keys(node.childMaps).length > 0);
       }
 
       $scope.nodeChange = function (node) {
