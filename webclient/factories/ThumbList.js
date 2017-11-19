@@ -172,9 +172,8 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
         item._camParams.zoom = 0.1;
 
         wwtlib.WWTControl.singleton.gotoTarget3(item._camParams);
-        if (!item.isPlanet) {
-          return outParams;
-        }
+        return outParams;
+
       } else {
         item._camParam.zoom = 360;
         //c.angle = 360;
