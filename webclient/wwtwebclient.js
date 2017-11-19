@@ -2097,9 +2097,10 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', functi
     } else if (util.getIsPlanet(item)) {
 
       if (scope.lookAt === 'Sky') {
-        item._camParams.zoom = 0.1;
+        //var c = item.get_camParams();
+        //c.zoom = 0.1;
 
-        wwtlib.WWTControl.singleton.gotoTarget3(item._camParams);
+        wwtlib.WWTControl.singleton.gotoTarget3(item.get_camParams());
         return outParams;
 
       } else {
