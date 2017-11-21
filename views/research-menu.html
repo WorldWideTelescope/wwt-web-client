@@ -1,9 +1,4 @@
-﻿<!--<a class="btn" id="propertyPanelLink"
-	   bs-popover
-	   localize="Properties"
-	localize-only="title"
-   data-content-template="views/popovers/property-panel.html"
-   data-placement="bottom">&nbsp;pop</a>-->
+﻿
 <ul class="dropdown-menu" role="menu" id="researchMenu">
 	<li><a href="javascript:void(0)"><span localize="Name"></span>: {{menuContext.get_name()}}</a></li>
 	<li class="dropdown-submenu">
@@ -29,8 +24,8 @@
 			</li>
 		</ul>
 	</li>
-	
-	<li role="presentation" class="divider"></li>
+
+  <li role="presentation" class="divider"></li>
 	<li><a ng-click="setBackgroundImage(menuContext)" href="javascript:void(0)" localize="Set as Background Imagery"></a></li>
 	<li><a ng-click="setForegroundImage(menuContext)" href="javascript:void(0)" localize="Set as Foreground Imagery"></a></li>
 	<li role="presentation" class="divider"></li>
