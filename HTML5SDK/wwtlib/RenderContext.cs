@@ -324,7 +324,7 @@ namespace wwtlib
                     maxX = (int)Math.Pow(2, level) * (int)(360 / layer.BaseTileDegrees);
 
                     break;
-                case ProjectionType.SkyImage:
+         
                 case ProjectionType.Tangent:
                     if (layer.WidthFactor == 1)
                     {
@@ -334,6 +334,10 @@ namespace wwtlib
                     {
                         maxX = (int)Math.Pow(2, level);
                     }
+                    break;
+
+                case ProjectionType.SkyImage:
+                    maxX = 1;
                     break;
                 case ProjectionType.Spherical:
                     maxX = 1;

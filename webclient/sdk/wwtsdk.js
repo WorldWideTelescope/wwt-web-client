@@ -13734,7 +13734,6 @@ window.wwtlib = function(){
       case 1:
         maxX = Math.pow(2, level) * ss.truncate((360 / layer.get_baseTileDegrees()));
         break;
-      case 5:
       case 2:
         if (layer.get_widthFactor() === 1) {
           maxX = Math.pow(2, level) * 2;
@@ -13742,6 +13741,9 @@ window.wwtlib = function(){
         else {
           maxX = Math.pow(2, level);
         }
+        break;
+      case 5:
+        maxX = 1;
         break;
       case 4:
         maxX = 1;
@@ -14643,8 +14645,14 @@ window.wwtlib = function(){
       var img = new FitsImage(url, ss.bind('_onWcsLoad', this));
     },
     _onWcsLoad: function(wcsImage) {
-      WWTControl.singleton.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
+      var width = ss.truncate(wcsImage.get_sizeX());
+      var height = ss.truncate(wcsImage.get_sizeY());
+      var newWidth = Texture.fitPowerOfTwo(width);
+      var newHeight = Texture.fitPowerOfTwo(height);
+      var extraY = newHeight - height;
+      WWTControl.singleton.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY() + extraY, wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
       WWTControl.singleton.renderContext.get_foregroundImageset().set_wcsImage(wcsImage);
+      WWTControl.singleton.renderContext.viewCamera.opacity = 100;
     },
     get_hideTourFeedback: function() {
       return this.hideTourFeedback;
@@ -24215,8 +24223,8 @@ window.wwtlib = function(){
     this.height = 0;
   }
   Bitmap.create = function(width, height) {
-    height = 1024;
-    width = 1024;
+    height = Texture.fitPowerOfTwo(height);
+    width = Texture.fitPowerOfTwo(width);
     var bmp = new Bitmap();
     bmp.height = height;
     bmp.width = width;

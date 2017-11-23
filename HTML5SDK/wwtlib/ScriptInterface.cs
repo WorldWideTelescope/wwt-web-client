@@ -227,6 +227,13 @@ namespace wwtlib
 
         private void OnWcsLoad(WcsImage wcsImage)
         {
+            int width = (int)wcsImage.SizeX;
+            int height = (int)wcsImage.SizeY;
+
+            int newWidth = Texture.FitPowerOfTwo(width);
+            int newHeight = Texture.FitPowerOfTwo(height);
+
+            int extraY = newHeight - height;
 
             WWTControl.Singleton.RenderContext.ForegroundImageset = Imageset.Create(
                         wcsImage.Description,
@@ -251,7 +258,7 @@ namespace wwtlib
                         false,
                         1,
                         wcsImage.ReferenceX,
-                        wcsImage.ReferenceY,
+                        wcsImage.ReferenceY+ extraY,
                         wcsImage.Copyright,
                         wcsImage.CreditsUrl,
                         "",
@@ -260,7 +267,7 @@ namespace wwtlib
                         ""
                         );
             WWTControl.Singleton.RenderContext.ForegroundImageset.WcsImage = wcsImage;
-          
+            WWTControl.Singleton.RenderContext.ViewCamera.Opacity = 100;
         }
 
         public bool hideTourFeedback = false;

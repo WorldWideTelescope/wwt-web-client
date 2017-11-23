@@ -21,14 +21,12 @@ namespace wwtlib
 
         public static Bitmap Create(int width, int height)
         {
-            height = 1024;
-            width = 1024;
+            height = Texture.FitPowerOfTwo(height);
+            width = Texture.FitPowerOfTwo(width);
 
             Bitmap bmp = new Bitmap();
             bmp.Height = height;
             bmp.Width = width;
-
-            
 
             bmp.buffer = new Uint8Array(width * height * 4);
             return bmp;
