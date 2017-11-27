@@ -1336,8 +1336,10 @@ namespace wwtlib
         string filename = "";
      
 
-        public override void LoadData(System.Html.Data.Files.Blob blob)
+        public override void LoadData(TourDocument tourDoc, string filename)
         {
+            System.Html.Data.Files.Blob blob = tourDoc.GetFileBlob(filename);
+
             FileReader doc = new FileReader();
             doc.OnLoadEnd = delegate (FileProgressEvent ee)
             {

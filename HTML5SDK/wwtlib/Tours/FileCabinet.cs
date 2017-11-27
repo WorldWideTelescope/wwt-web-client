@@ -30,7 +30,7 @@ namespace wwtlib
         protected List<FileEntry> FileList;
         Dictionary<string, FileEntry> FileDirectory;
         public string Filename;
-        public string TempDirectory;
+        public string TempDirectory = "";
         private int currentOffset = 0;
         private string packageID = "";
 
@@ -240,6 +240,10 @@ namespace wwtlib
                         break;
                     case ".txt":
                         type = "text/plain";
+                        break;
+                    case ".fit":
+                    case ".fits":
+                        type = "application/octet-stream";
                         break;
                 }
 

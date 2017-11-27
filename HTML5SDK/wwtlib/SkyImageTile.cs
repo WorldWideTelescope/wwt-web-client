@@ -117,13 +117,18 @@ namespace wwtlib
                 return true;
             }
 
-            Bitmap bmp = null; 
+            Bitmap bmp = null;
 
             if (dataset.WcsImage != null)
             {
                 WcsImage wcsImage = dataset.WcsImage as WcsImage;
                 bmp = wcsImage.GetBitmap();
                 texture2d = bmp.GetTexture();
+
+                if (bmp.Height != wcsImage.SizeY)
+                {
+                    PixelCenterY += bmp.Height - wcsImage.SizeY;
+                }
             }
             
             GeometryCreated = true;

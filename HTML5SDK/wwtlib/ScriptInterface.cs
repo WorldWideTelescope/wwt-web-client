@@ -222,18 +222,13 @@ namespace wwtlib
 
         public void LoadFits(string url)
         {
-            FitsImage img = new FitsImage(url, OnWcsLoad);
+            FitsImage img = new FitsImage(url, null, OnWcsLoad);
         }
 
         private void OnWcsLoad(WcsImage wcsImage)
         {
             int width = (int)wcsImage.SizeX;
             int height = (int)wcsImage.SizeY;
-
-            int newWidth = Texture.FitPowerOfTwo(width);
-            int newHeight = Texture.FitPowerOfTwo(height);
-
-            int extraY = newHeight - height;
 
             WWTControl.Singleton.RenderContext.ForegroundImageset = Imageset.Create(
                         wcsImage.Description,
@@ -258,7 +253,7 @@ namespace wwtlib
                         false,
                         1,
                         wcsImage.ReferenceX,
-                        wcsImage.ReferenceY+ extraY,
+                        wcsImage.ReferenceY,
                         wcsImage.Copyright,
                         wcsImage.CreditsUrl,
                         "",

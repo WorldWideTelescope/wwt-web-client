@@ -497,6 +497,9 @@ namespace wwtlib
                 case "GreatCirlceRouteLayer":
                     newLayer = new GreatCirlceRouteLayer();
                     break;
+                case "ImageSetLayer":
+                    newLayer = new ImageSetLayer();
+                    break;
                 default:
                     return null;
             }
@@ -559,7 +562,7 @@ namespace wwtlib
 
 
 
-        public virtual void LoadData(System.Html.Data.Files.Blob blob)
+        public virtual void LoadData(TourDocument doc, string filename)
         {
             return;
         }

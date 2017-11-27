@@ -178,10 +178,10 @@ namespace wwtlib
             return true;
         }
 
-        public override void LoadData(System.Html.Data.Files.Blob blob)
+        public override void LoadData(TourDocument tourDoc, string filename)
         {
             table = new Table();
-
+            System.Html.Data.Files.Blob blob = tourDoc.GetFileBlob(filename);
             this.GetStringFromGzipBlob(blob, delegate (string data)
             {
                 table.LoadFromString(data, false, true, true);

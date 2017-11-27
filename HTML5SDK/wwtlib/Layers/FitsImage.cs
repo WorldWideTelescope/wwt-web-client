@@ -19,11 +19,18 @@ namespace wwtlib
         Dictionary<String, String> header = new Dictionary<string, string>();
 
         private WcsLoaded callBack;
-        public FitsImage(string file, WcsLoaded callMeBack)
+        public FitsImage(string file, Blob blob, WcsLoaded callMeBack)
         {
             callBack = callMeBack;
             filename = file;
-            GetFile(file);
+            if (blob != null)
+            {
+                ReadFromBlob(blob);
+            }
+            else
+            {
+                GetFile(file);
+            }
         }
 
         WebFile webFile;
@@ -45,14 +52,25 @@ namespace wwtlib
             else if (webFile.State == StateType.Received)
             {
                 System.Html.Data.Files.Blob mainBlob = (System.Html.Data.Files.Blob)webFile.GetBlob();
-                FileReader chunck = new FileReader();
-                chunck.OnLoadEnd = delegate (System.Html.Data.Files.FileProgressEvent e)
-                {
-                    ReadFromBin(new BinaryReader(new Uint8Array(chunck.Result)));
-                    callBack.Invoke(this);             
-                };
-                chunck.ReadAsArrayBuffer(mainBlob);
+                ReadFromBlob(mainBlob);
             }
+        }
+
+        public Blob sourceBlob = null;
+
+        private void ReadFromBlob(Blob blob)
+        {
+            sourceBlob = blob;
+            FileReader chunck = new FileReader();
+            chunck.OnLoadEnd = delegate (System.Html.Data.Files.FileProgressEvent e)
+            {
+                ReadFromBin(new BinaryReader(new Uint8Array(chunck.Result)));
+                if (callBack != null)
+                {
+                    callBack.Invoke(this);
+                }
+            };
+            chunck.ReadAsArrayBuffer(blob);
         }
 
         private void ReadFromBin(BinaryReader br)

@@ -8764,6 +8764,9 @@ window.wwtlib = function(){
       case 'GreatCirlceRouteLayer':
         newLayer = new GreatCirlceRouteLayer();
         break;
+      case 'ImageSetLayer':
+        newLayer = new ImageSetLayer();
+        break;
       default:
         return null;
     }
@@ -8998,7 +9001,7 @@ window.wwtlib = function(){
       }
       this.initializeFromXml(node);
     },
-    loadData: function(blob) {
+    loadData: function(doc, filename) {
       return;
     },
     addFilesToCabinet: function(fc) {
@@ -13126,15 +13129,12 @@ window.wwtlib = function(){
       }
     },
     loadFits: function(url) {
-      var img = new FitsImage(url, ss.bind('_onWcsLoad', this));
+      var img = new FitsImage(url, null, ss.bind('_onWcsLoad', this));
     },
     _onWcsLoad: function(wcsImage) {
       var width = ss.truncate(wcsImage.get_sizeX());
       var height = ss.truncate(wcsImage.get_sizeY());
-      var newWidth = Texture.fitPowerOfTwo(width);
-      var newHeight = Texture.fitPowerOfTwo(height);
-      var extraY = newHeight - height;
-      WWTControl.singleton.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY() + extraY, wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
+      WWTControl.singleton.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
       WWTControl.singleton.renderContext.get_foregroundImageset().set_wcsImage(wcsImage);
       WWTControl.singleton.renderContext.viewCamera.opacity = 100;
     },
@@ -15605,6 +15605,7 @@ window.wwtlib = function(){
   // wwtlib.FileCabinet
 
   function FileCabinet() {
+    this.tempDirectory = '';
     this._currentOffset = 0;
     this._packageID = '';
     this.url = '';
@@ -15753,6 +15754,10 @@ window.wwtlib = function(){
             break;
           case '.txt':
             type = 'text/plain';
+            break;
+          case '.fit':
+          case '.fits':
+            type = 'application/octet-stream';
             break;
         }
         return this._mainBlob.slice(fe.offset, fe.offset + fe.size, type);
@@ -16670,7 +16675,7 @@ window.wwtlib = function(){
               }
               try {
                 newLayer.loadedFromTour = true;
-                newLayer.loadData(this.getFileBlob(fileName));
+                newLayer.loadData(this, fileName);
                 LayerManager.add(newLayer, false);
               }
               catch ($e4) {
@@ -30466,8 +30471,9 @@ window.wwtlib = function(){
 
   // wwtlib.FitsImage
 
-  function FitsImage(file, callMeBack) {
+  function FitsImage(file, blob, callMeBack) {
     this._header$1 = {};
+    this.sourceBlob = null;
     this.histogramMaxCount = 0;
     this.width = 0;
     this.height = 0;
@@ -30488,7 +30494,12 @@ window.wwtlib = function(){
     WcsImage.call(this);
     this._callBack$1 = callMeBack;
     this.filename = file;
-    this.getFile(file);
+    if (blob != null) {
+      this._readFromBlob$1(blob);
+    }
+    else {
+      this.getFile(file);
+    }
   }
   FitsImage.isGzip = function(br) {
     var line = br.readBytes(2);
@@ -30508,20 +30519,26 @@ window.wwtlib = function(){
       this._webFile$1.send();
     },
     fileStateChange: function() {
-      var $this = this;
-
       if (this._webFile$1.get_state() === 2) {
         alert(this._webFile$1.get_message());
       }
       else if (this._webFile$1.get_state() === 1) {
         var mainBlob = this._webFile$1.getBlob();
-        var chunck = new FileReader();
-        chunck.onloadend = function(e) {
-          $this._readFromBin$1(new BinaryReader(new Uint8Array(chunck.result)));
-          $this._callBack$1($this);
-        };
-        chunck.readAsArrayBuffer(mainBlob);
+        this._readFromBlob$1(mainBlob);
       }
+    },
+    _readFromBlob$1: function(blob) {
+      var $this = this;
+
+      this.sourceBlob = blob;
+      var chunck = new FileReader();
+      chunck.onloadend = function(e) {
+        $this._readFromBin$1(new BinaryReader(new Uint8Array(chunck.result)));
+        if ($this._callBack$1 != null) {
+          $this._callBack$1($this);
+        }
+      };
+      chunck.readAsArrayBuffer(blob);
     },
     _readFromBin$1: function(br) {
       this.parseHeader(br);
@@ -31365,10 +31382,123 @@ window.wwtlib = function(){
   // wwtlib.ImageSetLayer
 
   function ImageSetLayer() {
+    this._imageSet$1 = null;
+    this._lastScale$1 = 0;
+    this._min$1 = 0;
+    this._max$1 = 0;
+    this._extension$1 = 'txt';
+    this._overrideDefaultLayer$1 = false;
+    this._loaded$1 = false;
     Layer.call(this);
   }
   var ImageSetLayer$ = {
-
+    get_imageSet: function() {
+      return this._imageSet$1;
+    },
+    set_imageSet: function(value) {
+      this._imageSet$1 = value;
+      return value;
+    },
+    create: function(set) {
+      var isl = new ImageSetLayer();
+      isl._imageSet$1 = set;
+      return isl;
+    },
+    get_overrideDefaultLayer: function() {
+      return this._overrideDefaultLayer$1;
+    },
+    set_overrideDefaultLayer: function(value) {
+      this._overrideDefaultLayer$1 = value;
+      return value;
+    },
+    initializeFromXml: function(node) {
+      var imageSetNode = Util.selectSingleNode(node, 'ImageSet');
+      this._imageSet$1 = Imageset.fromXMLNode(imageSetNode);
+      if (node.attributes.getNamedItem('Extension') != null) {
+        this._extension$1 = node.attributes.getNamedItem('Extension').nodeValue;
+      }
+      if (node.attributes.getNamedItem('ScaleType') != null) {
+        this._lastScale$1 = Enums.parse('ScaleTypes', node.attributes.getNamedItem('ScaleType').nodeValue);
+      }
+      if (node.attributes.getNamedItem('MinValue') != null) {
+        this._min$1 = parseFloat(node.attributes.getNamedItem('MinValue').nodeValue);
+      }
+      if (node.attributes.getNamedItem('MaxValue') != null) {
+        this._max$1 = parseFloat(node.attributes.getNamedItem('MaxValue').nodeValue);
+      }
+      if (node.attributes.getNamedItem('OverrideDefault') != null) {
+        this._overrideDefaultLayer$1 = ss.boolean(node.attributes.getNamedItem('OverrideDefault').nodeValue);
+      }
+    },
+    draw: function(renderContext, opacity, flat) {
+      if (!this._loaded$1) {
+        return false;
+      }
+      renderContext.set_worldBase(renderContext.get_world());
+      renderContext.set_viewBase(renderContext.get_view());
+      renderContext.makeFrustum();
+      renderContext.drawImageSet(this._imageSet$1, this.get_opacity() * opacity * 100);
+      return true;
+    },
+    writeLayerProperties: function(xmlWriter) {
+      if (this._imageSet$1.get_wcsImage() != null) {
+        if (ss.canCast(this._imageSet$1.get_wcsImage(), FitsImage)) {
+          xmlWriter._writeAttributeString('Extension', '.fit');
+        }
+        else {
+          xmlWriter._writeAttributeString('Extension', '.png');
+        }
+      }
+      if (ss.canCast(this._imageSet$1.get_wcsImage(), FitsImage)) {
+        var fi = ss.safeCast(this._imageSet$1.get_wcsImage(), FitsImage);
+        xmlWriter._writeAttributeString('ScaleType', fi.lastScale.toString());
+        xmlWriter._writeAttributeString('MinValue', fi.lastBitmapMin.toString());
+        xmlWriter._writeAttributeString('MaxValue', fi.lastBitmapMax.toString());
+      }
+      xmlWriter._writeAttributeString('OverrideDefault', this._overrideDefaultLayer$1.toString());
+      Imageset.saveToXml(xmlWriter, this._imageSet$1, '');
+      Layer.prototype.writeLayerProperties.call(this, xmlWriter);
+    },
+    getTypeName: function() {
+      return 'TerraViewer.ImageSetLayer';
+    },
+    cleanUp: function() {
+      Layer.prototype.cleanUp.call(this);
+    },
+    addFilesToCabinet: function(fc) {
+      if (ss.canCast(this._imageSet$1.get_wcsImage(), FitsImage)) {
+        var fName = (this._imageSet$1.get_wcsImage()).get_filename();
+        var fileName = fc.tempDirectory + ss.format('{0}\\{1}{2}', fc.get_packageID(), this.id.toString(), this._extension$1);
+        fc.addFile(fileName, (this._imageSet$1.get_wcsImage()).sourceBlob);
+      }
+    },
+    getParamNames: function() {
+      return Layer.prototype.getParamNames.call(this);
+    },
+    getParams: function() {
+      return Layer.prototype.getParams.call(this);
+    },
+    setParams: function(paramList) {
+      Layer.prototype.setParams.call(this, paramList);
+    },
+    loadData: function(tourDoc, filename) {
+      if (ss.startsWith(this._extension$1.toLowerCase(), '.fit')) {
+        var blob = tourDoc.getFileBlob(ss.replaceString(filename, '.txt', this._extension$1));
+        var fi = new FitsImage('image.fit', blob, ss.bind('_doneLoading$1', this));
+        this._imageSet$1.set_wcsImage(fi);
+        if (this._max$1 > 0 || this._min$1 > 0) {
+          fi.lastBitmapMax = this._max$1;
+          fi.lastBitmapMin = this._min$1;
+          fi.lastScale = this._lastScale$1;
+        }
+      }
+      else {
+        this._loaded$1 = true;
+      }
+    },
+    _doneLoading$1: function(wcsImage) {
+      this._loaded$1 = true;
+    }
   };
 
 
@@ -31503,10 +31633,11 @@ window.wwtlib = function(){
       this._dataDirty$1 = true;
       return true;
     },
-    loadData: function(blob) {
+    loadData: function(tourDoc, filename) {
       var $this = this;
 
       this._table$1 = new Table();
+      var blob = tourDoc.getFileBlob(filename);
       this.getStringFromGzipBlob(blob, function(data) {
         $this._table$1.loadFromString(data, false, true, true);
         $this.computeDateDomainRange(-1, -1);
@@ -34187,9 +34318,10 @@ window.wwtlib = function(){
       var path = fName.substring(0, fName.lastIndexOf('\\') + 1);
       var path2 = fileName.substring(0, fileName.lastIndexOf('\\') + 1);
     },
-    loadData: function(blob) {
+    loadData: function(tourDoc, filename) {
       var $this = this;
 
+      var blob = tourDoc.getFileBlob(filename);
       var doc = new FileReader();
       doc.onloadend = function(ee) {
         var data = ss.safeCast(doc.result, String);
@@ -34722,6 +34854,9 @@ window.wwtlib = function(){
         var wcsImage = ss.safeCast(this.dataset.get_wcsImage(), WcsImage);
         bmp = wcsImage.getBitmap();
         this.texture2d = bmp.getTexture();
+        if (bmp.height !== wcsImage.get_sizeY()) {
+          this.pixelCenterY += bmp.height - wcsImage.get_sizeY();
+        }
       }
       this.geometryCreated = true;
       for (var i = 0; i < 4; i++) {

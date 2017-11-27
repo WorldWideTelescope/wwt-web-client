@@ -233,7 +233,7 @@ namespace wwtlib
                             try
                             {
                                 newLayer.LoadedFromTour = true;
-                                newLayer.LoadData(GetFileBlob(fileName));
+                                newLayer.LoadData(this, fileName);
                                 LayerManager.Add(newLayer, false);
                             }
                             catch
