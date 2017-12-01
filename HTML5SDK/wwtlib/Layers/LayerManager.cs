@@ -149,22 +149,22 @@ namespace wwtlib
 
             contextMenu = new ContextMenuStrip();
 
-            ToolStripMenuItem cutMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(427, "Cut"));
-            ToolStripMenuItem copyMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(428, "Copy"));
-            ToolStripMenuItem pasteMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(425, "Paste"));
-            ToolStripMenuItem deleteMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(167, "Delete"));
+            ToolStripMenuItem scaleMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(1291, "Scale/Histogram"));
+           
             ToolStripSeparator sep1 = new ToolStripSeparator();
-          
 
+            scaleMenu.Click = scaleMenu_click;
 
-            contextMenu.Items.Add(cutMenu);
-            contextMenu.Items.Add(copyMenu);
-            contextMenu.Items.Add(pasteMenu);
-               contextMenu.Items.Add(sep1);
-          contextMenu.Items.Add(deleteMenu);
-          
+            contextMenu.Items.Add(scaleMenu);
 
             contextMenu.Show(Vector2d.Create(x,y));
+        }
+
+        static public void scaleMenu_click(object sender, EventArgs e)
+        {
+            Histogram hist = new Histogram();
+            hist.image = FitsImage.Last;
+            hist.Show(Vector2d.Create(200, 200));
         }
 
         //static List<Layer> layers = new List<Layer>();

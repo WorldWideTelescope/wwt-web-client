@@ -5,6 +5,7 @@ using System.Html;
 using System.Xml;
 using System.Net;
 using System.Html.Data.Files;
+using System.Html.Media.Graphics;
 
 namespace wwtlib
 {
@@ -17,10 +18,12 @@ namespace wwtlib
     public class FitsImage : WcsImage
     {
         Dictionary<String, String> header = new Dictionary<string, string>();
+        public static FitsImage Last = null;
 
         private WcsLoaded callBack;
         public FitsImage(string file, Blob blob, WcsLoaded callMeBack)
         {
+            Last = this;
             callBack = callMeBack;
             filename = file;
             if (blob != null)
@@ -384,9 +387,35 @@ namespace wwtlib
             return bmp;
         }
 
+        public void DrawHistogram(CanvasContext2D ctx)
+        {
+            ctx.ClearRect(0, 0, 255, 150);
+            ctx.BeginPath();
+            ctx.StrokeStyle = "rgba(255,255,255,255)";
+            double logMax = Math.Log(HistogramMaxCount);
+            for (int i = 0; i < Histogram.Length; i++)
+            {
+                double height = Math.Log(Histogram[i]) / logMax;
+                if (height < 0)
+                {
+                    height = 0;
+                }
+
+                ctx.MoveTo(i, 150);
+                ctx.LineTo(i, 150 - (height * 150));
+                ctx.Stroke();
+            }
+           
+        }
+
         public int[] ComputeHistogram(int count)
         {
             int[] histogram = new int[count+1];
+
+            for(int i = 0; i < count+1; i++)
+            {
+                histogram[i] = 0;
+            }
 
             switch (DataType)
             {

@@ -170,6 +170,7 @@
     <Compile Include="Utilities\ColorPicker.cs" />
     <Compile Include="Utilities\ContextMenuStrip.cs" />
     <Compile Include="Utilities\FileReader.cs" />
+    <Compile Include="Utilities\Histogram.cs" />
     <Compile Include="Utilities\XmlTextWriter.cs" />
     <Compile Include="VizLayer.cs" />
     <Compile Include="WebFile.cs" />
