@@ -279,6 +279,10 @@
 
     </div>
 
+    <div id="histogram" class="histogram">
+        <canvas id="graph" src="" width="256" height="150" />
+    </div>
+
     <div id="colorpicker" class="colorpicker">
         <img id="colorhex" src="images\ColorPickerHex.png" width="189" height="208" />
     </div>
