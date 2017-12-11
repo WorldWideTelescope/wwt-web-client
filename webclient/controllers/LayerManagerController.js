@@ -270,6 +270,18 @@
         invokeSetting(node);
       };
 
+      $scope.collapsed = function(node){
+        return $scope.isObjectNode(node) ? !node.open : node.collapsed;
+      };
+      $scope.collapse = function(node){
+        var key = 'collapsed';
+        var collapse = !$scope.collapsed(node);
+        if ($scope.isObjectNode){
+          key = 'open';
+          collapse = !collapse;
+        }
+        node[key] = collapse;
+      }
       //var invokeSetting = function(node) {
       //	if (node.action) {
       //		try {
