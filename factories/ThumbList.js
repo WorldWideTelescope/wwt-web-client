@@ -184,9 +184,6 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
           wwtlib.WWTControl.singleton.gotoTarget3(item.get_camParams());
           return outParams;
 
-        } else {
-          item._camParam.zoom = 360;
-          //c.angle = 360;
         }
         if (scope.lookAt !== 'SolarSystem') {
 
