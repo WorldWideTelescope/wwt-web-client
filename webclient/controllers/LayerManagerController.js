@@ -55,7 +55,21 @@
         });
         wwt.resize();
       };
-
+      $scope.getChildren = function(node){
+        var children  = node.children || {};
+        if (children.length){
+          return children;
+        }
+        if (node.childMaps && Object.keys(node.childMaps).length){
+          children = node.childMaps;
+        }
+        if (node.layers && node.layers.length){
+          node.layers.forEach(function(l){
+            children[l._name] = l;
+          });
+        }
+          return children;
+      }
       var initTree = function () {
         return new treeNode({
           v: version,
@@ -243,7 +257,12 @@
       }
 
       $scope.hasChildren = function (node) {
-        return (node.children && node.children.length) || (node.childMaps && Object.keys(node.childMaps).length > 0);
+        var children = $scope.getChildren(node);
+        return children.length || Object.keys(children).length > 0;
+      };
+
+      $scope.isObjectNode = function(node){
+        return node.action == undefined;
       }
 
       $scope.nodeChange = function (node) {
