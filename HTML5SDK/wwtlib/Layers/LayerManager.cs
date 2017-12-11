@@ -215,36 +215,36 @@ namespace wwtlib
             //    }
             //}
 
-            LayerMaps["Sun"] = new LayerMap("Sun", ReferenceFrames.Sun);
-            LayerMaps["Sun"].ChildMaps["Mercury"] = new LayerMap("Mercury", ReferenceFrames.Mercury);
-            LayerMaps["Sun"].ChildMaps["Venus"] = new LayerMap("Venus", ReferenceFrames.Venus);
-            LayerMaps["Sun"].ChildMaps["Earth"] = new LayerMap("Earth", ReferenceFrames.Earth);
-            LayerMaps["Sun"].ChildMaps["Earth"].ChildMaps["Moon"] = new LayerMap("Moon", ReferenceFrames.Moon);
-
+            layerMaps["Sun"] = new LayerMap("Sun", ReferenceFrames.Sun);
+            layerMaps["Sun"].ChildMaps["Mercury"] = new LayerMap("Mercury", ReferenceFrames.Mercury);
+            layerMaps["Sun"].ChildMaps["Venus"] = new LayerMap("Venus", ReferenceFrames.Venus);
+            layerMaps["Sun"].ChildMaps["Earth"] = new LayerMap("Earth", ReferenceFrames.Earth);
+            layerMaps["Sun"].ChildMaps["Earth"].ChildMaps["Moon"] = new LayerMap("Moon", ReferenceFrames.Moon);
+            
             //if (!TourLayers)
             //{
             //    LayerMaps["Sun"].ChildMaps["Earth"].ChildMaps.Add("ISS", iss);
             //}
-
-            LayerMaps["Sun"].ChildMaps["Mars"] = new LayerMap("Mars", ReferenceFrames.Mars);
-            LayerMaps["Sun"].ChildMaps["Jupiter"] = new LayerMap("Jupiter", ReferenceFrames.Jupiter);
-            LayerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Io"] = new LayerMap("Io", ReferenceFrames.Io);
-            LayerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Europa"] = new LayerMap("Europa", ReferenceFrames.Europa);
-            LayerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Ganymede"] = new LayerMap("Ganymede", ReferenceFrames.Ganymede);
-            LayerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Callisto"] = new LayerMap("Callisto", ReferenceFrames.Callisto);
-            LayerMaps["Sun"].ChildMaps["Saturn"] = new LayerMap("Saturn", ReferenceFrames.Saturn);
-            LayerMaps["Sun"].ChildMaps["Uranus"] = new LayerMap("Uranus", ReferenceFrames.Uranus);
-            LayerMaps["Sun"].ChildMaps["Neptune"] = new LayerMap("Neptune", ReferenceFrames.Neptune);
-            LayerMaps["Sun"].ChildMaps["Pluto"] = new LayerMap("Pluto", ReferenceFrames.Pluto);
+            
+            layerMaps["Sun"].ChildMaps["Mars"] = new LayerMap("Mars", ReferenceFrames.Mars);
+            layerMaps["Sun"].ChildMaps["Jupiter"] = new LayerMap("Jupiter", ReferenceFrames.Jupiter);
+            layerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Io"] = new LayerMap("Io", ReferenceFrames.Io);
+            layerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Europa"] = new LayerMap("Europa", ReferenceFrames.Europa);
+            layerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Ganymede"] = new LayerMap("Ganymede", ReferenceFrames.Ganymede);
+            layerMaps["Sun"].ChildMaps["Jupiter"].ChildMaps["Callisto"] = new LayerMap("Callisto", ReferenceFrames.Callisto);
+            layerMaps["Sun"].ChildMaps["Saturn"] = new LayerMap("Saturn", ReferenceFrames.Saturn);
+            layerMaps["Sun"].ChildMaps["Uranus"] = new LayerMap("Uranus", ReferenceFrames.Uranus);
+            layerMaps["Sun"].ChildMaps["Neptune"] = new LayerMap("Neptune", ReferenceFrames.Neptune);
+            layerMaps["Sun"].ChildMaps["Pluto"] = new LayerMap("Pluto", ReferenceFrames.Pluto);
 
             
             AddMoons(moonfile);
 
-            LayerMaps["Sky"] = new LayerMap("Sky", ReferenceFrames.Sky);
-            LayerMaps["Sun"].Open = true;
-            AllMaps.Clear();
+            layerMaps["Sky"] = new LayerMap("Sky", ReferenceFrames.Sky);
+            layerMaps["Sun"].Open = true;
+            //AllMaps.Clear();
 
-            AddAllMaps(LayerMaps, null);
+            AddAllMaps(layerMaps, null);
 
             version++;
             LoadTree();
@@ -257,7 +257,7 @@ namespace wwtlib
             {
                 LayerMap map = maps[key];
                 map.Frame.Parent = parent;
-                AllMaps[map.Name] = map;
+                allMaps[map.Name] = map;
                 AddAllMaps(map.ChildMaps, map.Name);
             }
         }
@@ -270,8 +270,8 @@ namespace wwtlib
                 layer.CleanUp();
             }
 
-            LayerList.Clear();
-            LayerMaps.Clear();
+            layerList.Clear();
+            layerMaps.Clear();
         }
 
 
@@ -333,11 +333,11 @@ namespace wwtlib
                 frame.Frame.RepresentativeColor = Color.FromArgb(255, 144, 238, 144);
                 frame.Frame.Oblateness = 0;
 
-                LayerMaps["Sun"].ChildMaps[planet] = frame;
+                layerMaps["Sun"].ChildMaps[planet].ChildMaps[frame.Name] = frame;
 
-                AllMaps.Clear();
+                //allMaps.Clear();
 
-                AddAllMaps(LayerMaps, null);
+                AddAllMaps(layerMaps, null);
             }
         }
 

@@ -236,7 +236,7 @@ module.exports = function(grunt) {
     grunt.registerTask('dist-js', ['concat:webclient', 'uglify:webclient']);
 
     // Takes HTML5SDK generated script and packages into single usable lib. (scriptsharp v0.8).
-    grunt.registerTask('sdk', ['replace:wwtlib', 'concat:sdk', 'uglify:sdk']);
+    grunt.registerTask('sdk', ['replace:wwtlib', 'concat:sdk', 'uglify:sdk','concat:webclient','uglify:webclient']);
 
     // Minify the generated search data (rare - internal only)
     grunt.registerTask('dist-searchdata', ['uglify:searchData']);
