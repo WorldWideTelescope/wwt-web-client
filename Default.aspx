@@ -289,8 +289,8 @@
     <!--Layer Manager Recursive Tree Template (shared)-->
     <script type="text/ng-template" id="tree-toggle">
       <i class="fa" ng-if="hasChildren(node)"
-        ng-class="node.collapsed ? 'fa-plus-square-o' : 'fa-minus-square-o'"
-        ng-click="node.collapsed = !node.collapsed;"></i>
+        ng-class="collapsed(node) ? 'fa-plus-square-o' : 'fa-minus-square-o'"
+        ng-click="collapse(node)"></i>
       <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
     </script>
     <script type="text/ng-template" id="tree-node">
@@ -310,7 +310,7 @@
           </label>
         </div>
        <div class="indent"
-            ng-class="node.collapsed ? ' collapsed' : ''"
+            ng-class="collapsed(node) ? ' collapsed' : ''"
             ng-repeat="(name,node) in getChildren(node)"
             ng-include="'tree-node'">
        </div>
