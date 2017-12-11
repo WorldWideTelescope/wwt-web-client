@@ -294,35 +294,28 @@
       <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
     </script>
     <script type="text/ng-template" id="tree-node">
-     <div ng-show="name" ng-if="node.childMaps">
+     <div ng-show="name || node.name">
        <ng-include src="'tree-toggle'"></ng-include>
-       <div class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
+       <div ng-if="isObjectNode(node)" class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
          <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}"
                 localize-only="title">
            <input type="checkbox" ng-model="node.enabled"/>
            <span localize="{{name}}"></span>
          </label>
        </div>
+       <div class="checkbox" ng-if="!isObjectNode(node)">
+          <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title">
+            <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  data-ng-change="nodeChange(node)" />
+            <span localize="{{node.name}}"></span>
+          </label>
+        </div>
        <div class="indent"
             ng-class="node.collapsed ? ' collapsed' : ''"
-            ng-repeat="(name,node) in node.childMaps"
+            ng-repeat="(name,node) in getChildren(node)"
             ng-include="'tree-node'">
        </div>
      </div>
-     <div ng-if="!node.childMaps">
-         <ng-include src="'tree-toggle'"></ng-include>
-         <div class="checkbox">
-           <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title">
-             <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  data-ng-change="nodeChange(node)" />
-             <span localize="{{node.name}}"></span>
-           </label>
-         </div>
-         <div
-           class="indent" ng-include="'tree-node'"
-           ng-class="node.collapsed ? 'collapsed' : ''"
-           ng-repeat="node in node.children">
-         </div>
-       </div>
+
      </script>
 
 <% if (Client == Clients.Mobile)
