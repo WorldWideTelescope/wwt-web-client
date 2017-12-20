@@ -4,6 +4,11 @@
         <name>wwtlib</name>
     </assembly>
     <members>
+        <member name="F:wwtlib.Grids.planetLineList">
+            <summary>
+            Planet Grids
+            </summary>
+        </member>
         <member name="P:wwtlib.FileReader.ReadyState">
             <summary>
             Indicates the state of the FileReader. This will be one of the State constants. Read only.

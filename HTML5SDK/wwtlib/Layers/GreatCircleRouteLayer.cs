@@ -6,6 +6,7 @@ using System.Xml;
 using System.Html.Services;
 using System.Html.Media.Graphics;
 
+
 namespace wwtlib
 {
     public class GreatCirlceRouteLayer : Layer
@@ -35,7 +36,7 @@ namespace wwtlib
                 InitializeRoute(renderContext);
             }
             triangleList.JNow = percentComplete / 100;
-            triangleList.Draw(renderContext, opacity * this.Opacity, CullMode.CounterClockwise );
+            triangleList.Draw(renderContext, opacity * this.Opacity, CullMode.CounterClockwise);
 
 
             return true;
@@ -75,7 +76,7 @@ namespace wwtlib
             {
                 Vector3d v = Vector3d.Lerp(start, end, i / (float)steps);
                 v.Normalize();
-               // v.Multiply(1.1);
+                // v.Multiply(1.1);
                 Vector3d cl = v;
                 Vector3d cr = v;
 
@@ -120,7 +121,7 @@ namespace wwtlib
 
         private double latStart = 0;
 
-        
+
         public double LatStart
         {
             get { return latStart; }
@@ -135,7 +136,7 @@ namespace wwtlib
         }
         private double lngStart = 0;
 
-        
+
         public double LngStart
         {
             get { return lngStart; }
@@ -150,7 +151,7 @@ namespace wwtlib
         }
         private double latEnd = 0;
 
-        
+
         public double LatEnd
         {
             get { return latEnd; }
@@ -165,7 +166,7 @@ namespace wwtlib
         }
         private double lngEnd = 0;
 
-        
+
         public double LngEnd
         {
             get { return lngEnd; }
@@ -181,7 +182,7 @@ namespace wwtlib
 
         private double width = 4;
 
-        
+
         public double Width
         {
             get { return width; }
@@ -197,7 +198,7 @@ namespace wwtlib
 
         private double percentComplete = 100;
 
-        
+
         public double PercentComplete
         {
             get { return percentComplete; }

@@ -1278,5 +1278,139 @@ namespace wwtlib
                 }
             }
         }
+
+        /// <summary>
+        /// Planet Grids
+        /// </summary>
+        static SimpleLineList planetLineList;
+
+        public static bool DrawPlanetGrid(RenderContext renderContext, float opacity, Color drawColor)
+        {
+            if (planetLineList == null)
+            {
+                planetLineList = new SimpleLineList();
+                planetLineList.DepthBuffered = false;
+
+                Color col = drawColor;
+                for (double lng = 0; lng < 360; lng += 10)
+                {
+                    for (double lat = -80; lat < 80; lat += 2)
+                    {
+                        planetLineList.AddLine(Coordinates.GeoTo3dDouble(lat, lng), Coordinates.GeoTo3dDouble(lat + 2, lng));
+                    }
+                }
+
+                for (double lat = -80; lat <= 80; lat += 10)
+                {
+                    for (double l = 0; l < 360; l += 5)
+                    {
+                        planetLineList.AddLine(Coordinates.GeoTo3dDouble(lat, l), Coordinates.GeoTo3dDouble(lat, l + 5));
+                    }
+                }
+
+                int counter = 0;
+                for (double lng = 0; lng < 360; lng += 1)
+                {
+
+                    double lat = 0.25;
+                    switch (counter % 10)
+                    {
+                        case 0:
+                            counter++;
+                            continue;
+                        case 5:
+                            lat = .5;
+                            break;
+                    }
+                    counter++;
+
+                    planetLineList.AddLine(Coordinates.GeoTo3dDouble(lat, lng), Coordinates.GeoTo3dDouble(-lat, lng));
+                }
+
+                counter = 0;
+                for (double lng = 0; lng < 360; lng += 90)
+                {
+                    counter = 0;
+                    for (double b = -80; b <= 80; b += 1)
+                    {
+                        double width = 0.5 / 2;
+                        switch (counter % 10)
+                        {
+                            case 0:
+                                counter++;
+                                continue;
+                            case 5:
+                                width = .5;
+                                break;
+                        }
+                        counter++;
+
+                        planetLineList.AddLine(Coordinates.GeoTo3dDouble(b, lng + width), Coordinates.GeoTo3dDouble(b, lng - width));
+                    }
+                }
+            }
+            planetLineList.aaFix = false;
+            planetLineList.DepthBuffered = false;
+            planetLineList.Sky = false;
+            planetLineList.DrawLines(renderContext, opacity, drawColor);
+
+            return true;
+        }
+        static Text3dBatch PlanetTextBatch;
+        public static bool DrawPlanetGridText(RenderContext renderContext, float opacity, Color drawColor)
+        {
+            MakePlanetGridText();
+
+            PlanetTextBatch.Draw(renderContext, opacity, drawColor);
+            return true;
+        }
+
+        private static void MakePlanetGridText()
+        {
+            if (PlanetTextBatch == null)
+            {
+
+                PlanetTextBatch = new Text3dBatch(80);
+                for (int lng = -180; lng < 180; lng += 10)
+                {
+                    string text = "       " + lng.ToString();
+                    if (lng < 10)
+                    {
+                        text = "   " + lng.ToString();
+                    }
+                    else if (lng < 100)
+                    {
+                        text = "     " + lng.ToString();
+                    }
+                    PlanetTextBatch.Add(new Text3d(Coordinates.GeoTo3dDouble(0.4, lng), Coordinates.GeoTo3dDouble(0.5, lng), text, -80, .00006));
+                }
+
+                for (double lng = 0; lng < 360; lng += 90)
+                {
+
+                    for (double lat = -80; lat <= 80; lat += 10)
+                    {
+                        if (lat == 0)
+                        {
+                            continue;
+                        }
+                        string text = lat.ToString();
+                        if (lat > 0)
+                        {
+                            text = "  +" + lat.ToString();
+                            PlanetTextBatch.Add(new Text3d(Coordinates.GeoTo3dDouble(lat - .4, lng), Coordinates.GeoTo3dDouble(lat - .3, lng), text, -80, .00006));
+                        }
+                        else
+                        {
+                            text = "  - " + text.Substring(1);
+                            PlanetTextBatch.Add(new Text3d(Coordinates.GeoTo3dDouble(lat + .4, lng), Coordinates.GeoTo3dDouble(lat + .5, lng), text, -80, .00006));
+                        }
+                    }
+                }
+            }
+        }
+
+        // end planet Grids
+
     }
 }

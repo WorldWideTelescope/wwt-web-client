@@ -101,6 +101,7 @@
     <Compile Include="Layers\GreatCircleRouteLayer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\GridLayer.cs" />
     <Compile Include="Layers\ImageSetLayer.cs">
       <SubType>Code</SubType>
     </Compile>

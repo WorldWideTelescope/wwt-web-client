@@ -112,7 +112,7 @@ namespace wwtlib
             {
                 foreach (PositionVertexBuffer lineBuffer in lineBuffers)
                 {
-                    SimpleLineShader.Use(renderContext, lineBuffer.VertexBuffer, color);
+                    SimpleLineShader.Use(renderContext, lineBuffer.VertexBuffer, color, zBuffer);
                     renderContext.gl.drawArrays(GL.LINES, 0, lineBuffer.Count);
                 }
             }

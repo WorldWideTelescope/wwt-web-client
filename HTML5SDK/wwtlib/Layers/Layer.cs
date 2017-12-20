@@ -497,6 +497,9 @@ namespace wwtlib
                 case "GreatCirlceRouteLayer":
                     newLayer = new GreatCirlceRouteLayer();
                     break;
+                case "GridLayer":
+                    newLayer = new GridLayer();
+                    break;
                 case "ImageSetLayer":
                     newLayer = new ImageSetLayer();
                     break;

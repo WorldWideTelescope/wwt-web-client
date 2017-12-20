@@ -1165,9 +1165,6 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
-      console.assert(Degrees >= 0);
-      console.assert(Minutes >= 0);
-      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -1264,7 +1261,6 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
-    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -1429,7 +1425,6 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
-      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -2386,7 +2381,6 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
-          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -3843,7 +3837,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -3878,7 +3871,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
-    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -3915,7 +3907,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -4232,7 +4223,6 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
-      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -6293,7 +6283,7 @@ window.wwtlib = function(){
         var $enum1 = ss.enumerate(this._lineBuffers);
         while ($enum1.moveNext()) {
           var lineBuffer = $enum1.current;
-          SimpleLineShader.use(renderContext, lineBuffer.vertexBuffer, color);
+          SimpleLineShader.use(renderContext, lineBuffer.vertexBuffer, color, this._zBuffer);
           renderContext.gl.drawArrays(1, 0, lineBuffer.count);
         }
       }
@@ -6950,7 +6940,7 @@ window.wwtlib = function(){
     gl.blendFunc(770, 771);
     SimpleLineShader.initialized = true;
   };
-  SimpleLineShader.use = function(renderContext, vertex, lineColor) {
+  SimpleLineShader.use = function(renderContext, vertex, lineColor, useDepth) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!SimpleLineShader.initialized) {
@@ -6961,7 +6951,7 @@ window.wwtlib = function(){
       gl.uniformMatrix4fv(SimpleLineShader.mvMatLoc, false, mvMat.floatArray());
       gl.uniformMatrix4fv(SimpleLineShader.projMatLoc, false, renderContext.get_projection().floatArray());
       gl.uniform4f(SimpleLineShader.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, 1);
-      if (renderContext.space) {
+      if (renderContext.space || !useDepth) {
         gl.disable(2929);
       }
       else {
@@ -8654,6 +8644,95 @@ window.wwtlib = function(){
       }
     }
   };
+  Grids.drawPlanetGrid = function(renderContext, opacity, drawColor) {
+    if (Grids._planetLineList == null) {
+      Grids._planetLineList = new SimpleLineList();
+      Grids._planetLineList.set_depthBuffered(false);
+      var col = drawColor;
+      for (var lng = 0; lng < 360; lng += 10) {
+        for (var lat = -80; lat < 80; lat += 2) {
+          Grids._planetLineList.addLine(Coordinates.geoTo3dDouble(lat, lng), Coordinates.geoTo3dDouble(lat + 2, lng));
+        }
+      }
+      for (var lat = -80; lat <= 80; lat += 10) {
+        for (var l = 0; l < 360; l += 5) {
+          Grids._planetLineList.addLine(Coordinates.geoTo3dDouble(lat, l), Coordinates.geoTo3dDouble(lat, l + 5));
+        }
+      }
+      var counter = 0;
+      for (var lng = 0; lng < 360; lng += 1) {
+        var lat = 0.25;
+        switch (counter % 10) {
+          case 0:
+            counter++;
+            continue;
+          case 5:
+            lat = 0.5;
+            break;
+        }
+        counter++;
+        Grids._planetLineList.addLine(Coordinates.geoTo3dDouble(lat, lng), Coordinates.geoTo3dDouble(-lat, lng));
+      }
+      counter = 0;
+      for (var lng = 0; lng < 360; lng += 90) {
+        counter = 0;
+        for (var b = -80; b <= 80; b += 1) {
+          var width = 0.5 / 2;
+          switch (counter % 10) {
+            case 0:
+              counter++;
+              continue;
+            case 5:
+              width = 0.5;
+              break;
+          }
+          counter++;
+          Grids._planetLineList.addLine(Coordinates.geoTo3dDouble(b, lng + width), Coordinates.geoTo3dDouble(b, lng - width));
+        }
+      }
+    }
+    Grids._planetLineList.aaFix = false;
+    Grids._planetLineList.set_depthBuffered(false);
+    Grids._planetLineList.sky = false;
+    Grids._planetLineList.drawLines(renderContext, opacity, drawColor);
+    return true;
+  };
+  Grids.drawPlanetGridText = function(renderContext, opacity, drawColor) {
+    Grids._makePlanetGridText();
+    Grids._planetTextBatch.draw(renderContext, opacity, drawColor);
+    return true;
+  };
+  Grids._makePlanetGridText = function() {
+    if (Grids._planetTextBatch == null) {
+      Grids._planetTextBatch = new Text3dBatch(80);
+      for (var lng = -180; lng < 180; lng += 10) {
+        var text = '       ' + lng.toString();
+        if (lng < 10) {
+          text = '   ' + lng.toString();
+        }
+        else if (lng < 100) {
+          text = '     ' + lng.toString();
+        }
+        Grids._planetTextBatch.add(new Text3d(Coordinates.geoTo3dDouble(0.4, lng), Coordinates.geoTo3dDouble(0.5, lng), text, -80, 6E-05));
+      }
+      for (var lng = 0; lng < 360; lng += 90) {
+        for (var lat = -80; lat <= 80; lat += 10) {
+          if (!lat) {
+            continue;
+          }
+          var text = lat.toString();
+          if (lat > 0) {
+            text = '  +' + lat.toString();
+            Grids._planetTextBatch.add(new Text3d(Coordinates.geoTo3dDouble(lat - 0.4, lng), Coordinates.geoTo3dDouble(lat - 0.3, lng), text, -80, 6E-05));
+          }
+          else {
+            text = '  - ' + text.substring(1);
+            Grids._planetTextBatch.add(new Text3d(Coordinates.geoTo3dDouble(lat + 0.4, lng), Coordinates.geoTo3dDouble(lat + 0.5, lng), text, -80, 6E-05));
+          }
+        }
+      }
+    }
+  };
   var Grids$ = {
 
   };
@@ -8773,6 +8852,9 @@ window.wwtlib = function(){
         break;
       case 'GreatCirlceRouteLayer':
         newLayer = new GreatCirlceRouteLayer();
+        break;
+      case 'GridLayer':
+        newLayer = new GridLayer();
         break;
       case 'ImageSetLayer':
         newLayer = new ImageSetLayer();
@@ -31581,6 +31663,20 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.GridLayer
+
+  function GridLayer() {
+    Layer.call(this);
+  }
+  var GridLayer$ = {
+    draw: function(renderContext, opacity, flat) {
+      Grids.drawPlanetGrid(renderContext, opacity * this.get_opacity(), this.get_color());
+      Grids.drawPlanetGridText(renderContext, opacity * this.get_opacity(), this.get_color());
+      return true;
+    }
+  };
+
+
   // wwtlib.ImageSetLayer
 
   function ImageSetLayer() {
@@ -38284,6 +38380,7 @@ window.wwtlib = function(){
       ScaleSqrt: [ ScaleSqrt, ScaleSqrt$, ScaleMap ],
       HistogramEqualization: [ HistogramEqualization, HistogramEqualization$, ScaleMap ],
       GreatCirlceRouteLayer: [ GreatCirlceRouteLayer, GreatCirlceRouteLayer$, Layer ],
+      GridLayer: [ GridLayer, GridLayer$, Layer ],
       ImageSetLayer: [ ImageSetLayer, ImageSetLayer$, Layer ],
       TimeSeriesLayer: [ TimeSeriesLayer, TimeSeriesLayer$, Layer ],
       VoTableLayer: [ VoTableLayer, VoTableLayer$, Layer ],
