@@ -5706,7 +5706,7 @@ wwt.controllers.controller('LayerManagerController',
     '$timeout',
     'Util',
     function ($scope, appState, $timeout, util) {
-      var version = 9;
+    var version = 11;
 
       function treeNode(args) {
         this.name = args.name;
@@ -5715,9 +5715,13 @@ wwt.controllers.controller('LayerManagerController',
         this.action = args.action;
         this.collapsed = args.collapsed || false;
         this.disabled = false;
+        if (args.mergeWith){
+          //console.log({mergedFound:args})
+          this.mergeWith = args.mergeWith;
+        }
         if (args.v) this.v = args.v;
       }
-
+      var allMaps = {};
       var constellations = [];
       $scope.initLayerManager = function () {
         if (!wwtlib.Constellations.abbreviations) {
@@ -5729,18 +5733,19 @@ wwt.controllers.controller('LayerManagerController',
             name: name
           }));
         });
-        $scope.tree = appState.get('layerManager');
-        if (!$scope.tree || !$scope.tree.v || $scope.tree.v !== version) { //dump appState version when change is made
+        $scope.tree = initTree();//appState.get('layerManager');
+       /* if (!$scope.tree || !$scope.tree.v || $scope.tree.v !== version) { //dump appState version when change is made
           $scope.tree = initTree();
 
-          appState.set('layerManager', $scope.tree);
+          //appState.set('layerManager', $scope.tree);
         }
-
+*/
 
         $timeout(function () {
           initTreeNode(0, $scope.tree);
           $timeout(function () {
-            var sunTree = {Sun: (wwtlib.LayerManager.get_allMaps().Sun)};
+            allMaps = wwtlib.LayerManager.get_allMaps();
+            var sunTree = {Sun: (allMaps.Sun)};
 
             sunTree.Sun.collapsed = false;
 
@@ -5760,6 +5765,19 @@ wwt.controllers.controller('LayerManagerController',
       $scope.getChildren = function(node){
         var children  = node.children || {};
         if (children.length){
+
+          if (node.mergeWith){
+            //console.log('mergeWith',node.mergeWith);
+            allMaps = wwtlib.LayerManager.get_allMaps();
+            if (allMaps && allMaps[node.mergeWith]) {
+              //console.log(allMaps[node.mergeWith]);
+              var addedChildren = $scope.getChildren(allMaps[node.mergeWith]);
+              $.each(children, function (i, childNode) {
+                addedChildren[childNode.name] = childNode;
+              });
+              return addedChildren;
+            }
+          }
           return children;
         }
         if (node.childMaps && Object.keys(node.childMaps).length){
@@ -5884,6 +5902,7 @@ wwt.controllers.controller('LayerManagerController',
             }),
             new treeNode({
               name: $scope.getFromEn('2d Sky'),
+              mergeWith:'Sky',// key of node in wwtlib.LayerManager.get_allMaps() to merge into settings. Set this on any settings node
               checked: true,
               action: 'showSkyNode',
               children: [
@@ -5952,7 +5971,7 @@ wwt.controllers.controller('LayerManagerController',
           $scope.activeLayer = layerMap;
         });
 
-        console.log('invoke context menu on node', event, layerMap);
+        //console.log('invoke context menu on node', event, layerMap);
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       }
 
@@ -5966,7 +5985,7 @@ wwt.controllers.controller('LayerManagerController',
       }
 
       $scope.nodeChange = function (node) {
-        appState.set('layerManager', $scope.tree);
+        //appState.set('layerManager', $scope.tree);
         invokeSetting(node);
       };
 
@@ -5981,7 +6000,7 @@ wwt.controllers.controller('LayerManagerController',
           collapse = !collapse;
         }
         node[key] = collapse;
-      }
+      };
       //var invokeSetting = function(node) {
       //	if (node.action) {
       //		try {
@@ -6001,7 +6020,6 @@ wwt.controllers.controller('LayerManagerController',
         setChildState(node);
       };
 
-
       // enable/disable all child settings based on parent
       var setChildState = function (node) {
         if (node.children) {
@@ -6014,12 +6032,17 @@ wwt.controllers.controller('LayerManagerController',
             setChildState(child);
           });
         }
-      }
-
+      };
 
       function initTreeNode(i, node) {
         $.each(node.children, initTreeNode);
         invokeSetting(node);
+      }
+      wwt.detectNewLayers = function(){
+        $scope.$applyAsync(function(){
+          //console.log('detecting new layers',wwtlib.LayerManager.get_allMaps(),{newMaps:wwtlib.LayerManager.get_allMaps() !== allMaps});
+          allMaps = wwtlib.LayerManager.get_allMaps();
+        })
       }
     }]
 );
@@ -7803,6 +7826,7 @@ wwt.controllers.controller('OpenItemController',
             $('#openModal').modal('hide');
           } else if (itemType === 'FITS image') {
             wwt.wc.loadFits($scope.openItemUrl);
+            setTimeout(wwt.detectNewLayers,555);
             $('#openModal').modal('hide');
           } else {
 	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';

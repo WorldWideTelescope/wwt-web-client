@@ -29,6 +29,7 @@
             $('#openModal').modal('hide');
           } else if (itemType === 'FITS image') {
             wwt.wc.loadFits($scope.openItemUrl);
+            setTimeout(wwt.detectNewLayers,555);
             $('#openModal').modal('hide');
           } else {
 	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
