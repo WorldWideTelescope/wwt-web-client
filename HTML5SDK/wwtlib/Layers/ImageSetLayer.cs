@@ -27,7 +27,7 @@ namespace wwtlib
 
         }
 
-        public ImageSetLayer Create(Imageset set)
+        public static ImageSetLayer Create(Imageset set)
         {
             ImageSetLayer isl = new ImageSetLayer();
             isl.imageSet = set;
@@ -45,11 +45,7 @@ namespace wwtlib
         //{
         //    get
         //    {
-        //        //if (imageSet.WcsImage == null || !(imageSet.WcsImage is FitsImage))
-        //        //{
-        //        //    return null;
-        //        //}
-        //        return imageSet.WcsImage as FitsImage;
+        //        return (FitsImage)imageSet.WcsImage;
         //    }
         //}
 
@@ -194,7 +190,7 @@ namespace wwtlib
 
         }
 
-        private void DoneLoading(WcsImage wcsImage)
+        public void DoneLoading(WcsImage wcsImage)
         {
              loaded = true;
         }

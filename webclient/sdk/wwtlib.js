@@ -9209,40 +9209,28 @@ window.wwtlib = function(){
     }
     return value;
   };
-  LayerManager.showLayerMenu = function(layer, x, y) {
-    LayerManager._contextMenu = new ContextMenuStrip();
-    var scaleMenu = ToolStripMenuItem.create(Language.getLocalizedText(1291, 'Scale/Histogram'));
-    var sep1 = new ToolStripSeparator();
-    scaleMenu.click = LayerManager.scaleMenu_click;
-    LayerManager._contextMenu.items.push(scaleMenu);
-    LayerManager._contextMenu._show(Vector2d.create(x, y));
-  };
-  LayerManager.scaleMenu_click = function(sender, e) {
-    var hist = new Histogram();
-    hist.image = FitsImage.last;
-    hist.show(Vector2d.create(200, 200));
-  };
   LayerManager.initLayers = function() {
     LayerManager._clearLayers();
-    LayerManager._layerMaps['Sun'] = new LayerMap('Sun', 3);
-    LayerManager._layerMaps['Sun'].childMaps['Mercury'] = new LayerMap('Mercury', 4);
-    LayerManager._layerMaps['Sun'].childMaps['Venus'] = new LayerMap('Venus', 5);
-    LayerManager._layerMaps['Sun'].childMaps['Earth'] = new LayerMap('Earth', 6);
-    LayerManager._layerMaps['Sun'].childMaps['Earth'].childMaps['Moon'] = new LayerMap('Moon', 13);
-    LayerManager._layerMaps['Sun'].childMaps['Mars'] = new LayerMap('Mars', 7);
-    LayerManager._layerMaps['Sun'].childMaps['Jupiter'] = new LayerMap('Jupiter', 8);
-    LayerManager._layerMaps['Sun'].childMaps['Jupiter'].childMaps['Io'] = new LayerMap('Io', 14);
-    LayerManager._layerMaps['Sun'].childMaps['Jupiter'].childMaps['Europa'] = new LayerMap('Europa', 15);
-    LayerManager._layerMaps['Sun'].childMaps['Jupiter'].childMaps['Ganymede'] = new LayerMap('Ganymede', 16);
-    LayerManager._layerMaps['Sun'].childMaps['Jupiter'].childMaps['Callisto'] = new LayerMap('Callisto', 17);
-    LayerManager._layerMaps['Sun'].childMaps['Saturn'] = new LayerMap('Saturn', 9);
-    LayerManager._layerMaps['Sun'].childMaps['Uranus'] = new LayerMap('Uranus', 10);
-    LayerManager._layerMaps['Sun'].childMaps['Neptune'] = new LayerMap('Neptune', 11);
-    LayerManager._layerMaps['Sun'].childMaps['Pluto'] = new LayerMap('Pluto', 12);
+    LayerManager.get_layerMaps()['Sun'] = new LayerMap('Sun', 3);
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Mercury', 4));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Venus', 5));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Earth', 6));
+    LayerManager.get_layerMaps()['Sun'].childMaps['Earth'].addChild(new LayerMap('Moon', 13));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Mars', 7));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Jupiter', 8));
+    LayerManager.get_layerMaps()['Sun'].childMaps['Jupiter'].addChild(new LayerMap('Io', 14));
+    LayerManager.get_layerMaps()['Sun'].childMaps['Jupiter'].addChild(new LayerMap('Europa', 15));
+    LayerManager.get_layerMaps()['Sun'].childMaps['Jupiter'].addChild(new LayerMap('Ganymede', 16));
+    LayerManager.get_layerMaps()['Sun'].childMaps['Jupiter'].addChild(new LayerMap('Callisto', 17));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Saturn', 9));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Uranus', 10));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Neptune', 11));
+    LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Pluto', 12));
     LayerManager._addMoons(LayerManager._moonfile);
-    LayerManager._layerMaps['Sky'] = new LayerMap('Sky', 0);
-    LayerManager._layerMaps['Sun'].open = true;
-    LayerManager._addAllMaps(LayerManager._layerMaps, null);
+    LayerManager.get_layerMaps()['Sky'] = new LayerMap('Sky', 0);
+    LayerManager.get_layerMaps()['Sun'].open = true;
+    LayerManager._allMaps = {};
+    LayerManager._addAllMaps(LayerManager.get_layerMaps(), null);
     LayerManager._version++;
     LayerManager.loadTree();
   };
@@ -9252,7 +9240,7 @@ window.wwtlib = function(){
       var key = $enum1.current;
       var map = maps[key];
       map.frame.parent = parent;
-      LayerManager._allMaps[map.get_name()] = map;
+      LayerManager.get_allMaps()[map.get_name()] = map;
       LayerManager._addAllMaps(map.childMaps, map.get_name());
     }
   };
@@ -9263,8 +9251,8 @@ window.wwtlib = function(){
       var layer = LayerManager.get_layerList()[key];
       layer.cleanUp();
     }
-    ss.clearKeys(LayerManager._layerList);
-    ss.clearKeys(LayerManager._layerMaps);
+    ss.clearKeys(LayerManager.get_layerList());
+    ss.clearKeys(LayerManager.get_layerMaps());
   };
   LayerManager.getMoonFile = function(url) {
     LayerManager._webFileMoons = new WebFile(url);
@@ -9291,32 +9279,47 @@ window.wwtlib = function(){
         continue;
       }
       var parts = line.split('\t');
-      var planet = parts[0];
-      var frame = new LayerMap(parts[2], 18);
-      frame.frame._systemGenerated = true;
-      frame.frame.epoch = parseFloat(parts[1]);
-      frame.frame.semiMajorAxis = parseFloat(parts[3]) * 1000;
-      frame.frame.referenceFrameType = 1;
-      frame.frame.inclination = parseFloat(parts[7]);
-      frame.frame.longitudeOfAscendingNode = parseFloat(parts[8]);
-      frame.frame.eccentricity = parseFloat(parts[4]);
-      frame.frame.meanAnomolyAtEpoch = parseFloat(parts[6]);
-      frame.frame.meanDailyMotion = parseFloat(parts[9]);
-      frame.frame.argumentOfPeriapsis = parseFloat(parts[5]);
-      frame.frame.scale = 1;
-      frame.frame.semiMajorAxisUnits = 1;
-      frame.frame.meanRadius = parseFloat(parts[16]) * 1000;
-      frame.frame.rotationalPeriod = parseFloat(parts[17]);
-      frame.frame.showAsPoint = false;
-      frame.frame.showOrbitPath = true;
-      frame.frame.set_representativeColor(Color.fromArgb(255, 144, 238, 144));
-      frame.frame.oblateness = 0;
-      LayerManager._layerMaps['Sun'].childMaps[planet].childMaps[frame.get_name()] = frame;
-      LayerManager._addAllMaps(LayerManager._layerMaps, null);
+      if (parts.length > 16) {
+        var planet = parts[0];
+        var frame = new LayerMap(parts[2], 18);
+        frame.frame._systemGenerated = true;
+        frame.frame.epoch = parseFloat(parts[1]);
+        frame.frame.semiMajorAxis = parseFloat(parts[3]) * 1000;
+        frame.frame.referenceFrameType = 1;
+        frame.frame.inclination = parseFloat(parts[7]);
+        frame.frame.longitudeOfAscendingNode = parseFloat(parts[8]);
+        frame.frame.eccentricity = parseFloat(parts[4]);
+        frame.frame.meanAnomolyAtEpoch = parseFloat(parts[6]);
+        frame.frame.meanDailyMotion = parseFloat(parts[9]);
+        frame.frame.argumentOfPeriapsis = parseFloat(parts[5]);
+        frame.frame.scale = 1;
+        frame.frame.semiMajorAxisUnits = 1;
+        frame.frame.meanRadius = parseFloat(parts[16]) * 1000;
+        frame.frame.rotationalPeriod = parseFloat(parts[17]);
+        frame.frame.showAsPoint = false;
+        frame.frame.showOrbitPath = true;
+        frame.frame.set_representativeColor(Color.fromArgb(255, 144, 238, 144));
+        frame.frame.oblateness = 0;
+        LayerManager.get_layerMaps()['Sun'].childMaps[planet].childMaps[frame.get_name()] = frame;
+      }
     }
   };
   LayerManager.addVoTableLayer = function(table, title) {
     var layer = VoTableLayer.create(table);
+    layer.set_name(title);
+    layer.set_astronomical(true);
+    layer.set_referenceFrame('Sky');
+    LayerManager.get_layerList()[layer.id] = layer;
+    LayerManager.get_allMaps()['Sky'].layers.push(layer);
+    LayerManager.get_allMaps()['Sky'].open = true;
+    layer.set_enabled(true);
+    LayerManager._version++;
+    LayerManager.loadTree();
+    return layer;
+  };
+  LayerManager.addImageSetLayer = function(imageset, title) {
+    var layer = ImageSetLayer.create(imageset);
+    layer.doneLoading(null);
     layer.set_name(title);
     layer.set_astronomical(true);
     layer.set_referenceFrame('Sky');
@@ -9736,6 +9739,377 @@ window.wwtlib = function(){
       }
     }
   };
+  LayerManager.showLayerMenu = function(selected, x, y) {
+    LayerManager._selectedLayer = selected;
+    if (((ss.canCast(selected, Layer)) && !(ss.canCast(selected, SkyOverlays)))) {
+      var selectedLayer = selected;
+      LayerManager._contextMenu = new ContextMenuStrip();
+      var renameMenu = ToolStripMenuItem.create(Language.getLocalizedText(225, 'Rename'));
+      var Expand = ToolStripMenuItem.create(Language.getLocalizedText(981, 'Expand'));
+      var Collapse = ToolStripMenuItem.create(Language.getLocalizedText(982, 'Collapse'));
+      var copyMenu = ToolStripMenuItem.create(Language.getLocalizedText(428, 'Copy'));
+      var deleteMenu = ToolStripMenuItem.create(Language.getLocalizedText(167, 'Delete'));
+      var saveMenu = ToolStripMenuItem.create(Language.getLocalizedText(960, 'Save...'));
+      var publishMenu = ToolStripMenuItem.create(Language.getLocalizedText(983, 'Publish to Community...'));
+      var colorMenu = ToolStripMenuItem.create(Language.getLocalizedText(458, 'Color/Opacity'));
+      var opacityMenu = ToolStripMenuItem.create(Language.getLocalizedText(305, 'Opacity'));
+      var popertiesMenu = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
+      var scaleMenu = ToolStripMenuItem.create(Language.getLocalizedText(1291, 'Scale/Histogram'));
+      var lifeTimeMenu = ToolStripMenuItem.create(Language.getLocalizedText(683, 'Lifetime'));
+      var spacer1 = new ToolStripSeparator();
+      var top = ToolStripMenuItem.create(Language.getLocalizedText(684, 'Move to Top'));
+      var up = ToolStripMenuItem.create(Language.getLocalizedText(685, 'Move Up'));
+      var down = ToolStripMenuItem.create(Language.getLocalizedText(686, 'Move Down'));
+      var bottom = ToolStripMenuItem.create(Language.getLocalizedText(687, 'Move to Bottom'));
+      var showViewer = ToolStripMenuItem.create(Language.getLocalizedText(957, 'VO Table Viewer'));
+      var spacer2 = new ToolStripSeparator();
+      var defaultImageset = ToolStripMenuItem.create(Language.getLocalizedText(1294, 'Background Image Set'));
+      top.click = LayerManager._top_Click;
+      up.click = LayerManager._up_Click;
+      down.click = LayerManager._down_Click;
+      bottom.click = LayerManager._bottom_Click;
+      saveMenu.click = LayerManager._saveMenu_Click;
+      publishMenu.click = LayerManager._publishMenu_Click;
+      Expand.click = LayerManager._expand_Click;
+      Collapse.click = LayerManager._collapse_Click;
+      copyMenu.click = LayerManager._copyMenu_Click;
+      colorMenu.click = LayerManager._colorMenu_Click;
+      deleteMenu.click = LayerManager._deleteMenu_Click;
+      renameMenu.click = LayerManager._renameMenu_Click;
+      popertiesMenu.click = LayerManager._popertiesMenu_Click;
+      scaleMenu.click = LayerManager.scaleMenu_click;
+      defaultImageset.click = LayerManager._defaultImageset_Click;
+      opacityMenu.click = LayerManager._opacityMenu_Click;
+      lifeTimeMenu.click = LayerManager._lifeTimeMenu_Click;
+      showViewer.click = LayerManager._showViewer_Click;
+      LayerManager._contextMenu.items.push(renameMenu);
+      if (!selectedLayer.get_opened() && selectedLayer.getPrimaryUI() != null && selectedLayer.getPrimaryUI().get_hasTreeViewNodes()) {
+        LayerManager._contextMenu.items.push(Expand);
+      }
+      if (selectedLayer.get_opened()) {
+        LayerManager._contextMenu.items.push(Collapse);
+      }
+      if (selectedLayer.canCopyToClipboard()) {
+        LayerManager._contextMenu.items.push(copyMenu);
+      }
+      LayerManager._contextMenu.items.push(deleteMenu);
+      LayerManager._contextMenu.items.push(saveMenu);
+      LayerManager._contextMenu.items.push(spacer2);
+      LayerManager._contextMenu.items.push(colorMenu);
+      LayerManager._contextMenu.items.push(opacityMenu);
+      LayerManager._contextMenu.items.push(lifeTimeMenu);
+      if (ss.canCast(selected, ImageSetLayer)) {
+        LayerManager._contextMenu.items.push(defaultImageset);
+        var isl = ss.safeCast(selected, ImageSetLayer);
+        defaultImageset.checked = isl.get_overrideDefaultLayer();
+      }
+      if (ss.canCast(selected, SpreadSheetLayer) || ss.canCast(selected, Object3dLayer) || ss.canCast(selected, GroundOverlayLayer) || ss.canCast(selected, GreatCirlceRouteLayer) || ss.canCast(selected, OrbitLayer)) {
+        LayerManager._contextMenu.items.push(popertiesMenu);
+      }
+      if (ss.canCast(selected, VoTableLayer)) {
+        LayerManager._contextMenu.items.push(showViewer);
+      }
+      if (ss.canCast(selected, ImageSetLayer)) {
+        var isl = ss.safeCast(selected, ImageSetLayer);
+        LayerManager._contextMenu.items.push(scaleMenu);
+      }
+      if (LayerManager.get_allMaps()[selectedLayer.get_referenceFrame()].layers.length > 1) {
+        LayerManager._contextMenu.items.push(spacer1);
+        LayerManager._contextMenu.items.push(top);
+        LayerManager._contextMenu.items.push(up);
+        LayerManager._contextMenu.items.push(down);
+        LayerManager._contextMenu.items.push(bottom);
+      }
+      LayerManager._contextMenu._show(Vector2d.create(x, y));
+    }
+    else if (ss.canCast(selected, LayerMap)) {
+      var map = ss.safeCast(selected, LayerMap);
+      var sandbox = map.frame.reference.toString() === 'Sandbox';
+      var Dome = map.frame.name === 'Dome';
+      var Sky = map.frame.name === 'Sky';
+      if (Dome) {
+        return;
+      }
+      LayerManager._contextMenu = new ContextMenuStrip();
+      var trackFrame = ToolStripMenuItem.create(Language.getLocalizedText(1298, 'Track this frame'));
+      var goTo = ToolStripMenuItem.create(Language.getLocalizedText(1299, 'Fly Here'));
+      var showOrbit = ToolStripMenuItem.create('Show Orbit');
+      var newMenu = ToolStripMenuItem.create(Language.getLocalizedText(674, 'New Reference Frame'));
+      var newLayerGroupMenu = ToolStripMenuItem.create(Language.getLocalizedText(675, 'New Layer Group'));
+      var addMenu = ToolStripMenuItem.create(Language.getLocalizedText(166, 'Add'));
+      var newLight = ToolStripMenuItem.create('Add Light');
+      var addFeedMenu = ToolStripMenuItem.create(Language.getLocalizedText(956, 'Add OData/table feed as Layer'));
+      var addWmsLayer = ToolStripMenuItem.create(Language.getLocalizedText(987, 'New WMS Layer'));
+      var addGirdLayer = ToolStripMenuItem.create(Language.getLocalizedText(1300, 'New Lat/Lng Grid'));
+      var addGreatCircle = ToolStripMenuItem.create(Language.getLocalizedText(988, 'New Great Circle'));
+      var importTLE = ToolStripMenuItem.create(Language.getLocalizedText(989, 'Import Orbital Elements'));
+      var addMpc = ToolStripMenuItem.create(Language.getLocalizedText(1301, 'Add Minor Planet'));
+      var deleteFrameMenu = ToolStripMenuItem.create(Language.getLocalizedText(167, 'Delete'));
+      var pasteMenu = ToolStripMenuItem.create(Language.getLocalizedText(425, 'Paste'));
+      var addToTimeline = ToolStripMenuItem.create(Language.getLocalizedText(1290, 'Add to Timeline'));
+      var addKeyframe = ToolStripMenuItem.create(Language.getLocalizedText(1280, 'Add Keyframe'));
+      var popertiesMenu = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
+      var saveMenu = ToolStripMenuItem.create(Language.getLocalizedText(990, 'Save Layers'));
+      var publishLayers = ToolStripMenuItem.create(Language.getLocalizedText(991, 'Publish Layers to Community'));
+      var spacer1 = new ToolStripSeparator();
+      var spacer0 = new ToolStripSeparator();
+      var spacer2 = new ToolStripSeparator();
+      var asReferenceFrame = ToolStripMenuItem.create('As Reference Frame');
+      var asOrbitalLines = ToolStripMenuItem.create('As Orbital Line');
+      trackFrame.click = LayerManager._trackFrame_Click;
+      goTo.click = LayerManager._goTo_Click;
+      asReferenceFrame.click = LayerManager._addMpc_Click;
+      asOrbitalLines.click = LayerManager._asOrbitalLines_Click;
+      addMpc.dropDownItems.push(asReferenceFrame);
+      addMpc.dropDownItems.push(asOrbitalLines);
+      addMenu.click = LayerManager._addMenu_Click;
+      newLayerGroupMenu.click = LayerManager._newLayerGroupMenu_Click;
+      pasteMenu.click = LayerManager._pasteLayer_Click;
+      newMenu.click = LayerManager._newMenu_Click;
+      deleteFrameMenu.click = LayerManager._deleteFrameMenu_Click;
+      popertiesMenu.click = LayerManager._framePropertiesMenu_Click;
+      addGreatCircle.click = LayerManager._addGreatCircle_Click;
+      addGirdLayer.click = LayerManager._addGirdLayer_Click;
+      var convertToOrbit = ToolStripMenuItem.create('Extract Orbit Layer');
+      if (map.frame.reference !== 19) {
+        if ((WWTControl.singleton.get_solarSystemMode() | WWTControl.singleton.sandboxMode) === 1) {
+          var spacerNeeded = false;
+          if (map.frame.reference !== 18 && !WWTControl.singleton.sandboxMode) {
+            if (!Sky) {
+              LayerManager._contextMenu.items.push(goTo);
+              spacerNeeded = true;
+            }
+            try {
+              var name = map.frame.reference.toString();
+              if (name !== 'Sandbox') {
+                var ssObj = Enums.parse('SolarSystemObjects', name);
+                var id = ssObj;
+                var bit = Math.pow(2, id);
+                showOrbit.checked = !!(Settings.get_active().get_planetOrbitsFilter() & bit);
+                showOrbit.click = LayerManager._showOrbitPlanet_Click;
+                showOrbit.tag = bit.toString();
+              }
+            }
+            catch ($e1) {
+            }
+          }
+          else {
+            if (!sandbox && !Sky) {
+              LayerManager._contextMenu.items.push(trackFrame);
+              spacerNeeded = true;
+            }
+            showOrbit.checked = map.frame.showOrbitPath;
+            showOrbit.click = LayerManager._showOrbit_Click;
+          }
+          if (spacerNeeded) {
+            LayerManager._contextMenu.items.push(spacer2);
+          }
+          if (!Sky && !sandbox) {
+            LayerManager._contextMenu.items.push(showOrbit);
+            LayerManager._contextMenu.items.push(spacer0);
+          }
+          if (map.frame.reference.toString() === 'Sandbox') {
+            LayerManager._contextMenu.items.push(newLight);
+          }
+        }
+        if (!Sky) {
+          LayerManager._contextMenu.items.push(newMenu);
+        }
+        LayerManager._contextMenu.items.push(newLayerGroupMenu);
+      }
+      LayerManager._contextMenu.items.push(addMenu);
+      LayerManager._contextMenu.items.push(addFeedMenu);
+      if (!Sky) {
+        LayerManager._contextMenu.items.push(addGreatCircle);
+        LayerManager._contextMenu.items.push(addGirdLayer);
+      }
+      if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
+        LayerManager._contextMenu.items.push(addMpc);
+      }
+      if (map.frame.reference === 18 && map.frame.referenceFrameType === 1 && map.parent != null && map.parent.frame.name === 'Sun') {
+        LayerManager._contextMenu.items.push(convertToOrbit);
+      }
+      if (!Sky) {
+        LayerManager._contextMenu.items.push(addWmsLayer);
+      }
+      LayerManager._contextMenu.items.push(pasteMenu);
+      if (map.frame.reference === 19) {
+        LayerManager._contextMenu.items.push(deleteFrameMenu);
+      }
+      if (map.frame.reference === 18) {
+        LayerManager._contextMenu.items.push(deleteFrameMenu);
+        LayerManager._contextMenu.items.push(popertiesMenu);
+      }
+      LayerManager._contextMenu.items.push(spacer1);
+      LayerManager._contextMenu.items.push(saveMenu);
+      LayerManager._contextMenu._show(Vector2d.create(x, y));
+    }
+  };
+  LayerManager._publishMenu_Click = function(sender, e) {
+  };
+  LayerManager._addGirdLayer_Click = function(sender, e) {
+    var layer = new GridLayer();
+    layer.set_enabled(true);
+    layer.set_name('Lat-Lng Grid');
+    LayerManager.get_layerList()[layer.id] = layer;
+    layer.set_referenceFrame(LayerManager._currentMap);
+    LayerManager.get_allMaps()[LayerManager._currentMap].layers.push(layer);
+    LayerManager.get_allMaps()[LayerManager._currentMap].open = true;
+    LayerManager._version++;
+    LayerManager.loadTree();
+  };
+  LayerManager._trackFrame_Click = function(sender, e) {
+    var target = LayerManager._selectedLayer;
+    WWTControl.singleton.renderContext.set_solarSystemTrack(20);
+    WWTControl.singleton.renderContext.set_trackingFrame(target.get_name());
+    WWTControl.singleton.renderContext.viewCamera.zoom = WWTControl.singleton.renderContext.targetCamera.zoom = 1E-09;
+  };
+  LayerManager._goTo_Click = function(sender, e) {
+  };
+  LayerManager._saveMenu_Click = function(sender, e) {
+  };
+  LayerManager._expand_Click = function(sender, e) {
+  };
+  LayerManager._collapse_Click = function(sender, e) {
+  };
+  LayerManager._copyMenu_Click = function(sender, e) {
+    if (LayerManager._selectedLayer != null && ss.canCast(LayerManager._selectedLayer, Layer)) {
+      var node = LayerManager._selectedLayer;
+      node.copyToClipboard();
+    }
+  };
+  LayerManager._newLayerGroupMenu_Click = function(sender, e) {
+  };
+  LayerManager._importTLEFile = function(filename) {
+  };
+  LayerManager._makeLayerGroup = function(name) {
+  };
+  LayerManager._lifeTimeMenu_Click = function(sender, e) {
+  };
+  LayerManager._deleteFrameMenu_Click = function(sender, e) {
+  };
+  LayerManager._framePropertiesMenu_Click = function(sender, e) {
+  };
+  LayerManager._newMenu_Click = function(sender, e) {
+  };
+  LayerManager._opacityMenu_Click = function(sender, e) {
+  };
+  LayerManager._defaultImageset_Click = function(sender, e) {
+    var isl = ss.safeCast(LayerManager._selectedLayer, ImageSetLayer);
+    isl.set_overrideDefaultLayer(!isl.get_overrideDefaultLayer());
+  };
+  LayerManager._popertiesMenu_Click = function(sender, e) {
+  };
+  LayerManager._renameMenu_Click = function(sender, e) {
+    var layer = LayerManager._selectedLayer;
+    var input = new SimpleInput(Language.getLocalizedText(225, 'Rename'), Language.getLocalizedText(228, 'New Name'), layer.get_name(), 32);
+    if (input.showDialog() === 1) {
+      if (!ss.emptyString(input.resultText)) {
+        layer.set_name(input.resultText);
+        LayerManager._version++;
+        LayerManager.loadTree();
+      }
+    }
+  };
+  LayerManager._colorMenu_Click = function(sender, e) {
+    var layer = LayerManager._selectedLayer;
+    var picker = new PopupColorPicker();
+    picker.location = Cursor.get_position();
+    picker.color = layer.get_color();
+    if (picker.showDialog() === 1) {
+      layer.set_color(picker.color);
+    }
+  };
+  LayerManager._addMenu_Click = function(sender, e) {
+  };
+  LayerManager._deleteMenu_Click = function(sender, e) {
+    LayerManager._deleteSelectedLayer();
+  };
+  LayerManager._deleteSelectedLayer = function() {
+    if (LayerManager._selectedLayer != null && ss.canCast(LayerManager._selectedLayer, Layer)) {
+      var node = LayerManager._selectedLayer;
+      delete LayerManager.get_layerList()[node.id];
+      ss.remove(LayerManager.get_allMaps()[LayerManager.get_currentMap()].layers, node);
+      LayerManager._version++;
+    }
+  };
+  LayerManager.scaleMenu_click = function(sender, e) {
+    var hist = new Histogram();
+    hist.image = FitsImage.last;
+    hist.show(Vector2d.create(200, 200));
+  };
+  LayerManager._showViewer_Click = function(sender, e) {
+  };
+  LayerManager._bottom_Click = function(sender, e) {
+    var layer = ss.safeCast(LayerManager._selectedLayer, Layer);
+    if (layer != null) {
+      ss.remove(LayerManager.get_allMaps()[layer.get_referenceFrame()].layers, layer);
+      LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.push(layer);
+    }
+    LayerManager._version++;
+    LayerManager.loadTree();
+  };
+  LayerManager._down_Click = function(sender, e) {
+    var layer = ss.safeCast(LayerManager._selectedLayer, Layer);
+    if (layer != null) {
+      var index = LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.lastIndexOf(layer);
+      if (index < (LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.length - 1)) {
+        ss.remove(LayerManager.get_allMaps()[layer.get_referenceFrame()].layers, layer);
+        LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.splice(index + 1, 0, layer);
+      }
+    }
+    LayerManager._version++;
+    LayerManager.loadTree();
+  };
+  LayerManager._up_Click = function(sender, e) {
+    var layer = ss.safeCast(LayerManager._selectedLayer, Layer);
+    if (layer != null) {
+      var index = LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.lastIndexOf(layer);
+      if (index > 0) {
+        ss.remove(LayerManager.get_allMaps()[layer.get_referenceFrame()].layers, layer);
+        LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.splice(index - 1, 0, layer);
+      }
+    }
+    LayerManager._version++;
+    LayerManager.loadTree();
+  };
+  LayerManager._top_Click = function(sender, e) {
+    var layer = ss.safeCast(LayerManager._selectedLayer, Layer);
+    if (layer != null) {
+      ss.remove(LayerManager.get_allMaps()[layer.get_referenceFrame()].layers, layer);
+      LayerManager.get_allMaps()[layer.get_referenceFrame()].layers.splice(0, 0, layer);
+    }
+    LayerManager._version++;
+    LayerManager.loadTree();
+  };
+  LayerManager._pasteLayer_Click = function(sender, e) {
+  };
+  LayerManager._showOrbitPlanet_Click = function(sender, e) {
+    try {
+      var bit = parseInt((sender).tag.toString());
+      if (!(Settings.get_globalSettings().get_planetOrbitsFilter() & bit)) {
+        Settings.get_globalSettings().set_planetOrbitsFilter(Settings.get_globalSettings().get_planetOrbitsFilter() | bit);
+      }
+      else {
+        Settings.get_globalSettings().set_planetOrbitsFilter(Settings.get_globalSettings().get_planetOrbitsFilter() & ~bit);
+      }
+    }
+    catch ($e1) {
+    }
+  };
+  LayerManager._showOrbit_Click = function(sender, e) {
+    var map = ss.safeCast(LayerManager._selectedLayer, LayerMap);
+    map.frame.showOrbitPath = !map.frame.showOrbitPath;
+  };
+  LayerManager._addGreatCircle_Click = function(sender, e) {
+    LayerManager._addGreatCircleLayer();
+  };
+  LayerManager._addMpc_Click = function(sender, e) {
+  };
+  LayerManager._asOrbitalLines_Click = function(sender, e) {
+  };
+  LayerManager._addGreatCircleLayer = function() {
+  };
   var LayerManager$ = {
 
   };
@@ -9745,6 +10119,7 @@ window.wwtlib = function(){
 
   function LayerMap(name, reference) {
     this.childMaps = {};
+    this.parent = null;
     this.layers = [];
     this.open = false;
     this.enabled = true;
@@ -9815,6 +10190,10 @@ window.wwtlib = function(){
     this.frame.meanRadius = radius;
   }
   var LayerMap$ = {
+    addChild: function(child) {
+      child.parent = this;
+      this.childMaps[child.get_name()] = child;
+    },
     get_name: function() {
       return this.frame.name;
     },
@@ -9830,6 +10209,42 @@ window.wwtlib = function(){
     toString: function() {
       return this.get_name();
     }
+  };
+
+
+  // wwtlib.SkyOverlays
+
+  function SkyOverlays() {
+  }
+  var SkyOverlays$ = {
+
+  };
+
+
+  // wwtlib.Object3dLayer
+
+  function Object3dLayer() {
+  }
+  var Object3dLayer$ = {
+
+  };
+
+
+  // wwtlib.GroundOverlayLayer
+
+  function GroundOverlayLayer() {
+  }
+  var GroundOverlayLayer$ = {
+
+  };
+
+
+  // wwtlib.OrbitLayer
+
+  function OrbitLayer() {
+  }
+  var OrbitLayer$ = {
+
   };
 
 
@@ -10179,6 +10594,9 @@ window.wwtlib = function(){
     set_orbit: function(value) {
       this._orbit = value;
       return value;
+    },
+    getIndentifier: function() {
+      return this.name;
     },
     importTrajectory: function(filename) {
     },
@@ -13223,9 +13641,8 @@ window.wwtlib = function(){
     _onWcsLoad: function(wcsImage) {
       var width = ss.truncate(wcsImage.get_sizeX());
       var height = ss.truncate(wcsImage.get_sizeY());
-      WWTControl.singleton.renderContext.set_foregroundImageset(Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, ''));
-      WWTControl.singleton.renderContext.get_foregroundImageset().set_wcsImage(wcsImage);
-      WWTControl.singleton.renderContext.viewCamera.opacity = 100;
+      var imageset = Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, '');
+      LayerManager.addImageSetLayer(imageset, 'Fits Image');
     },
     get_hideTourFeedback: function() {
       return this.hideTourFeedback;
@@ -23550,6 +23967,7 @@ window.wwtlib = function(){
     this._moved = false;
     this._tracking = false;
     this._trackingObject = null;
+    this.sandboxMode = false;
     this._solarSystemTrack = 65536;
     this._moving = false;
     this._targetStudyImageset = null;
@@ -31689,6 +32107,11 @@ window.wwtlib = function(){
     this._loaded$1 = false;
     Layer.call(this);
   }
+  ImageSetLayer.create = function(set) {
+    var isl = new ImageSetLayer();
+    isl._imageSet$1 = set;
+    return isl;
+  };
   var ImageSetLayer$ = {
     get_imageSet: function() {
       return this._imageSet$1;
@@ -31696,11 +32119,6 @@ window.wwtlib = function(){
     set_imageSet: function(value) {
       this._imageSet$1 = value;
       return value;
-    },
-    create: function(set) {
-      var isl = new ImageSetLayer();
-      isl._imageSet$1 = set;
-      return isl;
     },
     get_overrideDefaultLayer: function() {
       return this._overrideDefaultLayer$1;
@@ -31782,7 +32200,7 @@ window.wwtlib = function(){
     loadData: function(tourDoc, filename) {
       if (ss.startsWith(this._extension$1.toLowerCase(), '.fit')) {
         var blob = tourDoc.getFileBlob(ss.replaceString(filename, '.txt', this._extension$1));
-        var fi = new FitsImage('image.fit', blob, ss.bind('_doneLoading$1', this));
+        var fi = new FitsImage('image.fit', blob, ss.bind('doneLoading', this));
         this._imageSet$1.set_wcsImage(fi);
         if (this._max$1 > 0 || this._min$1 > 0) {
           fi.lastBitmapMax = this._max$1;
@@ -31794,7 +32212,7 @@ window.wwtlib = function(){
         this._loaded$1 = true;
       }
     },
-    _doneLoading$1: function(wcsImage) {
+    doneLoading: function(wcsImage) {
       this._loaded$1 = true;
     }
   };
@@ -38270,6 +38688,10 @@ window.wwtlib = function(){
       DomainValue: [ DomainValue, DomainValue$, null ],
       LayerManager: [ LayerManager, LayerManager$, null ],
       LayerMap: [ LayerMap, LayerMap$, null ],
+      SkyOverlays: [ SkyOverlays, SkyOverlays$, null ],
+      Object3dLayer: [ Object3dLayer, Object3dLayer$, null ],
+      GroundOverlayLayer: [ GroundOverlayLayer, GroundOverlayLayer$, null ],
+      OrbitLayer: [ OrbitLayer, OrbitLayer$, null ],
       LayerUI: [ LayerUI, LayerUI$, null ],
       LayerUIMenuItem: [ LayerUIMenuItem, LayerUIMenuItem$, null ],
       LayerUITreeNode: [ LayerUITreeNode, LayerUITreeNode$, null ],
@@ -38642,6 +39064,7 @@ window.wwtlib = function(){
   LayerManager._layerList = {};
   LayerManager._layerListTours = {};
   LayerManager._moonfile = '';
+  LayerManager._selectedLayer = null;
   LayerManager.getMoonFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons');
   LayerUI._type = null;
   Orbit._initBegun = false;

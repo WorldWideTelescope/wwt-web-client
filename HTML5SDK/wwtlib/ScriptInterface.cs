@@ -223,6 +223,7 @@ namespace wwtlib
         public void LoadFits(string url)
         {
             FitsImage img = new FitsImage(url, null, OnWcsLoad);
+           
         }
 
         private void OnWcsLoad(WcsImage wcsImage)
@@ -230,7 +231,7 @@ namespace wwtlib
             int width = (int)wcsImage.SizeX;
             int height = (int)wcsImage.SizeY;
 
-            WWTControl.Singleton.RenderContext.ForegroundImageset = Imageset.Create(
+            Imageset imageset = Imageset.Create(
                         wcsImage.Description,
                         "m51",
                         ImageSetType.Sky,
@@ -261,8 +262,8 @@ namespace wwtlib
                         0,
                         ""
                         );
-            WWTControl.Singleton.RenderContext.ForegroundImageset.WcsImage = wcsImage;
-            WWTControl.Singleton.RenderContext.ViewCamera.Opacity = 100;
+
+            LayerManager.AddImageSetLayer(imageset, "Fits Image");
         }
 
         public bool hideTourFeedback = false;

@@ -2094,6 +2094,9 @@ namespace wwtlib
 
         bool tracking = false;
         Place trackingObject = null;
+
+        public bool SandboxMode = false;
+
         public bool SolarSystemMode
         {
             get

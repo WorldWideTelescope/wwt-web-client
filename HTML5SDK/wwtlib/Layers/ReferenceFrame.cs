@@ -95,7 +95,10 @@ namespace wwtlib
         //public LineList trajectoryLines = null;
         EOE elements = new EOE();
 
-
+        public string GetIndentifier()
+        {
+            return Name;
+        }
 
         //  public List<TrajectorySample> Trajectory = new List<TrajectorySample>();
 
