@@ -69,7 +69,7 @@
           });
         }
           return children;
-      }
+      };
       var initTree = function () {
         return new treeNode({
           v: version,
@@ -241,8 +241,6 @@
         });
       }
 
-
-
       $scope.showMenu = function (layerMap, event) {
         if ($scope.activeLayer) {
           $scope.activeLayer.active = false;
@@ -276,7 +274,7 @@
       $scope.collapse = function(node){
         var key = 'collapsed';
         var collapse = !$scope.collapsed(node);
-        if ($scope.isObjectNode){
+        if ($scope.isObjectNode(node)){
           key = 'open';
           collapse = !collapse;
         }
