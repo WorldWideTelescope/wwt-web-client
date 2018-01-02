@@ -8039,14 +8039,15 @@ wwt.controllers.controller('voConeSearch',
       $scope.coneSearch = true;
       $scope.siapImages = false;
       $scope.search = function () {
-        var searchUrl;
+        var searchUrl, url;
         if ($scope.hiliteIndex < 0) {
           //known good url for results
-          $scope.searchBaseTitle = "known good casjobs.sdss.org"
-          searchUrl = "http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
+          $scope.searchBaseTitle = "casjobs.sdss.org"
+          url = "http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch"//?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
         }
         else {
-          var url = $scope.searchBaseURL.replace('&amp;', '&');
+          url = $scope.searchBaseURL.replace('&amp;', '&');
+        }
           var lastIndex = url.length - 1;
           if (url.lastIndexOf('?') !== lastIndex && url.lastIndexOf('&') !== lastIndex) {
             if (url.indexOf('?') > 0) {
@@ -8072,7 +8073,7 @@ wwt.controllers.controller('voConeSearch',
             params.push(k + '=' + qObj[k]);
           });
           searchUrl = url + params.join('&');
-        }
+        //}
         wwtlib.VoTable.loadFromUrl(searchUrl, function () {
 
           $rootScope.loading(false);
