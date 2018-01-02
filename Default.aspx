@@ -280,7 +280,18 @@
     </div>
 
     <div id="histogram" class="histogram">
-        <canvas id="graph" src="" width="256" height="150" />
+        <div style="margin: 0px;">
+        <canvas id="graph" src="" width="256" height="150" style="margin: 0px;" />
+        </div>
+        <div class="select">
+            <select id="ScaleTypePicker" >
+               <option localize="Linear"></option>
+               <option localize="Log"></option>
+               <option localize="Power"></option>
+               <option localize="Square Root"></option>
+               <option localize="Histogram Equalization"></option>
+            </select>
+        </div>
     </div>
 
     <div id="colorpicker" class="colorpicker">
