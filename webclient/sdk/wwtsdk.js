@@ -11550,9 +11550,13 @@ window.wwtlib = function(){
     }
   };
   LayerManager.scaleMenu_click = function(sender, e) {
-    var hist = new Histogram();
-    hist.image = FitsImage.last;
-    hist.show(Vector2d.create(200, 200));
+    var isl = ss.safeCast(LayerManager._selectedLayer, ImageSetLayer);
+    if (isl != null) {
+      var hist = new Histogram();
+      hist.image = isl.getFitsImage();
+      hist.layer = isl;
+      hist.show(Vector2d.create(200, 200));
+    }
   };
   LayerManager._showViewer_Click = function(sender, e) {
   };
@@ -15158,7 +15162,9 @@ window.wwtlib = function(){
       var width = ss.truncate(wcsImage.get_sizeX());
       var height = ss.truncate(wcsImage.get_sizeY());
       var imageset = Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, '');
+      imageset.set_wcsImage(wcsImage);
       LayerManager.addImageSetLayer(imageset, 'Fits Image');
+      WWTControl.singleton.gotoRADecZoom(wcsImage.get_centerX() / 15, wcsImage.get_centerY(), 10 * wcsImage.get_scaleY() * height, false);
     },
     get_hideTourFeedback: function() {
       return this.hideTourFeedback;
@@ -24932,34 +24938,57 @@ window.wwtlib = function(){
 
   function Histogram() {
     this.image = null;
+    this.layer = null;
+    this.tile = null;
+    this._dropDown = null;
     this._downPosition = 0;
     this._lowPosition = 0;
     this._highPosition = 255;
     this._center = 127;
+    this._ignoreNextClick = false;
     this._dragType = 4;
+    this._updated = false;
     this.selectedCurveStyle = 0;
   }
   var Histogram$ = {
     nonMenuClick: function(e) {
-      var menu = document.getElementById('histogram');
-      menu.style.display = 'none';
-      window.removeEventListener('click', ss.bind('nonMenuClick', this), true);
-      var image = document.getElementById('graph');
-      image.removeEventListener('mousedown', ss.bind('mouseDown', this), false);
-      image.removeEventListener('mousemove', ss.bind('mousemove', this), false);
-      image.removeEventListener('mouseup', ss.bind('mouseup', this), false);
+      if (!this._ignoreNextClick) {
+        var menu = document.getElementById('histogram');
+        menu.style.display = 'none';
+        window.removeEventListener('click', ss.bind('nonMenuClick', this), true);
+        var image = document.getElementById('graph');
+        image.removeEventListener('mousedown', ss.bind('mouseDown', this), false);
+        image.removeEventListener('mousemove', ss.bind('mousemove', this), false);
+        image.removeEventListener('mouseup', ss.bind('mouseup', this), false);
+        this._dropDown.removeEventListener('change', ss.bind('curveStyleSelected', this), false);
+        this._dropDown.removeEventListener('click', ss.bind('ignoreMe', this), true);
+      }
+      this._ignoreNextClick = false;
     },
     show: function(position) {
+      this.tile = TileCache.getTile(0, 0, 0, this.layer.get_imageSet(), null);
       var picker = document.getElementById('histogram');
       picker.style.display = 'block';
       picker.style.left = position.x.toString() + 'px';
       picker.style.top = position.y.toString() + 'px';
-      window.addEventListener('click', ss.bind('nonMenuClick', this), true);
+      this.selectedCurveStyle = this.image.lastScale;
+      this._dropDown = document.getElementById('ScaleTypePicker');
+      this._dropDown.addEventListener('change', ss.bind('curveStyleSelected', this), false);
+      this._dropDown.addEventListener('click', ss.bind('ignoreMe', this), true);
       var canvas = document.getElementById('graph');
       canvas.addEventListener('mousedown', ss.bind('mouseDown', this), false);
       canvas.addEventListener('mousemove', ss.bind('mousemove', this), false);
       canvas.addEventListener('mouseup', ss.bind('mouseup', this), false);
+      window.addEventListener('click', ss.bind('nonMenuClick', this), true);
       this.draw();
+    },
+    ignoreMe: function(e) {
+      this._ignoreNextClick = true;
+    },
+    curveStyleSelected: function(e) {
+      this.selectedCurveStyle = this._dropDown.selectedIndex;
+      this.setUpdateTimer();
+      this._ignoreNextClick = true;
     },
     mouseDown: function(e) {
       var canvas = document.getElementById('graph');
@@ -25013,6 +25042,7 @@ window.wwtlib = function(){
       var factor = (this.image.maxVal - this.image.minVal) / 256;
       var low = this.image.minVal + (this._lowPosition * factor);
       var hi = this.image.minVal + (this._highPosition * factor);
+      this.setUpdateTimer();
       this.image.lastMax = this._highPosition;
       this.image.lastMin = this._lowPosition;
       e.cancelBubble = true;
@@ -25020,8 +25050,30 @@ window.wwtlib = function(){
     mouseup: function(e) {
       if (this._dragType !== 4) {
         this._dragType = 4;
+        this.setUpdateTimer();
+        this._ignoreNextClick = true;
       }
       e.cancelBubble = true;
+    },
+    setUpdateTimer: function() {
+      var $this = this;
+
+      setTimeout(function() {
+        $this.update();
+      }, 500);
+      this._updated = false;
+    },
+    update: function() {
+      if (this._updated) {
+        return;
+      }
+      if (this.image != null) {
+        var factor = (this.image.maxVal - this.image.minVal) / 256;
+        var low = this.image.minVal + (this._lowPosition * factor);
+        var hi = this.image.minVal + (this._highPosition * factor);
+        this.tile.texture2d = this.image.getScaledBitmap(low, hi, this.selectedCurveStyle).getTexture();
+      }
+      this._updated = true;
     },
     draw: function() {
       var canvas = document.getElementById('graph');
@@ -33642,6 +33694,9 @@ window.wwtlib = function(){
     set_overrideDefaultLayer: function(value) {
       this._overrideDefaultLayer$1 = value;
       return value;
+    },
+    getFitsImage: function() {
+      return ss.safeCast(this._imageSet$1.get_wcsImage(), FitsImage);
     },
     initializeFromXml: function(node) {
       var imageSetNode = Util.selectSingleNode(node, 'ImageSet');

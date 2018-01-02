@@ -262,8 +262,9 @@ namespace wwtlib
                         0,
                         ""
                         );
-
+            imageset.WcsImage = wcsImage;
             LayerManager.AddImageSetLayer(imageset, "Fits Image");
+            WWTControl.Singleton.GotoRADecZoom(wcsImage.CenterX/15, wcsImage.CenterY, 10 * wcsImage.ScaleY * height, false);
         }
 
         public bool hideTourFeedback = false;

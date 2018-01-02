@@ -1692,9 +1692,15 @@ namespace wwtlib
 
         static public void scaleMenu_click(object sender, EventArgs e)
         {
-            Histogram hist = new Histogram();
-            hist.image = FitsImage.Last;
-            hist.Show(Vector2d.Create(200, 200));
+            ImageSetLayer isl = selectedLayer as ImageSetLayer;
+
+            if (isl != null)
+            {
+                Histogram hist = new Histogram();
+                hist.image = isl.GetFitsImage();
+                hist.layer = isl;
+                hist.Show(Vector2d.Create(200, 200));
+            }
         }
 
         static void showViewer_Click(object sender, EventArgs e)

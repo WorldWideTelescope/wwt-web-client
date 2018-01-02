@@ -41,13 +41,10 @@ namespace wwtlib
             set { overrideDefaultLayer = value; }
         }
 
-        //public FitsImage FitsImage
-        //{
-        //    get
-        //    {
-        //        return (FitsImage)imageSet.WcsImage;
-        //    }
-        //}
+        public FitsImage GetFitsImage()
+        {
+            return imageSet.WcsImage as FitsImage;
+        }
 
         public override void InitializeFromXml(XmlNode node)
         {

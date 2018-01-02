@@ -4,7 +4,7 @@
     '$timeout',
     'Util',
     function ($scope, appState, $timeout, util) {
-    var version = 11;
+    var version = 12;
 
       function treeNode(args) {
         this.name = args.name;
@@ -92,6 +92,7 @@
         return new treeNode({
           v: version,
           name: $scope.getFromEn('Sky'),
+          mergeWith: 'Sky',// key of node in wwtlib.LayerManager.get_allMaps() to merge into settings. Set this on any settings node
           action: 'showSkyNode',
           children: [
             new treeNode({
@@ -200,7 +201,6 @@
             }),
             new treeNode({
               name: $scope.getFromEn('2d Sky'),
-              mergeWith:'Sky',// key of node in wwtlib.LayerManager.get_allMaps() to merge into settings. Set this on any settings node
               checked: true,
               action: 'showSkyNode',
               children: [

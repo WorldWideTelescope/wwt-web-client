@@ -18,22 +18,32 @@ namespace wwtlib
         }
 
         public FitsImage image = null;
+        public ImageSetLayer layer = null;
+        public SkyImageTile tile = null;
+        SelectElement dropDown = null;
 
         public void NonMenuClick(ElementEvent e)
         {
-            DivElement menu = Document.GetElementById<DivElement>("histogram");
-            menu.Style.Display = "none";
-            Window.RemoveEventListener("click", NonMenuClick, true);
+            if (!ignoreNextClick)
+            {
+                DivElement menu = Document.GetElementById<DivElement>("histogram");
+                menu.Style.Display = "none";
+                Window.RemoveEventListener("click", NonMenuClick, true);
 
-            ImageElement image = Document.GetElementById<ImageElement>("graph");
-            image.RemoveEventListener("mousedown", MouseDown, false);
-            image.RemoveEventListener("mousemove", mousemove, false);
-            image.RemoveEventListener("mouseup", mouseup, false);
+                ImageElement image = Document.GetElementById<ImageElement>("graph");
+                image.RemoveEventListener("mousedown", MouseDown, false);
+                image.RemoveEventListener("mousemove", mousemove, false);
+                image.RemoveEventListener("mouseup", mouseup, false);
+                dropDown.RemoveEventListener("change", CurveStyleSelected, false);
+                dropDown.RemoveEventListener("click", IgnoreMe, true);
+            }
+            ignoreNextClick = false;
         }
 
 
         public void Show(Vector2d position)
         {
+            tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, layer.ImageSet, null);
 
             DivElement picker = Document.GetElementById<DivElement>("histogram");
             /////////////picker.ClassName = "histogram";
@@ -41,24 +51,40 @@ namespace wwtlib
             picker.Style.Left = position.X.ToString() + "px";
             picker.Style.Top = position.Y.ToString() + "px";
 
-            Window.AddEventListener("click", NonMenuClick, true);
+            SelectedCurveStyle = (int)image.lastScale;
 
-            //ImageElement image = Document.GetElementById<ImageElement>("graph");
+            
+            dropDown = Document.GetElementById<SelectElement>("ScaleTypePicker");
 
+            dropDown.AddEventListener("change", CurveStyleSelected, false);
+            dropDown.AddEventListener("click", IgnoreMe, true);
             CanvasElement canvas = Document.GetElementById<CanvasElement>("graph");
 
             canvas.AddEventListener("mousedown", MouseDown, false);
             canvas.AddEventListener("mousemove", mousemove, false);
             canvas.AddEventListener("mouseup", mouseup, false);
+            Window.AddEventListener("click", NonMenuClick, true);
 
             Draw();
         }
 
-        int downPosition = 0;
+        public void IgnoreMe(ElementEvent e)
+        {
+            ignoreNextClick = true;
+        }
+
+        public void CurveStyleSelected(ElementEvent e)
+        {
+            SelectedCurveStyle = dropDown.SelectedIndex;
+            SetUpdateTimer();
+            ignoreNextClick = true;
+        }
+
+            int downPosition = 0;
         int lowPosition = 0;
         int highPosition = 255;
         int center = 127;
-
+        bool ignoreNextClick = false;
 
         DragType dragType = DragType.None;
 
@@ -125,9 +151,7 @@ namespace wwtlib
             double low = image.MinVal + (lowPosition * factor);
             double hi = image.MinVal + (highPosition * factor);
 
-            //this.Tile = (SkyImageTile)TileCache.GetTile(Tile.Level, Tile.X, Tile.Y, Tile.Dataset, null);
-            //updateTimer.Enabled = false;
-            //updateTimer.Enabled = true;
+            SetUpdateTimer();
             image.lastMax = highPosition;
             image.lastMin = lowPosition;
             e.CancelBubble = true;
@@ -138,10 +162,35 @@ namespace wwtlib
             if (dragType != DragType.None)
             {
                 dragType = DragType.None;
-               // updateTimer.Enabled = false;
-               // updateTimer.Enabled = true;
+                SetUpdateTimer();
+                ignoreNextClick = true;
             }
             e.CancelBubble = true;
+        }
+
+        bool updated = false;
+
+        public void SetUpdateTimer()
+        {
+            Script.SetTimeout(delegate () { Update(); }, 500);
+            updated = false;
+        }
+
+        public void Update()
+        {
+            if (updated)
+            {
+                return;
+            }
+
+            if (image != null)
+            {
+                double factor = (image.MaxVal - image.MinVal) / 256.0;
+                double low = image.MinVal + (lowPosition * factor);
+                double hi = image.MinVal + (highPosition * factor);
+                tile.texture2d = image.GetScaledBitmap(low, hi, (ScaleTypes)SelectedCurveStyle).GetTexture();
+            }
+            updated = true;
         }
 
         public int SelectedCurveStyle = 0;
