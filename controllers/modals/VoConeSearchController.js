@@ -53,7 +53,7 @@ wwt.controllers.controller('voConeSearch',
 
       $scope.hiliteIndex = -1;
 
-      $scope.regTitle = 'hubble';
+      $scope.regTitle = '';
       $scope.searchBaseURL = '';
       $scope.fromRegistry = true;
       $scope.fromView = true;

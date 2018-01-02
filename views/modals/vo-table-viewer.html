@@ -1,10 +1,13 @@
 <div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+
   <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
     <span localize="VO Table Viewer:"></span>
     {{votable.pagedRows.length}}
     <span localize="of"></span>
     {{votable.rows.length}}
     <span localize="Rows"></span>
+
   </h5>
 </div>
 <div class="modal-body vo-cone-search vo-table-viewer" ng-controller="voTableViewer">
@@ -28,27 +31,32 @@
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="RA Source"></label>
-          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="RASource">
+          <select class="form-control" ng-options="c.id as c for c in colArray"
+                  ng-model="RASource" ng-change="mapColumn('lngColumn', RASource)">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Dec Source"></label>
-          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="DecSource">
+          <select class="form-control" ng-options="c.id as c for c in colArray"
+                  ng-model="DecSource" ng-change="mapColumn('latColumn',DecSource)">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Distance Source"></label>
-          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="DistSource">
+          <select class="form-control" ng-options="c.id as c for c in colArray"
+                  ng-model="DistSource" ng-change="mapColumn('altColumn',DistSource)">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Type Source"></label>
-          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="TypeSource">
+          <select class="form-control" ng-options="c.id as c for c in colArray"
+                  ng-model="TypeSource" ng-change="mapColumn('markerColumn', TypeSource)">
           </select>
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="Size/Mag Source"></label>
-          <select class="form-control" ng-options="c.id as c for c in colArray"  ng-model="SizeSource">
+          <select class="form-control" ng-options="c.id as c for c in colArray"
+                  ng-model="SizeSource" ng-change="mapColumn('sizeColumn',SizeSource)">
           </select>
         </div>
       </div>

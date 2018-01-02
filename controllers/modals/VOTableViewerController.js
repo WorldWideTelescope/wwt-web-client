@@ -4,7 +4,7 @@ wwt.controllers.controller('voTableViewer',
       var init = function () {
 
         $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
-        console.log($scope.votable);
+
         var colArray = [];
         if ($scope.votable && $scope.votable.columns) {
           Object.keys($scope.votable.columns).forEach(function (c, i) {
@@ -40,7 +40,11 @@ wwt.controllers.controller('voTableViewer',
         $scope.colArray = colArray;
       };
 
-
+      $scope.mapColumn = function (layerPropKey, modelVal) {
+        var layer = $scope.voTableLayer;
+        layer[layerPropKey] = $scope.votable.columns[modelVal].index;
+        layer.cleanUp();
+      }
       $scope.hilite = function (row, $index) {
         var ra = parseFloat(row.columnData[$scope.RAIndex]);
         var dec = parseFloat(row.columnData[$scope.DecIndex]);
@@ -54,3 +58,10 @@ wwt.controllers.controller('voTableViewer',
     }
   ]);
 
+//ra: lngColumn
+//dec: latColumn
+//dist: altColumn
+//typeL markerColumn
+//sizeL sizeColum
+
+//call layer cleanup
