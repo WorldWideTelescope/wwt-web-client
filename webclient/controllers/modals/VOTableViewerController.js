@@ -1,6 +1,12 @@
 wwt.controllers.controller('voTableViewer',
   ['$rootScope', '$scope', 'AppState', 'Util',
     function ($rootScope, $scope, appState, util) {
+      var layer = $scope.voTableLayer;
+      $scope.plotTypes = [{lbl: 'Gaussian', type: 0}, {lbl: 'Point', type: 1}, {
+        lbl: 'Circle',
+        type: 2
+      }, {lbl: 'Push Pin', type: 3}];
+      $scope.plotType = layer.plotType;
       var init = function () {
 
         $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
@@ -41,8 +47,13 @@ wwt.controllers.controller('voTableViewer',
       };
 
       $scope.mapColumn = function (layerPropKey, modelVal) {
-        var layer = $scope.voTableLayer;
+
         layer[layerPropKey] = $scope.votable.columns[modelVal].index;
+        layer.cleanUp();
+      }
+      $scope.updatePlot = function () {
+        layer.plotType = $scope.plotType;
+        console.log($scope.plotType);
         layer.cleanUp();
       }
       $scope.hilite = function (row, $index) {

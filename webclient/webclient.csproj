@@ -76,6 +76,7 @@
     <Content Include="controllers\modals\SlideSelectionController.js" />
     <Content Include="controllers\modals\TourSlideText.js" />
     <Content Include="controllers\modals\VoConeSearchController.js" />
+    <Content Include="controllers\modals\VOTableViewerController.js" />
     <Content Include="controllers\tabs\AdsController.js" />
     <Content Include="controllers\tabs\CommunityController.js" />
     <Content Include="controllers\tabs\CurrentTourController.js" />
@@ -347,7 +348,6 @@
     <Content Include="views\popovers\transition-type.html" />
     <Content Include="views\research-menu.html" />
     <Content Include="views\thumbnail.html" />
-    <Content Include="views\tree-node.html" />
     <Content Include="css\variables.less" />
     <Content Include="css\webclient.css.map" />
     <Content Include="css\webclient.less" />
