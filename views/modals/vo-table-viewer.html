@@ -17,7 +17,10 @@
       <div class="row">
         <div class="col-md-2 form-group-sm">
           <label localize="Marker Type"></label>
-          <select class="form-control">
+          <select class="form-control" ng-options="p.type as p.lbl for p in plotTypes"
+                  ng-model="plotType" ng-change="updatePlot()">
+          </select>
+          <!--<select class="form-control">
             <option localize="Gaussian"></option>
             <option localize="Point"></option>
             <option localize="Circle"></option>
@@ -27,7 +30,7 @@
             <option localize="Target2"></option>
             <option localize="Column"></option>
             <option localize="Cylinder"></option>
-          </select>
+          </select>-->
         </div>
         <div class="col-md-2 form-group-sm">
           <label localize="RA Source"></label>

@@ -48,7 +48,7 @@
 
 	  var modalScope = $rootScope.$new();
     modalScope.voTableLayer = votable.get_table ? votable : wwtlib.VoTableLayer.create(votable);
-    modalScope.votable = $rootScope.voTableLayer.get_table()
+    modalScope.votable = modalScope.voTableLayer.get_table();
 
 	  $modal({
       scope: modalScope,

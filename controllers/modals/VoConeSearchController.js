@@ -79,7 +79,7 @@ wwt.controllers.controller('voConeSearch',
 
           var qObj = $scope.coneSearch ? {
             RA: $scope.RA,
-            Dec: $scope.Dec,
+            DEC: $scope.Dec,
             SR: $scope.Fov,
             VERB: $scope.verbosity
           } : {
