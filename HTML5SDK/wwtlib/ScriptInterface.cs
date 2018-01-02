@@ -52,6 +52,9 @@ namespace wwtlib
 
            
         }
+
+        //todo: Jonathan to invoke with either a votable or a layer as argument
+        public event EventHandler<EventArgs> VOTableDisplay;
        
         // public  EventHandler<ArrivedEventArgs> Arrived;
         public event EventHandler<ArrivedEventArgs> Arrived;
@@ -184,6 +187,7 @@ namespace wwtlib
         {
             LayerManager.AddVoTableLayer(table, "Vo Table");
         }
+        
 
         public void SetForegroundImageByName(string name)
         {

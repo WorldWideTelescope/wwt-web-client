@@ -2645,18 +2645,22 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 	}
 
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
+
 	  var modalScope = $rootScope.$new();
-	  modalScope.votable = votable;
+    modalScope.voTableLayer = votable.get_table ? votable : wwtlib.VoTableLayer.create(votable);
+    modalScope.votable = $rootScope.voTableLayer.get_table()
+
 	  $modal({
       scope: modalScope,
       templateUrl: 'views/modals/centered-modal-template.html',
       contentTemplate: 'views/modals/vo-table-viewer.html',
       show: true,
       placement: 'center',
-      backdrop: 'static'
+      backdrop: false
     });
   };
-	var loadingModal;
+
+  var loadingModal;
 	$rootScope.loading = function(flag,content){
 	  if (loadingModal){
 	    loadingModal.hide();
@@ -4486,7 +4490,7 @@ wwt.controllers.controller('MainController',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,
                     placement: 'center',
-                    backdrop: 'static'
+                    backdrop: false
                   });
                 }]
               }
@@ -4577,7 +4581,8 @@ wwt.controllers.controller('MainController',
         wwt.resize();
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
-        }
+        } 
+        wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       };
       //#endregion
 
@@ -8027,7 +8032,7 @@ wwt.controllers.controller('voConeSearch',
 
       $scope.hiliteIndex = -1;
 
-      $scope.regTitle = 'hubble';
+      $scope.regTitle = '';
       $scope.searchBaseURL = '';
       $scope.fromRegistry = true;
       $scope.fromView = true;
@@ -8104,7 +8109,7 @@ wwt.controllers.controller('voTableViewer',
       var init = function () {
 
         $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
-        console.log($scope.votable);
+
         var colArray = [];
         if ($scope.votable && $scope.votable.columns) {
           Object.keys($scope.votable.columns).forEach(function (c, i) {
@@ -8140,7 +8145,11 @@ wwt.controllers.controller('voTableViewer',
         $scope.colArray = colArray;
       };
 
-
+      $scope.mapColumn = function (layerPropKey, modelVal) {
+        var layer = $scope.voTableLayer;
+        layer[layerPropKey] = $scope.votable.columns[modelVal].index;
+        layer.cleanUp();
+      }
       $scope.hilite = function (row, $index) {
         var ra = parseFloat(row.columnData[$scope.RAIndex]);
         var dec = parseFloat(row.columnData[$scope.DecIndex]);
@@ -8154,6 +8163,13 @@ wwt.controllers.controller('voTableViewer',
     }
   ]);
 
+//ra: lngColumn
+//dec: latColumn
+//dist: altColumn
+//typeL markerColumn
+//sizeL sizeColum
+
+//call layer cleanup
 
 wwt.controllers.controller('LoginController',
     ['$scope',

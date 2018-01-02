@@ -10,6 +10,10 @@
 }
 
 .wwt-modal {
+  pointer-events: none;
+  .modal-content {
+    pointer-events: all;
+  }
   [data-movable] {
     background: rgba(255, 255, 255, .85);
     color: #333;

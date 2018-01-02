@@ -324,7 +324,7 @@ wwt.controllers.controller('MainController',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,
                     placement: 'center',
-                    backdrop: 'static'
+                    backdrop: false
                   });
                 }]
               }
@@ -415,7 +415,8 @@ wwt.controllers.controller('MainController',
         wwt.resize();
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
-        }
+        } 
+        wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       };
       //#endregion
 
