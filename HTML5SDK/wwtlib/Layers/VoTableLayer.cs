@@ -1251,7 +1251,7 @@ namespace wwtlib
 
         public override void CleanUp()
         {
-
+            dirty = true;
 
             if (lineList != null)
             {

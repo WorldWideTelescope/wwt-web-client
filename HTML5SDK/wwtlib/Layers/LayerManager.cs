@@ -1705,21 +1705,11 @@ namespace wwtlib
 
         static void showViewer_Click(object sender, EventArgs e)
         {
-            //if (selectedLayer is VoTableLayer)
-            //{
-            //    VoTableLayer layer = selectedLayer as VoTableLayer;
-
-            //    if (layer.Viewer != null)
-            //    {
-            //        layer.Viewer.Show();
-            //    }
-            //    else
-            //    {
-            //        VOTableViewer viewer = new VOTableViewer();
-            //        viewer.Layer = layer;
-            //        viewer.Show();
-            //    }
-            //}
+            if (selectedLayer is VoTableLayer)
+            {
+                VoTableLayer layer = selectedLayer as VoTableLayer;
+                WWTControl.scriptInterface.DisplayVoTableLayer(layer);
+            }
         }
 
         static void bottom_Click(object sender, EventArgs e)

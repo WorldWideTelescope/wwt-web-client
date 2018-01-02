@@ -99,10 +99,8 @@ wwt.controllers.controller('voConeSearch',
           $rootScope.loading(false);
           var table = this;
           if (table.rows.length) {
-            table.pagedRows = table.rows.slice(0, 100);
-            $rootScope.loadVOTableModal(this);
-            //var layer = new wwtlib.VoTable();
-            wwt.wc.addVoTableLayer(table);
+            table.pagedRows = table.rows.slice(0, 100);         
+            $rootScope.loadVOTableModal(wwt.wc.addVoTableLayer(table));
             $scope.$parent.$hide();
           } else {
             $scope.noResults = true;

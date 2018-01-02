@@ -73,6 +73,14 @@ namespace wwtlib
 
         public event EventHandler<SlideChangedEventArgs> SlideChanged;
 
+
+        public void DisplayVoTableLayer(VoTableLayer layer)
+        {
+            if (VOTableDisplay != null)
+			{
+                VOTableDisplay.Invoke(layer, new EventArgs());
+			}
+        }
 		internal void FireTourReady()
 		{
 			if (TourReady != null)
@@ -183,9 +191,9 @@ namespace wwtlib
         }
 
         // Call this to add a VOTable to layers
-        public void AddVoTableLayer(VoTable table)
+        public VoTableLayer AddVoTableLayer(VoTable table)
         {
-            LayerManager.AddVoTableLayer(table, "Vo Table");
+            return LayerManager.AddVoTableLayer(table, "Vo Table");
         }
         
 
