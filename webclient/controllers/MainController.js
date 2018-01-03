@@ -417,6 +417,7 @@ wwt.controllers.controller('MainController',
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
         wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
+        wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
       };
       //#endregion
 

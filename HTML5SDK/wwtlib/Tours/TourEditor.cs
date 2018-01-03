@@ -1313,11 +1313,12 @@ namespace wwtlib
             if (Focus != null)
             {
                 SimpleInput input = new SimpleInput(Language.GetLocalizedText(541, "Edit Hyperlink"), Language.GetLocalizedText(542, "Url"), Focus.Url, 2048);
-                if (input.ShowDialog() == DialogResult.OK)
-                {
-                    Undo.Push(new UndoTourStopChange(Language.GetLocalizedText(541, "Edit Hyperlink"), tour));
-                    Focus.Url = input.ResultText;
-                }
+
+                input.Show(Cursor.Position, delegate ()
+                    {
+                        Undo.Push(new UndoTourStopChange(Language.GetLocalizedText(541, "Edit Hyperlink"), tour));
+                        Focus.Url = input.Text;
+                    });
             }
         }
 

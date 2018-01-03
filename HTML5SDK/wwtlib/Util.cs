@@ -438,9 +438,8 @@ namespace wwtlib
 
     public class Guid
     {
-        static int nextId = 11232;
-
-        string guid = (nextId++).ToString();
+  
+        string guid = Create();
 
         public Guid()
         {
@@ -460,6 +459,11 @@ namespace wwtlib
             Guid temp = new Guid();
             temp.guid = id;
             return temp;
+        }
+
+        public static string Create()
+        {
+            return (string)Script.Literal(" 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); });");
         }
 
     }
@@ -1665,29 +1669,29 @@ namespace wwtlib
         Alt = 262144
     }
 
-    public class SimpleInput
-    {
-        private string url;
-        private string v1;
-        private string v2;
-        private int v3;
+    //public class SimpleInput
+    //{
+    //    private string url;
+    //    private string v1;
+    //    private string v2;
+    //    private int v3;
 
-        public SimpleInput(string v1, string v2, string url, int v3)
-        {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.url = url;
-            this.v3 = v3;
-        }
+    //    public SimpleInput(string v1, string v2, string url, int v3)
+    //    {
+    //        this.v1 = v1;
+    //        this.v2 = v2;
+    //        this.url = url;
+    //        this.v3 = v3;
+    //    }
 
-        public string ResultText = new string();
+    //    public string ResultText = new string();
 
-        public DialogResult ShowDialog()
-        {
+    //    public DialogResult ShowDialog()
+    //    {
 
-            return DialogResult.OK;
-        }
-    }
+    //        return DialogResult.OK;
+    //    }
+    //}
 
     public enum DialogResult { OK = 1, };
 

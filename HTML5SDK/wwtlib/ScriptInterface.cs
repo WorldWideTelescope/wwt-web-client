@@ -20,25 +20,6 @@ namespace wwtlib
             {
                 missedReady = true;
             }
-
-            // This is to 
-            //TestVoTable();
-        }
-
-        public void TestVoTable()
-        {
-            // This is to 
-            table = VoTable.LoadFromUrl("http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365", CallMeMaybe);
-
-        }
-
-        VoTable table = null;
-
-        private void CallMeMaybe()
-        {
-            //table is loaded now
-
-            string name = table.Column[0].Name;
         }
 
         public event EventHandler<CollectionLoadedEventArgs> CollectionLoaded;
@@ -48,15 +29,13 @@ namespace wwtlib
             if (CollectionLoaded != null)
             {
                 CollectionLoaded.Invoke(this, new CollectionLoadedEventArgs(url));
-            }
-
-           
+            }          
         }
 
-        //todo: Jonathan to invoke with either a votable or a layer as argument
+
         public event EventHandler<EventArgs> VOTableDisplay;
-       
-        // public  EventHandler<ArrivedEventArgs> Arrived;
+        public event EventHandler<EventArgs> RefreshLayerManager;
+      
         public event EventHandler<ArrivedEventArgs> Arrived;
         public event EventHandler<ArrivedEventArgs> Clicked;
         public event EventHandler<AnnotationClickEventArgs> AnnotationClicked;
@@ -79,6 +58,14 @@ namespace wwtlib
             if (VOTableDisplay != null)
 			{
                 VOTableDisplay.Invoke(layer, new EventArgs());
+			}
+        }
+
+        public void RefreshLayerManagerNow()
+        {
+            if (RefreshLayerManager != null)
+			{
+                RefreshLayerManager.Invoke(null, new EventArgs());
 			}
         }
 		internal void FireTourReady()

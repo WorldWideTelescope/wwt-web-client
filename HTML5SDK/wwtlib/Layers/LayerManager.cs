@@ -44,7 +44,10 @@ namespace wwtlib
 
         public static void LoadTree()
         {
-            //todo hook up to LayerManagerUI
+            if (WWTControl.scriptInterface != null)
+            {
+                WWTControl.scriptInterface.RefreshLayerManagerNow();
+            }
         }
 
         static Dictionary<string, LayerMap> layerMaps = new Dictionary<string, LayerMap>();
@@ -956,10 +959,22 @@ namespace wwtlib
 
         static ContextMenuStrip contextMenu;
         static object selectedLayer = null;
-
+        static Vector2d lastMenuClick = new Vector2d();
         static public void showLayerMenu(object selected, int x, int y)
         {
+            lastMenuClick = Vector2d.Create(x, y);
             selectedLayer = selected;
+
+            if (selected is LayerMap)
+            {
+                CurrentMap = ((LayerMap)selected).Name;
+            }
+            else if (selected is Layer)
+            {
+                CurrentMap = ((Layer)selected).ReferenceFrame;
+            }
+
+
             //if (layer is LayerMap)
             //{
 
@@ -1628,31 +1643,31 @@ namespace wwtlib
             Layer layer = (Layer)selectedLayer;
             SimpleInput input = new SimpleInput(Language.GetLocalizedText(225, "Rename"), Language.GetLocalizedText(228, "New Name"), layer.Name, 32);
 
-            if (input.ShowDialog() == DialogResult.OK)
+            input.Show(lastMenuClick, delegate ()
             {
-                if (!string.IsNullOrEmpty(input.ResultText))
+                if (!string.IsNullOrEmpty(input.Text))
                 {
-                    layer.Name = input.ResultText;
+                    layer.Name = input.Text;
                     version++;
                     LoadTree();
                 }
-            }
+            });
+
 
         }
 
         static void colorMenu_Click(object sender, EventArgs e)
         {
             Layer layer = (Layer)selectedLayer;
-            PopupColorPicker picker = new PopupColorPicker();
 
-            picker.Location = Cursor.Position;
+            ColorPicker picker = new ColorPicker();
 
-            picker.Color = layer.Color;
-
-            if (picker.ShowDialog() == DialogResult.OK)
+            picker.CallBack = delegate
             {
                 layer.Color = picker.Color;
-            }
+            };
+
+            picker.Show(Cursor.Position);
         }
 
         static void addMenu_Click(object sender, EventArgs e)
@@ -1684,8 +1699,7 @@ namespace wwtlib
 
                 LayerList.Remove(node.ID);
                 AllMaps[CurrentMap].Layers.Remove(node);
-
-                //todo update UI
+                LoadTree();
                 version++;
             }
         }

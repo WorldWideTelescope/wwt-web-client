@@ -396,22 +396,22 @@ namespace wwtlib
             }
         }
 
-        private bool enabled = true;
+     //   private bool enabled = true;
 
-        
-        public virtual bool Enabled
-        {
-            get { return enabled; }
-            set
-            {
-                if (enabled != value)
-                {
-                    version++;
-                    enabled = value;
-                }
-                //todo notify of change
-            }
-        }
+
+        public bool Enabled = true;
+        //{
+        //    get { return enabled; }
+        //    set
+        //    {
+        //        if (enabled != value)
+        //        {
+        //            version++;
+        //            enabled = value;
+        //        }
+        //        //todo notify of change
+        //    }
+        //}
 
         protected bool astronomical = false;
 

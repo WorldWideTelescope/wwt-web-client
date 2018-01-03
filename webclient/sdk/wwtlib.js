@@ -1165,6 +1165,9 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
+      console.assert(Degrees >= 0);
+      console.assert(Minutes >= 0);
+      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -1261,6 +1264,7 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
+    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -1425,6 +1429,7 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
+      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -2381,6 +2386,7 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
+          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -3837,6 +3843,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
+    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -3871,6 +3878,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
+    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -3907,6 +3915,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
+    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -4223,6 +4232,7 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
+      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -8836,7 +8846,7 @@ window.wwtlib = function(){
     this._fadeType = 4;
     this.version = 0;
     this.color = Colors.get_white();
-    this._enabled = true;
+    this.enabled = true;
     this.astronomical = false;
   }
   Layer.fromXml = function(layerNode, someFlag) {
@@ -9015,16 +9025,6 @@ window.wwtlib = function(){
       this.set_color(Color.fromName(value));
       return value;
     },
-    get_enabled: function() {
-      return this._enabled;
-    },
-    set_enabled: function(value) {
-      if (this._enabled !== value) {
-        this.version++;
-        this._enabled = value;
-      }
-      return value;
-    },
     get_astronomical: function() {
       return this.astronomical;
     },
@@ -9150,6 +9150,9 @@ window.wwtlib = function(){
     return value;
   };
   LayerManager.loadTree = function() {
+    if (WWTControl.scriptInterface != null) {
+      WWTControl.scriptInterface.refreshLayerManagerNow();
+    }
   };
   LayerManager.get_layerMaps = function() {
     if (LayerManager.get_tourLayers()) {
@@ -9312,7 +9315,7 @@ window.wwtlib = function(){
     LayerManager.get_layerList()[layer.id] = layer;
     LayerManager.get_allMaps()['Sky'].layers.push(layer);
     LayerManager.get_allMaps()['Sky'].open = true;
-    layer.set_enabled(true);
+    layer.enabled = true;
     LayerManager._version++;
     LayerManager.loadTree();
     return layer;
@@ -9326,7 +9329,7 @@ window.wwtlib = function(){
     LayerManager.get_layerList()[layer.id] = layer;
     LayerManager.get_allMaps()['Sky'].layers.push(layer);
     LayerManager.get_allMaps()['Sky'].open = true;
-    layer.set_enabled(true);
+    layer.enabled = true;
     LayerManager._version++;
     LayerManager.loadTree();
     return layer;
@@ -9554,7 +9557,7 @@ window.wwtlib = function(){
       while ($enum2.moveNext()) {
         var layer = $enum2.current;
         if ((!pass && ss.canCast(layer, ImageSetLayer)) || (pass === 1 && !(ss.canCast(layer, ImageSetLayer)))) {
-          if (layer.get_enabled()) {
+          if (layer.enabled) {
             var layerStart = SpaceTimeController.utcToJulian(layer.get_startTime());
             var layerEnd = SpaceTimeController.utcToJulian(layer.get_endTime());
             var fadeIn = SpaceTimeController.utcToJulian(layer.get_startTime()) - ((layer.get_fadeType() === 1 || layer.get_fadeType() === 3) ? (layer.get_fadeSpan() / 864000000) : 0);
@@ -9613,7 +9616,7 @@ window.wwtlib = function(){
     while ($enum1.moveNext()) {
       var key = $enum1.current;
       var layer = LayerManager.get_layerList()[key];
-      if (layer.get_enabled()) {
+      if (layer.enabled) {
         var info = new LayerInfo();
         info.startOpacity = info.endOpacity = layer.get_opacity();
         info.id = layer.id;
@@ -9635,9 +9638,9 @@ window.wwtlib = function(){
     while ($enum1.moveNext()) {
       var key = $enum1.current;
       var layer = LayerManager.get_layerList()[key];
-      layer.set_enabled(ss.keyExists(list, layer.id));
+      layer.enabled = ss.keyExists(list, layer.id);
       try {
-        if (layer.get_enabled()) {
+        if (layer.enabled) {
           layer.set_opacity(list[layer.id].frameOpacity);
           layer.setParams(list[layer.id].frameParams);
         }
@@ -9691,7 +9694,7 @@ window.wwtlib = function(){
       while ($enum2.moveNext()) {
         var layer = $enum2.current;
         if ((!pass && ss.canCast(layer, ImageSetLayer)) || (pass === 1 && !(ss.canCast(layer, ImageSetLayer)))) {
-          if (layer.get_enabled()) {
+          if (layer.enabled) {
             var layerStart = SpaceTimeController.utcToJulian(layer.get_startTime());
             var layerEnd = SpaceTimeController.utcToJulian(layer.get_endTime());
             var fadeIn = SpaceTimeController.utcToJulian(layer.get_startTime()) - ((layer.get_fadeType() === 1 || layer.get_fadeType() === 3) ? (layer.get_fadeSpan() / 864000000) : 0);
@@ -9740,7 +9743,14 @@ window.wwtlib = function(){
     }
   };
   LayerManager.showLayerMenu = function(selected, x, y) {
+    LayerManager._lastMenuClick = Vector2d.create(x, y);
     LayerManager._selectedLayer = selected;
+    if (ss.canCast(selected, LayerMap)) {
+      LayerManager.set_currentMap((selected).get_name());
+    }
+    else if (ss.canCast(selected, Layer)) {
+      LayerManager.set_currentMap((selected).get_referenceFrame());
+    }
     if (((ss.canCast(selected, Layer)) && !(ss.canCast(selected, SkyOverlays)))) {
       var selectedLayer = selected;
       LayerManager._contextMenu = new ContextMenuStrip();
@@ -9949,7 +9959,7 @@ window.wwtlib = function(){
   };
   LayerManager._addGirdLayer_Click = function(sender, e) {
     var layer = new GridLayer();
-    layer.set_enabled(true);
+    layer.enabled = true;
     layer.set_name('Lat-Lng Grid');
     LayerManager.get_layerList()[layer.id] = layer;
     layer.set_referenceFrame(LayerManager._currentMap);
@@ -10003,22 +10013,21 @@ window.wwtlib = function(){
   LayerManager._renameMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
     var input = new SimpleInput(Language.getLocalizedText(225, 'Rename'), Language.getLocalizedText(228, 'New Name'), layer.get_name(), 32);
-    if (input.showDialog() === 1) {
-      if (!ss.emptyString(input.resultText)) {
-        layer.set_name(input.resultText);
+    input.show(LayerManager._lastMenuClick, function() {
+      if (!ss.emptyString(input.text)) {
+        layer.set_name(input.text);
         LayerManager._version++;
         LayerManager.loadTree();
       }
-    }
+    });
   };
   LayerManager._colorMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
-    var picker = new PopupColorPicker();
-    picker.location = Cursor.get_position();
-    picker.color = layer.get_color();
-    if (picker.showDialog() === 1) {
+    var picker = new ColorPicker();
+    picker.callBack = function() {
       layer.set_color(picker.color);
-    }
+    };
+    picker.show(Cursor.get_position());
   };
   LayerManager._addMenu_Click = function(sender, e) {
   };
@@ -10030,6 +10039,7 @@ window.wwtlib = function(){
       var node = LayerManager._selectedLayer;
       delete LayerManager.get_layerList()[node.id];
       ss.remove(LayerManager.get_allMaps()[LayerManager.get_currentMap()].layers, node);
+      LayerManager.loadTree();
       LayerManager._version++;
     }
   };
@@ -13463,7 +13473,6 @@ window.wwtlib = function(){
 
   function ScriptInterface() {
     this._missedReady = false;
-    this._table = null;
     this.hideTourFeedback = false;
     this._smoothAnimation = false;
     this._showCaptions = true;
@@ -13483,12 +13492,6 @@ window.wwtlib = function(){
         this._missedReady = true;
       }
     },
-    testVoTable: function() {
-      this._table = VoTable.loadFromUrl('http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365', ss.bind('_callMeMaybe', this));
-    },
-    _callMeMaybe: function() {
-      var name = this._table.column[0].name;
-    },
     add_collectionLoaded: function(value) {
       this.__collectionLoaded = ss.bindAdd(this.__collectionLoaded, value);
     },
@@ -13505,6 +13508,12 @@ window.wwtlib = function(){
     },
     remove_voTableDisplay: function(value) {
       this.__voTableDisplay = ss.bindSub(this.__voTableDisplay, value);
+    },
+    add_refreshLayerManager: function(value) {
+      this.__refreshLayerManager = ss.bindAdd(this.__refreshLayerManager, value);
+    },
+    remove_refreshLayerManager: function(value) {
+      this.__refreshLayerManager = ss.bindSub(this.__refreshLayerManager, value);
     },
     add_arrived: function(value) {
       this.__arrived = ss.bindAdd(this.__arrived, value);
@@ -13563,6 +13572,11 @@ window.wwtlib = function(){
     displayVoTableLayer: function(layer) {
       if (this.__voTableDisplay != null) {
         this.__voTableDisplay(layer, new ss.EventArgs());
+      }
+    },
+    refreshLayerManagerNow: function() {
+      if (this.__refreshLayerManager != null) {
+        this.__refreshLayerManager(null, new ss.EventArgs());
       }
     },
     _fireTourReady: function() {
@@ -19315,12 +19329,14 @@ window.wwtlib = function(){
       }
     },
     _url_Click: function(sender, e) {
+      var $this = this;
+
       if (this.get_focus() != null) {
         var input = new SimpleInput(Language.getLocalizedText(541, 'Edit Hyperlink'), Language.getLocalizedText(542, 'Url'), this.get_focus().get_url(), 2048);
-        if (input.showDialog() === 1) {
-          Undo.push(new UndoTourStopChange(Language.getLocalizedText(541, 'Edit Hyperlink'), this._tour));
-          this.get_focus().set_url(input.resultText);
-        }
+        input.show(Cursor.get_position(), function() {
+          Undo.push(new UndoTourStopChange(Language.getLocalizedText(541, 'Edit Hyperlink'), $this._tour));
+          $this.get_focus().set_url(input.text);
+        });
       }
     },
     _pickColor_Click: function(sender, e) {
@@ -22865,7 +22881,7 @@ window.wwtlib = function(){
   // wwtlib.Guid
 
   function Guid() {
-    this._guid = (Guid._nextId++).toString();
+    this._guid = Guid.create();
   }
   Guid.newGuid = function() {
     return new Guid();
@@ -22874,6 +22890,9 @@ window.wwtlib = function(){
     var temp = new Guid();
     temp._guid = id;
     return temp;
+  };
+  Guid.create = function() {
+    return  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); });;
   };
   var Guid$ = {
     toString: function() {
@@ -23027,23 +23046,6 @@ window.wwtlib = function(){
   };
   var Cursors$ = {
 
-  };
-
-
-  // wwtlib.SimpleInput
-
-  function SimpleInput(v1, v2, url, v3) {
-    this._v3 = 0;
-    this.resultText = new String();
-    this._v1 = v1;
-    this._v2 = v2;
-    this._url = url;
-    this._v3 = v3;
-  }
-  var SimpleInput$ = {
-    showDialog: function() {
-      return 1;
-    }
   };
 
 
@@ -23651,6 +23653,75 @@ window.wwtlib = function(){
         }
         ctx.stroke();
       }
+    }
+  };
+
+
+  // wwtlib.SimpleInput
+
+  function SimpleInput(title, label, text, v3) {
+    this.title = 'Tile';
+    this.label = 'Enter Text Below';
+    this.text = '';
+    this._textElement = null;
+    this._ignoreNextClick = false;
+    this.title = title;
+    this.label = label;
+    this.text = text;
+  }
+  var SimpleInput$ = {
+    showDialog: function() {
+      return 1;
+    },
+    nonMenuClick: function(e) {
+      if (!this._ignoreNextClick) {
+        this._close();
+      }
+      this._ignoreNextClick = false;
+    },
+    show: function(position, callback) {
+      var simpleInputElement = document.getElementById('simpleinput');
+      simpleInputElement.style.display = 'block';
+      simpleInputElement.style.left = position.x.toString() + 'px';
+      simpleInputElement.style.top = position.y.toString() + 'px';
+      this._textElement = document.getElementById('inputtext');
+      this._textElement.value = this.text;
+      var titleDiv = document.getElementById('title');
+      var labelDiv = document.getElementById('inputlabel');
+      titleDiv.innerText = this.title;
+      labelDiv.innerText = this.label;
+      this._textElement.addEventListener('change', ss.bind('textChanged', this), false);
+      this._textElement.addEventListener('click', ss.bind('ignoreMe', this), true);
+      var okButton = document.getElementById('simpleinputok');
+      var cancelButton = document.getElementById('simpleinputcancel');
+      okButton.addEventListener('click', ss.bind('okClicked', this), false);
+      cancelButton.addEventListener('click', ss.bind('cancelClicked', this), false);
+      this._okCallback = callback;
+    },
+    okClicked: function(e) {
+      this._close();
+      if (this._okCallback != null) {
+        this._okCallback();
+      }
+    },
+    cancelClicked: function(e) {
+      this._close();
+    },
+    _close: function() {
+      var simpleInputElement = document.getElementById('simpleinput');
+      simpleInputElement.style.display = 'none';
+      this._textElement.removeEventListener('change', ss.bind('textChanged', this), false);
+      var okButton = document.getElementById('simpleinputok');
+      var cancelButton = document.getElementById('simpleinputcancel');
+      okButton.removeEventListener('click', ss.bind('okClicked', this), false);
+      cancelButton.removeEventListener('click', ss.bind('cancelClicked', this), false);
+    },
+    ignoreMe: function(e) {
+      this._ignoreNextClick = true;
+    },
+    textChanged: function(e) {
+      this.text = this._textElement.value;
+      this._ignoreNextClick = true;
     }
   };
 
@@ -38819,7 +38890,6 @@ window.wwtlib = function(){
       Language: [ Language, Language$, null ],
       Cursor: [ Cursor, Cursor$, null ],
       Cursors: [ Cursors, Cursors$, null ],
-      SimpleInput: [ SimpleInput, SimpleInput$, null ],
       SelectLink: [ SelectLink, SelectLink$, null ],
       PopupVolume: [ PopupVolume, PopupVolume$, null ],
       PopupColorPicker: [ PopupColorPicker, PopupColorPicker$, null ],
@@ -38831,6 +38901,7 @@ window.wwtlib = function(){
       ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
       TagMe: [ TagMe, TagMe$, null ],
       Histogram: [ Histogram, Histogram$, null ],
+      SimpleInput: [ SimpleInput, SimpleInput$, null ],
       XmlTextWriter: [ XmlTextWriter, XmlTextWriter$, null ],
       VizLayer: [ VizLayer, VizLayer$, null ],
       DataItem: [ DataItem, DataItem$, null ],
@@ -39136,6 +39207,7 @@ window.wwtlib = function(){
   LayerManager._layerListTours = {};
   LayerManager._moonfile = '';
   LayerManager._selectedLayer = null;
+  LayerManager._lastMenuClick = new Vector2d();
   LayerManager.getMoonFile('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons');
   LayerUI._type = null;
   Orbit._initBegun = false;
@@ -39229,7 +39301,6 @@ window.wwtlib = function(){
   UiTools.auPerParsec = 206264.806;
   UiTools.auPerLightYear = 63239.6717;
   UiTools.ssmUnitConversion = 370;
-  Guid._nextId = 11232;
   BinaryReader.id = 1;
   VizLayer.earthRadius = 6371000;
   WWTControl.imageSets = [];
