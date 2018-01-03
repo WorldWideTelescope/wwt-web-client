@@ -337,6 +337,7 @@
     <Content Include="views\modals\open-item.html" />
     <Content Include="views\modals\tour-uploader.html" />
     <Content Include="views\modals\vo-cone-search.html" />
+    <Content Include="views\modals\vo-table-viewer.html" />
     <Content Include="views\popovers\observing-time.html" />
     <Content Include="views\popovers\property-panel.html" />
     <Content Include="views\popovers\shareplace.html" />
