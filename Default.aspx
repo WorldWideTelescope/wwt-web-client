@@ -294,14 +294,13 @@
         </div>
     </div>
 
-     <div id="simpleinput" class="simpleinput">
-         <div id="title">TextEditBox</div><br>
-         <div id="inputlabel">Enter Text</div>
-        <input type="text" id="inputtext" />
-         <br>
-         <a class="btn" localize="Ok" id="simpleinputok"></a><br>
-         <a class="btn" localize="Cancel" id="simpleinputcancel"></a><br>
-    </div>
+   <div id="simpleinput" class="simpleinput">
+     <div id="title">TextEditBox</div>
+     <div id="inputlabel">Enter Text</div>
+     <input type="text" id="inputtext" />
+     <a class="btn" id="simpleinputok" localize="Ok" localize-only="title"> <i class="fa fa-check"></i></a>
+     <a id="simpleinputcancel" localize="Cancel" localize-only="title"><i class="fa fa-close"></i></a>
+  </div>
 
 
     <div id="colorpicker" class="colorpicker">
