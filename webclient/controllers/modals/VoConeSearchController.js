@@ -100,7 +100,7 @@ wwt.controllers.controller('voConeSearch',
           $rootScope.loading(false);
           var table = this;
           if (table.rows.length) {
-            table.pagedRows = table.rows.slice(0, 100);         
+            table.pagedRows = table.rows.slice(0, 100);
             $rootScope.loadVOTableModal(wwt.wc.addVoTableLayer(table));
             $scope.$parent.$hide();
           } else {
