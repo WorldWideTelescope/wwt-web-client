@@ -294,13 +294,27 @@
         </div>
     </div>
 
-   <div id="simpleinput" class="simpleinput">
-     <div id="title">TextEditBox</div>
-     <div id="inputlabel">Enter Text</div>
-     <input type="text" id="inputtext" />
-     <a class="btn" id="simpleinputok" localize="Ok" localize-only="title"> <i class="fa fa-check"></i></a>
-     <a id="simpleinputcancel" localize="Cancel" localize-only="title"><i class="fa fa-close"></i></a>
+  <div class="modal wwt-modal simpleinput" id="simplemodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" id="simpleinput">
+      <div class="modal-content">
+        <div class="modal-header">
+        <i class="fa fa-close pull-right" id="simpleinputcancel"></i>
+          <h5 id="simpletitle"></h5>
+        </div>
+        <div class="modal-body">
+          <div id="inputlabel">Enter Text</div>
+          <input type="text" id="inputtext" />
+
+        </div>
+        <div class="modal-footer">
+          <a class="btn" id="simpleinputok" localize="OK"></a>
+          <a class="btn" id="simpleinputcancel" localize="Cancel"></a>
+        </div>
+      </div>
+    </div>
   </div>
+
+
 
 
     <div id="colorpicker" class="colorpicker">

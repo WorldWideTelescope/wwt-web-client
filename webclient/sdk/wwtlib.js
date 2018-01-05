@@ -23681,12 +23681,14 @@ window.wwtlib = function(){
     },
     show: function(position, callback) {
       var simpleInputElement = document.getElementById('simpleinput');
+      var modalElement = document.getElementById('simplemodal');
+      modalElement.style.display = 'block';
       simpleInputElement.style.display = 'block';
-      simpleInputElement.style.left = position.x.toString() + 'px';
-      simpleInputElement.style.top = position.y.toString() + 'px';
+      simpleInputElement.style.marginLeft = position.x.toString() + 'px';
+      simpleInputElement.style.marginTop = position.y.toString() + 'px';
       this._textElement = document.getElementById('inputtext');
       this._textElement.value = this.text;
-      var titleDiv = document.getElementById('title');
+      var titleDiv = document.getElementById('simpletitle');
       var labelDiv = document.getElementById('inputlabel');
       titleDiv.innerText = this.title;
       labelDiv.innerText = this.label;
@@ -23708,7 +23710,7 @@ window.wwtlib = function(){
       this._close();
     },
     _close: function() {
-      var simpleInputElement = document.getElementById('simpleinput');
+      var simpleInputElement = document.getElementById('simplemodal');
       simpleInputElement.style.display = 'none';
       this._textElement.removeEventListener('change', ss.bind('textChanged', this), false);
       var okButton = document.getElementById('simpleinputok');

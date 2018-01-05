@@ -44,14 +44,16 @@ namespace wwtlib
         public void Show(Vector2d position, Action callback)
         {
             DivElement simpleInputElement = Document.GetElementById<DivElement>("simpleinput");
+            DivElement modalElement = Document.GetElementById<DivElement>("simplemodal");
+            modalElement.Style.Display = "block";
             simpleInputElement.Style.Display = "block";
-            simpleInputElement.Style.Left = position.X.ToString() + "px";
-            simpleInputElement.Style.Top = position.Y.ToString() + "px";
+            simpleInputElement.Style.MarginLeft = position.X.ToString() + "px";
+            simpleInputElement.Style.MarginTop = position.Y.ToString() + "px";
 
             textElement = Document.GetElementById<SelectElement>("inputtext");
             textElement.Value = Text;
 
-            DivElement titleDiv = Document.GetElementById<DivElement>("title");
+            DivElement titleDiv = Document.GetElementById<DivElement>("simpletitle");
             DivElement labelDiv = Document.GetElementById<DivElement>("inputlabel");
             titleDiv.InnerText = Title;
             labelDiv.InnerText = Label;
@@ -87,7 +89,7 @@ namespace wwtlib
 
         private void Close()
         {
-            DivElement simpleInputElement = Document.GetElementById<DivElement>("simpleinput");
+            DivElement simpleInputElement = Document.GetElementById<DivElement>("simplemodal");
             simpleInputElement.Style.Display = "none";
             //Window.RemoveEventListener("click", NonMenuClick, true);
             textElement.RemoveEventListener("change", TextChanged, false);
