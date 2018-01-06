@@ -181,17 +181,30 @@ namespace wwtlib
 
         public virtual double[] GetParams()
         {
-            return new double[0];
+            double[] paramList = new double[5];
+            paramList[0] = color.R / 255;
+            paramList[1] = color.G / 255;
+            paramList[2] = color.B / 255;
+            paramList[3] = color.A / 255;
+            paramList[4] = opacity;
+
+
+            return paramList;
         }
 
         public virtual void SetParams(double[] paramList)
         {
+            if (paramList.Length == 5)
+            {
+                opacity = (float)paramList[4];
+                color = Color.FromArgb((byte)(paramList[3] * 255), (byte)(paramList[0] * 255), (byte)(paramList[1] * 255), (byte)(paramList[2] * 255));
+            }
         }
 
         public virtual string[] GetParamNames()
         {
 
-            return new string[0];
+            return new string[] { "Color.Red", "Color.Green", "Color.Blue", "Color.Alpha", "Opacity" };
         }
 
         public virtual void CleanUp()

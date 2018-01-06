@@ -8975,12 +8975,22 @@ window.wwtlib = function(){
       return;
     },
     getParams: function() {
-      return new Array(0);
+      var paramList = new Array(5);
+      paramList[0] = this.color.r / 255;
+      paramList[1] = this.color.g / 255;
+      paramList[2] = this.color.b / 255;
+      paramList[3] = this.color.a / 255;
+      paramList[4] = this.opacity;
+      return paramList;
     },
     setParams: function(paramList) {
+      if (paramList.length === 5) {
+        this.opacity = paramList[4];
+        this.color = Color.fromArgb((paramList[3] * 255), (paramList[0] * 255), (paramList[1] * 255), (paramList[2] * 255));
+      }
     },
     getParamNames: function() {
-      return new Array(0);
+      return [ 'Color.Red', 'Color.Green', 'Color.Blue', 'Color.Alpha', 'Opacity' ];
     },
     cleanUp: function() {
     },
@@ -11296,8 +11306,11 @@ window.wwtlib = function(){
   // wwtlib.WcsImage
 
   function WcsImage() {
+    this.copyright = '';
+    this.creditsUrl = '';
     this._validWcs = false;
     this.keywords = [];
+    this.description = '';
     this.scaleX = 0;
     this.scaleY = 0;
     this.centerX = 0;
@@ -11316,6 +11329,7 @@ window.wwtlib = function(){
     this.hasScale = false;
     this.hasLocation = false;
     this.hasPixel = false;
+    this.filename = '';
     this._colorCombine = false;
   }
   var WcsImage$ = {
@@ -22888,7 +22902,7 @@ window.wwtlib = function(){
   };
   Guid.fromString = function(id) {
     var temp = new Guid();
-    temp._guid = id;
+    temp._guid = ss.trim(id);
     return temp;
   };
   Guid.create = function() {
@@ -23792,6 +23806,9 @@ window.wwtlib = function(){
     _writeAttributeString: function(key, value) {
       if (value != null) {
         this._attributes[key] = ss.replaceString(value.toString(), '&', '&amp;');
+      }
+      else {
+        this._attributes[key] = '';
       }
     },
     _writeEndElement: function() {
@@ -32242,7 +32259,7 @@ window.wwtlib = function(){
     this._lastScale$1 = 0;
     this._min$1 = 0;
     this._max$1 = 0;
-    this._extension$1 = 'txt';
+    this._extension$1 = '.txt';
     this._overrideDefaultLayer$1 = false;
     this._loaded$1 = false;
     Layer.call(this);
@@ -32302,11 +32319,12 @@ window.wwtlib = function(){
     writeLayerProperties: function(xmlWriter) {
       if (this._imageSet$1.get_wcsImage() != null) {
         if (ss.canCast(this._imageSet$1.get_wcsImage(), FitsImage)) {
-          xmlWriter._writeAttributeString('Extension', '.fit');
+          this._extension$1 = '.fit';
         }
         else {
-          xmlWriter._writeAttributeString('Extension', '.png');
+          this._extension$1 = '.png';
         }
+        xmlWriter._writeAttributeString('Extension', this._extension$1);
       }
       if (ss.canCast(this._imageSet$1.get_wcsImage(), FitsImage)) {
         var fi = ss.safeCast(this._imageSet$1.get_wcsImage(), FitsImage);

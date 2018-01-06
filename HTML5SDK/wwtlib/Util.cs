@@ -457,7 +457,7 @@ namespace wwtlib
         public static Guid FromString(string id)
         {
             Guid temp = new Guid();
-            temp.guid = id;
+            temp.guid = id.Trim();
             return temp;
         }
 

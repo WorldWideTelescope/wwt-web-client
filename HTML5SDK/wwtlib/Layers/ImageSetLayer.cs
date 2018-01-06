@@ -21,7 +21,7 @@ namespace wwtlib
             get { return imageSet; }
             set { imageSet = value; }
         }
-        string extension = "txt";
+        string extension = ".txt";
         public ImageSetLayer()
         {
 
@@ -105,12 +105,13 @@ namespace wwtlib
             {
                 if (imageSet.WcsImage is FitsImage)
                 {
-                    xmlWriter.WriteAttributeString("Extension", ".fit");
+                    extension = ".fit";
                 }
                 else
                 {
-                    xmlWriter.WriteAttributeString("Extension", ".png");
+                    extension = ".png";
                 }
+                xmlWriter.WriteAttributeString("Extension", extension);
             }
 
             if (imageSet.WcsImage is FitsImage)

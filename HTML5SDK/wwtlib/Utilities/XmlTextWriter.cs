@@ -99,6 +99,10 @@ namespace wwtlib
             {
                 attributes[key] = value.ToString().Replace("&", "&amp;");
             }
+            else
+            {
+                attributes[key] = "";
+            }
         }
 
         internal void WriteEndElement()

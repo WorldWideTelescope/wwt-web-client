@@ -30,14 +30,14 @@ namespace wwtlib
 
 
 
-        protected string copyright;
+        protected string copyright="";
 
         public string Copyright
         {
             get { return copyright; }
             set { copyright = value; }
         }
-        protected string creditsUrl;
+        protected string creditsUrl="";
 
         public string CreditsUrl
         {
@@ -66,7 +66,7 @@ namespace wwtlib
             }
             set { keywords = value; }
         }
-        protected string description;
+        protected string description="";
 
         public string Description
         {
@@ -201,7 +201,7 @@ namespace wwtlib
 
             rotation = rot2 / Math.PI * 180;
         }
-        protected string filename;
+        protected string filename="";
 
         public string Filename
         {
