@@ -1,36 +1,32 @@
-wwt.controllers.controller('colorpickerController',
-  ['$scope', function ($scope) {
+wwt.controllers.controller('colorpickerController', ['$scope', function ($scope) {
   var cp = $scope.colorpicker;
-
   var setMouse = function(e){
     if (!$scope.mouse){
       $scope.mouse = e;
     }
-    $(window).off('mousemove',setMouse)
+    $(window).off('mousemove', setMouse);
   }
-  $(window).on('mousemove',setMouse);
-  $scope.previewColor = 'rgba(0,0,0,0)';
-  $scope.rgb = [0,0,0];
-  $scope.opacity = 1;
+  $(window).on('mousemove', setMouse);
+  var opacity;
   $scope.init = function () {
-    $scope.opacity = cp.color.a / 255;
+
     var e = $scope.mouse || wwt.lastmouseContext;
-    $('body.wwt-webclient-wrapper .colorpicker-modal.wwt-modal .modal-dialog').css({marginTop:e.pageY,marginLeft:e.pageX});
-    console.log(wwt.lastmouseContext,$scope.mouse);
-    var bar = $('.cross-fader.color-picker a.btn').css('left', 100);
-    
+    $('body.wwt-webclient-wrapper div.colorpicker-modal.wwt-modal div.modal-dialog')
+      .css({marginTop:e.pageY, marginLeft:e.pageX});
+    opacity = cp.color.a / 255;
+    var left = Math.round(opacity*100);
+    var bar = $('.cross-fader.color-picker a.btn').css('left', left);
     var slider = new wwt.Move({
       el: bar,
       bounds: {
-        x: [-100,  0],
+        x: [0-left, 100-left],
         y: [0, 0]
       },
       onstart: function () {
         bar.addClass('moving');
       },
       onmove: function (args) {
-        $scope.opacity = this.css.left / 100;
-        //$('img#colorhex').css('opacity', bar.css.left/100);
+        opacity = this.css.left / 100;
         $scope.setColor();
       },
       oncomplete: function () {
@@ -47,15 +43,7 @@ wwt.controllers.controller('colorpickerController',
     }
     else{
       c = cp.color;
-      /*if (c.name === ''){
-        c.r = 255;
-        c.b = 255;
-        c.g = 255;
-      }*/
-      if (!c.a){
-        c.a = 255;//????
-      }
-      $scope.opacity = cp.color.a/255;
+      opacity = cp.color.a / 255;
     }
     $scope.rgb = [c.r,c.g,c.b];
     $scope.setColor();
@@ -63,14 +51,13 @@ wwt.controllers.controller('colorpickerController',
 
   $scope.setColor = function(){
       $scope.$applyAsync(function () {
-      $scope.previewColor = 'rgba(' + $scope.rgb.join(',') + ',' + $scope.opacity + ')';
-        
+      $scope.previewColor = 'rgba(' + $scope.rgb.join(',') + ',' + opacity + ')';
     });
 
   }
 
   $scope.commitColor = function(){
-    cp.color.a = Math.min(255,Math.max(0,Math.round($scope.opacity*255)));
+    cp.color.a = Math.min(255,Math.max(0,Math.round(opacity*255)));
     var rgb = $scope.rgb;
     cp.color.r = rgb[0];
     cp.color.g = rgb[1];
@@ -80,5 +67,5 @@ wwt.controllers.controller('colorpickerController',
     $scope.$hide();
   }
 
-  setTimeout($scope.init,500);
+  setTimeout($scope.init,800);
   }]);
