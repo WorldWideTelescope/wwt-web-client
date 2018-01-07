@@ -53,7 +53,7 @@ wwt.controllers.controller('colorpickerController',
       if (!c.a){
         c.a = 255;//????
       }
-      $scope.opacity =Math.round(cp.color.a/255);
+      $scope.opacity = cp.color.a/255;
     }
     $scope.rgb = [c.r,c.g,c.b];
     $scope.setColor();
