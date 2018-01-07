@@ -174,9 +174,13 @@ wwt.controllers.controller('MainController',
       };
 
       var hashChange = function (e, obj) {
-
+        if (!obj){
+          obj =hashManager.getHashObject();
+        }
         var goto = function () {
-          if (!obj) return;
+          if (!obj){
+            obj =hashManager.getHashObject();
+          }
           console.log('goto', parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
             parseFloat(obj['fov']),
@@ -202,6 +206,7 @@ wwt.controllers.controller('MainController',
           }, 2000);
         }
         var loadPlace = function (openPlace) {
+
           $('#loadingModal').modal('show');
           var goPlace = function (place, delay) {
             if (obj['ra']) {
@@ -254,15 +259,23 @@ wwt.controllers.controller('MainController',
         else if (obj['ra'] !== undefined) {
           goto();
         }
-        if (obj['lookAt']) {
-          setLookAtHash();
+        try {
+          if (!obj){
+            obj =hashManager.getHashObject();
+          }
+          if (obj['lookAt']) {
+            setLookAtHash();
 
-        }
-        else if (obj['imagery']) {
-          $timeout(function () {
-            $scope.setLookAt('Sky', obj['imagery']);
-          }, 2000);
+          }
+          else if (obj['imagery']) {
+            $timeout(function () {
+              $scope.setLookAt('Sky', obj['imagery']);
+            }, 2000);
 
+          }
+        }catch (ex){
+          setTimeout(hashChange,2000);
+          console.log(ex);
         }
 
 
@@ -416,7 +429,7 @@ wwt.controllers.controller('MainController',
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
-        wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
+       uiLibrary.addDialogHooks();
         wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
       };
       //#endregion

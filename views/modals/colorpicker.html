@@ -1,0 +1,22 @@
+
+<div class="modal-header">
+  <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
+    <span localize="Choose color"></span>
+  </h5>
+</div>
+<div class="modal-body">
+  <img id="colorhex" src="images\ColorPickerHex.png" width="189" height="208" ng-click="pickColor($event)" />
+  <a class="btn preview-ok" ng-click="commitColor()">
+    <span class=color-preview ng-style="{'background':previewColor}"></span>
+    <span localize="OK"></span>
+  </a>
+  <div class="control color-alpha" >
+    <label localize="Opacity"></label>
+    <div class="cross-fader color-picker">
+      <a class="btn">&nbsp;</a>
+    </div>
+
+  </div>
+
+</div>

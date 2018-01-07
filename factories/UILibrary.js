@@ -60,6 +60,23 @@
     });
   };
 
+	var showColorpicker = function(colorpicker,e){
+    var modalScope = $rootScope.$new();
+    modalScope.colorpicker = colorpicker;
+    console.log(e);
+    modalScope.mouse = e;
+    modalScope.customClass = 'colorpicker-modal';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html',
+      contentTemplate: 'views/modals/colorpicker.html',
+      show: true,
+      placement: 'center',
+      backdrop: false,
+      controller:'colorpickerController'
+    });
+  }
+
   var loadingModal;
 	$rootScope.loading = function(flag,content){
 	  if (loadingModal){
@@ -85,6 +102,11 @@
 
   }
 
-	return true;
+	return {
+	  addDialogHooks:function(){
+      wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
+      wwt.wc.add_colorPickerDisplay(showColorpicker)
+    }
+  };
 }]);
 

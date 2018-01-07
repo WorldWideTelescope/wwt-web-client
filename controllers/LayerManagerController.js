@@ -258,7 +258,7 @@
             })
           ]
         });
-      }
+      };
 
       $scope.showMenu = function (layerMap, event) {
         if ($scope.activeLayer) {

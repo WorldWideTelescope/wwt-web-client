@@ -14,16 +14,17 @@
   .modal-content {
     pointer-events: all;
   }
-  [data-movable] {
+  .modal-header {
     background: rgba(255, 255, 255, .85);
     color: #333;
     padding: 3px 5px;
-    cursor: pointer;
+    &[data-movable] {
+      cursor: pointer;
+    }
   }
 }
 
 #simplemodal{
- 
   #simpleinput{
     width: 271px !important;
     .modal-content {
@@ -48,5 +49,37 @@
       }
     }
   }
+}
 
+.colorpicker-modal{
+  .modal-dialog, .modal-content{
+    width:191px;
+    height:293px;
+    .modal-body {
+      padding: 0 !important;
+      .control, img#colorHex {
+        display: block;
+        margin-left:1px;
+      }
+      .control {
+        width: 110px;
+        margin-left: 5px;
+        margin-top:8px;
+      }
+      .preview-ok {
+        width: 50px;
+        text-align: left;
+        float: right;
+        margin-top: 23px;
+        margin-right:5px;
+        .color-preview {
+          display: inline-block;
+          margin-right: 2px;
+          height: 10px;
+          width: 10px;
+          border: solid 1px @bordercolor;
+        }
+      }
+    }
+  }
 }
