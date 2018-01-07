@@ -1661,13 +1661,16 @@ namespace wwtlib
             Layer layer = (Layer)selectedLayer;
 
             ColorPicker picker = new ColorPicker();
-
+            if (layer.Color != null)
+            {
+                picker.Color = layer.Color;
+            }
             picker.CallBack = delegate
             {
                 layer.Color = picker.Color;
             };
 
-            picker.Show(Cursor.Position);
+            picker.Show(e);
         }
 
         static void addMenu_Click(object sender, EventArgs e)

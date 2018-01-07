@@ -11550,10 +11550,13 @@ window.wwtlib = function(){
   LayerManager._colorMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
     var picker = new ColorPicker();
+    if (layer.get_color() != null) {
+      picker.color = layer.get_color();
+    }
     picker.callBack = function() {
       layer.set_color(picker.color);
     };
-    picker.show(Cursor.get_position());
+    picker.show(e);
   };
   LayerManager._addMenu_Click = function(sender, e) {
   };
@@ -15033,6 +15036,12 @@ window.wwtlib = function(){
         this.__collectionLoaded(this, new CollectionLoadedEventArgs(url));
       }
     },
+    add_colorPickerDisplay: function(value) {
+      this.__colorPickerDisplay = ss.bindAdd(this.__colorPickerDisplay, value);
+    },
+    remove_colorPickerDisplay: function(value) {
+      this.__colorPickerDisplay = ss.bindSub(this.__colorPickerDisplay, value);
+    },
     add_voTableDisplay: function(value) {
       this.__voTableDisplay = ss.bindAdd(this.__voTableDisplay, value);
     },
@@ -15098,6 +15107,11 @@ window.wwtlib = function(){
     },
     remove_slideChanged: function(value) {
       this.__slideChanged = ss.bindSub(this.__slideChanged, value);
+    },
+    showColorPicker: function(pickerInstance, e) {
+      if (this.__colorPickerDisplay != null) {
+        this.__colorPickerDisplay(pickerInstance, e);
+      }
     },
     displayVoTableLayer: function(layer) {
       if (this.__voTableDisplay != null) {
@@ -20881,7 +20895,7 @@ window.wwtlib = function(){
           overlay.set_color(picker.color);
         }
       };
-      picker.show(Vector2d.create(500, 500));
+      picker.show(e);
     },
     _volume_Click: function(sender, e) {
       var vol = new PopupVolume();
@@ -24805,28 +24819,15 @@ window.wwtlib = function(){
 
   function ColorPicker() {
     this.callBack = null;
-    this.color = Colors.get_red();
+    this.color = Colors.get_white();
   }
   var ColorPicker$ = {
     nonMenuClick: function(e) {
-      var menu = document.getElementById('colorpicker');
-      menu.style.display = 'none';
-      window.removeEventListener('click', ss.bind('nonMenuClick', this), true);
-      var image = document.getElementById('colorhex');
-      image.removeEventListener('click', ss.bind('pickColor', this), false);
     },
-    show: function(position) {
-      var picker = document.getElementById('colorpicker');
-      picker.className = 'colorpicker';
-      picker.style.display = 'block';
-      picker.style.left = position.x.toString() + 'px';
-      picker.style.top = position.y.toString() + 'px';
-      window.addEventListener('click', ss.bind('nonMenuClick', this), true);
-      var image = document.getElementById('colorhex');
-      image.addEventListener('mousedown', ss.bind('pickColor', this), false);
+    show: function(e) {
+      WWTControl.scriptInterface.showColorPicker(this, e);
     },
-    pickColor: function(e) {
-      var picker = document.getElementById('colorpicker');
+    getColorFromClick: function(e) {
       var image = document.getElementById('colorhex');
       var canvas = document.createElement('canvas');
       canvas.width = image.width;
@@ -24835,9 +24836,10 @@ window.wwtlib = function(){
       ctx.drawImage(image, 0, 0);
       var pixels = ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
       this.color = Color.fromArgb(pixels[3], pixels[0], pixels[1], pixels[2]);
-      if (this.callBack != null) {
-        this.callBack(this.color);
-      }
+      return this.color;
+    },
+    pickColor: function(e) {
+      this.callBack(this.color);
     }
   };
 

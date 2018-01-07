@@ -73,6 +73,7 @@
     <Content Include=".gitignore" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="controllers\LoginController.js" />
+    <Content Include="controllers\modals\colorpickerController.js" />
     <Content Include="controllers\modals\SlideSelectionController.js" />
     <Content Include="controllers\modals\TourSlideText.js" />
     <Content Include="controllers\modals\VoConeSearchController.js" />
@@ -320,9 +321,10 @@
     <Content Include="searchdataraw.js" />
     <Content Include="sunCorona.png" />
     <Content Include="views\copy-to-clipboard.html" />
-    <Content Include="views\layer-manager.html" />
     <Content Include="views\modals\centered-modal-template.html" />
+    <Content Include="views\modals\colorpicker.html" />
     <Content Include="views\modals\finder-scope.html" />
+    <Content Include="views\modals\loading-content.html" />
     <Content Include="views\modals\login-before-edit.html" />
     <Content Include="views\modals\intro.html" />
     <Content Include="views\modals\set-next-slide.html" />

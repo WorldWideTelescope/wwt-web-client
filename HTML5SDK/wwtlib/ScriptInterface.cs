@@ -32,6 +32,7 @@ namespace wwtlib
             }          
         }
 
+        public event EventHandler<EventArgs> ColorPickerDisplay;
 
         public event EventHandler<EventArgs> VOTableDisplay;
         public event EventHandler<EventArgs> RefreshLayerManager;
@@ -52,6 +53,13 @@ namespace wwtlib
 
         public event EventHandler<SlideChangedEventArgs> SlideChanged;
 
+        public void ShowColorPicker(ColorPicker pickerInstance, EventArgs e)
+        {
+            if (ColorPickerDisplay != null)
+            {
+                ColorPickerDisplay.Invoke(pickerInstance, e);
+            }
+        }
 
         public void DisplayVoTableLayer(VoTableLayer layer)
         {

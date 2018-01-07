@@ -1342,7 +1342,7 @@ namespace wwtlib
                 }
             };
 
-            picker.Show( Vector2d.Create(500, 500));
+            picker.Show(e);
         }
 
         void volume_Click(object sender, EventArgs e)
