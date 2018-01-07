@@ -11,16 +11,18 @@ wwt.controllers.controller('colorpickerController',
   $(window).on('mousemove',setMouse);
   $scope.previewColor = 'rgba(0,0,0,0)';
   $scope.rgb = [0,0,0];
-  $scope.opacity = 100;
-  $scope.init = function(){
+  $scope.opacity = 1;
+  $scope.init = function () {
+    $scope.opacity = cp.color.a / 255;
     var e = $scope.mouse || wwt.lastmouseContext;
     $('body.wwt-webclient-wrapper .colorpicker-modal.wwt-modal .modal-dialog').css({marginTop:e.pageY,marginLeft:e.pageX});
     console.log(wwt.lastmouseContext,$scope.mouse);
     var bar = $('.cross-fader.color-picker a.btn').css('left', 100);
+    
     var slider = new wwt.Move({
       el: bar,
       bounds: {
-        x: [-200,  0],
+        x: [-100,  0],
         y: [0, 0]
       },
       onstart: function () {
@@ -60,8 +62,9 @@ wwt.controllers.controller('colorpickerController',
   };
 
   $scope.setColor = function(){
-    $scope.$applyAsync(function(){
-      $scope.previewColor = 'rgba('+ $scope.rgb.join(',') + ',' + $scope.opacity +')';
+      $scope.$applyAsync(function () {
+      $scope.previewColor = 'rgba(' + $scope.rgb.join(',') + ',' + $scope.opacity + ')';
+        
     });
 
   }
