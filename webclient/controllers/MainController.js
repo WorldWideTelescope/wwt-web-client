@@ -331,8 +331,10 @@ wwt.controllers.controller('MainController',
                   });
                 }],
                 'VO Cone Search': [function () {
+                  var modalScope = $rootScope.$new();
+                  modalScope.customClass='vo-cone-modal';
                   var coneSearchModal = $modal({
-                    scope: $scope,
+                    scope: modalScope,
                     templateUrl: 'views/modals/centered-modal-template.html',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,

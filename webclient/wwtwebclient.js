@@ -1459,7 +1459,7 @@ wwt.app.directive('movable', ['AppState',function (appState) {
           if (tSel && tSel.indexOf('modal') > -1) {
 
             setTimeout(function () {
-              if (target.width() < 222) {
+              if (target.width() < 177) {
                 return;
               }
               el.css({
@@ -2650,6 +2650,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 
 	  var modalScope = $rootScope.$new();
+	  modalScope.customClass = 'vo-tbl-modal';
     modalScope.voTableLayer = votable.get_table ? votable : wwtlib.VoTableLayer.create(votable);
     modalScope.votable = modalScope.voTableLayer.get_table();
 
@@ -2666,7 +2667,6 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 	var showColorpicker = function(colorpicker,e){
     var modalScope = $rootScope.$new();
     modalScope.colorpicker = colorpicker;
-    console.log(e);
     modalScope.mouse = e;
     modalScope.customClass = 'colorpicker-modal';
     $modal({
@@ -4522,8 +4522,10 @@ wwt.controllers.controller('MainController',
                   });
                 }],
                 'VO Cone Search': [function () {
+                  var modalScope = $rootScope.$new();
+                  modalScope.customClass='vo-cone-modal';
                   var coneSearchModal = $modal({
-                    scope: $scope,
+                    scope: modalScope,
                     templateUrl: 'views/modals/centered-modal-template.html',
                     contentTemplate: 'views/modals/vo-cone-search.html',
                     show: true,
@@ -8023,7 +8025,7 @@ wwt.controllers.controller('voConeSearch',
     'Util',
     function ($rootScope, $scope, appState, util) {
       var init = function () {
-        $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
+        //$('.wwt-modal.vo-cone-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
 
 
       }
@@ -8152,7 +8154,7 @@ wwt.controllers.controller('voTableViewer',
       $scope.plotType = layer.plotType;
       var init = function () {
 
-        $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
+        //$('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
 
         var colArray = [];
         if ($scope.votable && $scope.votable.columns) {

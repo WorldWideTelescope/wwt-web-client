@@ -30,7 +30,7 @@
           if (tSel && tSel.indexOf('modal') > -1) {
 
             setTimeout(function () {
-              if (target.width() < 222) {
+              if (target.width() < 177) {
                 return;
               }
               el.css({

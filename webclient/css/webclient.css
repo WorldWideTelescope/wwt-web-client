@@ -7565,14 +7565,18 @@ body .histogram .header {
   position: relative;
   top: -4px;
   left: -4px;
+  width: 267px;
 }
 body .histogram .header #histogramClose {
   display: inline-block;
   height: 16px;
   width: 16px;
   float: right;
-  color: #333;
   cursor: pointer;
+}
+body .histogram .header #histogramClose a,
+body .histogram .header #histogramClose i {
+  color: #333;
 }
 div.wwt-modal div.modal-content div.vo-cone-search {
   width: 1123px;
@@ -7632,6 +7636,8 @@ div.wwt-modal div.modal-content div.vo-cone-search.vo-table-viewer div.results t
   max-width: 85px;
 }
 div.wwt-modal div.modal-content div.vo-cone-search div.results {
+  position: relative;
+  left: -2px;
   max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -7687,9 +7693,24 @@ div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td {
   background: rgba(255, 255, 255, 0.85);
   color: #333;
   padding: 3px 5px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 .wwt-modal .modal-header[data-movable] {
   cursor: pointer;
+}
+.wwt-modal div.modal-dialog div.modal-content {
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 8px #a1c2f9b0;
+          box-shadow: 0 0 8px #a1c2f9b0;
+}
+.wwt-modal.vo-tbl-modal .modal-dialog,
+.wwt-modal.vo-cone-modal .modal-dialog {
+  width: 1120px;
+}
+.wwt-modal.vo-tbl-modal .modal-dialog .modal-content,
+.wwt-modal.vo-cone-modal .modal-dialog .modal-content {
+  width: 1120px;
 }
 #simplemodal #simpleinput {
   width: 271px !important;

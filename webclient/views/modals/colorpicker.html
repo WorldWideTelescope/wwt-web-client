@@ -1,5 +1,4 @@
-
-<div class="modal-header">
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
   <h5>
     <i class="fa fa-close pull-right" ng-click="$hide()"></i>
     <span localize="Choose color"></span>
@@ -11,12 +10,10 @@
     <span class=color-preview ng-style="{'background':previewColor}"></span>
     <span localize="OK"></span>
   </a>
-  <div class="control color-alpha" >
+  <div class="control color-alpha">
     <label localize="Opacity"></label>
     <div class="cross-fader color-picker">
       <a class="btn">&nbsp;</a>
     </div>
-
   </div>
-
 </div>
