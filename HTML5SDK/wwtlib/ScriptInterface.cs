@@ -240,11 +240,11 @@ namespace wwtlib
 
             Imageset imageset = Imageset.Create(
                         wcsImage.Description,
-                        "m51",
+                        Util.GetHashCode(wcsImage.Filename).ToString(),
                         ImageSetType.Sky,
                         BandPass.Visible,
                         ProjectionType.SkyImage,
-                        54123,
+                        Util.GetHashCode(wcsImage.Filename),
                         0,
                         0,
                         256,
@@ -270,7 +270,8 @@ namespace wwtlib
                         ""
                         );
             imageset.WcsImage = wcsImage;
-            LayerManager.AddImageSetLayer(imageset, "Fits Image");
+            LayerManager.AddImageSetLayer(imageset, LayerManager.GetNextFitsName());
+            LayerManager.LoadTree();
             WWTControl.Singleton.GotoRADecZoom(wcsImage.CenterX/15, wcsImage.CenterY, 10 * wcsImage.ScaleY * height, false);
         }
 

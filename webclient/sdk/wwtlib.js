@@ -9344,6 +9344,25 @@ window.wwtlib = function(){
     LayerManager.loadTree();
     return layer;
   };
+  LayerManager.getNextFitsName = function() {
+    var currentNumber = 0;
+    var $enum1 = ss.enumerate(LayerManager.get_allMaps()['Sky'].layers);
+    while ($enum1.moveNext()) {
+      var layer = $enum1.current;
+      if (ss.startsWith(layer.get_name(), 'Fits Image ')) {
+        var number = ss.replaceString(layer.get_name(), 'Fits Image ', '');
+        try {
+          var num = parseInt(number);
+          if (num > currentNumber) {
+            currentNumber = num;
+          }
+        }
+        catch ($e2) {
+        }
+      }
+    }
+    return ss.format('Fits Image {0}', currentNumber + 1);
+  };
   LayerManager._closeAllTourLoadedLayers = function() {
     var purgeTargets = [];
     var $enum1 = ss.enumerate(ss.keys(LayerManager.get_layerList()));
@@ -9810,21 +9829,16 @@ window.wwtlib = function(){
         LayerManager._contextMenu.items.push(Collapse);
       }
       if (selectedLayer.canCopyToClipboard()) {
-        LayerManager._contextMenu.items.push(copyMenu);
       }
       LayerManager._contextMenu.items.push(deleteMenu);
-      LayerManager._contextMenu.items.push(saveMenu);
       LayerManager._contextMenu.items.push(spacer2);
       LayerManager._contextMenu.items.push(colorMenu);
-      LayerManager._contextMenu.items.push(opacityMenu);
-      LayerManager._contextMenu.items.push(lifeTimeMenu);
       if (ss.canCast(selected, ImageSetLayer)) {
         LayerManager._contextMenu.items.push(defaultImageset);
         var isl = ss.safeCast(selected, ImageSetLayer);
         defaultImageset.checked = isl.get_overrideDefaultLayer();
       }
       if (ss.canCast(selected, SpreadSheetLayer) || ss.canCast(selected, Object3dLayer) || ss.canCast(selected, GroundOverlayLayer) || ss.canCast(selected, GreatCirlceRouteLayer) || ss.canCast(selected, OrbitLayer)) {
-        LayerManager._contextMenu.items.push(popertiesMenu);
       }
       if (ss.canCast(selected, VoTableLayer)) {
         LayerManager._contextMenu.items.push(showViewer);
@@ -9896,8 +9910,6 @@ window.wwtlib = function(){
           var spacerNeeded = false;
           if (map.frame.reference !== 18 && !WWTControl.singleton.sandboxMode) {
             if (!Sky) {
-              LayerManager._contextMenu.items.push(goTo);
-              spacerNeeded = true;
             }
             try {
               var name = map.frame.reference.toString();
@@ -9933,35 +9945,24 @@ window.wwtlib = function(){
           }
         }
         if (!Sky) {
-          LayerManager._contextMenu.items.push(newMenu);
         }
-        LayerManager._contextMenu.items.push(newLayerGroupMenu);
       }
-      LayerManager._contextMenu.items.push(addMenu);
-      LayerManager._contextMenu.items.push(addFeedMenu);
       if (!Sky) {
-        LayerManager._contextMenu.items.push(addGreatCircle);
         LayerManager._contextMenu.items.push(addGirdLayer);
       }
       if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
-        LayerManager._contextMenu.items.push(addMpc);
       }
       if (map.frame.reference === 18 && map.frame.referenceFrameType === 1 && map.parent != null && map.parent.frame.name === 'Sun') {
-        LayerManager._contextMenu.items.push(convertToOrbit);
       }
       if (!Sky) {
-        LayerManager._contextMenu.items.push(addWmsLayer);
       }
-      LayerManager._contextMenu.items.push(pasteMenu);
       if (map.frame.reference === 19) {
         LayerManager._contextMenu.items.push(deleteFrameMenu);
       }
       if (map.frame.reference === 18) {
         LayerManager._contextMenu.items.push(deleteFrameMenu);
-        LayerManager._contextMenu.items.push(popertiesMenu);
       }
       LayerManager._contextMenu.items.push(spacer1);
-      LayerManager._contextMenu.items.push(saveMenu);
       LayerManager._contextMenu._show(Vector2d.create(x, y));
     }
   };
@@ -13702,9 +13703,10 @@ window.wwtlib = function(){
     _onWcsLoad: function(wcsImage) {
       var width = ss.truncate(wcsImage.get_sizeX());
       var height = ss.truncate(wcsImage.get_sizeY());
-      var imageset = Imageset.create(wcsImage.get_description(), 'm51', 2, 3, 5, 54123, 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, '');
+      var imageset = Imageset.create(wcsImage.get_description(), Util.getHashCode(wcsImage.get_filename()).toString(), 2, 3, 5, Util.getHashCode(wcsImage.get_filename()), 0, 0, 256, wcsImage.get_scaleY(), '.tif', wcsImage.get_scaleX() > 0, '', wcsImage.get_centerX(), wcsImage.get_centerY(), wcsImage.get_rotation(), false, '', false, false, 1, wcsImage.get_referenceX(), wcsImage.get_referenceY(), wcsImage.get_copyright(), wcsImage.get_creditsUrl(), '', '', 0, '');
       imageset.set_wcsImage(wcsImage);
-      LayerManager.addImageSetLayer(imageset, 'Fits Image');
+      LayerManager.addImageSetLayer(imageset, LayerManager.getNextFitsName());
+      LayerManager.loadTree();
       WWTControl.singleton.gotoRADecZoom(wcsImage.get_centerX() / 15, wcsImage.get_centerY(), 10 * wcsImage.get_scaleY() * height, false);
     },
     get_hideTourFeedback: function() {

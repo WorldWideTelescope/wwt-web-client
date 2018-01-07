@@ -357,6 +357,30 @@ namespace wwtlib
             return layer;
         }
 
+        public static string GetNextFitsName()
+        {
+            int currentNumber = 0;
+            foreach( Layer layer in AllMaps["Sky"].Layers)
+            {
+                if (layer.Name.StartsWith("Fits Image "))
+                {
+                    string number = layer.Name.Replace("Fits Image ", "");
+                    try
+                    {
+                        int num = Int32.Parse(number);
+                        if (num > currentNumber)
+                        {
+                            currentNumber = num;
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+            return string.Format("Fits Image {0}", currentNumber+1);
+        }
 
         internal static void CloseAllTourLoadedLayers()
         {
@@ -1076,11 +1100,11 @@ namespace wwtlib
 
                 if (selectedLayer.CanCopyToClipboard())
                 {
-                    contextMenu.Items.Add(copyMenu);
+                    //contextMenu.Items.Add(copyMenu);
                 }
 
                 contextMenu.Items.Add(deleteMenu);
-                contextMenu.Items.Add(saveMenu);
+                //contextMenu.Items.Add(saveMenu);
 
                 //if (Earth3d.IsLoggedIn)
                 //{
@@ -1089,10 +1113,10 @@ namespace wwtlib
 
                 contextMenu.Items.Add(spacer2);
                 contextMenu.Items.Add(colorMenu);
-                contextMenu.Items.Add(opacityMenu);
+                //contextMenu.Items.Add(opacityMenu);
 
                 // ToDo Should we have this only show up in layers under Identity Reference Frames?
-                contextMenu.Items.Add(lifeTimeMenu);
+                //contextMenu.Items.Add(lifeTimeMenu);
 
 
                 if (selected is ImageSetLayer)
@@ -1105,7 +1129,7 @@ namespace wwtlib
 
                 if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
                 {
-                    contextMenu.Items.Add(popertiesMenu);
+                    //contextMenu.Items.Add(popertiesMenu);
                 }
 
                 if (selected is VoTableLayer)
@@ -1215,8 +1239,8 @@ namespace wwtlib
                             // fly to
                             if (!Sky)
                             {
-                                contextMenu.Items.Add(goTo);
-                                spacerNeeded = true;
+                                //contextMenu.Items.Add(goTo);
+                                //spacerNeeded = true;
                             }
 
                             try
@@ -1270,39 +1294,39 @@ namespace wwtlib
 
                     if (!Sky)
                     {
-                        contextMenu.Items.Add(newMenu);
+                        //contextMenu.Items.Add(newMenu);
                     }
-                    contextMenu.Items.Add(newLayerGroupMenu);
+                    //contextMenu.Items.Add(newLayerGroupMenu);
 
                 }
 
-                contextMenu.Items.Add(addMenu);
-                contextMenu.Items.Add(addFeedMenu);
+                //contextMenu.Items.Add(addMenu);
+                //contextMenu.Items.Add(addFeedMenu);
                 if (!Sky)
                 {
-                    contextMenu.Items.Add(addGreatCircle);
+                    //contextMenu.Items.Add(addGreatCircle);
                     contextMenu.Items.Add(addGirdLayer);
                 }
 
                 if ((map.Frame.Reference != ReferenceFrames.Identity && map.Frame.Name == "Sun") ||
                     (map.Frame.Reference == ReferenceFrames.Identity && map.Parent != null && map.Parent.Frame.Name == "Sun"))
                 {
-                    contextMenu.Items.Add(addMpc);
+                    //contextMenu.Items.Add(addMpc);
                 }
 
                 if (map.Frame.Reference == ReferenceFrames.Custom && map.Frame.ReferenceFrameType == ReferenceFrameTypes.Orbital && map.Parent != null && map.Parent.Frame.Name == "Sun")
                 {
-                    contextMenu.Items.Add(convertToOrbit);
+                    //contextMenu.Items.Add(convertToOrbit);
                 }
 
 
                 if (!Sky)
                 {
-                    contextMenu.Items.Add(addWmsLayer);
+                    //contextMenu.Items.Add(addWmsLayer);
                 }
 
 
-                contextMenu.Items.Add(pasteMenu);
+                //contextMenu.Items.Add(pasteMenu);
 
 
                 if (map.Frame.Reference == ReferenceFrames.Identity)
@@ -1314,7 +1338,7 @@ namespace wwtlib
                 {
                     contextMenu.Items.Add(deleteFrameMenu);
 
-                    contextMenu.Items.Add(popertiesMenu);
+                    //contextMenu.Items.Add(popertiesMenu);
 
                 }
 
@@ -1322,7 +1346,7 @@ namespace wwtlib
                 {
                     contextMenu.Items.Add(spacer1);
                 }
-                contextMenu.Items.Add(saveMenu);
+                //contextMenu.Items.Add(saveMenu);
                 //if (Earth3d.IsLoggedIn)
                 //{
                 //    contextMenu.Items.Add(publishLayers);
