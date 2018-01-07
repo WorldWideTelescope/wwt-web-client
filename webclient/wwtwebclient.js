@@ -8266,13 +8266,12 @@ wwt.controllers.controller('colorpickerController',
       c = cp.getColorFromClick(event);
     }
     else{
-
       c = cp.color;
-      if (c.name === ''){
+      /*if (c.name === ''){
         c.r = 255;
         c.b = 255;
         c.g = 255;
-      }
+      }*/
       if (!c.a){
         c.a = 255;//????
       }
@@ -8290,7 +8289,7 @@ wwt.controllers.controller('colorpickerController',
   }
 
   $scope.commitColor = function(){
-    cp.color.a = Math.min(0,Math.max(255,Math.round($scope.opacity*255)));
+    cp.color.a = Math.min(255,Math.max(0,Math.round($scope.opacity*255)));
     var rgb = $scope.rgb;
     cp.color.r = rgb[0];
     cp.color.g = rgb[1];

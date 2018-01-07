@@ -1328,7 +1328,7 @@ namespace wwtlib
 
             //picker.Location = Cursor.Position;
 
-            //picker.Color = Focus.Color;
+            picker.Color = Focus.Color;
 
             // if (picker.ShowDialog() == DialogResult.OK)
 

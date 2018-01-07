@@ -20887,6 +20887,7 @@ window.wwtlib = function(){
       var $this = this;
 
       var picker = new ColorPicker();
+      picker.color = this.get_focus().get_color();
       picker.callBack = function() {
         Undo.push(new UndoTourStopChange(Language.getLocalizedText(543, 'Edit Color'), $this._tour));
         var $enum1 = ss.enumerate($this.selection.selectionSet);
@@ -25001,6 +25002,7 @@ window.wwtlib = function(){
     show: function(position) {
       this.tile = TileCache.getTile(0, 0, 0, this.layer.get_imageSet(), null);
       var picker = document.getElementById('histogram');
+      var closeBtn = document.getElementById('histogramClose');
       picker.style.display = 'block';
       picker.style.left = position.x.toString() + 'px';
       picker.style.top = position.y.toString() + 'px';

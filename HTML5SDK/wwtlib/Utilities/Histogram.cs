@@ -46,6 +46,7 @@ namespace wwtlib
             tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, layer.ImageSet, null);
 
             DivElement picker = Document.GetElementById<DivElement>("histogram");
+            DivElement closeBtn = Document.GetElementById<DivElement>("histogramClose");
             /////////////picker.ClassName = "histogram";
             picker.Style.Display = "block";
             picker.Style.Left = position.X.ToString() + "px";
