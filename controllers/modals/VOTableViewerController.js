@@ -9,7 +9,7 @@ wwt.controllers.controller('voTableViewer',
       $scope.plotType = layer.plotType;
       var init = function () {
 
-        $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
+        //$('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
 
         var colArray = [];
         if ($scope.votable && $scope.votable.columns) {

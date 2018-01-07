@@ -47,6 +47,7 @@
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 
 	  var modalScope = $rootScope.$new();
+	  modalScope.customClass = 'vo-tbl-modal';
     modalScope.voTableLayer = votable.get_table ? votable : wwtlib.VoTableLayer.create(votable);
     modalScope.votable = modalScope.voTableLayer.get_table();
 
@@ -63,7 +64,6 @@
 	var showColorpicker = function(colorpicker,e){
     var modalScope = $rootScope.$new();
     modalScope.colorpicker = colorpicker;
-    console.log(e);
     modalScope.mouse = e;
     modalScope.customClass = 'colorpicker-modal';
     $modal({

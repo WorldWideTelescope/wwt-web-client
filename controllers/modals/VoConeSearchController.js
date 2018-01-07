@@ -5,7 +5,7 @@ wwt.controllers.controller('voConeSearch',
     'Util',
     function ($rootScope, $scope, appState, util) {
       var init = function () {
-        $('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
+        //$('.wwt-modal.vo-cone-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
 
 
       }
