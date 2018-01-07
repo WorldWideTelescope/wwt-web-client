@@ -8239,7 +8239,7 @@ wwt.controllers.controller('colorpickerController',
     var e = $scope.mouse || wwt.lastmouseContext;
     $('body.wwt-webclient-wrapper .colorpicker-modal.wwt-modal .modal-dialog').css({marginTop:e.pageY,marginLeft:e.pageX});
     console.log(wwt.lastmouseContext,$scope.mouse);
-    var bar = $('.cross-fader.color-picker a.btn').css('left', $scope.opacity * 100);
+    var bar = $('.cross-fader.color-picker a.btn').css('left', 100);
     
     var slider = new wwt.Move({
       el: bar,

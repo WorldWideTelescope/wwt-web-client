@@ -24985,19 +24985,17 @@ window.wwtlib = function(){
     this.selectedCurveStyle = 0;
   }
   var Histogram$ = {
-    nonMenuClick: function(e) {
-      if (!this._ignoreNextClick) {
-        var menu = document.getElementById('histogram');
-        menu.style.display = 'none';
-        window.removeEventListener('click', ss.bind('nonMenuClick', this), true);
-        var image = document.getElementById('graph');
-        image.removeEventListener('mousedown', ss.bind('mouseDown', this), false);
-        image.removeEventListener('mousemove', ss.bind('mousemove', this), false);
-        image.removeEventListener('mouseup', ss.bind('mouseup', this), false);
-        this._dropDown.removeEventListener('change', ss.bind('curveStyleSelected', this), false);
-        this._dropDown.removeEventListener('click', ss.bind('ignoreMe', this), true);
-      }
-      this._ignoreNextClick = false;
+    close: function(e) {
+      var menu = document.getElementById('histogram');
+      var closeBtn = document.getElementById('histogramClose');
+      menu.style.display = 'none';
+      window.removeEventListener('click', ss.bind('close', this), true);
+      var image = document.getElementById('graph');
+      image.removeEventListener('mousedown', ss.bind('mouseDown', this), false);
+      image.removeEventListener('mousemove', ss.bind('mousemove', this), false);
+      image.removeEventListener('mouseup', ss.bind('mouseup', this), false);
+      this._dropDown.removeEventListener('change', ss.bind('curveStyleSelected', this), false);
+      this._dropDown.removeEventListener('click', ss.bind('ignoreMe', this), true);
     },
     show: function(position) {
       this.tile = TileCache.getTile(0, 0, 0, this.layer.get_imageSet(), null);
@@ -25014,7 +25012,7 @@ window.wwtlib = function(){
       canvas.addEventListener('mousedown', ss.bind('mouseDown', this), false);
       canvas.addEventListener('mousemove', ss.bind('mousemove', this), false);
       canvas.addEventListener('mouseup', ss.bind('mouseup', this), false);
-      window.addEventListener('click', ss.bind('nonMenuClick', this), true);
+      closeBtn.addEventListener('click', ss.bind('close', this), true);
       this.draw();
     },
     ignoreMe: function(e) {
@@ -25023,6 +25021,7 @@ window.wwtlib = function(){
     curveStyleSelected: function(e) {
       this.selectedCurveStyle = this._dropDown.selectedIndex;
       this.setUpdateTimer();
+      this.draw();
       this._ignoreNextClick = true;
     },
     mouseDown: function(e) {

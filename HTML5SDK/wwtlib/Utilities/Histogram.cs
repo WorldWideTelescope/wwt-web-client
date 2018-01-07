@@ -22,22 +22,21 @@ namespace wwtlib
         public SkyImageTile tile = null;
         SelectElement dropDown = null;
 
-        public void NonMenuClick(ElementEvent e)
+        public void Close(ElementEvent e)
         {
-            if (!ignoreNextClick)
-            {
-                DivElement menu = Document.GetElementById<DivElement>("histogram");
-                menu.Style.Display = "none";
-                Window.RemoveEventListener("click", NonMenuClick, true);
 
-                ImageElement image = Document.GetElementById<ImageElement>("graph");
-                image.RemoveEventListener("mousedown", MouseDown, false);
-                image.RemoveEventListener("mousemove", mousemove, false);
-                image.RemoveEventListener("mouseup", mouseup, false);
-                dropDown.RemoveEventListener("change", CurveStyleSelected, false);
-                dropDown.RemoveEventListener("click", IgnoreMe, true);
-            }
-            ignoreNextClick = false;
+            DivElement menu = Document.GetElementById<DivElement>("histogram");
+            DivElement closeBtn = Document.GetElementById<DivElement>("histogramClose");
+            menu.Style.Display = "none";
+            Window.RemoveEventListener("click", Close, true);
+
+            ImageElement image = Document.GetElementById<ImageElement>("graph");
+            image.RemoveEventListener("mousedown", MouseDown, false);
+            image.RemoveEventListener("mousemove", mousemove, false);
+            image.RemoveEventListener("mouseup", mouseup, false);
+            dropDown.RemoveEventListener("change", CurveStyleSelected, false);
+            dropDown.RemoveEventListener("click", IgnoreMe, true);
+
         }
 
 
@@ -64,7 +63,7 @@ namespace wwtlib
             canvas.AddEventListener("mousedown", MouseDown, false);
             canvas.AddEventListener("mousemove", mousemove, false);
             canvas.AddEventListener("mouseup", mouseup, false);
-            Window.AddEventListener("click", NonMenuClick, true);
+            closeBtn.AddEventListener("click", Close, true);
 
             Draw();
         }
@@ -78,6 +77,7 @@ namespace wwtlib
         {
             SelectedCurveStyle = dropDown.SelectedIndex;
             SetUpdateTimer();
+            Draw();
             ignoreNextClick = true;
         }
 
