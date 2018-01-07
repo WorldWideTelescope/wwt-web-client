@@ -281,7 +281,14 @@
     </div>
 
     <div id="histogram" class="histogram">
-        <div style="margin: 0px;">
+      <div class="header">
+        <div id="histogramClose">
+          <a><i class="fa fa-close"></i></a>
+        </div>
+        <span localize="Histogram"></span>
+
+      </div>
+      <div style="margin: 0px;">
         <canvas id="graph" src="" width="256" height="150" style="margin: 0px;" />
         </div>
         <div class="select">
