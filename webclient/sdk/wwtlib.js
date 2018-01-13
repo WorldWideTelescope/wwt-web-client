@@ -23293,7 +23293,7 @@ window.wwtlib = function(){
       Tile.prepDevice.bindTexture(3553, tex);
       Tile.prepDevice.texParameteri(3553, 10242, 33071);
       Tile.prepDevice.texParameteri(3553, 10243, 33071);
-      Tile.prepDevice.texImage2D(3553, 0, 6408, this.height, this.width, 0, 6408, 5121, this._buffer);
+      Tile.prepDevice.texImage2D(3553, 0, 6408, this.width, this.height, 0, 6408, 5121, this._buffer);
       Tile.prepDevice.texParameteri(3553, 10241, 9985);
       Tile.prepDevice.generateMipmap(3553);
       Tile.prepDevice.bindTexture(3553, null);
@@ -23591,7 +23591,8 @@ window.wwtlib = function(){
         var factor = (this.image.maxVal - this.image.minVal) / 256;
         var low = this.image.minVal + (this._lowPosition * factor);
         var hi = this.image.minVal + (this._highPosition * factor);
-        this.tile.texture2d = this.image.getScaledBitmap(low, hi, this.selectedCurveStyle).getTexture();
+        var z = this.image.lastBitmapZ;
+        this.tile.texture2d = this.image.getScaledBitmap(low, hi, this.selectedCurveStyle, z).getTexture();
       }
       this._updated = true;
     },
@@ -31329,13 +31330,17 @@ window.wwtlib = function(){
     this.blankValue = Number.MIN_VALUE;
     this.maxVal = Number.MIN_VALUE;
     this.minVal = Number.MAX_VALUE;
+    this.transparentBlack = true;
     this.lastMin = 0;
     this.lastMax = 255;
     this._color$1 = false;
+    this._sizeZ$1 = 1;
+    this.depth = 1;
     this._bufferSize$1 = 1;
     this.lastScale = 0;
     this.lastBitmapMin = 0;
     this.lastBitmapMax = 0;
+    this.lastBitmapZ = 0;
     WcsImage.call(this);
     FitsImage.last = this;
     this._callBack$1 = callMeBack;
@@ -31465,12 +31470,30 @@ window.wwtlib = function(){
             this._color$1 = true;
           }
         }
+        if (this.numAxis > 2) {
+          this._sizeZ$1 = this.depth = this.axisSize[2];
+          this.lastBitmapZ = ss.truncate((this._sizeZ$1 / 2));
+        }
         this.sizeX = this.width = this.axisSize[0];
         this.sizeY = this.height = this.axisSize[1];
         this._computeWcs$1();
         this.histogram = this.computeHistogram(256);
         this.histogramMaxCount = this.histogram[256];
       }
+    },
+    getZDescription: function() {
+      var description = '';
+      if (this._header$1['RESTFREQ'] != null && this._header$1['CRPIX3'] != null && this._header$1['CDELT3'] != null && this._header$1['CRVAL3'] != null) {
+        var c = 299792.458;
+        var f0 = parseFloat(this._header$1['RESTFREQ']);
+        var crpix3 = parseFloat(this._header$1['CRPIX3']);
+        var cdelt3 = parseFloat(this._header$1['CDELT3']);
+        var crval3 = parseFloat(this._header$1['CRVAL3']);
+        var f = ((this.lastBitmapZ + 1) - crpix3) * cdelt3 + crval3;
+        var fval = ((f0 - f) / f0) * c;
+        description = ss.format('Velocity {0} km/s', ss.truncate(fval));
+      }
+      return description;
     },
     _addKeyword$1: function(keyword, values) {
       if (keyword !== 'CONTINUE' && keyword !== 'COMMENT' && keyword !== 'HISTORY' && !ss.emptyString(keyword)) {
@@ -31741,13 +31764,15 @@ window.wwtlib = function(){
         this.lastBitmapMin = this.minVal;
         this.lastBitmapMax = this.maxVal;
       }
-      return this.getScaledBitmap(this.lastBitmapMin, this.lastBitmapMax, this.lastScale);
+      return this.getScaledBitmap(this.lastBitmapMin, this.lastBitmapMax, this.lastScale, this.lastBitmapZ);
     },
-    getScaledBitmap: function(min, max, scaleType) {
+    getScaledBitmap: function(min, max, scaleType, z) {
+      z = Math.min(z, this._sizeZ$1);
       var scale;
       this.lastScale = scaleType;
       this.lastBitmapMin = min;
       this.lastBitmapMax = max;
+      this.lastBitmapZ = z;
       switch (scaleType) {
         case 0:
         default:
@@ -31769,15 +31794,15 @@ window.wwtlib = function(){
       try {
         switch (this.dataType) {
           case 0:
-            return this._getBitmapByte$1(min, max, scale);
+            return this._getBitmapByte$1(min, max, scale, this.lastBitmapZ);
           case 1:
-            return this.getBitmapShort(min, max, scale);
+            return this.getBitmapShort(min, max, scale, this.lastBitmapZ);
           case 2:
-            return this._getBitmapInt$1(min, max, scale);
+            return this._getBitmapInt$1(min, max, scale, this.lastBitmapZ);
           case 3:
-            return this._getBitmapFloat$1(min, max, scale);
+            return this._getBitmapFloat$1(min, max, scale, this.lastBitmapZ);
           case 4:
-            return this._getBitmapDouble$1(min, max, scale);
+            return this._getBitmapDouble$1(min, max, scale, this.lastBitmapZ);
           case 5:
           default:
             return Bitmap.create(100, 100);
@@ -31787,11 +31812,11 @@ window.wwtlib = function(){
         return Bitmap.create(10, 10);
       }
     },
-    _getBitmapByte$1: function(min, max, scale) {
+    _getBitmapByte$1: function(min, max, scale, z) {
       var buf = this.dataBuffer;
       var factor = max - min;
       var stride = this.axisSize[0];
-      var page = this.axisSize[0] * this.axisSize[1];
+      var page = this.axisSize[0] * this.axisSize[1] * z;
       var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
       for (var y = 0; y < this.axisSize[1]; y++) {
         var indexY = ((this.axisSize[1] - 1) - y);
@@ -31811,24 +31836,24 @@ window.wwtlib = function(){
             }
           }
           else {
-            var dataValue = buf[x + indexY * stride];
+            var dataValue = buf[x + indexY * stride + page];
             if (this.containsBlanks && dataValue === this.blankValue) {
               bmp.setPixel(x, y, 0, 0, 0, 0);
             }
             else {
               var val = scale.map(dataValue);
-              bmp.setPixel(x, y, val, val, val, 255);
+              bmp.setPixel(x, y, val, val, val, (this.transparentBlack && !val) ? 0 : 255);
             }
           }
         }
       }
       return bmp;
     },
-    _getBitmapDouble$1: function(min, max, scale) {
+    _getBitmapDouble$1: function(min, max, scale, z) {
       var buf = this.dataBuffer;
       var factor = max - min;
       var stride = this.axisSize[0];
-      var page = this.axisSize[0] * this.axisSize[1];
+      var page = this.axisSize[0] * this.axisSize[1] * z;
       var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
       for (var y = 0; y < this.axisSize[1]; y++) {
         var indexY = ((this.axisSize[1] - 1) - y);
@@ -31848,24 +31873,24 @@ window.wwtlib = function(){
             }
           }
           else {
-            var dataValue = buf[x + indexY * stride];
+            var dataValue = buf[x + indexY * stride + page];
             if (this.containsBlanks && dataValue === this.blankValue) {
               bmp.setPixel(x, y, 0, 0, 0, 0);
             }
             else {
               var val = scale.map(dataValue);
-              bmp.setPixel(x, y, val, val, val, 255);
+              bmp.setPixel(x, y, val, val, val, (this.transparentBlack && !val) ? 0 : 255);
             }
           }
         }
       }
       return bmp;
     },
-    _getBitmapFloat$1: function(min, max, scale) {
+    _getBitmapFloat$1: function(min, max, scale, z) {
       var buf = this.dataBuffer;
       var factor = max - min;
       var stride = this.axisSize[0];
-      var page = this.axisSize[0] * this.axisSize[1];
+      var page = this.axisSize[0] * this.axisSize[1] * z;
       var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
       for (var y = 0; y < this.axisSize[1]; y++) {
         var indexY = ((this.axisSize[1] - 1) - y);
@@ -31885,24 +31910,24 @@ window.wwtlib = function(){
             }
           }
           else {
-            var dataValue = buf[x + indexY * stride];
+            var dataValue = buf[x + indexY * stride + page];
             if (this.containsBlanks && dataValue === this.blankValue) {
               bmp.setPixel(x, y, 0, 0, 0, 0);
             }
             else {
               var val = scale.map(dataValue);
-              bmp.setPixel(x, y, val, val, val, 255);
+              bmp.setPixel(x, y, val, val, val, (this.transparentBlack && !val) ? 0 : 255);
             }
           }
         }
       }
       return bmp;
     },
-    _getBitmapInt$1: function(min, max, scale) {
+    _getBitmapInt$1: function(min, max, scale, z) {
       var buf = this.dataBuffer;
       var factor = max - min;
       var stride = this.axisSize[0];
-      var page = this.axisSize[0] * this.axisSize[1];
+      var page = this.axisSize[0] * this.axisSize[1] * z;
       var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
       for (var y = 0; y < this.axisSize[1]; y++) {
         var indexY = ((this.axisSize[1] - 1) - y);
@@ -31922,24 +31947,24 @@ window.wwtlib = function(){
             }
           }
           else {
-            var dataValue = buf[x + indexY * stride];
+            var dataValue = buf[x + indexY * stride + page];
             if (this.containsBlanks && dataValue === this.blankValue) {
               bmp.setPixel(x, y, 0, 0, 0, 0);
             }
             else {
               var val = scale.map(dataValue);
-              bmp.setPixel(x, y, val, val, val, 255);
+              bmp.setPixel(x, y, val, val, val, (this.transparentBlack && !val) ? 0 : 255);
             }
           }
         }
       }
       return bmp;
     },
-    getBitmapShort: function(min, max, scale) {
+    getBitmapShort: function(min, max, scale, z) {
       var buf = this.dataBuffer;
       var factor = max - min;
       var stride = this.axisSize[0];
-      var page = this.axisSize[0] * this.axisSize[1];
+      var page = this.axisSize[0] * this.axisSize[1] * z;
       var bmp = Bitmap.create(this.axisSize[0], this.axisSize[1]);
       for (var y = 0; y < this.axisSize[1]; y++) {
         var indexY = ((this.axisSize[1] - 1) - y);
@@ -31959,13 +31984,13 @@ window.wwtlib = function(){
             }
           }
           else {
-            var dataValue = buf[x + indexY * stride];
+            var dataValue = buf[x + indexY * stride + page];
             if (this.containsBlanks && dataValue === this.blankValue) {
               bmp.setPixel(x, y, 0, 0, 0, 0);
             }
             else {
               var val = scale.map(dataValue);
-              bmp.setPixel(x, y, val, val, val, 255);
+              bmp.setPixel(x, y, val, val, val, (this.transparentBlack && !val) ? 0 : 255);
             }
           }
         }

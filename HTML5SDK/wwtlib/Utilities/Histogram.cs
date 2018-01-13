@@ -189,7 +189,8 @@ namespace wwtlib
                 double factor = (image.MaxVal - image.MinVal) / 256.0;
                 double low = image.MinVal + (lowPosition * factor);
                 double hi = image.MinVal + (highPosition * factor);
-                tile.texture2d = image.GetScaledBitmap(low, hi, (ScaleTypes)SelectedCurveStyle).GetTexture();
+                int z = image.lastBitmapZ;
+                tile.texture2d = image.GetScaledBitmap(low, hi, (ScaleTypes)SelectedCurveStyle, z).GetTexture();
             }
             updated = true;
         }

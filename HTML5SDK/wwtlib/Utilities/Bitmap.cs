@@ -48,7 +48,7 @@ namespace wwtlib
             Tile.PrepDevice.bindTexture(GL.TEXTURE_2D, tex);
             Tile.PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
             Tile.PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-            Tile.PrepDevice.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, Height, Width, 0, GL.RGBA, GL.UNSIGNED_BYTE, (WebGLArray)(object)buffer);
+            Tile.PrepDevice.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, Width, Height, 0, GL.RGBA, GL.UNSIGNED_BYTE, (WebGLArray)(object)buffer);
             Tile.PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR_MIPMAP_NEAREST);
             Tile.PrepDevice.generateMipmap(GL.TEXTURE_2D);
             Tile.PrepDevice.bindTexture(GL.TEXTURE_2D, null);
