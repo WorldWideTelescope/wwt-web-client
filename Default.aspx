@@ -323,11 +323,6 @@
   </div>
 
 
-
-
-    <div id="colorpicker" class="colorpicker">
-        <img id="colorhex" src="images\ColorPickerHex.png" width="189" height="208" />
-    </div>
     <!--Layer Manager Recursive Tree Template (shared)-->
     <script type="text/ng-template" id="tree-toggle">
       <i class="fa" ng-if="hasChildren(node)"
@@ -1179,11 +1174,14 @@
         </div>
     </div>
     <div class="layer-manager desktop"
-     ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block'}" ng-init="initLayerManager()">
+     ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block',height:  layerManagerHeight() + 28}" ng-init="initLayerManager()">
 
-      <button aria-hidden="true" class="close pull-right" type="button" ng-click="toggleLayerManager()">x</button>
+      <button
+      aria-hidden="true"
+      class="close pull-right" type="button" ng-click="toggleLayerManager()"
+      style="font-weight: 100;font-size: 16px">x</button>
       <h5 localize="Layers"></h5>
-       <div class="tree" ng-style="{height:  layerManagerHeight() + 'px' }">
+       <div class="tree" ng-style="{ height: layerManagerHeight()-222 }">
          <div
             ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
             ng-repeat="(name,node) in sunTree"
@@ -1195,6 +1193,42 @@
             ng-include="'tree-node'">
           </div>
       </div>
+      <div class="time-scrubber">
+        <table class="table">
+        <colgroup>
+          <col width="30%"/>
+          <col width="55%"/>
+          <col width="25%"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th localize="Name"></th>
+            <th localize="Value"></th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="i in [0,1,2,3,4,5]">
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        </tbody>
+        </table>
+        <h5 localize="Time Scrubber" id="timeScrubberLabel"></h5>
+        <div>
+
+        </div>
+        <div class="control">
+          <span class="pull-right" id="scrubberRightLabel">right</span>
+          <span id="scrubberLeftLabel">left</span>
+          <div class="scrubber-slider">
+              <a class="btn"></a>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
 
