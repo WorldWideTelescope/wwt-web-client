@@ -42,6 +42,18 @@
         $timeout(function () {
           initTreeNode(0, $scope.tree);
           $timeout(function () {
+            var bar = $('.scrubber-slider a.btn');
+            var scrubberMover = new wwt.Move({
+              el:bar,
+              bounds: {
+                x: [0, 247],
+                y: [0, 0]
+              },
+              onmove:function(){
+                console.log(this.css.left/247);
+                wwt.wc.setTimeScrubberPosition(this.css.left/247);
+              }
+            });
             allMaps = wwtlib.LayerManager.get_allMaps();
             var sunTree = {Sun: (allMaps.Sun)};
 

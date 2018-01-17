@@ -55,8 +55,39 @@ body {
 
       }
     }
+    .time-scrubber {
+      margin-top: 10px;
+      table.table {
+        margin-bottom: 2px;
+        th, td {
+          font-size: 10px;
+          padding: 1px 3px 0;
+          height: 17px;
+        }
+      }
+      h5 {
+        margin: 5px 0 2px;
+        font-weight: 100;
+        font-size: 12px;
+      }
+      .control{
+        display:block;
+        span {
+        font-size: 11px;
+      }
+        .scrubber-slider{
+          display:block;
+          width:100%;
+          a.btn{
+            left:0;
+            top: 2px;
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+          }
+        }
+      }
+    }
   }
-
   .layer-manager {
     div.collapsed {
       div.indent i, div.indent .checkbox {

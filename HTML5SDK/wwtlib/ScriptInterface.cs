@@ -201,6 +201,12 @@ namespace wwtlib
             }
         }
 
+        public void SetTimeScrubberPosition(double posLeft)
+        {
+            //to be implemented by jfay
+            //posLeft is float from 0-1
+        }
+
         public void SetForegroundOpacity(double opacity)
         {
             if (WWTControl.Singleton != null)

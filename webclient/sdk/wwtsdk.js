@@ -15201,6 +15201,8 @@ window.wwtlib = function(){
         WWTControl.singleton.renderContext.viewCamera.opacity = 100;
       }
     },
+    setTimeScrubberPosition: function(posLeft) {
+    },
     setForegroundOpacity: function(opacity) {
       if (WWTControl.singleton != null) {
         WWTControl.singleton.renderContext.viewCamera.opacity = opacity;

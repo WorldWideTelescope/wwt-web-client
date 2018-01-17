@@ -7644,36 +7644,36 @@ div.wwt-modal div.modal-content div.vo-cone-search div.results {
   margin: 8px -28px -8px -10px;
   width: 1120px;
 }
-div.wwt-modal div.modal-content div.vo-cone-search div.results table.table {
+table.table {
   table-layout: fixed;
 }
-div.wwt-modal div.modal-content div.vo-cone-search div.results table.table div.ellipsize {
+table.table div.ellipsize {
   max-height: 20px;
   max-width: 100%;
   text-overflow: clip ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-div.wwt-modal div.modal-content div.vo-cone-search div.results thead {
-  background-color: #fff;
+table.table thead {
+  background-color: rgba(255, 255, 255, 0.85);
 }
-div.wwt-modal div.modal-content div.vo-cone-search div.results thead th {
+table.table thead th {
   padding: 2px 3px;
   color: #333;
   font-size: 12px;
   font-weight: 400;
   border-right: inset 1px #444;
 }
-div.wwt-modal div.modal-content div.vo-cone-search div.results tbody tr.hilite {
+table.table tbody tr.hilite {
   background-color: #1f4ca4;
 }
-div.wwt-modal div.modal-content div.vo-cone-search div.results tbody td {
+table.table tbody td {
   cursor: pointer;
-  border: solid 1px #f7f7f7;
+  border: solid 1px rgba(247, 247, 247, 0.85);
   border-collapse: collapse;
   padding: 2px 3px;
   font-size: 12px;
-  color: #eee;
+  color: rgba(238, 238, 238, 0.85);
   height: 20px;
 }
 #loadingContentModal {
@@ -7824,6 +7824,39 @@ body .layer-manager.desktop .tree div.checkbox label {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+body .layer-manager.desktop .time-scrubber {
+  margin-top: 10px;
+}
+body .layer-manager.desktop .time-scrubber table.table {
+  margin-bottom: 2px;
+}
+body .layer-manager.desktop .time-scrubber table.table th,
+body .layer-manager.desktop .time-scrubber table.table td {
+  font-size: 10px;
+  padding: 1px 3px 0;
+  height: 17px;
+}
+body .layer-manager.desktop .time-scrubber h5 {
+  margin: 5px 0 2px;
+  font-weight: 100;
+  font-size: 12px;
+}
+body .layer-manager.desktop .time-scrubber .control {
+  display: block;
+}
+body .layer-manager.desktop .time-scrubber .control span {
+  font-size: 11px;
+}
+body .layer-manager.desktop .time-scrubber .control .scrubber-slider {
+  display: block;
+  width: 100%;
+}
+body .layer-manager.desktop .time-scrubber .control .scrubber-slider a.btn {
+  left: 0;
+  top: 2px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 body .layer-manager div.collapsed div.indent i,
 body .layer-manager div.collapsed div.indent .checkbox {
@@ -9264,7 +9297,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .cross-fader,
 .wwt-webclient-wrapper .year-slider,
 .wwt-webclient-wrapper .planetary-scale,
-.wwt-webclient-wrapper .sound-level {
+.wwt-webclient-wrapper .sound-level,
+.wwt-webclient-wrapper .scrubber-slider {
   -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
@@ -9288,7 +9322,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .cross-fader a.btn,
 .wwt-webclient-wrapper .year-slider a.btn,
 .wwt-webclient-wrapper .planetary-scale a.btn,
-.wwt-webclient-wrapper .sound-level a.btn {
+.wwt-webclient-wrapper .sound-level a.btn,
+.wwt-webclient-wrapper .scrubber-slider a.btn {
   position: absolute;
   left: 100px;
   margin: -6px 0 0 -6px;
@@ -9305,7 +9340,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .cross-fader a.btn.disabled,
 .wwt-webclient-wrapper .year-slider a.btn.disabled,
 .wwt-webclient-wrapper .planetary-scale a.btn.disabled,
-.wwt-webclient-wrapper .sound-level a.btn.disabled {
+.wwt-webclient-wrapper .sound-level a.btn.disabled,
+.wwt-webclient-wrapper .scrubber-slider a.btn.disabled {
   background-image: none;
   background-color: #ccc;
   opacity: .9;
@@ -9313,7 +9349,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .cross-fader.disabled,
 .wwt-webclient-wrapper .year-slider.disabled,
 .wwt-webclient-wrapper .planetary-scale.disabled,
-.wwt-webclient-wrapper .sound-level.disabled {
+.wwt-webclient-wrapper .sound-level.disabled,
+.wwt-webclient-wrapper .scrubber-slider.disabled {
   background-image: none;
   opacity: .5;
 }

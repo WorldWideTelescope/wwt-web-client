@@ -5,13 +5,13 @@ div.wwt-modal div.modal-content {
       position: relative;
       .no-results {
         padding: 3px 8px;
-        background-color: rgba(255,255,255,.33);
-        border-bottom: solid 1px rgba(255,255,255,.3);
+        background-color: rgba(255, 255, 255, .33);
+        border-bottom: solid 1px rgba(255, 255, 255, .3);
         top: -12px;
-        a{
-          cursor:pointer;
-          display:inline-block;
-          margin-right:1px;
+        a {
+          cursor: pointer;
+          display: inline-block;
+          margin-right: 1px;
         }
       }
     }
@@ -50,58 +50,59 @@ div.wwt-modal div.modal-content {
 
       }
     }
-    &.vo-table-viewer div.results{
-      overflow-x:auto;
-      thead tr th{
+    &.vo-table-viewer div.results {
+      overflow-x: auto;
+      thead tr th {
         min-width: 85px;
         max-width: 85px;
       }
     }
     div.results {
-      position:relative;
-      left:-2px;
+      position: relative;
+      left: -2px;
       max-height: 400px;
       overflow-y: auto;
       overflow-x: hidden;
       margin: 8px -28px -8px -10px;
       width: 1120px;
-      table.table {
 
-        table-layout: fixed;
-        div.ellipsize {
-          max-height: 20px;
-          max-width:100%;
-          text-overflow: clip ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-        }
-      }
-      thead {
-        background-color: #fff;
-        th {
-          padding: 2px 3px;
-          color: #333;
-          font-size: 12px;
-          font-weight: 400;
-          border-right: inset 1px #444;
-        }
-      }
-      tbody {
-        tr.hilite {
-          background-color: #1f4ca4;
-        }
-        td {
-          cursor: pointer;
-          border: solid 1px #f7f7f7;
-          border-collapse: collapse;
-          padding: 2px 3px;
-          font-size: 12px;
-          color: #eee;
-          height: 20px;
+    }
+  }
+}
 
+table.table {
+  table-layout: fixed;
+  div.ellipsize {
+    max-height: 20px;
+    max-width: 100%;
+    text-overflow: clip ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 
-        }
-      }
+  thead {
+    background-color: fade(#fff,85%);
+    th {
+      padding: 2px 3px;
+      color: #333;
+      font-size: 12px;
+      font-weight: 400;
+      border-right: inset 1px #444;
+    }
+  }
+  tbody {
+    tr.hilite {
+      background-color: #1f4ca4;
+    }
+    td {
+      cursor: pointer;
+      border: solid 1px fade(#f7f7f7,85%);
+      border-collapse: collapse;
+      padding: 2px 3px;
+      font-size: 12px;
+      color: fade(#eee,85%);
+      height: 20px;
+
     }
   }
 }
