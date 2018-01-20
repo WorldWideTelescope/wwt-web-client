@@ -15109,6 +15109,14 @@ window.wwtlib = function(){
     remove_slideChanged: function(value) {
       this.__slideChanged = ss.bindSub(this.__slideChanged, value);
     },
+    add_timeScrubberHook: function(value) {
+      this.__timeScrubberHook = ss.bindAdd(this.__timeScrubberHook, value);
+    },
+    remove_timeScrubberHook: function(value) {
+      this.__timeScrubberHook = ss.bindSub(this.__timeScrubberHook, value);
+    },
+    setTimeScrubberPosition: function(posLeft) {
+    },
     showColorPicker: function(pickerInstance, e) {
       if (this.__colorPickerDisplay != null) {
         this.__colorPickerDisplay(pickerInstance, e);
@@ -15200,8 +15208,6 @@ window.wwtlib = function(){
         WWTControl.singleton.setForegroundImageByName(name);
         WWTControl.singleton.renderContext.viewCamera.opacity = 100;
       }
-    },
-    setTimeScrubberPosition: function(posLeft) {
     },
     setForegroundOpacity: function(opacity) {
       if (WWTControl.singleton != null) {

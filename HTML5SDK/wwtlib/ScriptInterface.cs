@@ -53,6 +53,19 @@ namespace wwtlib
 
         public event EventHandler<SlideChangedEventArgs> SlideChanged;
 
+
+        public event EventHandler TimeScrubberHook;
+        //UI will set this to a function that takes 2 string properties (prop,val) 
+        //("title", "left", or "right" for the labels, "pos" for the slider pos)
+        //Pass a 0-1 float to set the slider position (stringify it if you need to for strong typing)
+
+        public void SetTimeScrubberPosition(double posLeft)
+        {   
+            //UI will call this function continuously while user drags time scrubber slider
+            //to be implemented by jfay
+            //posLeft is float from 0-1
+            
+        }
         public void ShowColorPicker(ColorPicker pickerInstance, EventArgs e)
         {
             if (ColorPickerDisplay != null)
@@ -201,12 +214,7 @@ namespace wwtlib
             }
         }
 
-        public void SetTimeScrubberPosition(double posLeft)
-        {
-            //to be implemented by jfay
-            //posLeft is float from 0-1
-        }
-
+       
         public void SetForegroundOpacity(double opacity)
         {
             if (WWTControl.Singleton != null)

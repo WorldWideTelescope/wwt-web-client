@@ -5769,6 +5769,7 @@ wwt.controllers.controller('LayerManagerController',
       }
       var allMaps = {};
       var constellations = [];
+
       $scope.initLayerManager = function () {
         if (!wwtlib.Constellations.abbreviations) {
           setTimeout($scope.initLayerManager, 333);
@@ -5780,28 +5781,41 @@ wwt.controllers.controller('LayerManagerController',
           }));
         });
         $scope.tree = initTree();//appState.get('layerManager');
-       /* if (!$scope.tree || !$scope.tree.v || $scope.tree.v !== version) { //dump appState version when change is made
-          $scope.tree = initTree();
 
-          //appState.set('layerManager', $scope.tree);
-        }
-*/
+    $scope.scrubber = {left:' ',right:' ',table:[0,1,2,3,4,5]};
 
         $timeout(function () {
+
+          wwt.wc.add_timeScrubberHook(function(prop,val){
+            switch (prop){
+              case 'left':
+              case 'right':
+              case 'title':
+                $scope.scrubber[prop] = val;
+                break;
+              default:
+                var el =  $('.scrubber-slider');
+                el.find('.btn').css('left', val * el.width());
+                break;
+            }
+          });
+
           initTreeNode(0, $scope.tree);
           $timeout(function () {
+            var w = $('.scrubber-slider').width();
             var bar = $('.scrubber-slider a.btn');
             var scrubberMover = new wwt.Move({
               el:bar,
               bounds: {
-                x: [0, 247],
+                x: [0, w],
                 y: [0, 0]
               },
               onmove:function(){
-                console.log(this.css.left/247);
-                wwt.wc.setTimeScrubberPosition(this.css.left/247);
+                wwt.wc.setTimeScrubberPosition(this.css.left/w);
               }
             });
+
+
             allMaps = wwtlib.LayerManager.get_allMaps();
             var sunTree = {Sun: (allMaps.Sun)};
 
@@ -6059,15 +6073,7 @@ wwt.controllers.controller('LayerManagerController',
         }
         node[key] = collapse;
       };
-      //var invokeSetting = function(node) {
-      //	if (node.action) {
-      //		try {
-      //			wwt.wc.settings['set_' + node.action](node.checked);
-      //		} catch (er) {
-      //			util.log(er, node.action);
-      //		}
-      //	}
-      //}
+
 
       var invokeSetting = function (node) {
         if (!node.disabled && node.action &&
