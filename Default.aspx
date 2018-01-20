@@ -1208,20 +1208,19 @@
           </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="i in [0,1,2,3,4,5]">
+        <tr ng-repeat="i in scrubber.table">
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         </tbody>
         </table>
-        <h5 localize="Time Scrubber" id="timeScrubberLabel"></h5>
-        <div>
+        <h5 localize="Time Scrubber" id="timeScrubberLabel" ng-if="!scrubber.title"></h5>
+        <h5 ng-if="scrubber.title">{{scrubber.title}}</h5>
 
-        </div>
         <div class="control">
-          <span class="pull-right" id="scrubberRightLabel">right</span>
-          <span id="scrubberLeftLabel">left</span>
+          <span class="pull-right" id="scrubberRightLabel">{{scrubber.right}}&nbsp;</span>
+          <span id="scrubberLeftLabel">{{scrubber.left}}&nbsp;</span>
           <div class="scrubber-slider">
               <a class="btn"></a>
           </div>
