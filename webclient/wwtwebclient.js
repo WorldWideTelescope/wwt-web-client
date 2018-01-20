@@ -5791,7 +5791,9 @@ wwt.controllers.controller('LayerManagerController',
               case 'left':
               case 'right':
               case 'title':
-                $scope.scrubber[prop] = val;
+                $scope.$applyAsync(function() {
+                  $scope.scrubber[prop] = val;
+                });
                 break;
               default:
                 var el =  $('.scrubber-slider');
