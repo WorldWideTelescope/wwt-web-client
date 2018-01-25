@@ -334,7 +334,7 @@
      <div ng-show="name || node.name">
        <ng-include src="'tree-toggle'"></ng-include>
        <div ng-if="isObjectNode(node)" class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
-         <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}"
+         <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}" ng-click="selectionChanged(node,$event)"
                 localize-only="title">
            <input type="checkbox" ng-model="node.enabled"/>
            <span localize="{{name}}"></span>
