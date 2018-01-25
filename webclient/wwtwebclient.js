@@ -6045,8 +6045,24 @@ wwt.controllers.controller('LayerManagerController',
           $scope.activeLayer = layerMap;
         });
 
+        //ensure selection is changed first.
+        wwtlib.LayerManager.layerSelectionChanged(layerMap);
+
+
         //console.log('invoke context menu on node', event, layerMap);
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
+      }
+
+      $scope.selectionChanged = function (layerMap, event) {
+          if ($scope.activeLayer) {
+              $scope.activeLayer.active = false;
+          }
+          $scope.$applyAsync(function () {
+              layerMap.active = true;
+              $scope.activeLayer = layerMap;
+          });
+
+          wwtlib.LayerManager.layerSelectionChanged(layerMap);
       }
 
       $scope.hasChildren = function (node) {

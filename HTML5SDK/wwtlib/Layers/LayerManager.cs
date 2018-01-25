@@ -984,6 +984,12 @@ namespace wwtlib
         static ContextMenuStrip contextMenu;
         static object selectedLayer = null;
         static Vector2d lastMenuClick = new Vector2d();
+
+        static public void layerSelectionChanged(object selected)
+        {
+
+        }
+
         static public void showLayerMenu(object selected, int x, int y)
         {
             lastMenuClick = Vector2d.Create(x, y);
