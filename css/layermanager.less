@@ -107,6 +107,14 @@ body {
 
         label {
           height: 18px;
+          &:hover:before {
+            box-shadow: none;
+            border: solid 1px #566783;
+          }
+        }
+        label[localize]:before:hover {
+          box-shadow: inset 0 1px 4px lighten(#394558, 10%), 0 0 10px 1px rgba(62,157,206,1) !important;
+          border-color: rgba(128,168,220,.99) !important;
         }
       }
 
