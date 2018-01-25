@@ -6063,10 +6063,10 @@ wwt.controllers.controller('LayerManagerController',
             $scope.activeLayer.active = false;
           }
           $scope.$applyAsync(function () {
-            if (layerMap && layerMap.action) {
+            if (layerMap && $scope.isObjectNode(layerMap)) {
               wwtlib.LayerManager.layerSelectionChanged(layerMap);
-              layerMap.active = true;
             }
+            layerMap.active = true;
             $scope.activeLayer = layerMap;
           });
         }
@@ -6078,7 +6078,7 @@ wwt.controllers.controller('LayerManagerController',
       };
 
       $scope.isObjectNode = function(node){
-        return node.action == undefined;
+        return node.action == undefined || node.layers || node.childMaps;
       }
 
       $scope.nodeChange = function (node) {
