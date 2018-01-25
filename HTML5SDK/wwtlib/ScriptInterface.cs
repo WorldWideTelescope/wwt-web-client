@@ -60,12 +60,15 @@ namespace wwtlib
         //Pass a 0-1 float to set the slider position (stringify it if you need to for strong typing)
 
         public void SetTimeScrubberPosition(double posLeft)
-        {   
-            //UI will call this function continuously while user drags time scrubber slider
-            //to be implemented by jfay
-            //posLeft is float from 0-1
-            
+        {
+            LayerManager.SetTimeSliderValue(posLeft);
         }
+
+        public void SetTimeSlider(string name, string value)
+        {
+            TimeScrubberHook.Invoke(name, (EventArgs)(object)value);
+        }
+
         public void ShowColorPicker(ColorPicker pickerInstance, EventArgs e)
         {
             if (ColorPickerDisplay != null)

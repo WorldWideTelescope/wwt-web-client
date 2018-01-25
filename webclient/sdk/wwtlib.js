@@ -9773,6 +9773,33 @@ window.wwtlib = function(){
   };
   LayerManager.layerSelectionChanged = function(selected) {
     LayerManager._selectedLayer = selected;
+    if (LayerManager._selectedLayer != null) {
+      if (ss.canCast(LayerManager._selectedLayer, LayerMap)) {
+        var map = ss.safeCast(LayerManager._selectedLayer, LayerMap);
+        if (map != null) {
+          LayerManager.set_currentMap(map.get_name());
+        }
+      }
+      else {
+        var layer = ss.safeCast(LayerManager._selectedLayer, ImageSetLayer);
+        if (layer != null && ss.canCast(layer.get_imageSet().get_wcsImage(), FitsImage)) {
+          WWTControl.scriptInterface.setTimeSlider('left', '0');
+          WWTControl.scriptInterface.setTimeSlider('right', (layer.getFitsImage().depth - 1).toString());
+          WWTControl.scriptInterface.setTimeSlider('title', 'Velocity');
+          return;
+        }
+      }
+    }
+    WWTControl.scriptInterface.setTimeSlider('left', '');
+    WWTControl.scriptInterface.setTimeSlider('right', '');
+    WWTControl.scriptInterface.setTimeSlider('title', Language.getLocalizedText(667, 'Time Scrubber'));
+  };
+  LayerManager.setTimeSliderValue = function(pos) {
+    var layer = ss.safeCast(LayerManager._selectedLayer, ImageSetLayer);
+    if (layer != null && ss.canCast(layer.get_imageSet().get_wcsImage(), FitsImage)) {
+      Histogram.updateImage(layer, pos);
+      WWTControl.scriptInterface.setTimeSlider('title', layer.getFitsImage().getZDescription());
+    }
   };
   LayerManager.showLayerMenu = function(selected, x, y) {
     LayerManager._lastMenuClick = Vector2d.create(x, y);
@@ -13603,6 +13630,10 @@ window.wwtlib = function(){
       this.__timeScrubberHook = ss.bindSub(this.__timeScrubberHook, value);
     },
     setTimeScrubberPosition: function(posLeft) {
+      LayerManager.setTimeSliderValue(posLeft);
+    },
+    setTimeSlider: function(name, value) {
+      this.__timeScrubberHook(name, value);
     },
     showColorPicker: function(pickerInstance, e) {
       if (this.__colorPickerDisplay != null) {
@@ -23481,6 +23512,14 @@ window.wwtlib = function(){
     this._updated = false;
     this.selectedCurveStyle = 0;
   }
+  Histogram.updateImage = function(isl, z) {
+    var image = ss.safeCast(isl.get_imageSet().get_wcsImage(), FitsImage);
+    var Tile = TileCache.getTile(0, 0, 0, isl.get_imageSet(), null);
+    var factor = (image.maxVal - image.minVal) / 256;
+    var low = image.lastBitmapMin;
+    var hi = image.lastBitmapMax;
+    Tile.texture2d = image.getScaledBitmap(low, hi, image.lastScale, Math.floor(z * (image.depth - 1))).getTexture();
+  };
   var Histogram$ = {
     close: function(e) {
       var menu = document.getElementById('histogram');

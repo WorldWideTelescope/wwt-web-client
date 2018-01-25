@@ -988,6 +988,79 @@ namespace wwtlib
         static public void layerSelectionChanged(object selected)
         {
             selectedLayer = selected;
+
+            if (selectedLayer != null)
+            {
+                //if (selectedLayer as ITimeSeriesDescription != null)
+                //{
+                //    timeScrubber.Maximum = 1000;
+                //    ITimeSeriesDescription iTimeSeries = layerTree.SelectedNode.Tag as ITimeSeriesDescription;
+
+                //    timeSeries.Checked = iTimeSeries.IsTimeSeries;
+                //    if (iTimeSeries.SeriesStartTime.ToString("HH:mm:ss") == "00:00:00")
+                //    {
+                //        startDate.Text = iTimeSeries.SeriesStartTime.ToString("yyyy/MM/dd");
+                //    }
+                //    else
+                //    {
+                //        startDate.Text = iTimeSeries.SeriesStartTime.ToString("yyyy/MM/dd HH:mm:ss");
+                //    }
+
+                //    if (iTimeSeries.SeriesEndTime.ToString("HH:mm:ss") == "00:00:00")
+                //    {
+                //        endDate.Text = iTimeSeries.SeriesEndTime.ToString("yyyy/MM/dd");
+                //    }
+                //    else
+                //    {
+                //        endDate.Text = iTimeSeries.SeriesEndTime.ToString("yyyy/MM/dd HH:mm:ss");
+                //    }
+
+                //    return;
+                //}
+                //else
+                
+                if (selectedLayer is LayerMap)
+                {
+                    LayerMap map = selectedLayer as LayerMap;
+                    if (map != null)
+                    {
+                        CurrentMap = map.Name;
+                    }
+                }
+                else
+                {
+                    ImageSetLayer layer = selectedLayer as ImageSetLayer;
+                    if (layer != null && layer.ImageSet.WcsImage is FitsImage)
+                    {
+                        WWTControl.scriptInterface.SetTimeSlider("left", "0");
+                        WWTControl.scriptInterface.SetTimeSlider("right", (layer.GetFitsImage().Depth-1).ToString());
+                        WWTControl.scriptInterface.SetTimeSlider("title", "Velocity");            
+                            //Histogram.UpdateImage(layer, timeScrubber.Value);
+                        //timeSeries.Checked = false;
+                        //startDate.Text = "0";
+                        //timeScrubber.Maximum = layer.FitsImage.Depth - 1;
+                        ////timeScrubber.Value = layer.FitsImage.min layer.FitsImage.lastBitmapZ;
+                        //endDate.Text = timeScrubber.Maximum.ToString();
+                        return;
+                    }
+                }
+            }
+
+            //timeSeries.Checked = false;
+
+            WWTControl.scriptInterface.SetTimeSlider("left", "");
+            WWTControl.scriptInterface.SetTimeSlider("right", "");
+            WWTControl.scriptInterface.SetTimeSlider("title", Language.GetLocalizedText(667, "Time Scrubber"));      
+        }
+
+        static public void SetTimeSliderValue(double pos)
+        {
+            ImageSetLayer layer = selectedLayer as ImageSetLayer;
+            if (layer != null && layer.ImageSet.WcsImage is FitsImage)
+            {
+                Histogram.UpdateImage(layer, pos);
+                WWTControl.scriptInterface.SetTimeSlider("title", layer.GetFitsImage().GetZDescription() );
+            }
         }
 
         static public void showLayerMenu(object selected, int x, int y)

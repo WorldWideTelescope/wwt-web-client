@@ -68,6 +68,16 @@ namespace wwtlib
             Draw();
         }
 
+        public static void UpdateImage(ImageSetLayer isl, double z)
+        {
+            FitsImage image = isl.ImageSet.WcsImage as FitsImage;
+            SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
+            double factor = (image.MaxVal - image.MinVal) / 256.0;
+            double low = image.lastBitmapMin;
+            double hi = image.lastBitmapMax;
+            Tile.texture2d = image.GetScaledBitmap(low, hi, image.lastScale, Math.Floor(z* (image.Depth-1))).GetTexture();
+        }
+
         public void IgnoreMe(ElementEvent e)
         {
             ignoreNextClick = true;
