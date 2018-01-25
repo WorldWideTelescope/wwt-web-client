@@ -9771,6 +9771,9 @@ window.wwtlib = function(){
       }
     }
   };
+  LayerManager.layerSelectionChanged = function(selected) {
+    LayerManager._selectedLayer = selected;
+  };
   LayerManager.showLayerMenu = function(selected, x, y) {
     LayerManager._lastMenuClick = Vector2d.create(x, y);
     LayerManager._selectedLayer = selected;

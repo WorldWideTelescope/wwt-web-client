@@ -7876,6 +7876,16 @@ body .layer-manager .tree div.checkbox {
 body .layer-manager .tree div.checkbox label {
   height: 18px;
 }
+body .layer-manager .tree div.checkbox label:hover:before {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: solid 1px #566783;
+}
+body .layer-manager .tree div.checkbox label[localize]:before:hover {
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce !important;
+          box-shadow: inset 0 1px 4px #4d5d77, 0 0 10px 1px #3e9dce !important;
+  border-color: rgba(128, 168, 220, 0.99) !important;
+}
 body .layer-manager .tree i.fa {
   cursor: pointer;
   position: relative;

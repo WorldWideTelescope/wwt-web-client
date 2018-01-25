@@ -987,7 +987,7 @@ namespace wwtlib
 
         static public void layerSelectionChanged(object selected)
         {
-
+            selectedLayer = selected;
         }
 
         static public void showLayerMenu(object selected, int x, int y)

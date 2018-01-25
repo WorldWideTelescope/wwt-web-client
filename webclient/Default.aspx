@@ -340,9 +340,9 @@
            <span localize="{{name}}"></span>
          </label>
        </div>
-       <div class="checkbox" ng-if="!isObjectNode(node)">
-          <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title">
-            <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  data-ng-change="nodeChange(node)" />
+       <div class="checkbox" ng-if="!isObjectNode(node)" ng-class="{activelayer:node.active}">
+          <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title" ng-click="selectionChanged(node,$event)">
+            <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  ng-change="nodeChange(node)" />
             <span localize="{{node.name}}"></span>
           </label>
         </div>

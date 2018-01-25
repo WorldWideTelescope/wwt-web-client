@@ -306,16 +306,23 @@
       }
 
       $scope.selectionChanged = function (layerMap, event) {
+        if (event.currentTarget.tagName==='LABEL' && event.offsetX > 17){
+          //console.log(event);
+          event.preventDefault();
+          event.stopImmediatePropagation();
+
           if ($scope.activeLayer) {
-              $scope.activeLayer.active = false;
+            $scope.activeLayer.active = false;
           }
           $scope.$applyAsync(function () {
+            if (layerMap && layerMap.action) {
+              wwtlib.LayerManager.layerSelectionChanged(layerMap);
               layerMap.active = true;
-              $scope.activeLayer = layerMap;
+            }
+            $scope.activeLayer = layerMap;
           });
-
-          wwtlib.LayerManager.layerSelectionChanged(layerMap);
-      }
+        }
+      };
 
       $scope.hasChildren = function (node) {
         var children = $scope.getChildren(node);
