@@ -13,7 +13,7 @@
     public string ResourcesVersion = ConfigurationManager.AppSettings["ResourcesVersion"];
     public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
     public string BodyClass;
-    public string SDKLocation = "http://localhost:26993/scripts/wwtsdk.aspx?debug=true";
+    public string SDKLocation = "sdk/wwtsdk.min.js";
     public enum Clients
     {
         Html5 = 0,
@@ -45,7 +45,7 @@
             }
             else if (Request.QueryString["debug"] == "local")
             {
-                SDKLocation = "sdk/wwtsdk.aspx" + DebugQs;
+                SDKLocation = "sdk/wwtsdk.js" + DebugQs;
             }
             else if (Request.QueryString["debug"] == "localmin")
             {
@@ -154,7 +154,7 @@
       }
     </style>
     <script src="//js.live.net/v5.0/wl.js"></script>
-    <script src="sdk/wwtsdk.js"></script>
+    <script src="sdk/wwtsdk<%=DotMin %>"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap<%=DotMin %>"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular<%=DotMin %>"></script>
@@ -222,7 +222,7 @@
     <% }
        else
        { %>
-    <script src="<%= ResourcesLocation %>/wwtwebclient.min.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/wwtwebclient<%=DotMin%>?v=<%= ResourcesVersion%>"></script>
     <% } %>
 
     <% }
@@ -1181,7 +1181,7 @@
       class="close pull-right" type="button" ng-click="toggleLayerManager()"
       style="font-weight: 100;font-size: 16px">x</button>
       <h5 localize="Layers"></h5>
-       <div class="tree" ng-style="{ height: layerManagerHeight()-222 }">
+       <div class="tree" ng-style="{ height: layerManagerHeight()-72 }">
          <div
             ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
             ng-repeat="(name,node) in sunTree"
@@ -1194,7 +1194,7 @@
           </div>
       </div>
       <div class="time-scrubber">
-        <table class="table">
+        <!--<table class="table">
         <colgroup>
           <col width="30%"/>
           <col width="55%"/>
@@ -1214,7 +1214,7 @@
           <td>&nbsp;</td>
         </tr>
         </tbody>
-        </table>
+        </table>-->
         <h5 localize="Time Scrubber" id="timeScrubberLabel" ng-if="!scrubber.title"></h5>
         <h5 ng-if="scrubber.title">{{scrubber.title}}</h5>
 

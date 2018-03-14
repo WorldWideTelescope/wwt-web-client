@@ -89,6 +89,7 @@
         wwt.resize();
       };
       $scope.getChildren = function(node){
+        if (!node)return {};
         var children  = node.children || {};
         if (children.length){
 
@@ -325,6 +326,7 @@
       };
 
       $scope.hasChildren = function (node) {
+        if (!node){return false;}
         var children = $scope.getChildren(node);
         return children.length || Object.keys(children).length > 0;
       };
