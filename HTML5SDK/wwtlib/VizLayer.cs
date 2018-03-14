@@ -28,7 +28,7 @@ namespace wwtlib
             {
                 imageReady = true;
             }, false);
-            starProfile.Src = "images/starProfile.png";
+            starProfile.Src = "images/StarProfileAlpha.png";
             bool gotHeader = false;
             foreach (string line in lines)
             {
