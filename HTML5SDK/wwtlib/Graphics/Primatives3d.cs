@@ -900,7 +900,7 @@ namespace wwtlib
                         imageReady = true;
                     }, false);
 
-                    starProfile.Src = "/images/starProfile.png";
+                    starProfile.Src = "/images/StarProfileAlpha.png";
 
                     worldList = new Vector3d[points.Count];
                     transformedList = new Vector3d[points.Count];
@@ -926,7 +926,7 @@ namespace wwtlib
                     {
                         if (starTexture == null)
                         {
-                            starTexture = Planets.LoadPlanetTexture("/images/starProfile.png");
+                            starTexture = Planets.LoadPlanetTexture("/images/StarProfileAlpha.png");
                         }
 
                         int count = this.points.Count;
@@ -1036,7 +1036,7 @@ namespace wwtlib
                     TimeSeriesPointSpriteShader.Use(
                             renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d,
                             Color.FromArgb(255 * opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
-                            (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960)), MinSize
+                            this.TimeSeries ? 0 : (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960)), MinSize
                         );
 
                     renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);

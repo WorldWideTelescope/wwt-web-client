@@ -204,8 +204,7 @@ namespace wwtlib
         }
 
 
-
-        public static string GetNameFrom3dId(int id)
+        public static string GetImageSetNameNameFrom3dId(int id)
         {
             switch (id)
             {
@@ -237,8 +236,47 @@ namespace wwtlib
                     return "Ganymede (Jupiter)";
                 case 13:
                     return "Callisto (Jupiter)";
-                case 19: 
+                case 19:
                     return "Bing Maps Aerial";
+                default:
+                    return "";
+            }
+        }
+
+        public static string GetNameFrom3dId(int id)
+        {
+            switch (id)
+            {
+                case 0:
+                    return "Sun";
+                case 1:
+                    return "Mercury";
+                case 2:
+                    return "Venus";
+                case 3:
+                    return "Mars";
+                case 4:
+                    return "Jupiter";
+                case 5:
+                    return "Saturn";
+                case 6:
+                    return "Uranus";
+                case 7:
+                    return "Neptune";
+                case 8:
+                    return "Pluto";
+                case 9:
+                    return "Moon";
+                case 10:
+                    return "Io";
+                case 11:
+                    return "Europa";
+                case 12:
+                    return "Ganymede";
+                case 13:
+                    return "Callisto";
+                case 19: 
+                    return "Earth";
                 default:
                     return "";
             }
@@ -1217,10 +1255,12 @@ namespace wwtlib
             
             if (planetID == (int)SolarSystemObjects.Sun)
             {
+                TileShader.MinLightingBrightness = 1.0f;
             //    device.RenderState.Lighting = false;
             }
             else
             {
+                TileShader.MinLightingBrightness = 0.025f;
              //   device.RenderState.Lighting = Settings.Active.SolarSystemLighting;
             }
 
@@ -1231,7 +1271,7 @@ namespace wwtlib
             double rotationCurrent = 0;
             if (planetID == (int)SolarSystemObjects.Earth)
             {
-                rotationCurrent = Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
+                rotationCurrent = Math.PI + Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
             }
             else
             {
@@ -1287,7 +1327,7 @@ namespace wwtlib
                 sunPosition.Normalize();
 
                 renderContext.SunPosition = sunPosition;
-
+                TileShader.SunPosition = Vector3d.SubtractVectors(planet3dLocations[0], planet);
                 Vector3d loc = Vector3d.SubtractVectors(planet3dLocations[planetID], centerPoint);
                 loc.Subtract(renderContext.CameraPosition);
                 double dist = loc.Length();
@@ -1653,7 +1693,7 @@ namespace wwtlib
             {
                 PointList ppList = new PointList(renderContext);
                 ppList.MinSize = 20;
-                ppList.AddPoint(location.Copy(), color.Clone(), new Dates(0, 1), (float)size);
+                ppList.AddPoint(location.Copy(), color.Clone(), new Dates(0, 1), (float)size/100);
                 // ppList.ShowFarSide = true;
                 ppList.DepthBuffered = true;
                 ppList.Draw(renderContext, 1, false);
@@ -2216,7 +2256,7 @@ namespace wwtlib
 //        static BitmapImage PlanetShadow;
         static void DrawSphere(RenderContext renderContext, int planetID)
         {
-            string planetName = GetNameFrom3dId(planetID);
+            string planetName = GetImageSetNameNameFrom3dId(planetID);
             Imageset planet = WWTControl.Singleton.GetImagesetByName(planetName);
 
             if (planet == null)

@@ -743,6 +743,10 @@ namespace wwtlib
                 foreach (string key in AllMaps[referenceFrame].ChildMaps.Keys)
                 {
                     LayerMap map = AllMaps[referenceFrame].ChildMaps[key];
+                    if (!(map is LayerMap))
+                    {
+                        continue;
+                    }
                     if (map.Frame.ShowOrbitPath && Settings.Active.SolarSystemOrbits)
                     {
                         if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Orbital)
@@ -1507,6 +1511,7 @@ namespace wwtlib
             layer.Name = "Lat-Lng Grid";
             LayerList[layer.ID] = layer;
             layer.ReferenceFrame = currentMap;
+            
             AllMaps[currentMap].Layers.Add(layer);
             AllMaps[currentMap].Open = true;
             version++;

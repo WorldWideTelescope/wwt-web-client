@@ -8267,7 +8267,7 @@ window.wwtlib = function(){
           this._starProfile.addEventListener('load', function(e) {
             $this._imageReady = true;
           }, false);
-          this._starProfile.src = '/images/starProfile.png';
+          this._starProfile.src = '/images/StarProfileAlpha.png';
           this._worldList = new Array(this._points.length);
           this._transformedList = new Array(this._points.length);
           var index = 0;
@@ -8288,7 +8288,7 @@ window.wwtlib = function(){
         else {
           if (!this._pointBuffers.length) {
             if (PointList.starTexture == null) {
-              PointList.starTexture = Planets.loadPlanetTexture('/images/starProfile.png');
+              PointList.starTexture = Planets.loadPlanetTexture('/images/StarProfileAlpha.png');
             }
             var count = this._points.length;
             var pointBuffer = null;
@@ -8364,7 +8364,7 @@ window.wwtlib = function(){
         var $enum2 = ss.enumerate(this._pointBuffers);
         while ($enum2.moveNext()) {
           var pointBuffer = $enum2.current;
-          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, PointList.starTexture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)), this.minSize);
+          TimeSeriesPointSpriteShader.use(renderContext, pointBuffer.vertexBuffer, PointList.starTexture.texture2d, Color.fromArgb(255 * opacity, 255, 255, 255), this.depthBuffered, this.jNow, (this.timeSeries) ? 0 : this.decay, renderContext.cameraPosition, (this.scale * (renderContext.height / 960)), this.minSize);
           renderContext.gl.drawArrays(0, 0, pointBuffer.count);
         }
       }
@@ -8839,16 +8839,22 @@ window.wwtlib = function(){
   }
   TileShader.init = function(renderContext) {
     var gl = renderContext.gl;
-    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '   vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));             \n' + '   gl_FragColor = col * opacity;                                                       \n' + '   }                                                                                   \n';
-    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '     }                                                                            \n' + '                                                                                  \n';
+    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '   varying vec3 vNormal;                                                               \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '   uniform vec3 uSunPosition;                                                          \n' + '   uniform float uMinBrightness;                                                       \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '     vec3 normal = normalize(vNormal);                                                 \n' + '     float dt = uMinBrightness + max(0.0,- dot(normal,uSunPosition));                     \n' + '     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n' + '     gl_FragColor = col * opacity;                                                     \n' + '     gl_FragColor.rgb *= dt;                                                           \n' + '   }                                                                                   \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec3 vNormal;                                                        \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vec3 normal = normalize(aVertexPosition);                          \n' + '         vec3 normalT = normalize(mat3(uMVMatrix) * normal);                                 \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '         vNormal = normalT;                                                        \n' + '     }                                                                            \n' + '                                                                                  \n';
     TileShader._frag = gl.createShader(35632);
     gl.shaderSource(TileShader._frag, fragShaderText);
     gl.compileShader(TileShader._frag);
     var stat = gl.getShaderParameter(TileShader._frag, 35713);
+    if (!stat) {
+      var errorF = gl.getShaderInfoLog(TileShader._frag);
+    }
     TileShader._vert = gl.createShader(35633);
     gl.shaderSource(TileShader._vert, vertexShaderText);
     gl.compileShader(TileShader._vert);
     var stat1 = gl.getShaderParameter(TileShader._vert, 35713);
+    if (!stat1) {
+      var errorV = gl.getShaderInfoLog(TileShader._vert);
+    }
     TileShader._prog = gl.createProgram();
     gl.attachShader(TileShader._prog, TileShader._vert);
     gl.attachShader(TileShader._prog, TileShader._frag);
@@ -8860,6 +8866,8 @@ window.wwtlib = function(){
     TileShader.projMatLoc = gl.getUniformLocation(TileShader._prog, 'uPMatrix');
     TileShader.mvMatLoc = gl.getUniformLocation(TileShader._prog, 'uMVMatrix');
     TileShader.sampLoc = gl.getUniformLocation(TileShader._prog, 'uSampler');
+    TileShader.sunLoc = gl.getUniformLocation(TileShader._prog, 'uSunPosition');
+    TileShader.minBrightnessLoc = gl.getUniformLocation(TileShader._prog, 'uMinBrightness');
     TileShader.opacityLoc = gl.getUniformLocation(TileShader._prog, 'opacity');
     Tile.uvMultiple = 1;
     Tile.demEnabled = true;
@@ -8876,8 +8884,18 @@ window.wwtlib = function(){
       gl.useProgram(TileShader._prog);
       var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
       gl.uniform1f(TileShader.opacityLoc, opacity);
+      gl.uniform1f(TileShader.minBrightnessLoc, (renderContext.lighting) ? TileShader.minLightingBrightness : 1);
       gl.uniformMatrix4fv(TileShader.mvMatLoc, false, mvMat.floatArray());
       gl.uniformMatrix4fv(TileShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      TileShader.sunPosition.normalize();
+      var mvInv = renderContext.get_view().clone();
+      mvInv.set_m41(0);
+      mvInv.set_m42(0);
+      mvInv.set_m43(0);
+      mvInv.set_m44(1);
+      var sp = Vector3d._transformCoordinate(TileShader.sunPosition, mvInv);
+      sp.normalize();
+      gl.uniform3f(TileShader.sunLoc, -sp.x, -sp.y, -sp.z);
       gl.uniform1i(TileShader.sampLoc, 0);
       if (renderContext.space || noDepth) {
         gl.disable(2929);
@@ -11133,6 +11151,9 @@ window.wwtlib = function(){
       while ($enum3.moveNext()) {
         var key = $enum3.current;
         var map = LayerManager.get_allMaps()[referenceFrame].childMaps[key];
+        if (!(ss.canCast(map, LayerMap))) {
+          continue;
+        }
         if (map.frame.showOrbitPath && Settings.get_active().get_solarSystemOrbits()) {
           if (map.frame.referenceFrameType === 1) {
             if (map.frame.get_orbit() == null) {
@@ -13322,7 +13343,7 @@ window.wwtlib = function(){
         return -1;
     }
   };
-  Planets.getNameFrom3dId = function(id) {
+  Planets.getImageSetNameNameFrom3dId = function(id) {
     switch (id) {
       case 0:
         return 'Sun';
@@ -13354,6 +13375,42 @@ window.wwtlib = function(){
         return 'Callisto (Jupiter)';
       case 19:
         return 'Bing Maps Aerial';
+      default:
+        return '';
+    }
+  };
+  Planets.getNameFrom3dId = function(id) {
+    switch (id) {
+      case 0:
+        return 'Sun';
+      case 1:
+        return 'Mercury';
+      case 2:
+        return 'Venus';
+      case 3:
+        return 'Mars';
+      case 4:
+        return 'Jupiter';
+      case 5:
+        return 'Saturn';
+      case 6:
+        return 'Uranus';
+      case 7:
+        return 'Neptune';
+      case 8:
+        return 'Pluto';
+      case 9:
+        return 'Moon';
+      case 10:
+        return 'Io';
+      case 11:
+        return 'Europa';
+      case 12:
+        return 'Ganymede';
+      case 13:
+        return 'Callisto';
+      case 19:
+        return 'Earth';
       default:
         return '';
     }
@@ -13830,13 +13887,15 @@ window.wwtlib = function(){
   };
   Planets._drawPlanet3d = function(renderContext, planetID, centerPoint) {
     if (planetID === 0) {
+      TileShader.minLightingBrightness = 1;
     }
     else {
+      TileShader.minLightingBrightness = 0.025;
     }
     var radius = Planets.getAdjustedPlanetRadius(planetID);
     var rotationCurrent = 0;
     if (planetID === 19) {
-      rotationCurrent = Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
+      rotationCurrent = Math.PI + Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
     }
     else {
       rotationCurrent = (((Planets._jNow - 2451545) / Planets.planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
@@ -13870,6 +13929,7 @@ window.wwtlib = function(){
       var sunPosition = Vector3d.subtractVectors(sun, planet);
       sunPosition.normalize();
       renderContext.set_sunPosition(sunPosition);
+      TileShader.sunPosition = Vector3d.subtractVectors(Planets._planet3dLocations[0], planet);
       var loc = Vector3d.subtractVectors(Planets._planet3dLocations[planetID], centerPoint);
       loc.subtract(renderContext.cameraPosition);
       var dist = loc.length();
@@ -14067,7 +14127,7 @@ window.wwtlib = function(){
     if (renderContext.gl != null) {
       var ppList = new PointList(renderContext);
       ppList.minSize = 20;
-      ppList.addPoint(location.copy(), color._clone(), new Dates(0, 1), size);
+      ppList.addPoint(location.copy(), color._clone(), new Dates(0, 1), size / 100);
       ppList.depthBuffered = true;
       ppList.draw(renderContext, 1, false);
     }
@@ -14213,7 +14273,7 @@ window.wwtlib = function(){
     return Coordinates.mapTo0To360Range(Coordinates.radiansToDegrees(Math.atan2(Math.cos(Delta0) * Math.sin(Alpha0 - Alpha), Math.sin(Delta0) * Math.cos(Delta) - Math.cos(Delta0) * Math.sin(Delta) * Math.cos(Alpha0 - Alpha))));
   };
   Planets._drawSphere = function(renderContext, planetID) {
-    var planetName = Planets.getNameFrom3dId(planetID);
+    var planetName = Planets.getImageSetNameNameFrom3dId(planetID);
     var planet = WWTControl.singleton.getImagesetByName(planetName);
     if (planet == null) {
       planet = WWTControl.singleton.getImagesetByName('Bing Maps Aerial');
@@ -25441,7 +25501,7 @@ window.wwtlib = function(){
       this._starProfile.addEventListener('load', function(e) {
         $this._imageReady = true;
       }, false);
-      this._starProfile.src = 'images/starProfile.png';
+      this._starProfile.src = 'images/StarProfileAlpha.png';
       var gotHeader = false;
       var $enum1 = ss.enumerate(lines);
       while ($enum1.moveNext()) {
@@ -40774,6 +40834,8 @@ window.wwtlib = function(){
   TileShader.textureLoc = 0;
   TileShader.initialized = false;
   TileShader._prog = null;
+  TileShader.sunPosition = Vector3d.create(-1, -1, -1);
+  TileShader.minLightingBrightness = 1;
   SpriteShader.vertLoc = 0;
   SpriteShader.textureLoc = 0;
   SpriteShader.colorLoc = 0;
