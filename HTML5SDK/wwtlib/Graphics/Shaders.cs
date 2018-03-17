@@ -435,6 +435,8 @@ namespace wwtlib
         public static WebGLUniformLocation cameraPosLoc;
         public static WebGLUniformLocation scaleLoc;
         public static WebGLUniformLocation minSizeLoc;
+        public static WebGLUniformLocation skyLoc;
+        public static WebGLUniformLocation showFarSideLoc;
 
         public static bool initialized = false;
         public static void Init(RenderContext renderContext)
@@ -468,11 +470,14 @@ namespace wwtlib
                     "    uniform float decay;                                                                \n" +
                     "    uniform float scale;                                                                \n" +
                     "    uniform float minSize;                                                              \n" +
+                    "    uniform float sky;                                                                  \n" +
+                    "    uniform float showFarSide;                                                          \n" +
                     "                                                                                        \n" +
                     "    varying lowp vec4 vColor;                                                           \n" +
                     "                                                                                        \n" +
                     "    void main(void)                                                                     \n" +
                     "    {                                                                                   \n" +
+                    "        float dotCam = dot( normalize(cameraPosition-aVertexPosition), normalize(aVertexPosition));                                  \n" +
                     "        float dist = distance(aVertexPosition, cameraPosition);                         \n" +
                     "        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);                \n" +
                     "        float dAlpha = 1.0;                                                             \n" +
@@ -484,7 +489,7 @@ namespace wwtlib
                     "                  dAlpha = 1.0;                                                         \n" +
                     "             }                                                                          \n" +
                     "        }                                                                               \n" +
-                    "        if (jNow < aTime.x && decay > 0.0)                                              \n" +
+                    "        if ( showFarSide == 0.0 && (dotCam * sky) < 0.0 || (jNow < aTime.x && decay > 0.0))                                              \n" +
                     "        {                                                                               \n" +
                     "            vColor = vec4(0.0, 0.0, 0.0, 0.0);                                          \n" +
                     "        }                                                                               \n" +
@@ -537,7 +542,10 @@ namespace wwtlib
             lineColorLoc = gl.getUniformLocation(prog, "lineColor");
             cameraPosLoc = gl.getUniformLocation(prog, "cameraPosition");
             scaleLoc = gl.getUniformLocation(prog, "scale");
+            skyLoc = gl.getUniformLocation(prog, "sky");
+            showFarSideLoc = gl.getUniformLocation(prog, "showFarSide");
             minSizeLoc = gl.getUniformLocation(prog, "minSize");
+
             gl.enable(GL.BLEND);
            
             initialized = true;
@@ -545,7 +553,7 @@ namespace wwtlib
 
         private static WebGLProgram prog = null;
 
-        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay, Vector3d camera, float scale, float minSize)
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay, Vector3d camera, float scale, float minSize, bool showFarSide, bool sky)
         {
             GL gl = renderContext.gl;
             if (gl != null)
@@ -568,6 +576,8 @@ namespace wwtlib
                 gl.uniform3f(cameraPosLoc, (float)camera.X, (float)camera.Y, (float)camera.Z);
                 gl.uniform1f(scaleLoc, scale);
                 gl.uniform1f(minSizeLoc, minSize);
+                gl.uniform1f(showFarSideLoc, showFarSide ? 1 : 0);
+                gl.uniform1f(skyLoc, sky? -1 : 1);
                 if (zBuffer)
                 {
                     gl.enable(GL.DEPTH_TEST);
@@ -701,10 +711,10 @@ namespace wwtlib
                     "                                                                                        \n" +
                     "     float E = PI / 2.0;                                                                \n" +
                     "     float scale = PI / 4.0;                                                            \n" +
+                    "     for (int i =0; i<23; i++)                                                          \n" +
                     "     {                                                                                  \n" +
                     "       float R = E - e *sin(E);                                                         \n" +
                     "       if (M > R)                                                                       \n" +
-                    "     for (int i =0; i<23; i++)                                                          \n" +
                     "      	E += scale;                                                                      \n" +
                     "       else                                                                             \n" +
                     "     	E -= scale;                                                                      \n" +
@@ -886,6 +896,7 @@ namespace wwtlib
                       "   void main(void) {                                                                   \n" +
                       "     vec3 normal = normalize(vNormal);                                                 \n" +
                       "     float dt = uMinBrightness + max(0.0,- dot(normal,uSunPosition));                  \n" +
+                      "     if ( uMinBrightness == 1.0 ) { dt = 1.0; }                                        \n" +     
                       "     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n" +
                       "     gl_FragColor = col * opacity;                                                     \n" +
                       "     gl_FragColor.rgb *= dt;                                                           \n" +

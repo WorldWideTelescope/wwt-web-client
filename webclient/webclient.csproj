@@ -196,6 +196,7 @@
     <Content Include="Images\moon.jpg" />
     <Content Include="Images\MultiSelhand.bmp" />
     <Content Include="Images\neptune.jpg" />
+    <Content Include="Images\pins.png" />
     <Content Include="Images\pluto.jpg" />
     <Content Include="Images\saturn.png" />
     <Content Include="Images\SaturnRings.png" />

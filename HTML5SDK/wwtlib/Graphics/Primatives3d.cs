@@ -1031,12 +1031,17 @@ namespace wwtlib
             }
             else
             {
+                Vector3d zero = new Vector3d();
+                Matrix3d matInv = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+                matInv.Invert();
+                Vector3d cam = Vector3d.TransformCoordinate(zero, matInv);
+
                 foreach (TimeSeriesPointVertexBuffer pointBuffer in pointBuffers)
                 {
                     TimeSeriesPointSpriteShader.Use(
                             renderContext, pointBuffer.VertexBuffer, starTexture.Texture2d,
                             Color.FromArgb(255 * opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
-                            this.TimeSeries ? 0 : (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960)), MinSize
+                            this.TimeSeries ? (float)Decay : 0, cam, (float)(scale * (renderContext.Height / 960)), MinSize, ShowFarSide, Sky
                         );
 
                     renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
@@ -1046,16 +1051,21 @@ namespace wwtlib
             }
         }
 
-        internal void DrawTextured(RenderContext renderContext, Texture texture, float opacity)
+        public void DrawTextured(RenderContext renderContext, WebGLTexture texture, float opacity)
         {
             InitBuffer(renderContext);
+
+            Vector3d zero = new Vector3d();
+            Matrix3d matInv = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+            matInv.Invert();
+            Vector3d cam = Vector3d.TransformCoordinate(zero, matInv);
 
             foreach (TimeSeriesPointVertexBuffer pointBuffer in pointBuffers)
             {
                 TimeSeriesPointSpriteShader.Use(
-                        renderContext, pointBuffer.VertexBuffer, texture.Texture2d,
+                        renderContext, pointBuffer.VertexBuffer, texture,
                         Color.FromArgb(255*opacity, 255, 255, 255), DepthBuffered, (float)(this.JNow),
-                        (float)Decay, renderContext.CameraPosition, (float)(scale * (renderContext.Height / 960)), MinSize
+                        (float)Decay, cam, (float)(scale * (renderContext.Height / 960)), MinSize, ShowFarSide, Sky
                     );
 
                 renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);

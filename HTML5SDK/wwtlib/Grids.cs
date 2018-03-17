@@ -196,6 +196,7 @@ namespace wwtlib
 
                 starSprites = new PointList(renderContext);
                 starSprites.DepthBuffered = false;
+                starSprites.ShowFarSide = true;
                 foreach (Star star in stars)
                 {
                     Vector3d pos = Coordinates.RADecTo3dAu(star.RA, star.Dec, star.Distance);
@@ -343,7 +344,7 @@ namespace wwtlib
                 {
 
                     //cosmosSprites[i].MinPointSize = 1;
-                    cosmosSprites[i].DrawTextured(renderContext, galaxyTextures[i], (alpha * opacity) / 255.0f);
+                    cosmosSprites[i].DrawTextured(renderContext, galaxyTextures[i].Texture2d, (alpha * opacity) / 255.0f);
                    // cosmosSprites[i].Draw(renderContext,  (alpha * opacity) / 255.0f, false);
                 }
             }

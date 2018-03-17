@@ -2517,7 +2517,7 @@ namespace wwtlib
 
         public static Matrix3d InvertMatrix(Matrix3d matrix3d)
         {
-            Matrix3d mat = matrix3d;
+            Matrix3d mat = matrix3d.Clone();
             mat.Invert();
             return mat;
         }

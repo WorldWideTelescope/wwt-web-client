@@ -14,7 +14,7 @@ namespace wwtlib
     public enum MarkerMixes { Same_For_All = 0, /*Group_by_Range, Group_by_Values */};
     public enum ColorMaps { Same_For_All = 0, /*Group_by_Range=1, */Group_by_Values = 2, Per_Column_Literal = 3/*, Gradients_by_Range=4*/ };
 
-    public enum PlotTypes { Gaussian = 0, Point = 1, Circle = 2,/* Square,*/ PushPin = 3/*, Custom */};
+    public enum PlotTypes { Gaussian = 0, Point = 1, Circle = 2, Square = 3, PushPin = 4, Custom=5 };
 
     public enum MarkerScales { Screen = 0, World = 1 };
     public enum RAUnits { Hours = 0, Degrees = 1 };
