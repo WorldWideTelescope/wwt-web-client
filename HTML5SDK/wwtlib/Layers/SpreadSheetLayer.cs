@@ -804,7 +804,7 @@ namespace wwtlib
                         }
                         else
                         {
-                            pointSize = (float)1;
+                            pointSize = (float).2f;
                         }
                         if (PlotType == PlotTypes.Point)
                         {
@@ -2156,7 +2156,7 @@ namespace wwtlib
 
             double jNow = SpaceTimeController.JNow - SpaceTimeController.UtcToJulian(baseDate);
 
-            float adjustedScale = scaleFactor;
+            float adjustedScale = scaleFactor*3;
 
             if (flat && astronomical && (markerScale == MarkerScales.World))
             {
@@ -2186,11 +2186,34 @@ namespace wwtlib
             if (pointList != null)
             {
                 pointList.DepthBuffered = false;
-                pointList.Decay = decay;
+                pointList.ShowFarSide = ShowFarSide;
+                pointList.Decay = timeSeries ? decay : 0;
                 pointList.Sky = this.Astronomical;
                 pointList.TimeSeries = timeSeries;
                 pointList.JNow = jNow;
                 pointList.scale = (markerScale == MarkerScales.World) ? (float)adjustedScale : -(float)adjustedScale;
+                switch (plotType)
+                {
+                    case PlotTypes.Gaussian:
+                        pointList.Draw(renderContext, opacity * Opacity, false);
+                        break;
+                    case PlotTypes.Circle:                    
+                    case PlotTypes.Point:
+                        pointList.DrawTextured(renderContext, PushPin.GetPushPinTexture(35), opacity * Opacity);
+                        break;
+                    case PlotTypes.Square:
+                        pointList.DrawTextured(renderContext, PushPin.GetPushPinTexture(67), opacity * Opacity);
+                        break;
+                    case PlotTypes.Custom: 
+                    case PlotTypes.PushPin:
+                        pointList.DrawTextured(renderContext, PushPin.GetPushPinTexture(markerIndex), opacity * Opacity);
+                        break;
+
+                    default:
+                        break;
+                }
+
+
                 pointList.Draw(renderContext, opacity * Opacity, false);
             }
 
@@ -2613,5 +2636,92 @@ namespace wwtlib
 
             return point;
         }
+    }
+
+    public class PushPin
+    {
+        static Dictionary<int, WebGLTexture> pinTextureCache = new Dictionary<int, WebGLTexture>();
+        static Texture Pins = Planets.LoadPlanetTexture("/images/pins.png");
+        public static WebGLTexture GetPushPinTexture(int pinId)
+        {
+            WebGLTexture texture = null; 
+
+            if (pinTextureCache.ContainsKey(pinId))
+            {
+                return pinTextureCache[pinId];
+            }
+
+            try
+            {
+                texture = Tile.PrepDevice.createTexture();
+
+                Tile.PrepDevice.bindTexture(GL.TEXTURE_2D, texture);
+
+                int row = Math.Floor(pinId / 16);
+                int col = pinId % 16;
+
+                CanvasElement temp = (CanvasElement)Document.CreateElement("canvas");
+                temp.Height = 32;
+                temp.Width = 32;
+                CanvasContext2D ctx = (CanvasContext2D)temp.GetContext(Rendering.Render2D);
+                ctx.DrawImage(Pins.ImageElement, (col * 32), (row * 32), 32, 32, 0, 0, 32, 32);
+
+                //Substitute the resized image
+                ImageElement image = (ImageElement)(Element)temp;
+
+                Tile.PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+                Tile.PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+                Tile.PrepDevice.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, image);
+                Tile.PrepDevice.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR_MIPMAP_NEAREST);
+                Tile.PrepDevice.generateMipmap(GL.TEXTURE_2D);
+
+                Tile.PrepDevice.bindTexture(GL.TEXTURE_2D, null);
+                pinTextureCache[pinId] = texture;
+            }
+            catch
+            {
+
+            }
+            return texture;
+        }
+
+        //static Dictionary<int, Bitmap> pinBitmapCache = new Dictionary<int, Bitmap>();
+
+        //public static Bitmap GetPushPinBitmap(int pinId)
+        //{
+        //    if (pinBitmapCache.ContainsKey(pinId))
+        //    {
+        //        return pinBitmapCache[pinId];
+        //    }
+
+        //    Bitmap bmp = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+        //    Graphics gOut = Graphics.FromImage(bmp);
+
+        //    int row = pinId / 16;
+        //    int col = pinId % 16;
+        //    gOut.DrawImage(Pins, new Rectangle(0, 0, 32, 32), (col * 32), (row * 32), 32, 32, GraphicsUnit.Pixel);
+
+        //    gOut.Flush();
+        //    gOut.Dispose();
+        //    pinBitmapCache.Add(pinId, bmp);
+        //    return bmp;
+        //}
+
+        //public static void DrawAt(Graphics g, int pinId, int x, int y)
+        //{
+        //    int row = pinId / 16;
+        //    int col = pinId % 16;
+        //    g.DrawImage(Pins, new Rectangle(x, y, 32, 32), (col * 32), (row * 32), 32, 32, GraphicsUnit.Pixel);
+
+        //}
+
+        //public static int PinCount
+        //{
+        //    get
+        //    {
+        //        return 348;
+        //    }
+        //}
     }
 }
