@@ -1261,6 +1261,15 @@ namespace wwtlib
             else
             {
                 TileShader.MinLightingBrightness = 0.025f;
+
+                if (planetID == (int)SolarSystemObjects.Earth)
+                {
+                    TileShader.AtmosphereColor = Color.FromArgb(255, 65, 157, 217);
+                }
+                else
+                {
+                    TileShader.AtmosphereColor = Color.FromArgb(0, 0, 0, 0);
+                }
              //   device.RenderState.Lighting = Settings.Active.SolarSystemLighting;
             }
 

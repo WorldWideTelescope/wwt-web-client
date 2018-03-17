@@ -876,6 +876,7 @@ namespace wwtlib
         public static WebGLUniformLocation sunLoc;
         public static WebGLUniformLocation opacityLoc;
         public static WebGLUniformLocation minBrightnessLoc;
+        public static WebGLUniformLocation atmosphereColorLoc;
 
         public static bool initialized = false;
         public static void Init(RenderContext renderContext)
@@ -887,19 +888,26 @@ namespace wwtlib
                       "                                                                                       \n" +
                       "   varying vec2 vTextureCoord;                                                         \n" +
                       "   varying vec3 vNormal;                                                               \n" +
+                      "   varying vec3 vCamVector;                                                               \n" +
                       "                                                                                       \n" +
                       "   uniform sampler2D uSampler;                                                         \n" +
                       "   uniform float opacity;                                                              \n" +
                       "   uniform vec3 uSunPosition;                                                          \n" +
                       "   uniform float uMinBrightness;                                                       \n" +
+                      "   uniform vec3 uAtmosphereColor;                                                       \n" +
                       "                                                                                       \n" +
                       "   void main(void) {                                                                   \n" +
                       "     vec3 normal = normalize(vNormal);                                                 \n" +
-                      "     float dt = uMinBrightness + max(0.0,- dot(normal,uSunPosition));                  \n" +
-                      "     if ( uMinBrightness == 1.0 ) { dt = 1.0; }                                        \n" +     
+                      "     vec3 camVN = normalize(vCamVector);                                               \n" +
+                      "     vec3 cam = normalize(vec3(0.0,0.0,-1.0));                                                    \n" +
+                      "     float dt = uMinBrightness + pow(max(0.0,- dot(normal,uSunPosition)),0.5);                  \n" +
+                      "     float atm = max(0.0, 1.0 - 2.5 * dot(cam,camVN)) + 0.3 * dt;                             \n" +
+                      "     atm = (dt > uMinBrightness) ? atm : 0.0;                                          \n" +
+                      "     if ( uMinBrightness == 1.0 ) { dt = 1.0; atm= 0.0; }                                        \n" +     
                       "     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n" +
                       "     gl_FragColor = col * opacity;                                                     \n" +
                       "     gl_FragColor.rgb *= dt;                                                           \n" +
+                      "     gl_FragColor.rgb += atm * uAtmosphereColor;                                  \n" + //vec3( .25, .61, .85);  
                       "   }                                                                                   \n";
 
 
@@ -912,10 +920,12 @@ namespace wwtlib
                     "                                                                                  \n" +
                     "     varying vec2 vTextureCoord;                                                  \n" +
                     "     varying vec3 vNormal;                                                        \n" +
+                    "     varying vec3 vCamVector;                                                     \n" +
                     "                                                                                  \n" +
                     "                                                                                  \n" +
                     "     void main(void) {                                                            \n" +
                     "         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n" +
+                    "         vCamVector = normalize((mat3(uMVMatrix) * aVertexPosition).xyz);              \n" +
                     "         vec3 normal = normalize(aVertexPosition);                                \n" +
                     "         vec3 normalT = normalize(mat3(uMVMatrix) * normal);                      \n" +
                     "         vTextureCoord = aTextureCoord;                                           \n" +
@@ -960,6 +970,7 @@ namespace wwtlib
             sunLoc = gl.getUniformLocation(prog, "uSunPosition");
             minBrightnessLoc = gl.getUniformLocation(prog, "uMinBrightness");
             opacityLoc = gl.getUniformLocation(prog, "opacity");
+            atmosphereColorLoc = gl.getUniformLocation(prog, "uAtmosphereColor");
 
             Tile.uvMultiple = 1;
             Tile.DemEnabled = true;
@@ -972,6 +983,8 @@ namespace wwtlib
         private static WebGLProgram prog = null;
         public static Vector3d SunPosition = Vector3d.Create(-1, -1, -1);
         public static float MinLightingBrightness = 1.0f;
+
+        public static Color AtmosphereColor = Color.FromArgb(0, 0, 0, 0);
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity, bool noDepth)
         {
             GL gl = renderContext.gl;
@@ -987,6 +1000,15 @@ namespace wwtlib
                 Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
                 gl.uniform1f(opacityLoc, opacity);
                 gl.uniform1f(minBrightnessLoc, renderContext.Lighting ? MinLightingBrightness : 1.0f);
+
+                if (renderContext.Lighting)
+                {
+                    gl.uniform3f(atmosphereColorLoc, AtmosphereColor.R / 255.0f, AtmosphereColor.G / 255.0f, AtmosphereColor.B / 255.0f);
+                }
+                else
+                {
+                    gl.uniform3f(atmosphereColorLoc, 0f, 0f, 0f);
+                }
 
                 gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
                 gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
