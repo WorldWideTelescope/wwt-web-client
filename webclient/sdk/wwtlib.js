@@ -1167,9 +1167,6 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
-      console.assert(Degrees >= 0);
-      console.assert(Minutes >= 0);
-      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -1266,7 +1263,6 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
-    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -1431,7 +1427,6 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
-      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -2388,7 +2383,6 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
-          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -3845,7 +3839,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -3880,7 +3873,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
-    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -3917,7 +3909,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -4234,7 +4225,6 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
-      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -6753,7 +6743,7 @@ window.wwtlib = function(){
           this._starProfile.addEventListener('load', function(e) {
             $this._imageReady = true;
           }, false);
-          this._starProfile.src = '/images/StarProfileAlpha.png';
+          this._starProfile.src = '/webclient/images/StarProfileAlpha.png';
           this._worldList = new Array(this._points.length);
           this._transformedList = new Array(this._points.length);
           var index = 0;
@@ -6774,7 +6764,7 @@ window.wwtlib = function(){
         else {
           if (!this._pointBuffers.length) {
             if (PointList.starTexture == null) {
-              PointList.starTexture = Planets.loadPlanetTexture('/images/StarProfileAlpha.png');
+              PointList.starTexture = Planets.loadPlanetTexture('/webclient/images/StarProfileAlpha.png');
             }
             var count = this._points.length;
             var pointBuffer = null;
@@ -11661,7 +11651,7 @@ window.wwtlib = function(){
     }
     if (MinorPlanets._mpcVertexBuffer == null) {
       if (MinorPlanets.starTexture == null) {
-        MinorPlanets.starTexture = Planets.loadPlanetTexture('/images/starProfile.png');
+        MinorPlanets.starTexture = Planets.loadPlanetTexture('/webclient/images/starProfileAlpha.png');
       }
       for (var i = 0; i < 7; i++) {
         MinorPlanets._mpcBlendStates[i] = BlendState.create(false, 1000);
@@ -12521,7 +12511,9 @@ window.wwtlib = function(){
             Planets.drawSaturnsRings(renderContext, true, dist);
           }
           else {
+            renderContext.lighting = false;
             Planets._drawRings(renderContext);
+            renderContext.lighting = oldLighting;
           }
         }
         renderContext.lighting = oldLighting;
@@ -39460,7 +39452,7 @@ window.wwtlib = function(){
   LayerUI._type = null;
   Orbit._initBegun = false;
   PushPin._pinTextureCache = {};
-  PushPin._pins = Planets.loadPlanetTexture('/images/pins.png');
+  PushPin._pins = Planets.loadPlanetTexture('/webclient/images/pins.png');
   MinorPlanets.mpcList = [];
   MinorPlanets._initBegun = false;
   MinorPlanets._mpcBlendStates = new Array(7);

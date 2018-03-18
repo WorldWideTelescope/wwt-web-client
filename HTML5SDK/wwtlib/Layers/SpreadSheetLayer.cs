@@ -2641,7 +2641,7 @@ namespace wwtlib
     public class PushPin
     {
         static Dictionary<int, WebGLTexture> pinTextureCache = new Dictionary<int, WebGLTexture>();
-        static Texture Pins = Planets.LoadPlanetTexture("/images/pins.png");
+        static Texture Pins = Planets.LoadPlanetTexture("/webclient/images/pins.png");
         public static WebGLTexture GetPushPinTexture(int pinId)
         {
             WebGLTexture texture = null; 

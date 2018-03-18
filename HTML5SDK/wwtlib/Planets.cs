@@ -1418,7 +1418,10 @@ namespace wwtlib
                         }
                         else
                         {
+                            renderContext.Lighting = false;
+
                             DrawRings(renderContext);
+                            renderContext.Lighting = oldLighting;
                         }
                     }
 
