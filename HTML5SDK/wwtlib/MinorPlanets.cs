@@ -85,7 +85,7 @@ namespace wwtlib
             {
                 if (starTexture == null)
                 {
-                    starTexture = Planets.LoadPlanetTexture("/images/starProfile.png");
+                    starTexture = Planets.LoadPlanetTexture("/webclient/images/starProfileAlpha.png");
                 }
                 for (int i = 0; i < 7; i++)
                 {

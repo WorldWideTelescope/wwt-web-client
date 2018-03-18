@@ -900,7 +900,7 @@ namespace wwtlib
                         imageReady = true;
                     }, false);
 
-                    starProfile.Src = "/images/StarProfileAlpha.png";
+                    starProfile.Src = "/webclient/images/StarProfileAlpha.png";
 
                     worldList = new Vector3d[points.Count];
                     transformedList = new Vector3d[points.Count];
@@ -926,7 +926,7 @@ namespace wwtlib
                     {
                         if (starTexture == null)
                         {
-                            starTexture = Planets.LoadPlanetTexture("/images/StarProfileAlpha.png");
+                            starTexture = Planets.LoadPlanetTexture("/webclient/images/StarProfileAlpha.png");
                         }
 
                         int count = this.points.Count;
