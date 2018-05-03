@@ -263,7 +263,7 @@
 
     function nav(url) {
         if (isStandalone() && url.indexOf('http') !== 0) {
-            url = 'http://worldwidetelescope.org' + url;
+            url = '//worldwidetelescope.org' + url;
         }
 		window.open(url);
 	}

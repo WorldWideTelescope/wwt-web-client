@@ -374,7 +374,7 @@ wwt.controllers.controller('MainController',
             button: 'rbnADS',
             menu: {
               'ADS Home Page': [function () {
-                window.open('http://www.adsass.org/wwt');
+                window.open('//www.adsass.org/wwt');
               }]
             }
           });

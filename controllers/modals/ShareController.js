@@ -1,7 +1,7 @@
-﻿wwt.controllers.controller('ShareController',
+wwt.controllers.controller('ShareController',
 [
 	'$scope',
-	'$rootScope',
+	'$rootScope', 
 	'Util',
 	'$timeout',
 	'HashManager',
@@ -44,7 +44,7 @@
 			}
 			$('meta[property="og:url"]').attr('content', $scope.shareUrlReadOnly);
 			$('meta[property="og:title"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_name() + ' - WorldWide Telescope' : $scope.getFromEn('WorldWide Telescope Web Client'));
-			$('meta[property="og:image"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_thumbnailUrl() : location.host + '/webclient/Images/wwtlogo.png');
+          $('meta[property="og:image"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_thumbnailUrl() : 'https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png');
 			selectUrl(222);
 		};
 

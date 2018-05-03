@@ -1,13 +1,11 @@
-﻿wwt.controllers.controller('MobileNavController',
+wwt.controllers.controller('MobileNavController',
 ['$rootScope',
 	'$scope',
 	'Util',
 	'$modal',
 	'Localization',
-	function ($rootScope, $scope, util, $modal,loc) {
-
-		
-
+  function ($rootScope, $scope, util, $modal, loc) {
+    var v = '?v=3';
 		$scope.showModal = function (modalButton) {
 			$scope.hideMenu();
 			if (typeof modalButton.modal == 'object') {
@@ -29,7 +27,7 @@
 					text: loc.getFromEn('Tours'),
 					icon: 'fa-play',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-tours.html',
+						contentTemplate: 'views/modals/mobile-tours.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -38,7 +36,7 @@
 					text: loc.getFromEn('Search'),
 					icon: 'fa-search',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-search.html',
+                      contentTemplate: 'views/modals/mobile-search.html' + v,
 						show: false,
 						scope: $scope,
 						prefixEvent: 'searchModal'
@@ -48,7 +46,7 @@
 					text: loc.getFromEn('View'),
 					icon: 'fa-eye',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-view.html',
+                      contentTemplate: 'views/modals/mobile-view.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -57,7 +55,7 @@
 					text: loc.getFromEn('Settings'),
 					icon: 'fa-gears',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-settings.html',
+                      contentTemplate: 'views/modals/mobile-settings.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -66,7 +64,7 @@
 					text: loc.getFromEn('Layers'),
 					icon: 'fa-align-left',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-layer-manager.html',
+                      contentTemplate: 'views/modals/mobile-layer-manager.html' + v,
 						show: false,
 						scope: $scope
 					})

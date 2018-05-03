@@ -3,6 +3,7 @@
 <%@ Import Namespace="System.Security.Cryptography.X509Certificates" %>
 <%@ Import Namespace="WURFL" %>
 <script runat="server">
+
     public bool Debug = false;
     public bool DebugChrome = false;
     public bool ADS = false;
@@ -14,6 +15,7 @@
     public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
     public string BodyClass;
     public string SDKLocation = "sdk/wwtsdk.min.js";
+    public string ImgDir = "https://wwtweb.blob.core.windows.net/webclient/";
     public enum Clients
     {
         Html5 = 0,
@@ -126,10 +128,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best telescopes in the world." />
     <meta name="ROBOTS" content="INDEX, FOLLOW">
-    <meta property="og:url" content="http://worldwidetelescope.org/webclient" />
+    <meta property="og:url" content="//worldwidetelescope.org/webclient" />
     <meta property="og:title" content="WorldWide Telescope Web Client" />
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." />
-    <meta property="og:image" content="http://worldwidetelescope.org/webclient/Images/wwtlogo.png" />
+    <meta property="og:image" content="https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png" />
     <link rel="icon" href="favicon.ico"/>
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        {
@@ -222,7 +224,7 @@
     <% }
        else
        { %>
-    <script src="<%= ResourcesLocation %>/wwtwebclient<%=DotMin%>?v=<%= ResourcesVersion%>"></script>
+    <script src="wwtwebclient<%=DotMin%>?v=<%= ResourcesVersion%>"></script>
     <% } %>
 
     <% }
@@ -245,7 +247,7 @@
         </style>
      <script src="fblogin.js" type="text/javascript"></script>
       <script
-           src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"
+           src="//static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"
            type="text/javascript">
       </script>
 
@@ -463,14 +465,14 @@
         </div>
     </div>
     <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
-        <a href="http://aas.org" target="_blank" style="position:relative;left:3px;z-index:5"
+        <a href="//aas.org" target="_blank" style="position:relative;left:3px;z-index:5"
             class="pull-right">
             <img ng-src="https://wwtweb.blob.core.windows.net/images/aas-white110.png"
                     localize="American Astronomical Society (AAS) Logo"
                     localize-only="alt" style="width:60px;height:60px;"/>
         </a>
         <a class="pull-left" href="/home" style="margin-left: -11px;">
-            <img src='<%= ResourcesLocation%>/Images/wwtlogo.png'
+            <img src='<%=ImgDir %>wwtlogo.png?v=<%= ResourcesVersion%>'
                 localize="WorldWide Telescope Logo"
                 localize-only="alt"
                 style="height:60px;width:60px"
@@ -1383,7 +1385,7 @@
         <div class="modal-content">
 
             <div class="modal-body">
-                <img src='<%= ResourcesLocation%>/Images/wwtlogo.png'
+                <img src='<%=ImgDir %>wwtlogo.png?v=<%= ResourcesVersion%>'
                     style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;"
                     class="pull-left"
                     localize="WorldWide Telescope Logo"
@@ -1445,8 +1447,8 @@
             <div style="text-align:center;font-family:Arial;margin-top:50px;">
             This page requires Silverlight 4.<br />
             <br />
-            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.41108.0" style="text-decoration:none">
-              <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
+            <a href="//go.microsoft.com/fwlink/?LinkID=149156&v=4.0.41108.0" style="text-decoration:none">
+              <img src="//go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
             </a>
             </div>
         </object>

@@ -751,7 +751,7 @@
 
   /**
    * Get an element CSS property on the page
-   * Thanks to JavaScript Kit: http://www.javascriptkit.com/dhtmltutors/dhtmlcascade4.shtml
+   * Thanks to JavaScript Kit: //www.javascriptkit.com/dhtmltutors/dhtmlcascade4.shtml
    *
    * @api private
    * @method _getPropValue
@@ -777,7 +777,7 @@
 
   /**
    * Provides a cross-browser way to get the screen dimensions
-   * via: http://stackoverflow.com/questions/5864467/internet-explorer-innerheight
+   * via: //stackoverflow.com/questions/5864467/internet-explorer-innerheight
    *
    * @api private
    * @method _getWinSize
@@ -794,7 +794,7 @@
 
   /**
    * Add overlay layer to the page
-   * http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
+   * //stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
    *
    * @api private
    * @method _elementInViewport
@@ -861,7 +861,7 @@
 
   /**
    * Get an element position on the page
-   * Thanks to `meouw`: http://stackoverflow.com/a/442474/375966
+   * Thanks to `meouw`: //stackoverflow.com/a/442474/375966
    *
    * @api private
    * @method _getOffset
@@ -895,7 +895,7 @@
 
   /**
    * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
-   * via: http://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
+   * via: //stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
    *
    * @param obj1
    * @param obj2

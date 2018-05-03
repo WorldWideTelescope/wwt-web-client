@@ -103,14 +103,14 @@
 	var init = function () {
 		var deferred = $q.defer();
 		$q.all([
-			$http.get('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?X=Languages')
+			$http.get('//worldwidetelescope.org/wwtweb/catalog.aspx?X=Languages')
 			.success(function(data) {
 				lpacks = $(data);
 			})
 			.error(function(data, status, headers, config) {
 				util.log(data, status, headers, config);
 			}),
-			$http.get('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=lang_en')
+			$http.get('//worldwidetelescope.org/wwtweb/catalog.aspx?Q=lang_en')
 			.success(function(data) {
 				data = transformLanguagePack(data);
 				englishData = data;
