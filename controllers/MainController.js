@@ -431,7 +431,7 @@ wwt.controllers.controller('MainController',
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
-       uiLibrary.addDialogHooks();
+        uiLibrary.addDialogHooks();
         wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
       };
       //#endregion

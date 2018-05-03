@@ -159,16 +159,16 @@
     <script src="sdk/wwtsdk<%=DotMin %>"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-touch<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-cookies<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel<%=DotMin %>"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-touch<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-cookies<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel<%=DotMin %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
     <% if (Debug || DebugChrome)
        { %>
 

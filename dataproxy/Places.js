@@ -1,4 +1,4 @@
-﻿wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
+wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	function ($http, $q, $timeout, util) {
 		
 	var api = {
@@ -28,12 +28,22 @@
 		});
 		return deferred.promise;
 	}
-
-        var fixThumb = function(item) {
-            item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+      var cleanseUrl = function (fieldName,item) {
+        if(item[fieldName])
+          item[fieldName] = item[fieldName].replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
+      }
+      var fixThumb = function (item) {
+          item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
 			        .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-                    .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/");
-        }
+            .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+            .replace("cdn.worldwidetelescope.org/wwtweb", "worldwidetelescope.org/wwtweb");
+        Object.keys(item).forEach(function (key) {
+          var lk = key.toLowerCase();
+          if (lk.indexOf('url') > -1 || lk.indexOf('thumb') > -1) {
+            cleanseUrl(key, item);
+          }
+        });
+      }
 
 	    function getChildren(obj) {
 		var deferred = $q.defer();
@@ -62,7 +72,8 @@
 		return deferred.promise;
 	};
 
-	var transformData = function(items) {
+      var transformData = function (items) {
+        console.log('items', items);
 		$.each(items, function (i, item) {
 			try {
 				if (typeof item.get_type == 'function') {
@@ -75,7 +86,13 @@
 					item.isPanorama = item.get_dataSetType() === 3;
 					item.isSurvey = item.get_dataSetType() === 2;
 					item.isPlanet = item.get_dataSetType() === 1;
-				}
+        }
+        Object.keys(item).forEach(function (key) {
+          var lk = key.toLowerCase();
+          if (lk.indexOf('url') > -1 || lk.indexOf('thumb') > -1) {
+            cleanseUrl(key, item);
+          }
+        });
 			} catch (er) {
 				util.log(item, er);
 			}
@@ -124,7 +141,8 @@
 		return deferred.promise;
 	};
 
-	function openCollection(url) {
+      function openCollection(url) {
+        url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
 	    var deferred = $q.defer();
 	    if (!openCollectionsFolder) {
 	        openCollectionsFolder = wwt.wc.createFolder();
