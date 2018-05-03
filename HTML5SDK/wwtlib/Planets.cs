@@ -712,7 +712,7 @@ namespace wwtlib
         {
             return false;
             //string filename = Properties.Settings.Default.CahceDirectory + @"data\orbits.bin";
-            //DataSetManager.DownloadFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=orbitsbin", filename, false, true);
+            //DataSetManager.DownloadFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=orbitsbin", filename, false, true);
             //FileStream fs = null;
             //BinaryReader br = null;
             //long len = 0;
@@ -855,7 +855,7 @@ namespace wwtlib
 
         private static void LoadPlanetTextures()
         {
-            string baseUrl = "http://cdn.worldwidetelescope.org/webclient/images/";
+            string baseUrl = "//cdn.worldwidetelescope.org/webclient/images/";
 
             planetTextures = new Texture[20];
             planetTextures[0] = LoadPlanetTexture(baseUrl + @"sun.png");
@@ -1651,7 +1651,7 @@ namespace wwtlib
             {
                 return;
             }
-            ringsTexture = Planets.LoadPlanetTexture("http://cdn.worldwidetelescope.org/webclient/images/SaturnRingsStrip.png");
+            ringsTexture = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/SaturnRingsStrip.png");
             double inner = 1.113;
             double outer = 2.25;
 

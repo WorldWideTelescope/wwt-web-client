@@ -12,7 +12,7 @@ wwt.controllers.controller('voConeSearch',
       $scope.searchRegistry = function () {
         $scope.hiliteIndex = -1;
         $scope.searchBaseURL = '';
-        var searchUrl = "http://nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
+        var searchUrl = "//nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
           $scope.regTitle
           + "%25'%20or%20shortname%20like%20'%25" +
           $scope.regTitle
@@ -64,7 +64,7 @@ wwt.controllers.controller('voConeSearch',
         if ($scope.hiliteIndex < 0) {
           //known good url for results
           $scope.searchBaseTitle = "casjobs.sdss.org"
-          url = "http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch"//?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
+          url = "//casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch"//?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
         }
         else {
           url = $scope.searchBaseURL.replace('&amp;', '&');

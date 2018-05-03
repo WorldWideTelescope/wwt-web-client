@@ -132,7 +132,7 @@ namespace wwtlib
     
         private static void StartInit()
         {
-            GetMpcFile("http://cdn.worldwidetelescope.org/wwtweb/catalog.aspx?Q=mpcbin");
+            GetMpcFile("//cdn.worldwidetelescope.org/wwtweb/catalog.aspx?Q=mpcbin");
         }
 
         public static void InitMPCVertexBuffer()

@@ -16,7 +16,7 @@ public partial class _Login : System.Web.UI.Page
 	   // {
 	   //     if (GoodieTwoShoes(Request.Cookies["email"].Value.ToLower()) == Request.Cookies["alphakey"].Value)
 		//    {
-			Response.Redirect("http://www.worldwidetelescope.org/webclient/default.aspx");
+			Response.Redirect("//worldwidetelescope.org/webclient/default.aspx");
 	   //     }
 
 	  //  }
@@ -68,7 +68,7 @@ public partial class _Login : System.Web.UI.Page
 		//if (!string.IsNullOrEmpty(this.emailadress.Text))
 		//{
 		//	string key = GoodieTwoShoes(this.emailadress.Text.Trim().ToLower());
-		//	string body = string.Format("Please visit http://www.worldwidetelescope.org/webclient<br>E-Mail:{0}<br>Key:{1}", this.emailadress.Text, key);
+		//	string body = string.Format("Please visit //worldwidetelescope.org/webclient<br>E-Mail:{0}<br>Key:{1}", this.emailadress.Text, key);
 		//	SendMail
 		//	(
 		//		ConfigurationManager.AppSettings["SmtpServer"],
@@ -121,7 +121,7 @@ public partial class _Login : System.Web.UI.Page
 
 		//	//  Response.Redirect("");
 		//	ErrorMessage.Text = "Your Key was written to the cookie Click the Banner above to start the Web Client";
-		//Response.Redirect("http://www.worldwidetelescope.org/webclient/default.aspx");
+		//Response.Redirect("//worldwidetelescope.org/webclient/default.aspx");
 
 		//}
 		//else

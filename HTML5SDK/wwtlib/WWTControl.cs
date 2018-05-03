@@ -698,8 +698,8 @@ namespace wwtlib
             {
                 if (constellationsFigures == null)
                 {
-                    constellationsFigures = Constellations.Create("Constellations", "http://www.worldwidetelescope.org/data/figures.txt", false, false, false);
-                    //constellationsFigures = Constellations.Create("Constellations", "http://localhost/data/figures.txt", false, false, false);
+                    constellationsFigures = Constellations.Create("Constellations", "//worldwidetelescope.org/data/figures.txt", false, false, false);
+                    //constellationsFigures = Constellations.Create("Constellations", "//localhost/data/figures.txt", false, false, false);
                 }
 
                 constellationsFigures.Draw(RenderContext, false, "UMA", false);
@@ -760,8 +760,8 @@ namespace wwtlib
             {
                 if (constellationsBoundries == null)
                 {
-                    constellationsBoundries = Constellations.Create("Constellations", "http://www.worldwidetelescope.org/data/constellations.txt", true, false, false);
-                    //constellationsBoundries = Constellations.Create("Constellations", "http://localhost/data/constellations.txt", true, false, false);
+                    constellationsBoundries = Constellations.Create("Constellations", "//worldwidetelescope.org/data/constellations.txt", true, false, false);
+                    //constellationsBoundries = Constellations.Create("Constellations", "//localhost/data/constellations.txt", true, false, false);
                 }
                 constellationsBoundries.Draw(RenderContext, Settings.Active.ShowConstellationSelection, Constellation, false);
             }
@@ -1289,9 +1289,9 @@ namespace wwtlib
                 fgDevice = (CanvasContext2D)foregroundCanvas.GetContext(Rendering.Render2D);
             }
             webFolder = new Folder();
-            webFolder.LoadFromUrl("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?X=ImageSets5", SetupComplete);
+            webFolder.LoadFromUrl("//worldwidetelescope.org/wwtweb/catalog.aspx?X=ImageSets5", SetupComplete);
 
-            WebFile webFile = new WebFile("http://www.worldwidetelescope.org/wwtweb/weblogin.aspx?user=12345678-03D2-4935-8D0F-DCE54C9113E5&Version=HTML5&webkey=AX2011Gqqu&platform=web");
+            WebFile webFile = new WebFile("//worldwidetelescope.org/wwtweb/weblogin.aspx?user=12345678-03D2-4935-8D0F-DCE54C9113E5&Version=HTML5&webkey=AX2011Gqqu&platform=web");
             webFile.Send();
         }
 
@@ -1322,7 +1322,7 @@ namespace wwtlib
 
 
                 ExploreRoot = new Folder();
-                ExploreRoot.LoadFromUrl("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=NewExploreRoot",
+                ExploreRoot.LoadFromUrl("//worldwidetelescope.org/wwtweb/catalog.aspx?W=NewExploreRoot",
                     delegate { Explorer.AddItems(WWTControl.ExploreRoot.Children); Explorer.Refresh(); });
             }
         }
@@ -1946,10 +1946,10 @@ namespace wwtlib
                 Singleton.RenderContext.BackgroundImageset =
                     Imageset.Create(
                     "DSS",
-                    "http://cdn.worldwidetelescope.org/wwtweb/dss.aspx?q={1},{2},{3}",
+                    "//cdn.worldwidetelescope.org/wwtweb/dss.aspx?q={1},{2},{3}",
                     ImageSetType.Sky, BandPass.Visible, ProjectionType.Toast, 100,
                     0, 12, 256, 180, ".png", false, "", 0, 0, 0, false,
-                    "http://www.worldwidetelescope.org/thumbnails/DSS.png",
+                    "//worldwidetelescope.org/thumbnails/DSS.png",
                     true, false, 0, 0, 0, "", "", "", "", 1, "Sky");
 
 
@@ -1958,10 +1958,10 @@ namespace wwtlib
                     Singleton.RenderContext.BackgroundImageset =
                         Imageset.Create(
                         "Blue Marble",
-                        "http://www.worldwidetelescope.org/wwtweb/tiles.aspx?q={1},{2},{3},bm200407",
+                        "//worldwidetelescope.org/wwtweb/tiles.aspx?q={1},{2},{3},bm200407",
                         ImageSetType.Earth, BandPass.Visible, ProjectionType.Toast, 101,
                         0, 7, 256, 180, ".png", false, "", 0, 0, 0, false,
-                        "http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=bm200407",
+                        "//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=bm200407",
                         true, false, 0, 0, 0, "", "", "", "", 6371000, "Earth");
 
 
@@ -1971,10 +1971,10 @@ namespace wwtlib
                     Singleton.RenderContext.BackgroundImageset =
                      Imageset.Create(
                      "Virtual Earth Aerial",
-                     "http://a{0}.ortho.tiles.virtualearth.net/tiles/a{1}.jpeg?g=15",
+                     "//a{0}.ortho.tiles.virtualearth.net/tiles/a{1}.jpeg?g=15",
                      ImageSetType.Earth, BandPass.Visible, ProjectionType.Mercator, 102,
                      1, 20, 256, 360, ".png", false, "0123", 0, 0, 0, false,
-                     "http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=earth",
+                     "//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=earth",
                      true, false, 0, 0, 0, "", "", "", "", 6371000, "Earth");
                 }
                
@@ -1986,7 +1986,7 @@ namespace wwtlib
                 //     "",
                 //     ImageSetType.SolarSystem, BandPass.Visible, ProjectionType.Toast, 10112,
                 //     1, 20, 256, 360, ".png", false, "0123", 0, 0, 0, false,
-                //     "http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=SolarSytem",
+                //     "//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=SolarSytem",
                 //     true, false, 0, 0, 0, "", "", "", "", 6371000, "3D Solar System View");
                 //}
 

@@ -21,7 +21,7 @@ namespace wwtlib
         {
             if (milkyWayImage == null)
             {
-                milkyWayImage = Planets.LoadPlanetTexture("http://cdn.worldwidetelescope.org/webclient/images/milkywaybar.jpg");
+                milkyWayImage = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/milkywaybar.jpg");
             }
 
   
@@ -183,7 +183,7 @@ namespace wwtlib
         {
             if (!starsDownloading)
             {
-                GetStarFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos");
+                GetStarFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos");
                 starsDownloading = true;
             }
 
@@ -329,7 +329,7 @@ namespace wwtlib
                         }
 
 
-                        string name = string.Format("http://cdn.worldwidetelescope.org/webclient/images/gal_{0}.jpg", num);
+                        string name = string.Format("//cdn.worldwidetelescope.org/webclient/images/gal_{0}.jpg", num);
 
                         galaxyTextures[i] = Planets.LoadPlanetTexture(name);
 
@@ -447,7 +447,7 @@ namespace wwtlib
         {
             if (!downloadingGalaxy)
             {
-                GetGalaxyFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=cosmosnewbin");
+                GetGalaxyFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=cosmosnewbin");
                 downloadingGalaxy = true;
             }
             return false;

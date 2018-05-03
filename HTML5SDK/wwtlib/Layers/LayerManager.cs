@@ -149,7 +149,7 @@ namespace wwtlib
         //static List<Layer> layers = new List<Layer>();
         static LayerManager()
         {
-            GetMoonFile("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons");
+            GetMoonFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons");
             //InitLayers();
         }
         static string moonfile = "";
@@ -163,7 +163,7 @@ namespace wwtlib
             //    try
             //    {
             //        //This is downloaded now on startup
-            //        string url = "http://www.worldwidetelescope.org/wwtweb/isstle.aspx";
+            //        string url = "//worldwidetelescope.org/wwtweb/isstle.aspx";
             //        string filename = string.Format(@"{0}data\isstle.txt", Properties.Settings.Default.CahceDirectory);
             //        DataSetManager.DownloadFile(url, filename, false, false);
 

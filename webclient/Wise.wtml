@@ -341,7 +341,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Cassiopeia A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-002L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-89.78104190124" Projection="Tan" FileType=".png" CenterY="59.140912964" CenterX="351.30190945" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25640521728">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu/gallery_CassiopeiaA.html</CreditsUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu/gallery_CassiopeiaA.html</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-002.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -476,7 +476,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Circinus Molecular Cloud" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-039L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.940694" CenterX="227.285958" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-039.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -728,7 +728,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="NGC 1514" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-041L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="30.775956" CenterX="62.320792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu</CreditsUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -773,7 +773,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="WISEPC J045853.90+643451.9" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-040L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="172" Projection="Tan" FileType=".png" CenterY="64.5814312" CenterX="74.7255652" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.39136833536">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-040.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -944,7 +944,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="WISE J18103305" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-003L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.01" Projection="Tan" FileType=".png" CenterY="-33.2974232" CenterX="272.2221957" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56468056064">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu/gallery_dusty_star.html</CreditsUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu/gallery_dusty_star.html</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-003.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -953,7 +953,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Flame Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-004L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-1.91222" CenterX="85.42792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.551114752">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu/gallery_FlameNebula2.html</CreditsUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu/gallery_FlameNebula2.html</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-004.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>

@@ -25,7 +25,7 @@ window.wwtlib = function(){
     MARS: 3, 
     JUPITER: 4, 
     SATURN: 5, 
-    URANUS: 6, 
+    URANUS: 6,  
     NEPTUNE: 7, 
     PLUTO: 8
   };

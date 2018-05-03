@@ -39,7 +39,7 @@ namespace wwtlib
         {
             get
             {
-                return "http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?Name=folderup";
+                return "//worldwidetelescope.org/wwtweb/thumbnail.aspx?Name=folderup";
             }
             set
             {

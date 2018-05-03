@@ -967,7 +967,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="M82" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-471L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.08" Projection="Tan" FileType=".png" CenterY="69.6810899" CenterX="148.9616001" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.239514959872">
 <Credits>NASA/CXC/Wesleyan/R.Kilgard et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2011/m82/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2011/m82/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-471.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -1075,7 +1075,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Arp 147" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-474L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.08" Projection="Tan" FileType=".png" CenterY="1.3143841" CenterX="47.8295752" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0170194366464">
 <Credits>X-ray: NASA/CXC/MIT/S.Rappaport et al, Optical: NASA/STScI</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2011/arp147/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2011/arp147/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-474.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2686,7 +2686,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="SNR 0103-72.6" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-80L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.18" Projection="Tan" FileType=".png" CenterY="-72.3858252" CenterX="16.2644182" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.122466189312">
 <Credits>NASA/CXC/PSU/S.Park et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2003/snr0103/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2003/snr0103/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-80.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2704,7 +2704,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="NGC 4438 and NGC 4435" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-94L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.41" Projection="Tan" FileType=".png" CenterY="13.0239006" CenterX="186.926608" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.1875304448">
 <Credits>NASA/CXC/M.Machacek et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2003/ngc4438/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2003/ngc4438/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-94.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2776,7 +2776,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Sagittarius A*; Galactic Center" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-87L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.13" Projection="Tan" FileType=".png" CenterY="-29.0075707" CenterX="266.4157891" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.239433515008">
 <Credits>NASA/CXC/MIT/F.K.Baganoff et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2003/0203long/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2003/0203long/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-87.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2812,7 +2812,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Arp 270" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-123L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.04" Projection="Tan" FileType=".png" CenterY="32.9847782" CenterX="162.4670358" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.113613697024">
 <Credits>NASA/U. Birmingham/A.Read</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2002/arp270/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2002/arp270/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-123.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2839,7 +2839,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="NGC 4697" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-160L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.05" Projection="Tan" FileType=".png" CenterY="-5.8006924" CenterX="192.1494868" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.118572998656">
 <Credits>NASA/CXC/UVa/C.Sarazin et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2002/1140/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2002/1140/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-160.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2848,7 +2848,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="NGC 4649" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-125L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.04" Projection="Tan" FileType=".png" CenterY="11.5684064" CenterX="190.9431258" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.319654600704">
 <Credits>NASA/CXC/UVa/S.Randall et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2002/1139/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2002/1139/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-125.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2920,7 +2920,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="1E 0657-56" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-114L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.27" Projection="Tan" FileType=".png" CenterY="-55.9392679" CenterX="104.6503023" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.406506549248">
 <Credits>NASA/SAO/CXC/M.Markevitch et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2002/0066/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2002/0066/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-114.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2938,7 +2938,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="N132D" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-124L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-69.6403072" CenterX="81.2680422" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.08372639744">
 <Credits>NASA/SAO/CXC</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2002/0050/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2002/0050/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-124.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2965,7 +2965,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Vela Pulsar (Wide-Field View)" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-164L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-1.9" Projection="Tan" FileType=".png" CenterY="-45.1935034" CenterX="128.8251426" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.71522373632">
 <Credits>NASA/SAO/CXC</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/velawv/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/velawv/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-164.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2974,7 +2974,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="M15" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-176L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="5.94" Projection="Tan" FileType=".png" CenterY="12.1675401" CenterX="322.4928678" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0102993750016">
 <Credits>NASA/GSFC/N.White, L.Angelini</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/m15/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/m15/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-176.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -2983,7 +2983,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="KS 1731-260" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-175L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-4.09" Projection="Tan" FileType=".png" CenterY="-26.0928058" CenterX="263.5542395" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0314231074816">
 <Credits>NASA/CXC/Wijnands et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/ks1731/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/ks1731/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-175.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3001,7 +3001,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Chandra Deep Field South " BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-153L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="37.86" Projection="Tan" FileType=".png" CenterY="-27.8172681" CenterX="53.1139229" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.55498299392">
 <Credits>NASA/JHU/AUI/R.Giacconi et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/cdfs/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/cdfs/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-153.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3028,7 +3028,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Rosette Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-174L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="35" Projection="Tan" FileType=".png" CenterY="4.6756584" CenterX="98.2767925" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.94352459776">
 <Credits>NASA/Penn State/L.Townsley et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/2237/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/2237/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-174.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3037,7 +3037,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="NGC 7027" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-163L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-5.38" Projection="Tan" FileType=".png" CenterY="42.2359696" CenterX="316.757055" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0070821808128">
 <Credits>NASA/RIT/J.Kastner et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/1252/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/1252/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-163.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3055,7 +3055,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="NGC 6543" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-145L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.75" Projection="Tan" FileType=".png" CenterY="66.323736" CenterX="269.6354789" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0175992236286131">
 <Credits>Left: X-ray (NASA/UIUC/Y.Chu et al.), Right: X-ray/Optical Composite (X-ray: NASA/UIUC/Y.Chu et al., Optical: NASA/HST)</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/1220/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/1220/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-145.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3082,7 +3082,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="GRB 010222" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-154L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-5.7" Projection="Tan" FileType=".png" CenterY="43.0168431" CenterX="223.0509174" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.11734962176">
 <Credits>NASA/CNR/L.Piro et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/1006/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/1006/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-154.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3101,7 +3101,7 @@
  <ImageSet DataSetType="Sky" Name="Circinus Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-156L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-0.51" Projection="Tan" FileType=".png" CenterY="-65.340514" CenterX="213.2880595" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.025310741504">
 <Credits>NASA/Penn State/F.Bauer et al
 NASA/Penn State/F.Bauer et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/0167/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/0167/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-156.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3110,7 +3110,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="EMSS 1358+6245" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-173L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="62.5170858" CenterX="209.9632264" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.060075210752">
 <Credits>NASA/MIT/J.Arabadjis et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/0164/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/0164/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-173.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3119,7 +3119,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Centaurus A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-166L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0.51" Projection="Tan" FileType=".png" CenterY="-43.0231952" CenterX="201.3661957" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.149625714688">
 <Credits>NASA/SAO/R.Kraft et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2001/0157blue/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2001/0157blue/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-166.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3191,7 +3191,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Vela Pulsar" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-201L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="4.7" Projection="Tan" FileType=".png" CenterY="-45.1803109" CenterX="128.8354228" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.095994753024">
 <Credits>NASA/PSU/G.Pavlov et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/vela/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/vela/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-201.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3200,7 +3200,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="BD+30-3639" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-202L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="4.11" Projection="Tan" FileType=".png" CenterY="30.5162847" CenterX="293.6878168" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0213931216896">
 <Credits>NASA/RIT/J.Kastner et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/pne/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/pne/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-202.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3209,7 +3209,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Pictor A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-203L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-0.1" Projection="Tan" FileType=".png" CenterY="-45.7710273" CenterX="79.9095725" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.056501450752">
 <Credits>NASA/UMD/A.Wilson et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/pictor/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/pictor/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-203.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3236,7 +3236,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Deep Field in Canes Venatici" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-220L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-2.05" Projection="Tan" FileType=".png" CenterY="42.694703" CenterX="198.099332" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.376575381504">
 <Credits>NASA/GSFC (Mushotzky et al.)</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/bg/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/bg/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-220.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3245,7 +3245,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Abell 2142" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-212L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="3.82" Projection="Tan" FileType=".png" CenterY="27.2328686" CenterX="239.5804578" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.238258057216">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/a2142/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/a2142/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-212.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3263,7 +3263,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Cygnus A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-190L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-0.73" Projection="Tan" FileType=".png" CenterY="40.7336755" CenterX="299.8675312" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0489166560673827">
 <Credits>NASA/UMD/A.Wilson et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0216/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0216/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-190.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3272,7 +3272,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Galactic Center" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-216L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.69" Projection="Tan" FileType=".png" CenterY="-29.008397" CenterX="266.4167788" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0394924541550147">
 <Credits>NASA/MIT/PSU</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0204/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0204/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-216.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3281,7 +3281,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Abell 1795" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-185L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="1.84" Projection="Tan" FileType=".png" CenterY="26.5878436" CenterX="207.2201478" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0290967810048">
 <Credits>NASA/IoA/AC Fabian et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0163/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0163/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-185.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3290,7 +3290,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="3C273" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-191L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-20.11" Projection="Tan" FileType=".png" CenterY="2.0498655" CenterX="187.2755342" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.007919108096">
 <Credits>NASA/CXC/SAO/H.Marshall et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0131/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0131/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-191.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3299,7 +3299,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Antennae" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-196L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-0.22" Projection="Tan" FileType=".png" CenterY="-18.8825388" CenterX="180.4699931" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.08711196672">
 <Credits>NASA/SAO/CXC/G.Fabbiano et al.</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0120/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0120/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-196.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3308,7 +3308,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="M82" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-214L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.34" Projection="Tan" FileType=".png" CenterY="69.6766381" CenterX="148.9637058" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.120985264128">
 <Credits>NASA/CXC/SAO/PSU/CMU</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0094/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0094/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-214.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3344,7 +3344,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="E0102-72.3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-217L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-8.43" Projection="Tan" FileType=".png" CenterY="-72.031088" CenterX="16.0073082" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0311781548032">
 <Credits>NASA/MIT</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0015/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0015/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-217.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3353,7 +3353,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="M31" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-215L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.08" Projection="Tan" FileType=".png" CenterY="41.2686944" CenterX="10.6849928" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.03404850266112">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/2000/0007/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/2000/0007/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-215.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3362,7 +3362,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="PSR 0540-69" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-286L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-0.48" Projection="Tan" FileType=".png" CenterY="-69.3326124" CenterX="85.0410438" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0173064769536">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/1999/snrg/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/1999/snrg/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-286.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3389,7 +3389,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="3C295" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-288L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-36.04" Projection="Tan" FileType=".png" CenterY="52.2029681" CenterX="212.8350856" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.112000963145143">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/1999/0166/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/1999/0166/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-288.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3416,7 +3416,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Hydra A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-245L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="3.28" Projection="Tan" FileType=".png" CenterY="-12.0953871" CenterX="139.5231159" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.099289071616">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/1999/0087/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/1999/0087/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-245.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3425,7 +3425,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="PKS 0637-72" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-289L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-7.22" Projection="Tan" FileType=".png" CenterY="-75.2710885" CenterX="98.9388648" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0289796272128">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/1999/0064/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/1999/0064/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-289.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -3434,7 +3434,7 @@ NASA/Penn State/F.Bauer et al.</Credits>
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Crab Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Chandra-241L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="1.43" Projection="Tan" FileType=".png" CenterY="22.0155289" CenterX="83.6295453" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.090837684224">
 <Credits>NASA/CXC/SAO</Credits>
-<CreditsUrl>http://chandra.harvard.edu/photo/1999/0052/</CreditsUrl>
+<CreditsUrl>//chandra.harvard.edu/photo/1999/0052/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Chandra-241.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>

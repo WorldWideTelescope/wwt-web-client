@@ -1,8 +1,8 @@
 ﻿var ngIntroDirective = angular.module('angular-intro', []);
 
 /**
-* TODO: Use isolate scope, but requires angular 1.2: http://plnkr.co/edit/a2c14O?p=preview
-* See: http://stackoverflow.com/q/18796023/237209
+* TODO: Use isolate scope, but requires angular 1.2: //plnkr.co/edit/a2c14O?p=preview
+* See: //stackoverflow.com/q/18796023/237209
 */
 
 ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($timeout, $parse) {

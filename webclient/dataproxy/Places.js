@@ -31,7 +31,7 @@
 
         var fixThumb = function(item) {
             item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-			        .replace("www.worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+			        .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
                     .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/");
         }
 
@@ -93,7 +93,7 @@
 			}
 			root = wwt.wc.createFolder();
 		
-			root.loadFromUrl('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot', function () {
+			root.loadFromUrl('//worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot', function () {
 				var collection;
 				if (util.getQSParam('wtml') != null) {
 					openCollectionsFolder = wwt.wc.createFolder();
@@ -150,7 +150,7 @@
 	    var vampFolder = wwt.wc.createFolder();
 	    vampFolder.set_name('New VAMP Feeds');
 	    vampFolder.guid = '0v0';
-	    vampFolder.set_url('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
+	    vampFolder.set_url('//worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
 	    root.addChildFolder(vampFolder);
 	    
 	}
@@ -171,7 +171,7 @@
 		if (manualData) {
 			encodedUrl += manualData;
 		}
-		collection.loadFromUrl('http://www.worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodedUrl, function () {
+		collection.loadFromUrl('//worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodedUrl, function () {
 			//collection.get_children();
 			//collection.url = url;
 			if (collection.get_children()[0].get_RA() != 0 || collection.get_children()[0].get_dec() != 0) {
@@ -202,7 +202,7 @@
 			});
 			deferred.resolve(collection);
 		});
-		wwt.wc.loadImageCollection('http://www.worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodeURIComponent(url));*/
+		wwt.wc.loadImageCollection('//worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodeURIComponent(url));*/
 		//});
 		return deferred.promise;
 	}

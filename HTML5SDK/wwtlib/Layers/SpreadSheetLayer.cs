@@ -87,9 +87,9 @@ namespace wwtlib
 
             //    XmlDocument xmlDoc = new XmlDocument();
             //    XmlNamespaceManager xmlNsMgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            //    xmlNsMgr.AddNamespace("atom", "http://www.w3.org/2005/Atom");
-            //    xmlNsMgr.AddNamespace("m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
-            //    xmlNsMgr.AddNamespace("d", "http://schemas.microsoft.com/ado/2007/08/dataservices");
+            //    xmlNsMgr.AddNamespace("atom", "//www.w3.org/2005/Atom");
+            //    xmlNsMgr.AddNamespace("m", "//schemas.microsoft.com/ado/2007/08/dataservices/metadata");
+            //    xmlNsMgr.AddNamespace("d", "//schemas.microsoft.com/ado/2007/08/dataservices");
 
             //    xmlDoc.LoadXml(xml);
             //    XmlNodeList elements = xmlDoc.DocumentElement.SelectNodes("./atom:entry", xmlNsMgr);

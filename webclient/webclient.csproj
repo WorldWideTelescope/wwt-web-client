@@ -58,19 +58,18 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.7.1.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.7.1.0\lib\Wurfl.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Wurfl, Version=1.9.0.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.dll</HintPath>
     </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.7.1.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.7.1.0\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.9.0.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.js" />
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
+    <Content Include="App_Readme\Readme.txt" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="controllers\LoginController.js" />
     <Content Include="controllers\modals\colorpickerController.js" />
@@ -289,7 +288,6 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="App_Data\wurfl-latest.zip" />
     <Content Include="Chandra.wtml" />
     <Content Include="css\contextmenu.less" />
     <Content Include="css\tours.less" />
@@ -303,6 +301,14 @@
     <Content Include="css\fonts\tinymce.ttf" />
     <Content Include="css\fonts\tinymce.woff" />
     <Content Include="css\mixins.less" />
+    <Content Include="Introspector\Introspector.pdf" />
+    <Content Include="Introspector\Introspector.ashx" />
+    <Content Include="COPYING.evaluation" />
+    <Content Include="App_Readme\WURFL.chm" />
+    <Content Include="App_Readme\wurfl-latest.zip" />
+    <Content Include="App_Data\wurfl-latest.zip" />
+    <Content Include="css\layermanager.less" />
+    <Content Include="css\modals.less" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -358,7 +364,9 @@
     <Content Include="WWTSL.xap" />
     <Content Include="wwtwebclient.js" />
     <Content Include="ensurenpm.cmd" />
-    <Content Include="adsass.wtml" />
+    <Content Include="adsass.wtml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="Hubble.wtml" />
     <Content Include="ESO.wtml" />

@@ -1018,9 +1018,9 @@ namespace wwtlib
                 }
 
 
-                if (returnUrl.IndexOf("http://r{S}.ortho.tiles.virtualearth.net") > -1)
+                if (returnUrl.IndexOf("//r{S}.ortho.tiles.virtualearth.net") > -1)
                 {
-                    returnUrl = returnUrl.Replace("http://r{S}.ortho.tiles.virtualearth.net", "http://ecn.t{S}.tiles.virtualearth.net");
+                    returnUrl = returnUrl.Replace("//r{S}.ortho.tiles.virtualearth.net", "//ecn.t{S}.tiles.virtualearth.net");
                 }
 
                 
@@ -1036,9 +1036,9 @@ namespace wwtlib
                     server = id.Substr(id.Length-1, 1).ToString();
                 }
 
-                //if (returnUrl == "http://r{S}.ortho.tiles.virtualearth.net/tiles/wtl00{Q}?g=121&band=wwt_rgb" && id.Length > 7 && (id.StartsWith("2") || id.StartsWith("3")))
+                //if (returnUrl == "//r{S}.ortho.tiles.virtualearth.net/tiles/wtl00{Q}?g=121&band=wwt_rgb" && id.Length > 7 && (id.StartsWith("2") || id.StartsWith("3")))
                 //{
-                //    returnUrl = "http://r{S}.ortho.tiles.virtualearth.net/tiles/wtl00{Q}?g=120&band=wwt_jpg";
+                //    returnUrl = "//r{S}.ortho.tiles.virtualearth.net/tiles/wtl00{Q}?g=120&band=wwt_jpg";
                 //}
 
 
@@ -1059,7 +1059,7 @@ namespace wwtlib
             {
                 if (dataset.Projection == ProjectionType.Mercator)
                 {
-                    string baseUrl = "http://cdn.worldwidetelescope.org/wwtweb/demtile.aspx?q={0},{1},{2},M";
+                    string baseUrl = "//cdn.worldwidetelescope.org/wwtweb/demtile.aspx?q={0},{1},{2},M";
                     if (!String.IsNullOrEmpty(dataset.DemUrl))
                     {
                         baseUrl = dataset.DemUrl;
