@@ -59,10 +59,12 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Wurfl, Version=1.9.0.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.dll</HintPath>
+      <HintPath>..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Wurfl.Aspnet.Extensions, Version=1.9.0.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+      <HintPath>..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -301,14 +303,14 @@
     <Content Include="css\fonts\tinymce.ttf" />
     <Content Include="css\fonts\tinymce.woff" />
     <Content Include="css\mixins.less" />
+    <Content Include="css\layermanager.less" />
+    <Content Include="css\modals.less" />
     <Content Include="Introspector\Introspector.pdf" />
     <Content Include="Introspector\Introspector.ashx" />
     <Content Include="COPYING.evaluation" />
     <Content Include="App_Readme\WURFL.chm" />
     <Content Include="App_Readme\wurfl-latest.zip" />
     <Content Include="App_Data\wurfl-latest.zip" />
-    <Content Include="css\layermanager.less" />
-    <Content Include="css\modals.less" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
