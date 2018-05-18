@@ -227,3 +227,4 @@ COPYING.txt
 /webclient/sdk/mscorlib.dll
 /webclient/sdk/Script.Web.dll
 /webclient/sdk/wwtlib.dll
+/.vs/config/applicationhost.config

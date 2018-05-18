@@ -121,8 +121,8 @@ namespace wwtlib
         {
 
 
-            if (url.ToLowerCase().StartsWith("http://worldwidetelescope.org") ||
-                url.ToLowerCase().StartsWith("http://www.worldwidetelescope.org"))
+            if (url.ToLowerCase().StartsWith("//worldwidetelescope.org") ||
+                url.ToLowerCase().StartsWith("//worldwidetelescope.org"))
             {
                 if (url.ToLowerCase().IndexOf("worldwidetelescope.org/wwtweb/") < 12)
                 {
@@ -130,8 +130,8 @@ namespace wwtlib
                 }
                 return url.Split("worldwidetelescope.org")[1];
             }
-            if (url.ToLowerCase().StartsWith("http://wwtstaging.azurewebsites.net") ||
-                url.ToLowerCase().StartsWith("http://wwtstaging.azurewebsites.net"))
+            if (url.ToLowerCase().StartsWith("//wwtstaging.azurewebsites.net") ||
+                url.ToLowerCase().StartsWith("//wwtstaging.azurewebsites.net"))
             {
                 if (url.ToLowerCase().IndexOf("wwtstaging.azurewebsites.net/wwtweb/") < 12)
                 {
@@ -142,7 +142,7 @@ namespace wwtlib
 
             if (url.ToLowerCase().StartsWith("http"))
             {
-                return "http://www.worldwidetelescope.org/webserviceproxy.aspx?targeturl=" + url.EncodeUriComponent();
+                return "//worldwidetelescope.org/webserviceproxy.aspx?targeturl=" + url.EncodeUriComponent();
             }
             return url;
         }
@@ -176,7 +176,7 @@ namespace wwtlib
 
         public static string GetTourComponent(string url, string name)
         {
-            return "http://www.worldwidetelescope.org/GetTourFile.aspx?targeturl=" + url.EncodeUriComponent() + "&filename=" + name;
+            return "//worldwidetelescope.org/GetTourFile.aspx?targeturl=" + url.EncodeUriComponent() + "&filename=" + name;
         }
 
         public static string XMLDate(Date d)

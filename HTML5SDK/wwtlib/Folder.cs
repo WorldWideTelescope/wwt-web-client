@@ -544,7 +544,7 @@ namespace wwtlib
                 if (string.IsNullOrEmpty(thumbnailUrlField))
                 {
 
-                    return "http://cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=folder";
+                    return "//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=folder";
                 }
 
                 return this.thumbnailUrlField;

@@ -14,7 +14,7 @@ _site
 *.vi
 *.zip
 *~
-**/wwtlib.dll
+*.dll
 
 # OS or Editor folders
 ._*

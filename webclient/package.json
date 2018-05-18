@@ -9,7 +9,7 @@
         "web",
         "HTML5 SDK"
     ],
-    "homepage": "http://WorldWideTelescope.org",
+    "homepage": "//WorldWideTelescope.org",
     "author": "Jonathan Fay (jfay@microsoft.com) and Ron Gilchrist (kid@thewebkid.com)",
     "repository": {
         "type": "git",

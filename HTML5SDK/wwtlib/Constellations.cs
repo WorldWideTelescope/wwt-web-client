@@ -388,8 +388,8 @@ namespace wwtlib
         }
 
 
-        public static Constellations Containment = Constellations.Create("Constellations", "http://www.worldwidetelescope.org/data/constellations.txt", true, true, true);
-        //public static Constellations Containment = Constellations.Create("Constellations", "http://localhost/data/constellations.txt", true, true, true);
+        public static Constellations Containment = Constellations.Create("Constellations", "//worldwidetelescope.org/data/constellations.txt", true, true, true);
+        //public static Constellations Containment = Constellations.Create("Constellations", "//localhost/data/constellations.txt", true, true, true);
 
         static string constToDraw = "";
 
@@ -496,8 +496,8 @@ namespace wwtlib
                 if (artFile == null)
                 {
                     artFile = new Folder();
-                    artFile.LoadFromUrl("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=hevelius", OnArtReady);
-                    //artFile.LoadFromUrl("http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=and", OnArtReady);
+                    artFile.LoadFromUrl("//worldwidetelescope.org/wwtweb/catalog.aspx?W=hevelius", OnArtReady);
+                    //artFile.LoadFromUrl("//worldwidetelescope.org/wwtweb/catalog.aspx?W=and", OnArtReady);
                 }
 
                 return;
@@ -548,9 +548,9 @@ namespace wwtlib
 
         static Constellations()
         {
-            //string url = "http://www.worldwidetelescope.org/data/constellationNames_RADEC_EN.txt";
-            //string url = "http://localhost/data/constellationNames_RADEC_EN.txt";
-            string url = "http://www.worldwidetelescope.org/wwtweb/catalog.aspx?q=ConstellationNamePositions_EN";
+            //string url = "//worldwidetelescope.org/data/constellationNames_RADEC_EN.txt";
+            //string url = "//localhost/data/constellationNames_RADEC_EN.txt";
+            string url = "//worldwidetelescope.org/wwtweb/catalog.aspx?q=ConstellationNamePositions_EN";
             webFileConstNames = new WebFile(url);
             webFileConstNames.OnStateChange = LoadNames;
             webFileConstNames.Send();

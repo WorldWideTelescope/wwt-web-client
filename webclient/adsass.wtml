@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Folder Name="ADS All Sky Survey">
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="allSources_512" Url="http://www.adsass.org/wwt/allSources_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="allSources_512" Url="//www.adsass.org/wwt/allSources_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>allSources_512.jpg</ThumbnailUrl>
@@ -9,7 +9,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1800_1850_512" Url="http://www.adsass.org/wwt/date-1800_1850_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1800_1850_512" Url="//www.adsass.org/wwt/date-1800_1850_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1800_1850_512.jpg</ThumbnailUrl>
@@ -17,7 +17,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1850_1900_512" Url="http://www.adsass.org/wwt/date-1850_1900_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1850_1900_512" Url="//www.adsass.org/wwt/date-1850_1900_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1850_1900_512.jpg</ThumbnailUrl>
@@ -25,7 +25,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1900_1910_512" Url="http://www.adsass.org/wwt/date-1900_1910_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1900_1910_512" Url="//www.adsass.org/wwt/date-1900_1910_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1900_1910_512.jpg</ThumbnailUrl>
@@ -33,7 +33,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1910_1920_512" Url="http://www.adsass.org/wwt/date-1910_1920_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1910_1920_512" Url="//www.adsass.org/wwt/date-1910_1920_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1910_1920_512.jpg</ThumbnailUrl>
@@ -41,7 +41,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1920_1930_512" Url="http://www.adsass.org/wwt/date-1920_1930_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1920_1930_512" Url="//www.adsass.org/wwt/date-1920_1930_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1920_1930_512.jpg</ThumbnailUrl>
@@ -49,7 +49,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1930_1940_512" Url="http://www.adsass.org/wwt/date-1930_1940_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1930_1940_512" Url="//www.adsass.org/wwt/date-1930_1940_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1930_1940_512.jpg</ThumbnailUrl>
@@ -57,7 +57,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1940_1945_512" Url="http://www.adsass.org/wwt/date-1940_1945_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1940_1945_512" Url="//www.adsass.org/wwt/date-1940_1945_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1940_1945_512.jpg</ThumbnailUrl>
@@ -65,7 +65,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1945_1950_512" Url="http://www.adsass.org/wwt/date-1945_1950_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1945_1950_512" Url="//www.adsass.org/wwt/date-1945_1950_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1945_1950_512.jpg</ThumbnailUrl>
@@ -73,7 +73,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1950_1955_512" Url="http://www.adsass.org/wwt/date-1950_1955_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1950_1955_512" Url="//www.adsass.org/wwt/date-1950_1955_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1950_1955_512.jpg</ThumbnailUrl>
@@ -81,7 +81,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1955_1960_512" Url="http://www.adsass.org/wwt/date-1955_1960_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1955_1960_512" Url="//www.adsass.org/wwt/date-1955_1960_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1955_1960_512.jpg</ThumbnailUrl>
@@ -89,7 +89,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1960_1965_512" Url="http://www.adsass.org/wwt/date-1960_1965_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1960_1965_512" Url="//www.adsass.org/wwt/date-1960_1965_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1960_1965_512.jpg</ThumbnailUrl>
@@ -97,7 +97,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1965_1970_512" Url="http://www.adsass.org/wwt/date-1965_1970_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1965_1970_512" Url="//www.adsass.org/wwt/date-1965_1970_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1965_1970_512.jpg</ThumbnailUrl>
@@ -105,7 +105,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1970_1975_512" Url="http://www.adsass.org/wwt/date-1970_1975_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1970_1975_512" Url="//www.adsass.org/wwt/date-1970_1975_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1970_1975_512.jpg</ThumbnailUrl>
@@ -113,7 +113,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1975_1980_512" Url="http://www.adsass.org/wwt/date-1975_1980_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1975_1980_512" Url="//www.adsass.org/wwt/date-1975_1980_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1975_1980_512.jpg</ThumbnailUrl>
@@ -121,7 +121,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1980_1985_512" Url="http://www.adsass.org/wwt/date-1980_1985_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1980_1985_512" Url="//www.adsass.org/wwt/date-1980_1985_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1980_1985_512.jpg</ThumbnailUrl>
@@ -129,7 +129,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1985_1990_512" Url="http://www.adsass.org/wwt/date-1985_1990_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1985_1990_512" Url="//www.adsass.org/wwt/date-1985_1990_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1985_1990_512.jpg</ThumbnailUrl>
@@ -137,7 +137,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1990_512" Url="http://www.adsass.org/wwt/date-1990_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1990_512" Url="//www.adsass.org/wwt/date-1990_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1990_512.jpg</ThumbnailUrl>
@@ -145,7 +145,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1991_512" Url="http://www.adsass.org/wwt/date-1991_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1991_512" Url="//www.adsass.org/wwt/date-1991_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1991_512.jpg</ThumbnailUrl>
@@ -153,7 +153,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1992_512" Url="http://www.adsass.org/wwt/date-1992_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1992_512" Url="//www.adsass.org/wwt/date-1992_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1992_512.jpg</ThumbnailUrl>
@@ -161,7 +161,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1993_512" Url="http://www.adsass.org/wwt/date-1993_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1993_512" Url="//www.adsass.org/wwt/date-1993_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1993_512.jpg</ThumbnailUrl>
@@ -169,7 +169,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1994_512" Url="http://www.adsass.org/wwt/date-1994_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1994_512" Url="//www.adsass.org/wwt/date-1994_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1994_512.jpg</ThumbnailUrl>
@@ -177,7 +177,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1995_512" Url="http://www.adsass.org/wwt/date-1995_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1995_512" Url="//www.adsass.org/wwt/date-1995_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1995_512.jpg</ThumbnailUrl>
@@ -185,7 +185,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1996_512" Url="http://www.adsass.org/wwt/date-1996_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1996_512" Url="//www.adsass.org/wwt/date-1996_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1996_512.jpg</ThumbnailUrl>
@@ -193,7 +193,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1997_512" Url="http://www.adsass.org/wwt/date-1997_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1997_512" Url="//www.adsass.org/wwt/date-1997_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1997_512.jpg</ThumbnailUrl>
@@ -201,7 +201,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1998_512" Url="http://www.adsass.org/wwt/date-1998_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1998_512" Url="//www.adsass.org/wwt/date-1998_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1998_512.jpg</ThumbnailUrl>
@@ -209,7 +209,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1999_512" Url="http://www.adsass.org/wwt/date-1999_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-1999_512" Url="//www.adsass.org/wwt/date-1999_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-1999_512.jpg</ThumbnailUrl>
@@ -217,7 +217,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2000_512" Url="http://www.adsass.org/wwt/date-2000_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2000_512" Url="//www.adsass.org/wwt/date-2000_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2000_512.jpg</ThumbnailUrl>
@@ -225,7 +225,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2001_512" Url="http://www.adsass.org/wwt/date-2001_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2001_512" Url="//www.adsass.org/wwt/date-2001_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2001_512.jpg</ThumbnailUrl>
@@ -233,7 +233,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2002_512" Url="http://www.adsass.org/wwt/date-2002_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2002_512" Url="//www.adsass.org/wwt/date-2002_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2002_512.jpg</ThumbnailUrl>
@@ -241,7 +241,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2003_512" Url="http://www.adsass.org/wwt/date-2003_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2003_512" Url="//www.adsass.org/wwt/date-2003_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2003_512.jpg</ThumbnailUrl>
@@ -249,7 +249,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2004_512" Url="http://www.adsass.org/wwt/date-2004_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2004_512" Url="//www.adsass.org/wwt/date-2004_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2004_512.jpg</ThumbnailUrl>
@@ -257,7 +257,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2005_512" Url="http://www.adsass.org/wwt/date-2005_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2005_512" Url="//www.adsass.org/wwt/date-2005_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2005_512.jpg</ThumbnailUrl>
@@ -265,7 +265,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2006_512" Url="http://www.adsass.org/wwt/date-2006_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2006_512" Url="//www.adsass.org/wwt/date-2006_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2006_512.jpg</ThumbnailUrl>
@@ -273,7 +273,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2007_512" Url="http://www.adsass.org/wwt/date-2007_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2007_512" Url="//www.adsass.org/wwt/date-2007_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2007_512.jpg</ThumbnailUrl>
@@ -281,7 +281,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2008_512" Url="http://www.adsass.org/wwt/date-2008_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2008_512" Url="//www.adsass.org/wwt/date-2008_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2008_512.jpg</ThumbnailUrl>
@@ -289,7 +289,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2009_512" Url="http://www.adsass.org/wwt/date-2009_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2009_512" Url="//www.adsass.org/wwt/date-2009_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2009_512.jpg</ThumbnailUrl>
@@ -297,7 +297,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2010_512" Url="http://www.adsass.org/wwt/date-2010_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2010_512" Url="//www.adsass.org/wwt/date-2010_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2010_512.jpg</ThumbnailUrl>
@@ -305,7 +305,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2011_512" Url="http://www.adsass.org/wwt/date-2011_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2011_512" Url="//www.adsass.org/wwt/date-2011_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2011_512.jpg</ThumbnailUrl>
@@ -313,7 +313,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2012_512" Url="http://www.adsass.org/wwt/date-2012_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2012_512" Url="//www.adsass.org/wwt/date-2012_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2012_512.jpg</ThumbnailUrl>
@@ -321,7 +321,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2013_512" Url="http://www.adsass.org/wwt/date-2013_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-2013_512" Url="//www.adsass.org/wwt/date-2013_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-2013_512.jpg</ThumbnailUrl>
@@ -329,7 +329,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-pre1800_512" Url="http://www.adsass.org/wwt/date-pre1800_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="date-pre1800_512" Url="//www.adsass.org/wwt/date-pre1800_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>date-pre1800_512.jpg</ThumbnailUrl>
@@ -337,7 +337,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Galaxy_512" Url="http://www.adsass.org/wwt/Galaxy_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Galaxy_512" Url="//www.adsass.org/wwt/Galaxy_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>Galaxy_512.jpg</ThumbnailUrl>
@@ -345,7 +345,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="HII-region_512" Url="http://www.adsass.org/wwt/HII-region_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="HII-region_512" Url="//www.adsass.org/wwt/HII-region_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>HII-region_512.jpg</ThumbnailUrl>
@@ -353,7 +353,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Infrared_512" Url="http://www.adsass.org/wwt/Infrared_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Infrared_512" Url="//www.adsass.org/wwt/Infrared_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>Infrared_512.jpg</ThumbnailUrl>
@@ -361,7 +361,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="lut_x" Url="http://www.adsass.org/wwt/lut_x/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="lut_x" Url="//www.adsass.org/wwt/lut_x/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>lut_x.jpg</ThumbnailUrl>
@@ -369,7 +369,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="lut_y" Url="http://www.adsass.org/wwt/lut_y/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="lut_y" Url="//www.adsass.org/wwt/lut_y/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>lut_y.jpg</ThumbnailUrl>
@@ -377,7 +377,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Nebula_512" Url="http://www.adsass.org/wwt/Nebula_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Nebula_512" Url="//www.adsass.org/wwt/Nebula_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>Nebula_512.jpg</ThumbnailUrl>
@@ -385,7 +385,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Other_512" Url="http://www.adsass.org/wwt/Other_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Other_512" Url="//www.adsass.org/wwt/Other_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>Other_512.jpg</ThumbnailUrl>
@@ -393,7 +393,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Radio_512" Url="http://www.adsass.org/wwt/Radio_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Radio_512" Url="//www.adsass.org/wwt/Radio_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>Radio_512.jpg</ThumbnailUrl>
@@ -401,7 +401,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Star_512" Url="http://www.adsass.org/wwt/Star_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="Star_512" Url="//www.adsass.org/wwt/Star_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>Star_512.jpg</ThumbnailUrl>
@@ -409,7 +409,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="UV_512" Url="http://www.adsass.org/wwt/UV_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="UV_512" Url="//www.adsass.org/wwt/UV_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>UV_512.jpg</ThumbnailUrl>
@@ -417,7 +417,7 @@
 </ImageSet>
 
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="X_512" Url="http://www.adsass.org/wwt/X_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="Visible" Name="X_512" Url="//www.adsass.org/wwt/X_512/{1}/{3}/{3}_{2}.png" BaseTileLevel="0" TileLevels="3" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits> ADS All Sky Survey </Credits>
 <CreditsUrl> adsass.org </CreditsUrl>
 <ThumbnailUrl>X_512.jpg</ThumbnailUrl>
@@ -432,16 +432,16 @@
 <Description />
 </ImageSet>
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="IR" Name="WISE All Sky (Infrared)" Url="http://www.worldwidetelescope.org/wwtweb/tiles.aspx?q={L},{X},{Y},wise" BaseTileLevel="0" TileLevels="7" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
+<ImageSet Generic="False" DataSetType="Sky" BandPass="IR" Name="WISE All Sky (Infrared)" Url="//worldwidetelescope.org/wwtweb/tiles.aspx?q={L},{X},{Y},wise" BaseTileLevel="0" TileLevels="7" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False">
 <Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>http://wise.ssl.berkeley.edu/</CreditsUrl>
-<ThumbnailUrl>http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=wise</ThumbnailUrl>
+<CreditsUrl>//wise.ssl.berkeley.edu/</CreditsUrl>
+<ThumbnailUrl>//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=wise</ThumbnailUrl>
 </ImageSet>
 
-<ImageSet Generic="False" DataSetType="Sky" BandPass="IR" Name="GLIMPSE/MIPSGAL" Url="http://www.worldwidetelescope.org/wwtweb/glimpse.aspx?q={1},{2},{3}" BaseTileLevel="0" TileLevels="11" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False" StockSet="False">
-<ThumbnailUrl>http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=glimpsetn</ThumbnailUrl>
+<ImageSet Generic="False" DataSetType="Sky" BandPass="IR" Name="GLIMPSE/MIPSGAL" Url="//worldwidetelescope.org/wwtweb/glimpse.aspx?q={1},{2},{3}" BaseTileLevel="0" TileLevels="11" BaseDegreesPerTile="180" FileType=".png" BottomsUp="False" Projection="Toast" QuadTreeMap="" CenterX="0" CenterY="0" OffsetX="0" OffsetY="0" Rotation="0" Sparse="False" ElevationModel="False" StockSet="False">
+<ThumbnailUrl>//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=glimpsetn</ThumbnailUrl>
 <Credits>NASA/JPL-Caltech/Univ. of Wisconsin. The GLIMPSE survey was performed using the Spitzer Space Telescope.</Credits>
-<CreditsUrl>http://www.astro.wisc.edu/sirtf/</CreditsUrl>
+<CreditsUrl>//www.astro.wisc.edu/sirtf/</CreditsUrl>
 </ImageSet>
 
 

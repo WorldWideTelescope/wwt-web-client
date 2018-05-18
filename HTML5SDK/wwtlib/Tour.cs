@@ -138,7 +138,7 @@ namespace wwtlib
                 }
                 else
                 {
-                    return String.Format("http://cdn.worldwidetelescope.org/wwtweb/GetTourThumbnail.aspx?GUID={0}", Id);
+                    return String.Format("//worldwidetelescope.org/wwtweb/GetTourThumbnail.aspx?GUID={0}", Id);
                 }
             }
             set
@@ -154,7 +154,7 @@ namespace wwtlib
             {
                 if (string.IsNullOrEmpty(tourUrl))
                 {
-                    return string.Format("http://cdn.worldwidetelescope.org/wwtweb/GetTour.aspx?GUID={0}", this.Id);
+                    return string.Format("//cdn.worldwidetelescope.org/wwtweb/GetTour.aspx?GUID={0}", this.Id);
                 }
                 else
                 {

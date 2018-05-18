@@ -756,7 +756,7 @@
 
   /**
    * Get an element CSS property on the page
-   * Thanks to JavaScript Kit: http://www.javascriptkit.com/dhtmltutors/dhtmlcascade4.shtml
+   * Thanks to JavaScript Kit: //www.javascriptkit.com/dhtmltutors/dhtmlcascade4.shtml
    *
    * @api private
    * @method _getPropValue
@@ -782,7 +782,7 @@
 
   /**
    * Provides a cross-browser way to get the screen dimensions
-   * via: http://stackoverflow.com/questions/5864467/internet-explorer-innerheight
+   * via: //stackoverflow.com/questions/5864467/internet-explorer-innerheight
    *
    * @api private
    * @method _getWinSize
@@ -799,7 +799,7 @@
 
   /**
    * Add overlay layer to the page
-   * http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
+   * //stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
    *
    * @api private
    * @method _elementInViewport
@@ -866,7 +866,7 @@
 
   /**
    * Get an element position on the page
-   * Thanks to `meouw`: http://stackoverflow.com/a/442474/375966
+   * Thanks to `meouw`: //stackoverflow.com/a/442474/375966
    *
    * @api private
    * @method _getOffset
@@ -900,7 +900,7 @@
 
   /**
    * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
-   * via: http://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
+   * via: //stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
    *
    * @param obj1
    * @param obj2
@@ -1025,8 +1025,8 @@
 var ngIntroDirective = angular.module('angular-intro', []);
 
 /**
-* TODO: Use isolate scope, but requires angular 1.2: http://plnkr.co/edit/a2c14O?p=preview
-* See: http://stackoverflow.com/q/18796023/237209
+* TODO: Use isolate scope, but requires angular 1.2: //plnkr.co/edit/a2c14O?p=preview
+* See: //stackoverflow.com/q/18796023/237209
 */
 
 ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($timeout, $parse) {
@@ -1816,14 +1816,14 @@ wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) 
 	var init = function () {
 		var deferred = $q.defer();
 		$q.all([
-			$http.get('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?X=Languages')
+			$http.get('//worldwidetelescope.org/wwtweb/catalog.aspx?X=Languages')
 			.success(function(data) {
 				lpacks = $(data);
 			})
 			.error(function(data, status, headers, config) {
 				util.log(data, status, headers, config);
 			}),
-			$http.get('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?Q=lang_en')
+			$http.get('//worldwidetelescope.org/wwtweb/catalog.aspx?Q=lang_en')
 			.success(function(data) {
 				data = transformLanguagePack(data);
 				englishData = data;
@@ -2157,7 +2157,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
         "_elevation": 50,
         "_name": "Uranus",
         "guid": "Solar System (Sky).8",
-        "thumb": "http://cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=uranus",
+        "thumb": "//cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=uranus",
         "isPlanet": false,
         "isFGImage": true,
         "$$hashKey": "object:832",
@@ -2474,7 +2474,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 
     function nav(url) {
         if (isStandalone() && url.indexOf('http') !== 0) {
-            url = 'http://worldwidetelescope.org' + url;
+            url = '//worldwidetelescope.org' + url;
         }
 		window.open(url);
 	}
@@ -3248,12 +3248,22 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		});
 		return deferred.promise;
 	}
-
-        var fixThumb = function(item) {
-            item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-			        .replace("www.worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-                    .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/");
-        }
+      var cleanseUrl = function (fieldName,item) {
+        if(item[fieldName])
+          item[fieldName] = item[fieldName].replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
+      }
+      var fixThumb = function (item) {
+          item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+			        .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+            .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
+            .replace("cdn.worldwidetelescope.org/wwtweb", "worldwidetelescope.org/wwtweb");
+        Object.keys(item).forEach(function (key) {
+          var lk = key.toLowerCase();
+          if (lk.indexOf('url') > -1 || lk.indexOf('thumb') > -1) {
+            cleanseUrl(key, item);
+          }
+        });
+      }
 
 	    function getChildren(obj) {
 		var deferred = $q.defer();
@@ -3282,7 +3292,8 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		return deferred.promise;
 	};
 
-	var transformData = function(items) {
+      var transformData = function (items) {
+        console.log('items', items);
 		$.each(items, function (i, item) {
 			try {
 				if (typeof item.get_type == 'function') {
@@ -3295,7 +3306,13 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 					item.isPanorama = item.get_dataSetType() === 3;
 					item.isSurvey = item.get_dataSetType() === 2;
 					item.isPlanet = item.get_dataSetType() === 1;
-				}
+        }
+        Object.keys(item).forEach(function (key) {
+          var lk = key.toLowerCase();
+          if (lk.indexOf('url') > -1 || lk.indexOf('thumb') > -1) {
+            cleanseUrl(key, item);
+          }
+        });
 			} catch (er) {
 				util.log(item, er);
 			}
@@ -3313,7 +3330,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 			}
 			root = wwt.wc.createFolder();
 		
-			root.loadFromUrl('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot', function () {
+			root.loadFromUrl('//worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot', function () {
 				var collection;
 				if (util.getQSParam('wtml') != null) {
 					openCollectionsFolder = wwt.wc.createFolder();
@@ -3344,7 +3361,8 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		return deferred.promise;
 	};
 
-	function openCollection(url) {
+      function openCollection(url) {
+        url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
 	    var deferred = $q.defer();
 	    if (!openCollectionsFolder) {
 	        openCollectionsFolder = wwt.wc.createFolder();
@@ -3370,7 +3388,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	    var vampFolder = wwt.wc.createFolder();
 	    vampFolder.set_name('New VAMP Feeds');
 	    vampFolder.guid = '0v0';
-	    vampFolder.set_url('http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
+	    vampFolder.set_url('//worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
 	    root.addChildFolder(vampFolder);
 	    
 	}
@@ -3391,7 +3409,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 		if (manualData) {
 			encodedUrl += manualData;
 		}
-		collection.loadFromUrl('http://www.worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodedUrl, function () {
+		collection.loadFromUrl('//worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodedUrl, function () {
 			//collection.get_children();
 			//collection.url = url;
 			if (collection.get_children()[0].get_RA() != 0 || collection.get_children()[0].get_dec() != 0) {
@@ -3422,7 +3440,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 			});
 			deferred.resolve(collection);
 		});
-		wwt.wc.loadImageCollection('http://www.worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodeURIComponent(url));*/
+		wwt.wc.loadImageCollection('//worldwidetelescope.org/WWTWeb/TileImage.aspx?imageurl=' + encodeURIComponent(url));*/
 		//});
 		return deferred.promise;
 	}
@@ -3487,6 +3505,7 @@ get_subType = undefined
 get_dataSetType = 1
 
 */
+
 wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util', function ($rootScope, $http, $q, $timeout, util) {
     var api = {
         getRoot: getRoot,
@@ -3861,7 +3880,7 @@ wwt.app.factory('Astrometry', [
         jobSuccess: 'Job Succeeded',
         calibrationFail: 'Calibration Results Failed'
     };
-		var uploadUrl, // "http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
+		var uploadUrl, // "//www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
 			statusCallback,
 			sessionId = null,
 			submissionId = null,
@@ -3871,7 +3890,7 @@ wwt.app.factory('Astrometry', [
 			errorData = null,
 			debug=false;
 
-		/*var upload = '{"session": "####", "url": "http://apod.nasa.gov/apod/image/1206/ldn673s_block1123.jpg", "scale_units": "degwidth", "scale_lower": 0.5, "scale_upper": 1.0, "center_ra": 290, "center_dec": 11, "radius": 2.0 }      ';*/
+		/*var upload = '{"session": "####", "url": "//apod.nasa.gov/apod/image/1206/ldn673s_block1123.jpg", "scale_units": "degwidth", "scale_lower": 0.5, "scale_upper": 1.0, "center_ra": 290, "center_dec": 11, "radius": 2.0 }      ';*/
 
 
 		function login() {
@@ -3882,7 +3901,7 @@ wwt.app.factory('Astrometry', [
 			var loginJson = encodeURIComponent(JSON.stringify(loginData));
 
 			$.ajax({
-				url: "http://nova.astrometry.net/api/login",
+				url: "//nova.astrometry.net/api/login",
 				type: "POST",
 				data: "request-json=" + loginJson,
 				dataType: "json",
@@ -3909,7 +3928,7 @@ wwt.app.factory('Astrometry', [
 			var uploadJson = encodeURIComponent(JSON.stringify(uploadData));
 
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/url_upload",
+				url: "//supernova.astrometry.net/api/url_upload",
 				type: "POST",
 				data: "request-json=" + uploadJson,
 				dataType: "json",
@@ -3928,7 +3947,7 @@ wwt.app.factory('Astrometry', [
 		function checkStatus() {
 			showStatus(statusTypes.statusCheck);
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/submissions/" + submissionId,
+				url: "//supernova.astrometry.net/api/submissions/" + submissionId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -3955,7 +3974,7 @@ wwt.app.factory('Astrometry', [
 		function checkJobStatus() {
 			//showStatus("Checking Job Status: " + jobId);
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/jobs/" + jobId,
+				url: "//supernova.astrometry.net/api/jobs/" + jobId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -3991,7 +4010,7 @@ wwt.app.factory('Astrometry', [
 
 		function getCalibration() {
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/jobs/" + jobId + "/calibration",
+				url: "//supernova.astrometry.net/api/jobs/" + jobId + "/calibration",
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -4050,7 +4069,7 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 			rootFolders = folders;
 		    $.each(folders, function(i,item) {
 		        if (item.get_thumbnailUrl) {
-		            item.thumb = item.get_thumbnailUrl().replace("http://wwtstaging.azurewebsites.net/Content/Images/", "https://wwtweb.blob.core.windows.net/images/");
+		            item.thumb = item.get_thumbnailUrl().replace("//wwtstaging.azurewebsites.net/Content/Images/", "https://wwtweb.blob.core.windows.net/images/");
 		        }
 		    });
 			deferred.resolve(folders);
@@ -4084,7 +4103,7 @@ wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 			}
 			root = wwt.wc.createFolder();
 		
-			root.loadFromUrl('http://worldwidetelescope.org/Resource/Service/Payload', function () {
+			root.loadFromUrl('//worldwidetelescope.org/Resource/Service/Payload', function () {
 				deferred.resolve(root.get_children());
 			});
 		}
@@ -4565,7 +4584,7 @@ wwt.controllers.controller('MainController',
             button: 'rbnADS',
             menu: {
               'ADS Home Page': [function () {
-                window.open('http://www.adsass.org/wwt');
+                window.open('//www.adsass.org/wwt');
               }]
             }
           });
@@ -4622,7 +4641,7 @@ wwt.controllers.controller('MainController',
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
-       uiLibrary.addDialogHooks();
+        uiLibrary.addDialogHooks();
         wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
       };
       //#endregion
@@ -5645,10 +5664,8 @@ wwt.controllers.controller('MobileNavController',
 	'Util',
 	'$modal',
 	'Localization',
-	function ($rootScope, $scope, util, $modal,loc) {
-
-		
-
+  function ($rootScope, $scope, util, $modal, loc) {
+    var v = '?v=3';
 		$scope.showModal = function (modalButton) {
 			$scope.hideMenu();
 			if (typeof modalButton.modal == 'object') {
@@ -5670,7 +5687,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Tours'),
 					icon: 'fa-play',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-tours.html',
+						contentTemplate: 'views/modals/mobile-tours.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -5679,7 +5696,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Search'),
 					icon: 'fa-search',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-search.html',
+                      contentTemplate: 'views/modals/mobile-search.html' + v,
 						show: false,
 						scope: $scope,
 						prefixEvent: 'searchModal'
@@ -5689,7 +5706,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('View'),
 					icon: 'fa-eye',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-view.html',
+                      contentTemplate: 'views/modals/mobile-view.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -5698,7 +5715,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Settings'),
 					icon: 'fa-gears',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-settings.html',
+                      contentTemplate: 'views/modals/mobile-settings.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -5707,7 +5724,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Layers'),
 					icon: 'fa-align-left',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-layer-manager.html',
+                      contentTemplate: 'views/modals/mobile-layer-manager.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -5746,6 +5763,7 @@ wwt.controllers.controller('MobileNavController',
 		});
 	}
 ]);
+
 wwt.controllers.controller('LayerManagerController',
   ['$scope',
     'AppState',
@@ -5837,6 +5855,7 @@ wwt.controllers.controller('LayerManagerController',
         wwt.resize();
       };
       $scope.getChildren = function(node){
+        if (!node)return {};
         var children  = node.children || {};
         if (children.length){
 
@@ -6073,6 +6092,7 @@ wwt.controllers.controller('LayerManagerController',
       };
 
       $scope.hasChildren = function (node) {
+        if (!node){return false;}
         var children = $scope.getChildren(node);
         return children.length || Object.keys(children).length > 0;
       };
@@ -7249,14 +7269,14 @@ wwt.controllers.controller('CurrentTourController', [
                       $scope.$applyAsync(function () {
                             if (data && data.length > 1) {
                                 $scope.modalData.step = 'success';
-                                var url = 'http://' + location.host + '/file/Download/' + data + '/' + tour._title + '/wtt'
+                                var url = '//' + location.host + '/file/Download/' + data + '/' + tour._title + '/wtt'
                                 $scope.modalData.download = {
                                     url: url,
                                     showStatus: false,
                                     label: 'Share Download Link'
                                 };
                                 $scope.modalData.share = {
-                                    url: 'http://' + location.host + '/webclient?tourUrl=' + encodeURIComponent(url),
+                                    url: '//' + location.host + '/webclient?tourUrl=' + encodeURIComponent(url),
                                     showStatus: false,
                                     label: 'Share Playable Link'
                                 }
@@ -7808,7 +7828,7 @@ wwt.controllers.controller('TourSlideText', [
 wwt.controllers.controller('ShareController',
 [
 	'$scope',
-	'$rootScope',
+	'$rootScope', 
 	'Util',
 	'$timeout',
 	'HashManager',
@@ -7851,7 +7871,7 @@ wwt.controllers.controller('ShareController',
 			}
 			$('meta[property="og:url"]').attr('content', $scope.shareUrlReadOnly);
 			$('meta[property="og:title"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_name() + ' - WorldWide Telescope' : $scope.getFromEn('WorldWide Telescope Web Client'));
-			$('meta[property="og:image"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_thumbnailUrl() : location.host + '/webclient/Images/wwtlogo.png');
+          $('meta[property="og:image"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_thumbnailUrl() : 'https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png');
 			selectUrl(222);
 		};
 
@@ -7884,6 +7904,7 @@ wwt.controllers.controller('ShareController',
 		};
 	}
 ]);
+
 wwt.controllers.controller('OpenItemController',
 	['$rootScope',
 	'$scope',
@@ -7919,7 +7940,7 @@ wwt.controllers.controller('OpenItemController',
             $('#openModal').modal('hide');
           } else {
 	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
-	            //$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
+	            //$scope.openItemUrl = '//www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
 	            places.importImage($scope.openItemUrl).then(function (folder) {
 	                //var imported = folder.get_children()[0];
 	                if (folder) {
@@ -8075,7 +8096,7 @@ wwt.controllers.controller('voConeSearch',
       $scope.searchRegistry = function () {
         $scope.hiliteIndex = -1;
         $scope.searchBaseURL = '';
-        var searchUrl = "http://nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
+        var searchUrl = "//nvo.stsci.edu/vor10/NVORegInt.asmx/VOTCapabilityPredicate?predicate=(title%20like%20'%25" +
           $scope.regTitle
           + "%25'%20or%20shortname%20like%20'%25" +
           $scope.regTitle
@@ -8127,7 +8148,7 @@ wwt.controllers.controller('voConeSearch',
         if ($scope.hiliteIndex < 0) {
           //known good url for results
           $scope.searchBaseTitle = "casjobs.sdss.org"
-          url = "http://casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch"//?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
+          url = "//casjobs.sdss.org/vo/dr5cone/sdssConeSearch.asmx/ConeSearch"//?ra=202.507695905339&dec=47.2148314989668&sr=0.26563787460365";
         }
         else {
           url = $scope.searchBaseURL.replace('&amp;', '&');
@@ -8376,7 +8397,7 @@ wwt.controllers.controller('LoginController',
 
         $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
-            var redir = 'http://' + location.host + '/webclient';
+            var redir = '//' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
                 $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
                 encodeURIComponent(redir) + '&display=popup';

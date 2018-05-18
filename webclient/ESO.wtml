@@ -760,7 +760,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="B 68" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso0102bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.0583166472" Projection="Tan" FileType=".png" CenterY="-23.826228" CenterX="260.659371" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.144166912">
 <Credits>ESO</Credits>
-<CreditsUrl>http://www.eso.org/public/images/eso0102b/</CreditsUrl>
+<CreditsUrl>//www.eso.org/public/images/eso0102b/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso0102b.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -769,7 +769,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="Orion Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso0124aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0.26" Projection="Tan" FileType=".png" CenterY="-5.39229719216" CenterX="83.8127794158" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0954965701777408">
 <Credits>ESO</Credits>
-<CreditsUrl>http://www.eso.org/public/images/eso0124a/</CreditsUrl>
+<CreditsUrl>//www.eso.org/public/images/eso0124a/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso0124a.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>
@@ -841,7 +841,7 @@
  <ForegroundImageSet>
  <ImageSet DataSetType="Sky" Name="1ES 0657-558" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso9920uL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.26429806307" Projection="Tan" FileType=".png" CenterY="-55.9443" CenterX="104.623294" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0551502090245948">
 <Credits>ESO</Credits>
-<CreditsUrl>http://www.eso.org/public/images/eso9920u/</CreditsUrl>
+<CreditsUrl>//www.eso.org/public/images/eso9920u/</CreditsUrl>
 <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso9920u.jpg</ThumbnailUrl>
 </ImageSet>
 </ForegroundImageSet>

@@ -2,8 +2,8 @@
 This repository contains the HTML5 SDK which is the rendering engine for the web client and the embeddable web control. It also contains the full web client code. This repository does not contain all the server-side endpoints needed to render tiles, constellation lines, etc. Some samples will be included in the future.
 
 ## Prerequisites
-* Visual Studio 2013 ([Free Community Edition](http://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx))
-* [NodeJs](http://nodejs.org/download/) - Only needed if you want to compile the sdk into javascript or run the minified web client js code. 
+* Visual Studio 2013 ([Free Community Edition](//www.visualstudio.com/en-us/news/vs2013-community-vs.aspx))
+* [NodeJs](//nodejs.org/download/) - Only needed if you want to compile the sdk into javascript or run the minified web client js code. 
 
 ## Included Projects
 There are two solutions in the repository. The standalone webclient sln includes only the webclient implementation of the Html5sdk. The Html5sdk contains a sln which loads both the html5sdk AND the webclient. Opening the html5sdk sln enables you to compile the c# files into javascript, then run the webclient locally using the modified js output. 
@@ -30,10 +30,10 @@ To make changes to the HTML5 SDK, simply compile the html5sdk project (named wwt
 If you are not familiar with [Angular JS](https://angularjs.org/), I recommend taking some time to learn angularjs as this is a very heavy angular app. 
 
 ### Bootstrap
-We also use the [bootstrap](http://getbootstrap.com) library and compile our own less with the bootstrap less lib. We use their dropdowns, popovers, and modals quite a bit.
+We also use the [bootstrap](//getbootstrap.com) library and compile our own less with the bootstrap less lib. We use their dropdowns, popovers, and modals quite a bit.
 
 ### Angular-strap
-We use the [angular-strap](http://mgcrea.github.io/angular-strap/) directives library to integrate bootstrap components into angular. 
+We use the [angular-strap](//mgcrea.github.io/angular-strap/) directives library to integrate bootstrap components into angular. 
 
 ### ScriptSharp
 We use ScriptSharp to compile the c# classes into javascript. We recently upgraded to [ScriptSharp v0.8](https://github.com/nikhilk/scriptsharp/wiki/Release-Notes)

@@ -1,8 +1,8 @@
 ﻿<%@ Page Language="C#" EnableViewStateMac="false"  EnableViewState="false" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="_Login" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="//www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>WorldWide Telescope Alpha Registration</title>
 <link href="../styles/wwt.css" rel="stylesheet" type="text/css" />
@@ -17,8 +17,8 @@
                                     <tr><td>
 
  <div>
-        <a href="http://www.worldwidetelescope.org/webclient/default.aspx" ><Img ID="Image1" 
-            Src="http://www.worldwidetelescope.org/images/top_logo.jpg" /> </a>
+        <a href="//worldwidetelescope.org/webclient/default.aspx" ><Img ID="Image1" 
+            Src="//worldwidetelescope.org/images/top_logo.jpg" /> </a>
         In order to access this pre-release you must agree to keep the site contents 
         confidential and provide your e-mail address.<br />
         If you don&#39;t yet have a key and agree to the terms, enter your e-mail adress and 
