@@ -37,7 +37,7 @@
 
         $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
-            var redir = 'http://' + location.host + '/webclient';
+            var redir = '//' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
                 $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
                 encodeURIComponent(redir) + '&display=popup';

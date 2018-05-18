@@ -33,7 +33,7 @@
             $('#openModal').modal('hide');
           } else {
 	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
-	            //$scope.openItemUrl = 'http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
+	            //$scope.openItemUrl = '//www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
 	            places.importImage($scope.openItemUrl).then(function (folder) {
 	                //var imported = folder.get_children()[0];
 	                if (folder) {

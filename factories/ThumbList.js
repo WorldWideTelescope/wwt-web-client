@@ -226,7 +226,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
         "_elevation": 50,
         "_name": "Uranus",
         "guid": "Solar System (Sky).8",
-        "thumb": "http://cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=uranus",
+        "thumb": "//cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=uranus",
         "isPlanet": false,
         "isFGImage": true,
         "$$hashKey": "object:832",

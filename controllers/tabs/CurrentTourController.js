@@ -232,14 +232,14 @@ wwt.controllers.controller('CurrentTourController', [
                       $scope.$applyAsync(function () {
                             if (data && data.length > 1) {
                                 $scope.modalData.step = 'success';
-                                var url = 'http://' + location.host + '/file/Download/' + data + '/' + tour._title + '/wtt'
+                                var url = '//' + location.host + '/file/Download/' + data + '/' + tour._title + '/wtt'
                                 $scope.modalData.download = {
                                     url: url,
                                     showStatus: false,
                                     label: 'Share Download Link'
                                 };
                                 $scope.modalData.share = {
-                                    url: 'http://' + location.host + '/webclient?tourUrl=' + encodeURIComponent(url),
+                                    url: '//' + location.host + '/webclient?tourUrl=' + encodeURIComponent(url),
                                     showStatus: false,
                                     label: 'Share Playable Link'
                                 }

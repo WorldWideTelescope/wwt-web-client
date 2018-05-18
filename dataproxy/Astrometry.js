@@ -30,7 +30,7 @@
         jobSuccess: 'Job Succeeded',
         calibrationFail: 'Calibration Results Failed'
     };
-		var uploadUrl, // "http://www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
+		var uploadUrl, // "//www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
 			statusCallback,
 			sessionId = null,
 			submissionId = null,
@@ -40,7 +40,7 @@
 			errorData = null,
 			debug=false;
 
-		/*var upload = '{"session": "####", "url": "http://apod.nasa.gov/apod/image/1206/ldn673s_block1123.jpg", "scale_units": "degwidth", "scale_lower": 0.5, "scale_upper": 1.0, "center_ra": 290, "center_dec": 11, "radius": 2.0 }      ';*/
+		/*var upload = '{"session": "####", "url": "//apod.nasa.gov/apod/image/1206/ldn673s_block1123.jpg", "scale_units": "degwidth", "scale_lower": 0.5, "scale_upper": 1.0, "center_ra": 290, "center_dec": 11, "radius": 2.0 }      ';*/
 
 
 		function login() {
@@ -51,7 +51,7 @@
 			var loginJson = encodeURIComponent(JSON.stringify(loginData));
 
 			$.ajax({
-				url: "http://nova.astrometry.net/api/login",
+				url: "//nova.astrometry.net/api/login",
 				type: "POST",
 				data: "request-json=" + loginJson,
 				dataType: "json",
@@ -78,7 +78,7 @@
 			var uploadJson = encodeURIComponent(JSON.stringify(uploadData));
 
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/url_upload",
+				url: "//supernova.astrometry.net/api/url_upload",
 				type: "POST",
 				data: "request-json=" + uploadJson,
 				dataType: "json",
@@ -97,7 +97,7 @@
 		function checkStatus() {
 			showStatus(statusTypes.statusCheck);
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/submissions/" + submissionId,
+				url: "//supernova.astrometry.net/api/submissions/" + submissionId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -124,7 +124,7 @@
 		function checkJobStatus() {
 			//showStatus("Checking Job Status: " + jobId);
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/jobs/" + jobId,
+				url: "//supernova.astrometry.net/api/jobs/" + jobId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -160,7 +160,7 @@
 
 		function getCalibration() {
 			$.ajax({
-				url: "http://supernova.astrometry.net/api/jobs/" + jobId + "/calibration",
+				url: "//supernova.astrometry.net/api/jobs/" + jobId + "/calibration",
 				type: "GET",
 				dataType: "json",
 				crossDomain: true

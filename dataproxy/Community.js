@@ -16,7 +16,7 @@
 			rootFolders = folders;
 		    $.each(folders, function(i,item) {
 		        if (item.get_thumbnailUrl) {
-		            item.thumb = item.get_thumbnailUrl().replace("http://wwtstaging.azurewebsites.net/Content/Images/", "https://wwtweb.blob.core.windows.net/images/");
+		            item.thumb = item.get_thumbnailUrl().replace("//wwtstaging.azurewebsites.net/Content/Images/", "https://wwtweb.blob.core.windows.net/images/");
 		        }
 		    });
 			deferred.resolve(folders);
@@ -50,7 +50,7 @@
 			}
 			root = wwt.wc.createFolder();
 		
-			root.loadFromUrl('http://worldwidetelescope.org/Resource/Service/Payload', function () {
+			root.loadFromUrl('//worldwidetelescope.org/Resource/Service/Payload', function () {
 				deferred.resolve(root.get_children());
 			});
 		}
