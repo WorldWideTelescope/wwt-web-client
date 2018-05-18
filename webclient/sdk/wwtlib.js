@@ -7424,6 +7424,90 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ImageShader
+
+  function ImageShader() {
+  }
+  ImageShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n' + '     gl_FragColor = col * opacity;                                                     \n' + '   }                                                                                   \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec3 vNormal;                                                        \n' + '     varying vec3 vCamVector;                                                     \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '     }                                                                            \n' + '                                                                                  \n';
+    ImageShader._frag = gl.createShader(35632);
+    gl.shaderSource(ImageShader._frag, fragShaderText);
+    gl.compileShader(ImageShader._frag);
+    var stat = gl.getShaderParameter(ImageShader._frag, 35713);
+    if (!stat) {
+      var errorF = gl.getShaderInfoLog(ImageShader._frag);
+    }
+    ImageShader._vert = gl.createShader(35633);
+    gl.shaderSource(ImageShader._vert, vertexShaderText);
+    gl.compileShader(ImageShader._vert);
+    var stat1 = gl.getShaderParameter(ImageShader._vert, 35713);
+    if (!stat1) {
+      var errorV = gl.getShaderInfoLog(ImageShader._vert);
+    }
+    ImageShader._prog = gl.createProgram();
+    gl.attachShader(ImageShader._prog, ImageShader._vert);
+    gl.attachShader(ImageShader._prog, ImageShader._frag);
+    gl.linkProgram(ImageShader._prog);
+    var errcode = gl.getProgramParameter(ImageShader._prog, 35714);
+    gl.useProgram(ImageShader._prog);
+    ImageShader.vertLoc = gl.getAttribLocation(ImageShader._prog, 'aVertexPosition');
+    ImageShader.textureLoc = gl.getAttribLocation(ImageShader._prog, 'aTextureCoord');
+    ImageShader.projMatLoc = gl.getUniformLocation(ImageShader._prog, 'uPMatrix');
+    ImageShader.mvMatLoc = gl.getUniformLocation(ImageShader._prog, 'uMVMatrix');
+    ImageShader.sampLoc = gl.getUniformLocation(ImageShader._prog, 'uSampler');
+    ImageShader.opacityLoc = gl.getUniformLocation(ImageShader._prog, 'opacity');
+    Tile.uvMultiple = 1;
+    Tile.demEnabled = true;
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    ImageShader.initialized = true;
+  };
+  ImageShader.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!ImageShader.initialized) {
+        ImageShader.init(renderContext);
+      }
+      gl.useProgram(ImageShader._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniform1f(ImageShader.opacityLoc, opacity);
+      gl.uniformMatrix4fv(ImageShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(ImageShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      gl.uniform1i(ImageShader.sampLoc, 0);
+      if (renderContext.space || noDepth) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.enableVertexAttribArray(ImageShader.vertLoc);
+      gl.enableVertexAttribArray(ImageShader.textureLoc);
+      gl.vertexAttribPointer(ImageShader.vertLoc, 3, 5126, false, 20, 0);
+      gl.vertexAttribPointer(ImageShader.textureLoc, 2, 5126, false, 20, 12);
+      gl.activeTexture(33984);
+      gl.bindTexture(3553, texture);
+      gl.bindBuffer(34963, index);
+      gl.enable(3042);
+      if (noDepth) {
+        gl.blendFunc(770, 1);
+      }
+      else {
+        gl.blendFunc(770, 771);
+      }
+    }
+  };
+  var ImageShader$ = {
+
+  };
+
+
   // wwtlib.SpriteShader
 
   function SpriteShader() {
@@ -7962,7 +8046,7 @@ window.wwtlib = function(){
     var log = Math.log(Math.max(1, zoom)) / Math.log(4);
     var distAlpha = (log - 14) * 128;
     var alpha = (Math.min(255, Math.max(0, distAlpha)) * opacity);
-    TileShader.use(renderContext, Grids._galaxyImageVertexBuffer.vertexBuffer, Grids._galaxyImageIndexBuffer, Grids._milkyWayImage.texture2d, opacity, true);
+    ImageShader.use(renderContext, Grids._galaxyImageVertexBuffer.vertexBuffer, Grids._galaxyImageIndexBuffer, Grids._milkyWayImage.texture2d, opacity, true);
     renderContext.gl.drawElements(4, Grids._galaxyImageTriangleCount * 3, 5123, 0);
   };
   Grids.drawStars3D = function(renderContext, opacity) {
@@ -8108,6 +8192,7 @@ window.wwtlib = function(){
       var count = Grids._galaxyVertexCounts[i];
       Grids._cosmosSprites[i] = new PointList(renderContext);
       Grids._cosmosSprites[i].depthBuffered = false;
+      Grids._cosmosSprites[i].showFarSide = true;
       indexList[i] = 0;
     }
     var $enum1 = ss.enumerate(Grids._cosmos);
@@ -24416,12 +24501,15 @@ window.wwtlib = function(){
   var WWTControl$ = {
     _addAnnotation: function(annotation) {
       this._annotations.push(annotation);
+      Annotation.batchDirty = true;
     },
     _removeAnnotation: function(annotation) {
       ss.remove(this._annotations, annotation);
+      Annotation.batchDirty = true;
     },
     _clearAnnotations: function() {
       this._annotations.length = 0;
+      Annotation.batchDirty = true;
     },
     get__zoomMax: function() {
       if (this.renderContext.get_backgroundImageset() != null && this.renderContext.get_backgroundImageset().get_dataSetType() === 4) {
@@ -24699,12 +24787,14 @@ window.wwtlib = function(){
       }
       else {
         var index = 0;
+        Annotation.prepBatch(this.renderContext);
         var $enum1 = ss.enumerate(this._annotations);
         while ($enum1.moveNext()) {
           var item = $enum1.current;
           item.draw(this.renderContext);
           index++;
         }
+        Annotation.drawBatch(this.renderContext);
         if ((ss.now() - this._lastMouseMove) > 400) {
           var raDecDown = this.getCoordinatesForScreenPoint(this._hoverTextPoint.x, this._hoverTextPoint.y);
           this._annotationHover(raDecDown.x, raDecDown.y, this._hoverTextPoint.x, this._hoverTextPoint.y);
@@ -25736,9 +25826,35 @@ window.wwtlib = function(){
   // wwtlib.Annotation
 
   function Annotation() {
+    this.addedToPrimitives = false;
+    this.annotationDirty = true;
     this._opacity = 1;
     this._showHoverLabel = false;
   }
+  Annotation.prepBatch = function(renderContext) {
+    if (Annotation.pointList == null || Annotation.batchDirty) {
+      Annotation.pointList = new PointList(renderContext);
+      Annotation.lineList = new LineList();
+      Annotation.triangleList = new TriangleList();
+      Annotation.lineList.set_depthBuffered(false);
+      Annotation.triangleList.depthBuffered = false;
+    }
+  };
+  Annotation.drawBatch = function(renderContext) {
+    Annotation.batchDirty = false;
+    if (renderContext.gl == null) {
+      return;
+    }
+    if (Annotation.pointList != null) {
+      Annotation.pointList.draw(renderContext, 1, false);
+    }
+    if (Annotation.lineList != null) {
+      Annotation.lineList.drawLines(renderContext, 1);
+    }
+    if (Annotation.triangleList != null) {
+      Annotation.triangleList.draw(renderContext, 1, 0);
+    }
+  };
   Annotation.separation = function(Alpha1, Delta1, Alpha2, Delta2) {
     Delta1 = Delta1 / 180 * Math.PI;
     Delta2 = Delta2 / 180 * Math.PI;
@@ -26057,12 +26173,7 @@ window.wwtlib = function(){
     return temp;
   };
   Color.fromName = function(name) {
-    var temp = new Color();
-    temp.a = 255;
-    temp.r = 255;
-    temp.g = 255;
-    temp.b = 255;
-    temp.name = name;
+    var temp = Color._fromWindowsNamedColor(name);
     return temp;
   };
   Color.load = function(color) {
@@ -27998,6 +28109,11 @@ window.wwtlib = function(){
     return mat.transform(vector3d);
   };
   var Vector3d$ = {
+    set: function(valueX, valueY, valueZ) {
+      this.x = valueX;
+      this.y = valueY;
+      this.z = valueZ;
+    },
     copy: function() {
       var temp = new Vector3d();
       temp.x = this.x;
@@ -37970,34 +38086,64 @@ window.wwtlib = function(){
       this.center = Coordinates.raDecTo3d(this._ra$1, this._dec$1);
     },
     draw: function(renderContext) {
+      var onScreen = true;
       var rad = this._radius$1;
       if (this._skyRelative$1) {
         rad /= renderContext.get_fovScale() / 3600;
       }
       var screenSpacePnt = renderContext.WVP.transform(this.center);
       if (screenSpacePnt.z < 0) {
-        return;
+        onScreen = false;
       }
       if (Vector3d.dot(renderContext.get_viewPoint(), this.center) < 0.55) {
-        return;
+        onScreen = false;
       }
       if (renderContext.gl != null) {
+        if (Annotation.batchDirty || this.annotationDirty) {
+          var up = Vector3d.create(0, 1, 0);
+          var xNormal = Vector3d.cross(this.center, up);
+          var yNormal = Vector3d.cross(this.center, xNormal);
+          var r = this._radius$1 / 44;
+          var segments = 72;
+          var radiansPerSegment = Math.PI * 2 / segments;
+          var vertexList = [];
+          for (var j = 0; j <= segments; j++) {
+            var x = Math.cos(j * radiansPerSegment) * r;
+            var y = Math.sin(j * radiansPerSegment) * r;
+            vertexList.push(Vector3d.create(this.center.x + x * xNormal.x + y * yNormal.x, this.center.y + x * xNormal.y + y * yNormal.y, this.center.z + x * xNormal.z + y * yNormal.z));
+          }
+          if (this._strokeWidth$1 > 0 && vertexList.length > 1) {
+            for (var i = 0; i < (vertexList.length - 1); i++) {
+              Annotation.lineList.addLine(vertexList[i], vertexList[i + 1], this._lineColor$1, new Dates(0, 1));
+            }
+            Annotation.lineList.addLine(vertexList[vertexList.length - 1], vertexList[0], this._lineColor$1, new Dates(0, 1));
+          }
+          if (this._fill$1) {
+            var indexes = Tessellator.tesselateSimplePoly(vertexList);
+            for (var i = 0; i < indexes.length; i += 3) {
+              Annotation.triangleList.addSubdividedTriangles(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], this._fillColor$1, new Dates(0, 1), 2);
+            }
+          }
+          this.annotationDirty = false;
+        }
       }
       else {
-        var ctx = renderContext.device;
-        ctx.save();
-        ctx.globalAlpha = this.get_opacity();
-        ctx.beginPath();
-        ctx.arc(screenSpacePnt.x, screenSpacePnt.y, rad, 0, Math.PI * 2, true);
-        ctx.lineWidth = this._strokeWidth$1;
-        ctx.fillStyle = this._fillColor$1.toString();
-        if (this._fill$1) {
-          ctx.fill();
+        if (onScreen) {
+          var ctx = renderContext.device;
+          ctx.save();
+          ctx.globalAlpha = this.get_opacity();
+          ctx.beginPath();
+          ctx.arc(screenSpacePnt.x, screenSpacePnt.y, rad, 0, Math.PI * 2, true);
+          ctx.lineWidth = this._strokeWidth$1;
+          ctx.fillStyle = this._fillColor$1.toString();
+          if (this._fill$1) {
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+          ctx.strokeStyle = this._lineColor$1.toString();
+          ctx.stroke();
+          ctx.restore();
         }
-        ctx.globalAlpha = 1;
-        ctx.strokeStyle = this._lineColor$1.toString();
-        ctx.stroke();
-        ctx.restore();
       }
     },
     hitTest: function(renderContext, RA, dec, x, y) {
@@ -38057,6 +38203,22 @@ window.wwtlib = function(){
     },
     draw: function(renderContext) {
       if (renderContext.gl != null) {
+        if (Annotation.batchDirty || this.annotationDirty) {
+          var vertexList = this._points$1;
+          if (this._strokeWidth$1 > 0 && this._points$1.length > 1) {
+            for (var i = 0; i < (this._points$1.length - 1); i++) {
+              Annotation.lineList.addLine(vertexList[i], vertexList[i + 1], this._lineColor$1, new Dates(0, 1));
+            }
+            Annotation.lineList.addLine(vertexList[this._points$1.length - 1], vertexList[0], this._lineColor$1, new Dates(0, 1));
+          }
+          if (this._fill$1) {
+            var indexes = Tessellator.tesselateSimplePoly(vertexList);
+            for (var i = 0; i < indexes.length; i += 3) {
+              Annotation.triangleList.addSubdividedTriangles(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], this._fillColor$1, new Dates(0, 1), 2);
+            }
+          }
+          this.annotationDirty = false;
+        }
       }
       else {
         var ctx = renderContext.device;
@@ -38127,6 +38289,15 @@ window.wwtlib = function(){
     },
     draw: function(renderContext) {
       if (renderContext.gl != null) {
+        if (Annotation.batchDirty || this.annotationDirty) {
+          var vertexList = this._points$1;
+          if (this._strokeWidth$1 > 0) {
+            for (var i = 0; i < (this._points$1.length - 1); i++) {
+              Annotation.lineList.addLine(vertexList[i], vertexList[i + 1], this._lineColor$1, new Dates(0, 1));
+            }
+          }
+          this.annotationDirty = false;
+        }
       }
       else {
         var ctx = renderContext.device;
@@ -39054,6 +39225,7 @@ window.wwtlib = function(){
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
       KeplerPointSpriteShader: [ KeplerPointSpriteShader, KeplerPointSpriteShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
+      ImageShader: [ ImageShader, ImageShader$, null ],
       SpriteShader: [ SpriteShader, SpriteShader$, null ],
       ShapeSpriteShader: [ ShapeSpriteShader, ShapeSpriteShader$, null ],
       TextShader: [ TextShader, TextShader$, null ],
@@ -39398,6 +39570,10 @@ window.wwtlib = function(){
   TileShader.sunPosition = Vector3d.create(-1, -1, -1);
   TileShader.minLightingBrightness = 1;
   TileShader.atmosphereColor = Color.fromArgb(0, 0, 0, 0);
+  ImageShader.vertLoc = 0;
+  ImageShader.textureLoc = 0;
+  ImageShader.initialized = false;
+  ImageShader._prog = null;
   SpriteShader.vertLoc = 0;
   SpriteShader.textureLoc = 0;
   SpriteShader.colorLoc = 0;
@@ -39560,6 +39736,10 @@ window.wwtlib = function(){
   WWTControl.singleton.renderContext = new RenderContext();
   SpaceTimeController.last = ss.now();
   SpaceTimeController.updateClock();
+  Annotation.pointList = null;
+  Annotation.lineList = null;
+  Annotation.triangleList = null;
+  Annotation.batchDirty = true;
   Constellations.RC = 0.017453292519943;
   Constellations._maxSeperation = 0.745;
   Constellations.containment = Constellations.create('Constellations', 'http://www.worldwidetelescope.org/data/constellations.txt', true, true, true);

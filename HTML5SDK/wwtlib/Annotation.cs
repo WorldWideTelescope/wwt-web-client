@@ -9,6 +9,55 @@ namespace wwtlib
 
     public class Annotation
     {
+        // Web GL support for annotations
+        // Annotations all share a set of supporting primitives, each time any annotation changes the primitives, they must be regenerated if they have been drawn already.
+        // It is best to do updates in large batches
+
+        protected static PointList PointList = null;
+        protected static LineList LineList = null;
+        protected static TriangleList TriangleList = null;
+
+        public static bool BatchDirty = true;
+        public static void PrepBatch(RenderContext renderContext)
+        {
+            if (PointList == null || BatchDirty)
+            {
+                PointList = new PointList(renderContext);
+                LineList = new LineList();
+                TriangleList = new TriangleList();
+                LineList.DepthBuffered = false;
+                TriangleList.DepthBuffered = false;
+            }
+        }
+
+        public static void DrawBatch(RenderContext renderContext )
+        {
+            BatchDirty = false;
+            if (renderContext.gl == null)
+            {
+                return;
+            }
+
+            if (PointList != null)
+            {
+                PointList.Draw(renderContext, 1, false);
+            }
+
+            if (LineList != null)
+            {
+                LineList.DrawLines(renderContext, 1);
+            }
+
+            if (TriangleList != null)
+            {
+                TriangleList.Draw(renderContext, 1, CullMode.None);
+            }
+        }
+
+        protected bool AddedToPrimitives = false;
+
+        protected bool AnnotationDirty = true;
+
         public virtual void Draw(RenderContext renderContext)
         {
 
@@ -94,6 +143,8 @@ namespace wwtlib
         {
             return (uint)opacity << 24 | (uint)col.R << 16 | (uint)col.G << 8 | (uint)col.B;
         }
+
+
     }
 
     public class Circle : Annotation
@@ -174,6 +225,7 @@ namespace wwtlib
 
         public override void Draw(RenderContext renderContext)
         {
+            bool onScreen = true;
             double rad = radius;
             if (skyRelative)
             {
@@ -182,35 +234,82 @@ namespace wwtlib
             Vector3d screenSpacePnt = renderContext.WVP.Transform(center);
             if (screenSpacePnt.Z < 0)
             {
-                return;
+                onScreen = false;
             }
 
-            if (Vector3d.Dot((Vector3d)renderContext.ViewPoint, (Vector3d)center) < .55)
+            if (Vector3d.Dot((Vector3d)renderContext.ViewPoint, center) < .55)
             {
-                return;
+                onScreen = false;
             }
+
             if (renderContext.gl != null)
             {
-                //todo draw in WebGL
+
+                if (Annotation.BatchDirty || AnnotationDirty)
+                {
+                    Vector3d up = Vector3d.Create(0, 1, 0);
+
+                    Vector3d xNormal = Vector3d.Cross(center, up);
+
+                    Vector3d yNormal = Vector3d.Cross(center, xNormal);
+
+                    double r = radius / 44;
+
+                    int segments = 72;
+
+                    double radiansPerSegment = Math.PI * 2 / segments;
+                    List<Vector3d> vertexList = new List<Vector3d>();
+
+                    for (int j = 0; j <= segments; j++)
+                    {
+                        double x = Math.Cos(j * radiansPerSegment) * r;
+                        double y = Math.Sin(j * radiansPerSegment) * r;
+
+                        vertexList.Add(Vector3d.Create(center.X + x * xNormal.X + y * yNormal.X, center.Y + x * xNormal.Y + y * yNormal.Y, center.Z + x * xNormal.Z + y * yNormal.Z));
+
+                    }
+
+                    if (strokeWidth > 0 && vertexList.Count > 1)
+                    {
+                        for (int i = 0; i < (vertexList.Count - 1); i++)
+                        {
+                            LineList.AddLine(vertexList[i], vertexList[i + 1], lineColor, new Dates(0, 1));
+                        }
+                        LineList.AddLine(vertexList[vertexList.Count - 1], vertexList[0], lineColor, new Dates(0, 1));
+                    }
+                    if (fill)
+                    {
+                        List<int> indexes = Tessellator.TesselateSimplePoly(vertexList);
+
+                        for (int i = 0; i < indexes.Count; i += 3)
+                        {
+                            TriangleList.AddSubdividedTriangles(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], fillColor, new Dates(0, 1), 2);
+                        }
+                    }
+                    AnnotationDirty = false;
+                }
             }
             else
             {
-                CanvasContext2D ctx = renderContext.Device;
-                ctx.Save();
-                ctx.Alpha = Opacity;
-                ctx.BeginPath();
-                ctx.Arc(screenSpacePnt.X, screenSpacePnt.Y, rad, 0, Math.PI * 2, true);
-                ctx.LineWidth = strokeWidth;
-                ctx.FillStyle = fillColor.ToString();
-                if (fill)
+                if (onScreen)
                 {
-                    ctx.Fill();
-                }
-                ctx.Alpha = 1.0;
-                ctx.StrokeStyle = lineColor.ToString();
-                ctx.Stroke();
+                    CanvasContext2D ctx = renderContext.Device;
+                    ctx.Save();
+                    ctx.Alpha = Opacity;
+                    ctx.BeginPath();
+                    ctx.Arc(screenSpacePnt.X, screenSpacePnt.Y, rad, 0, Math.PI * 2, true);
+                    ctx.LineWidth = strokeWidth;
+                    ctx.FillStyle = fillColor.ToString();
+                    if (fill)
+                    {
+                        ctx.Fill();
+                    }
+                    ctx.Alpha = 1.0;
+                    ctx.StrokeStyle = lineColor.ToString();
+                    ctx.Stroke();
 
-                ctx.Restore();
+                    ctx.Restore();
+                }
             }
         }
 
@@ -307,7 +406,31 @@ namespace wwtlib
         {
             if (renderContext.gl != null)
             {
-                //todo draw in WebGL
+                if (Annotation.BatchDirty || AnnotationDirty)
+                {
+                    //todo can we save this work for later?
+                    List<Vector3d> vertexList = points;
+
+
+                    if (strokeWidth > 0 && points.Count > 1)
+                    {
+                        for (int i = 0; i < (points.Count - 1); i++)
+                        {
+                            LineList.AddLine(vertexList[i], vertexList[i + 1], lineColor, new Dates(0, 1));
+                        }
+                        LineList.AddLine(vertexList[points.Count - 1], vertexList[0], lineColor, new Dates(0, 1));
+                    }
+                    if (fill)
+                    {
+                        List<int> indexes = Tessellator.TesselateSimplePoly(vertexList);
+
+                        for (int i = 0; i < indexes.Count; i += 3)
+                        {
+                            TriangleList.AddSubdividedTriangles(vertexList[indexes[i]], vertexList[indexes[i + 1]], vertexList[indexes[i + 2]], fillColor, new Dates(0, 1), 2);
+                        }
+                    }
+                    AnnotationDirty = false;
+                }
             }
             else
             {
@@ -397,7 +520,22 @@ namespace wwtlib
         {
             if (renderContext.gl != null)
             {
-                //todo draw in WebGL
+                if (Annotation.BatchDirty || AnnotationDirty)
+                {
+                    //todo can we save this work for later?
+                    List<Vector3d> vertexList = points;
+
+
+                    if (strokeWidth > 0)
+                    {
+                        for (int i = 0; i < (points.Count - 1); i++)
+                        {
+                            LineList.AddLine(vertexList[i], vertexList[i + 1], lineColor, new Dates(0, 1));
+                        }
+                    }
+                   
+                    AnnotationDirty = false;
+                }
             }
             else
             {

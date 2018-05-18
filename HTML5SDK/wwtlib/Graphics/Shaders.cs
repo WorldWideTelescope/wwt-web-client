@@ -1062,6 +1062,166 @@ namespace wwtlib
         }
     }
 
+    public class ImageShader
+    {
+        public ImageShader()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+
+        public static int vertLoc;
+        public static int textureLoc;
+        public static WebGLUniformLocation projMatLoc;
+        public static WebGLUniformLocation mvMatLoc;
+        public static WebGLUniformLocation sampLoc;
+        public static WebGLUniformLocation opacityLoc;
+
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                      " precision mediump float;                                                              \n" +
+                      "                                                                                       \n" +
+                      "   varying vec2 vTextureCoord;                                                         \n" +
+                      "                                                                                       \n" +
+                      "   uniform sampler2D uSampler;                                                         \n" +
+                      "   uniform float opacity;                                                              \n" +
+
+                      "                                                                                       \n" +
+                      "   void main(void) {                                                                   \n" +
+                      "     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n" +
+                      "     gl_FragColor = col * opacity;                                                     \n" +
+                      "   }                                                                                   \n";
+
+
+            String vertexShaderText =
+                    "     attribute vec3 aVertexPosition;                                              \n" +
+                    "     attribute vec2 aTextureCoord;                                                \n" +
+                    "                                                                                  \n" +
+                    "     uniform mat4 uMVMatrix;                                                      \n" +
+                    "     uniform mat4 uPMatrix;                                                       \n" +
+                    "                                                                                  \n" +
+                    "     varying vec2 vTextureCoord;                                                  \n" +
+                    "     varying vec3 vNormal;                                                        \n" +
+                    "     varying vec3 vCamVector;                                                     \n" +
+                    "                                                                                  \n" +
+                    "                                                                                  \n" +
+                    "     void main(void) {                                                            \n" +
+                    "         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n" +
+                    "         vTextureCoord = aTextureCoord;                                           \n" +
+                    "     }                                                                            \n" +
+                    "                                                                                  \n";
+
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+            if ((int)stat == 0)
+            {
+                object errorF = gl.getShaderInfoLog(frag);
+            }
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+            if ((int)stat1 == 0)
+            {
+                object errorV = gl.getShaderInfoLog(vert);
+            }
+
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            vertLoc = gl.getAttribLocation(prog, "aVertexPosition");
+            textureLoc = gl.getAttribLocation(prog, "aTextureCoord");
+            projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
+            mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
+            sampLoc = gl.getUniformLocation(prog, "uSampler");
+            opacityLoc = gl.getUniformLocation(prog, "opacity");
+
+            Tile.uvMultiple = 1;
+            Tile.DemEnabled = true;
+
+            gl.enable(GL.BLEND);
+            gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity, bool noDepth)
+        {
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+                gl.uniform1f(opacityLoc, opacity);
+
+
+                gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
+                gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
+
+                gl.uniform1i(sampLoc, 0);
+                if (renderContext.Space || noDepth)
+                {
+                    gl.disable(GL.DEPTH_TEST);
+                }
+                else
+                {
+                    gl.enable(GL.DEPTH_TEST);
+                }
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+
+                gl.enableVertexAttribArray(vertLoc);
+                gl.enableVertexAttribArray(textureLoc);
+                gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 20, 0);
+                gl.vertexAttribPointer(textureLoc, 2, GL.FLOAT, false, 20, 12);
+                gl.activeTexture(GL.TEXTURE0);
+                gl.bindTexture(GL.TEXTURE_2D, texture);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, index);
+                gl.enable(GL.BLEND);
+
+                if (noDepth)
+                {
+                    gl.blendFunc(GL.SRC_ALPHA, GL.ONE);
+                }
+                else
+                {
+                    gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+                }
+            }
+        }
+    }
+
+
     public class SpriteShader
     {
         public SpriteShader()

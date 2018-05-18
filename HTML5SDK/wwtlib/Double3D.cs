@@ -401,6 +401,14 @@ namespace wwtlib
             temp.Z = valueZ;
             return temp;
         }
+
+        public void Set(double valueX, double valueY, double valueZ)
+        {
+            X = valueX;
+            Y = valueY;
+            Z = valueZ;
+        }
+
         public static Vector3d MakeCopy(Vector3d value)
         {
             Vector3d temp = new Vector3d();

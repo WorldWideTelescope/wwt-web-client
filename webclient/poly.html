@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="utf-8" content="chrome=1, IE=edge" http-equiv="X-UA-Compatible" />
+  
+    <title>WWT Web Client Poly</title>
+    <script src="sdk/wwtsdk.js"></script>
+    
+    <script>
+     // Create the WorldWide telescope object variable
+     var wwt;
+     // Create variables to hold some annotation objects
+    var circle1;
+    var circle2;
+    var polygon1;
+    var polyline1;
+    
+    // Create variables to hold the changeable settings
+     var bShowCrosshairs = true;
+    var bShowUI = true;
+    var bShowFigures = true;
+    var bShowAnnotations = true;
+    var bShowCircles = false;
+    var bShowPolygon = false;
+    var bShowPolyLine = false;
+    
+    // A simple function to toggle the settings
+    // This function is called from the checkbox entries setup in the html table
+     function toggleSetting(text)
+    {
+            switch (text) 
+        {
+                case 'ShowUI':
+                    bShowUI = !bShowUI;
+                    wwt.hideUI(!bShowUI);
+                    break;
+                 case 'ShowCrosshairs':
+                    bShowCrosshairs = !bShowCrosshairs;
+                    wwt.settings.set_showCrosshairs(bShowCrosshairs);
+                    break;
+                 case 'ShowFigures':
+                    bShowFigures = !bShowFigures;
+                    wwt.settings.set_showConstellationFigures(bShowFigures);
+                    break;
+                 case 'ShowCircles':
+                    bShowCircles = !bShowCircles;
+                    if (bShowCircles) {
+                        wwt.addAnnotation(circle1);
+                        wwt.addAnnotation(circle2);
+                    } else {
+                        wwt.removeAnnotation(circle1);
+                        wwt.removeAnnotation(circle2);
+                    }
+                    break;
+                 case 'ShowPolygon':
+                    bShowPolygon = !bShowPolygon;
+                    if (bShowPolygon) {
+                        wwt.addAnnotation(polygon1);
+                    } else {
+                        wwt.removeAnnotation(polygon1);
+                    }
+                    break;
+                 case 'ShowPolyLine':
+                    bShowPolyLine = !bShowPolyLine;
+                    if (bShowPolyLine) {
+                        wwt.addAnnotation(polyline1);
+                    } else {
+                        wwt.removeAnnotation(polyline1);
+                    }
+                    break;
+            }
+    }
+     // A function to change the view to different constellations
+    // Note the "instant" parameter set to false for smooth slewing
+    // This function is called from the button entries in the html table
+     function GotoConstellation(text) {    
+        
+        switch (text) {
+            case 'Sagittarius':
+                wwt.gotoRaDecZoom(286.485, -27.5231666666667, 60, false);
+                break;
+             case 'Aquarius':
+                wwt.gotoRaDecZoom(334.345, -9.21083333333333, 60, false);
+                break;
+        }
+    }
+     // A function to create a polygon
+    
+    function createWWTPolygon(fill, lineColor, fillColor, lineWidth, opacity, points) {
+        var poly = wwt.createPolygon(fill);
+        poly.set_lineColor(lineColor);
+        poly.set_fillColor(fillColor);
+        poly.set_lineWidth(lineWidth);
+        poly.set_opacity(opacity);
+        for (var i in points) {
+            poly.addPoint(points[i][0], points[i][1]);
+        }   
+        return poly;
+    } 
+    
+    // A function to create a polyline object
+     function createWWTPolyLine(lineColor, lineWidth, opacity, points) {
+        var polyline = wwt.createPolyLine(true);
+        polyline.set_lineColor(lineColor);
+        polyline.set_lineWidth(lineWidth);
+        polyline.set_opacity(opacity);
+        for (var i in points) {
+            polyline.addPoint(points[i][0], points[i][1]);
+        }    
+        
+        return polyline;
+    }
+        // A function to create a circle
+    function createWWTCircle(fill, lineColor, fillColor, lineWidth, opacity, radius, skyRelative, ra, dec) {
+        var circle = wwt.createCircle(fill);
+        circle.set_lineColor(lineColor);
+        circle.set_fillColor(fillColor);
+        circle.set_lineWidth(lineWidth);
+        circle.set_opacity(opacity);
+        circle.set_radius(radius);
+        circle.set_skyRelative(skyRelative);
+        circle.setCenter(ra, dec);
+        return circle;
+    }
+       function initialize() {
+          wwt = wwtlib.WWTControl.initControl("WWTCanvas");
+          wwt.add_ready(wwtReady);
+      }
+     // The wwtReady function is called by the WWT Web Control software
+    // This function sets up the wwt object, and the initial defaults
+     function wwtReady() {
+        wwt.settings.set_showCrosshairs(bShowCrosshairs);
+        wwt.settings.set_showConstellationFigures(bShowFigures);
+        wwt.hideUI(!bShowUI);
+         wwt.settings.set_showConstellationBoundries(true);
+         // Create a skyRelative filled circle centered on Sagittarius
+        circle1 = createWWTCircle(true, "red", "yellow", 2, 1.0, 5, true, 286.485, -27.5231666666667);
+        
+        // Add its annotation
+        circle1.set_id("Center of Constellation Sagittarius");
+        circle1.set_label("RA 286.485, Dec -27.5231666666667");
+        circle1.set_showHoverLabel(true);
+        
+        // Create a fixed empty circle centered on Aquarius
+        circle2 = createWWTCircle(false, "green", "", 3, 1.0, 25, false, 334.345, -9.21083333333333);
+        
+        // Add its annotation
+        circle2.set_id("Center of Constellation Aquarius");
+        circle2.set_label("RA 334.345, Dec -9.21083333333333");
+        circle2.set_showHoverLabel(true);
+         // Create a polyline, with a fork at [300, -17]
+        var points1 = [[320, -9], [320, -20], [300, -17], [305, 0], [300, -17], [300, -24]];
+        polyline1 = createWWTPolyLine("purple", 2, 1.0, points1);
+        polyline1.set_id("polyline1");
+         // Create a polygon
+        var points2 = [[324, -9], [324, -20], [296, -17], [305, 3]];
+        polygon1 = createWWTPolygon(true, "grey", "blue", 2, 1.0, points2);
+        polygon1.set_id("polygon1");
+    }
+     </script>
+ </head>
+ <body onload="initialize()" >
+ <!-- The body section creates a table with two columns. The first contains the -->
+<!-- canvas object that the WWT web client uses as the render target. And the second a table within-->
+<!-- the table, containing some buttons and checkboxes.-->
+ <table border="2" bgcolor="lightgrey">
+    <tr><td>
+        <div id="WorldWideTelescopeControlHost">
+        
+            <div id="WWTCanvas" style="width: 750px; height: 750px; border-style: none; border-width: 0px;">
+            </div>
+    </div>
+    </td><td>
+     <table border="2" cellspacing="4" cellpadding="4" bgcolor="gold">
+    
+    <tr>
+    <th colspan="2"><h2>WWT Web Client Poly</h2></th>
+    </tr>
+            
+    <tr>
+    <th colspan = "2"> 
+    <input type="button" id="Sagittarius" value="Goto Sagittarius" onclick="GotoConstellation('Sagittarius')"/>
+    <input type="button" id="Aquarius" value="Goto Aquarius" onclick="GotoConstellation('Aquarius')"/></th>        
+    </tr>
+     <tr>
+    <th colspan = "2">Settings</th>
+    </tr>
+    
+<!--    <tr>
+        <td> Show UI </td>
+        <td> <input id="UI" type="checkbox" checked="checked" onclick="toggleSetting('ShowUI');"/></td>
+     </tr>-->
+    
+    <tr>
+        <td> Show Crosshairs</td>
+        <td> <input id="Crosshairs" type="checkbox" checked="checked" onclick="toggleSetting('ShowCrosshairs');"/></td>
+     </tr>
+     <tr>
+        <td> Show Figures </td>
+        <td> <input id="Figures" type="checkbox" checked="checked" onclick="toggleSetting('ShowFigures');"/></td>
+     </tr>
+        <tr>
+    <th colspan = "2">Annotations</th>
+    </tr>
+        <tr>
+        <td> Show Circles </td>
+        <td> <input id="Circle" type="checkbox"  onclick="toggleSetting('ShowCircles');"/></td>
+    </tr>
+        <tr>
+        <td> Show Polygon </td>
+        <td> <input id="Polygon" type="checkbox" onclick="toggleSetting('ShowPolygon');"/></td>
+    </tr>
+            <tr>
+        <td> Show PolyLine </td>
+        <td> <input id="PolyLine" type="checkbox" onclick="toggleSetting('ShowPolyLine');"/></td>
+    </tr>
+</table>
+</td>
+</tr>
+</table>
+ </body>
+</html>

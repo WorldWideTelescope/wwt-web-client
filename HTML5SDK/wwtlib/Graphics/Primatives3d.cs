@@ -817,9 +817,6 @@ namespace wwtlib
                     renderContext.gl.drawArrays(GL.TRIANGLES, 0, triBuffer.Count);
                 }
             }
-
-
-
         }
     }
 

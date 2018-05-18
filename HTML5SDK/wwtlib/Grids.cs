@@ -144,7 +144,7 @@ namespace wwtlib
             //device.ImmediateContext.DrawIndexed(galaxyImageTriangleCount * 3, 0, 0);
 
 
-            TileShader.Use(renderContext, galaxyImageVertexBuffer.VertexBuffer, galaxyImageIndexBuffer, milkyWayImage.Texture2d, (float)opacity, true);
+            ImageShader.Use(renderContext, galaxyImageVertexBuffer.VertexBuffer, galaxyImageIndexBuffer, milkyWayImage.Texture2d, (float)opacity, true);
             renderContext.gl.drawElements(GL.TRIANGLES, galaxyImageTriangleCount * 3, GL.UNSIGNED_SHORT, 0);
         }
 
@@ -388,6 +388,7 @@ namespace wwtlib
                 int count = galaxyVertexCounts[i];
                 cosmosSprites[i] = new PointList(renderContext);
                 cosmosSprites[i].DepthBuffered = false;
+                cosmosSprites[i].ShowFarSide = true;
                 indexList[i] = 0;
             }
 

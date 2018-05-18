@@ -42,19 +42,19 @@ namespace wwtlib
         internal void AddAnnotation(Annotation annotation)
         {
             annotations.Add(annotation);
-            
+            Annotation.BatchDirty = true;
         }
 
         internal void RemoveAnnotation(Annotation annotation)
         {
             annotations.Remove(annotation);
-            
+            Annotation.BatchDirty = true;
         }
 
         internal void ClearAnnotations()
         {
             annotations.Clear();
-            
+            Annotation.BatchDirty = true;
         }
 
 
@@ -625,11 +625,14 @@ namespace wwtlib
             else
             {
                 int index = 0;
+                Annotation.PrepBatch(RenderContext);
                 foreach (Annotation item in annotations)
                 {
                     item.Draw(RenderContext);
                     index++;
                 }
+
+                Annotation.DrawBatch(RenderContext);
 
                 if ((Date.Now - lastMouseMove) > 400)
                 {
