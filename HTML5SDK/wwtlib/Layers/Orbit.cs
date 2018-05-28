@@ -22,146 +22,180 @@ namespace wwtlib
         }
         public void CleanUp()
         {
-            //if (orbitVertexBuffer != null)
-            //{
-            //    orbitVertexBuffer.Dispose();
-            //    GC.SuppressFinalize(orbitVertexBuffer);
-            //    orbitVertexBuffer = null;
-            //}
+
         }
 
-        public void InitVertexBuffer(RenderContext renderContext)
+        // Get the radius of a sphere (centered at a focus of the ellipse) that is
+        // large enough to contain the orbit. The value returned has units of the orbit scale.
+        public double BoundingRadius
         {
-            //try
-            //{
-            //    if (orbitVertexBuffer == null)
-            //    {
-
-            //        VertexBuffer temp = new VertexBuffer(typeof(KeplerVertex), segmentCount, device, Usage.WriteOnly, KeplerVertex.Format, Tile.PoolToUse);
-            //        KeplerVertex[] points = (KeplerVertex[])temp.Lock(0, 0); // Lock the buffer (which will return our structs)
-            //        for (int i = 0; i < segmentCount; i++)
-            //        {
-            //            points[i].Fill(elements);
-            //            points[i].orbitPos = (float)i / (float)(segmentCount - 1);
-            //            points[i].a /= scale;
-            //            points[i].Col = orbitColor.ToArgb();
-            //        }
-
-            //        temp.Unlock();
-            //        orbitVertexBuffer = temp;
-            //    }
-            //}
-            //finally
-            //{
-            //}
+            get
+            {
+                if (elements != null)
+                {
+                    return (elements.a * (1.0 + elements.e)) / scale;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            }
         }
+
+        // Convert from standard coordinate system with z normal to the orbital plane
+        // to WWT's system where y is the normal. Note that this transformation is not
+        // a pure rotation: it incorporates a reflection, because the two systems have
+        // different handedness.
+        static Matrix3d orbitalToWwt = Matrix3d.Create(1.0, 0.0, 0.0, 0.0,
+                                                    0.0, 0.0, 1.0, 0.0,
+                                                    0.0, 1.0, 0.0, 0.0,
+                                                    0.0, 0.0, 0.0, 1.0);
 
         static bool initBegun = false;
         // ** Begin 
         public void Draw3D(RenderContext renderContext, float opacity, Vector3d centerPoint)
         {
+            Matrix3d orbitalPlaneOrientation = Matrix3d.MultiplyMatrix(Matrix3d.RotationZ(Coordinates.DegreesToRadians(elements.w)),
+                                                         Matrix3d.MultiplyMatrix( Matrix3d.RotationX(Coordinates.DegreesToRadians(elements.i)),
+                                                         Matrix3d.RotationZ(Coordinates.DegreesToRadians(elements.omega))));
 
+            // Extra transformation required because the ellipse shader uses the xy-plane, but WWT uses the
+            // xz-plane as the reference.
+            orbitalPlaneOrientation = Matrix3d.MultiplyMatrix(orbitalPlaneOrientation, orbitalToWwt);
 
+            Matrix3d worldMatrix = Matrix3d.MultiplyMatrix( Matrix3d.MultiplyMatrix(orbitalPlaneOrientation , Matrix3d.Translation(centerPoint)), renderContext.World);
 
-        //    Device device = renderContext.Device;
-        //    double zoom = Earth3d.MainWindow.ZoomFactor;
-        //    double distAlpha = ((Math.Log(Math.Max(1, zoom), 4)) - 15.5) * 90;
-        //    //double distAlpha = ((Math.Log(Math.Max(1, zoom), 4)) - 14) * 30 + 24;
+            double M = elements.n * (SpaceTimeController.JNow - elements.T);
+            double F = 1;
+            if (M < 0)
+            {
+                F = -1;
+            }
+            M = Math.Abs(M) / 360.0;
+            M = (M - (int)(M)) * 360.0 * F;
 
-        //    int alpha = Math.Min(255, Math.Max(0, (int)distAlpha));
+            Color color = Color.FromArgbColor((int)(opacity * 255.0f), orbitColor);
 
+            // Newton-Raphson iteration to solve Kepler's equation.
+            // This is faster than calling CAAKepler.Calculate(), and 5 steps
+            // is more than adequate for draw the orbit paths of small satellites
+            // (which are ultimately rendered using single-precision floating point.)
+            M = Coordinates.DegreesToRadians(M);
+            double E = M;
+            for (int i = 0; i < 5; i++)
+            {
+                E += (M - E + elements.e * Math.Sin(E)) / (1 - elements.e * Math.Cos(E));
+            }
 
-        //    if (alpha > 254)
-        //    {
-        //        return;
-        //    }
-
-
-        //    if (orbitVertexBuffer == null)
-        //    {
-        //        KeplerShader.MakeVertexShader(device);
-        //        InitVertexBuffer(renderContext.Device);
-        //        return;
-        //    }
-        //    //device.DrawUserPrimitives(PrimitiveType.LineList, segments, points);
-
-
-        //    //       Matrix savedWorld = device.Transform.World;
-
-        //    //        Matrix offset = Matrix.Translation(-centerPoint.Vector3);
-
-        //    //  device.Transform.World = device.Transform.World * offset;
-        //    Vector3 cam = Vector3d.TransformCoordinate(renderContext.CameraPosition, Matrix3d.Invert(renderContext.World)).Vector3;
-
-
-        //    double M = elements.n * (SpaceTimeController.JNow - elements.T) * 0.01745329251994;
-        //    double F = 1;
-        //    if (M < 0)
-        //    {
-        //        F = -1;
-        //    }
-        //    M = Math.Abs(M) / (2 * Math.PI);
-        //    M = (M - (int)(M)) * 2 * Math.PI * F;
-
-
-        //    KeplerShader.UseShader(device, SpaceTimeController.JNow, cam, opacity, (float)M);
-
-        //    device.RenderState.PointSpriteEnable = true;
-        //    device.RenderState.PointScaleEnable = true;
-
-        //    device.RenderState.PointScaleA = 0;
-        //    device.RenderState.PointScaleB = 0;
-        //    device.RenderState.PointScaleC = 100f;
-        //    device.RenderState.ZBufferEnable = true;
-        //    device.RenderState.ZBufferWriteEnable = false;
-        //    device.SetTexture(0, null);
-
-        //    device.SetStreamSource(0, orbitVertexBuffer, 0);
-        //    device.VertexFormat = KeplerVertex.Format;
-
-        //    device.RenderState.CullMode = Cull.None;
-        //    device.RenderState.AlphaBlendEnable = true;
-        //    device.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
-        //    device.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
-
-        //    //device.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.One;
-
-
-
-
-        //    device.RenderState.ColorWriteEnable = ColorWriteEnable.RedGreenBlueAlpha;
-        //    device.TextureState[0].ColorOperation = TextureOperation.Modulate;
-        //    device.TextureState[0].ColorArgument1 = TextureArgument.TextureColor;
-        //    device.TextureState[0].ColorArgument2 = TextureArgument.Diffuse;
-        //    device.TextureState[0].AlphaOperation = TextureOperation.Modulate;
-        //    device.TextureState[0].AlphaArgument1 = TextureArgument.TextureColor;
-        //    device.TextureState[0].AlphaArgument2 = TextureArgument.Diffuse;
-
-        //    device.TextureState[1].ColorOperation = TextureOperation.SelectArg1;
-        //    device.TextureState[1].ColorArgument1 = TextureArgument.Current;
-        //    device.TextureState[1].ColorArgument2 = TextureArgument.Constant;
-        //    device.TextureState[1].AlphaOperation = TextureOperation.Modulate;
-        //    device.TextureState[1].AlphaArgument1 = TextureArgument.Current;
-        //    device.TextureState[1].AlphaArgument2 = TextureArgument.Constant;
-
-        //    device.TextureState[2].ColorOperation = TextureOperation.Disable;
-        //    device.TextureState[2].AlphaOperation = TextureOperation.Disable;
-
-        //    device.TextureState[1].ConstantColor = Color.FromArgb(255 - alpha, 255 - alpha, 255 - alpha, 255 - alpha);
-
-        //    device.DrawPrimitives(PrimitiveType.LineStrip, 0, segmentCount - 1);
-        //    device.VertexShader = null;
-        //    device.RenderState.ZBufferWriteEnable = true;
-        //    device.RenderState.PointSpriteEnable = false;
-        //    device.RenderState.PointScaleEnable = false;
-        //    // device.Transform.World = savedWorld;
-
+            EllipseRenderer.DrawEllipse(renderContext, elements.a / scale, elements.e, E, color, worldMatrix);
         }
-
-
 
         //VertexBuffer orbitVertexBuffer = null;
         int segmentCount = 0;
     }
 
+    public class EllipseRenderer
+    {
+        private static PositionVertexBuffer ellipseVertexBuffer;
+        private static PositionVertexBuffer ellipseWithoutStartPointVertexBuffer;
+        private static EllipseShader ellipseShader;
+
+
+        // Draw an ellipse with the specified semi-major axis and eccentricity. The orbit is drawn over a single period,
+        // fading from full brightness at the given eccentric anomaly.
+        //
+        // In order to match exactly the position at which a planet is drawn, the planet's position at the current time
+        // must be passed as a parameter. positionNow is in the current coordinate system of the render context, not the
+        // translated and rotated system of the orbital plane.
+        public static void DrawEllipseWithPosition(RenderContext renderContext, double semiMajorAxis, double eccentricity, double eccentricAnomaly, Color color, Matrix3d worldMatrix, Vector3d positionNow)
+        {
+            if (ellipseShader == null)
+            {
+                ellipseShader = new EllipseShader();
+            }
+
+            if (ellipseVertexBuffer == null)
+            {
+                ellipseVertexBuffer = CreateEllipseVertexBuffer(500);
+            }
+
+            Matrix3d savedWorld = renderContext.World;
+            renderContext.World = worldMatrix;
+
+            renderContext.gl.bindBuffer(GL.ARRAY_BUFFER, ellipseVertexBuffer.VertexBuffer);
+            renderContext.gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+           
+            EllipseShader.Use(renderContext, (float)semiMajorAxis, (float)eccentricity, (float)eccentricAnomaly, color, 1.0f, savedWorld, positionNow);
+
+            renderContext.gl.drawArrays(GL.LINE_STRIP, 0, ellipseVertexBuffer.Count);
+
+            renderContext.World = savedWorld;
+        }
+
+
+        // This version of DrawEllipse works without a 'head' point
+        public static void DrawEllipse(RenderContext renderContext, double semiMajorAxis, double eccentricity, double eccentricAnomaly, Color color, Matrix3d worldMatrix)
+        {
+            if (ellipseShader == null)
+            {
+                ellipseShader = new EllipseShader();
+            }
+
+            if (ellipseWithoutStartPointVertexBuffer == null)
+            {
+                ellipseWithoutStartPointVertexBuffer = CreateEllipseVertexBufferWithoutStartPoint(360);
+            }
+
+            Matrix3d savedWorld = renderContext.World;
+            renderContext.World = worldMatrix;
+
+            renderContext.gl.bindBuffer(GL.ARRAY_BUFFER, ellipseWithoutStartPointVertexBuffer.VertexBuffer);
+            renderContext.gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+            EllipseShader.Use(renderContext, (float)semiMajorAxis, (float)eccentricity, (float)eccentricAnomaly, color, 1.0f, savedWorld, Vector3d.Create(0.0, 0.0, 0.0));
+
+            renderContext.gl.drawArrays(GL.LINE_STRIP, 0, ellipseWithoutStartPointVertexBuffer.Count-1);
+
+            renderContext.World = savedWorld;
+        }
+
+
+        public static PositionVertexBuffer CreateEllipseVertexBuffer(int vertexCount)
+        {
+            PositionVertexBuffer vb = new PositionVertexBuffer(vertexCount);
+            Vector3d[] verts = vb.Lock();
+            int index = 0;
+            // Pack extra samples into the front of the orbit to avoid obvious segmentation
+            // when viewed from near the planet or moon.
+            for (int i = 0; i < vertexCount / 2; ++i)
+            {
+                verts[index++] = Vector3d.Create(2.0f * (float)i / (float)vertexCount * 0.05f, 0.0f, 0.0f);
+            }
+            for (int i = 0; i < vertexCount / 2; ++i)
+            {
+                verts[index++] = Vector3d.Create(2.0f * (float)i / (float)vertexCount * 0.95f + 0.05f, 0.0f, 0.0f);
+            }
+
+            vb.Unlock();
+
+            return vb;
+        }
+
+        public static PositionVertexBuffer CreateEllipseVertexBufferWithoutStartPoint(int vertexCount)
+        {
+            PositionVertexBuffer vb = new PositionVertexBuffer(vertexCount);
+            Vector3d[] verts = vb.Lock();
+
+            // Setting a non-zero value will prevent the ellipse shader from using the 'head' point
+            verts[0] = Vector3d.Create(1.0e-6f, 0.0f, 0.0f);
+
+            for (int i = 1; i < vertexCount; ++i)
+            {
+                verts[i] = Vector3d.Create(2.0f * (float)i / (float)vertexCount, 0.0f, 0.0f);
+            }
+
+            vb.Unlock();
+
+            return vb;
+        }
+    }
 }

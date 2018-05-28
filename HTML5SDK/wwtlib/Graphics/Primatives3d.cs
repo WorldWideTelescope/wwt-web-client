@@ -923,7 +923,7 @@ namespace wwtlib
                     {
                         if (starTexture == null)
                         {
-                            starTexture = Planets.LoadPlanetTexture("/webclient/images/StarProfileAlpha.png");
+                            starTexture = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/StarProfileAlpha.png");
                         }
 
                         int count = this.points.Count;

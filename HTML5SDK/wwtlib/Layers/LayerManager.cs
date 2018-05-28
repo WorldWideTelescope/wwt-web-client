@@ -315,10 +315,11 @@ namespace wwtlib
                     frame.Frame.RotationalPeriod = double.Parse(parts[17]);
                     frame.Frame.ShowAsPoint = false;
                     frame.Frame.ShowOrbitPath = true;
-                    frame.Frame.RepresentativeColor = Color.FromArgb(255, 144, 238, 144);
+                    frame.Frame.RepresentativeColor = Color.FromArgb(255, 175, 216, 230);
                     frame.Frame.Oblateness = 0;
 
-                    LayerMaps["Sun"].ChildMaps[planet].ChildMaps[frame.Name] = frame;
+                    LayerMaps["Sun"].ChildMaps[planet].AddChild(frame);
+
                 }
             }
         }
@@ -747,18 +748,18 @@ namespace wwtlib
                     {
                         continue;
                     }
-                    if (map.Frame.ShowOrbitPath && Settings.Active.SolarSystemOrbits)
+                    if (map.Frame.ShowOrbitPath && Settings.Active.SolarSystemOrbits && Settings.Active.SolarSystemMinorOrbits)
                     {
                         if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Orbital)
                         {
                             if (map.Frame.Orbit == null)
                             {
-                                map.Frame.Orbit = new Orbit(map.Frame.Elements, 360, map.Frame.RepresentativeColor, 1, (float)renderContext.NominalRadius);
+                                map.Frame.Orbit = new Orbit(map.Frame.Elements, 360, map.Frame.RepresentativeColor, 1, (float)map.Parent.Frame.MeanRadius);
                             }
                             Matrix3d matSaved = renderContext.World;
                             renderContext.World = Matrix3d.MultiplyMatrix(thisMap.Frame.WorldMatrix, renderContext.WorldBaseNonRotating);
 
-                            map.Frame.Orbit.Draw3D(renderContext, 1f * .25f, Vector3d.Create(0, 0, 0));
+                            map.Frame.Orbit.Draw3D(renderContext, 1f * .5f, Vector3d.Create(0, 0, 0));
                             renderContext.World = matSaved;
                         }
                         else if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Trajectory)

@@ -6764,7 +6764,7 @@ window.wwtlib = function(){
         else {
           if (!this._pointBuffers.length) {
             if (PointList.starTexture == null) {
-              PointList.starTexture = Planets.loadPlanetTexture('/webclient/images/StarProfileAlpha.png');
+              PointList.starTexture = Planets.loadPlanetTexture('//cdn.worldwidetelescope.org/webclient/images/StarProfileAlpha.png');
             }
             var count = this._points.length;
             var pointBuffer = null;
@@ -7317,6 +7317,73 @@ window.wwtlib = function(){
     }
   };
   var KeplerPointSpriteShader$ = {
+
+  };
+
+
+  // wwtlib.EllipseShader
+
+  function EllipseShader() {
+  }
+  EllipseShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = '    precision mediump float;                                                            \n' + '    varying lowp vec4 vColor;                                                           \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        gl_FragColor = vColor;                                          \n' + '    }                                                                                   \n';
+    var vertexShaderText = '    attribute vec3 Angle;                                                               \n' + '    uniform mat4 matWVP;                                                             \n' + '    uniform mat4 matPosition;                                                              \n' + '    uniform vec3 positionNow;                                                        \n' + '    uniform float semiMajorAxis;                                                                   \n' + '    uniform float eccentricity;                                                              \n' + '    uniform vec4 color;                                                             \n' + '    uniform float eccentricAnomaly;                                                              \n' + '    varying lowp vec4 vColor;                                                           \n' + '                                                                                        \n' + '    void main(void)                                                                     \n' + '    {                                                                                   \n' + '        float fade = (1.0 - Angle.x);                                                    \n' + '        float PI = 3.1415927;                                                          \n' + '        float E = eccentricAnomaly - Angle.x * 2.0 * PI;                                   \n' + '        vec2 semiAxes = vec2(1.0, sqrt(1.0 - eccentricity * eccentricity)) * semiMajorAxis;   \n' + '        vec2 planePos = semiAxes * vec2(cos(E) - eccentricity, sin(E));              \n' + '        if (Angle.x == 0.0)                                                         \n' + '           gl_Position =  matPosition * vec4(positionNow, 1.0);                                \n' + '        else                                                                           \n' + '           gl_Position = matWVP * vec4(planePos.x, planePos.y, 0.0, 1.0);              \n' + '        vColor = vec4(color.rgb, fade * color.a);                                      \n' + '    }                                                                                  \n';
+    EllipseShader._frag = gl.createShader(35632);
+    gl.shaderSource(EllipseShader._frag, fragShaderText);
+    gl.compileShader(EllipseShader._frag);
+    var stat = gl.getShaderParameter(EllipseShader._frag, 35713);
+    EllipseShader._vert = gl.createShader(35633);
+    gl.shaderSource(EllipseShader._vert, vertexShaderText);
+    gl.compileShader(EllipseShader._vert);
+    var stat1 = gl.getShaderParameter(EllipseShader._vert, 35713);
+    var compilationLog = gl.getShaderInfoLog(EllipseShader._vert);
+    EllipseShader._prog = gl.createProgram();
+    gl.attachShader(EllipseShader._prog, EllipseShader._vert);
+    gl.attachShader(EllipseShader._prog, EllipseShader._frag);
+    gl.linkProgram(EllipseShader._prog);
+    var errcode = gl.getProgramParameter(EllipseShader._prog, 35714);
+    gl.useProgram(EllipseShader._prog);
+    EllipseShader.angleLoc = gl.getAttribLocation(EllipseShader._prog, 'Angle');
+    EllipseShader.matWVPLoc = gl.getUniformLocation(EllipseShader._prog, 'matWVP');
+    EllipseShader.matPositionLoc = gl.getUniformLocation(EllipseShader._prog, 'matPosition');
+    EllipseShader.positionNowLoc = gl.getUniformLocation(EllipseShader._prog, 'positionNow');
+    EllipseShader.colorLoc = gl.getUniformLocation(EllipseShader._prog, 'color');
+    EllipseShader.semiMajorAxisLoc = gl.getUniformLocation(EllipseShader._prog, 'semiMajorAxis');
+    EllipseShader.eccentricityLoc = gl.getUniformLocation(EllipseShader._prog, 'eccentricity');
+    EllipseShader.eccentricAnomalyLoc = gl.getUniformLocation(EllipseShader._prog, 'eccentricAnomaly');
+    gl.enable(3042);
+    EllipseShader.initialized = true;
+  };
+  EllipseShader.use = function(renderContext, semiMajorAxis, eccentricity, eccentricAnomaly, lineColor, opacity, world, positionNow) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!EllipseShader.initialized) {
+        EllipseShader.init(renderContext);
+      }
+      gl.useProgram(EllipseShader._prog);
+      var WVPPos = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(world, renderContext.get_view()), renderContext.get_projection());
+      var WVP = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view()), renderContext.get_projection());
+      gl.uniformMatrix4fv(EllipseShader.matWVPLoc, false, WVP.floatArray());
+      gl.uniformMatrix4fv(EllipseShader.matPositionLoc, false, WVPPos.floatArray());
+      gl.uniform3f(EllipseShader.positionNowLoc, positionNow.x, positionNow.y, positionNow.z);
+      gl.uniform4f(EllipseShader.colorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, lineColor.a / 255);
+      gl.uniform1f(EllipseShader.semiMajorAxisLoc, semiMajorAxis);
+      gl.uniform1f(EllipseShader.eccentricityLoc, eccentricity);
+      gl.uniform1f(EllipseShader.eccentricAnomalyLoc, eccentricAnomaly);
+      gl.disable(2929);
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.enableVertexAttribArray(EllipseShader.angleLoc);
+      gl.vertexAttribPointer(EllipseShader.angleLoc, 3, 5126, false, 0, 0);
+      gl.lineWidth(1);
+      gl.enable(3042);
+      gl.blendFunc(770, 1);
+    }
+  };
+  var EllipseShader$ = {
 
   };
 
@@ -9426,9 +9493,9 @@ window.wwtlib = function(){
         frame.frame.rotationalPeriod = parseFloat(parts[17]);
         frame.frame.showAsPoint = false;
         frame.frame.showOrbitPath = true;
-        frame.frame.set_representativeColor(Color.fromArgb(255, 144, 238, 144));
+        frame.frame.set_representativeColor(Color.fromArgb(255, 175, 216, 230));
         frame.frame.oblateness = 0;
-        LayerManager.get_layerMaps()['Sun'].childMaps[planet].childMaps[frame.get_name()] = frame;
+        LayerManager.get_layerMaps()['Sun'].childMaps[planet].addChild(frame);
       }
     }
   };
@@ -9735,14 +9802,14 @@ window.wwtlib = function(){
         if (!(ss.canCast(map, LayerMap))) {
           continue;
         }
-        if (map.frame.showOrbitPath && Settings.get_active().get_solarSystemOrbits()) {
+        if (map.frame.showOrbitPath && Settings.get_active().get_solarSystemOrbits() && Settings.get_active().get_solarSystemMinorOrbits()) {
           if (map.frame.referenceFrameType === 1) {
             if (map.frame.get_orbit() == null) {
-              map.frame.set_orbit(new Orbit(map.frame.get_elements(), 360, map.frame.get_representativeColor(), 1, renderContext.get_nominalRadius()));
+              map.frame.set_orbit(new Orbit(map.frame.get_elements(), 360, map.frame.get_representativeColor(), 1, map.parent.frame.meanRadius));
             }
             var matSaved = renderContext.get_world();
             renderContext.set_world(Matrix3d.multiplyMatrix(thisMap.frame.worldMatrix, renderContext.get_worldBaseNonRotating()));
-            map.frame.get_orbit().draw3D(renderContext, 1 * 0.25, Vector3d.create(0, 0, 0));
+            map.frame.get_orbit().draw3D(renderContext, 1 * 0.5, Vector3d.create(0, 0, 0));
             renderContext.set_world(matSaved);
           }
           else if (map.frame.referenceFrameType === 2) {
@@ -10670,10 +10737,95 @@ window.wwtlib = function(){
   var Orbit$ = {
     cleanUp: function() {
     },
-    initVertexBuffer: function(renderContext) {
+    get_boundingRadius: function() {
+      if (this._elements != null) {
+        return (this._elements.a * (1 + this._elements.e)) / this._scale;
+      }
+      else {
+        return 0;
+      }
     },
     draw3D: function(renderContext, opacity, centerPoint) {
+      var orbitalPlaneOrientation = Matrix3d.multiplyMatrix(Matrix3d._rotationZ(Coordinates.degreesToRadians(this._elements.w)), Matrix3d.multiplyMatrix(Matrix3d._rotationX(Coordinates.degreesToRadians(this._elements.i)), Matrix3d._rotationZ(Coordinates.degreesToRadians(this._elements.omega))));
+      orbitalPlaneOrientation = Matrix3d.multiplyMatrix(orbitalPlaneOrientation, Orbit._orbitalToWwt);
+      var worldMatrix = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(orbitalPlaneOrientation, Matrix3d.translation(centerPoint)), renderContext.get_world());
+      var M = this._elements.n * (SpaceTimeController.get_jNow() - this._elements.t);
+      var F = 1;
+      if (M < 0) {
+        F = -1;
+      }
+      M = Math.abs(M) / 360;
+      M = (M - ss.truncate(M)) * 360 * F;
+      var color = Color._fromArgbColor(ss.truncate((opacity * 255)), this._orbitColor);
+      M = Coordinates.degreesToRadians(M);
+      var E = M;
+      for (var i = 0; i < 5; i++) {
+        E += (M - E + this._elements.e * Math.sin(E)) / (1 - this._elements.e * Math.cos(E));
+      }
+      EllipseRenderer.drawEllipse(renderContext, this._elements.a / this._scale, this._elements.e, E, color, worldMatrix);
     }
+  };
+
+
+  // wwtlib.EllipseRenderer
+
+  function EllipseRenderer() {
+  }
+  EllipseRenderer.drawEllipseWithPosition = function(renderContext, semiMajorAxis, eccentricity, eccentricAnomaly, color, worldMatrix, positionNow) {
+    if (EllipseRenderer._ellipseShader == null) {
+      EllipseRenderer._ellipseShader = new EllipseShader();
+    }
+    if (EllipseRenderer._ellipseVertexBuffer == null) {
+      EllipseRenderer._ellipseVertexBuffer = EllipseRenderer.createEllipseVertexBuffer(500);
+    }
+    var savedWorld = renderContext.get_world();
+    renderContext.set_world(worldMatrix);
+    renderContext.gl.bindBuffer(34962, EllipseRenderer._ellipseVertexBuffer.vertexBuffer);
+    renderContext.gl.bindBuffer(34963, null);
+    EllipseShader.use(renderContext, semiMajorAxis, eccentricity, eccentricAnomaly, color, 1, savedWorld, positionNow);
+    renderContext.gl.drawArrays(3, 0, EllipseRenderer._ellipseVertexBuffer.count);
+    renderContext.set_world(savedWorld);
+  };
+  EllipseRenderer.drawEllipse = function(renderContext, semiMajorAxis, eccentricity, eccentricAnomaly, color, worldMatrix) {
+    if (EllipseRenderer._ellipseShader == null) {
+      EllipseRenderer._ellipseShader = new EllipseShader();
+    }
+    if (EllipseRenderer._ellipseWithoutStartPointVertexBuffer == null) {
+      EllipseRenderer._ellipseWithoutStartPointVertexBuffer = EllipseRenderer.createEllipseVertexBufferWithoutStartPoint(360);
+    }
+    var savedWorld = renderContext.get_world();
+    renderContext.set_world(worldMatrix);
+    renderContext.gl.bindBuffer(34962, EllipseRenderer._ellipseWithoutStartPointVertexBuffer.vertexBuffer);
+    renderContext.gl.bindBuffer(34963, null);
+    EllipseShader.use(renderContext, semiMajorAxis, eccentricity, eccentricAnomaly, color, 1, savedWorld, Vector3d.create(0, 0, 0));
+    renderContext.gl.drawArrays(3, 0, EllipseRenderer._ellipseWithoutStartPointVertexBuffer.count - 1);
+    renderContext.set_world(savedWorld);
+  };
+  EllipseRenderer.createEllipseVertexBuffer = function(vertexCount) {
+    var vb = new PositionVertexBuffer(vertexCount);
+    var verts = vb.lock();
+    var index = 0;
+    for (var i = 0; i < vertexCount / 2; ++i) {
+      verts[index++] = Vector3d.create(2 * i / vertexCount * 0.05, 0, 0);
+    }
+    for (var i = 0; i < vertexCount / 2; ++i) {
+      verts[index++] = Vector3d.create(2 * i / vertexCount * 0.95 + 0.05, 0, 0);
+    }
+    vb.unlock();
+    return vb;
+  };
+  EllipseRenderer.createEllipseVertexBufferWithoutStartPoint = function(vertexCount) {
+    var vb = new PositionVertexBuffer(vertexCount);
+    var verts = vb.lock();
+    verts[0] = Vector3d.create(1E-06, 0, 0);
+    for (var i = 1; i < vertexCount; ++i) {
+      verts[i] = Vector3d.create(2 * i / vertexCount, 0, 0);
+    }
+    vb.unlock();
+    return vb;
+  };
+  var EllipseRenderer$ = {
+
   };
 
 
@@ -10915,6 +11067,7 @@ window.wwtlib = function(){
     _computeOrbital: function(renderContext) {
       var ee = this.get_elements();
       var point = ELL.calculateRectangularJD(SpaceTimeController.get_jNow(), ee);
+      this.meanAnomoly = ee.meanAnnomolyOut;
       var pointInstantLater = ELL.calculateRectangular(ee, this.meanAnomoly + 0.001);
       var direction = Vector3d.subtractVectors(point, pointInstantLater);
       direction.normalize();
@@ -10964,9 +11117,9 @@ window.wwtlib = function(){
       this.worldMatrix = Matrix3d.get_identity();
       var localScale = (1 / renderContext.get_nominalRadius()) * this.scale * this.meanRadius;
       this.worldMatrix.scale(Vector3d.create(localScale, localScale, localScale));
-      var mat = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationY(this.heading), Matrix3d._rotationX(this.pitch)), Matrix3d._rotationZ(this.roll));
+      var mat = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationY(this.heading / 180 * Math.PI), Matrix3d._rotationX(this.pitch / 180 * Math.PI)), Matrix3d._rotationZ(this.roll / 180 * Math.PI));
       if (!!this.rotationalPeriod) {
-        var rotationCurrent = (((SpaceTimeController.get_jNow() - this.zeroRotationDate) / this.rotationalPeriod) * 360) % (360);
+        var rotationCurrent = (((SpaceTimeController.get_jNow() - this.zeroRotationDate) / this.rotationalPeriod) * Math.PI * 2) % (Math.PI * 2);
         this.worldMatrix._multiply(Matrix3d._rotationX(-rotationCurrent));
       }
       point = Vector3d.scale(point, scaleFactor);
@@ -11736,7 +11889,7 @@ window.wwtlib = function(){
     }
     if (MinorPlanets._mpcVertexBuffer == null) {
       if (MinorPlanets.starTexture == null) {
-        MinorPlanets.starTexture = Planets.loadPlanetTexture('/webclient/images/starProfileAlpha.png');
+        MinorPlanets.starTexture = Planets.loadPlanetTexture('//cdn.worldwidetelescope.org/webclient/images/starProfileAlpha.png');
       }
       for (var i = 0; i < 7; i++) {
         MinorPlanets._mpcBlendStates[i] = BlendState.create(false, 1000);
@@ -11813,6 +11966,18 @@ window.wwtlib = function(){
     }
   };
   var MinorPlanets$ = {
+
+  };
+
+
+  // wwtlib.KeplerianElements
+
+  function KeplerianElements() {
+    this.a = 0;
+    this.e = 0;
+    this.ea = 0;
+  }
+  var KeplerianElements$ = {
 
   };
 
@@ -12378,6 +12543,8 @@ window.wwtlib = function(){
         var angle = Math.atan2(Planets._planet3dLocations[id].z, Planets._planet3dLocations[id].x);
         Planets._drawSingleOrbit(renderContext, Planets.planetColors[id], id, centerPoint, angle, Planets._planet3dLocations[id], fade);
       }
+      var mid = 9;
+      Planets._drawSingleOrbit(renderContext, Planets.planetColors[mid], mid, centerPoint, 0, Planets._planet3dLocations[mid], fade);
     }
     ss.clearKeys(Planets._drawOrder);
     var camera = renderContext.cameraPosition.copy();
@@ -12451,46 +12618,205 @@ window.wwtlib = function(){
       ctx.restore();
     }
     else {
-      var count = Planets._orbitalSampleRate;
-      var planetDropped = false;
-      var viewPoint = renderContext.get_viewPoint();
-      var point = new Vector3d();
-      var pointTest = new Vector3d();
-      var lastPoint = new Vector3d();
-      var lastColor = new Color();
-      var firstPoint = true;
-      var list = new OrbitLineList();
-      for (var i = 0; i < count; i++) {
-        var pnt = Planets._orbits[id][i].copy();
-        var angle = (Math.atan2(pnt.z, pnt.x) + Math.PI * 2 - startAngle) % (Math.PI * 2);
-        var alpha = ss.truncate((angle / (Math.PI * 2) * 255));
-        var alphaD = alpha / 255;
-        var color = Color.fromArgb(alpha, eclipticColor.r, eclipticColor.g, eclipticColor.b);
-        if (alpha < 2 && !planetDropped && !firstPoint) {
-          pnt = Vector3d.subtractVectors(planetNow, centerPoint);
-          alphaD = 1;
-          alpha = 255;
-          color.a = 255;
-          lastColor.a = 255;
-          list.addLine(lastPoint, pnt.copy(), lastColor._clone(), color._clone());
-          lastColor.a = 0;
-          color.a = 0;
-          pnt = Planets._orbits[id][i].copy();
-          planetDropped = true;
+      if (id !== 9) {
+        var count = Planets._orbitalSampleRate;
+        var planetDropped = false;
+        var viewPoint = renderContext.get_viewPoint();
+        var point = new Vector3d();
+        var pointTest = new Vector3d();
+        var lastPoint = new Vector3d();
+        var lastColor = new Color();
+        var firstPoint = true;
+        var list = new OrbitLineList();
+        for (var i = 0; i < count; i++) {
+          var pnt = Planets._orbits[id][i].copy();
+          var angle = (Math.atan2(pnt.z, pnt.x) + Math.PI * 2 - startAngle) % (Math.PI * 2);
+          var alpha = ss.truncate((angle / (Math.PI * 2) * 255));
+          var alphaD = alpha / 255;
+          var color = Color.fromArgb(alpha, eclipticColor.r, eclipticColor.g, eclipticColor.b);
+          if (alpha < 2 && !planetDropped && !firstPoint) {
+            pnt = Vector3d.subtractVectors(planetNow, centerPoint);
+            alphaD = 1;
+            alpha = 255;
+            color.a = 255;
+            lastColor.a = 255;
+            list.addLine(lastPoint, pnt.copy(), lastColor._clone(), color._clone());
+            lastColor.a = 0;
+            color.a = 0;
+            pnt = Planets._orbits[id][i].copy();
+            planetDropped = true;
+          }
+          pnt = Vector3d.subtractVectors(pnt, centerPoint);
+          if (firstPoint) {
+            firstPoint = false;
+          }
+          else {
+            list.addLine(lastPoint, pnt, lastColor, color);
+          }
+          lastPoint = pnt;
+          lastColor = color._clone();
         }
-        pnt = Vector3d.subtractVectors(pnt, centerPoint);
-        if (firstPoint) {
-          firstPoint = false;
+        list.drawLines(renderContext, 1, Colors.get_white());
+        list.clear();
+      }
+      else {
+        var mu = 0;
+        switch (id) {
+          case 9:
+            mu = 398600.44189 + 4902.7779;
+            break;
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+            mu = 126686534;
+            break;
+          default:
+            mu = 132712440018.8;
+            break;
+        }
+        var deltaT = 1 / 1440 * 0.1;
+        var r0 = Planets.getPlanetPositionDirect(id, Planets._jNow);
+        var r1 = Planets.getPlanetPositionDirect(id, Planets._jNow - deltaT);
+        var v = Vector3d.scale(Vector3d.subtractVectors(r0, r1), 1 / deltaT);
+        var elements = Planets._stateVectorToKeplerian(r0, v, mu);
+        Planets._drawSingleOrbitElements(renderContext, eclipticColor, id, centerPoint, startAngle, planetNow, elements);
+      }
+    }
+  };
+  Planets.getPlanetPositionDirect = function(id, jd) {
+    var L = 0;
+    var B = 0;
+    var R = 0;
+    switch (id) {
+      case 1:
+        L = CAAMercury.eclipticLongitude(jd);
+        B = CAAMercury.eclipticLatitude(jd);
+        R = CAAMercury.radiusVector(jd);
+        break;
+      case 2:
+        L = CAAVenus.eclipticLongitude(jd);
+        B = CAAVenus.eclipticLatitude(jd);
+        R = CAAVenus.radiusVector(jd);
+        break;
+      case 19:
+        L = CAAEarth.eclipticLongitude(jd);
+        B = CAAEarth.eclipticLatitude(jd);
+        R = CAAEarth.radiusVector(jd);
+        break;
+      case 3:
+        L = CAAMars.eclipticLongitude(jd);
+        B = CAAMars.eclipticLatitude(jd);
+        R = CAAMars.radiusVector(jd);
+        break;
+      case 4:
+        L = CAAJupiter.eclipticLongitude(jd);
+        B = CAAJupiter.eclipticLatitude(jd);
+        R = CAAJupiter.radiusVector(jd);
+        break;
+      case 5:
+        L = CAASaturn.eclipticLongitude(jd);
+        B = CAASaturn.eclipticLatitude(jd);
+        R = CAASaturn.radiusVector(jd);
+        break;
+      case 6:
+        L = CAAUranus.eclipticLongitude(jd);
+        B = CAAUranus.eclipticLatitude(jd);
+        R = CAAUranus.radiusVector(jd);
+        break;
+      case 7:
+        L = CAANeptune.eclipticLongitude(jd);
+        B = CAANeptune.eclipticLatitude(jd);
+        R = CAANeptune.radiusVector(jd);
+        break;
+      case 8:
+        L = CAAPluto.eclipticLongitude(jd);
+        B = CAAPluto.eclipticLatitude(jd);
+        R = CAAPluto.radiusVector(jd);
+        break;
+      case 9:
+        L = CAAMoon.eclipticLongitude(jd);
+        B = CAAMoon.eclipticLatitude(jd);
+        R = CAAMoon.radiusVector(jd) / 149598000;
+        break;
+      case 10:
+        var galileanInfo = GM.calculate(jd);
+        var position = galileanInfo.satellite1.eclipticRectangularCoordinates;
+        return Vector3d.create(position.x, position.z, position.y);
+      case 11:
+        var galileanInfo = GM.calculate(jd);
+        var position = galileanInfo.satellite2.eclipticRectangularCoordinates;
+        return Vector3d.create(position.x, position.z, position.y);
+      case 12:
+        var galileanInfo = GM.calculate(jd);
+        var position = galileanInfo.satellite3.eclipticRectangularCoordinates;
+        return Vector3d.create(position.x, position.z, position.y);
+      case 13:
+        var galileanInfo = GM.calculate(jd);
+        var position = galileanInfo.satellite4.eclipticRectangularCoordinates;
+        return Vector3d.create(position.x, position.z, position.y);
+    }
+    L = Coordinates.degreesToRadians(L);
+    B = Coordinates.degreesToRadians(B);
+    var eclPos = Vector3d.create(Math.cos(L) * Math.cos(B) * R, Math.sin(L) * Math.cos(B) * R, Math.sin(B) * R);
+    var eclipticOfDateRotation = (Coordinates.meanObliquityOfEcliptic(jd) - Coordinates.meanObliquityOfEcliptic(2451545)) * Planets.RC;
+    eclPos.rotateX(eclipticOfDateRotation);
+    return Vector3d.create(eclPos.x, eclPos.z, eclPos.y);
+  };
+  Planets._stateVectorToKeplerian = function(position, velocity, mu) {
+    var r = Vector3d.scale(position, 149598000);
+    var v = Vector3d.scale(Vector3d.scale(velocity, 1 / 86400), 149598000);
+    var rmag = r.length();
+    var vmag = v.length();
+    var sma = 1 / (2 / rmag - vmag * vmag / mu);
+    var h = Vector3d.cross(r, v);
+    var ecc = Vector3d.subtractVectors(Vector3d.scale(Vector3d.cross(v, h), 1 / mu), Vector3d.scale(r, 1 / rmag));
+    var e = ecc.length();
+    h.normalize();
+    ecc.normalize();
+    var s = Vector3d.cross(h, ecc);
+    r.normalize();
+    var cosNu = Vector3d.dot(ecc, r);
+    var sinNu = Vector3d.dot(s, r);
+    var E = Math.atan2(Math.sqrt(1 - e * e) * sinNu, e + cosNu);
+    var elements = new KeplerianElements();
+    elements.orientation = Matrix3d.create(ecc.x, ecc.y, ecc.z, 0, s.x, s.y, s.z, 0, h.x, h.y, h.z, 0, 0, 0, 0, 1);
+    elements.a = sma;
+    elements.e = e;
+    elements.ea = E;
+    return elements;
+  };
+  Planets._drawSingleOrbitElements = function(renderContext, eclipticColor, id, centerPoint, xstartAngle, planetNow, el) {
+    var scaleFactor;
+    switch (id) {
+      case 9:
+        if (Settings.get_active().get_solarSystemScale() > 1) {
+          scaleFactor = Settings.get_active().get_solarSystemScale() / 2;
         }
         else {
-          list.addLine(lastPoint, pnt, lastColor, color);
+          scaleFactor = 1;
         }
-        lastPoint = pnt;
-        lastColor = color._clone();
-      }
-      list.drawLines(renderContext, 1, Colors.get_white());
-      list.clear();
+        break;
+      case 10:
+      case 11:
+      case 12:
+      case 13:
+        scaleFactor = Settings.get_active().get_solarSystemScale();
+        break;
+      default:
+        scaleFactor = 1;
+        break;
     }
+    var translation = Vector3d.negate(centerPoint);
+    if (id === 9) {
+      translation.add(Planets._planet3dLocations[19]);
+    }
+    else if (id === 10 || id === 11 || id === 12 || id === 13) {
+      translation.add(Planets._planet3dLocations[4]);
+    }
+    var currentPosition = Vector3d.subtractVectors(planetNow, centerPoint);
+    var worldMatrix = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(el.orientation, Matrix3d.translation(translation)), renderContext.get_world());
+    EllipseRenderer.drawEllipseWithPosition(renderContext, el.a / 149598000 * scaleFactor, el.e, el.ea, eclipticColor, worldMatrix, currentPosition);
   };
   Planets.isPlanetInFrustum = function(renderContext, rad) {
     var frustum = renderContext.get_frustum();
@@ -14767,8 +15093,8 @@ window.wwtlib = function(){
     this._textureDirty = true;
     this._version = 0;
     this._cellHeight = height;
-    this._texture = Planets.loadPlanetTexture('/webclient/images/glyphs1.png');
-    this._webFile = new WebFile('/webclient/images/glyphs1.xml');
+    this._texture = Planets.loadPlanetTexture('//cdn.worldwidetelescope.org/webclient/images/glyphs1.png');
+    this._webFile = new WebFile('//cdn.worldwidetelescope.org/webclient/images/glyphs1.xml');
     this._webFile.onStateChange = ss.bind('_glyphXmlReady', this);
     this._webFile.send();
   }
@@ -39071,7 +39397,6 @@ window.wwtlib = function(){
   var $exports = ss.module('wwtlib',
     {
       IFolder: [ IFolder ],
-      PositionVertexBuffer: [ PositionVertexBuffer, PositionVertexBuffer$, null ],
       PositionTextureVertexBuffer: [ PositionTextureVertexBuffer, PositionTextureVertexBuffer$, null ],
       KeplerVertexBuffer: [ KeplerVertexBuffer, KeplerVertexBuffer$, null ],
       TimeSeriesLineVertexBuffer: [ TimeSeriesLineVertexBuffer, TimeSeriesLineVertexBuffer$, null ],
@@ -39211,6 +39536,7 @@ window.wwtlib = function(){
       AstroRaDec: [ AstroRaDec, AstroRaDec$, null ],
       RiseSetDetails: [ RiseSetDetails, RiseSetDetails$, null ],
       AstroCalc: [ AstroCalc, AstroCalc$, null ],
+      PositionVertexBuffer: [ PositionVertexBuffer, PositionVertexBuffer$, null ],
       Dates: [ Dates, Dates$, null ],
       SimpleLineList: [ SimpleLineList, SimpleLineList$, null ],
       OrbitLineList: [ OrbitLineList, OrbitLineList$, null ],
@@ -39224,6 +39550,7 @@ window.wwtlib = function(){
       LineShaderNormalDates: [ LineShaderNormalDates, LineShaderNormalDates$, null ],
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
       KeplerPointSpriteShader: [ KeplerPointSpriteShader, KeplerPointSpriteShader$, null ],
+      EllipseShader: [ EllipseShader, EllipseShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
       ImageShader: [ ImageShader, ImageShader$, null ],
       SpriteShader: [ SpriteShader, SpriteShader$, null ],
@@ -39246,6 +39573,7 @@ window.wwtlib = function(){
       LayerUIMenuItem: [ LayerUIMenuItem, LayerUIMenuItem$, null ],
       LayerUITreeNode: [ LayerUITreeNode, LayerUITreeNode$, null ],
       Orbit: [ Orbit, Orbit$, null ],
+      EllipseRenderer: [ EllipseRenderer, EllipseRenderer$, null ],
       ReferenceFrame: [ ReferenceFrame, ReferenceFrame$, null ],
       KmlCoordinate: [ KmlCoordinate, KmlCoordinate$, null ],
       KmlLineList: [ KmlLineList, KmlLineList$, null ],
@@ -39254,6 +39582,7 @@ window.wwtlib = function(){
       VoRow: [ VoRow, VoRow$, null ],
       VoColumn: [ VoColumn, VoColumn$, null ],
       WcsImage: [ WcsImage, WcsImage$, null ],
+      KeplerianElements: [ KeplerianElements, KeplerianElements$, null ],
       Planets: [ Planets, Planets$, null ],
       RenderContext: [ RenderContext, RenderContext$, null ],
       RenderTriangle: [ RenderTriangle, RenderTriangle$, null ],
@@ -39563,6 +39892,9 @@ window.wwtlib = function(){
   KeplerPointSpriteShader.orbitLoc = 0;
   KeplerPointSpriteShader.initialized = false;
   KeplerPointSpriteShader._prog = null;
+  EllipseShader.angleLoc = 0;
+  EllipseShader.initialized = false;
+  EllipseShader._prog = null;
   TileShader.vertLoc = 0;
   TileShader.textureLoc = 0;
   TileShader.initialized = false;
@@ -39626,9 +39958,10 @@ window.wwtlib = function(){
   LayerManager._lastMenuClick = new Vector2d();
   LayerManager.getMoonFile('//worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons');
   LayerUI._type = null;
+  Orbit._orbitalToWwt = Matrix3d.create(1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1);
   Orbit._initBegun = false;
   PushPin._pinTextureCache = {};
-  PushPin._pins = Planets.loadPlanetTexture('/webclient/images/pins.png');
+  PushPin._pins = Planets.loadPlanetTexture('//cdn.worldwidetelescope.org/webclient/images/pins.png');
   MinorPlanets.mpcList = [];
   MinorPlanets._initBegun = false;
   MinorPlanets._mpcBlendStates = new Array(7);

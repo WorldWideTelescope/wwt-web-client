@@ -5,7 +5,7 @@ using System.Html;
 
 namespace wwtlib
 {
-    class PositionVertexBuffer
+    public class PositionVertexBuffer
     {
         public int Count = 0;
 

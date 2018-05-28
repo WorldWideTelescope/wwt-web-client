@@ -7,6 +7,15 @@ using System.Net;
 
 namespace wwtlib
 {
+    // Keplerian elements defined here use eccentric anomaly instead of mean anomaly and
+    // have all orbital plane angles converted to a rotation matrix.
+    public class KeplerianElements
+    {
+        public double a;
+        public double e;
+        public double ea;
+        public Matrix3d orientation;
+    }
 
     public class Planets
     {
@@ -500,7 +509,7 @@ namespace wwtlib
 
             planetDrawOrder = new Dictionary<double, int>();
             planetLocations = new AstroRaDec[20];
-            
+
             Vector3d center = new Vector3d();
             int planetCenter = 0;
             if (planetCenter > -1)
@@ -896,8 +905,6 @@ namespace wwtlib
 
             if (Settings.Active.SolarSystemOrbits && fade > 0)
             {
-
-
                 for (int ii = 1; ii < 10; ii++)
                 {
                     int id = ii;
@@ -912,6 +919,8 @@ namespace wwtlib
                     DrawSingleOrbit(renderContext, planetColors[id], id, centerPoint, angle, planet3dLocations[id], fade);
                 }
 
+                int mid = (int)SolarSystemObjects.Moon;
+                DrawSingleOrbit(renderContext, planetColors[mid], mid, centerPoint, 0.0, planet3dLocations[mid], fade);
             }
 
             drawOrder.Clear();
@@ -1062,63 +1071,323 @@ namespace wwtlib
             }
             else
             {
-                int count = orbitalSampleRate;
-                bool planetDropped = false;
-
-                Vector3d viewPoint = renderContext.ViewPoint;
-                Vector3d point = new Vector3d();
-                Vector3d pointTest = new Vector3d();
-
-                Vector3d lastPoint = new Vector3d();
-                Color lastColor = new Color();
-                bool firstPoint = true;
-                OrbitLineList list = new OrbitLineList();
-
-                for (int i = 0; i < count; i++)
+                if (id != (int)SolarSystemObjects.Moon)
                 {
-                    Vector3d pnt = orbits[id][i].Copy();
+                    int count = orbitalSampleRate;
+                    bool planetDropped = false;
 
-                    double angle = (Math.Atan2(pnt.Z, pnt.X) + Math.PI * 2 - startAngle) % (Math.PI * 2);
-                    int alpha = (int)((angle) / (Math.PI * 2) * 255);
+                    Vector3d viewPoint = renderContext.ViewPoint;
+                    Vector3d point = new Vector3d();
+                    Vector3d pointTest = new Vector3d();
 
-                    double alphaD = (double)alpha / 255.0;
-                    Color color = Color.FromArgb(alpha, eclipticColor.R, eclipticColor.G, eclipticColor.B);
+                    Vector3d lastPoint = new Vector3d();
+                    Color lastColor = new Color();
+                    bool firstPoint = true;
+                    OrbitLineList list = new OrbitLineList();
 
-                    if (alpha < 2 && !planetDropped && !firstPoint)
+                    for (int i = 0; i < count; i++)
                     {
-                        pnt = Vector3d.SubtractVectors(planetNow, centerPoint);
-                        alphaD = 1.0;
-                        alpha = 255;
+                        Vector3d pnt = orbits[id][i].Copy();
 
-                        color.A = 255;
-                        lastColor.A = 255;
-                        list.AddLine(lastPoint, pnt.Copy(), lastColor.Clone(), color.Clone());
-                        lastColor.A = 0;
-                        color.A = 0;
-                        pnt = orbits[id][i].Copy();
-                        planetDropped = true;
-                    }
-                  
-                    pnt = Vector3d.SubtractVectors(pnt, centerPoint);
-                 
-  
-                    if (firstPoint)
-                    {
+                        double angle = (Math.Atan2(pnt.Z, pnt.X) + Math.PI * 2 - startAngle) % (Math.PI * 2);
+                        int alpha = (int)((angle) / (Math.PI * 2) * 255);
 
-                        firstPoint = false;
+                        double alphaD = (double)alpha / 255.0;
+                        Color color = Color.FromArgb(alpha, eclipticColor.R, eclipticColor.G, eclipticColor.B);
+
+                        if (alpha < 2 && !planetDropped && !firstPoint)
+                        {
+                            pnt = Vector3d.SubtractVectors(planetNow, centerPoint);
+                            alphaD = 1.0;
+                            alpha = 255;
+
+                            color.A = 255;
+                            lastColor.A = 255;
+                            list.AddLine(lastPoint, pnt.Copy(), lastColor.Clone(), color.Clone());
+                            lastColor.A = 0;
+                            color.A = 0;
+                            pnt = orbits[id][i].Copy();
+                            planetDropped = true;
+                        }
+
+                        pnt = Vector3d.SubtractVectors(pnt, centerPoint);
+
+
+                        if (firstPoint)
+                        {
+
+                            firstPoint = false;
+                        }
+                        else
+                        {
+                            list.AddLine(lastPoint, pnt, lastColor, color);
+                        }
+                        lastPoint = pnt;
+                        lastColor = color.Clone();
                     }
-                    else
-                    {
-                       list.AddLine(lastPoint, pnt, lastColor, color);
-                    }
-                    lastPoint = pnt;
-                    lastColor = color.Clone();
+                    list.DrawLines(renderContext, 1.0f, Colors.White);
+                    list.Clear();
                 }
-                list.DrawLines(renderContext, 1.0f, Colors.White);
-                list.Clear();
+                else
+                {
+                    double mu = 0.0;
+                    switch (id)
+                    {
+                        case (int)SolarSystemObjects.Moon:
+                            mu = muEarth + muMoon;
+                            break;
+
+                        case (int)SolarSystemObjects.Io:
+                        case (int)SolarSystemObjects.Europa:
+                        case (int)SolarSystemObjects.Ganymede:
+                        case (int)SolarSystemObjects.Callisto:
+                            mu = muJupiter;
+                            break;
+
+                        default:
+                            mu = muSun;
+                            break;
+                    }
+
+                    // Estimate velocity through differences
+                    double deltaT = 1.0 / 1440.0 * 0.1;
+                    Vector3d r0 = GetPlanetPositionDirect((SolarSystemObjects)id, jNow);
+                    Vector3d r1 = GetPlanetPositionDirect((SolarSystemObjects)id, jNow - deltaT);
+
+                    Vector3d v = Vector3d.Scale(Vector3d.SubtractVectors(r0, r1), 1.0 / deltaT);
+
+                    KeplerianElements elements = stateVectorToKeplerian(r0, v, mu);
+
+                    DrawSingleOrbitElements(renderContext, eclipticColor, id, centerPoint, startAngle, planetNow, elements);
+                }
             }
         }
 
+        // mu is the standard gravitational parameter GM, where G
+        // is the gravitational constant and M is the mass of the
+        // central body.
+        const double muSun = 1.327124400188e11; // km^3/s^2
+        const double muEarth = 3.9860044189e5;
+        const double muMoon = 4.9027779e3;
+        const double muJupiter = 1.26686534e8;
+
+
+        // Get the position of a Solar System object using a 'direct' calculation that
+        // avoids including an aberration correction.
+        //
+        // The returned position is in ecliptic coordinate system with the origin at the center
+        // of the parent body (i.e. the Sun for planets, a planet for moons). The position of moons
+        // is _not_ modified by the SolarSystemScale, making it possible to use function to
+        // a calculate valid Keplerian elements.
+        public static Vector3d GetPlanetPositionDirect(SolarSystemObjects id, double jd)
+        {
+            double L = 0.0;
+            double B = 0.0;
+            double R = 0.0;
+
+            switch (id)
+            {
+                case SolarSystemObjects.Mercury:
+                    L = CAAMercury.EclipticLongitude(jd);
+                    B = CAAMercury.EclipticLatitude(jd);
+                    R = CAAMercury.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Venus:
+                    L = CAAVenus.EclipticLongitude(jd);
+                    B = CAAVenus.EclipticLatitude(jd);
+                    R = CAAVenus.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Earth:
+                    {
+                        //double x = HiResTimer.TickCount;
+                        L = CAAEarth.EclipticLongitude(jd);
+                        B = CAAEarth.EclipticLatitude(jd);
+                        R = CAAEarth.RadiusVector(jd);
+                        //x = (HiResTimer.TickCount - x) / HiResTimer.Frequency;
+                        //System.Console.WriteLine("Earth orbit time: " + x * 1000.0 + "ms");
+                    }
+                    break;
+                case SolarSystemObjects.Mars:
+                    L = CAAMars.EclipticLongitude(jd);
+                    B = CAAMars.EclipticLatitude(jd);
+                    R = CAAMars.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Jupiter:
+                    L = CAAJupiter.EclipticLongitude(jd);
+                    B = CAAJupiter.EclipticLatitude(jd);
+                    R = CAAJupiter.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Saturn:
+                    L = CAASaturn.EclipticLongitude(jd);
+                    B = CAASaturn.EclipticLatitude(jd);
+                    R = CAASaturn.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Uranus:
+                    L = CAAUranus.EclipticLongitude(jd);
+                    B = CAAUranus.EclipticLatitude(jd);
+                    R = CAAUranus.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Neptune:
+                    L = CAANeptune.EclipticLongitude(jd);
+                    B = CAANeptune.EclipticLatitude(jd);
+                    R = CAANeptune.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Pluto:
+                    L = CAAPluto.EclipticLongitude(jd);
+                    B = CAAPluto.EclipticLatitude(jd);
+                    R = CAAPluto.RadiusVector(jd);
+                    break;
+                case SolarSystemObjects.Moon:
+                    L = CAAMoon.EclipticLongitude(jd);
+                    B = CAAMoon.EclipticLatitude(jd);
+                    R = CAAMoon.RadiusVector(jd) / 149598000;
+                    break;
+                case SolarSystemObjects.Io:
+                    {
+                        GMDS galileanInfo = GM.Calculate(jd);
+                        C3D position = galileanInfo.Satellite1.EclipticRectangularCoordinates;
+                        return  Vector3d.Create(position.X, position.Z, position.Y);
+                    }
+                case SolarSystemObjects.Europa:
+                    {
+                        GMDS galileanInfo = GM.Calculate(jd);
+                        C3D position = galileanInfo.Satellite2.EclipticRectangularCoordinates;
+                        return Vector3d.Create(position.X, position.Z, position.Y);
+                    }
+                case SolarSystemObjects.Ganymede:
+                    {
+                        GMDS galileanInfo = GM.Calculate(jd);
+                        C3D position = galileanInfo.Satellite3.EclipticRectangularCoordinates;
+                        return Vector3d.Create(position.X, position.Z, position.Y);
+                    }
+                case SolarSystemObjects.Callisto:
+                    {
+                        GMDS galileanInfo = GM.Calculate(jd);
+                        C3D position = galileanInfo.Satellite4.EclipticRectangularCoordinates;
+                        return Vector3d.Create(position.X, position.Z, position.Y);
+                    }
+            }
+            // Enabling this code transforms planet positions from the mean ecliptic/equinox of
+            // date to the J2000 ecliptic. It is necessary because the VSOP87D series used
+            // for planet positions is in the mean-of-date frame. The transformation is currently
+            // disabled in order to better match planet positions calculated elsewhere in the code.
+            //CAA2DCoordinate prec = CAAPrecession.PrecessEcliptic(L, B, jd, 2451545.0);
+            //L = prec.X;
+            //B = prec.Y;
+
+            L = Coordinates.DegreesToRadians(L);
+            B = Coordinates.DegreesToRadians(B);
+            Vector3d eclPos = Vector3d.Create(Math.Cos(L) * Math.Cos(B)* R, Math.Sin(L) * Math.Cos(B)* R, Math.Sin(B)* R) ;
+
+            // Transform from the ecliptic of date to the J2000 ecliptic; this transformation should be deleted
+            // once the precession is turned one.
+            double eclipticOfDateRotation = (Coordinates.MeanObliquityOfEcliptic(jd) - Coordinates.MeanObliquityOfEcliptic(2451545.0)) * RC;
+            eclPos.RotateX(eclipticOfDateRotation);
+
+            return Vector3d.Create(eclPos.X, eclPos.Z, eclPos.Y);
+        }
+
+        private static KeplerianElements stateVectorToKeplerian(Vector3d position, Vector3d velocity, double mu)
+        {
+            // Work in units of km and seconds
+            Vector3d r = Vector3d.Scale(position, UiTools.KilometersPerAu);
+            Vector3d v = Vector3d.Scale(Vector3d.Scale(velocity, 1.0 / 86400.0), UiTools.KilometersPerAu);
+
+            double rmag = r.Length();
+            double vmag = v.Length();
+
+            double sma = 1.0 / (2.0 / rmag - vmag * vmag / mu);
+
+            // h is the orbital angular momentum vector
+            Vector3d h = Vector3d.Cross(r, v);
+
+            // ecc is the eccentricity vector, which points from the
+            // planet at periapsis to the center point.
+            Vector3d ecc = Vector3d.SubtractVectors(Vector3d.Scale(Vector3d.Cross(v, h), 1.0 / mu), Vector3d.Scale( r, 1.0 / rmag));
+            double e = ecc.Length();
+
+            h.Normalize();
+            ecc.Normalize();
+
+            // h, s, and ecc are orthogonal vectors that define a coordinate
+            // system. h is normal to the orbital plane.
+            Vector3d s = Vector3d.Cross(h, ecc);
+
+            // Calculate the sine and cosine of the true anomaly
+            r.Normalize();
+            double cosNu = Vector3d.Dot(ecc, r);
+            double sinNu = Vector3d.Dot(s, r);
+
+            // Compute the eccentric anomaly
+            double E = Math.Atan2(Math.Sqrt(1 - e * e) * sinNu, e + cosNu);
+
+            // Mean anomaly not required
+            // double M = E - e * Math.Sin(E);
+
+            KeplerianElements elements = new KeplerianElements();
+
+            // Create a rotation matrix given the three orthogonal vectors:
+            //   ecc - eccentricity vector
+            //   s   - in the orbital plane, perpendicular to ecc
+            //   h   - angular momentum vector, normal to orbital plane
+            elements.orientation = Matrix3d.Create(ecc.X, ecc.Y, ecc.Z, 0.0,
+                                                s.X, s.Y, s.Z, 0.0,
+                                                h.X, h.Y, h.Z, 0.0,
+                                                0.0, 0.0, 0.0, 1.0);
+            elements.a = sma;
+            elements.e = e;
+            elements.ea = E;
+
+            return elements;
+        }
+
+        private static void DrawSingleOrbitElements(RenderContext renderContext, Color eclipticColor, int id, Vector3d centerPoint, double xstartAngle, Vector3d planetNow, KeplerianElements el)
+        {
+            double scaleFactor;
+            switch (id)
+            {
+                case (int)SolarSystemObjects.Moon:
+                    if (Settings.Active.SolarSystemScale > 1)
+                        scaleFactor = Settings.Active.SolarSystemScale / 2;
+                    else
+                        scaleFactor = 1.0;
+                    break;
+
+                case (int)SolarSystemObjects.Io:
+                case (int)SolarSystemObjects.Europa:
+                case (int)SolarSystemObjects.Ganymede:
+                case (int)SolarSystemObjects.Callisto:
+                    scaleFactor = Settings.Active.SolarSystemScale;
+                    break;
+
+                default:
+                    scaleFactor = 1.0;
+                    break;
+            }
+
+            Vector3d translation = Vector3d.Negate(centerPoint);
+            if (id == (int)SolarSystemObjects.Moon)
+            {
+                translation.Add(planet3dLocations[(int)SolarSystemObjects.Earth]);
+            }
+            else if (id == (int)SolarSystemObjects.Io || id == (int)SolarSystemObjects.Europa || id == (int)SolarSystemObjects.Ganymede || id == (int)SolarSystemObjects.Callisto)
+            {
+                translation.Add(planet3dLocations[(int)SolarSystemObjects.Jupiter]);
+            }
+
+            Vector3d currentPosition = Vector3d.SubtractVectors(planetNow, centerPoint);
+            //if (orbitTraces[id] != null)
+            //{
+            //    Matrix3d worldMatrix = Matrix3d.Translation(translation) * renderContext.World;
+            //    orbitTraces[id].render(renderContext, Color.FromArgb(eclipticColor), worldMatrix, jNow, currentPosition, 0.0);
+            //}
+            //else
+            {
+                Matrix3d worldMatrix = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(el.orientation, Matrix3d.Translation(translation)), renderContext.World);
+                EllipseRenderer.DrawEllipseWithPosition(renderContext, el.a / UiTools.KilometersPerAu * scaleFactor, el.e, el.ea, eclipticColor, worldMatrix, currentPosition);
+            }
+
+        }
 
         static Date lastUpdate = new Date();
         const double EarthDiameter = 0.000137224;

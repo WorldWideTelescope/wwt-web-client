@@ -512,7 +512,7 @@ namespace wwtlib
         {
             EOE ee = Elements;
             Vector3d point = ELL.CalculateRectangularJD(SpaceTimeController.JNow, ee);
-
+            MeanAnomoly = ee.meanAnnomolyOut;
             Vector3d pointInstantLater = ELL.CalculateRectangular(ee, MeanAnomoly+.001);
 
             Vector3d direction =  Vector3d.SubtractVectors(point, pointInstantLater);
@@ -572,10 +572,10 @@ namespace wwtlib
             double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
             WorldMatrix.Scale(Vector3d.Create(localScale, localScale, localScale));
 
-            Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading), Matrix3d.RotationX(Pitch)),Matrix3d.RotationZ(Roll));
+            Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading / 180.0 * Math.PI), Matrix3d.RotationX(Pitch / 180.0 * Math.PI)),Matrix3d.RotationZ(Roll / 180.0 * Math.PI));
             if (RotationalPeriod != 0)
             {
-                double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
+                double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * Math.PI * 2) % (Math.PI * 2);
                 WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
             }
 

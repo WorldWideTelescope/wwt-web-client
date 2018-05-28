@@ -857,6 +857,159 @@ namespace wwtlib
         }
     }
 
+    public class EllipseShader
+    {
+        public EllipseShader()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+        public static int AngleLoc;
+
+
+        public static WebGLUniformLocation matWVPLoc;
+        public static WebGLUniformLocation matPositionLoc;
+        public static WebGLUniformLocation positionNowLoc;
+        public static WebGLUniformLocation colorLoc;
+        public static WebGLUniformLocation opacityLoc;
+        public static WebGLUniformLocation semiMajorAxisLoc;
+        public static WebGLUniformLocation eccentricityLoc;
+        public static WebGLUniformLocation eccentricAnomalyLoc;
+
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                    "    precision mediump float;                                                            \n" +
+                    "    varying lowp vec4 vColor;                                                           \n" +
+                    "    void main(void)                                                                     \n" +
+                    "    {                                                                                   \n" +
+                    "        gl_FragColor = vColor;                                          \n" +
+                    "    }                                                                                   \n";
+
+
+            String vertexShaderText =
+                    "    attribute vec3 Angle;                                                               \n" +
+                    "    uniform mat4 matWVP;                                                             \n" +
+                    "    uniform mat4 matPosition;                                                              \n" +
+                    "    uniform vec3 positionNow;                                                        \n" +
+                    "    uniform float semiMajorAxis;                                                                   \n" +
+                    "    uniform float eccentricity;                                                              \n" +
+                    "    uniform vec4 color;                                                             \n" +
+                    "    uniform float eccentricAnomaly;                                                              \n" +
+         //           "    uniform float opacity;                                                              \n" +
+                    "    varying lowp vec4 vColor;                                                           \n" +
+                    "                                                                                        \n" +
+                    "    void main(void)                                                                     \n" +
+                    "    {                                                                                   \n" +
+                    "        float fade = (1.0 - Angle.x);                                                    \n" +
+                    "        float PI = 3.1415927;                                                          \n" +
+                    "        float E = eccentricAnomaly - Angle.x * 2.0 * PI;                                   \n" +
+                    "        vec2 semiAxes = vec2(1.0, sqrt(1.0 - eccentricity * eccentricity)) * semiMajorAxis;   \n" +
+                    "        vec2 planePos = semiAxes * vec2(cos(E) - eccentricity, sin(E));              \n" +
+                    "        if (Angle.x == 0.0)                                                         \n" +
+                    "           gl_Position =  matPosition * vec4(positionNow, 1.0);                                \n" +
+                    "        else                                                                           \n" +
+                    "           gl_Position = matWVP * vec4(planePos.x, planePos.y, 0.0, 1.0);              \n" +
+                    "        vColor = vec4(color.rgb, fade * color.a);                                      \n" +
+                    "    }                                                                                  \n";
+
+
+
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+            object compilationLog = gl.getShaderInfoLog(vert);
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            AngleLoc = gl.getAttribLocation(prog, "Angle");
+
+            matWVPLoc = gl.getUniformLocation(prog, "matWVP");
+            matPositionLoc = gl.getUniformLocation(prog, "matPosition");
+            positionNowLoc = gl.getUniformLocation(prog, "positionNow");
+            colorLoc = gl.getUniformLocation(prog, "color");
+           // opacityLoc = gl.getUniformLocation(prog, "opacity");
+            semiMajorAxisLoc = gl.getUniformLocation(prog, "semiMajorAxis");
+            eccentricityLoc = gl.getUniformLocation(prog, "eccentricity");
+            eccentricAnomalyLoc = gl.getUniformLocation(prog, "eccentricAnomaly");
+            
+            gl.enable(GL.BLEND);
+
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+
+        public static void Use(
+            RenderContext renderContext,float semiMajorAxis,float eccentricity, float eccentricAnomaly, 
+            Color lineColor, float opacity, Matrix3d world, Vector3d positionNow )
+        {
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d WVPPos = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(world,renderContext.View ),  renderContext.Projection);
+                Matrix3d WVP = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(renderContext.World,renderContext.View ),  renderContext.Projection);
+
+                gl.uniformMatrix4fv(matWVPLoc, false, WVP.FloatArray());
+                gl.uniformMatrix4fv(matPositionLoc, false, WVPPos.FloatArray());
+                gl.uniform3f(positionNowLoc, (float)positionNow.X, (float)positionNow.Y, (float)positionNow.Z);
+                gl.uniform4f(colorLoc, lineColor.R / 255f, lineColor.G / 255f, lineColor.B / 255f, lineColor.A / 255f);
+               // gl.uniform1f(opacityLoc, opacity);
+                gl.uniform1f(semiMajorAxisLoc, semiMajorAxis);
+                gl.uniform1f(eccentricityLoc, eccentricity);
+                gl.uniform1f(eccentricAnomalyLoc, eccentricAnomaly);
+
+
+              //  gl.enable(GL.DEPTH_TEST);
+                gl.disable(GL.DEPTH_TEST);
+
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+                //gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+                //gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+
+                gl.enableVertexAttribArray(AngleLoc);
+               
+                gl.vertexAttribPointer(AngleLoc, 3, GL.FLOAT, false, 0, 0);
+                gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
+                gl.blendFunc(GL.SRC_ALPHA, GL.ONE);
+            }
+        }
+    }
+
     public class TileShader
     {
         public TileShader()
