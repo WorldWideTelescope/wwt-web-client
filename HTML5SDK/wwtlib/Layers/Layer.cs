@@ -537,6 +537,9 @@ namespace wwtlib
                 case "ImageSetLayer":
                     newLayer = new ImageSetLayer();
                     break;
+                case "Object3dLayer":
+                    newLayer = new Object3dLayer();
+                    break;
                 default:
                     return null;
             }

@@ -201,11 +201,11 @@ namespace wwtlib
         bool dirty = false;
         public override void CleanUp()
         {
-            if (object3d != null)
-            {
-                object3d.Dispose();
-            }
-            object3d = null;
+            //if (object3d != null)
+            //{
+            //    object3d.Dispose();
+            //}
+            //object3d = null;
             dirty = true;
         }
 
@@ -1331,7 +1331,7 @@ namespace wwtlib
                         if (group.materialIndex == materialIndex)
                         {
 
-                            renderContext.gl.drawElements(GL.TRIANGLES, group.indexCount, GL.UNSIGNED_INT, group.startIndex);
+                            renderContext.gl.drawElements(GL.TRIANGLES, group.indexCount, GL.UNSIGNED_INT, group.startIndex*4);
                         }
                     }
                 }
@@ -1348,7 +1348,7 @@ namespace wwtlib
         public PositionNormalTexturedTangent[] tangentVertices;
         public uint[] indices;
 
-        public SphereHull BoundingSphere;
+        public SphereHull BoundingSphere = new SphereHull();
 
         //Group[] attributeGroups;
         List<ObjectNode> objects;
@@ -1552,7 +1552,7 @@ namespace wwtlib
             }
 
             int vertexCount = vertexList.Count;
-            int triangleCount = indexList.Count / 3;
+            int triangleCount = Math.Floor(indexList.Count / 3);
 
             // Create a list of vertices sorted by their positions. This will be used to
             // produce a list of vertices with unique positions.
@@ -1580,6 +1580,11 @@ namespace wwtlib
             }
 
             int[] vertexInstanceCounts = new int[uniqueVertexCount];
+            for(int i=0; i< uniqueVertexCount; i++ )
+            {
+                vertexInstanceCounts[i] = 0;
+            }
+
             foreach (int vertexIndex in indexList)
             {
                 int uniqueIndex = vertexMap[vertexIndex];
@@ -1588,19 +1593,24 @@ namespace wwtlib
 
             // vertexInstances contains the list of faces each vertex is referenced in
             int[][] vertexInstances = new int[uniqueVertexCount][];
+
             for (int i = 0; i < uniqueVertexCount; ++i)
             {
                 int count = vertexInstanceCounts[i];
                 if (count > 0)
                 {
                     vertexInstances[i] = new int[count];
+                    for(int j =0; j< count; j++)
+                    {
+                        vertexInstances[i][j] = 0;
+                    }
                 }
             }
 
             // For each vertex, record all faces which include it
             for (int i = 0; i < indexList.Count; ++i)
             {
-                int faceIndex = i / 3;
+                int faceIndex = Math.Floor(i / 3);
                 int uniqueIndex = vertexMap[indexList[i]];
                 vertexInstances[uniqueIndex][--vertexInstanceCounts[uniqueIndex]] = faceIndex;
             }
@@ -1630,7 +1640,7 @@ namespace wwtlib
             {
                 int vertexIndex = indexList[i];
                 int uniqueIndex = vertexMap[vertexIndex];
-                Vector3d faceNormal = faceNormals[i / 3];
+                Vector3d faceNormal = faceNormals[Math.Floor(i / 3)];
 
                 Vector3d sum = new Vector3d();
                 foreach (int faceIndex in vertexInstances[uniqueIndex])
@@ -1666,7 +1676,7 @@ namespace wwtlib
             }
 
             int vertexCount = vertexList.Count;
-            int triangleCount = indexList.Count / 3;
+            int triangleCount = Math.Floor(indexList.Count / 3);
 
             // Create a list of vertices sorted by their positions. This will be used to
             // produce a list of vertices with unique positions.
@@ -1714,7 +1724,7 @@ namespace wwtlib
             // For each vertex, record all faces which include it
             for (int i = 0; i < indexList.Count; ++i)
             {
-                int faceIndex = i / 3;
+                int faceIndex = Math.Floor(i / 3);
                 uint uniqueIndex = vertexMap[indexList[i]];
                 vertexInstances[uniqueIndex][--vertexInstanceCounts[uniqueIndex]] = faceIndex;
             }
@@ -1772,7 +1782,7 @@ namespace wwtlib
             {
                 uint vertexIndex = indexList[i];
                 uint uniqueIndex = vertexMap[(int)vertexIndex];
-                Vector3d du = partials[i / 3];
+                Vector3d du = partials[Math.Floor(i / 3)];
 
                 Vector3d sum = new Vector3d();
                 foreach (int faceIndex in vertexInstances[uniqueIndex])
@@ -1802,7 +1812,7 @@ namespace wwtlib
         private Vector3d[] CalculateVertexNormals(List<PositionNormalTextured> vertexList, List<int> indexList, float creaseAngleRad)
         {
             int vertexCount = vertexList.Count;
-            int triangleCount = indexList.Count / 3;
+            int triangleCount = Math.Floor(indexList.Count / 3);
 
             // vertexInstanceCounts contains the number of times each vertex is referenced in the mesh 
             int[] vertexInstanceCounts = new int[vertexCount];
@@ -1825,7 +1835,7 @@ namespace wwtlib
             // For each vertex, record all faces which include it
             for (int i = 0; i < indexList.Count; ++i)
             {
-                int faceIndex = i / 3;
+                int faceIndex = Math.Floor(i / 3);
                 int vertexIndex = indexList[i];
                 vertexInstances[vertexIndex][--vertexInstanceCounts[vertexIndex]] = faceIndex;
             }
@@ -1854,7 +1864,7 @@ namespace wwtlib
             for (int i = 0; i < newVertexCount; ++i)
             {
                 int vertexIndex = indexList[i];
-                Vector3d faceNormal = faceNormals[i / 3];
+                Vector3d faceNormal = faceNormals[Math.Floor(i / 3)];
 
                 Vector3d sum = new Vector3d();
                 foreach (int faceIndex in vertexInstances[vertexIndex])
@@ -2595,10 +2605,10 @@ namespace wwtlib
                                 b = br.ReadByte();
                                 if (b > 0)
                                 {
-                                    name += (char)b;
+                                    name += string.FromCharCode(b); 
                                 }
 
-                            } while (b != '\0');
+                            } while (b != 0);
 
                             currentObject = new ObjectNode();
                             currentObject.Name = name;
@@ -2613,7 +2623,7 @@ namespace wwtlib
                         // Marks the start of a mesh section
                         case 0x4100:
                             startMapIndex = vertexList.Count;
-                            startTriangleIndex = indexList.Count / 3;
+                            startTriangleIndex = Math.Floor(indexList.Count / 3);
                             break;
 
                         // This section has the vertex list.. Maps to Vertext buffer in Direct3d
@@ -2661,11 +2671,11 @@ namespace wwtlib
                                     b1 = br.ReadByte();
                                     if (b1 > 0)
                                     {
-                                        material += (char)b1;
+                                        material += string.FromCharCode(b1);
                                     }
 
                                     i++;
-                                } while (b1 != '\0');
+                                } while (b1 != 0);
                                 int triCount = br.ReadUInt16();
                                 int[] applyList = new int[triCount];
 
@@ -2740,11 +2750,12 @@ namespace wwtlib
                                     b2 = br.ReadByte();
                                     if (b2 > 0)
                                     {
-                                        matName += (char)b2;
+                                        
+                                        matName += string.FromCharCode(b2);
                                     }
 
                                     i++;
-                                } while (b2 != '\0');
+                                } while (b2 != 0);
                                 materialNames.Add(matName);
 
                                 if (currentMaterialIndex > -1)
@@ -2805,11 +2816,11 @@ namespace wwtlib
                                     b2 = br.ReadByte();
                                     if (b2 > 0)
                                     {
-                                        textureFilename += (char)b2;
+                                        textureFilename += string.FromCharCode(b2);
                                     }
 
                                     i++;
-                                } while (b2 != '\0');
+                                } while (b2 != 0);
                                 string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
                                 try
                                 {
@@ -2853,11 +2864,11 @@ namespace wwtlib
                                     b2 = br.ReadByte();
                                     if (b2 > 0)
                                     {
-                                        textureFilename += (char)b2;
+                                        textureFilename += string.FromCharCode(b2);
                                     }
 
                                     i++;
-                                } while (b2 != '\0');
+                                } while (b2 != 0);
 
                                 string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
                                 try
@@ -2901,11 +2912,11 @@ namespace wwtlib
                                     b2 = br.ReadByte();
                                     if (b2 > 0)
                                     {
-                                        textureFilename += (char)b2;
+                                        textureFilename += string.FromCharCode(b2);
                                     }
 
                                     i++;
-                                } while (b2 != '\0');
+                                } while (b2 != 0);
 
                                 string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
                                 try
@@ -2946,11 +2957,11 @@ namespace wwtlib
                                     b1 = br.ReadByte();
                                     if (b1 > 0)
                                     {
-                                        name += (char)b1;
+                                        name += string.FromCharCode(b1);
                                     }
 
                                     i++;
-                                } while (b1 != '\0');
+                                } while (b1 != 0);
                                 int dum1 = (int)br.ReadUInt16();
                                 int dum2 = (int)br.ReadUInt16();
                                 int level = (int)br.ReadUInt16();
@@ -2987,11 +2998,11 @@ namespace wwtlib
                                     b1 = br.ReadByte();
                                     if (b1 > 0)
                                     {
-                                        name += (char)b1;
+                                        name += string.FromCharCode(b1);
                                     }
 
                                     i++;
-                                } while (b1 != '\0');
+                                } while (b1 != 0);
                                 objNames.Add("$$$" + name);
                             }
                             break;
@@ -3195,7 +3206,7 @@ namespace wwtlib
             mesh.commitToDevice();
 
             dirty = false;
-
+            readyToRender = true;
         }
 
         private void OffsetObjects(List<PositionNormalTextured> vertList, List<ObjectNode> objects, Matrix3d offsetMat, Vector3d offsetPoint)
@@ -3333,9 +3344,14 @@ namespace wwtlib
 
 
         public bool ISSLayer = false;
-
+        bool readyToRender = false;
         public void Render(RenderContext renderContext, float opacity)
         {
+            if (!readyToRender)
+            {
+                return;
+            }
+
             if (dirty && !(ISSLayer))
             {
                 Reload();
@@ -3372,7 +3388,7 @@ namespace wwtlib
             if (radiusInPixels < 0.5f)
             {
                 // Too small to be visible; skip rendering
-                return;
+             //todo   return;
             }
 
             // These colors can be modified by shadows, distance from planet, etc. Restore
@@ -3426,7 +3442,7 @@ namespace wwtlib
                     // Set the material and texture for this subset
                     renderContext.SetMaterial(meshMaterials[i], meshTextures[i], meshSpecularTextures[i], meshNormalMaps[i], opacity);
 
-                    ModelShader.Use(renderContext, null, null, meshTextures[i].Texture2d, opacity, false);
+                    ModelShader.Use(renderContext, mesh.vertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i].Texture2d, opacity, false);
                     renderContext.PreDraw();
                     //todo                   renderContext.setSamplerState(0, renderContext.WrapSampler);
                     mesh.drawSubset(renderContext, i);
@@ -3443,7 +3459,7 @@ namespace wwtlib
                     if (meshTextures[i] != null)
                     {
                         renderContext.MainTexture = meshTextures[i];
-                        ModelShader.Use(renderContext, null, null, meshTextures[i].Texture2d, opacity, false);
+                        ModelShader.Use(renderContext, mesh.vertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i].Texture2d, opacity, false);
                     }
                     renderContext.PreDraw();
                     mesh.drawSubset(renderContext, i);

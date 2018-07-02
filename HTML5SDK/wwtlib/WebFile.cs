@@ -25,9 +25,11 @@ namespace wwtlib
 
         public WebFile(string url)
         {
-            _url = url.Replace("www.worldwidetelescope.org", "worldwidetelescope.org")
-                .Replace("cdn.worldwidetelescope.org", "worldwidetelescope.org")
-                .Replace("http://", "//");
+            //_url = url.Replace("www.worldwidetelescope.org", "worldwidetelescope.org")
+            //    .Replace("cdn.worldwidetelescope.org", "worldwidetelescope.org")
+            //    .Replace("http://", "//");
+
+            _url = url;
         }
 
         public void Send()

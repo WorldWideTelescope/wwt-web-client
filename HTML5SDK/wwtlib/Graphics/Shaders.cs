@@ -1198,6 +1198,7 @@ namespace wwtlib
                 gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
 
                 gl.enableVertexAttribArray(vertLoc);
+                gl.enableVertexAttribArray(normalLoc);
                 gl.enableVertexAttribArray(textureLoc);
                 gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, stride, 0);
                 gl.vertexAttribPointer(normalLoc, 3, GL.FLOAT, false, stride, 12);

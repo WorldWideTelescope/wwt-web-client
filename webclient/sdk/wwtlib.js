@@ -7251,6 +7251,7 @@ window.wwtlib = function(){
       gl.disableVertexAttribArray(3);
       gl.bindBuffer(34962, vertex);
       gl.enableVertexAttribArray(ModelShader.vertLoc);
+      gl.enableVertexAttribArray(ModelShader.normalLoc);
       gl.enableVertexAttribArray(ModelShader.textureLoc);
       gl.vertexAttribPointer(ModelShader.vertLoc, 3, 5126, false, stride, 0);
       gl.vertexAttribPointer(ModelShader.normalLoc, 3, 5126, false, stride, 12);
@@ -8938,6 +8939,9 @@ window.wwtlib = function(){
       case 'ImageSetLayer':
         newLayer = new ImageSetLayer();
         break;
+      case 'Object3dLayer':
+        newLayer = new Object3dLayer();
+        break;
       default:
         return null;
     }
@@ -10619,6 +10623,7 @@ window.wwtlib = function(){
   // wwtlib.Mesh
 
   function Mesh() {
+    this.boundingSphere = new SphereHull();
   }
   Mesh.create = function(vertices, indices) {
     var mesh = new Mesh();
@@ -10698,7 +10703,7 @@ window.wwtlib = function(){
           while ($enum2.moveNext()) {
             var group = $enum2.current;
             if (group.materialIndex === materialIndex) {
-              renderContext.gl.drawElements(4, group.indexCount, 5125, group.startIndex);
+              renderContext.gl.drawElements(4, group.indexCount, 5125, group.startIndex * 4);
             }
           }
         }
@@ -10744,6 +10749,7 @@ window.wwtlib = function(){
     this._textureLib = {};
     this._tourDocument = null;
     this.issLayer = false;
+    this._readyToRender = false;
     this.useCurrentAmbient = false;
     this._dirty = true;
     this.color = color;
@@ -10836,7 +10842,7 @@ window.wwtlib = function(){
         return null;
       }
       var vertexCount = vertexList.length;
-      var triangleCount = indexList.length / 3;
+      var triangleCount = Math.floor(indexList.length / 3);
       var vertexPositions = [];
       for (var vertexIndex = 0; vertexIndex < vertexList.length; ++vertexIndex) {
         var vp = new VertexPosition();
@@ -10856,6 +10862,9 @@ window.wwtlib = function(){
         vertexMap[vertexPositions[vertexIndex].index] = uniqueVertexCount - 1;
       }
       var vertexInstanceCounts = new Array(uniqueVertexCount);
+      for (var i = 0; i < uniqueVertexCount; i++) {
+        vertexInstanceCounts[i] = 0;
+      }
       var $enum1 = ss.enumerate(indexList);
       while ($enum1.moveNext()) {
         var vertexIndex = $enum1.current;
@@ -10867,10 +10876,13 @@ window.wwtlib = function(){
         var count = vertexInstanceCounts[i];
         if (count > 0) {
           vertexInstances[i] = new Array(count);
+          for (var j = 0; j < count; j++) {
+            vertexInstances[i][j] = 0;
+          }
         }
       }
       for (var i = 0; i < indexList.length; ++i) {
-        var faceIndex = i / 3;
+        var faceIndex = Math.floor(i / 3);
         var uniqueIndex = vertexMap[indexList[i]];
         vertexInstances[uniqueIndex][--vertexInstanceCounts[uniqueIndex]] = faceIndex;
       }
@@ -10890,7 +10902,7 @@ window.wwtlib = function(){
       for (var i = 0; i < newVertexCount; ++i) {
         var vertexIndex = indexList[i];
         var uniqueIndex = vertexMap[vertexIndex];
-        var faceNormal = faceNormals[i / 3];
+        var faceNormal = faceNormals[Math.floor(i / 3)];
         var sum = new Vector3d();
         var $enum2 = ss.enumerate(vertexInstances[uniqueIndex]);
         while ($enum2.moveNext()) {
@@ -10910,7 +10922,7 @@ window.wwtlib = function(){
         return null;
       }
       var vertexCount = vertexList.length;
-      var triangleCount = indexList.length / 3;
+      var triangleCount = Math.floor(indexList.length / 3);
       var vertexPositions = [];
       for (var vertexIndex = 0; vertexIndex < vertexList.length; ++vertexIndex) {
         var vp = new VertexPosition();
@@ -10944,7 +10956,7 @@ window.wwtlib = function(){
         }
       }
       for (var i = 0; i < indexList.length; ++i) {
-        var faceIndex = i / 3;
+        var faceIndex = Math.floor(i / 3);
         var uniqueIndex = vertexMap[indexList[i]];
         vertexInstances[uniqueIndex][--vertexInstanceCounts[uniqueIndex]] = faceIndex;
       }
@@ -10985,7 +10997,7 @@ window.wwtlib = function(){
       for (var i = 0; i < newVertexCount; ++i) {
         var vertexIndex = indexList[i];
         var uniqueIndex = vertexMap[vertexIndex];
-        var du = partials[i / 3];
+        var du = partials[Math.floor(i / 3)];
         var sum = new Vector3d();
         var $enum2 = ss.enumerate(vertexInstances[uniqueIndex]);
         while ($enum2.moveNext()) {
@@ -11003,7 +11015,7 @@ window.wwtlib = function(){
     },
     _calculateVertexNormals: function(vertexList, indexList, creaseAngleRad) {
       var vertexCount = vertexList.length;
-      var triangleCount = indexList.length / 3;
+      var triangleCount = Math.floor(indexList.length / 3);
       var vertexInstanceCounts = new Array(vertexCount);
       var $enum1 = ss.enumerate(indexList);
       while ($enum1.moveNext()) {
@@ -11018,7 +11030,7 @@ window.wwtlib = function(){
         }
       }
       for (var i = 0; i < indexList.length; ++i) {
-        var faceIndex = i / 3;
+        var faceIndex = Math.floor(i / 3);
         var vertexIndex = indexList[i];
         vertexInstances[vertexIndex][--vertexInstanceCounts[vertexIndex]] = faceIndex;
       }
@@ -11037,7 +11049,7 @@ window.wwtlib = function(){
       var cosCreaseAngle = Math.min(0.9999, Math.cos(creaseAngleRad));
       for (var i = 0; i < newVertexCount; ++i) {
         var vertexIndex = indexList[i];
-        var faceNormal = faceNormals[i / 3];
+        var faceNormal = faceNormals[Math.floor(i / 3)];
         var sum = new Vector3d();
         var $enum2 = ss.enumerate(vertexInstances[vertexIndex]);
         while ($enum2.moveNext()) {
@@ -11175,9 +11187,9 @@ window.wwtlib = function(){
             do {
               b = br.readByte();
               if (b > 0) {
-                name += b;
+                name += String.fromCharCode(b);
               }
-            } while (b !== '\u0000');
+            } while (!!b);
             currentObject = new ObjectNode();
             currentObject.name = name;
             objects.push(currentObject);
@@ -11187,7 +11199,7 @@ window.wwtlib = function(){
             break;
           case 16640:
             startMapIndex = vertexList.length;
-            startTriangleIndex = indexList.length / 3;
+            startTriangleIndex = Math.floor(indexList.length / 3);
             break;
           case 16656:
             vertexCount = br.readUInt16();
@@ -11219,10 +11231,10 @@ window.wwtlib = function(){
             do {
               b1 = br.readByte();
               if (b1 > 0) {
-                material += b1;
+                material += String.fromCharCode(b1);
               }
               i++;
-            } while (b1 !== '\u0000');
+            } while (!!b1);
             var triCount = br.readUInt16();
             var applyList = new Array(triCount);
             attributeID = Object3d._getMaterialID(material, materialNames);
@@ -11259,10 +11271,10 @@ window.wwtlib = function(){
             do {
               b2 = br.readByte();
               if (b2 > 0) {
-                matName += b2;
+                matName += String.fromCharCode(b2);
               }
               i++;
-            } while (b2 !== '\u0000');
+            } while (!!b2);
             materialNames.push(matName);
             if (currentMaterialIndex > -1) {
               this._addMaterial(currentMaterial);
@@ -11297,10 +11309,10 @@ window.wwtlib = function(){
             do {
               b2 = br.readByte();
               if (b2 > 0) {
-                textureFilename += b2;
+                textureFilename += String.fromCharCode(b2);
               }
               i++;
-            } while (b2 !== '\u0000');
+            } while (!!b2);
             var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
             try {
               var tex = this._tourDocument.getCachedTexture2d(path + textureFilename);
@@ -11327,10 +11339,10 @@ window.wwtlib = function(){
             do {
               b2 = br.readByte();
               if (b2 > 0) {
-                textureFilename += b2;
+                textureFilename += String.fromCharCode(b2);
               }
               i++;
-            } while (b2 !== '\u0000');
+            } while (!!b2);
             var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
             try {
               var tex = this._tourDocument.getCachedTexture2d(path + textureFilename);
@@ -11357,10 +11369,10 @@ window.wwtlib = function(){
             do {
               b2 = br.readByte();
               if (b2 > 0) {
-                textureFilename += b2;
+                textureFilename += String.fromCharCode(b2);
               }
               i++;
-            } while (b2 !== '\u0000');
+            } while (!!b2);
             var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
             try {
               var tex = this._tourDocument.getCachedTexture2d(path + textureFilename);
@@ -11389,10 +11401,10 @@ window.wwtlib = function(){
             do {
               b1 = br.readByte();
               if (b1 > 0) {
-                name += b1;
+                name += String.fromCharCode(b1);
               }
               i++;
-            } while (b1 !== '\u0000');
+            } while (!!b1);
             var dum1 = br.readUInt16();
             var dum2 = br.readUInt16();
             var level = br.readUInt16();
@@ -11417,10 +11429,10 @@ window.wwtlib = function(){
             do {
               b1 = br.readByte();
               if (b1 > 0) {
-                name += b1;
+                name += String.fromCharCode(b1);
               }
               i++;
-            } while (b1 !== '\u0000');
+            } while (!!b1);
             objNames.push('$$$' + name);
             break;
           case 45075:
@@ -11547,6 +11559,7 @@ window.wwtlib = function(){
       this._mesh.setObjects(nodeTreeRoot);
       this._mesh.commitToDevice();
       this._dirty = false;
+      this._readyToRender = true;
     },
     _offsetObjects: function(vertList, objects, offsetMat, offsetPoint) {
       var $enum1 = ss.enumerate(objects);
@@ -11613,6 +11626,9 @@ window.wwtlib = function(){
       renderContext.set_hemisphereLightColor(Color.fromArgb(255, ss.truncate((renderContext.get_hemisphereLightColor().r * hemiLightFactor)), ss.truncate((renderContext.get_hemisphereLightColor().g * hemiLightFactor)), ss.truncate((renderContext.get_hemisphereLightColor().b * hemiLightFactor))));
     },
     render: function(renderContext, opacity) {
+      if (!this._readyToRender) {
+        return;
+      }
       if (this._dirty && !this.issLayer) {
         this._reload();
       }
@@ -11636,7 +11652,6 @@ window.wwtlib = function(){
       var pixelsPerUnit = (p11 / w) * viewportHeight;
       var radiusInPixels = (radius * pixelsPerUnit);
       if (radiusInPixels < 0.5) {
-        return;
       }
       var savedSunlightColor = renderContext.get_sunlightColor();
       var savedReflectedColor = renderContext.get_reflectedLightColor();
@@ -11667,7 +11682,7 @@ window.wwtlib = function(){
             this._meshMaterials[i] = mat;
           }
           renderContext.setMaterial(this._meshMaterials[i], this._meshTextures[i], this._meshSpecularTextures[i], this._meshNormalMaps[i], opacity);
-          ModelShader.use(renderContext, null, null, this._meshTextures[i].texture2d, opacity, false);
+          ModelShader.use(renderContext, this._mesh.vertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, this._meshTextures[i].texture2d, opacity, false);
           renderContext.preDraw();
           this._mesh.drawSubset(renderContext, i);
         }
@@ -11677,7 +11692,7 @@ window.wwtlib = function(){
         for (var i = 0; i < this._meshTextures.length; i++) {
           if (this._meshTextures[i] != null) {
             renderContext.set_mainTexture(this._meshTextures[i]);
-            ModelShader.use(renderContext, null, null, this._meshTextures[i].texture2d, opacity, false);
+            ModelShader.use(renderContext, this._mesh.vertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, this._meshTextures[i].texture2d, opacity, false);
           }
           renderContext.preDraw();
           this._mesh.drawSubset(renderContext, i);
@@ -14293,11 +14308,16 @@ window.wwtlib = function(){
     this._frustum = new Array(6);
     this._ambientLightColor = Colors.get_black();
     this._hemiLightColor = Colors.get_black();
+    this._hemiLightUp = new Vector3d();
     this._sunlightColor = Colors.get_white();
+    this._sunPosition = new Vector3d();
     this._reflectedLightColor = Colors.get_black();
+    this._reflectedLightPosition = new Vector3d();
     this._occludingPlanetRadius = 0;
+    this._occludingPlanetPosition = new Vector3d();
     this._lightingStateDirty = true;
     this._twoSidedLighting = false;
+    this.cameraPosition = new Vector3d();
     this._skyColor = 'Blue';
     for (var i = 0; i < 6; i++) {
       this._frustum[i] = new PlaneD(0, 0, 0, 0);
@@ -14901,6 +14921,7 @@ window.wwtlib = function(){
       if (this.gl == null) {
         return;
       }
+      var uints_for_indices = this.gl.getExtension('OES_element_index_uint');
       Tile.uvMultiple = 1;
       Tile.demEnabled = true;
       TileShader.init(this);
@@ -25657,7 +25678,7 @@ window.wwtlib = function(){
   function WebFile(url) {
     this._state = 0;
     this.responseType = '';
-    this._url = ss.replaceString(ss.replaceString(ss.replaceString(url, 'www.worldwidetelescope.org', 'worldwidetelescope.org'), 'cdn.worldwidetelescope.org', 'worldwidetelescope.org'), 'http://', '//');
+    this._url = url;
   }
   var WebFile$ = {
     send: function() {
@@ -34964,10 +34985,6 @@ window.wwtlib = function(){
       return value;
     },
     cleanUp: function() {
-      if (this.object3d != null) {
-        this.object3d.dispose();
-      }
-      this.object3d = null;
       this._dirty$1 = true;
     },
     colorChanged: function() {
