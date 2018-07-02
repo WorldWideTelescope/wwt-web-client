@@ -24,6 +24,10 @@ namespace wwtlib
         {
             return new Dates(this.StartDate, this.EndDate);
         }
+        public static Dates Empty()
+        {
+            return new Dates(0, 0);
+        }
     }
 
 

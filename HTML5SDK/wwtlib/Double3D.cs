@@ -186,9 +186,6 @@ namespace wwtlib
         {
             return String.Format("{0}, {1}, {2}, {3}, {4}", Position.X, Position.Y, Position.Z, Tu, Tv);
         }
-
-
-
     }
 
 
@@ -359,6 +356,158 @@ namespace wwtlib
         public override string ToString()
         {
             return String.Format("{0}, {1}, {2}, {3}", Position.X, Position.Y, Position.Z, Color.ToString());
+        }
+    }
+
+    // Summary:
+    //    Custom vertex format with position, normal, texture coordinate, and tangent vector. The
+    //    tangent vector is stored in the second texture coordinate.
+    public class PositionNormalTexturedTangent
+    {
+        // Summary:
+        //     Retrieves the Microsoft.DirectX.Direct3D.VertexFormats for the current custom
+        //     vertex.
+        //public static  VertexFormats Format = VertexFormats.Position |
+        //                                      VertexFormats.Normal   |
+        //                                      VertexFormats.Texture2 |
+        //                                      VertexTextureCoordinate.Size3(1);
+        public double X;
+        //
+        // Summary:
+        //     Retrieves or sets the y component of the position.
+        public double Y;
+        //
+        // Summary:
+        //     Retrieves or sets the z component of the position.
+        public double Z;
+        // Summary:
+        //     Retrieves or sets the nx component of the vertex normal.
+        public double Nx;
+        //
+        // Summary:
+        //     Retrieves or sets the ny component of the vertex normal.
+        public double Ny;
+        //
+        // Summary:
+        //     Retrieves or sets the nz component of the vertex normal.
+        public double Nz;
+        //
+        // Summary:
+        //     Retrieves or sets the u component of the texture coordinate.
+        public double Tu;
+        //
+        // Summary:
+        //     Retrieves or sets the v component of the texture coordinate.
+        public double Tv;
+        //
+        // Summary:
+        //     Retrieves or sets the x component of the tangent vector
+        public double Tanx;
+        //
+        // Summary:
+        //     Retrieves or sets the y component of the tangent vector
+        public double Tany;
+        //
+        // Summary:
+        //     Retrieves or sets the z component of the tangent vector
+        public double Tanz;
+
+        //
+        // Summary:
+        //     Initializes a new instance of the PositionNormalTexturedTangent
+        //     class.
+        //
+        public PositionNormalTexturedTangent(Vector3d position, Vector3d normal, Vector2d texCoord, Vector3d tangent)
+        {
+            X = position.X;
+            Y = position.Y;
+            Z = position.Z;
+            Nx = normal.X;
+            Ny = normal.Y;
+            Nz = normal.Z;
+            Tu = texCoord.X;
+            Tv = texCoord.Y;
+            Tanx = tangent.X;
+            Tany = tangent.Y;
+            Tanz = tangent.Z;
+        }
+
+        // Summary:
+        //     Retrieves or sets the vertex normal data.
+        public Vector3d Normal
+        {
+            get
+            {
+                return Vector3d.Create(Nx, Ny, Nz);
+            }
+            set
+            {
+                Nx = value.X;
+                Ny = value.Y;
+                Nz = value.Z;
+            }
+        }
+
+        // Summary:
+        //     Retrieves or sets the vertex position.
+        public Vector3d Position
+        {
+            get
+            {
+                return Vector3d.Create(X, Y, Z);
+            }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+            }
+        }
+
+        // Summary:
+        //     Retrieves or sets the texture coordinate.
+        public Vector2d TexCoord
+        {
+            get
+            {
+                return Vector2d.Create(Tu, Tv);
+            }
+            set
+            {
+                Tu = value.X;
+                Tv = value.Y;
+            }
+        }
+
+        // Summary:
+        //     Retrieves or sets the vertex tangent.
+        public Vector3d Tangent
+        {
+            get
+            {
+                return Vector3d.Create(Tanx, Tany, Tanz);
+            }
+            set
+            {
+                Tanx = value.X;
+                Tany = value.Y;
+                Tanz = value.Z;
+            }
+        }
+
+
+
+        // Summary:
+        //     Obtains a string representation of the current instance.
+        //
+        // Returns:
+        //     String that represents the object.
+        public override string ToString()
+        {
+            return string.Format(
+                "X={0}, Y={1}, Z={2}, Nx={3}, Ny={4}, Nz={5}, U={6}, V={7}, TanX={8}, TanY={9}, TanZ={10}",
+                X, Y, Z, Nx, Ny, Nz, Tu, Tv, Tanx, Tany, Tanz
+                );
         }
     }
 
@@ -560,6 +709,10 @@ namespace wwtlib
                 return Vector3d.Create(0, 0, 0);
             }
         }
+
+
+
+        public static Vector3d Zero = new Vector3d();
 
         // rounds to factor
         public void Round()
@@ -911,6 +1064,8 @@ namespace wwtlib
             Y *= s;
             Z *= s;
         }
+
+
         //
         // Summary:
         //     Multiplies a 3-D vector by a System.Single value.
@@ -1199,11 +1354,11 @@ namespace wwtlib
             }
         }
 
-        public static Vector2d Subtract(Vector2d vec)
-        {
-            return Vector2d.Create(-vec.X, -vec.Y);
+        //public static Vector2d Subtract(Vector2d vec)
+        //{
+        //    return Vector2d.Create(-vec.X, -vec.Y);
 
-        }
+        //}
 
         public static Vector2d Create(double x, double y)
         {
@@ -1214,7 +1369,7 @@ namespace wwtlib
             return temp;
         }
 
-        public static Vector2d SubtractVector(Vector2d left, Vector2d right)
+        public static Vector2d Subtract(Vector2d left, Vector2d right)
         {
             return Vector2d.Create(left.X - right.X, left.Y - right.Y);
         }
@@ -1234,7 +1389,12 @@ namespace wwtlib
             Y = Y * factor;
         }
 
+        //internal static Vector2d Subtract(Vector2d v1, Vector2d v2)
+        //{
+        //    return Vector2d.Create(v1.X - v2.X, v1.Y - v2.Y);
+        //}
     }
+
     public class Matrix3d 
     {
         private double _m11;
@@ -3006,6 +3166,210 @@ namespace wwtlib
             return string.Format(
                 "X={0}, Y={1}, Z={2}, Nx={3}, Ny={4}, Nz={5}, U={6}, V={7}, U1={8}, U2={9}",
                 X, Y, Z, Nx, Ny, Nz, Tu, Tv, Tu1, Tv1
+                );
+        }
+    }
+
+    public class PositionNormalTextured
+    {
+        // Summary:
+        //     Retrieves the Microsoft.DirectX.Direct3D.VertexFormats for the current custom
+        //     vertex.
+        //public const VertexFormats Format = VertexFormats.Position | VertexFormats.Normal | VertexFormats.Texture2;
+        public double X;
+        //
+        // Summary:
+        //     Retrieves or sets the y component of the position.
+        public double Y;
+        //
+        // Summary:
+        //     Retrieves or sets the z component of the position.
+        public double Z;
+        // Summary:
+        //     Retrieves or sets the nx component of the vertex normal.
+        public double Nx;
+        //
+        // Summary:
+        //     Retrieves or sets the ny component of the vertex normal.
+        public double Ny;
+        //
+        // Summary:
+        //     Retrieves or sets the nz component of the vertex normal.
+        public double Nz;
+        //
+        // Summary:
+        //     Retrieves or sets the u component of the texture coordinate.
+        public double Tu;
+        //
+        // Summary:
+        //     Retrieves or sets the v component of the texture coordinate.
+        public double Tv;
+        //
+        // Summary:
+        //     Retrieves or sets the u component of the texture coordinate.
+    
+
+        //
+        // Summary:
+        //     Initializes a new instance of the PositionNormalTexturedX2
+        //     class.
+        //
+        // Parameters:
+        //   pos:
+        //     A Microsoft.DirectX.Vector3 object that contains the vertex position.
+        //
+        //   nor:
+        //     A Microsoft.DirectX.Vector3 object that contains the vertex normal data.
+        //
+        //   u:
+        //     Floating-point value that represents the PositionNormalTexturedX2.#ctor()
+        //     component of the texture coordinate.
+        //
+        //   v:
+        //     Floating-point value that represents the PositionNormalTexturedX2.#ctor()
+        //     component of the texture coordinate.
+
+        public PositionNormalTextured()
+        {
+        }
+
+        public static PositionNormalTextured CreateShort(Vector3d pos, Vector3d nor, double u, double v)
+        {
+            PositionNormalTextured temp = new PositionNormalTextured();
+            temp.X = pos.X;
+            temp.Y = pos.Y;
+            temp.Z = pos.Z;
+            temp.Nx = nor.X;
+            temp.Ny = nor.Y;
+            temp.Nz = nor.Z;
+            temp.Tu = u;
+            temp.Tv = v;
+            return temp;
+        }
+
+        internal static PositionNormalTextured Create(float x, float y, float z, int nx, int ny, int nz, int tu, int tv)
+        {
+            PositionNormalTextured temp = new PositionNormalTextured();
+            temp.X = x;
+            temp.Y = y;
+            temp.Z = z;
+            temp.Nx = nx;
+            temp.Ny = ny;
+            temp.Nz = nz;
+            temp.Tu = tu;
+            temp.Tv = tv;
+            return temp;
+        }
+
+
+
+        //
+        // Summary:
+        //     Initializes a new instance of the PositionNormalTexturedX2
+        //     class.
+        //
+        // Parameters:
+        //   xvalue:
+        //     Floating-point value that represents the x coordinate of the position.
+        //
+        //   yvalue:
+        //     Floating-point value that represents the y coordinate of the position.
+        //
+        //   zvalue:
+        //     Floating-point value that represents the z coordinate of the position.
+        //
+        //   nxvalue:
+        //     Floating-point value that represents the nx coordinate of the vertex normal.
+        //
+        //   nyvalue:
+        //     Floating-point value that represents the ny coordinate of the vertex normal.
+        //
+        //   nzvalue:
+        //     Floating-point value that represents the nz coordinate of the vertex normal.
+        //
+        //   u:
+        //     Floating-point value that represents the PositionNormalTexturedX2.#ctor()
+        //     component of the texture coordinate.
+        //
+        //   v:
+        //     Floating-point value that represents the PositionNormalTexturedX2.#ctor()
+        //     component of the texture coordinate.
+
+        public PositionNormalTexturedX2 CreateLong(float xvalue, float yvalue, float zvalue, float nxvalue, float nyvalue, float nzvalue, float u, float v)
+        {
+            PositionNormalTexturedX2 temp = new PositionNormalTexturedX2();
+            temp.X = xvalue;
+            temp.Y = yvalue;
+            temp.Z = zvalue;
+            temp.Nx = nxvalue;
+            temp.Ny = nyvalue;
+            temp.Nz = nzvalue;
+            temp.Tu = u;
+            temp.Tv = v;
+            return temp;
+        }
+
+
+        public static PositionNormalTextured CreateUV(Vector3d pos, Vector3d nor, Vector2d uv)
+        {
+            PositionNormalTextured temp = new PositionNormalTextured();
+            temp.X = pos.X;
+            temp.Y = pos.Y;
+            temp.Z = pos.Z;
+            temp.Nx = nor.X;
+            temp.Ny = nor.Y;
+            temp.Nz = nor.Z;
+            temp.Tu = uv.X;
+            temp.Tv = uv.Y;
+            return temp;
+        }
+
+
+        // Summary:
+        //     Retrieves or sets the vertex normal data.
+        public Vector3d Normal
+        {
+            get
+            {
+                return Vector3d.Create(Nx, Ny, Nz);
+            }
+            set
+            {
+                Nx = value.X;
+                Ny = value.Y;
+                Nz = value.Z;
+            }
+        }
+
+
+        //
+        // Summary:
+        //     Retrieves or sets the vertex position.
+        public Vector3d Position
+        {
+            get
+            {
+                return Vector3d.Create(X, Y, Y);
+            }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+            }
+        }
+
+
+        // Summary:
+        //     Obtains a string representation of the current instance.
+        //
+        // Returns:
+        //     String that represents the object.
+        public override string ToString()
+        {
+            return string.Format(
+                "X={0}, Y={1}, Z={2}, Nx={3}, Ny={4}, Nz={5}, U={6}, V={7}, U1={8}, U2={9}",
+                X, Y, Z, Nx, Ny, Nz, Tu, Tv
                 );
         }
     }

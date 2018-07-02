@@ -5,7 +5,53 @@ using System.Html;
 
 namespace wwtlib
 {
-    public class PositionVertexBuffer
+    public class ShortIndexBuffer
+    {
+        public WebGLBuffer Buffer;
+
+        public ShortIndexBuffer(Uint16Array indexes)
+        {
+            Buffer = Tile.PrepDevice.createBuffer();
+            Tile.PrepDevice.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, Buffer);
+            Tile.PrepDevice.bufferData(GL.ELEMENT_ARRAY_BUFFER, indexes, GL.STATIC_DRAW);
+        }
+    }
+
+    public class IndexBuffer : IDisposable
+    {
+        public WebGLBuffer Buffer;
+
+        public IndexBuffer(Uint32Array indexes)
+        {
+            Buffer = Tile.PrepDevice.createBuffer();
+            Tile.PrepDevice.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, Buffer);
+            Tile.PrepDevice.bufferData(GL.ELEMENT_ARRAY_BUFFER, indexes, GL.STATIC_DRAW);
+        }
+        
+        public void Dispose()
+        {
+            Tile.PrepDevice.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+            Tile.PrepDevice.deleteBuffer(Buffer);
+            Buffer = null;
+        }
+
+    }
+    
+    public class VertexBufferBase : IDisposable
+    {
+        public WebGLBuffer VertexBuffer;
+
+        public void Dispose()
+        {
+            Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, null);
+            Tile.PrepDevice.deleteBuffer(VertexBuffer);
+            VertexBuffer = null;
+        }
+    }   
+            
+
+
+    public class PositionVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
@@ -22,7 +68,7 @@ namespace wwtlib
             return verts;
         }
 
-        public WebGLBuffer VertexBuffer;
+        
         public void Unlock()
         {
 
@@ -43,13 +89,21 @@ namespace wwtlib
         }
     }
 
-    class PositionTextureVertexBuffer
+    class PositionTextureVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
         public PositionTextureVertexBuffer(int count)
         {
             Count = count;
+        }
+
+        public static PositionTextureVertexBuffer Create(PositionTexture[] data)
+        {
+            PositionTextureVertexBuffer buffer = new PositionTextureVertexBuffer(data.Length);
+            buffer.verts = data;
+            buffer.Unlock();
+            return buffer;
         }
 
         PositionTexture[] verts = null;
@@ -60,7 +114,6 @@ namespace wwtlib
             return verts;
         }
 
-        public WebGLBuffer VertexBuffer;
         public void Unlock()
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
@@ -80,7 +133,107 @@ namespace wwtlib
             Tile.PrepDevice.bufferData(GL.ARRAY_BUFFER, f32array, GL.STATIC_DRAW);
         }
     }
-   class KeplerVertexBuffer
+
+    public class PositionNormalTexturedVertexBuffer : VertexBufferBase
+    {
+        public int Count = 0;
+
+        public PositionNormalTexturedVertexBuffer(int count)
+        {
+            Count = count;
+        }
+
+        public static PositionNormalTexturedVertexBuffer Create(PositionNormalTextured[] data)
+        {
+            PositionNormalTexturedVertexBuffer buffer = new PositionNormalTexturedVertexBuffer(data.Length);
+            buffer.verts = data;
+            buffer.Unlock();
+            return buffer;
+        }
+
+        PositionNormalTextured[] verts = null;
+
+        public PositionNormalTextured[] Lock()
+        {
+            verts = new PositionNormalTextured[Count];
+            return verts;
+        }
+
+
+        public void Unlock()
+        {
+            VertexBuffer = Tile.PrepDevice.createBuffer();
+            Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, VertexBuffer);
+            Float32Array f32array = new Float32Array(Count * 8);
+            float[] buffer = (float[])(object)f32array;
+            int index = 0;
+            foreach (PositionNormalTextured pt in verts)
+            {
+                buffer[index++] = (float)pt.X;
+                buffer[index++] = (float)pt.Y;
+                buffer[index++] = (float)pt.Z;
+                buffer[index++] = (float)pt.Nx;
+                buffer[index++] = (float)pt.Ny;
+                buffer[index++] = (float)pt.Nz;
+                buffer[index++] = (float)pt.Tu;
+                buffer[index++] = (float)pt.Tv;
+            }
+
+            Tile.PrepDevice.bufferData(GL.ARRAY_BUFFER, f32array, GL.STATIC_DRAW);
+        }
+    }
+    public class PositionNormalTexturedTangentVertexBuffer : VertexBufferBase
+    {
+        public int Count = 0;
+
+        public PositionNormalTexturedTangentVertexBuffer(int count)
+        {
+            Count = count;
+        }
+
+        public static PositionNormalTexturedTangentVertexBuffer Create(PositionNormalTexturedTangent[] data)
+        {
+            PositionNormalTexturedTangentVertexBuffer buffer = new PositionNormalTexturedTangentVertexBuffer(data.Length);
+            buffer.verts = data;
+            buffer.Unlock();
+            return buffer;
+        }
+
+        PositionNormalTexturedTangent[] verts = null;
+
+        public PositionNormalTexturedTangent[] Lock()
+        {
+            verts = new PositionNormalTexturedTangent[Count];
+            return verts;
+        }
+
+        public void Unlock()
+        {
+            VertexBuffer = Tile.PrepDevice.createBuffer();
+            Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, VertexBuffer);
+            Float32Array f32array = new Float32Array(Count * 8);
+            float[] buffer = (float[])(object)f32array;
+            int index = 0;
+            foreach (PositionNormalTexturedTangent pt in verts)
+            {
+                buffer[index++] = (float)pt.X;
+                buffer[index++] = (float)pt.Y;
+                buffer[index++] = (float)pt.Z;
+                buffer[index++] = (float)pt.Nx;
+                buffer[index++] = (float)pt.Ny;
+                buffer[index++] = (float)pt.Nz;
+                buffer[index++] = (float)pt.Tanx;
+                buffer[index++] = (float)pt.Tany;
+                buffer[index++] = (float)pt.Tanz;
+                buffer[index++] = (float)pt.Tu;
+                buffer[index++] = (float)pt.Tv;
+            }
+
+            Tile.PrepDevice.bufferData(GL.ARRAY_BUFFER, f32array, GL.STATIC_DRAW);
+        }
+    }
+
+    class KeplerVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
@@ -104,7 +257,6 @@ namespace wwtlib
             return tmp;
         }
 
-        public WebGLBuffer VertexBuffer;
         public void Unlock()
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
@@ -139,7 +291,7 @@ namespace wwtlib
         }
     }
 
-    class TimeSeriesLineVertexBuffer
+    class TimeSeriesLineVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
@@ -156,7 +308,6 @@ namespace wwtlib
             return verts;
         }
 
-        public WebGLBuffer VertexBuffer;
         public void Unlock()
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
@@ -181,7 +332,7 @@ namespace wwtlib
         }
     }
     
-    class TimeSeriesPointVertexBuffer
+    class TimeSeriesPointVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
@@ -198,7 +349,6 @@ namespace wwtlib
             return verts;
         }
 
-        public WebGLBuffer VertexBuffer;
         public void Unlock()
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
@@ -231,7 +381,7 @@ namespace wwtlib
         }
     }
 
-    class PositionColoredVertexBuffer
+    class PositionColoredVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
@@ -248,7 +398,6 @@ namespace wwtlib
             return verts;
         }
 
-        public WebGLBuffer VertexBuffer;
         public void Unlock()
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
@@ -269,16 +418,9 @@ namespace wwtlib
 
             Tile.PrepDevice.bufferData(GL.ARRAY_BUFFER, f32array, GL.STATIC_DRAW);
         }
-
-        public void Dispose()
-        {
-            Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, null);
-            Tile.PrepDevice.deleteBuffer(VertexBuffer);
-            VertexBuffer = null;
-        }
     }
 
-    class PositionColoredTexturedVertexBuffer
+    class PositionColoredTexturedVertexBuffer : VertexBufferBase
     {
         public int Count = 0;
 
@@ -295,7 +437,6 @@ namespace wwtlib
             return verts;
         }
 
-        public WebGLBuffer VertexBuffer;
         public void Unlock()
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();

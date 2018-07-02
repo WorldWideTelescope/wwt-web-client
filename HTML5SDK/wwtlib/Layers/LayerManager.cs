@@ -1211,7 +1211,7 @@ namespace wwtlib
                     defaultImageset.Checked = isl.OverrideDefaultLayer;
                 }
 
-                if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
+              //  if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
                 {
                     //contextMenu.Items.Add(popertiesMenu);
                 }
@@ -2202,10 +2202,7 @@ namespace wwtlib
     {
 
     }
-    public class Object3dLayer
-    {
 
-    }
     public class GroundOverlayLayer
     {
     }

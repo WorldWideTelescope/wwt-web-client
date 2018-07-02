@@ -5943,268 +5943,43 @@ window.wwtlib = function(){
   };
 
 
-  // wwtlib.PositionVertexBuffer
+  // wwtlib.ShortIndexBuffer
 
-  function PositionVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
+  function ShortIndexBuffer(indexes) {
+    this.buffer = Tile.prepDevice.createBuffer();
+    Tile.prepDevice.bindBuffer(34963, this.buffer);
+    Tile.prepDevice.bufferData(34963, indexes, 35044);
   }
-  var PositionVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 3);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.x;
-        buffer[index++] = pt.y;
-        buffer[index++] = pt.z;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
+  var ShortIndexBuffer$ = {
+
+  };
+
+
+  // wwtlib.IndexBuffer
+
+  function IndexBuffer(indexes) {
+    this.buffer = Tile.prepDevice.createBuffer();
+    Tile.prepDevice.bindBuffer(34963, this.buffer);
+    Tile.prepDevice.bufferData(34963, indexes, 35044);
+  }
+  var IndexBuffer$ = {
+    dispose: function() {
+      Tile.prepDevice.bindBuffer(34963, null);
+      Tile.prepDevice.deleteBuffer(this.buffer);
+      this.buffer = null;
     }
   };
 
 
-  // wwtlib.PositionTextureVertexBuffer
+  // wwtlib.VertexBufferBase
 
-  function PositionTextureVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
+  function VertexBufferBase() {
   }
-  var PositionTextureVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 5);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.position.x;
-        buffer[index++] = pt.position.y;
-        buffer[index++] = pt.position.z;
-        buffer[index++] = pt.tu;
-        buffer[index++] = pt.tv;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
-    }
-  };
-
-
-  // wwtlib.KeplerVertexBuffer
-
-  function KeplerVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
-  }
-  KeplerVertexBuffer.create = function(items) {
-    var tmp = new KeplerVertexBuffer(items.length);
-    tmp._verts = items;
-    return tmp;
-  };
-  var KeplerVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 19);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.ABC.x;
-        buffer[index++] = pt.ABC.y;
-        buffer[index++] = pt.ABC.z;
-        buffer[index++] = pt.abc1.x;
-        buffer[index++] = pt.abc1.y;
-        buffer[index++] = pt.abc1.z;
-        buffer[index++] = pt.pointSize;
-        buffer[index++] = pt.color.r / 255;
-        buffer[index++] = pt.color.g / 255;
-        buffer[index++] = pt.color.b / 255;
-        buffer[index++] = pt.color.a / 255;
-        buffer[index++] = pt.w;
-        buffer[index++] = pt.e;
-        buffer[index++] = pt.n;
-        buffer[index++] = pt.t;
-        buffer[index++] = pt.a;
-        buffer[index++] = pt.z;
-        buffer[index++] = pt.orbitPos;
-        buffer[index++] = pt.orbits;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
-    }
-  };
-
-
-  // wwtlib.TimeSeriesLineVertexBuffer
-
-  function TimeSeriesLineVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
-  }
-  var TimeSeriesLineVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 9);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.position.x;
-        buffer[index++] = pt.position.y;
-        buffer[index++] = pt.position.z;
-        buffer[index++] = pt.get_color().r / 255;
-        buffer[index++] = pt.get_color().g / 255;
-        buffer[index++] = pt.get_color().b / 255;
-        buffer[index++] = pt.get_color().a / 255;
-        buffer[index++] = pt.tu;
-        buffer[index++] = pt.tv;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
-    }
-  };
-
-
-  // wwtlib.TimeSeriesPointVertexBuffer
-
-  function TimeSeriesPointVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
-  }
-  var TimeSeriesPointVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 10);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.position.x;
-        buffer[index++] = pt.position.y;
-        buffer[index++] = pt.position.z;
-        buffer[index++] = pt.get_color().r / 255;
-        buffer[index++] = pt.get_color().g / 255;
-        buffer[index++] = pt.get_color().b / 255;
-        buffer[index++] = pt.get_color().a / 255;
-        buffer[index++] = pt.tu;
-        buffer[index++] = pt.tv;
-        buffer[index++] = pt.pointSize;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
-    },
+  var VertexBufferBase$ = {
     dispose: function() {
       Tile.prepDevice.bindBuffer(34962, null);
       Tile.prepDevice.deleteBuffer(this.vertexBuffer);
       this.vertexBuffer = null;
-    }
-  };
-
-
-  // wwtlib.PositionColoredVertexBuffer
-
-  function PositionColoredVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
-  }
-  var PositionColoredVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 7);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.position.x;
-        buffer[index++] = pt.position.y;
-        buffer[index++] = pt.position.z;
-        buffer[index++] = pt.color.r / 255;
-        buffer[index++] = pt.color.g / 255;
-        buffer[index++] = pt.color.b / 255;
-        buffer[index++] = pt.color.a / 255;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
-    },
-    dispose: function() {
-      Tile.prepDevice.bindBuffer(34962, null);
-      Tile.prepDevice.deleteBuffer(this.vertexBuffer);
-      this.vertexBuffer = null;
-    }
-  };
-
-
-  // wwtlib.PositionColoredTexturedVertexBuffer
-
-  function PositionColoredTexturedVertexBuffer(count) {
-    this.count = 0;
-    this._verts = null;
-    this.count = count;
-  }
-  var PositionColoredTexturedVertexBuffer$ = {
-    lock: function() {
-      this._verts = new Array(this.count);
-      return this._verts;
-    },
-    unlock: function() {
-      this.vertexBuffer = Tile.prepDevice.createBuffer();
-      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 9);
-      var buffer = f32array;
-      var index = 0;
-      var $enum1 = ss.enumerate(this._verts);
-      while ($enum1.moveNext()) {
-        var pt = $enum1.current;
-        buffer[index++] = pt.position.x;
-        buffer[index++] = pt.position.y;
-        buffer[index++] = pt.position.z;
-        buffer[index++] = pt.color.r / 255;
-        buffer[index++] = pt.color.g / 255;
-        buffer[index++] = pt.color.b / 255;
-        buffer[index++] = pt.color.a / 255;
-        buffer[index++] = pt.tu;
-        buffer[index++] = pt.tv;
-      }
-      Tile.prepDevice.bufferData(34962, f32array, 35044);
     }
   };
 
@@ -6217,6 +5992,9 @@ window.wwtlib = function(){
     this.startDate = start;
     this.endDate = end;
   }
+  Dates.empty = function() {
+    return new Dates(0, 0);
+  };
   var Dates$ = {
     copy: function() {
       return new Dates(this.startDate, this.endDate);
@@ -7388,6 +7166,112 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ModelShader
+
+  function ModelShader() {
+  }
+  ModelShader.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '   varying vec3 vNormal;                                                               \n' + '   varying vec3 vCamVector;                                                               \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '   uniform vec3 uSunPosition;                                                          \n' + '   uniform float uMinBrightness;                                                       \n' + '   uniform vec3 uAtmosphereColor;                                                       \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '     vec3 normal = normalize(vNormal);                                                 \n' + '     vec3 camVN = normalize(vCamVector);                                               \n' + '     vec3 cam = normalize(vec3(0.0,0.0,-1.0));                                                    \n' + '     float dt = uMinBrightness + pow(max(0.0,- dot(normal,uSunPosition)),0.5);                  \n' + '     float atm = max(0.0, 1.0 - 2.5 * dot(cam,camVN)) + 0.3 * dt;                             \n' + '     atm = (dt > uMinBrightness) ? atm : 0.0;                                          \n' + '     if ( uMinBrightness == 1.0 ) { dt = 1.0; atm= 0.0; }                                        \n' + '     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n' + '     gl_FragColor = col * opacity;                                                     \n' + '     gl_FragColor.rgb *= dt;                                                           \n' + '     gl_FragColor.rgb += atm * uAtmosphereColor;                                  \n' + '   }                                                                                   \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec3 aNormal;                                                     \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec3 vNormal;                                                        \n' + '     varying vec3 vCamVector;                                                     \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vCamVector = normalize((mat3(uMVMatrix) * aVertexPosition).xyz);              \n' + '         vec3 normalT = normalize(mat3(uMVMatrix) * aNormal);                      \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '         vNormal = normalT;                                                       \n' + '     }                                                                            \n' + '                                                                                  \n';
+    ModelShader._frag = gl.createShader(35632);
+    gl.shaderSource(ModelShader._frag, fragShaderText);
+    gl.compileShader(ModelShader._frag);
+    var stat = gl.getShaderParameter(ModelShader._frag, 35713);
+    if (!stat) {
+      var errorF = gl.getShaderInfoLog(ModelShader._frag);
+    }
+    ModelShader._vert = gl.createShader(35633);
+    gl.shaderSource(ModelShader._vert, vertexShaderText);
+    gl.compileShader(ModelShader._vert);
+    var stat1 = gl.getShaderParameter(ModelShader._vert, 35713);
+    if (!stat1) {
+      var errorV = gl.getShaderInfoLog(ModelShader._vert);
+    }
+    ModelShader._prog = gl.createProgram();
+    gl.attachShader(ModelShader._prog, ModelShader._vert);
+    gl.attachShader(ModelShader._prog, ModelShader._frag);
+    gl.linkProgram(ModelShader._prog);
+    var errcode = gl.getProgramParameter(ModelShader._prog, 35714);
+    gl.useProgram(ModelShader._prog);
+    ModelShader.vertLoc = gl.getAttribLocation(ModelShader._prog, 'aVertexPosition');
+    ModelShader.normalLoc = gl.getAttribLocation(ModelShader._prog, 'aNormal');
+    ModelShader.textureLoc = gl.getAttribLocation(ModelShader._prog, 'aTextureCoord');
+    ModelShader.projMatLoc = gl.getUniformLocation(ModelShader._prog, 'uPMatrix');
+    ModelShader.mvMatLoc = gl.getUniformLocation(ModelShader._prog, 'uMVMatrix');
+    ModelShader.sampLoc = gl.getUniformLocation(ModelShader._prog, 'uSampler');
+    ModelShader.sunLoc = gl.getUniformLocation(ModelShader._prog, 'uSunPosition');
+    ModelShader.minBrightnessLoc = gl.getUniformLocation(ModelShader._prog, 'uMinBrightness');
+    ModelShader.opacityLoc = gl.getUniformLocation(ModelShader._prog, 'opacity');
+    ModelShader.atmosphereColorLoc = gl.getUniformLocation(ModelShader._prog, 'uAtmosphereColor');
+    Tile.uvMultiple = 1;
+    Tile.demEnabled = true;
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    ModelShader.initialized = true;
+  };
+  ModelShader.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
+    var stride = 32;
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!ModelShader.initialized) {
+        ModelShader.init(renderContext);
+      }
+      gl.useProgram(ModelShader._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniform1f(ModelShader.opacityLoc, opacity);
+      gl.uniform1f(ModelShader.minBrightnessLoc, (renderContext.lighting) ? ModelShader.minLightingBrightness : 1);
+      if (renderContext.lighting) {
+        gl.uniform3f(ModelShader.atmosphereColorLoc, ModelShader.atmosphereColor.r / 255, ModelShader.atmosphereColor.g / 255, ModelShader.atmosphereColor.b / 255);
+      }
+      else {
+        gl.uniform3f(ModelShader.atmosphereColorLoc, 0, 0, 0);
+      }
+      gl.uniformMatrix4fv(ModelShader.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(ModelShader.projMatLoc, false, renderContext.get_projection().floatArray());
+      ModelShader.sunPosition.normalize();
+      var mvInv = renderContext.get_view().clone();
+      mvInv.set_m41(0);
+      mvInv.set_m42(0);
+      mvInv.set_m43(0);
+      mvInv.set_m44(1);
+      var sp = Vector3d._transformCoordinate(ModelShader.sunPosition, mvInv);
+      sp.normalize();
+      gl.uniform3f(ModelShader.sunLoc, -sp.x, -sp.y, -sp.z);
+      gl.uniform1i(ModelShader.sampLoc, 0);
+      if (renderContext.space || noDepth) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.enableVertexAttribArray(ModelShader.vertLoc);
+      gl.enableVertexAttribArray(ModelShader.textureLoc);
+      gl.vertexAttribPointer(ModelShader.vertLoc, 3, 5126, false, stride, 0);
+      gl.vertexAttribPointer(ModelShader.normalLoc, 3, 5126, false, stride, 12);
+      gl.vertexAttribPointer(ModelShader.textureLoc, 2, 5126, false, stride, 24);
+      gl.activeTexture(33984);
+      gl.bindTexture(3553, texture);
+      gl.bindBuffer(34963, index);
+      gl.enable(3042);
+      if (noDepth) {
+        gl.blendFunc(770, 1);
+      }
+      else {
+        gl.blendFunc(770, 771);
+      }
+    }
+  };
+  var ModelShader$ = {
+
+  };
+
+
   // wwtlib.TileShader
 
   function TileShader() {
@@ -7979,6 +7863,9 @@ window.wwtlib = function(){
     cleanUp: function() {
       this.imageElement = null;
       Tile.prepDevice.deleteTexture(this.texture2d);
+    },
+    dispose: function() {
+      this.cleanUp();
     },
     load: function(url) {
       var $this = this;
@@ -9174,6 +9061,9 @@ window.wwtlib = function(){
     getParamNames: function() {
       return [ 'Color.Red', 'Color.Green', 'Color.Blue', 'Color.Alpha', 'Opacity' ];
     },
+    getEditUI: function() {
+      return ss.safeCast(this, IUiController);
+    },
     cleanUp: function() {
     },
     get_name: function() {
@@ -9209,6 +9099,9 @@ window.wwtlib = function(){
         this.cleanUp();
       }
       return value;
+    },
+    colorChanged: function() {
+      this.cleanUp();
     },
     get_colorValue: function() {
       return this.get_color().toString();
@@ -10053,8 +9946,6 @@ window.wwtlib = function(){
         var isl = ss.safeCast(selected, ImageSetLayer);
         defaultImageset.checked = isl.get_overrideDefaultLayer();
       }
-      if (ss.canCast(selected, SpreadSheetLayer) || ss.canCast(selected, Object3dLayer) || ss.canCast(selected, GroundOverlayLayer) || ss.canCast(selected, GreatCirlceRouteLayer) || ss.canCast(selected, OrbitLayer)) {
-      }
       if (ss.canCast(selected, VoTableLayer)) {
         LayerManager._contextMenu.items.push(showViewer);
       }
@@ -10468,15 +10359,6 @@ window.wwtlib = function(){
   };
 
 
-  // wwtlib.Object3dLayer
-
-  function Object3dLayer() {
-  }
-  var Object3dLayer$ = {
-
-  };
-
-
   // wwtlib.GroundOverlayLayer
 
   function GroundOverlayLayer() {
@@ -10589,9 +10471,9 @@ window.wwtlib = function(){
     remove_nodeChecked: function(value) {
       this.__nodeChecked = ss.bindSub(this.__nodeChecked, value);
     },
-    fireNodeChecked: function() {
+    fireNodeChecked: function(newState) {
       if (this.__nodeChecked != null) {
-        this.__nodeChecked(this);
+        this.__nodeChecked(this, newState);
       }
     },
     add_nodeUpdated: function(value) {
@@ -10719,6 +10601,1129 @@ window.wwtlib = function(){
       }
       return this._nodes;
     }
+  };
+
+
+  // wwtlib.Group
+
+  function Group() {
+    this.startIndex = 0;
+    this.indexCount = 0;
+    this.materialIndex = 0;
+  }
+  var Group$ = {
+
+  };
+
+
+  // wwtlib.Mesh
+
+  function Mesh() {
+  }
+  Mesh.create = function(vertices, indices) {
+    var mesh = new Mesh();
+    mesh.vertices = vertices;
+    mesh.indices = indices;
+    var points = new Array(vertices.length);
+    for (var i = 0; i < vertices.length; ++i) {
+      points[i] = vertices[i].get_position();
+    }
+    mesh.boundingSphere = ConvexHull.findEnclosingSphere(points);
+    return mesh;
+  };
+  Mesh.createTangent = function(vertices, indices) {
+    var mesh = new Mesh();
+    mesh.tangentVertices = vertices;
+    mesh.indices = indices;
+    var points = new Array(mesh.tangentVertices.length);
+    for (var i = 0; i < mesh.tangentVertices.length; ++i) {
+      points[i] = mesh.tangentVertices[i].get_position();
+    }
+    mesh.boundingSphere = ConvexHull.findEnclosingSphere(points);
+    return mesh;
+  };
+  var Mesh$ = {
+    dispose: function() {
+      if (this.vertexBuffer != null) {
+        this.vertexBuffer.dispose();
+        this.vertexBuffer = null;
+      }
+      if (this.tangentVertexBuffer != null) {
+        this.tangentVertexBuffer.dispose();
+        this.tangentVertexBuffer = null;
+      }
+      if (this.indexBuffer != null) {
+        this.indexBuffer.dispose();
+        this.indexBuffer = null;
+      }
+    },
+    setObjects: function(objects) {
+      this._objects = objects;
+    },
+    commitToDevice: function() {
+      if (this.vertices != null) {
+        this.vertexBuffer = PositionNormalTexturedVertexBuffer.create(this.vertices);
+      }
+      else if (this.tangentVertices != null) {
+        this.tangentVertexBuffer = PositionNormalTexturedTangentVertexBuffer.create(this.tangentVertices);
+      }
+      this.indexBuffer = new IndexBuffer(new Uint32Array(this.indices));
+    },
+    beginDrawing: function(renderContext) {
+      if (this.vertexBuffer != null) {
+        renderContext._setVertexBuffer(this.vertexBuffer);
+      }
+      else if (this.tangentVertexBuffer != null) {
+        renderContext._setVertexBuffer(this.tangentVertexBuffer);
+      }
+      if (this.indexBuffer != null) {
+        renderContext._setIndexBuffer(this.indexBuffer);
+      }
+    },
+    drawSubset: function(renderContext, materialIndex) {
+      if (this.indexBuffer == null || this._objects == null) {
+        return;
+      }
+      this.drawHierarchy(this._objects, materialIndex, renderContext, 0);
+    },
+    drawHierarchy: function(nodes, materialIndex, renderContext, depth) {
+      if (depth > 1212) {
+        return;
+      }
+      var $enum1 = ss.enumerate(nodes);
+      while ($enum1.moveNext()) {
+        var node = $enum1.current;
+        if (node.drawGroup != null && node.enabled) {
+          var $enum2 = ss.enumerate(node.drawGroup);
+          while ($enum2.moveNext()) {
+            var group = $enum2.current;
+            if (group.materialIndex === materialIndex) {
+              renderContext.gl.drawElements(4, group.indexCount, 5125, group.startIndex);
+            }
+          }
+        }
+        this.drawHierarchy(node.children, materialIndex, renderContext, depth + 1);
+      }
+    },
+    get_objects: function() {
+      return this._objects;
+    },
+    set_objects: function(value) {
+      this._objects = value;
+      return value;
+    }
+  };
+
+
+  // wwtlib.VertexPosition
+
+  function VertexPosition() {
+    this.index = 0;
+  }
+  var VertexPosition$ = {
+
+  };
+
+
+  // wwtlib.Object3d
+
+  function Object3d(tourDoc, filename, flipV, flipHandedness, smooth, color) {
+    this.flipHandedness = false;
+    this.flipV = true;
+    this.smooth = true;
+    this._mesh = null;
+    this._meshMaterials = [];
+    this._meshTextures = [];
+    this._meshSpecularTextures = [];
+    this._meshNormalMaps = [];
+    this.meshFilenames = [];
+    this.color = Colors.get_white();
+    this._textureCache = {};
+    this.objects = [];
+    this._matLib = {};
+    this._textureLib = {};
+    this._tourDocument = null;
+    this.issLayer = false;
+    this.useCurrentAmbient = false;
+    this._dirty = true;
+    this.color = color;
+    this.smooth = smooth;
+    this.flipV = flipV;
+    this.flipHandedness = flipHandedness;
+    this.filename = filename;
+    if (ss.endsWith(this.filename.toLowerCase(), '.obj')) {
+    }
+    else {
+      this._loadMeshFrom3ds(tourDoc, this.filename, 1);
+    }
+  }
+  Object3d._compareVector3 = function(v0, v1) {
+    if (v0.x < v1.x) {
+      return -1;
+    }
+    else if (v0.x > v1.x) {
+      return 1;
+    }
+    else if (v0.y < v1.y) {
+      return -1;
+    }
+    else if (v0.y > v1.y) {
+      return 1;
+    }
+    else if (v0.z < v1.z) {
+      return -1;
+    }
+    else if (v0.z > v1.z) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  };
+  Object3d._compareVector = function(v0, v1) {
+    if (v0.x < v1.x) {
+      return -1;
+    }
+    else if (v0.x > v1.x) {
+      return 1;
+    }
+    else if (v0.y < v1.y) {
+      return -1;
+    }
+    else if (v0.y > v1.y) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  };
+  Object3d._getMaterialID = function(material, materialNames) {
+    var index = 0;
+    var $enum1 = ss.enumerate(materialNames);
+    while ($enum1.moveNext()) {
+      var mat = $enum1.current;
+      if (mat === material) {
+        return index;
+      }
+      index++;
+    }
+    return -1;
+  };
+  Object3d._disposeTextureList = function(textures) {
+    if (textures != null) {
+      for (var i = 0; i < textures.length; ++i) {
+        if (textures[i] != null) {
+          textures[i].dispose();
+          textures[i] = null;
+        }
+      }
+      textures.length = 0;
+    }
+  };
+  var Object3d$ = {
+    _reload: function() {
+      if (!this.issLayer) {
+        this.dispose();
+        if (ss.endsWith(this.filename.toLowerCase(), '.obj')) {
+        }
+        else {
+          this._loadMeshFrom3ds(this._tourDocument, this.filename, 1);
+        }
+      }
+    },
+    _calculateVertexNormalsMerged: function(vertexList, indexList, creaseAngleRad) {
+      if (!vertexList.length) {
+        return null;
+      }
+      var vertexCount = vertexList.length;
+      var triangleCount = indexList.length / 3;
+      var vertexPositions = [];
+      for (var vertexIndex = 0; vertexIndex < vertexList.length; ++vertexIndex) {
+        var vp = new VertexPosition();
+        vp.position = vertexList[vertexIndex].get_position();
+        vp.index = vertexIndex;
+        vertexPositions.push(vp);
+      }
+      vertexPositions.sort(function(v0, v1) {
+        return Object3d._compareVector3(v0.position, v1.position);
+      });
+      var vertexMap = new Array(vertexPositions.length);
+      var uniqueVertexCount = 0;
+      for (var vertexIndex = 0; vertexIndex < vertexPositions.length; vertexIndex++) {
+        if (!vertexIndex || !!Object3d._compareVector3(vertexPositions[vertexIndex].position, vertexPositions[vertexIndex - 1].position)) {
+          ++uniqueVertexCount;
+        }
+        vertexMap[vertexPositions[vertexIndex].index] = uniqueVertexCount - 1;
+      }
+      var vertexInstanceCounts = new Array(uniqueVertexCount);
+      var $enum1 = ss.enumerate(indexList);
+      while ($enum1.moveNext()) {
+        var vertexIndex = $enum1.current;
+        var uniqueIndex = vertexMap[vertexIndex];
+        vertexInstanceCounts[uniqueIndex]++;
+      }
+      var vertexInstances = new Array(uniqueVertexCount);
+      for (var i = 0; i < uniqueVertexCount; ++i) {
+        var count = vertexInstanceCounts[i];
+        if (count > 0) {
+          vertexInstances[i] = new Array(count);
+        }
+      }
+      for (var i = 0; i < indexList.length; ++i) {
+        var faceIndex = i / 3;
+        var uniqueIndex = vertexMap[indexList[i]];
+        vertexInstances[uniqueIndex][--vertexInstanceCounts[uniqueIndex]] = faceIndex;
+      }
+      var faceNormals = new Array(triangleCount);
+      for (var i = 0; i < triangleCount; ++i) {
+        var i0 = indexList[i * 3 + 0];
+        var i1 = indexList[i * 3 + 1];
+        var i2 = indexList[i * 3 + 2];
+        var edge0 = Vector3d.subtractVectors(vertexList[i1].get_position(), vertexList[i0].get_position());
+        var edge1 = Vector3d.subtractVectors(vertexList[i2].get_position(), vertexList[i1].get_position());
+        faceNormals[i] = Vector3d.cross(edge0, edge1);
+        faceNormals[i].normalize();
+      }
+      var newVertexCount = triangleCount * 3;
+      var vertexNormals = new Array(newVertexCount);
+      var cosCreaseAngle = Math.min(0.9999, Math.cos(creaseAngleRad));
+      for (var i = 0; i < newVertexCount; ++i) {
+        var vertexIndex = indexList[i];
+        var uniqueIndex = vertexMap[vertexIndex];
+        var faceNormal = faceNormals[i / 3];
+        var sum = new Vector3d();
+        var $enum2 = ss.enumerate(vertexInstances[uniqueIndex]);
+        while ($enum2.moveNext()) {
+          var faceIndex = $enum2.current;
+          var n = faceNormals[faceIndex];
+          if (Vector3d.dot(faceNormal, n) > cosCreaseAngle) {
+            sum.add(n);
+          }
+        }
+        vertexNormals[i] = sum;
+        vertexNormals[i].normalize();
+      }
+      return vertexNormals;
+    },
+    _calculateVertexTangents: function(vertexList, indexList, creaseAngleRad) {
+      if (!vertexList.length) {
+        return null;
+      }
+      var vertexCount = vertexList.length;
+      var triangleCount = indexList.length / 3;
+      var vertexPositions = [];
+      for (var vertexIndex = 0; vertexIndex < vertexList.length; ++vertexIndex) {
+        var vp = new VertexPosition();
+        vp.position = vertexList[vertexIndex].get_position();
+        vp.index = vertexIndex;
+        vertexPositions.push(vp);
+      }
+      vertexPositions.sort(function(v0, v1) {
+        return Object3d._compareVector3(v0.position, v1.position);
+      });
+      var vertexMap = new Array(vertexPositions.length);
+      var uniqueVertexCount = 0;
+      for (var vertexIndex = 0; vertexIndex < vertexPositions.length; vertexIndex++) {
+        if (!vertexIndex || !!Object3d._compareVector3(vertexPositions[vertexIndex].position, vertexPositions[vertexIndex - 1].position)) {
+          ++uniqueVertexCount;
+        }
+        vertexMap[vertexPositions[vertexIndex].index] = (uniqueVertexCount - 1);
+      }
+      var vertexInstanceCounts = new Array(uniqueVertexCount);
+      var $enum1 = ss.enumerate(indexList);
+      while ($enum1.moveNext()) {
+        var vertexIndex = $enum1.current;
+        var uniqueIndex = vertexMap[vertexIndex];
+        vertexInstanceCounts[uniqueIndex]++;
+      }
+      var vertexInstances = new Array(uniqueVertexCount);
+      for (var i = 0; i < uniqueVertexCount; ++i) {
+        var count = vertexInstanceCounts[i];
+        if (count > 0) {
+          vertexInstances[i] = new Array(count);
+        }
+      }
+      for (var i = 0; i < indexList.length; ++i) {
+        var faceIndex = i / 3;
+        var uniqueIndex = vertexMap[indexList[i]];
+        vertexInstances[uniqueIndex][--vertexInstanceCounts[uniqueIndex]] = faceIndex;
+      }
+      var partials = new Array(triangleCount);
+      for (var i = 0; i < triangleCount; ++i) {
+        var v0 = vertexList[indexList[i * 3 + 0]];
+        var v1 = vertexList[indexList[i * 3 + 1]];
+        var v2 = vertexList[indexList[i * 3 + 2]];
+        var edge0 = Vector3d.subtractVectors(v1.get_position(), v0.get_position());
+        var edge1 = Vector3d.subtractVectors(v2.get_position(), v0.get_position());
+        var m00 = v1.tu - v0.tu;
+        var m01 = v1.tv - v0.tv;
+        var m10 = v2.tu - v0.tu;
+        var m11 = v2.tv - v0.tv;
+        var determinant = m00 * m11 - m01 * m10;
+        if (Math.abs(determinant) < 1E-06) {
+          if (edge0.lengthSq() > 0) {
+            partials[i] = edge0;
+            partials[i].normalize();
+          }
+          else {
+            partials[i] = Vector3d.create(1, 0, 0);
+          }
+        }
+        else {
+          var invDeterminant = 1 / determinant;
+          var n00 = m11 * invDeterminant;
+          var n01 = -m01 * invDeterminant;
+          var n10 = -m10 * invDeterminant;
+          var n11 = m00 * invDeterminant;
+          partials[i] = Vector3d.addVectors(Vector3d.multiplyScalar(edge0, n00), Vector3d.multiplyScalar(edge1, n01));
+          partials[i].normalize();
+        }
+      }
+      var newVertexCount = triangleCount * 3;
+      var tangents = new Array(newVertexCount);
+      var cosCreaseAngle = Math.min(0.9999, Math.cos(creaseAngleRad));
+      for (var i = 0; i < newVertexCount; ++i) {
+        var vertexIndex = indexList[i];
+        var uniqueIndex = vertexMap[vertexIndex];
+        var du = partials[i / 3];
+        var sum = new Vector3d();
+        var $enum2 = ss.enumerate(vertexInstances[uniqueIndex]);
+        while ($enum2.moveNext()) {
+          var faceIndex = $enum2.current;
+          var T = partials[faceIndex];
+          if (Vector3d.dot(du, T) > cosCreaseAngle) {
+            sum.add(T);
+          }
+        }
+        var N = vertexList[vertexIndex].get_normal();
+        tangents[i] = Vector3d.subtractVectors(sum, Vector3d.multiplyScalar(N, Vector3d.dot(N, sum)));
+        tangents[i].normalize();
+      }
+      return tangents;
+    },
+    _calculateVertexNormals: function(vertexList, indexList, creaseAngleRad) {
+      var vertexCount = vertexList.length;
+      var triangleCount = indexList.length / 3;
+      var vertexInstanceCounts = new Array(vertexCount);
+      var $enum1 = ss.enumerate(indexList);
+      while ($enum1.moveNext()) {
+        var vertexIndex = $enum1.current;
+        vertexInstanceCounts[vertexIndex]++;
+      }
+      var vertexInstances = new Array(vertexCount);
+      for (var i = 0; i < vertexCount; ++i) {
+        var count = vertexInstanceCounts[i];
+        if (count > 0) {
+          vertexInstances[i] = new Array(count);
+        }
+      }
+      for (var i = 0; i < indexList.length; ++i) {
+        var faceIndex = i / 3;
+        var vertexIndex = indexList[i];
+        vertexInstances[vertexIndex][--vertexInstanceCounts[vertexIndex]] = faceIndex;
+      }
+      var faceNormals = new Array(triangleCount);
+      for (var i = 0; i < triangleCount; ++i) {
+        var i0 = indexList[i * 3 + 0];
+        var i1 = indexList[i * 3 + 1];
+        var i2 = indexList[i * 3 + 2];
+        var edge0 = Vector3d.subtractVectors(vertexList[i1].get_position(), vertexList[i0].get_position());
+        var edge1 = Vector3d.subtractVectors(vertexList[i2].get_position(), vertexList[i1].get_position());
+        faceNormals[i] = Vector3d.cross(edge0, edge1);
+        faceNormals[i].normalize();
+      }
+      var newVertexCount = triangleCount * 3;
+      var vertexNormals = new Array(newVertexCount);
+      var cosCreaseAngle = Math.min(0.9999, Math.cos(creaseAngleRad));
+      for (var i = 0; i < newVertexCount; ++i) {
+        var vertexIndex = indexList[i];
+        var faceNormal = faceNormals[i / 3];
+        var sum = new Vector3d();
+        var $enum2 = ss.enumerate(vertexInstances[vertexIndex]);
+        while ($enum2.moveNext()) {
+          var faceIndex = $enum2.current;
+          var n = faceNormals[faceIndex];
+          if (Vector3d.dot(faceNormal, n) > cosCreaseAngle) {
+            sum.add(n);
+          }
+        }
+        vertexNormals[i] = sum;
+        vertexNormals[i].normalize();
+      }
+      return vertexNormals;
+    },
+    _addMaterial: function(material) {
+      this._meshMaterials.push(material);
+      while (this._meshTextures.length < this._meshMaterials.length) {
+        this._meshTextures.push(null);
+      }
+      while (this._meshSpecularTextures.length < this._meshMaterials.length) {
+        this._meshSpecularTextures.push(null);
+      }
+      while (this._meshNormalMaps.length < this._meshMaterials.length) {
+        this._meshNormalMaps.push(null);
+      }
+    },
+    _loadColorChunk: function(br) {
+      var chunkID = br.readUInt16();
+      var chunkLength = br.readUInt32();
+      var color = Colors.get_black();
+      if ((chunkID === 16 || chunkID === 19) && chunkLength === 18) {
+        var r = Math.max(0, Math.min(1, br.readSingle()));
+        var g = Math.max(0, Math.min(1, br.readSingle()));
+        var b = Math.max(0, Math.min(1, br.readSingle()));
+        color = Color.fromArgb(255, ss.truncate((255 * r)), ss.truncate((255 * g)), ss.truncate((255 * b)));
+      }
+      else if ((chunkID === 17 || chunkID === 18) && chunkLength === 9) {
+        color = Color.fromArgb(255, br.readByte(), br.readByte(), br.readByte());
+      }
+      else {
+        br.readBytes(chunkLength - 6);
+      }
+      return color;
+    },
+    _loadPercentageChunk: function(br) {
+      var chunkID = br.readUInt16();
+      var chunkLength = br.readUInt32();
+      var percentage = 0;
+      if (chunkID === 48 && chunkLength === 8) {
+        percentage = br.readUInt16();
+      }
+      else if (chunkID === 49 && chunkLength === 10) {
+        percentage = br.readSingle();
+      }
+      else {
+        br.readBytes(chunkLength - 6);
+      }
+      return percentage;
+    },
+    _getIndexies: function(data) {
+      var parts = ss.trim(data).split('/');
+      var indecies = new Array(3);
+      if (ss.emptyString(data)) {
+        return indecies;
+      }
+      if (parts.length > 0) {
+        indecies[0] = parseInt(parts[0]);
+      }
+      if (parts.length > 1) {
+        if (ss.emptyString(parts[1])) {
+          indecies[1] = 0;
+        }
+        else {
+          indecies[1] = parseInt(parts[1]);
+        }
+      }
+      if (parts.length > 2) {
+        indecies[2] = parseInt(parts[2]);
+      }
+      return indecies;
+    },
+    _loadMeshFrom3ds: function(doc, filename, scale) {
+      var $this = this;
+
+      this._tourDocument = doc;
+      var blob = doc.getFileBlob(filename);
+      var chunck = new FileReader();
+      chunck.onloadend = function(e) {
+        $this._read3dsFromBin(new BinaryReader(new Uint8Array(chunck.result)), scale);
+      };
+      chunck.readAsArrayBuffer(blob);
+    },
+    _read3dsFromBin: function(br, scale) {
+      var i;
+      var sectionID;
+      var sectionLength;
+      var name = '';
+      var material = '';
+      var triangleCount = 0;
+      var vertexCount = 0;
+      var vertexList = [];
+      var indexList = [];
+      var attribList = [];
+      var materialNames = [];
+      var currentMaterialIndex = -1;
+      var currentMaterial = new Material();
+      var attributeID = 0;
+      var count = 0;
+      var lastID = 0;
+      var exit = false;
+      var normalMapFound = false;
+      var offsetX = 0;
+      var offsetY = 0;
+      var offsetZ = 0;
+      var objects = [];
+      var currentObject = null;
+      var objHierarchy = [];
+      var objNames = [];
+      var objectTable = {};
+      var dummyCount = 0;
+      var length = br.get_length() - 1;
+      var startMapIndex = 0;
+      var startTriangleIndex = 0;
+      while (br.get_position() < length && !exit) {
+        sectionID = br.readUInt16();
+        sectionLength = br.readUInt32();
+        switch (sectionID) {
+          case 19789:
+            break;
+          case 15677:
+            break;
+          case 16384:
+            name = '';
+            var b;
+            do {
+              b = br.readByte();
+              if (b > 0) {
+                name += b;
+              }
+            } while (b !== '\u0000');
+            currentObject = new ObjectNode();
+            currentObject.name = name;
+            objects.push(currentObject);
+            if (!ss.keyExists(objectTable, currentObject.name)) {
+              objectTable[currentObject.name] = currentObject;
+            }
+            break;
+          case 16640:
+            startMapIndex = vertexList.length;
+            startTriangleIndex = indexList.length / 3;
+            break;
+          case 16656:
+            vertexCount = br.readUInt16();
+            for (i = 0; i < vertexCount; i++) {
+              var x = br.readSingle() - offsetX;
+              var y = br.readSingle() - offsetY;
+              var z = br.readSingle() - offsetZ;
+              var vert = PositionNormalTextured._create(x * scale, z * scale, y * scale, 0, 0, 0, 0, 0);
+              vertexList.push(vert);
+            }
+            break;
+          case 16672:
+            var triCount = br.readUInt16();
+            triangleCount += triCount;
+            for (i = 0; i < triCount; i++) {
+              var aa = br.readUInt16() + startMapIndex;
+              var bb = br.readUInt16() + startMapIndex;
+              var cc = br.readUInt16() + startMapIndex;
+              indexList.push(cc);
+              indexList.push(bb);
+              indexList.push(aa);
+              var flags = br.readUInt16();
+            }
+            break;
+          case 16688:
+            material = '';
+            i = 0;
+            var b1;
+            do {
+              b1 = br.readByte();
+              if (b1 > 0) {
+                material += b1;
+              }
+              i++;
+            } while (b1 !== '\u0000');
+            var triCount = br.readUInt16();
+            var applyList = new Array(triCount);
+            attributeID = Object3d._getMaterialID(material, materialNames);
+            for (i = 0; i < triCount; i++) {
+              applyList[i] = br.readUInt16() + startTriangleIndex;
+            }
+            currentObject.applyLists.push(applyList);
+            currentObject.applyListsIndex.push(attributeID);
+            break;
+          case 16704:
+            count = br.readUInt16();
+            for (i = 0; i < count; i++) {
+              var vert = vertexList[startMapIndex + i];
+              var texCoord = Vector2d.create(br.readSingle(), (this.flipV) ? (1 - br.readSingle()) : br.readSingle());
+              vertexList[startMapIndex + i] = PositionNormalTextured.createUV(vert.get_position(), new Vector3d(), texCoord);
+            }
+            break;
+          case 16736:
+            var mat = new Array(12);
+            for (i = 0; i < 12; i++) {
+              mat[i] = br.readSingle();
+            }
+            if (ss.keyExists(objectTable, name)) {
+              objectTable[name].localMat = Matrix3d.create(mat[0], mat[1], mat[2], 0, mat[3], mat[4], mat[5], 0, mat[6], mat[7], mat[8], 0, mat[9], mat[10], mat[11], 1);
+              objectTable[name].localMat.invert();
+            }
+            break;
+          case 45055:
+            break;
+          case 40960:
+            var matName = '';
+            i = 0;
+            var b2;
+            do {
+              b2 = br.readByte();
+              if (b2 > 0) {
+                matName += b2;
+              }
+              i++;
+            } while (b2 !== '\u0000');
+            materialNames.push(matName);
+            if (currentMaterialIndex > -1) {
+              this._addMaterial(currentMaterial);
+            }
+            currentMaterialIndex++;
+            currentMaterial = new Material();
+            currentMaterial.diffuse = Colors.get_white();
+            currentMaterial.ambient = Colors.get_white();
+            currentMaterial.specular = Colors.get_black();
+            currentMaterial.specularSharpness = 30;
+            currentMaterial.opacity = 1;
+            break;
+          case 40976:
+            currentMaterial.ambient = this._loadColorChunk(br);
+            break;
+          case 40992:
+            currentMaterial.diffuse = this._loadColorChunk(br);
+            break;
+          case 41008:
+            currentMaterial.specular = this._loadColorChunk(br);
+            break;
+          case 41024:
+            currentMaterial.specularSharpness = 1 + 2 * this._loadPercentageChunk(br);
+            currentMaterial.specularSharpness = Math.max(10, currentMaterial.specularSharpness);
+            break;
+          case 41472:
+            break;
+          case 41728:
+            var textureFilename = '';
+            i = 0;
+            var b2;
+            do {
+              b2 = br.readByte();
+              if (b2 > 0) {
+                textureFilename += b2;
+              }
+              i++;
+            } while (b2 !== '\u0000');
+            var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
+            try {
+              var tex = this._tourDocument.getCachedTexture2d(path + textureFilename);
+              if (tex != null) {
+                this._meshTextures.push(tex);
+                this.meshFilenames.push(textureFilename);
+                currentMaterial.diffuse = Colors.get_white();
+              }
+              else {
+                this._meshTextures.push(null);
+              }
+            }
+            catch ($e1) {
+              this._meshTextures.push(null);
+            }
+            break;
+          case 41520:
+            var percentage = this._loadPercentageChunk(br);
+            var nameId = br.readUInt16();
+            var nameBlockLength = br.readUInt32();
+            var textureFilename = '';
+            i = 0;
+            var b2;
+            do {
+              b2 = br.readByte();
+              if (b2 > 0) {
+                textureFilename += b2;
+              }
+              i++;
+            } while (b2 !== '\u0000');
+            var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
+            try {
+              var tex = this._tourDocument.getCachedTexture2d(path + textureFilename);
+              if (tex != null) {
+                this._meshNormalMaps.push(tex);
+                this.meshFilenames.push(textureFilename);
+                normalMapFound = true;
+              }
+              else {
+                this._meshNormalMaps.push(null);
+              }
+            }
+            catch ($e2) {
+              this._meshNormalMaps.push(null);
+            }
+            break;
+          case 41476:
+            var strength = this._loadPercentageChunk(br);
+            var nameId = br.readUInt16();
+            var nameBlockLength = br.readUInt32();
+            var textureFilename = '';
+            i = 0;
+            var b2;
+            do {
+              b2 = br.readByte();
+              if (b2 > 0) {
+                textureFilename += b2;
+              }
+              i++;
+            } while (b2 !== '\u0000');
+            var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
+            try {
+              var tex = this._tourDocument.getCachedTexture2d(path + textureFilename);
+              if (tex != null) {
+                this._meshSpecularTextures.push(tex);
+                this.meshFilenames.push(textureFilename);
+                var gray = ss.truncate((255.99 * strength / 100));
+                currentMaterial.specular = Color.fromArgb(255, gray, gray, gray);
+              }
+              else {
+                this._meshSpecularTextures.push(null);
+              }
+            }
+            catch ($e3) {
+              this._meshSpecularTextures.push(null);
+            }
+            break;
+          case 45056:
+            break;
+          case 45058:
+            break;
+          case 45072:
+            name = '';
+            i = 0;
+            var b1;
+            do {
+              b1 = br.readByte();
+              if (b1 > 0) {
+                name += b1;
+              }
+              i++;
+            } while (b1 !== '\u0000');
+            var dum1 = br.readUInt16();
+            var dum2 = br.readUInt16();
+            var level = br.readUInt16();
+            if (level === 65535) {
+              level = -1;
+            }
+            if (ss.startsWith(name, '$')) {
+              dummyCount++;
+            }
+            else {
+              objNames.push(name);
+            }
+            objHierarchy.push(level);
+            if (ss.keyExists(objectTable, name)) {
+              objectTable[name].level = level;
+            }
+            break;
+          case 45073:
+            name = '';
+            i = 0;
+            var b1;
+            do {
+              b1 = br.readByte();
+              if (b1 > 0) {
+                name += b1;
+              }
+              i++;
+            } while (b1 !== '\u0000');
+            objNames.push('$$$' + name);
+            break;
+          case 45075:
+            var points = new Array(3);
+            for (i = 0; i < 3; i++) {
+              points[i] = br.readSingle();
+            }
+            if (ss.keyExists(objectTable, name)) {
+              objectTable[name].pivotPoint = Vector3d.create(-points[0], -points[1], -points[2]);
+            }
+            break;
+          case 45088:
+            var pos = new Array(8);
+            for (i = 0; i < 8; i++) {
+              pos[i] = br.readSingle();
+            }
+            break;
+          default:
+            br.seekRelative((sectionLength - 6));
+            break;
+        }
+        lastID = sectionID;
+      }
+      br.close();
+      if (currentMaterialIndex > -1) {
+        this._addMaterial(currentMaterial);
+      }
+      var degtorag = Math.PI / 180;
+      var creaseAngleRad = ((this.smooth) ? 70 * degtorag : 45 * degtorag);
+      var vertexNormals = this._calculateVertexNormalsMerged(vertexList, indexList, creaseAngleRad);
+      var newVertexList = [];
+      var newVertexCount = triangleCount * 3;
+      for (var vertexIndex = 0; vertexIndex < newVertexCount; ++vertexIndex) {
+        var v = vertexList[indexList[vertexIndex]];
+        v.set_normal(vertexNormals[vertexIndex]);
+        newVertexList.push(v);
+      }
+      var newIndexList = [];
+      var $enum4 = ss.enumerate(objects);
+      while ($enum4.moveNext()) {
+        var node = $enum4.current;
+        var materialGroups = [];
+        for (i = 0; i < node.applyLists.length; i++) {
+          var matId = node.applyListsIndex[i];
+          var startIndex = newIndexList.length;
+          var $enum5 = ss.enumerate(node.applyLists[i]);
+          while ($enum5.moveNext()) {
+            var triangleIndex = $enum5.current;
+            newIndexList.push((triangleIndex * 3));
+            newIndexList.push((triangleIndex * 3 + 1));
+            newIndexList.push((triangleIndex * 3 + 2));
+          }
+          var group = new Group();
+          group.startIndex = startIndex;
+          group.indexCount = node.applyLists[i].length * 3;
+          group.materialIndex = matId;
+          materialGroups.push(group);
+        }
+        node.drawGroup = materialGroups;
+      }
+      var nodeStack = new ss.Stack();
+      var nodeTreeRoot = [];
+      var rootDummy = new ObjectNode();
+      rootDummy.name = 'Root';
+      rootDummy.parent = null;
+      rootDummy.level = -1;
+      rootDummy.drawGroup = null;
+      var currentLevel = -1;
+      nodeStack.push(rootDummy);
+      nodeTreeRoot.push(rootDummy);
+      for (i = 0; i < objHierarchy.length; i++) {
+        var level = objHierarchy[i];
+        if (level <= currentLevel) {
+          while (level <= nodeStack.peek().level && nodeStack.count > 1) {
+            nodeStack.pop();
+          }
+          currentLevel = level;
+        }
+        if (ss.startsWith(objNames[i], '$$$')) {
+          var dummy = new ObjectNode();
+          dummy.name = ss.replaceString(objNames[i], '$$$', '');
+          dummy.parent = nodeStack.peek();
+          dummy.parent.children.push(dummy);
+          dummy.level = currentLevel = level;
+          dummy.drawGroup = null;
+          nodeStack.push(dummy);
+        }
+        else {
+          objectTable[objNames[i]].level = currentLevel = level;
+          objectTable[objNames[i]].parent = nodeStack.peek();
+          objectTable[objNames[i]].parent.children.push(objectTable[objNames[i]]);
+          nodeStack.push(objectTable[objNames[i]]);
+        }
+      }
+      if (!objHierarchy.length) {
+        var $enum6 = ss.enumerate(objects);
+        while ($enum6.moveNext()) {
+          var node = $enum6.current;
+          rootDummy.children.push(node);
+          node.parent = rootDummy;
+        }
+      }
+      if (normalMapFound) {
+        var tangentIndexList = [];
+        for (var tangentIndex = 0; tangentIndex < newVertexCount; ++tangentIndex) {
+          tangentIndexList.push(tangentIndex);
+        }
+        var tangents = this._calculateVertexTangents(newVertexList, tangentIndexList, creaseAngleRad);
+        var vertices = new Array(newVertexList.length);
+        var vertexIndex = 0;
+        var $enum7 = ss.enumerate(newVertexList);
+        while ($enum7.moveNext()) {
+          var v = $enum7.current;
+          var tvertex = new PositionNormalTexturedTangent(v.get_position(), v.get_normal(), Vector2d.create(v.tu, v.tv), tangents[vertexIndex]);
+          vertices[vertexIndex] = tvertex;
+          ++vertexIndex;
+        }
+        this._mesh = Mesh.createTangent(vertices, newIndexList);
+      }
+      else {
+        this._mesh = Mesh.create(newVertexList, newIndexList);
+      }
+      this.objects = nodeTreeRoot;
+      this._mesh.setObjects(nodeTreeRoot);
+      this._mesh.commitToDevice();
+      this._dirty = false;
+    },
+    _offsetObjects: function(vertList, objects, offsetMat, offsetPoint) {
+      var $enum1 = ss.enumerate(objects);
+      while ($enum1.moveNext()) {
+        var node = $enum1.current;
+        var matLoc = node.localMat;
+        this._offsetObjects(vertList, node.children, matLoc, Vector3d.addVectors(node.pivotPoint, offsetPoint));
+        var $enum2 = ss.enumerate(node.drawGroup);
+        while ($enum2.moveNext()) {
+          var group = $enum2.current;
+          var end = group.startIndex + group.indexCount;
+          for (var i = group.startIndex; i < end; i++) {
+            var vert = vertList[i];
+            vert.set_position(Vector3d.addVectors(vert.get_position(), Vector3d.addVectors(node.pivotPoint, offsetPoint)));
+            vertList[i] = vert;
+          }
+        }
+      }
+    },
+    setupLighting: function(renderContext) {
+      var objPosition = Vector3d.create(renderContext.get_world().get_offsetX(), renderContext.get_world().get_offsetY(), renderContext.get_world().get_offsetZ());
+      var objToLight = Vector3d.subtractVectors(objPosition, renderContext.get_reflectedLightPosition());
+      var sunPosition = Vector3d.subtractVectors(renderContext.get_sunPosition(), renderContext.get_reflectedLightPosition());
+      var cosPhaseAngle = (sunPosition.length() <= 0) ? 1 : Vector3d.dot(objToLight, sunPosition) / (objToLight.length() * sunPosition.length());
+      var reflectedLightFactor = Math.max(0, cosPhaseAngle);
+      reflectedLightFactor = Math.sqrt(reflectedLightFactor);
+      var hemiLightFactor = 0;
+      var sunlightFactor = 1;
+      if (renderContext.get_occludingPlanetRadius() > 0) {
+        var objAltitude = Vector3d.subtractVectors(objPosition, renderContext.get_occludingPlanetPosition()).length() - renderContext.get_occludingPlanetRadius();
+        hemiLightFactor = Math.max(0, Math.min(1, 1 - (objAltitude / renderContext.get_occludingPlanetRadius()) * 300));
+        reflectedLightFactor *= (1 - hemiLightFactor);
+        var sunToPlanet = Vector3d.subtractVectors(renderContext.get_occludingPlanetPosition(), renderContext.get_sunPosition());
+        var objToPlanet = Vector3d.subtractVectors(renderContext.get_occludingPlanetPosition(), objPosition);
+        var hemiLightDirection = Vector3d.create(-objToPlanet.x, -objToPlanet.y, -objToPlanet.z);
+        hemiLightDirection.normalize();
+        renderContext.set_hemisphereLightUp(hemiLightDirection);
+        var objToSun = Vector3d.subtractVectors(renderContext.get_sunPosition(), objPosition);
+        var sunPlanetDistance = sunToPlanet.length();
+        var t = -Vector3d.dot(objToSun, sunToPlanet) / (sunPlanetDistance * sunPlanetDistance);
+        if (t > 1) {
+          var shadowAxisPoint = Vector3d.addVectors(renderContext.get_sunPosition(), Vector3d.multiplyScalar(sunToPlanet, t));
+          var d = Vector3d.subtractVectors(shadowAxisPoint, objPosition).length();
+          var s = Vector3d.subtractVectors(shadowAxisPoint, renderContext.get_sunPosition()).length();
+          var solarRadius = 0.004645784;
+          var penumbraRadius = renderContext.get_occludingPlanetRadius() + (t - 1) * (renderContext.get_occludingPlanetRadius() + solarRadius);
+          var umbraRadius = renderContext.get_occludingPlanetRadius() + (t - 1) * (renderContext.get_occludingPlanetRadius() - solarRadius);
+          if (d < penumbraRadius) {
+            var minimumShadow = 0;
+            if (umbraRadius < 0) {
+              var occlusion = Math.pow(1 / (1 - umbraRadius), 2);
+              umbraRadius = 0;
+              minimumShadow = 1 - occlusion;
+            }
+            var u = Math.max(0, umbraRadius);
+            sunlightFactor = Math.max(minimumShadow, (d - u) / (penumbraRadius - u));
+            var gray = ss.truncate((255.99 * sunlightFactor));
+            renderContext.set_sunlightColor(Color.fromArgb(255, gray, gray, gray));
+            hemiLightFactor *= sunlightFactor;
+          }
+        }
+      }
+      renderContext.set_reflectedLightColor(Color.fromArgb(255, ss.truncate((renderContext.get_reflectedLightColor().r * reflectedLightFactor)), ss.truncate((renderContext.get_reflectedLightColor().g * reflectedLightFactor)), ss.truncate((renderContext.get_reflectedLightColor().b * reflectedLightFactor))));
+      renderContext.set_hemisphereLightColor(Color.fromArgb(255, ss.truncate((renderContext.get_hemisphereLightColor().r * hemiLightFactor)), ss.truncate((renderContext.get_hemisphereLightColor().g * hemiLightFactor)), ss.truncate((renderContext.get_hemisphereLightColor().b * hemiLightFactor))));
+    },
+    render: function(renderContext, opacity) {
+      if (this._dirty && !this.issLayer) {
+        this._reload();
+      }
+      var oldWorld = renderContext.get_world();
+      var offset = this._mesh.boundingSphere.center;
+      var unitScale = 1;
+      if (this._mesh.boundingSphere.radius > 0) {
+        unitScale = 1 / this._mesh.boundingSphere.radius;
+      }
+      renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.translation(Vector3d.create(-offset.x, -offset.y, -offset.z)), Matrix3d._scaling(unitScale, unitScale, unitScale)), oldWorld));
+      var worldView = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      var v = worldView.transform(Vector3d.get_empty());
+      var scaleFactor = Math.sqrt(worldView.get_m11() * worldView.get_m11() + worldView.get_m22() * worldView.get_m22() + worldView.get_m33() * worldView.get_m33()) / unitScale;
+      var dist = v.length();
+      var radius = scaleFactor;
+      var viewportHeight = ss.truncate(renderContext.height);
+      var p11 = renderContext.get_projection().get_m11();
+      var p34 = renderContext.get_projection().get_m34();
+      var p44 = renderContext.get_projection().get_m44();
+      var w = Math.abs(p34) * dist + p44;
+      var pixelsPerUnit = (p11 / w) * viewportHeight;
+      var radiusInPixels = (radius * pixelsPerUnit);
+      if (radiusInPixels < 0.5) {
+        return;
+      }
+      var savedSunlightColor = renderContext.get_sunlightColor();
+      var savedReflectedColor = renderContext.get_reflectedLightColor();
+      var savedHemiColor = renderContext.get_hemisphereLightColor();
+      if (Settings.get_current().get_solarSystemLighting()) {
+        this.setupLighting(renderContext);
+        if (!this.useCurrentAmbient) {
+          renderContext.set_ambientLightColor(Color.fromArgb(255, 11, 11, 11));
+        }
+      }
+      else {
+        renderContext.set_sunlightColor(Colors.get_black());
+        renderContext.set_reflectedLightColor(Colors.get_black());
+        renderContext.set_hemisphereLightColor(Colors.get_black());
+        renderContext.set_ambientLightColor(Colors.get_white());
+      }
+      if (this._mesh == null) {
+        return;
+      }
+      var count = this._meshMaterials.length;
+      this._mesh.beginDrawing(renderContext);
+      if (count > 0) {
+        for (var i = 0; i < this._meshMaterials.length; i++) {
+          if (this._meshMaterials[i].isDefault) {
+            var mat = this._meshMaterials[i];
+            mat.diffuse = this.color;
+            mat.ambient = this.color;
+            this._meshMaterials[i] = mat;
+          }
+          renderContext.setMaterial(this._meshMaterials[i], this._meshTextures[i], this._meshSpecularTextures[i], this._meshNormalMaps[i], opacity);
+          ModelShader.use(renderContext, null, null, this._meshTextures[i].texture2d, opacity, false);
+          renderContext.preDraw();
+          this._mesh.drawSubset(renderContext, i);
+        }
+      }
+      else {
+        renderContext.preDraw();
+        for (var i = 0; i < this._meshTextures.length; i++) {
+          if (this._meshTextures[i] != null) {
+            renderContext.set_mainTexture(this._meshTextures[i]);
+            ModelShader.use(renderContext, null, null, this._meshTextures[i].texture2d, opacity, false);
+          }
+          renderContext.preDraw();
+          this._mesh.drawSubset(renderContext, i);
+        }
+      }
+      renderContext.set_world(oldWorld);
+      renderContext.set_sunlightColor(savedSunlightColor);
+      renderContext.set_reflectedLightColor(savedReflectedColor);
+      renderContext.set_hemisphereLightColor(savedHemiColor);
+      renderContext.set_ambientLightColor(Colors.get_black());
+    },
+    dispose: function() {
+      if (this._mesh != null) {
+        this._mesh.dispose();
+        this._mesh = null;
+      }
+      var $enum1 = ss.enumerate(ss.keys(this._textureCache));
+      while ($enum1.moveNext()) {
+        var key = $enum1.current;
+        var tex = this._textureCache[key];
+        if (tex != null) {
+          tex.dispose();
+        }
+      }
+      ss.clearKeys(this._textureCache);
+      Object3d._disposeTextureList(this._meshTextures);
+      Object3d._disposeTextureList(this._meshSpecularTextures);
+      Object3d._disposeTextureList(this._meshNormalMaps);
+      this._meshMaterials.length = 0;
+      this._dirty = true;
+    }
+  };
+
+
+  // wwtlib.ObjectNode
+
+  function ObjectNode() {
+    this.level = -1;
+    this.children = [];
+    this.enabled = true;
+    this.drawGroup = [];
+    this.applyLists = [];
+    this.applyListsIndex = [];
+  }
+  var ObjectNode$ = {
+
   };
 
 
@@ -13242,6 +14247,18 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.Material
+
+  function Material() {
+    this.specularSharpness = 0;
+    this.opacity = 0;
+    this.isDefault = false;
+  }
+  var Material$ = {
+
+  };
+
+
   // wwtlib.RenderContext
 
   function RenderContext() {
@@ -13253,6 +14270,7 @@ window.wwtlib = function(){
     this._fovAngle = 0;
     this._fovScale = 0;
     this._nominalRadius = 6378137;
+    this._mainTexture = null;
     this.viewMover = null;
     this.viewCamera = new CameraParameters();
     this.targetCamera = new CameraParameters();
@@ -13273,6 +14291,13 @@ window.wwtlib = function(){
     this.nearPlane = 0;
     this._frustumDirty = true;
     this._frustum = new Array(6);
+    this._ambientLightColor = Colors.get_black();
+    this._hemiLightColor = Colors.get_black();
+    this._sunlightColor = Colors.get_white();
+    this._reflectedLightColor = Colors.get_black();
+    this._occludingPlanetRadius = 0;
+    this._lightingStateDirty = true;
+    this._twoSidedLighting = false;
     this._skyColor = 'Blue';
     for (var i = 0; i < 6; i++) {
       this._frustum[i] = new PlaneD(0, 0, 0, 0);
@@ -13447,11 +14472,14 @@ window.wwtlib = function(){
       this._nominalRadius = value;
       return value;
     },
-    get_sunPosition: function() {
-      return this._sunPosition;
+    get_mainTexture: function() {
+      return this._mainTexture;
     },
-    set_sunPosition: function(value) {
-      this._sunPosition = value;
+    set_mainTexture: function(value) {
+      if (value != null) {
+        this._mainTexture = value;
+        this.gl.bindTexture(3553, this._mainTexture.texture2d);
+      }
       return value;
     },
     onTarget: function(place) {
@@ -13749,6 +14777,88 @@ window.wwtlib = function(){
     get_frustum: function() {
       return this._frustum;
     },
+    get_ambientLightColor: function() {
+      return this._ambientLightColor;
+    },
+    set_ambientLightColor: function(value) {
+      this._ambientLightColor = value;
+      this._lightingStateDirty = true;
+      return value;
+    },
+    get_hemisphereLightColor: function() {
+      return this._hemiLightColor;
+    },
+    set_hemisphereLightColor: function(value) {
+      this._hemiLightColor = value;
+      this._lightingStateDirty = true;
+      return value;
+    },
+    get_hemisphereLightUp: function() {
+      return this._hemiLightUp;
+    },
+    set_hemisphereLightUp: function(value) {
+      this._hemiLightUp = value;
+      this._lightingStateDirty = true;
+      return value;
+    },
+    get_sunlightColor: function() {
+      return this._sunlightColor;
+    },
+    set_sunlightColor: function(value) {
+      this._sunlightColor = value;
+      this._lightingStateDirty = true;
+      return value;
+    },
+    get_sunPosition: function() {
+      return this._sunPosition;
+    },
+    set_sunPosition: function(value) {
+      this._sunPosition = value;
+      this._lightingStateDirty = true;
+      return value;
+    },
+    get_reflectedLightColor: function() {
+      return this._reflectedLightColor;
+    },
+    set_reflectedLightColor: function(value) {
+      if (this._reflectedLightColor !== value) {
+        this._reflectedLightColor = value;
+        this._lightingStateDirty = true;
+      }
+      return value;
+    },
+    get_reflectedLightPosition: function() {
+      return this._reflectedLightPosition;
+    },
+    set_reflectedLightPosition: function(value) {
+      this._reflectedLightPosition = value;
+      this._lightingStateDirty = true;
+      return value;
+    },
+    get_occludingPlanetRadius: function() {
+      return this._occludingPlanetRadius;
+    },
+    set_occludingPlanetRadius: function(value) {
+      this._occludingPlanetRadius = value;
+      return value;
+    },
+    get_occludingPlanetPosition: function() {
+      return this._occludingPlanetPosition;
+    },
+    set_occludingPlanetPosition: function(value) {
+      this._occludingPlanetPosition = value;
+      return value;
+    },
+    get_twoSidedLighting: function() {
+      return this._twoSidedLighting;
+    },
+    set_twoSidedLighting: function(value) {
+      if (value !== this._twoSidedLighting) {
+        this._twoSidedLighting = value;
+        this._lightingStateDirty = true;
+      }
+      return value;
+    },
     makeFrustum: function() {
       this.WV = Matrix3d.multiplyMatrix(this.get_world(), this.get_view());
       var viewProjection = Matrix3d.multiplyMatrix(this.WV, this.get_projection());
@@ -13799,6 +14909,15 @@ window.wwtlib = function(){
       this.targetAlt = this.alt;
       this.targetAz = this.az;
       this.targetCamera = this.viewCamera.copy();
+    },
+    _setVertexBuffer: function(vertexBuffer) {
+    },
+    _setIndexBuffer: function(indexBuffer) {
+    },
+    setMaterial: function(material, diffuseTex, specularTex, normalMap, opacity) {
+      this.set_mainTexture(diffuseTex);
+    },
+    preDraw: function() {
     }
   };
 
@@ -13843,8 +14962,8 @@ window.wwtlib = function(){
     return temp;
   };
   RenderTriangle._getMiterPoint = function(p1, p2, p3, edgeOffset) {
-    var edge1 = Vector2d.subtractVector(p2, p1);
-    var edge2 = Vector2d.subtractVector(p3, p1);
+    var edge1 = Vector2d.subtract(p2, p1);
+    var edge2 = Vector2d.subtract(p3, p1);
     edge1.normalize();
     edge2.normalize();
     var dir = Vector2d.create(edge1.x + edge2.x, edge1.y + edge2.y);
@@ -23814,13 +24933,18 @@ window.wwtlib = function(){
       this.position += 4;
       return result;
     },
-    readUint32: function() {
+    readUInt32: function() {
       var result = (this._data[this.position] + (this._data[this.position + 1] << 8) + (this._data[this.position + 2] << 16) + (this._data[this.position + 3] << 24));
       this.position += 4;
       return result;
     },
+    readUInt16: function() {
+      var result = (this._data[this.position] + (this._data[this.position + 1] << 8));
+      this.position += 2;
+      return result;
+    },
     readInt32: function() {
-      var result = this.readUint32();
+      var result = this.readUInt32();
       if (!!(result & 2147483648)) {
         return (-((result - 1) ^ 4294967295));
       }
@@ -28326,6 +29450,74 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.PositionNormalTexturedTangent
+
+  function PositionNormalTexturedTangent(position, normal, texCoord, tangent) {
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.nx = 0;
+    this.ny = 0;
+    this.nz = 0;
+    this.tu = 0;
+    this.tv = 0;
+    this.tanx = 0;
+    this.tany = 0;
+    this.tanz = 0;
+    this.x = position.x;
+    this.y = position.y;
+    this.z = position.z;
+    this.nx = normal.x;
+    this.ny = normal.y;
+    this.nz = normal.z;
+    this.tu = texCoord.x;
+    this.tv = texCoord.y;
+    this.tanx = tangent.x;
+    this.tany = tangent.y;
+    this.tanz = tangent.z;
+  }
+  var PositionNormalTexturedTangent$ = {
+    get_normal: function() {
+      return Vector3d.create(this.nx, this.ny, this.nz);
+    },
+    set_normal: function(value) {
+      this.nx = value.x;
+      this.ny = value.y;
+      this.nz = value.z;
+      return value;
+    },
+    get_position: function() {
+      return Vector3d.create(this.x, this.y, this.z);
+    },
+    set_position: function(value) {
+      this.x = value.x;
+      this.y = value.y;
+      this.z = value.z;
+      return value;
+    },
+    get_texCoord: function() {
+      return Vector2d.create(this.tu, this.tv);
+    },
+    set_texCoord: function(value) {
+      this.tu = value.x;
+      this.tv = value.y;
+      return value;
+    },
+    get_tangent: function() {
+      return Vector3d.create(this.tanx, this.tany, this.tanz);
+    },
+    set_tangent: function(value) {
+      this.tanx = value.x;
+      this.tany = value.y;
+      this.tanz = value.z;
+      return value;
+    },
+    toString: function() {
+      return ss.format('X={0}, Y={1}, Z={2}, Nx={3}, Ny={4}, Nz={5}, U={6}, V={7}, TanX={8}, TanY={9}, TanZ={10}', this.x, this.y, this.z, this.nx, this.ny, this.nz, this.tu, this.tv, this.tanx, this.tany, this.tanz);
+    }
+  };
+
+
   // wwtlib.Vector3d
 
   function Vector3d() {
@@ -28572,16 +29764,13 @@ window.wwtlib = function(){
     pntOut.normalize();
     return Vector2d.cartesianToSpherical2(pntOut);
   };
-  Vector2d.subtract = function(vec) {
-    return Vector2d.create(-vec.x, -vec.y);
-  };
   Vector2d.create = function(x, y) {
     var temp = new Vector2d();
     temp.x = x;
     temp.y = y;
     return temp;
   };
-  Vector2d.subtractVector = function(left, right) {
+  Vector2d.subtract = function(left, right) {
     return Vector2d.create(left.x - right.x, left.y - right.y);
   };
   var Vector2d$ = {
@@ -29718,6 +30907,91 @@ window.wwtlib = function(){
     },
     toString: function() {
       return ss.format('X={0}, Y={1}, Z={2}, Nx={3}, Ny={4}, Nz={5}, U={6}, V={7}, U1={8}, U2={9}', this.x, this.y, this.z, this.nx, this.ny, this.nz, this.tu, this.tv, this.tu1, this.tv1);
+    }
+  };
+
+
+  // wwtlib.PositionNormalTextured
+
+  function PositionNormalTextured() {
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.nx = 0;
+    this.ny = 0;
+    this.nz = 0;
+    this.tu = 0;
+    this.tv = 0;
+  }
+  PositionNormalTextured.createShort = function(pos, nor, u, v) {
+    var temp = new PositionNormalTextured();
+    temp.x = pos.x;
+    temp.y = pos.y;
+    temp.z = pos.z;
+    temp.nx = nor.x;
+    temp.ny = nor.y;
+    temp.nz = nor.z;
+    temp.tu = u;
+    temp.tv = v;
+    return temp;
+  };
+  PositionNormalTextured._create = function(x, y, z, nx, ny, nz, tu, tv) {
+    var temp = new PositionNormalTextured();
+    temp.x = x;
+    temp.y = y;
+    temp.z = z;
+    temp.nx = nx;
+    temp.ny = ny;
+    temp.nz = nz;
+    temp.tu = tu;
+    temp.tv = tv;
+    return temp;
+  };
+  PositionNormalTextured.createUV = function(pos, nor, uv) {
+    var temp = new PositionNormalTextured();
+    temp.x = pos.x;
+    temp.y = pos.y;
+    temp.z = pos.z;
+    temp.nx = nor.x;
+    temp.ny = nor.y;
+    temp.nz = nor.z;
+    temp.tu = uv.x;
+    temp.tv = uv.y;
+    return temp;
+  };
+  var PositionNormalTextured$ = {
+    createLong: function(xvalue, yvalue, zvalue, nxvalue, nyvalue, nzvalue, u, v) {
+      var temp = new PositionNormalTexturedX2();
+      temp.x = xvalue;
+      temp.y = yvalue;
+      temp.z = zvalue;
+      temp.nx = nxvalue;
+      temp.ny = nyvalue;
+      temp.nz = nzvalue;
+      temp.tu = u;
+      temp.tv = v;
+      return temp;
+    },
+    get_normal: function() {
+      return Vector3d.create(this.nx, this.ny, this.nz);
+    },
+    set_normal: function(value) {
+      this.nx = value.x;
+      this.ny = value.y;
+      this.nz = value.z;
+      return value;
+    },
+    get_position: function() {
+      return Vector3d.create(this.x, this.y, this.y);
+    },
+    set_position: function(value) {
+      this.x = value.x;
+      this.y = value.y;
+      this.z = value.z;
+      return value;
+    },
+    toString: function() {
+      return ss.format('X={0}, Y={1}, Z={2}, Nx={3}, Ny={4}, Nz={5}, U={6}, V={7}, U1={8}, U2={9}', this.x, this.y, this.z, this.nx, this.ny, this.nz, this.tu, this.tv);
     }
   };
 
@@ -31924,6 +33198,367 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.PositionVertexBuffer
+
+  function PositionVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  var PositionVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 3);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.x;
+        buffer[index++] = pt.y;
+        buffer[index++] = pt.z;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.PositionTextureVertexBuffer
+
+  function PositionTextureVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  PositionTextureVertexBuffer.create = function(data) {
+    var buffer = new PositionTextureVertexBuffer(data.length);
+    buffer._verts$1 = data;
+    buffer.unlock();
+    return buffer;
+  };
+  var PositionTextureVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 5);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.PositionNormalTexturedVertexBuffer
+
+  function PositionNormalTexturedVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  PositionNormalTexturedVertexBuffer.create = function(data) {
+    var buffer = new PositionNormalTexturedVertexBuffer(data.length);
+    buffer._verts$1 = data;
+    buffer.unlock();
+    return buffer;
+  };
+  var PositionNormalTexturedVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 8);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.x;
+        buffer[index++] = pt.y;
+        buffer[index++] = pt.z;
+        buffer[index++] = pt.nx;
+        buffer[index++] = pt.ny;
+        buffer[index++] = pt.nz;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.PositionNormalTexturedTangentVertexBuffer
+
+  function PositionNormalTexturedTangentVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  PositionNormalTexturedTangentVertexBuffer.create = function(data) {
+    var buffer = new PositionNormalTexturedTangentVertexBuffer(data.length);
+    buffer._verts$1 = data;
+    buffer.unlock();
+    return buffer;
+  };
+  var PositionNormalTexturedTangentVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 8);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.x;
+        buffer[index++] = pt.y;
+        buffer[index++] = pt.z;
+        buffer[index++] = pt.nx;
+        buffer[index++] = pt.ny;
+        buffer[index++] = pt.nz;
+        buffer[index++] = pt.tanx;
+        buffer[index++] = pt.tany;
+        buffer[index++] = pt.tanz;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.KeplerVertexBuffer
+
+  function KeplerVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  KeplerVertexBuffer.create = function(items) {
+    var tmp = new KeplerVertexBuffer(items.length);
+    tmp._verts$1 = items;
+    return tmp;
+  };
+  var KeplerVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 19);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.ABC.x;
+        buffer[index++] = pt.ABC.y;
+        buffer[index++] = pt.ABC.z;
+        buffer[index++] = pt.abc1.x;
+        buffer[index++] = pt.abc1.y;
+        buffer[index++] = pt.abc1.z;
+        buffer[index++] = pt.pointSize;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+        buffer[index++] = pt.w;
+        buffer[index++] = pt.e;
+        buffer[index++] = pt.n;
+        buffer[index++] = pt.t;
+        buffer[index++] = pt.a;
+        buffer[index++] = pt.z;
+        buffer[index++] = pt.orbitPos;
+        buffer[index++] = pt.orbits;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.TimeSeriesLineVertexBuffer
+
+  function TimeSeriesLineVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  var TimeSeriesLineVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 9);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.get_color().r / 255;
+        buffer[index++] = pt.get_color().g / 255;
+        buffer[index++] = pt.get_color().b / 255;
+        buffer[index++] = pt.get_color().a / 255;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.TimeSeriesPointVertexBuffer
+
+  function TimeSeriesPointVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  var TimeSeriesPointVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 10);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.get_color().r / 255;
+        buffer[index++] = pt.get_color().g / 255;
+        buffer[index++] = pt.get_color().b / 255;
+        buffer[index++] = pt.get_color().a / 255;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+        buffer[index++] = pt.pointSize;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    },
+    dispose: function() {
+      Tile.prepDevice.bindBuffer(34962, null);
+      Tile.prepDevice.deleteBuffer(this.vertexBuffer);
+      this.vertexBuffer = null;
+    }
+  };
+
+
+  // wwtlib.PositionColoredVertexBuffer
+
+  function PositionColoredVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  var PositionColoredVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 7);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
+  // wwtlib.PositionColoredTexturedVertexBuffer
+
+  function PositionColoredTexturedVertexBuffer(count) {
+    this.count = 0;
+    this._verts$1 = null;
+    VertexBufferBase.call(this);
+    this.count = count;
+  }
+  var PositionColoredTexturedVertexBuffer$ = {
+    lock: function() {
+      this._verts$1 = new Array(this.count);
+      return this._verts$1;
+    },
+    unlock: function() {
+      this.vertexBuffer = Tile.prepDevice.createBuffer();
+      Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
+      var f32array = new Float32Array(this.count * 9);
+      var buffer = f32array;
+      var index = 0;
+      var $enum1 = ss.enumerate(this._verts$1);
+      while ($enum1.moveNext()) {
+        var pt = $enum1.current;
+        buffer[index++] = pt.position.x;
+        buffer[index++] = pt.position.y;
+        buffer[index++] = pt.position.z;
+        buffer[index++] = pt.color.r / 255;
+        buffer[index++] = pt.color.g / 255;
+        buffer[index++] = pt.color.b / 255;
+        buffer[index++] = pt.color.a / 255;
+        buffer[index++] = pt.tu;
+        buffer[index++] = pt.tv;
+      }
+      Tile.prepDevice.bufferData(34962, f32array, 35044);
+    }
+  };
+
+
   // wwtlib.FitsImage
 
   function FitsImage(file, blob, callMeBack) {
@@ -33026,6 +34661,729 @@ window.wwtlib = function(){
   var LayerCollection$ = {
     draw: function(renderContext, opacity, flat) {
       return Layer.prototype.draw.call(this, renderContext, opacity, false);
+    }
+  };
+
+
+  // wwtlib.Object3dLayer
+
+  function Object3dLayer() {
+    this._primaryUI$1 = null;
+    this._heading$1 = 0;
+    this._flipV$1 = true;
+    this._flipHandedness$1 = false;
+    this._smooth$1 = true;
+    this._twoSidedGeometry$1 = false;
+    this._pitch$1 = 0;
+    this._roll$1 = 0;
+    this._scale$1 = Vector3d.create(1, 1, 1);
+    this._translate$1 = Vector3d.create(0, 0, 0);
+    this._lightID$1 = 0;
+    this._dirty$1 = false;
+    this.objType = false;
+    this._xHandle$1 = new Vector2d();
+    this._yHandle$1 = new Vector2d();
+    this._zHandle$1 = new Vector2d();
+    this._hprHandles$1 = new Array(6);
+    this._uiScale$1 = 1;
+    this._showEditUi$1 = false;
+    this._dragMode$1 = 0;
+    this._pntDown$1 = new Vector2d();
+    this._valueOnDown$1 = 0;
+    this._valueOnDown2$1 = 0;
+    this._hitDist$1 = 20;
+    this._lockPreferedAxis$1 = false;
+    this._preferY$1 = false;
+    Layer.call(this);
+  }
+  Object3dLayer._initTranslateUI$1 = function() {
+    Object3dLayer._translateUILines$1 = new LineList();
+    Object3dLayer._translateUILines$1.timeSeries = false;
+    Object3dLayer._translateUILines$1.set_depthBuffered(false);
+    Object3dLayer._translateUILines$1.showFarSide = true;
+    Object3dLayer._translateUI$1 = new TriangleList();
+    Object3dLayer._translateUI$1.depthBuffered = false;
+    Object3dLayer._translateUI$1.timeSeries = false;
+    Object3dLayer._translateUI$1.writeZbuffer = false;
+    var twoPi = Math.PI * 2;
+    var step = twoPi / 45;
+    var rad = 0.05;
+    for (var a = 0; a < twoPi; a += step) {
+      var pnt1 = Vector3d.create(1 - rad * 4, 0, 0);
+      var pnt2 = Vector3d.create(1 - rad * 4, Math.cos(a) * rad, Math.sin(a) * rad);
+      var pnt3 = Vector3d.create(1 - rad * 4, Math.cos(a + step) * rad, Math.sin(a + step) * rad);
+      Object3dLayer._translateUI$1.addTriangle(pnt1, pnt2, pnt3, Colors.get_red(), Dates.empty());
+    }
+    for (var a = 0; a < twoPi; a += step) {
+      var pnt1 = Vector3d.create(1, 0, 0);
+      var pnt3 = Vector3d.create(1 - rad * 4, Math.cos(a) * rad, Math.sin(a) * rad);
+      var pnt2 = Vector3d.create(1 - rad * 4, Math.cos(a + step) * rad, Math.sin(a + step) * rad);
+      Object3dLayer._translateUI$1.addTriangle(pnt1, pnt2, pnt3, Color.fromArgb(255, 255, Math.max(0, (Math.sin(a) * 128)), Math.max(0, (Math.sin(a) * 128))), Dates.empty());
+    }
+    Object3dLayer._translateUILines$1.addLine(Vector3d.create(0, 0, 0), Vector3d.create(1, 0, 0), Colors.get_red(), Dates.empty());
+    for (var a = 0; a < twoPi; a += step) {
+      var pnt1 = Vector3d.create(0, 1 - rad * 4, 0);
+      var pnt3 = Vector3d.create(Math.cos(a) * rad, 1 - rad * 4, Math.sin(a) * rad);
+      var pnt2 = Vector3d.create(Math.cos(a + step) * rad, 1 - rad * 4, Math.sin(a + step) * rad);
+      Object3dLayer._translateUI$1.addTriangle(pnt1, pnt2, pnt3, Colors.get_green(), Dates.empty());
+    }
+    for (var a = 0; a < twoPi; a += step) {
+      var pnt1 = Vector3d.create(0, 1, 0);
+      var pnt2 = Vector3d.create(Math.cos(a) * rad, 1 - rad * 4, Math.sin(a) * rad);
+      var pnt3 = Vector3d.create(Math.cos(a + step) * rad, 1 - rad * 4, Math.sin(a + step) * rad);
+      Object3dLayer._translateUI$1.addTriangle(pnt1, pnt2, pnt3, Color.fromArgb(255, Math.max(0, (Math.sin(a) * 128)), 255, Math.max(0, (Math.sin(a) * 128))), Dates.empty());
+    }
+    Object3dLayer._translateUILines$1.addLine(Vector3d.create(0, 0, 0), Vector3d.create(0, 1, 0), Colors.get_green(), Dates.empty());
+    for (var a = 0; a < twoPi; a += step) {
+      var pnt1 = Vector3d.create(0, 0, 1 - rad * 4);
+      var pnt2 = Vector3d.create(Math.cos(a) * rad, Math.sin(a) * rad, 1 - rad * 4);
+      var pnt3 = Vector3d.create(Math.cos(a + step) * rad, Math.sin(a + step) * rad, 1 - rad * 4);
+      Object3dLayer._translateUI$1.addTriangle(pnt1, pnt2, pnt3, Colors.get_blue(), Dates.empty());
+    }
+    for (var a = 0; a < twoPi; a += step) {
+      var pnt1 = Vector3d.create(0, 0, 1);
+      var pnt3 = Vector3d.create(Math.cos(a) * rad, Math.sin(a) * rad, 1 - rad * 4);
+      var pnt2 = Vector3d.create(Math.cos(a + step) * rad, Math.sin(a + step) * rad, 1 - rad * 4);
+      Object3dLayer._translateUI$1.addTriangle(pnt1, pnt2, pnt3, Color.fromArgb(255, Math.max(0, (Math.sin(a) * 128)), Math.max(0, (Math.sin(a) * 128)), 255), Dates.empty());
+    }
+    Object3dLayer._translateUILines$1.addLine(Vector3d.create(0, 0, 0), Vector3d.create(0, 0, 1), Colors.get_blue(), Dates.empty());
+    Object3dLayer._initRotateUI$1();
+    Object3dLayer._initScaleUI$1();
+  };
+  Object3dLayer._initScaleUI$1 = function() {
+    Object3dLayer._scaleUI$1 = new TriangleList();
+    Object3dLayer._scaleUI$1.depthBuffered = false;
+    Object3dLayer._scaleUI$1.timeSeries = false;
+    Object3dLayer._scaleUI$1.writeZbuffer = false;
+    var twoPi = Math.PI * 2;
+    var step = twoPi / 45;
+    var rad = 0.05;
+    Object3dLayer._makeCube$1(Object3dLayer._scaleUI$1, Vector3d.create(1 - rad * 2, 0, 0), rad * 2, Colors.get_red());
+    Object3dLayer._makeCube$1(Object3dLayer._scaleUI$1, Vector3d.create(0, 1 - rad * 2, 0), rad * 2, Colors.get_green());
+    Object3dLayer._makeCube$1(Object3dLayer._scaleUI$1, Vector3d.create(0, 0, 1 - rad * 2), rad * 2, Colors.get_blue());
+  };
+  Object3dLayer._makeCube$1 = function(tl, center, size, color) {
+    var dark = Color.fromArgb(255, ss.truncate((color.r * 0.6)), color.g, ss.truncate((color.b * 0.6)));
+    var med = Color.fromArgb(255, ss.truncate((color.r * 0.8)), ss.truncate((color.g * 0.8)), ss.truncate((color.b * 0.8)));
+    tl.addQuad(Vector3d.create(center.x + size, center.y + size, center.z + size), Vector3d.create(center.x + size, center.y + size, center.z - size), Vector3d.create(center.x - size, center.y + size, center.z + size), Vector3d.create(center.x - size, center.y + size, center.z - size), color, Dates.empty());
+    tl.addQuad(Vector3d.create(center.x + size, center.y - size, center.z + size), Vector3d.create(center.x - size, center.y - size, center.z + size), Vector3d.create(center.x + size, center.y - size, center.z - size), Vector3d.create(center.x - size, center.y - size, center.z - size), color, Dates.empty());
+    tl.addQuad(Vector3d.create(center.x - size, center.y + size, center.z + size), Vector3d.create(center.x - size, center.y + size, center.z - size), Vector3d.create(center.x - size, center.y - size, center.z + size), Vector3d.create(center.x - size, center.y - size, center.z - size), dark, Dates.empty());
+    tl.addQuad(Vector3d.create(center.x + size, center.y + size, center.z + size), Vector3d.create(center.x + size, center.y - size, center.z + size), Vector3d.create(center.x + size, center.y + size, center.z - size), Vector3d.create(center.x + size, center.y - size, center.z - size), dark, Dates.empty());
+    tl.addQuad(Vector3d.create(center.x + size, center.y + size, center.z + size), Vector3d.create(center.x - size, center.y + size, center.z + size), Vector3d.create(center.x + size, center.y - size, center.z + size), Vector3d.create(center.x - size, center.y - size, center.z + size), med, Dates.empty());
+    tl.addQuad(Vector3d.create(center.x + size, center.y + size, center.z - size), Vector3d.create(center.x + size, center.y - size, center.z - size), Vector3d.create(center.x - size, center.y + size, center.z - size), Vector3d.create(center.x - size, center.y - size, center.z - size), med, Dates.empty());
+  };
+  Object3dLayer._initRotateUI$1 = function() {
+    Object3dLayer._rotateUi$1 = new TriangleList();
+    Object3dLayer._rotateUi$1.depthBuffered = false;
+    Object3dLayer._rotateUi$1.timeSeries = false;
+    Object3dLayer._rotateUi$1.writeZbuffer = false;
+    var twoPi = Math.PI * 2;
+    var step = twoPi / 40;
+    var rad = 0.05;
+    var index = 0;
+    for (var a = 0; a < twoPi; a += step) {
+      var start = !(index % 10);
+      var end = !((index + 1) % 10);
+      var pnt1 = Vector3d.create(rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.cos(a), Math.sin(a));
+      var pnt2 = Vector3d.create(-rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.cos(a), Math.sin(a));
+      var pnt3 = Vector3d.create(rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.cos(a + step), Math.sin(a + step));
+      var pnt4 = Vector3d.create(-rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.cos(a + step), Math.sin(a + step));
+      Object3dLayer._rotateUi$1.addQuad(pnt1, pnt3, pnt2, pnt4, Color._fromArgbColor(192, Colors.get_red()), Dates.empty());
+      index++;
+    }
+    index = 0;
+    for (var a = 0; a < twoPi; a += step) {
+      var start = !(index % 10);
+      var end = !((index + 1) % 10);
+      var pnt1 = Vector3d.create(Math.cos(a), Math.sin(a), rad * ((start) ? 0 : ((end) ? 1.5 : 1)));
+      var pnt2 = Vector3d.create(Math.cos(a), Math.sin(a), -rad * ((start) ? 0 : ((end) ? 1.5 : 1)));
+      var pnt3 = Vector3d.create(Math.cos(a + step), Math.sin(a + step), rad * ((start) ? 1.5 : ((end) ? 0 : 1)));
+      var pnt4 = Vector3d.create(Math.cos(a + step), Math.sin(a + step), -rad * ((start) ? 1.5 : ((end) ? 0 : 1)));
+      Object3dLayer._rotateUi$1.addQuad(pnt1, pnt3, pnt2, pnt4, Color._fromArgbColor(192, Colors.get_blue()), Dates.empty());
+      index++;
+    }
+    index = 0;
+    for (var a = 0; a < twoPi; a += step) {
+      var start = !(index % 10);
+      var end = !((index + 1) % 10);
+      var pnt1 = Vector3d.create(Math.cos(a), rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.sin(a));
+      var pnt2 = Vector3d.create(Math.cos(a), -rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.sin(a));
+      var pnt3 = Vector3d.create(Math.cos(a + step), rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.sin(a + step));
+      var pnt4 = Vector3d.create(Math.cos(a + step), -rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.sin(a + step));
+      Object3dLayer._rotateUi$1.addQuad(pnt1, pnt2, pnt3, pnt4, Color._fromArgbColor(192, Colors.get_green()), Dates.empty());
+      index++;
+    }
+    index = 0;
+    for (var a = 0; a < twoPi; a += step) {
+      var start = !(index % 10);
+      var end = !((index + 1) % 10);
+      var pnt1 = Vector3d.create(-rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.cos(a), Math.sin(a));
+      var pnt2 = Vector3d.create(rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.cos(a), Math.sin(a));
+      var pnt3 = Vector3d.create(-rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.cos(a + step), Math.sin(a + step));
+      var pnt4 = Vector3d.create(rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.cos(a + step), Math.sin(a + step));
+      Object3dLayer._rotateUi$1.addQuad(pnt1, pnt3, pnt2, pnt4, Colors.get_red(), Dates.empty());
+      index++;
+    }
+    index = 0;
+    for (var a = 0; a < twoPi; a += step) {
+      var start = !(index % 10);
+      var end = !((index + 1) % 10);
+      var pnt1 = Vector3d.create(Math.cos(a), Math.sin(a), -rad * ((start) ? 0 : ((end) ? 1.5 : 1)));
+      var pnt2 = Vector3d.create(Math.cos(a), Math.sin(a), rad * ((start) ? 0 : ((end) ? 1.5 : 1)));
+      var pnt3 = Vector3d.create(Math.cos(a + step), Math.sin(a + step), -rad * ((start) ? 1.5 : ((end) ? 0 : 1)));
+      var pnt4 = Vector3d.create(Math.cos(a + step), Math.sin(a + step), rad * ((start) ? 1.5 : ((end) ? 0 : 1)));
+      Object3dLayer._rotateUi$1.addQuad(pnt1, pnt3, pnt2, pnt4, Colors.get_blue(), Dates.empty());
+      index++;
+    }
+    index = 0;
+    for (var a = 0; a < twoPi; a += step) {
+      var start = !(index % 10);
+      var end = !((index + 1) % 10);
+      var pnt1 = Vector3d.create(Math.cos(a), -rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.sin(a));
+      var pnt2 = Vector3d.create(Math.cos(a), rad * ((start) ? 0 : ((end) ? 1.5 : 1)), Math.sin(a));
+      var pnt3 = Vector3d.create(Math.cos(a + step), -rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.sin(a + step));
+      var pnt4 = Vector3d.create(Math.cos(a + step), rad * ((start) ? 1.5 : ((end) ? 0 : 1)), Math.sin(a + step));
+      Object3dLayer._rotateUi$1.addQuad(pnt1, pnt2, pnt3, pnt4, Colors.get_green(), Dates.empty());
+      index++;
+    }
+  };
+  var Object3dLayer$ = {
+    getPrimaryUI: function() {
+      if (this._primaryUI$1 == null) {
+        this._primaryUI$1 = new Object3dLayerUI(this);
+      }
+      return this._primaryUI$1;
+    },
+    get_flipV: function() {
+      return this._flipV$1;
+    },
+    set_flipV: function(value) {
+      if (this._flipV$1 !== value) {
+        this._flipV$1 = value;
+        if (this.object3d != null) {
+          this.object3d.flipV = this._flipV$1;
+          this.object3d._reload();
+        }
+        this.version++;
+      }
+      return value;
+    },
+    get_flipHandedness: function() {
+      return this._flipHandedness$1;
+    },
+    set_flipHandedness: function(value) {
+      if (this._flipHandedness$1 !== value) {
+        this._flipHandedness$1 = value;
+        if (this.object3d != null) {
+          this.object3d.flipHandedness = this._flipHandedness$1;
+          this.object3d._reload();
+        }
+        this.version++;
+      }
+      return value;
+    },
+    get_smooth: function() {
+      return this._smooth$1;
+    },
+    set_smooth: function(value) {
+      if (this._smooth$1 !== value) {
+        this._smooth$1 = value;
+        if (this.object3d != null) {
+          this.object3d.smooth = this._smooth$1;
+          this.object3d._reload();
+        }
+        this.version++;
+      }
+      return value;
+    },
+    get_twoSidedGeometry: function() {
+      return this._twoSidedGeometry$1;
+    },
+    set_twoSidedGeometry: function(value) {
+      if (this._twoSidedGeometry$1 !== value) {
+        this._twoSidedGeometry$1 = value;
+        this.version++;
+      }
+      return value;
+    },
+    get_heading: function() {
+      return this._heading$1;
+    },
+    set_heading: function(value) {
+      if (this._heading$1 !== value) {
+        this.version++;
+        this._heading$1 = value;
+      }
+      return value;
+    },
+    get_pitch: function() {
+      return this._pitch$1;
+    },
+    set_pitch: function(value) {
+      if (this._pitch$1 !== value) {
+        this.version++;
+        this._pitch$1 = value;
+      }
+      return value;
+    },
+    get_roll: function() {
+      return this._roll$1;
+    },
+    set_roll: function(value) {
+      if (this._roll$1 !== value) {
+        this.version++;
+        this._roll$1 = value;
+      }
+      return value;
+    },
+    get_scale: function() {
+      return this._scale$1;
+    },
+    set_scale: function(value) {
+      if (this._scale$1 !== value) {
+        this.version++;
+        this._scale$1 = value;
+      }
+      return value;
+    },
+    get_translate: function() {
+      return this._translate$1;
+    },
+    set_translate: function(value) {
+      if (this._translate$1 !== value) {
+        this.version++;
+        this._translate$1 = value;
+      }
+      return value;
+    },
+    get_lightID: function() {
+      return this._lightID$1;
+    },
+    set_lightID: function(value) {
+      this._lightID$1 = value;
+      return value;
+    },
+    cleanUp: function() {
+      if (this.object3d != null) {
+        this.object3d.dispose();
+      }
+      this.object3d = null;
+      this._dirty$1 = true;
+    },
+    colorChanged: function() {
+      if (this.object3d != null) {
+        this.object3d.color = this.get_color();
+      }
+    },
+    writeLayerProperties: function(xmlWriter) {
+      xmlWriter._writeAttributeString('FlipV', this.get_flipV().toString());
+      xmlWriter._writeAttributeString('FlipHandedness', this.get_flipHandedness().toString());
+      xmlWriter._writeAttributeString('Smooth', this.get_smooth().toString());
+      xmlWriter._writeAttributeString('TwoSidedGeometry', this.get_twoSidedGeometry().toString());
+      xmlWriter._writeAttributeString('Heading', this.get_heading().toString());
+      xmlWriter._writeAttributeString('Pitch', this.get_pitch().toString());
+      xmlWriter._writeAttributeString('Roll', this.get_roll().toString());
+      xmlWriter._writeAttributeString('Scale', this.get_scale().toString());
+      xmlWriter._writeAttributeString('Translate', this.get_translate().toString());
+      xmlWriter._writeAttributeString('LightID', this.get_lightID().toString());
+      xmlWriter._writeAttributeString('Obj', this.objType.toString());
+    },
+    getParams: function() {
+      var paramList = new Array(14);
+      paramList[0] = this._heading$1;
+      paramList[1] = this._pitch$1;
+      paramList[2] = this._roll$1;
+      paramList[3] = this._scale$1.x;
+      paramList[4] = this._scale$1.y;
+      paramList[5] = this._scale$1.z;
+      paramList[6] = this._translate$1.x;
+      paramList[7] = this._translate$1.y;
+      paramList[8] = this._translate$1.z;
+      paramList[9] = this.get_color().r / 255;
+      paramList[10] = this.get_color().g / 255;
+      paramList[11] = this.get_color().b / 255;
+      paramList[12] = this.get_color().a / 255;
+      paramList[13] = this.get_opacity();
+      return paramList;
+    },
+    getParamNames: function() {
+      return [ 'Heading', 'Pitch', 'Roll', 'Scale.X', 'Scale.Y', 'Scale.Z', 'Translate.X', 'Translate.Y', 'Translate.Z', 'Colors.Red', 'Colors.Green', 'Colors.Blue', 'Colors.Alpha', 'Opacity' ];
+    },
+    setParams: function(paramList) {
+      if (paramList.length === 14) {
+        this._heading$1 = paramList[0];
+        this._pitch$1 = paramList[1];
+        this._roll$1 = paramList[2];
+        this._scale$1.x = paramList[3];
+        this._scale$1.y = paramList[4];
+        this._scale$1.z = paramList[5];
+        this._translate$1.x = paramList[6];
+        this._translate$1.y = paramList[7];
+        this._translate$1.z = paramList[8];
+        this.set_opacity(paramList[13]);
+        var color = Color.fromArgb(ss.truncate((paramList[12] * 255)), ss.truncate((paramList[9] * 255)), ss.truncate((paramList[10] * 255)), ss.truncate((paramList[11] * 255)));
+        this.set_color(color);
+      }
+    },
+    add_propertiesChanged: function(value) {
+      this.__propertiesChanged$1 = ss.bindAdd(this.__propertiesChanged$1, value);
+    },
+    remove_propertiesChanged: function(value) {
+      this.__propertiesChanged$1 = ss.bindSub(this.__propertiesChanged$1, value);
+    },
+    fireChanged: function() {
+      if (this.__propertiesChanged$1 != null) {
+        this.__propertiesChanged$1(this, new ss.EventArgs());
+      }
+    },
+    getEditUI: function() {
+      return ss.safeCast(this, IUiController);
+    },
+    initializeFromXml: function(node) {
+      this.set_flipV(ss.boolean(node.attributes.getNamedItem('FlipV').nodeValue));
+      if (node.attributes.getNamedItem('FlipHandedness') != null) {
+        this.set_flipHandedness(ss.boolean(node.attributes.getNamedItem('FlipHandedness').nodeValue));
+      }
+      else {
+        this.set_flipHandedness(false);
+      }
+      if (node.attributes.getNamedItem('Smooth') != null) {
+        this.set_smooth(ss.boolean(node.attributes.getNamedItem('Smooth').nodeValue));
+      }
+      else {
+        this.set_smooth(true);
+      }
+      if (node.attributes.getNamedItem('TwoSidedGeometry') != null) {
+        this.set_twoSidedGeometry(ss.boolean(node.attributes.getNamedItem('TwoSidedGeometry').nodeValue));
+      }
+      else {
+        this.set_twoSidedGeometry(false);
+      }
+      if (node.attributes.getNamedItem('Obj') != null) {
+        this.objType = ss.boolean(node.attributes.getNamedItem('Obj').nodeValue);
+      }
+      else {
+        this.objType = false;
+      }
+      this.set_heading(parseFloat(node.attributes.getNamedItem('Heading').nodeValue));
+      this.set_pitch(parseFloat(node.attributes.getNamedItem('Pitch').nodeValue));
+      this.set_roll(parseFloat(node.attributes.getNamedItem('Roll').nodeValue));
+      this.set_scale(Vector3d.parse(node.attributes.getNamedItem('Scale').nodeValue));
+      this.set_translate(Vector3d.parse(node.attributes.getNamedItem('Translate').nodeValue));
+      if (node.attributes.getNamedItem('LightID') != null) {
+        this.set_lightID(parseInt(node.attributes.getNamedItem('LightID').nodeValue));
+      }
+    },
+    draw: function(renderContext, opacity, flat) {
+      var oldWorld = renderContext.get_world();
+      var rotation = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationZ(-this._roll$1 / 180 * Math.PI), Matrix3d._rotationX(-this._pitch$1 / 180 * Math.PI)), Matrix3d._rotationY(this._heading$1 / 180 * Math.PI));
+      renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(rotation, Matrix3d._scaling(this._scale$1.x, this._scale$1.y, this._scale$1.z)), Matrix3d.translation(this._translate$1)), oldWorld));
+      renderContext.set_twoSidedLighting(this.get_twoSidedGeometry());
+      if (this._lightID$1 > 0) {
+      }
+      else {
+        if (this.object3d != null) {
+          this.object3d.color = this.get_color();
+          this.object3d.render(renderContext, opacity * this.get_opacity());
+        }
+      }
+      renderContext.set_twoSidedLighting(false);
+      renderContext.set_world(oldWorld);
+      return true;
+    },
+    addFilesToCabinet: function(fc) {
+    },
+    loadData: function(doc, filename) {
+      if (ss.endsWith(filename.toLowerCase(), '.obj')) {
+        this.objType = true;
+      }
+      if (!this._lightID$1) {
+        if (this.objType) {
+          this.object3d = new Object3d(doc, ss.replaceString(filename, '.txt', '.obj'), this.get_flipV(), this._flipHandedness$1, true, this.get_color());
+        }
+        else {
+          this.object3d = new Object3d(doc, ss.replaceString(filename, '.txt', '.3ds'), this.get_flipV(), this._flipHandedness$1, true, this.get_color());
+        }
+      }
+    },
+    pointToView: function(pnt) {
+      var clientHeight = WWTControl.singleton.renderContext.height;
+      var clientWidth = WWTControl.singleton.renderContext.width;
+      var viewWidth = (WWTControl.singleton.renderContext.width / WWTControl.singleton.renderContext.height) * 1116;
+      var x = ((pnt.x) / (clientWidth) * viewWidth) - ((viewWidth - 1920) / 2);
+      var y = (pnt.y) / clientHeight * 1116;
+      return Vector2d.create(x, y);
+    },
+    render: function(renderEngine) {
+      this._showEditUi$1 = true;
+      return;
+    },
+    preRender: function(renderEngine) {
+      this._showEditUi$1 = true;
+      return;
+    },
+    mouseDown: function(sender, e) {
+      var location = this.pointToView(Vector2d.create(e.offsetX, e.offsetY));
+      this._pntDown$1 = location;
+      var pnt = location;
+      if (e.shiftKey) {
+        if (Vector2d.subtract(pnt, this._xHandle$1).get_length() < this._hitDist$1) {
+          this._dragMode$1 = 10;
+          this._valueOnDown$1 = this._scale$1.x;
+          return true;
+        }
+        if (Vector2d.subtract(pnt, this._yHandle$1).get_length() < this._hitDist$1) {
+          this._dragMode$1 = 10;
+          this._valueOnDown$1 = this._scale$1.y;
+          return true;
+        }
+        if (Vector2d.subtract(pnt, this._zHandle$1).get_length() < this._hitDist$1) {
+          this._dragMode$1 = 10;
+          this._valueOnDown$1 = this._scale$1.z;
+          return true;
+        }
+      }
+      else {
+        if (Vector2d.subtract(pnt, this._xHandle$1).get_length() < this._hitDist$1) {
+          this._dragMode$1 = 1;
+          this._valueOnDown$1 = this._translate$1.x;
+          return true;
+        }
+        if (Vector2d.subtract(pnt, this._yHandle$1).get_length() < this._hitDist$1) {
+          this._dragMode$1 = 2;
+          this._valueOnDown$1 = this._translate$1.y;
+          return true;
+        }
+        if (Vector2d.subtract(pnt, this._zHandle$1).get_length() < this._hitDist$1) {
+          this._dragMode$1 = 3;
+          this._valueOnDown$1 = this._translate$1.z;
+          return true;
+        }
+      }
+      for (var i = 0; i < this._hprHandles$1.length; i++) {
+        if (Vector2d.subtract(pnt, this._hprHandles$1[i]).get_length() < this._hitDist$1) {
+          switch (i) {
+            case 0:
+              this._dragMode$1 = 4;
+              this._valueOnDown$1 = this._heading$1;
+              this._valueOnDown2$1 = this._pitch$1;
+              return true;
+            case 1:
+              this._dragMode$1 = 7;
+              this._valueOnDown$1 = this._heading$1;
+              this._valueOnDown2$1 = this._pitch$1;
+              return true;
+            case 2:
+              this._dragMode$1 = 5;
+              this._valueOnDown$1 = this._pitch$1;
+              this._valueOnDown2$1 = this._roll$1;
+              return true;
+            case 3:
+              this._dragMode$1 = 8;
+              this._valueOnDown$1 = this._pitch$1;
+              this._valueOnDown2$1 = this._roll$1;
+              return true;
+            case 4:
+              this._dragMode$1 = 6;
+              this._valueOnDown$1 = this._roll$1;
+              this._valueOnDown2$1 = this._heading$1;
+              return true;
+            case 5:
+              this._dragMode$1 = 9;
+              this._valueOnDown$1 = this._roll$1;
+              this._valueOnDown2$1 = this._heading$1;
+              return true;
+            default:
+              break;
+          }
+        }
+      }
+      return false;
+    },
+    mouseUp: function(sender, e) {
+      if (!!this._dragMode$1) {
+        this._dragMode$1 = 0;
+        this._lockPreferedAxis$1 = false;
+        return true;
+      }
+      return false;
+    },
+    mouseMove: function(sender, e) {
+      var location = this.pointToView(Vector2d.create(e.offsetX, e.offsetY));
+      if (!!this._dragMode$1) {
+        var dist = 0;
+        var distX = location.x - this._pntDown$1.x;
+        var distY = -(location.y - this._pntDown$1.y);
+        if (this._lockPreferedAxis$1) {
+          if (this._preferY$1) {
+            dist = distY;
+            this._preferY$1 = true;
+            Cursor.set_current(Cursors.get_sizeNS());
+          }
+          else {
+            dist = distX;
+            this._preferY$1 = false;
+            Cursor.set_current(Cursors.get_sizeWE());
+          }
+        }
+        else {
+          if (Math.abs(distX) > Math.abs(distY)) {
+            dist = distX;
+            this._preferY$1 = false;
+          }
+          else {
+            dist = distY;
+            this._preferY$1 = true;
+          }
+          if (dist > 5) {
+            this._lockPreferedAxis$1 = true;
+          }
+        }
+        switch (this._dragMode$1) {
+          case 0:
+            break;
+          case 1:
+            this._translate$1.x = this._valueOnDown$1 + (12 * this._uiScale$1 * (dist / WWTControl.singleton.renderContext.width));
+            break;
+          case 2:
+            this._translate$1.y = this._valueOnDown$1 + (12 * this._uiScale$1 * (dist / WWTControl.singleton.renderContext.width));
+            break;
+          case 3:
+            this._translate$1.z = this._valueOnDown$1 + (12 * this._uiScale$1 * (dist / WWTControl.singleton.renderContext.width));
+            break;
+          case 4:
+            this._heading$1 = this._valueOnDown$1 - distX / 4;
+            this._pitch$1 = this._valueOnDown2$1 + distY / 4;
+            break;
+          case 5:
+            this._pitch$1 = this._valueOnDown$1 + distY / 4;
+            this._roll$1 = this._valueOnDown2$1 - distX / 4;
+            break;
+          case 6:
+            this._roll$1 = this._valueOnDown$1 + distY / 4;
+            this._heading$1 = this._valueOnDown2$1 - distX / 4;
+            break;
+          case 7:
+            this._heading$1 = this._valueOnDown$1 - distX / 4;
+            this._pitch$1 = this._valueOnDown2$1 - distY / 4;
+            break;
+          case 8:
+            this._pitch$1 = this._valueOnDown$1 + distY / 4;
+            this._roll$1 = this._valueOnDown2$1 + distX / 4;
+            break;
+          case 9:
+            this._roll$1 = this._valueOnDown$1 - distY / 4;
+            this._heading$1 = this._valueOnDown2$1 - distX / 4;
+            break;
+          case 10:
+            this._scale$1.x = this._scale$1.y = this._scale$1.z = this._valueOnDown$1 * Math.pow(2, (dist / 100));
+            break;
+          default:
+            break;
+        }
+        this.fireChanged();
+        return true;
+      }
+      else {
+        var pnt = location;
+        if (Vector2d.subtract(pnt, this._xHandle$1).get_length() < this._hitDist$1) {
+          Cursor.set_current(Cursors.get_sizeAll());
+          return true;
+        }
+        if (Vector2d.subtract(pnt, this._yHandle$1).get_length() < this._hitDist$1) {
+          Cursor.set_current(Cursors.get_sizeAll());
+          return true;
+        }
+        if (Vector2d.subtract(pnt, this._zHandle$1).get_length() < this._hitDist$1) {
+          Cursor.set_current(Cursors.get_sizeAll());
+          return true;
+        }
+        for (var i = 0; i < this._hprHandles$1.length; i++) {
+          if (Vector2d.subtract(pnt, this._hprHandles$1[i]).get_length() < this._hitDist$1) {
+            Cursor.set_current(Cursors.get_sizeAll());
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+    mouseClick: function(sender, e) {
+      return false;
+    },
+    click: function(sender, e) {
+      return false;
+    },
+    mouseDoubleClick: function(sender, e) {
+      return false;
+    },
+    keyDown: function(sender, e) {
+      return false;
+    },
+    keyUp: function(sender, e) {
+      return false;
+    },
+    hover: function(pnt) {
+      return false;
+    }
+  };
+
+
+  // wwtlib.Object3dLayerUI
+
+  function Object3dLayerUI(layer) {
+    this._layer$1 = null;
+    this._opened$1 = true;
+    this._callbacks$1 = null;
+    LayerUI.call(this);
+    this._layer$1 = layer;
+  }
+  var Object3dLayerUI$ = {
+    setUICallbacks: function(callbacks) {
+      this._callbacks$1 = callbacks;
+    },
+    get_hasTreeViewNodes: function() {
+      return true;
+    },
+    getTreeNodes: function() {
+      var nodes = [];
+      if (this._layer$1.object3d.objects.length > 0 && this._layer$1.object3d.objects[0].children != null) {
+        this._loadTree$1(nodes, this._layer$1.object3d.objects[0].children);
+      }
+      return nodes;
+    },
+    _loadTree$1: function(nodes, children) {
+      var $enum1 = ss.enumerate(children);
+      while ($enum1.moveNext()) {
+        var child = $enum1.current;
+        var node = new LayerUITreeNode();
+        node.set_name(child.name);
+        node.set_tag(child);
+        node.set_checked(child.enabled);
+        node.add_nodeSelected(ss.bind('_node_NodeSelected$1', this));
+        node.add_nodeChecked(ss.bind('_node_NodeChecked$1', this));
+        nodes.push(node);
+        this._loadTree$1(node.get_nodes(), child.children);
+      }
+    },
+    _node_NodeChecked$1: function(node, newState) {
+      var child = node.get_tag();
+      if (child != null) {
+        child.enabled = newState;
+      }
+    },
+    _node_NodeSelected$1: function(node) {
+      if (this._callbacks$1 != null) {
+        var child = node.get_tag();
+        var rowData = {};
+        rowData['Name'] = child.name;
+        rowData['Pivot.X'] = child.pivotPoint.x.toString();
+        rowData['Pivot.Y'] = child.pivotPoint.y.toString();
+        rowData['Pivot.Z'] = child.pivotPoint.z.toString();
+        this._callbacks$1.showRowData(rowData);
+      }
+    },
+    getNodeContextMenu: function(node) {
+      return LayerUI.prototype.getNodeContextMenu.call(this, node);
     }
   };
 
@@ -39397,13 +41755,8 @@ window.wwtlib = function(){
   var $exports = ss.module('wwtlib',
     {
       IFolder: [ IFolder ],
-      PositionTextureVertexBuffer: [ PositionTextureVertexBuffer, PositionTextureVertexBuffer$, null ],
-      KeplerVertexBuffer: [ KeplerVertexBuffer, KeplerVertexBuffer$, null ],
-      TimeSeriesLineVertexBuffer: [ TimeSeriesLineVertexBuffer, TimeSeriesLineVertexBuffer$, null ],
-      TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, null ],
-      PositionColoredVertexBuffer: [ PositionColoredVertexBuffer, PositionColoredVertexBuffer$, null ],
-      PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, null ],
       Sprite2d: [ Sprite2d, Sprite2d$, null ],
+      VertexPosition: [ VertexPosition, VertexPosition$, null ],
       Table: [ Table, Table$, null ],
       MinorPlanets: [ MinorPlanets, MinorPlanets$, null ],
       TileCache: [ TileCache, TileCache$, null ],
@@ -39414,6 +41767,12 @@ window.wwtlib = function(){
       FolderUp: [ FolderUp, FolderUp$, null, IThumbnail ],
       ViewMoverSlew: [ ViewMoverSlew, ViewMoverSlew$, null, IViewMover ],
       MainView: [ MainView, null, null ],
+      PositionTextureVertexBuffer: [ PositionTextureVertexBuffer, PositionTextureVertexBuffer$, VertexBufferBase ],
+      KeplerVertexBuffer: [ KeplerVertexBuffer, KeplerVertexBuffer$, VertexBufferBase ],
+      TimeSeriesLineVertexBuffer: [ TimeSeriesLineVertexBuffer, TimeSeriesLineVertexBuffer$, VertexBufferBase ],
+      TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, VertexBufferBase ],
+      PositionColoredVertexBuffer: [ PositionColoredVertexBuffer, PositionColoredVertexBuffer$, VertexBufferBase ],
+      PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, VertexBufferBase ],
       LayerCollection: [ LayerCollection, LayerCollection$, Layer ],
       SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, Layer ]
     },
@@ -39536,7 +41895,9 @@ window.wwtlib = function(){
       AstroRaDec: [ AstroRaDec, AstroRaDec$, null ],
       RiseSetDetails: [ RiseSetDetails, RiseSetDetails$, null ],
       AstroCalc: [ AstroCalc, AstroCalc$, null ],
-      PositionVertexBuffer: [ PositionVertexBuffer, PositionVertexBuffer$, null ],
+      ShortIndexBuffer: [ ShortIndexBuffer, ShortIndexBuffer$, null ],
+      IndexBuffer: [ IndexBuffer, IndexBuffer$, null, ss.IDisposable ],
+      VertexBufferBase: [ VertexBufferBase, VertexBufferBase$, null, ss.IDisposable ],
       Dates: [ Dates, Dates$, null ],
       SimpleLineList: [ SimpleLineList, SimpleLineList$, null ],
       OrbitLineList: [ OrbitLineList, OrbitLineList$, null ],
@@ -39551,13 +41912,14 @@ window.wwtlib = function(){
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
       KeplerPointSpriteShader: [ KeplerPointSpriteShader, KeplerPointSpriteShader$, null ],
       EllipseShader: [ EllipseShader, EllipseShader$, null ],
+      ModelShader: [ ModelShader, ModelShader$, null ],
       TileShader: [ TileShader, TileShader$, null ],
       ImageShader: [ ImageShader, ImageShader$, null ],
       SpriteShader: [ SpriteShader, SpriteShader$, null ],
       ShapeSpriteShader: [ ShapeSpriteShader, ShapeSpriteShader$, null ],
       TextShader: [ TextShader, TextShader$, null ],
       Tessellator: [ Tessellator, Tessellator$, null ],
-      Texture: [ Texture, Texture$, null ],
+      Texture: [ Texture, Texture$, null, ss.IDisposable ],
       Grids: [ Grids, Grids$, null ],
       KeplerVertex: [ KeplerVertex, KeplerVertex$, null ],
       ScaleMap: [ ScaleMap, ScaleMap$, null ],
@@ -39566,12 +41928,15 @@ window.wwtlib = function(){
       LayerManager: [ LayerManager, LayerManager$, null ],
       LayerMap: [ LayerMap, LayerMap$, null ],
       SkyOverlays: [ SkyOverlays, SkyOverlays$, null ],
-      Object3dLayer: [ Object3dLayer, Object3dLayer$, null ],
       GroundOverlayLayer: [ GroundOverlayLayer, GroundOverlayLayer$, null ],
       OrbitLayer: [ OrbitLayer, OrbitLayer$, null ],
       LayerUI: [ LayerUI, LayerUI$, null ],
       LayerUIMenuItem: [ LayerUIMenuItem, LayerUIMenuItem$, null ],
       LayerUITreeNode: [ LayerUITreeNode, LayerUITreeNode$, null ],
+      Group: [ Group, Group$, null ],
+      Mesh: [ Mesh, Mesh$, null, ss.IDisposable ],
+      Object3d: [ Object3d, Object3d$, null ],
+      ObjectNode: [ ObjectNode, ObjectNode$, null ],
       Orbit: [ Orbit, Orbit$, null ],
       EllipseRenderer: [ EllipseRenderer, EllipseRenderer$, null ],
       ReferenceFrame: [ ReferenceFrame, ReferenceFrame$, null ],
@@ -39584,6 +41949,7 @@ window.wwtlib = function(){
       WcsImage: [ WcsImage, WcsImage$, null ],
       KeplerianElements: [ KeplerianElements, KeplerianElements$, null ],
       Planets: [ Planets, Planets$, null ],
+      Material: [ Material, Material$, null ],
       RenderContext: [ RenderContext, RenderContext$, null ],
       RenderTriangle: [ RenderTriangle, RenderTriangle$, null ],
       ScriptInterface: [ ScriptInterface, ScriptInterface$, null ],
@@ -39659,6 +42025,7 @@ window.wwtlib = function(){
       PositionTexture: [ PositionTexture, PositionTexture$, null ],
       PositionColoredTextured: [ PositionColoredTextured, PositionColoredTextured$, null ],
       PositionColored: [ PositionColored, PositionColored$, null ],
+      PositionNormalTexturedTangent: [ PositionNormalTexturedTangent, PositionNormalTexturedTangent$, null ],
       Vector3d: [ Vector3d, Vector3d$, null ],
       Vector2d: [ Vector2d, Vector2d$, null ],
       Matrix3d: [ Matrix3d, Matrix3d$, null ],
@@ -39667,6 +42034,7 @@ window.wwtlib = function(){
       PlaneD: [ PlaneD, PlaneD$, null ],
       Vector4d: [ Vector4d, Vector4d$, null ],
       PositionNormalTexturedX2: [ PositionNormalTexturedX2, PositionNormalTexturedX2$, null ],
+      PositionNormalTextured: [ PositionNormalTextured, PositionNormalTextured$, null ],
       SphereHull: [ SphereHull, SphereHull$, null ],
       ConvexHull: [ ConvexHull, ConvexHull$, null ],
       Folder: [ Folder, Folder$, null, IThumbnail ],
@@ -39675,6 +42043,9 @@ window.wwtlib = function(){
       ViewMoverKenBurnsStyle: [ ViewMoverKenBurnsStyle, ViewMoverKenBurnsStyle$, null, IViewMover ],
       Place: [ Place, Place$, null, IThumbnail, IPlace ],
       Class1: [ Class1, Class1$, null ],
+      PositionVertexBuffer: [ PositionVertexBuffer, PositionVertexBuffer$, VertexBufferBase ],
+      PositionNormalTexturedVertexBuffer: [ PositionNormalTexturedVertexBuffer, PositionNormalTexturedVertexBuffer$, VertexBufferBase ],
+      PositionNormalTexturedTangentVertexBuffer: [ PositionNormalTexturedTangentVertexBuffer, PositionNormalTexturedTangentVertexBuffer$, VertexBufferBase ],
       FitsImage: [ FitsImage, FitsImage$, WcsImage ],
       ScaleLinear: [ ScaleLinear, ScaleLinear$, ScaleMap ],
       ScaleLog: [ ScaleLog, ScaleLog$, ScaleMap ],
@@ -39684,6 +42055,8 @@ window.wwtlib = function(){
       GreatCirlceRouteLayer: [ GreatCirlceRouteLayer, GreatCirlceRouteLayer$, Layer ],
       GridLayer: [ GridLayer, GridLayer$, Layer ],
       ImageSetLayer: [ ImageSetLayer, ImageSetLayer$, Layer ],
+      Object3dLayer: [ Object3dLayer, Object3dLayer$, Layer, IUiController ],
+      Object3dLayerUI: [ Object3dLayerUI, Object3dLayerUI$, LayerUI ],
       TimeSeriesLayer: [ TimeSeriesLayer, TimeSeriesLayer$, Layer ],
       VoTableLayer: [ VoTableLayer, VoTableLayer$, Layer ],
       PlotTile: [ PlotTile, PlotTile$, Tile ],
@@ -39895,6 +42268,14 @@ window.wwtlib = function(){
   EllipseShader.angleLoc = 0;
   EllipseShader.initialized = false;
   EllipseShader._prog = null;
+  ModelShader.vertLoc = 0;
+  ModelShader.normalLoc = 0;
+  ModelShader.textureLoc = 0;
+  ModelShader.initialized = false;
+  ModelShader._prog = null;
+  ModelShader.sunPosition = Vector3d.create(-1, -1, -1);
+  ModelShader.minLightingBrightness = 1;
+  ModelShader.atmosphereColor = Color.fromArgb(0, 0, 0, 0);
   TileShader.vertLoc = 0;
   TileShader.textureLoc = 0;
   TileShader.initialized = false;
@@ -39958,6 +42339,8 @@ window.wwtlib = function(){
   LayerManager._lastMenuClick = new Vector2d();
   LayerManager.getMoonFile('//worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons');
   LayerUI._type = null;
+  Object3d.maX_VERTICES = 8000;
+  Object3d.maX_POLYGONS = 8000;
   Orbit._orbitalToWwt = Matrix3d.create(1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1);
   Orbit._initBegun = false;
   PushPin._pinTextureCache = {};
@@ -40093,6 +42476,7 @@ window.wwtlib = function(){
   Coordinates.RCRA = (3.1415927 / 12);
   Coordinates.radius = 1;
   Coordinates._rotationMatrix = null;
+  Vector3d.zero = new Vector3d();
   Matrix3d._s_identity = Matrix3d._createIdentity();
   FolderBrowser._downloading = false;
   FolderBrowser._imagesLoaded = false;
@@ -40102,6 +42486,10 @@ window.wwtlib = function(){
   })();
   FitsImage.last = null;
   FitsImage._naN$1 = 0 / 0;
+  Object3dLayer._translateUI$1 = null;
+  Object3dLayer._translateUILines$1 = null;
+  Object3dLayer._scaleUI$1 = null;
+  Object3dLayer._rotateUi$1 = null;
   SpreadSheetLayer._circleTexture$1 = null;
   TimeSeriesLayer._circleTexture$1 = null;
   VoTableLayer._circleTexture$1 = null;

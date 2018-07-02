@@ -7,6 +7,17 @@ using System.Html;
 
 namespace wwtlib
 {
+
+    public class Material
+    {
+        public Color Diffuse;
+        public Color Ambient;
+        public Color Specular;
+        public float SpecularSharpness;
+        public float Opacity;
+        public bool IsDefault;
+    }
+
     public class RenderContext
     {
         public static bool UseGl = false;
@@ -214,17 +225,21 @@ namespace wwtlib
             set { nominalRadius = value; }
         }
 
-        private Vector3d sunPosition;
-        public Vector3d SunPosition
-        {
-            get
-            {
-                return sunPosition;
-            }
 
+        Texture mainTexture = null;
+        public Texture MainTexture
+        {
+            get { return mainTexture; }
             set
             {
-                sunPosition = value;
+                if (value != null)
+                {
+                    mainTexture = value;
+                    gl.bindTexture(GL.TEXTURE_2D, mainTexture.Texture2d);
+
+                   
+                    //textureStateDirty = true;
+                }
             }
         }
 
@@ -939,6 +954,164 @@ namespace wwtlib
             }
         }
 
+        private Color ambientLightColor = Colors.Black;
+        public Color AmbientLightColor
+        {
+            get
+            {
+                return ambientLightColor;
+            }
+
+            set
+            {
+                ambientLightColor = value;
+                lightingStateDirty = true;
+            }
+        }
+
+        private Color hemiLightColor = Colors.Black;
+        public Color HemisphereLightColor
+        {
+            get
+            {
+                return hemiLightColor;
+            }
+
+            set
+            {
+                hemiLightColor = value;
+                lightingStateDirty = true;
+            }
+        }
+
+        private Vector3d hemiLightUp;
+        public Vector3d HemisphereLightUp
+        {
+            get
+            {
+                return hemiLightUp;
+            }
+
+            set
+            {
+                hemiLightUp = value;
+                lightingStateDirty = true;
+            }
+        }
+
+
+        private Color sunlightColor = Colors.White;
+        public Color SunlightColor
+        {
+            get
+            {
+                return sunlightColor;
+            }
+
+            set
+            {
+                sunlightColor = value;
+                lightingStateDirty = true;
+            }
+        }
+
+        private Vector3d sunPosition;
+        public Vector3d SunPosition
+        {
+            get
+            {
+                return sunPosition;
+            }
+
+            set
+            {
+                sunPosition = value;
+                lightingStateDirty = true;
+            }
+        }
+
+        private Color reflectedLightColor = Colors.Black;
+        public Color ReflectedLightColor
+        {
+            get
+            {
+                return reflectedLightColor;
+            }
+
+            set
+            {
+                if (reflectedLightColor != value)
+                {
+                    reflectedLightColor = value;
+                    lightingStateDirty = true;
+                }
+            }
+        }
+
+        private Vector3d reflectedLightPosition;
+        public Vector3d ReflectedLightPosition
+        {
+            get
+            {
+                return reflectedLightPosition;
+            }
+
+            set
+            {
+                reflectedLightPosition = value;
+                lightingStateDirty = true;
+            }
+        }
+
+        // Radius of a planet casting a shadow; zero when there's no shadow
+        private double occludingPlanetRadius = 0.0;
+        public double OccludingPlanetRadius
+        {
+            get
+            {
+                return occludingPlanetRadius;
+            }
+
+            set
+            {
+                occludingPlanetRadius = value;
+            }
+        }
+
+        private Vector3d occludingPlanetPosition;
+        public Vector3d OccludingPlanetPosition
+        {
+            get
+            {
+                return occludingPlanetPosition;
+            }
+
+            set
+            {
+                occludingPlanetPosition = value;
+            }
+        }
+
+        bool lightingStateDirty = true;
+
+        private bool twoSidedLighting = false;
+        public bool TwoSidedLighting
+        {
+            get
+            {
+                return twoSidedLighting;
+            }
+
+            set
+            {
+                if (value != twoSidedLighting)
+                {
+                    twoSidedLighting = value;
+                    lightingStateDirty = true;
+                }
+            }
+        }
+
         public Vector3d CameraPosition;
 
         public Matrix3d WVP;
@@ -1033,5 +1206,157 @@ namespace wwtlib
 
             TargetCamera = ViewCamera.Copy();
         }
+
+        internal void SetVertexBuffer(VertexBufferBase vertexBuffer)
+        {
+        }
+
+        internal void SetIndexBuffer(IndexBuffer indexBuffer)
+        {
+        }
+
+        // Set up a shader for the specified material properties and the
+        // current lighting environment.
+        public void SetMaterial(Material material, Texture diffuseTex, Texture specularTex, Texture normalMap, float opacity)
+        {
+            //todo
+            //PlanetSurfaceStyle surfaceStyle = PlanetSurfaceStyle.Diffuse;
+            //if (material.Specular != SysColor.FromArgb(255, 0, 0, 0))
+            //{
+            //    surfaceStyle = PlanetSurfaceStyle.Specular;
+            //}
+
+            //// Force the emissive style when lighting is disabled
+            //if (!lightingEnabled)
+            //{
+            //    surfaceStyle = PlanetSurfaceStyle.Emissive;
+            //}
+
+            //PlanetShaderKey key = new PlanetShaderKey(surfaceStyle, false, 0);
+            //if (reflectedLightColor != SysColor.FromArgb(255, 0, 0, 0))
+            //{
+            //    key.lightCount = 2;
+            //}
+
+            //key.textures = 0;
+            //if (diffuseTex != null)
+            //{
+            //    key.textures |= PlanetShaderKey.SurfaceProperty.Diffuse;
+            //}
+
+            //if (specularTex != null)
+            //{
+            //    key.textures |= PlanetShaderKey.SurfaceProperty.Specular;
+            //}
+
+            //if (normalMap != null)
+            //{
+            //    key.textures |= PlanetShaderKey.SurfaceProperty.Normal;
+            //}
+
+            //key.TwoSidedLighting = twoSidedLighting;
+
+            //SetupPlanetSurfaceEffect(key, material.Opacity * opacity);
+
+            //shader.DiffuseColor = new Vector4(material.Diffuse.R / 255.0f, material.Diffuse.G / 255.0f, material.Diffuse.B / 255.0f, material.Opacity * opacity);
+            //if (surfaceStyle == PlanetSurfaceStyle.Specular || surfaceStyle == PlanetSurfaceStyle.SpecularPass)
+            //{
+            //    shader.SpecularColor = new Vector4(material.Specular.R / 255.0f, material.Specular.G / 255.0f, material.Specular.B / 255.0f, 0.0f);
+            //    shader.SpecularPower = material.SpecularSharpness;
+            //}
+
+            MainTexture = diffuseTex;
+
+            //if (diffuseTex != null)
+            //{
+            //    shader.MainTexture = diffuseTex.ResourceView;
+            //}
+
+            //if (specularTex != null)
+            //{
+            //    shader.SpecularTexture = specularTex.ResourceView;
+            //}
+
+            //if (normalMap != null)
+            //{
+            //    shader.NormalTexture = normalMap.ResourceView;
+            //}
+        }
+
+        public void PreDraw()
+        {
+            //updateShaderTransformLightingConstants();
+            //if (textureStateDirty)
+            //{
+            //    if (mainTexture != null && shader != null)
+            //    {
+            //        shader.MainTexture = mainTexture.ResourceView;
+            //    }
+            //    textureStateDirty = false;
+            //}
+
+            //if (shader != null)
+            //{
+            //    shader.use(devContext);
+            //}
+
+            //if (currentMode != (int)currentDepthStencilMode)
+            //{
+            //    devContext.OutputMerger.DepthStencilState = standardDepthStencilStates[(int)currentDepthStencilMode];
+            //    currentMode = (int)currentDepthStencilMode;
+            //}
+        }
+        //public PlanetShader SetupPlanetSurfaceEffect(PlanetShaderKey key, float opacity)
+        //{
+        //    return SetupPlanetSurfaceEffectShader(key, opacity);
+        //}
+        //private PlanetShader SetupPlanetSurfaceEffectShader(PlanetShaderKey key, float opacity)
+        //{
+        //    //todo
+        //    //PlanetShader shader = PlanetShader11.GetPlanetShader(Device, key);
+
+        //    //// If we've got a shader, make it active on the device and set the
+        //    //// shader constants.
+        //    //if (shader != null)
+        //    //{
+        //    //    shader.use(Device.ImmediateContext);
+
+        //    //    // Set the combined world/view/projection matrix in the shader
+        //    //    Matrix3d worldMatrix = World;
+        //    //    Matrix3d viewMatrix = View;
+        //    //    Matrix wvp = (worldMatrix * viewMatrix * Projection).Matrix;
+        //    //    if (RenderContext11.ExternalProjection)
+        //    //    {
+        //    //        wvp = wvp * ExternalScalingFactor;
+        //    //    }
+
+
+        //    //    shader.WVPMatrix = wvp;
+        //    //    shader.DiffuseColor = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+
+        //    //    Matrix3d invWorld = worldMatrix;
+        //    //    invWorld.Invert();
+
+        //    //    // For view-dependent lighting (e.g. specular), we need the position of the camera
+        //    //    // in the planet-fixed coordinate system.
+        //    //    Matrix3d worldViewMatrix = worldMatrix * viewMatrix;
+        //    //    Matrix3d invWorldView = worldViewMatrix;
+        //    //    invWorldView.Invert();
+        //    //    shader.WorldViewMatrix = worldViewMatrix.Matrix;
+
+        //    //    Vector3d cameraPositionObj = Vector3d.TransformCoordinate(new Vector3d(0.0, 0.0, 0.0), invWorldView);
+        //    //    shader.CameraPosition = cameraPositionObj.Vector3;
+        //    //}
+
+        //    //Shader = shader;
+
+        //    //return shader;
+
+        //    return null; 
+        //}
     }
+    //class PlanetShader
+    //{
+
+    //}
 }

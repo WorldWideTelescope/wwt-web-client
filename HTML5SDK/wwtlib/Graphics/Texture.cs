@@ -7,7 +7,7 @@ using System.Net;
 
 namespace wwtlib
 {
-    public class Texture
+    public class Texture : IDisposable
     {
         public ImageElement ImageElement = null;
         public WebGLTexture Texture2d = null;
@@ -36,6 +36,11 @@ namespace wwtlib
             ImageElement = null;
             Tile.PrepDevice.deleteTexture(Texture2d);
 
+        }
+
+        public void Dispose()
+        {
+            CleanUp();
         }
 
         public void Load(string url)

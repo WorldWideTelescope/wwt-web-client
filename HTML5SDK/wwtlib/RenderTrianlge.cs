@@ -226,8 +226,8 @@ namespace wwtlib
 
         private static Vector2d GetMiterPoint(Vector2d p1, Vector2d p2, Vector2d p3, double edgeOffset)
         {
-            Vector2d edge1 = Vector2d.SubtractVector(p2, p1);
-            Vector2d edge2 = Vector2d.SubtractVector(p3, p1);
+            Vector2d edge1 = Vector2d.Subtract(p2, p1);
+            Vector2d edge2 = Vector2d.Subtract(p3, p1);
             edge1.Normalize();
             edge2.Normalize();
             Vector2d dir = Vector2d.Create(edge1.X + edge2.X, edge1.Y + edge2.Y);

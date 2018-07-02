@@ -9,6 +9,18 @@ using System.Html.Media.Graphics;
 namespace wwtlib
 {
 
+    //[System.AttributeUsage(System.AttributeTargets.Property | System.AttributeTargets.Method)]
+    //public class LayerProperty : System.Attribute
+    //{
+
+    //    public LayerProperty()
+    //    {
+
+    //    }
+    //}
+
+
+
     public enum AltUnits { Meters=1, Feet=2, Inches=3, Miles=4, Kilometers=5, AstronomicalUnits=6, LightYears=7, Parsecs=8, MegaParsecs=9, Custom=10 };
     public enum FadeType { FadeIn=1, FadeOut=2, Both=3, None=4 };
     public abstract class Layer 
@@ -207,6 +219,11 @@ namespace wwtlib
             return new string[] { "Color.Red", "Color.Green", "Color.Blue", "Color.Alpha", "Opacity" };
         }
 
+        public virtual object GetEditUI()
+        {
+            return this as IUiController;
+        }
+
         public virtual void CleanUp()
         {
         }
@@ -396,7 +413,11 @@ namespace wwtlib
             }
         }
 
-        
+        public virtual void ColorChanged()
+        {
+            CleanUp();
+        }
+
         public virtual string ColorValue
         {
             get

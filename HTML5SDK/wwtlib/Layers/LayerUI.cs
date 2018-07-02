@@ -103,7 +103,7 @@ namespace wwtlib
         }
     }
 
-    public delegate void LayerUITreeNodeCheckedDelegate(LayerUITreeNode node);
+    public delegate void LayerUITreeNodeCheckedDelegate(LayerUITreeNode node, bool newState);
     public delegate void LayerUITreeNodeUpdatedDelegate(LayerUITreeNode node);
     public delegate void LayerUITreeNodeSelectedDelegate(LayerUITreeNode node);
     public delegate void LayerUITreeNodeActivatedDelegate(LayerUITreeNode node);
@@ -112,11 +112,11 @@ namespace wwtlib
     {
         public event LayerUITreeNodeCheckedDelegate NodeChecked;
 
-        public void FireNodeChecked()
+        public void FireNodeChecked(bool newState)
         {
             if (NodeChecked != null)
             {
-                NodeChecked.Invoke(this);
+                NodeChecked.Invoke(this, newState);
             }
         }
 

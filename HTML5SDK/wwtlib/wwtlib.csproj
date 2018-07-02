@@ -114,6 +114,7 @@
     <Compile Include="Layers\LayerUI.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\Object3d.cs" />
     <Compile Include="Layers\Orbit.cs">
       <SubType>Code</SubType>
     </Compile>

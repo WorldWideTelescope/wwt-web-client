@@ -104,7 +104,7 @@ namespace wwtlib
 
             return result;
         }
-        public UInt32 ReadUint32()
+        public UInt32 ReadUInt32()
         {
 
             //if (this.data.length < this.position + 4)
@@ -116,10 +116,19 @@ namespace wwtlib
             return result;
 
         }
+        public UInt16 ReadUInt16()
+        {
+
+            UInt16 result = (UInt16)(this.data[this.position] + (this.data[this.position + 1] << 8) );
+            this.position += 2;
+            return result;
+
+        }
+
         public Int32 ReadInt32()
         {
 
-            UInt32 result = this.ReadUint32();
+            UInt32 result = this.ReadUInt32();
 
             if ((result & 0x80000000) != 0)
             {

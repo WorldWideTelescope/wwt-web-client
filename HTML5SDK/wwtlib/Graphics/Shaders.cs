@@ -1010,13 +1010,222 @@ namespace wwtlib
         }
     }
 
+    public class ModelShader
+    {
+        public ModelShader()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+
+        public static int vertLoc;
+        public static int normalLoc;
+        public static int textureLoc;
+        public static WebGLUniformLocation projMatLoc;
+        public static WebGLUniformLocation mvMatLoc;
+        public static WebGLUniformLocation sampLoc;
+        public static WebGLUniformLocation sunLoc;
+        public static WebGLUniformLocation opacityLoc;
+        public static WebGLUniformLocation minBrightnessLoc;
+        public static WebGLUniformLocation atmosphereColorLoc;
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                      " precision mediump float;                                                              \n" +
+                      "                                                                                       \n" +
+                      "   varying vec2 vTextureCoord;                                                         \n" +
+                      "   varying vec3 vNormal;                                                               \n" +
+                      "   varying vec3 vCamVector;                                                               \n" +
+                      "                                                                                       \n" +
+                      "   uniform sampler2D uSampler;                                                         \n" +
+                      "   uniform float opacity;                                                              \n" +
+                      "   uniform vec3 uSunPosition;                                                          \n" +
+                      "   uniform float uMinBrightness;                                                       \n" +
+                      "   uniform vec3 uAtmosphereColor;                                                       \n" +
+                      "                                                                                       \n" +
+                      "   void main(void) {                                                                   \n" +
+                      "     vec3 normal = normalize(vNormal);                                                 \n" +
+                      "     vec3 camVN = normalize(vCamVector);                                               \n" +
+                      "     vec3 cam = normalize(vec3(0.0,0.0,-1.0));                                                    \n" +
+                      "     float dt = uMinBrightness + pow(max(0.0,- dot(normal,uSunPosition)),0.5);                  \n" +
+                      "     float atm = max(0.0, 1.0 - 2.5 * dot(cam,camVN)) + 0.3 * dt;                             \n" +
+                      "     atm = (dt > uMinBrightness) ? atm : 0.0;                                          \n" +
+                      "     if ( uMinBrightness == 1.0 ) { dt = 1.0; atm= 0.0; }                                        \n" +
+                      "     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n" +
+                      "     gl_FragColor = col * opacity;                                                     \n" +
+                      "     gl_FragColor.rgb *= dt;                                                           \n" +
+                      "     gl_FragColor.rgb += atm * uAtmosphereColor;                                  \n" + //vec3( .25, .61, .85);  
+                      "   }                                                                                   \n";
+
+
+            String vertexShaderText =
+                    "     attribute vec3 aVertexPosition;                                              \n" +
+                    "     attribute vec3 aNormal;                                                     \n" +
+                    "     attribute vec2 aTextureCoord;                                                \n" +
+                    "                                                                                  \n" +
+                    "     uniform mat4 uMVMatrix;                                                      \n" +
+                    "     uniform mat4 uPMatrix;                                                       \n" +
+                    "                                                                                  \n" +
+                    "     varying vec2 vTextureCoord;                                                  \n" +
+                    "     varying vec3 vNormal;                                                        \n" +
+                    "     varying vec3 vCamVector;                                                     \n" +
+                    "                                                                                  \n" +
+                    "                                                                                  \n" +
+                    "     void main(void) {                                                            \n" +
+                    "         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n" +
+                    "         vCamVector = normalize((mat3(uMVMatrix) * aVertexPosition).xyz);              \n" +
+                    "         vec3 normalT = normalize(mat3(uMVMatrix) * aNormal);                      \n" +
+                    "         vTextureCoord = aTextureCoord;                                           \n" +
+                    "         vNormal = normalT;                                                       \n" +
+                    "     }                                                                            \n" +
+                    "                                                                                  \n";
+
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+            if ((int)stat == 0)
+            {
+                object errorF = gl.getShaderInfoLog(frag);
+            }
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+            if ((int)stat1 == 0)
+            {
+                object errorV = gl.getShaderInfoLog(vert);
+            }
+
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            vertLoc = gl.getAttribLocation(prog, "aVertexPosition");
+            normalLoc = gl.getAttribLocation(prog, "aNormal");
+            textureLoc = gl.getAttribLocation(prog, "aTextureCoord");
+            projMatLoc = gl.getUniformLocation(prog, "uPMatrix");
+            mvMatLoc = gl.getUniformLocation(prog, "uMVMatrix");
+            sampLoc = gl.getUniformLocation(prog, "uSampler");
+            sunLoc = gl.getUniformLocation(prog, "uSunPosition");
+            minBrightnessLoc = gl.getUniformLocation(prog, "uMinBrightness");
+            opacityLoc = gl.getUniformLocation(prog, "opacity");
+            atmosphereColorLoc = gl.getUniformLocation(prog, "uAtmosphereColor");
+
+            Tile.uvMultiple = 1;
+            Tile.DemEnabled = true;
+
+            gl.enable(GL.BLEND);
+            gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+        public static Vector3d SunPosition = Vector3d.Create(-1, -1, -1);
+        public static float MinLightingBrightness = 1.0f;
+
+        public static Color AtmosphereColor = Color.FromArgb(0, 0, 0, 0);
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index,  WebGLTexture texture, float opacity, bool noDepth)
+        {
+            int stride = 32;
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+                gl.uniform1f(opacityLoc, opacity);
+                gl.uniform1f(minBrightnessLoc, renderContext.Lighting ? MinLightingBrightness : 1.0f);
+
+                if (renderContext.Lighting)
+                {
+                    gl.uniform3f(atmosphereColorLoc, AtmosphereColor.R / 255.0f, AtmosphereColor.G / 255.0f, AtmosphereColor.B / 255.0f);
+                }
+                else
+                {
+                    gl.uniform3f(atmosphereColorLoc, 0f, 0f, 0f);
+                }
+
+                gl.uniformMatrix4fv(mvMatLoc, false, mvMat.FloatArray());
+                gl.uniformMatrix4fv(projMatLoc, false, renderContext.Projection.FloatArray());
+                SunPosition.Normalize();
+
+                Matrix3d mvInv = renderContext.View.Clone();
+                mvInv.M41 = 0;
+                mvInv.M42 = 0;
+                mvInv.M43 = 0;
+                mvInv.M44 = 1;
+                Vector3d sp = Vector3d.TransformCoordinate(SunPosition, mvInv);
+                sp.Normalize();
+
+
+                gl.uniform3f(sunLoc, -(float)sp.X, -(float)sp.Y, -(float)sp.Z);
+
+                gl.uniform1i(sampLoc, 0);
+                if (renderContext.Space || noDepth)
+                {
+                    gl.disable(GL.DEPTH_TEST);
+                }
+                else
+                {
+                    gl.enable(GL.DEPTH_TEST);
+                }
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+
+                gl.enableVertexAttribArray(vertLoc);
+                gl.enableVertexAttribArray(textureLoc);
+                gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, stride, 0);
+                gl.vertexAttribPointer(normalLoc, 3, GL.FLOAT, false, stride, 12);
+                gl.vertexAttribPointer(textureLoc, 2, GL.FLOAT, false, stride, 24);
+                gl.activeTexture(GL.TEXTURE0);
+                gl.bindTexture(GL.TEXTURE_2D, texture);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, index);
+                gl.enable(GL.BLEND);
+
+                if (noDepth)
+                {
+                    gl.blendFunc(GL.SRC_ALPHA, GL.ONE);
+                }
+                else
+                {
+                    gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+                }
+            }
+        }
+    }
+
+
     public class TileShader
     {
         public TileShader()
         {
 
         }
-
         internal static WebGLShader frag;
         internal static WebGLShader vert;
 
@@ -1056,7 +1265,7 @@ namespace wwtlib
                       "     float dt = uMinBrightness + pow(max(0.0,- dot(normal,uSunPosition)),0.5);                  \n" +
                       "     float atm = max(0.0, 1.0 - 2.5 * dot(cam,camVN)) + 0.3 * dt;                             \n" +
                       "     atm = (dt > uMinBrightness) ? atm : 0.0;                                          \n" +
-                      "     if ( uMinBrightness == 1.0 ) { dt = 1.0; atm= 0.0; }                                        \n" +     
+                      "     if ( uMinBrightness == 1.0 ) { dt = 1.0; atm= 0.0; }                                        \n" +
                       "     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n" +
                       "     gl_FragColor = col * opacity;                                                     \n" +
                       "     gl_FragColor.rgb *= dt;                                                           \n" +
@@ -1100,7 +1309,7 @@ namespace wwtlib
             gl.shaderSource(vert, vertexShaderText);
             gl.compileShader(vert);
             object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
-            if ((int)stat1 ==0 )
+            if ((int)stat1 == 0)
             {
                 object errorV = gl.getShaderInfoLog(vert);
             }

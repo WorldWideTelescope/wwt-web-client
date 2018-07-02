@@ -343,6 +343,7 @@ namespace System.Html
         public void bufferData(int target, int size, int usage) { return; }
         public void bufferData(int target, Float32Array data, int usage) { return; }
         public void bufferData(int target, Uint16Array data, int usage) { return; }
+        public void bufferData(int target, Uint32Array data, int usage) { return; }
         public void bufferData(int target, WebGLArray data, int usage) { return; }
         public void bufferSubData(int target, int offset, WebGLArray data) { return; }
         public void bufferSubData(int target, int offset, WebGLArrayBuffer data) { return; }
@@ -839,6 +840,15 @@ namespace System.Html
     public class Uint16Array
     {
         public Uint16Array(object data) { }
+        [ScriptField]
+        public int length { get { return 0; } }
+    }
+
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
+    public class Uint32Array
+    {
+        public Uint32Array(object data) { }
         [ScriptField]
         public int length { get { return 0; } }
     }

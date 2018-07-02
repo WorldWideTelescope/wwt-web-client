@@ -6,6 +6,7 @@ using System.Xml;
 using System.Html.Services;
 using System.Html.Media.Graphics;
 using System.Net;
+using System.Html.Data.Files;
 
 namespace wwtlib
 {
@@ -181,7 +182,7 @@ namespace wwtlib
         public override void LoadData(TourDocument tourDoc, string filename)
         {
             table = new Table();
-            System.Html.Data.Files.Blob blob = tourDoc.GetFileBlob(filename);
+            Blob blob = tourDoc.GetFileBlob(filename);
             this.GetStringFromGzipBlob(blob, delegate (string data)
             {
                 table.LoadFromString(data, false, true, true);
@@ -209,7 +210,7 @@ namespace wwtlib
            
             string data = table.Save();
 
-            System.Html.Data.Files.Blob blob = new System.Html.Data.Files.Blob(new object[] { data });
+            Blob blob = new Blob(new object[] { data });
             
             fc.AddFile(fileName, blob);
 
