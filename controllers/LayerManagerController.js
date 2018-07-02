@@ -1,4 +1,4 @@
-﻿wwt.controllers.controller('LayerManagerController',
+wwt.controllers.controller('LayerManagerController',
   ['$scope',
     'AppState',
     '$timeout',
@@ -8,7 +8,7 @@
 
       function treeNode(args) {
         this.name = args.name;
-        this.checked = args.checked === undefined ? true : args.checked;
+        this.checked = getSticky(args.name, args.action,args.checked);
         this.children = args.children || [];
         this.action = args.action;
         this.collapsed = args.collapsed || false;
@@ -18,6 +18,21 @@
           this.mergeWith = args.mergeWith;
         }
         if (args.v) this.v = args.v;
+      }
+      var getSticky = function (name, action, defaultState) {
+        var sticky = appState.get('layerMgr_' + name + action)
+        if (name && action && sticky !== undefined) {
+          return sticky;
+        } else if (defaultState !== undefined) {
+          return defaultState;
+        } else {
+          return true;
+        }
+      }
+      var setSticky = function (name, action, checked) {
+        if (name && action) {
+          appState.set('layerMgr_' + name + action, checked);
+        }
       }
       var allMaps = {};
       var constellations = [];
@@ -364,6 +379,7 @@
           wwt.wc.settings['set_' + node.action]) {
           var settingFlag = node.checked && !node.disabled;
           wwt.wc.settings['set_' + node.action](settingFlag);
+          setSticky(node.name, node.action, settingFlag);
         }
         setChildState(node);
       };
