@@ -5814,7 +5814,7 @@ wwt.controllers.controller('LayerManagerController',
 
       function treeNode(args) {
         this.name = args.name;
-        this.checked = args.checked === undefined ? true : args.checked;
+        this.checked = getSticky(args.name, args.action,args.checked);
         this.children = args.children || [];
         this.action = args.action;
         this.collapsed = args.collapsed || false;
@@ -5824,6 +5824,21 @@ wwt.controllers.controller('LayerManagerController',
           this.mergeWith = args.mergeWith;
         }
         if (args.v) this.v = args.v;
+      }
+      var getSticky = function (name, action, defaultState) {
+        var sticky = appState.get('layerMgr_' + name + action)
+        if (name && action && sticky !== undefined) {
+          return sticky;
+        } else if (defaultState !== undefined) {
+          return defaultState;
+        } else {
+          return true;
+        }
+      }
+      var setSticky = function (name, action, checked) {
+        if (name && action) {
+          appState.set('layerMgr_' + name + action, checked);
+        }
       }
       var allMaps = {};
       var constellations = [];
@@ -6170,6 +6185,7 @@ wwt.controllers.controller('LayerManagerController',
           wwt.wc.settings['set_' + node.action]) {
           var settingFlag = node.checked && !node.disabled;
           wwt.wc.settings['set_' + node.action](settingFlag);
+          setSticky(node.name, node.action, settingFlag);
         }
         setChildState(node);
       };
@@ -8432,7 +8448,7 @@ wwt.controllers.controller('LoginController',
 
                 $rootScope.loggedIn = true;
                 $rootScope.token = $cookies.get('access_token');
-            }
+            } 
         }
 
         function log(response) {
@@ -8442,13 +8458,13 @@ wwt.controllers.controller('LoginController',
                 $timeout(function () {
                     $rootScope.loggedIn = true;
                 });
-            }
+            } 
             console.log(response, arguments);
         }
 
         $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
-            var redir = '//' + location.host + '/webclient';
+            var redir = 'http://' + location.host + '/webclient';
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
                 $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
                 encodeURIComponent(redir) + '&display=popup';
@@ -8468,6 +8484,7 @@ wwt.controllers.controller('LoginController',
         init();
 
     }]);
+
 wwt.Move = function (createArgs) {
 	
 	//#region initialization
