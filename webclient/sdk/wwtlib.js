@@ -7210,8 +7210,7 @@ window.wwtlib = function(){
     gl.blendFunc(770, 771);
     ModelShader.initialized = true;
   };
-  ModelShader.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
-    var stride = 32;
+  ModelShader.use = function(renderContext, vertex, index, texture, opacity, noDepth, stride) {
     var gl = renderContext.gl;
     if (gl != null) {
       if (!ModelShader.initialized) {
@@ -7255,7 +7254,7 @@ window.wwtlib = function(){
       gl.enableVertexAttribArray(ModelShader.textureLoc);
       gl.vertexAttribPointer(ModelShader.vertLoc, 3, 5126, false, stride, 0);
       gl.vertexAttribPointer(ModelShader.normalLoc, 3, 5126, false, stride, 12);
-      gl.vertexAttribPointer(ModelShader.textureLoc, 2, 5126, false, stride, 24);
+      gl.vertexAttribPointer(ModelShader.textureLoc, 2, 5126, false, stride, stride - 8);
       gl.activeTexture(33984);
       gl.bindTexture(3553, texture);
       gl.bindBuffer(34963, index);
@@ -7269,6 +7268,112 @@ window.wwtlib = function(){
     }
   };
   var ModelShader$ = {
+
+  };
+
+
+  // wwtlib.ModelShaderTan
+
+  function ModelShaderTan() {
+  }
+  ModelShaderTan.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '   varying vec3 vNormal;                                                               \n' + '   varying vec3 vCamVector;                                                               \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '   uniform vec3 uSunPosition;                                                          \n' + '   uniform float uMinBrightness;                                                       \n' + '   uniform vec3 uAtmosphereColor;                                                       \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '     vec3 normal = normalize(vNormal);                                                 \n' + '     vec3 camVN = normalize(vCamVector);                                               \n' + '     vec3 cam = normalize(vec3(0.0,0.0,-1.0));                                                    \n' + '     float dt = uMinBrightness + pow(max(0.0,- dot(normal,uSunPosition)),0.5);                  \n' + '     float atm = max(0.0, 1.0 - 2.5 * dot(cam,camVN)) + 0.3 * dt;                             \n' + '     atm = (dt > uMinBrightness) ? atm : 0.0;                                          \n' + '     if ( uMinBrightness == 1.0 ) { dt = 1.0; atm= 0.0; }                                        \n' + '     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n' + '     gl_FragColor = col * opacity;                                                     \n' + '     gl_FragColor.rgb *= dt;                                                           \n' + '     gl_FragColor.rgb += atm * uAtmosphereColor;                                  \n' + '   }                                                                                   \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec3 aNormal;                                                     \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec3 vNormal;                                                        \n' + '     varying vec3 vCamVector;                                                     \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vCamVector = normalize((mat3(uMVMatrix) * aVertexPosition).xyz);              \n' + '         vec3 normalT = normalize(mat3(uMVMatrix) * aNormal);                      \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '         vNormal = normalT;                                                       \n' + '     }                                                                            \n' + '                                                                                  \n';
+    ModelShaderTan._frag = gl.createShader(35632);
+    gl.shaderSource(ModelShaderTan._frag, fragShaderText);
+    gl.compileShader(ModelShaderTan._frag);
+    var stat = gl.getShaderParameter(ModelShaderTan._frag, 35713);
+    if (!stat) {
+      var errorF = gl.getShaderInfoLog(ModelShaderTan._frag);
+    }
+    ModelShaderTan._vert = gl.createShader(35633);
+    gl.shaderSource(ModelShaderTan._vert, vertexShaderText);
+    gl.compileShader(ModelShaderTan._vert);
+    var stat1 = gl.getShaderParameter(ModelShaderTan._vert, 35713);
+    if (!stat1) {
+      var errorV = gl.getShaderInfoLog(ModelShaderTan._vert);
+    }
+    ModelShaderTan._prog = gl.createProgram();
+    gl.attachShader(ModelShaderTan._prog, ModelShaderTan._vert);
+    gl.attachShader(ModelShaderTan._prog, ModelShaderTan._frag);
+    gl.linkProgram(ModelShaderTan._prog);
+    var errcode = gl.getProgramParameter(ModelShaderTan._prog, 35714);
+    gl.useProgram(ModelShaderTan._prog);
+    ModelShaderTan.vertLoc = gl.getAttribLocation(ModelShaderTan._prog, 'aVertexPosition');
+    ModelShaderTan.normalLoc = gl.getAttribLocation(ModelShaderTan._prog, 'aNormal');
+    ModelShaderTan.textureLoc = gl.getAttribLocation(ModelShaderTan._prog, 'aTextureCoord');
+    ModelShaderTan.projMatLoc = gl.getUniformLocation(ModelShaderTan._prog, 'uPMatrix');
+    ModelShaderTan.mvMatLoc = gl.getUniformLocation(ModelShaderTan._prog, 'uMVMatrix');
+    ModelShaderTan.sampLoc = gl.getUniformLocation(ModelShaderTan._prog, 'uSampler');
+    ModelShaderTan.sunLoc = gl.getUniformLocation(ModelShaderTan._prog, 'uSunPosition');
+    ModelShaderTan.minBrightnessLoc = gl.getUniformLocation(ModelShaderTan._prog, 'uMinBrightness');
+    ModelShaderTan.opacityLoc = gl.getUniformLocation(ModelShaderTan._prog, 'opacity');
+    ModelShaderTan.atmosphereColorLoc = gl.getUniformLocation(ModelShaderTan._prog, 'uAtmosphereColor');
+    Tile.uvMultiple = 1;
+    Tile.demEnabled = true;
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    ModelShaderTan.initialized = true;
+  };
+  ModelShaderTan.use = function(renderContext, vertex, index, texture, opacity, noDepth, stride) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!ModelShaderTan.initialized) {
+        ModelShaderTan.init(renderContext);
+      }
+      gl.useProgram(ModelShaderTan._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniform1f(ModelShaderTan.opacityLoc, opacity);
+      gl.uniform1f(ModelShaderTan.minBrightnessLoc, (renderContext.lighting) ? ModelShaderTan.minLightingBrightness : 1);
+      if (renderContext.lighting) {
+        gl.uniform3f(ModelShaderTan.atmosphereColorLoc, ModelShaderTan.atmosphereColor.r / 255, ModelShaderTan.atmosphereColor.g / 255, ModelShaderTan.atmosphereColor.b / 255);
+      }
+      else {
+        gl.uniform3f(ModelShaderTan.atmosphereColorLoc, 0, 0, 0);
+      }
+      gl.uniformMatrix4fv(ModelShaderTan.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(ModelShaderTan.projMatLoc, false, renderContext.get_projection().floatArray());
+      ModelShaderTan.sunPosition.normalize();
+      var mvInv = renderContext.get_view().clone();
+      mvInv.set_m41(0);
+      mvInv.set_m42(0);
+      mvInv.set_m43(0);
+      mvInv.set_m44(1);
+      var sp = Vector3d._transformCoordinate(ModelShaderTan.sunPosition, mvInv);
+      sp.normalize();
+      gl.uniform3f(ModelShaderTan.sunLoc, -sp.x, -sp.y, -sp.z);
+      gl.uniform1i(ModelShaderTan.sampLoc, 0);
+      if (renderContext.space || noDepth) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.enableVertexAttribArray(ModelShaderTan.vertLoc);
+      gl.enableVertexAttribArray(ModelShaderTan.normalLoc);
+      gl.enableVertexAttribArray(ModelShaderTan.textureLoc);
+      gl.vertexAttribPointer(ModelShaderTan.vertLoc, 3, 5126, false, stride, 0);
+      gl.vertexAttribPointer(ModelShaderTan.normalLoc, 3, 5126, false, stride, 12);
+      gl.vertexAttribPointer(ModelShaderTan.textureLoc, 2, 5126, false, stride, stride - 8);
+      gl.activeTexture(33984);
+      gl.bindTexture(3553, texture);
+      gl.bindBuffer(34963, index);
+      gl.enable(3042);
+      if (noDepth) {
+        gl.blendFunc(770, 1);
+      }
+      else {
+        gl.blendFunc(770, 771);
+      }
+    }
+  };
+  var ModelShaderTan$ = {
 
   };
 
@@ -7456,6 +7561,90 @@ window.wwtlib = function(){
     }
   };
   var ImageShader$ = {
+
+  };
+
+
+  // wwtlib.ImageShader2
+
+  function ImageShader2() {
+  }
+  ImageShader2.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = ' precision mediump float;                                                              \n' + '                                                                                       \n' + '   varying vec2 vTextureCoord;                                                         \n' + '                                                                                       \n' + '   uniform sampler2D uSampler;                                                         \n' + '   uniform float opacity;                                                              \n' + '                                                                                       \n' + '   void main(void) {                                                                   \n' + '     vec4 col = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));           \n' + '     gl_FragColor = col * opacity;                                                     \n' + '   }                                                                                   \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '     attribute vec2 aTextureCoord;                                                \n' + '                                                                                  \n' + '     uniform mat4 uMVMatrix;                                                      \n' + '     uniform mat4 uPMatrix;                                                       \n' + '                                                                                  \n' + '     varying vec2 vTextureCoord;                                                  \n' + '     varying vec3 vNormal;                                                        \n' + '     varying vec3 vCamVector;                                                     \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);         \n' + '         vTextureCoord = aTextureCoord;                                           \n' + '     }                                                                            \n' + '                                                                                  \n';
+    ImageShader2._frag = gl.createShader(35632);
+    gl.shaderSource(ImageShader2._frag, fragShaderText);
+    gl.compileShader(ImageShader2._frag);
+    var stat = gl.getShaderParameter(ImageShader2._frag, 35713);
+    if (!stat) {
+      var errorF = gl.getShaderInfoLog(ImageShader2._frag);
+    }
+    ImageShader2._vert = gl.createShader(35633);
+    gl.shaderSource(ImageShader2._vert, vertexShaderText);
+    gl.compileShader(ImageShader2._vert);
+    var stat1 = gl.getShaderParameter(ImageShader2._vert, 35713);
+    if (!stat1) {
+      var errorV = gl.getShaderInfoLog(ImageShader2._vert);
+    }
+    ImageShader2._prog = gl.createProgram();
+    gl.attachShader(ImageShader2._prog, ImageShader2._vert);
+    gl.attachShader(ImageShader2._prog, ImageShader2._frag);
+    gl.linkProgram(ImageShader2._prog);
+    var errcode = gl.getProgramParameter(ImageShader2._prog, 35714);
+    gl.useProgram(ImageShader2._prog);
+    ImageShader2.vertLoc = gl.getAttribLocation(ImageShader2._prog, 'aVertexPosition');
+    ImageShader2.textureLoc = gl.getAttribLocation(ImageShader2._prog, 'aTextureCoord');
+    ImageShader2.projMatLoc = gl.getUniformLocation(ImageShader2._prog, 'uPMatrix');
+    ImageShader2.mvMatLoc = gl.getUniformLocation(ImageShader2._prog, 'uMVMatrix');
+    ImageShader2.sampLoc = gl.getUniformLocation(ImageShader2._prog, 'uSampler');
+    ImageShader2.opacityLoc = gl.getUniformLocation(ImageShader2._prog, 'opacity');
+    Tile.uvMultiple = 1;
+    Tile.demEnabled = true;
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    ImageShader2.initialized = true;
+  };
+  ImageShader2.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!ImageShader2.initialized) {
+        ImageShader2.init(renderContext);
+      }
+      gl.useProgram(ImageShader2._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniform1f(ImageShader2.opacityLoc, opacity);
+      gl.uniformMatrix4fv(ImageShader2.mvMatLoc, false, mvMat.floatArray());
+      gl.uniformMatrix4fv(ImageShader2.projMatLoc, false, renderContext.get_projection().floatArray());
+      gl.uniform1i(ImageShader2.sampLoc, 0);
+      if (renderContext.space || noDepth) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.bindBuffer(34962, vertex);
+      gl.enableVertexAttribArray(ImageShader2.vertLoc);
+      gl.enableVertexAttribArray(ImageShader2.textureLoc);
+      gl.vertexAttribPointer(ImageShader2.vertLoc, 3, 5126, false, 32, 0);
+      gl.vertexAttribPointer(ImageShader2.textureLoc, 2, 5126, false, 32, 24);
+      gl.activeTexture(33984);
+      gl.bindTexture(3553, texture);
+      gl.bindBuffer(34963, index);
+      gl.enable(3042);
+      if (noDepth) {
+        gl.blendFunc(770, 1);
+      }
+      else {
+        gl.blendFunc(770, 771);
+      }
+    }
+  };
+  var ImageShader2$ = {
 
   };
 
@@ -10744,6 +10933,8 @@ window.wwtlib = function(){
     this.meshFilenames = [];
     this.color = Colors.get_white();
     this._textureCache = {};
+    this._matFiles = new Array(0);
+    this._matFileIndex = 0;
     this.objects = [];
     this._matLib = {};
     this._textureLib = {};
@@ -10758,6 +10949,7 @@ window.wwtlib = function(){
     this.flipHandedness = flipHandedness;
     this.filename = filename;
     if (ss.endsWith(this.filename.toLowerCase(), '.obj')) {
+      this._loadMeshFromObj(tourDoc, this.filename);
     }
     else {
       this._loadMeshFrom3ds(tourDoc, this.filename, 1);
@@ -10831,6 +11023,7 @@ window.wwtlib = function(){
       if (!this.issLayer) {
         this.dispose();
         if (ss.endsWith(this.filename.toLowerCase(), '.obj')) {
+          this._loadMeshFromObj(this._tourDocument, this.filename);
         }
         else {
           this._loadMeshFrom3ds(this._tourDocument, this.filename, 1);
@@ -10942,6 +11135,9 @@ window.wwtlib = function(){
         vertexMap[vertexPositions[vertexIndex].index] = (uniqueVertexCount - 1);
       }
       var vertexInstanceCounts = new Array(uniqueVertexCount);
+      for (var i = 0; i < uniqueVertexCount; i++) {
+        vertexInstanceCounts[i] = 0;
+      }
       var $enum1 = ss.enumerate(indexList);
       while ($enum1.moveNext()) {
         var vertexIndex = $enum1.current;
@@ -10953,6 +11149,9 @@ window.wwtlib = function(){
         var count = vertexInstanceCounts[i];
         if (count > 0) {
           vertexInstances[i] = new Array(count);
+          for (var j = 0; j < count; j++) {
+            vertexInstances[i][j] = 0;
+          }
         }
       }
       for (var i = 0; i < indexList.length; ++i) {
@@ -11108,6 +11307,338 @@ window.wwtlib = function(){
         br.readBytes(chunkLength - 6);
       }
       return percentage;
+    },
+    _loadMeshFromObj: function(doc, filename) {
+      var $this = this;
+
+      this.filename = filename;
+      this._tourDocument = doc;
+      var blob = doc.getFileBlob(filename);
+      var chunck = new FileReader();
+      chunck.onloadend = function(e) {
+        $this._matFiles = $this._readObjMaterialsFromBin(ss.safeCast(chunck.result, String));
+        $this._matFileIndex = 0;
+        $this._loadMatLib(ss.safeCast(chunck.result, String));
+      };
+      chunck.readAsText(blob);
+    },
+    _readObjMaterialsFromBin: function(data) {
+      var matFiles = [];
+      var lines = data.split('\n');
+      var $enum1 = ss.enumerate(lines);
+      while ($enum1.moveNext()) {
+        var lineraw = $enum1.current;
+        var line = ss.replaceString(lineraw, '  ', ' ');
+        var parts = ss.trim(line).split(' ');
+        if (parts.length > 0) {
+          switch (parts[0]) {
+            case 'mtllib':
+              var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
+              var matFile = path + parts[1];
+              matFiles.push(matFile);
+              break;
+          }
+        }
+      }
+      return matFiles;
+    },
+    _readObjFromBin: function(data) {
+      var objectFound = false;
+      var objects = [];
+      var currentObject = new ObjectNode();
+      currentObject.name = 'Default';
+      var triangleCount = 0;
+      var vertexCount = 0;
+      var vertexList = [];
+      var vertList = [];
+      var normList = [];
+      var uvList = [];
+      vertList.push(new Vector3d());
+      normList.push(new Vector3d());
+      uvList.push(new Vector2d());
+      var indexList = [];
+      var attribList = [];
+      var applyLists = [];
+      var applyListsIndex = [];
+      var materialNames = [];
+      var currentMaterialIndex = -1;
+      var currentMaterial = new Material();
+      var currentGroup = new Group();
+      var currentIndex = 0;
+      currentMaterial = new Material();
+      currentMaterial.diffuse = this.color;
+      currentMaterial.ambient = this.color;
+      currentMaterial.specular = Colors.get_white();
+      currentMaterial.specularSharpness = 30;
+      currentMaterial.opacity = 1;
+      currentMaterial.isDefault = true;
+      currentGroup.startIndex = 0;
+      currentGroup.indexCount = 0;
+      currentGroup.materialIndex = 0;
+      var lines = data.split('\n');
+      var $enum1 = ss.enumerate(lines);
+      while ($enum1.moveNext()) {
+        var lineraw = $enum1.current;
+        var line = ss.replaceString(lineraw, '  ', ' ');
+        var parts = ss.trim(line).split(' ');
+        if (parts.length > 0) {
+          switch (parts[0]) {
+            case 'mtllib':
+              break;
+            case 'usemtl':
+              var materialName = parts[1];
+              if (ss.keyExists(this._matLib, materialName)) {
+                if (currentMaterialIndex === -1 && currentIndex > 0) {
+                  this._addMaterial(currentMaterial);
+                  currentMaterialIndex++;
+                }
+                if (currentMaterialIndex > -1) {
+                  currentGroup.indexCount = currentIndex - currentGroup.startIndex;
+                  currentObject.drawGroup.push(currentGroup);
+                }
+                currentMaterialIndex++;
+                if (ss.keyExists(this._matLib, materialName)) {
+                  currentMaterial = this._matLib[materialName];
+                  if (ss.keyExists(this._textureLib, materialName)) {
+                    try {
+                      if (!ss.keyExists(this._textureCache, this._textureLib[materialName])) {
+                        var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
+                        var tex = this._tourDocument.getCachedTexture2d(path + this._textureLib[materialName]);
+                        if (tex != null) {
+                          this.meshFilenames.push(this._textureLib[materialName]);
+                          this._textureCache[this._textureLib[materialName]] = tex;
+                        }
+                      }
+                      this._meshTextures.push(this._textureCache[this._textureLib[materialName]]);
+                    }
+                    catch ($e2) {
+                    }
+                  }
+                  this._addMaterial(currentMaterial);
+                  currentGroup = new Group();
+                  currentGroup.startIndex = currentIndex;
+                  currentGroup.indexCount = 0;
+                  currentGroup.materialIndex = currentMaterialIndex;
+                }
+              }
+              break;
+            case 'v':
+              vertexCount++;
+              if (this.flipHandedness) {
+                vertList.push(Vector3d.create(-parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3])));
+              }
+              else {
+                vertList.push(Vector3d.create(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3])));
+              }
+              break;
+            case 'vn':
+              if (this.flipHandedness) {
+                normList.push(Vector3d.create(-parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3])));
+              }
+              else {
+                normList.push(Vector3d.create(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3])));
+              }
+              break;
+            case 'vt':
+              uvList.push(Vector2d.create(parseFloat(parts[1]), (this.flipV) ? (1 - parseFloat(parts[2])) : parseFloat(parts[2])));
+              break;
+            case 'g':
+            case 'o':
+              if (objectFound) {
+                if (currentMaterialIndex > -1) {
+                  currentGroup.indexCount = currentIndex - currentGroup.startIndex;
+                  currentObject.drawGroup.push(currentGroup);
+                  currentGroup = new Group();
+                  currentGroup.startIndex = currentIndex;
+                  currentGroup.indexCount = 0;
+                  currentGroup.materialIndex = currentMaterialIndex;
+                }
+                currentObject = new ObjectNode();
+              }
+              objectFound = true;
+              if (parts.length > 1) {
+                currentObject.name = parts[1];
+              }
+              else {
+                currentObject.name = 'Unnamed';
+              }
+              objects.push(currentObject);
+              break;
+            case 'f':
+              var indexiesA = this._getIndexies(parts[1]);
+              var indexiesB = this._getIndexies(parts[2]);
+              var indexiesC = this._getIndexies(parts[3]);
+              vertexList.push(PositionNormalTextured.createUV(vertList[indexiesA[0]], normList[indexiesA[2]], uvList[indexiesA[1]]));
+              vertexList.push(PositionNormalTextured.createUV(vertList[indexiesB[0]], normList[indexiesB[2]], uvList[indexiesB[1]]));
+              vertexList.push(PositionNormalTextured.createUV(vertList[indexiesC[0]], normList[indexiesC[2]], uvList[indexiesC[1]]));
+              if (this.flipHandedness) {
+                indexList.push(currentIndex);
+                indexList.push(currentIndex + 2);
+                indexList.push(currentIndex + 1);
+              }
+              else {
+                indexList.push(currentIndex);
+                indexList.push(currentIndex + 1);
+                indexList.push(currentIndex + 2);
+              }
+              triangleCount++;
+              currentIndex += 3;
+              if (parts.length > 4) {
+                var partIndex = 4;
+                while (partIndex < parts.length) {
+                  if (this.flipHandedness) {
+                    indexiesA = this._getIndexies(parts[1]);
+                    indexiesC = this._getIndexies(parts[partIndex]);
+                    indexiesB = this._getIndexies(parts[partIndex - 1]);
+                  }
+                  else {
+                    indexiesA = this._getIndexies(parts[1]);
+                    indexiesB = this._getIndexies(parts[partIndex - 1]);
+                    indexiesC = this._getIndexies(parts[partIndex]);
+                  }
+                  vertexList.push(PositionNormalTextured.createUV(vertList[indexiesA[0]], normList[indexiesA[2]], uvList[indexiesA[1]]));
+                  vertexList.push(PositionNormalTextured.createUV(vertList[indexiesB[0]], normList[indexiesB[2]], uvList[indexiesB[1]]));
+                  vertexList.push(PositionNormalTextured.createUV(vertList[indexiesC[0]], normList[indexiesC[2]], uvList[indexiesC[1]]));
+                  indexList.push(currentIndex);
+                  indexList.push(currentIndex + 1);
+                  indexList.push(currentIndex + 2);
+                  triangleCount++;
+                  currentIndex += 3;
+                  partIndex++;
+                }
+              }
+              break;
+          }
+        }
+      }
+      if (!objectFound) {
+        objects.push(currentObject);
+      }
+      if (currentMaterialIndex === -1 && currentIndex > 0) {
+        this._addMaterial(currentMaterial);
+        currentMaterialIndex++;
+      }
+      if (currentMaterialIndex > -1) {
+        currentGroup.indexCount = (currentIndex - currentGroup.startIndex);
+        currentObject.drawGroup.push(currentGroup);
+      }
+      if (normList.length < 2) {
+        var degtorag = Math.PI / 180;
+        var creaseAngleRad = ((this.smooth) ? 170 * degtorag : 45 * degtorag);
+        var vertexNormals = this._calculateVertexNormalsMerged(vertexList, indexList, creaseAngleRad);
+        var newVertexList = [];
+        var newVertexCount = indexList.length;
+        for (var vertexIndex = 0; vertexIndex < newVertexCount; ++vertexIndex) {
+          var v = vertexList[indexList[vertexIndex]];
+          v.set_normal(vertexNormals[vertexIndex]);
+          newVertexList.push(v);
+        }
+        vertexList = newVertexList;
+      }
+      this._mesh = Mesh.create(vertexList, indexList);
+      var rootDummy = new ObjectNode();
+      rootDummy.name = 'Root';
+      rootDummy.parent = null;
+      rootDummy.level = -1;
+      rootDummy.drawGroup = null;
+      rootDummy.children = objects;
+      this.objects = [];
+      this.objects.push(rootDummy);
+      this._mesh.setObjects(this.objects);
+      this._mesh.commitToDevice();
+      this._dirty = false;
+      this._readyToRender = true;
+    },
+    _loadMatLib: function(data) {
+      var $this = this;
+
+      if (this._matFileIndex < this._matFiles.length) {
+        var filename = this._matFiles[this._matFileIndex++];
+        var blob = this._tourDocument.getFileBlob(filename);
+        var chunck = new FileReader();
+        chunck.onloadend = function(e) {
+          $this._readMatLibFromBin(ss.safeCast(chunck.result, String));
+          $this._loadMatLib(data);
+        };
+        chunck.readAsText(blob);
+      }
+      else {
+        this._readObjFromBin(data);
+      }
+    },
+    _readMatLibFromBin: function(data) {
+      try {
+        var currentMaterial = new Material();
+        var materialName = '';
+        this._matLib = {};
+        this._textureLib = {};
+        var lines = data.split('\n');
+        var $enum1 = ss.enumerate(lines);
+        while ($enum1.moveNext()) {
+          var lineraw = $enum1.current;
+          var line = lineraw;
+          var parts = ss.trim(line).split(' ');
+          if (parts.length > 0) {
+            switch (parts[0]) {
+              case 'newmtl':
+                if (!ss.emptyString(materialName)) {
+                  this._matLib[materialName] = currentMaterial;
+                }
+                currentMaterial = new Material();
+                currentMaterial.diffuse = Colors.get_white();
+                currentMaterial.ambient = Colors.get_white();
+                currentMaterial.specular = Colors.get_black();
+                currentMaterial.specularSharpness = 30;
+                currentMaterial.opacity = 1;
+                materialName = parts[1];
+                break;
+              case 'Ka':
+                currentMaterial.ambient = Color.fromArgb(255, Math.min(parseFloat(parts[1]) * 255, 255), Math.min(parseFloat(parts[2]) * 255, 255), Math.min(parseFloat(parts[3]) * 255, 255));
+                break;
+              case 'map_Kd':
+                currentMaterial.diffuse = Colors.get_white();
+                var textureFilename = parts[1];
+                for (var i = 2; i < parts.length; i++) {
+                  textureFilename += ' ' + parts[i];
+                }
+                var path = this.filename.substring(0, this.filename.lastIndexOf('\\') + 1);
+                textureFilename = ss.replaceString(textureFilename, '/', '\\');
+                if (textureFilename.indexOf('\\') !== -1) {
+                  textureFilename = textureFilename.substring(textureFilename.lastIndexOf('\\') + 1);
+                }
+                this._textureLib[materialName] = textureFilename;
+                break;
+              case 'Kd':
+                currentMaterial.diffuse = Color.fromArgb(255, Math.min(parseFloat(parts[1]) * 255, 255), Math.min(parseFloat(parts[2]) * 255, 255), Math.min(parseFloat(parts[3]) * 255, 255));
+                break;
+              case 'Ks':
+                currentMaterial.specular = Color.fromArgb(255, Math.min(parseFloat(parts[1]) * 255, 255), Math.min(parseFloat(parts[2]) * 255, 255), Math.min(parseFloat(parts[3]) * 255, 255));
+                break;
+              case 'd':
+                currentMaterial.opacity = parseFloat(parts[1]);
+                break;
+              case 'Tr':
+                currentMaterial.opacity = 1 - parseFloat(parts[1]);
+                break;
+              case 'illum':
+                var illuminationMode = parseInt(parts[1]);
+                break;
+              case 'sharpness':
+                currentMaterial.specularSharpness = parseFloat(parts[1]);
+                break;
+              case 'Ns':
+                currentMaterial.specularSharpness = 1 + 2 * parseFloat(parts[1]);
+                currentMaterial.specularSharpness = Math.max(10, currentMaterial.specularSharpness);
+                break;
+            }
+          }
+        }
+        if (!ss.emptyString(materialName)) {
+          this._matLib[materialName] = currentMaterial;
+        }
+      }
+      catch ($e2) {
+      }
     },
     _getIndexies: function(data) {
       var parts = ss.trim(data).split('/');
@@ -11638,7 +12169,7 @@ window.wwtlib = function(){
       if (this._mesh.boundingSphere.radius > 0) {
         unitScale = 1 / this._mesh.boundingSphere.radius;
       }
-      renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.translation(Vector3d.create(-offset.x, -offset.y, -offset.z)), Matrix3d._scaling(unitScale, unitScale, unitScale)), oldWorld));
+      renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationY(Math.PI), Matrix3d.translation(Vector3d.create(-offset.x, -offset.y, -offset.z))), Matrix3d._scaling(unitScale, unitScale, unitScale)), oldWorld));
       var worldView = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
       var v = worldView.transform(Vector3d.get_empty());
       var scaleFactor = Math.sqrt(worldView.get_m11() * worldView.get_m11() + worldView.get_m22() * worldView.get_m22() + worldView.get_m33() * worldView.get_m33()) / unitScale;
@@ -11671,6 +12202,7 @@ window.wwtlib = function(){
       if (this._mesh == null) {
         return;
       }
+      ModelShader.minLightingBrightness = 0.1;
       var count = this._meshMaterials.length;
       this._mesh.beginDrawing(renderContext);
       if (count > 0) {
@@ -11682,7 +12214,12 @@ window.wwtlib = function(){
             this._meshMaterials[i] = mat;
           }
           renderContext.setMaterial(this._meshMaterials[i], this._meshTextures[i], this._meshSpecularTextures[i], this._meshNormalMaps[i], opacity);
-          ModelShader.use(renderContext, this._mesh.vertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, this._meshTextures[i].texture2d, opacity, false);
+          if (this._mesh.vertexBuffer != null) {
+            ModelShader.use(renderContext, this._mesh.vertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, (this._meshTextures[i] != null) ? this._meshTextures[i].texture2d : null, opacity, false, 32);
+          }
+          else {
+            ModelShader.use(renderContext, this._mesh.tangentVertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, (this._meshTextures[i] != null) ? this._meshTextures[i].texture2d : null, opacity, false, 44);
+          }
           renderContext.preDraw();
           this._mesh.drawSubset(renderContext, i);
         }
@@ -11692,7 +12229,12 @@ window.wwtlib = function(){
         for (var i = 0; i < this._meshTextures.length; i++) {
           if (this._meshTextures[i] != null) {
             renderContext.set_mainTexture(this._meshTextures[i]);
-            ModelShader.use(renderContext, this._mesh.vertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, this._meshTextures[i].texture2d, opacity, false);
+            if (this._mesh.vertexBuffer != null) {
+              ModelShader.use(renderContext, this._mesh.vertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, (this._meshTextures[i] != null) ? this._meshTextures[i].texture2d : null, opacity, false, 32);
+            }
+            else {
+              ModelShader.use(renderContext, this._mesh.tangentVertexBuffer.vertexBuffer, this._mesh.indexBuffer.buffer, (this._meshTextures[i] != null) ? this._meshTextures[i].texture2d : null, opacity, false, 44);
+            }
           }
           renderContext.preDraw();
           this._mesh.drawSubset(renderContext, i);
@@ -31003,7 +31545,7 @@ window.wwtlib = function(){
       return value;
     },
     get_position: function() {
-      return Vector3d.create(this.x, this.y, this.y);
+      return Vector3d.create(this.x, this.y, this.z);
     },
     set_position: function(value) {
       this.x = value.x;
@@ -33353,7 +33895,7 @@ window.wwtlib = function(){
     unlock: function() {
       this.vertexBuffer = Tile.prepDevice.createBuffer();
       Tile.prepDevice.bindBuffer(34962, this.vertexBuffer);
-      var f32array = new Float32Array(this.count * 8);
+      var f32array = new Float32Array(this.count * 11);
       var buffer = f32array;
       var index = 0;
       var $enum1 = ss.enumerate(this._verts$1);
@@ -40743,6 +41285,7 @@ window.wwtlib = function(){
       return this._fill$1;
     },
     set_fill: function(value) {
+      Annotation.batchDirty = true;
       this._fill$1 = value;
       return value;
     },
@@ -40750,6 +41293,7 @@ window.wwtlib = function(){
       return this._skyRelative$1;
     },
     set_skyRelative: function(value) {
+      Annotation.batchDirty = true;
       this._skyRelative$1 = value;
       return value;
     },
@@ -40757,6 +41301,7 @@ window.wwtlib = function(){
       return this._strokeWidth$1;
     },
     set_lineWidth: function(value) {
+      Annotation.batchDirty = true;
       this._strokeWidth$1 = value;
       return value;
     },
@@ -40764,6 +41309,7 @@ window.wwtlib = function(){
       return this._radius$1;
     },
     set_radius: function(value) {
+      Annotation.batchDirty = true;
       this._radius$1 = value;
       return value;
     },
@@ -40771,6 +41317,7 @@ window.wwtlib = function(){
       return this._lineColor$1.toString();
     },
     set_lineColor: function(value) {
+      Annotation.batchDirty = true;
       this._lineColor$1 = Color.fromName(value);
       return value;
     },
@@ -40778,10 +41325,12 @@ window.wwtlib = function(){
       return this._fillColor$1.toString();
     },
     set_fillColor: function(value) {
+      Annotation.batchDirty = true;
       this._fillColor$1 = Color.fromName(value);
       return value;
     },
     setCenter: function(ra, dec) {
+      Annotation.batchDirty = true;
       this._ra$1 = ra / 15;
       this._dec$1 = dec;
       this.center = Coordinates.raDecTo3d(this._ra$1, this._dec$1);
@@ -40872,12 +41421,14 @@ window.wwtlib = function(){
   }
   var Poly$ = {
     addPoint: function(x, y) {
+      Annotation.batchDirty = true;
       this._points$1.push(Coordinates.raDecTo3d(x / 15, y));
     },
     get_fill: function() {
       return this._fill$1;
     },
     set_fill: function(value) {
+      Annotation.batchDirty = true;
       this._fill$1 = value;
       return value;
     },
@@ -40885,6 +41436,7 @@ window.wwtlib = function(){
       return this._strokeWidth$1;
     },
     set_lineWidth: function(value) {
+      Annotation.batchDirty = true;
       this._strokeWidth$1 = value;
       return value;
     },
@@ -40892,6 +41444,7 @@ window.wwtlib = function(){
       return this._lineColor$1.toString();
     },
     set_lineColor: function(value) {
+      Annotation.batchDirty = true;
       this._lineColor$1 = Color.fromName(value);
       return value;
     },
@@ -40899,6 +41452,7 @@ window.wwtlib = function(){
       return this._fillColor$1.toString();
     },
     set_fillColor: function(value) {
+      Annotation.batchDirty = true;
       this._fillColor$1 = Color.fromName(value);
       return value;
     },
@@ -40972,12 +41526,14 @@ window.wwtlib = function(){
   }
   var PolyLine$ = {
     addPoint: function(x, y) {
+      Annotation.batchDirty = true;
       this._points$1.push(Coordinates.raDecTo3d(x / 15, y));
     },
     get_lineWidth: function() {
       return this._strokeWidth$1;
     },
     set_lineWidth: function(value) {
+      Annotation.batchDirty = true;
       this._strokeWidth$1 = value;
       return value;
     },
@@ -40985,6 +41541,7 @@ window.wwtlib = function(){
       return this._lineColor$1.toString();
     },
     set_lineColor: function(value) {
+      Annotation.batchDirty = true;
       this._lineColor$1 = Color.fromName(value);
       return value;
     },
@@ -41930,8 +42487,10 @@ window.wwtlib = function(){
       KeplerPointSpriteShader: [ KeplerPointSpriteShader, KeplerPointSpriteShader$, null ],
       EllipseShader: [ EllipseShader, EllipseShader$, null ],
       ModelShader: [ ModelShader, ModelShader$, null ],
+      ModelShaderTan: [ ModelShaderTan, ModelShaderTan$, null ],
       TileShader: [ TileShader, TileShader$, null ],
       ImageShader: [ ImageShader, ImageShader$, null ],
+      ImageShader2: [ ImageShader2, ImageShader2$, null ],
       SpriteShader: [ SpriteShader, SpriteShader$, null ],
       ShapeSpriteShader: [ ShapeSpriteShader, ShapeSpriteShader$, null ],
       TextShader: [ TextShader, TextShader$, null ],
@@ -42293,6 +42852,14 @@ window.wwtlib = function(){
   ModelShader.sunPosition = Vector3d.create(-1, -1, -1);
   ModelShader.minLightingBrightness = 1;
   ModelShader.atmosphereColor = Color.fromArgb(0, 0, 0, 0);
+  ModelShaderTan.vertLoc = 0;
+  ModelShaderTan.normalLoc = 0;
+  ModelShaderTan.textureLoc = 0;
+  ModelShaderTan.initialized = false;
+  ModelShaderTan._prog = null;
+  ModelShaderTan.sunPosition = Vector3d.create(-1, -1, -1);
+  ModelShaderTan.minLightingBrightness = 1;
+  ModelShaderTan.atmosphereColor = Color.fromArgb(0, 0, 0, 0);
   TileShader.vertLoc = 0;
   TileShader.textureLoc = 0;
   TileShader.initialized = false;
@@ -42304,6 +42871,10 @@ window.wwtlib = function(){
   ImageShader.textureLoc = 0;
   ImageShader.initialized = false;
   ImageShader._prog = null;
+  ImageShader2.vertLoc = 0;
+  ImageShader2.textureLoc = 0;
+  ImageShader2.initialized = false;
+  ImageShader2._prog = null;
   SpriteShader.vertLoc = 0;
   SpriteShader.textureLoc = 0;
   SpriteShader.colorLoc = 0;

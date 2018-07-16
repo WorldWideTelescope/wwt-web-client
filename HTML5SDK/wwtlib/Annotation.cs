@@ -159,7 +159,11 @@ namespace wwtlib
         public bool Fill
         {
             get { return fill; }
-            set { fill = value; }
+            set
+            {
+                Annotation.BatchDirty = true;
+                fill = value;
+            }
         }
 
 
@@ -169,14 +173,23 @@ namespace wwtlib
         public bool SkyRelative
         {
             get { return skyRelative; }
-            set { skyRelative = value; }
+            set
+            {
+                Annotation.BatchDirty = true;
+                skyRelative = value;
+            }
         }
         double strokeWidth = 1;
         
         public double LineWidth
         {
             get { return strokeWidth; }
-            set { strokeWidth = value; }
+
+            set
+            {
+                Annotation.BatchDirty = true;
+                strokeWidth = value;
+            }
         }
 
         double radius = 10;
@@ -184,7 +197,11 @@ namespace wwtlib
         public double Radius
         {
             get { return radius; }
-            set { radius = value; }
+            set
+            {
+                Annotation.BatchDirty = true;
+                radius = value;
+            }
         }
 
 
@@ -195,6 +212,7 @@ namespace wwtlib
             get { return lineColor.ToString(); }
             set
             {
+                Annotation.BatchDirty = true;
                 lineColor = Color.FromName(value);
             }
         }
@@ -205,6 +223,7 @@ namespace wwtlib
             get { return fillColor.ToString(); }
             set
             {
+                Annotation.BatchDirty = true;
                 fillColor = Color.FromName(value);
             }
         }
@@ -216,7 +235,7 @@ namespace wwtlib
         
         public void SetCenter(double ra, double dec)
         {
-
+            Annotation.BatchDirty = true;
             this.ra = ra / 15;
             this.dec = dec;
             center = Coordinates.RADecTo3d(this.ra, this.dec);
@@ -338,6 +357,7 @@ namespace wwtlib
         
         public void AddPoint(double x, double y)
         {
+            Annotation.BatchDirty = true;
             points.Add(Coordinates.RADecTo3d(x / 15, y));
         }
 
@@ -346,14 +366,22 @@ namespace wwtlib
         public bool Fill
         {
             get { return fill; }
-            set { fill = value; }
+            set
+            {
+                Annotation.BatchDirty = true;
+                fill = value;
+            }
         }
         double strokeWidth = 1;
         
         public double LineWidth
         {
             get { return strokeWidth; }
-            set { strokeWidth = value; }
+            set
+            {
+                Annotation.BatchDirty = true;
+                strokeWidth = value;
+            }
         }
         Color lineColor = Colors.White;
 
@@ -362,6 +390,7 @@ namespace wwtlib
             get { return lineColor.ToString(); }
             set
             {
+                Annotation.BatchDirty = true;
                 lineColor = Color.FromName(value);
             }
         }
@@ -372,6 +401,7 @@ namespace wwtlib
             get { return fillColor.ToString(); }
             set
             {
+                Annotation.BatchDirty = true;
                 fillColor = Color.FromName(value);
             }
         }
@@ -493,6 +523,7 @@ namespace wwtlib
         
         public void AddPoint(double x, double y)
         {
+            Annotation.BatchDirty = true;
             points.Add(Coordinates.RADecTo3d(x / 15, y));
         }
 
@@ -501,7 +532,11 @@ namespace wwtlib
         public double LineWidth
         {
             get { return strokeWidth; }
-            set { strokeWidth = value; }
+            set
+            {
+                Annotation.BatchDirty = true;
+                strokeWidth = value;
+            }
         }
         Color lineColor = Colors.White;
 
@@ -510,6 +545,7 @@ namespace wwtlib
             get { return lineColor.ToString(); }
             set
             {
+                Annotation.BatchDirty = true;
                 lineColor = Color.FromName(value);
             }
         }

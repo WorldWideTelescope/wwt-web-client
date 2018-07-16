@@ -211,7 +211,7 @@ namespace wwtlib
         {
             VertexBuffer = Tile.PrepDevice.createBuffer();
             Tile.PrepDevice.bindBuffer(GL.ARRAY_BUFFER, VertexBuffer);
-            Float32Array f32array = new Float32Array(Count * 8);
+            Float32Array f32array = new Float32Array(Count * 11);
             float[] buffer = (float[])(object)f32array;
             int index = 0;
             foreach (PositionNormalTexturedTangent pt in verts)

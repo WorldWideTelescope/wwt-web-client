@@ -3349,7 +3349,7 @@ namespace wwtlib
         {
             get
             {
-                return Vector3d.Create(X, Y, Y);
+                return Vector3d.Create(X, Y, Z);
             }
             set
             {

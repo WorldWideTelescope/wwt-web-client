@@ -1206,7 +1206,7 @@ namespace wwtlib
 
         }
 
-        public static Mesh Create(PositionNormalTextured[] vertices, uint[] indices)
+        public static Mesh Create(PositionNormalTextured[] vertices, int[] indices)
         {
             Mesh mesh = new Mesh();
             mesh.vertices = vertices;
@@ -1236,7 +1236,7 @@ namespace wwtlib
         //}
 
         // Create a mesh from vertices with tangents, for use with a normal map
-        public static Mesh CreateTangent(PositionNormalTexturedTangent[] vertices, uint[] indices)
+        public static Mesh CreateTangent(PositionNormalTexturedTangent[] vertices, int[] indices)
         {
             Mesh mesh = new Mesh();
 
@@ -1346,7 +1346,7 @@ namespace wwtlib
         // Only one of these two will be non-null
         public PositionNormalTextured[] vertices;
         public PositionNormalTexturedTangent[] tangentVertices;
-        public uint[] indices;
+        public int[] indices;
 
         public SphereHull BoundingSphere = new SphereHull();
 
@@ -1454,7 +1454,7 @@ namespace wwtlib
             Filename = filename;
             if (Filename.ToLowerCase().EndsWith(".obj"))
             {
-                //LoadMeshFromObj(Filename);
+                LoadMeshFromObj(tourDoc,Filename);
             }
             else
             {
@@ -1469,7 +1469,7 @@ namespace wwtlib
                 Dispose();
                 if (Filename.ToLowerCase().EndsWith(".obj"))
                 {
-                    // LoadMeshFromObj(Filename);
+                    LoadMeshFromObj(tourDocument, Filename);
                 }
 
                 else
@@ -1704,6 +1704,11 @@ namespace wwtlib
             }
 
             int[] vertexInstanceCounts = new int[uniqueVertexCount];
+            for (int i = 0; i < uniqueVertexCount; i++)
+            {
+                vertexInstanceCounts[i] = 0;
+            }
+
             foreach (int vertexIndex in indexList)
             {
                 uint uniqueIndex = vertexMap[vertexIndex];
@@ -1718,6 +1723,10 @@ namespace wwtlib
                 if (count > 0)
                 {
                     vertexInstances[i] = new int[count];
+                    for (int j = 0; j < count; j++)
+                    {
+                        vertexInstances[i][j] = 0;
+                    }
                 }
             }
 
@@ -1963,326 +1972,378 @@ namespace wwtlib
 
         Dictionary<string, Texture> TextureCache = new Dictionary<string, Texture>();
 
-        //       private void LoadMeshFromObj(string filename)
-        //       {
-        //           // Force garbage collection to ensure that unmanaged resources are released.
-        //           // Temporary workaround until unmanaged resource leak is identified
+        string[] matFiles = new string[0];
+        int matFileIndex = 0;
+        private void LoadMeshFromObj(TourDocument doc, string filename)
+        {
+            this.Filename = filename;
+            tourDocument = doc;
+            
 
-        //           bool objectFound = false;
-        //           //Dictionary<string, ObjectNode> objectTable = new Dictionary<string, ObjectNode>();
-        //           List<ObjectNode> objects = new List<ObjectNode>();
-        //           ObjectNode currentObject = new ObjectNode();
-        //           currentObject.Name = "Default";
+            Blob blob = doc.GetFileBlob(filename);
+            FileReader chunck = new FileReader();
+            chunck.OnLoadEnd = delegate (FileProgressEvent e)
+            {
+                matFiles = ReadObjMaterialsFromBin(chunck.Result as string);
+                matFileIndex = 0;
+                // pass data to LoadMatLib. It will chain load all the material files, then load the obj from this data - hack for having no synchronous blob reading in javascript
+                LoadMatLib(chunck.Result as string);
 
-        //           int triangleCount = 0;
-        //           int vertexCount = 0;
+                //this is delay loaded when mat files are all read.
+                //ReadObjFromBin(chunck.Result as string);
 
-        ////           List<Mesh.Group> matGroups = new List<Mesh.Group>();
+            };
+            chunck.ReadAsText(blob);
+        }
 
-        //           List<PositionNormalTextured> vertexList = new List<PositionNormalTextured>();
-        //           List<Vector3d> vertList = new List<Vector3d>();
-        //           List<Vector3d> normList = new List<Vector3d>();
-        //           List<Vector2d> uvList = new List<Vector2d>();
+        private string[] ReadObjMaterialsFromBin(string data)
+        {
+            List<string> matFiles = new List<string>();
 
-        //           vertList.Add(new Vector3d());
-        //           normList.Add(new Vector3d());
-        //           uvList.Add(new Vector2d());
+            string[] lines = data.Split("\n");
+            {
 
+                foreach (string lineraw in lines)
+                {
+                    string line = lineraw.Replace("  ", " ");
 
-        //           List<int> indexList = new List<int>();
-        //           List<int> attribList = new List<int>();
-        //           List<int[]> applyLists = new List<int[]>();
-        //           List<int> applyListsIndex = new List<int>();
-        //           List<string> materialNames = new List<string>();
-        //           int currentMaterialIndex = -1;
-        //           Material currentMaterial = new Material();
-        //           Mesh.Group currentGroup = new Mesh.Group();
+                    string[] parts = line.Trim().Split(" ");
 
+                    if (parts.Length > 0)
+                    {
+                        switch (parts[0])
+                        {
+                            case "mtllib":
+                                {
+                                    string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
+                                    string matFile = path + parts[1];
+                                    matFiles.Add(matFile);
 
-        //           int currentIndex = 0;
+                                    //LoadMatLib(matFile);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
 
+            return matFiles;
+        }
 
-        //           //initialize the default material
+        private void ReadObjFromBin(string data)
+        {
+            bool objectFound = false;
+            //Dictionary<string, ObjectNode> objectTable = new Dictionary<string, ObjectNode>();
+            List<ObjectNode> objects = new List<ObjectNode>();
+            ObjectNode currentObject = new ObjectNode();
+            currentObject.Name = "Default";
 
-        //           currentMaterial = new Material();
-        //           currentMaterial.Diffuse = Color;
-        //           currentMaterial.Ambient = Color;
-        //           currentMaterial.Specular = Colors.White;
-        //           currentMaterial.SpecularSharpness = 30.0f;
-        //           currentMaterial.Opacity = 1.0f;
-        //           currentMaterial.Default = true;
+            int triangleCount = 0;
+            int vertexCount = 0;
 
-        //           //initialize the group
-        //           currentGroup.startIndex = 0;
-        //           currentGroup.indexCount = 0;
-        //           currentGroup.materialIndex = 0;
+            //           List<Mesh.Group> matGroups = new List<Mesh.Group>();
 
-        //           using (Stream fs = new FileStream(filename, FileMode.Open,FileAccess.Read))
-        //           {
-        //               StreamReader sr = new StreamReader(fs);
+            List<PositionNormalTextured> vertexList = new List<PositionNormalTextured>();
+            List<Vector3d> vertList = new List<Vector3d>();
+            List<Vector3d> normList = new List<Vector3d>();
+            List<Vector2d> uvList = new List<Vector2d>();
 
-        //               while (!sr.EndOfStream)
-        //               {
-        //                   string line = sr.ReadLine().Replace("  ", " ");
-
-        //                   string[] parts = line.Trim().Split(new char[] { ' ' });
-
-        //                   if (parts.Length > 0)
-        //                   {
-        //                       switch (parts[0])
-        //                       {
-        //                           case "mtllib":
-        //                               {
-        //                                   string path = filename.Substring(0, filename.LastIndexOf('\\') + 1);
-        //                                   string matFile = path + "\\" + parts[1];
-        //                                   LoadMatLib(matFile);
-        //                               }
-        //                               break;
-        //                           case "usemtl":
-        //                               string materialName = parts[1];
-        //                               if (matLib.ContainsKey(materialName))
-        //                               {
-        //                                   if (currentMaterialIndex == -1 && currentIndex > 0)
-        //                                   {
-        //                                       addMaterial(currentMaterial);
-        //                                       currentMaterialIndex++;
-        //                                   }
-
-        //                                   if (currentMaterialIndex > -1)
-        //                                   {
-        //                                       currentGroup.indexCount = currentIndex - currentGroup.startIndex;
-        //                                 //      matGroups.Add(currentGroup);
-        //                                       currentObject.DrawGroup.Add(currentGroup);
-        //                                   }
-
-        //                                   currentMaterialIndex++;
-
-        //                                   if (matLib.ContainsKey(materialName))
-        //                                   {
-        //                                       currentMaterial = matLib[materialName];
+            vertList.Add(new Vector3d());
+            normList.Add(new Vector3d());
+            uvList.Add(new Vector2d());
 
 
-        //                                       if (textureLib.ContainsKey(materialName))
-        //                                       {
-        //                                           try
-        //                                           {
-        //                                               if (!TextureCache.ContainsKey(textureLib[materialName]))
-        //                                               {
-        //                                                   string path = filename.Substring(0, filename.LastIndexOf('\\') + 1);
-
-        //                                                   Texture tex = LoadTexture(path + textureLib[materialName]);
-        //                                                   if (tex != null)
-        //                                                   {
-        //                                                       meshFilenames.Add(textureLib[materialName]);
-        //                                                       TextureCache[textureLib[materialName]] = tex;
-        //                                                   }
-        //                                               }
-        //                                               meshTextures.Add(TextureCache[textureLib[materialName]]);
-        //                                           }
-        //                                           catch
-        //                                           {
-        //                                           }
-        //                                       }
-
-        //                                       addMaterial(currentMaterial);
-
-        //                                       currentGroup = new Mesh.Group();
-        //                                       currentGroup.startIndex = currentIndex;
-        //                                       currentGroup.indexCount = 0;
-        //                                       currentGroup.materialIndex = currentMaterialIndex;
-        //                                   }
-        //                               }
-
-        //                               break;
-        //                           case "v":
-        //                               vertexCount++;
-        //                               if (FlipHandedness)
-        //                               {
-        //                                   vertList.Add(Vector3d.Create(-float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
-        //                               }
-        //                               else
-        //                               {
-        //                                   vertList.Add(Vector3d.Create(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
-        //                               }
-        //                               break;
-        //                           case "vn":
-        //                               if (FlipHandedness)
-        //                               {
-        //                                   normList.Add(Vector3d.Create(-float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
-        //                               }
-        //                               else
-        //                               {
-        //                                   normList.Add(Vector3d.Create(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
-        //                               }
-        //                               break;
-        //                           case "vt":
-        //                               uvList.Add(new Vector2d(float.Parse(parts[1]), FlipV ? (1 - float.Parse(parts[2])) : float.Parse(parts[2])));
-        //                               break;
-        //                           case "g":
-        //                           case "o":
-        //                               if (objectFound)
-        //                               {
-        //                                   if (currentMaterialIndex > -1)
-        //                                   {
-        //                                       currentGroup.indexCount = currentIndex - currentGroup.startIndex;
-        //                      //                 matGroups.Add(currentGroup);
-        //                                       currentObject.DrawGroup.Add(currentGroup);
-        //                                       currentGroup = new Mesh.Group();
-        //                                       currentGroup.startIndex = currentIndex;
-        //                                       currentGroup.indexCount = 0;
-        //                                       currentGroup.materialIndex = currentMaterialIndex;
-        //                                   }
-        //                                   currentObject = new ObjectNode();
-        //                               }
-
-        //                               objectFound = true;
-        //                               if (parts.Length > 1)
-        //                               {
-        //                                   currentObject.Name = parts[1];
-        //                               }
-        //                               else
-        //                               {
-        //                                   currentObject.Name = "Unnamed";
-        //                               }
-        //                               objects.Add(currentObject);
-        //                               //if (!objectTable.ContainsKey(currentObject.Name))
-        //                               //{
-        //                               //    objectTable.Add(currentObject.Name, currentObject);
-        //                               //}
-        //                               break;
-        //                           case "f":
-        //                               int[] indexiesA = GetIndexies(parts[1]);
-        //                               int[] indexiesB = GetIndexies(parts[2]);
-        //                               int[] indexiesC = GetIndexies(parts[3]);
-
-        //                               vertexList.Add(new PositionNormalTextured(vertList[indexiesA[0]], normList[indexiesA[2]], uvList[indexiesA[1]]));
-        //                               vertexList.Add(new PositionNormalTextured(vertList[indexiesB[0]], normList[indexiesB[2]], uvList[indexiesB[1]]));
-        //                               vertexList.Add(new PositionNormalTextured(vertList[indexiesC[0]], normList[indexiesC[2]], uvList[indexiesC[1]]));
-
-        //                               if (FlipHandedness)
-        //                               {
-        //                                   indexList.Add(currentIndex);
-        //                                   indexList.Add(currentIndex + 2);
-        //                                   indexList.Add(currentIndex + 1);
-        //                               }
-        //                               else
-        //                               {
-        //                                   indexList.Add(currentIndex);
-        //                                   indexList.Add(currentIndex + 1);
-        //                                   indexList.Add(currentIndex + 2);  
-
-        //                               }
-
-        //                               triangleCount++;
-        //                               currentIndex += 3;
-        //                               //bool flip = true;
-        //                               if (parts.Length > 4)
-        //                               {
-        //                                   int partIndex = 4;
-
-        //                                   while (partIndex < (parts.Length))
-        //                                   {
-        //                                       if (FlipHandedness)
-        //                                       {
-        //                                           indexiesA = GetIndexies(parts[1]);
-        //                                           indexiesC = GetIndexies(parts[partIndex]);          
-        //                                           indexiesB = GetIndexies(parts[partIndex - 1]);
-        //                                       }
-        //                                       else
-        //                                       {
-        //                                           indexiesA = GetIndexies(parts[1]);
-        //                                           indexiesB = GetIndexies(parts[partIndex - 1]);
-        //                                           indexiesC = GetIndexies(parts[partIndex]);
-        //                                       }
-        //                                       vertexList.Add(new PositionNormalTextured(vertList[indexiesA[0]], normList[indexiesA[2]], uvList[indexiesA[1]]));
-        //                                       vertexList.Add(new PositionNormalTextured(vertList[indexiesB[0]], normList[indexiesB[2]], uvList[indexiesB[1]]));
-        //                                       vertexList.Add(new PositionNormalTextured(vertList[indexiesC[0]], normList[indexiesC[2]], uvList[indexiesC[1]]));
+            List<int> indexList = new List<int>();
+            List<int> attribList = new List<int>();
+            List<int[]> applyLists = new List<int[]>();
+            List<int> applyListsIndex = new List<int>();
+            List<string> materialNames = new List<string>();
+            int currentMaterialIndex = -1;
+            Material currentMaterial = new Material();
+            Group currentGroup = new Group();
 
 
-        //                                       indexList.Add(currentIndex);
-        //                                       indexList.Add(currentIndex + 1);
-        //                                       indexList.Add(currentIndex + 2);
-        //                                       triangleCount++;
-
-        //                                       currentIndex += 3;
-        //                                       partIndex++;
-        //                                   }
-        //                               }
-        //                               break;
-        //                       }
-        //                   }
-        //               }
-        //           }
-
-        //           if (!objectFound)
-        //           {
-        //               // add the default object
-        //               objects.Add(currentObject);
-        //           }
-
-        //           if (currentMaterialIndex == -1 && currentIndex > 0)
-        //           {
-        //               addMaterial(currentMaterial);
-        //               currentMaterialIndex++;
-        //           }
-
-        //           if (currentMaterialIndex > -1)
-        //           {
-        //               currentGroup.indexCount = currentIndex - currentGroup.startIndex;
-        //               currentObject.DrawGroup.Add(currentGroup);
-        //           }
-
-        //           if (normList.Count < 2)
-        //           {
-
-        //               float creaseAngleRad = MathUtil.DegreesToRadians(Smooth ? 170.0f : 45.0f);
-
-        //               Vector3d[] vertexNormals = CalculateVertexNormalsMerged(vertexList, indexList, creaseAngleRad);
-        //               List<PositionNormalTextured> newVertexList = new List<PositionNormalTextured>();
-        //               int newVertexCount = indexList.Count;
-
-        //               for (int vertexIndex = 0; vertexIndex < newVertexCount; ++vertexIndex)
-        //               {
-        //                   PositionNormalTextured v = vertexList[indexList[vertexIndex]];
-        //                   v.Normal = vertexNormals[vertexIndex];
-        //                   newVertexList.Add(v);
-        //               }
-
-        //               vertexList = newVertexList;
-        //           }
+            int currentIndex = 0;
 
 
+            //initialize the default material
+
+            currentMaterial = new Material();
+            currentMaterial.Diffuse = Color;
+            currentMaterial.Ambient = Color;
+            currentMaterial.Specular = Colors.White;
+            currentMaterial.SpecularSharpness = 30.0f;
+            currentMaterial.Opacity = 1.0f;
+            currentMaterial.IsDefault = true;
+
+            //initialize the group
+            currentGroup.startIndex = 0;
+            currentGroup.indexCount = 0;
+            currentGroup.materialIndex = 0;
+
+            string[] lines = data.Split("\n");
+            {
+                
+                foreach(string lineraw in lines)
+                {
+                    string line = lineraw.Replace("  ", " ");
+
+                    string[] parts = line.Trim().Split(" ");
+
+                    if (parts.Length > 0)
+                    {
+                        switch (parts[0])
+                        {
+                            case "mtllib":
+                                // We have to pre-load these now in JavaScript, since we can't synchronously load the file and we need file contents to interpret the rest of this file
+                                //{
+                                //    string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
+                                //    string matFile = path + parts[1];
+                                //    LoadMatLib(matFile);
+                                //}
+                                break;
+                            case "usemtl":
+                                string materialName = parts[1];
+                                if (matLib.ContainsKey(materialName))
+                                {
+                                    if (currentMaterialIndex == -1 && currentIndex > 0)
+                                    {
+                                        addMaterial(currentMaterial);
+                                        currentMaterialIndex++;
+                                    }
+
+                                    if (currentMaterialIndex > -1)
+                                    {
+                                        currentGroup.indexCount = currentIndex - currentGroup.startIndex;
+                                        //      matGroups.Add(currentGroup);
+                                        currentObject.DrawGroup.Add(currentGroup);
+                                    }
+
+                                    currentMaterialIndex++;
+
+                                    if (matLib.ContainsKey(materialName))
+                                    {
+                                        currentMaterial = matLib[materialName];
 
 
-        //           mesh = new Mesh(vertexList.ToArray(), indexList.ToArray());
-        //           ObjectNode rootDummy = new ObjectNode();
-        //           rootDummy.Name = "Root";
-        //           rootDummy.Parent = null;
-        //           rootDummy.Level = -1;
-        //           rootDummy.DrawGroup = null;
-        //           rootDummy.Children = objects;
+                                        if (textureLib.ContainsKey(materialName))
+                                        {
+                                            try
+                                            {
+                                                if (!TextureCache.ContainsKey(textureLib[materialName]))
+                                                {
+                                                    string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
 
-        //           Objects = new List<ObjectNode>();
-        //           Objects.Add(rootDummy);
+                                                    Texture tex = tourDocument.GetCachedTexture2d(path + textureLib[materialName]);
+                                                    if (tex != null)
+                                                    {
+                                                        meshFilenames.Add(textureLib[materialName]);
+                                                        TextureCache[textureLib[materialName]] = tex;
+                                                    }
+                                                }
+                                                meshTextures.Add(TextureCache[textureLib[materialName]]);
+                                            }
+                                            catch
+                                            {
+                                            }
+                                        }
+
+                                        addMaterial(currentMaterial);
+
+                                        currentGroup = new Group();
+                                        currentGroup.startIndex = currentIndex;
+                                        currentGroup.indexCount = 0;
+                                        currentGroup.materialIndex = currentMaterialIndex;
+                                    }
+                                }
+
+                                break;
+                            case "v":
+                                vertexCount++;
+                                if (FlipHandedness)
+                                {
+                                    vertList.Add(Vector3d.Create(-float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
+                                }
+                                else
+                                {
+                                    vertList.Add(Vector3d.Create(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
+                                }
+                                break;
+                            case "vn":
+                                if (FlipHandedness)
+                                {
+                                    normList.Add(Vector3d.Create(-float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
+                                }
+                                else
+                                {
+                                    normList.Add(Vector3d.Create(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3])));
+                                }
+                                break;
+                            case "vt":
+                                uvList.Add(Vector2d.Create(float.Parse(parts[1]), FlipV ? (1 - float.Parse(parts[2])) : float.Parse(parts[2])));
+                                break;
+                            case "g":
+                            case "o":
+                                if (objectFound)
+                                {
+                                    if (currentMaterialIndex > -1)
+                                    {
+                                        currentGroup.indexCount = currentIndex - currentGroup.startIndex;
+                                        //                 matGroups.Add(currentGroup);
+                                        currentObject.DrawGroup.Add(currentGroup);
+                                        currentGroup = new Group();
+                                        currentGroup.startIndex = currentIndex;
+                                        currentGroup.indexCount = 0;
+                                        currentGroup.materialIndex = currentMaterialIndex;
+                                    }
+                                    currentObject = new ObjectNode();
+                                }
+
+                                objectFound = true;
+                                if (parts.Length > 1)
+                                {
+                                    currentObject.Name = parts[1];
+                                }
+                                else
+                                {
+                                    currentObject.Name = "Unnamed";
+                                }
+                                objects.Add(currentObject);
+                                //if (!objectTable.ContainsKey(currentObject.Name))
+                                //{
+                                //    objectTable.Add(currentObject.Name, currentObject);
+                                //}
+                                break;
+                            case "f":
+                                int[] indexiesA = GetIndexies(parts[1]);
+                                int[] indexiesB = GetIndexies(parts[2]);
+                                int[] indexiesC = GetIndexies(parts[3]);
+
+                                vertexList.Add(PositionNormalTextured.CreateUV(vertList[indexiesA[0]], normList[indexiesA[2]], uvList[indexiesA[1]]));
+                                vertexList.Add(PositionNormalTextured.CreateUV(vertList[indexiesB[0]], normList[indexiesB[2]], uvList[indexiesB[1]]));
+                                vertexList.Add(PositionNormalTextured.CreateUV(vertList[indexiesC[0]], normList[indexiesC[2]], uvList[indexiesC[1]]));
+
+                                if (FlipHandedness)
+                                {
+                                    indexList.Add(currentIndex);
+                                    indexList.Add(currentIndex + 2);
+                                    indexList.Add(currentIndex + 1);
+                                }
+                                else
+                                {
+                                    indexList.Add(currentIndex);
+                                    indexList.Add(currentIndex + 1);
+                                    indexList.Add(currentIndex + 2);
+
+                                }
+
+                                triangleCount++;
+                                currentIndex += 3;
+                                //bool flip = true;
+                                if (parts.Length > 4)
+                                {
+                                    int partIndex = 4;
+
+                                    while (partIndex < (parts.Length))
+                                    {
+                                        if (FlipHandedness)
+                                        {
+                                            indexiesA = GetIndexies(parts[1]);
+                                            indexiesC = GetIndexies(parts[partIndex]);
+                                            indexiesB = GetIndexies(parts[partIndex - 1]);
+                                        }
+                                        else
+                                        {
+                                            indexiesA = GetIndexies(parts[1]);
+                                            indexiesB = GetIndexies(parts[partIndex - 1]);
+                                            indexiesC = GetIndexies(parts[partIndex]);
+                                        }
+                                        vertexList.Add(PositionNormalTextured.CreateUV(vertList[indexiesA[0]], normList[indexiesA[2]], uvList[indexiesA[1]]));
+                                        vertexList.Add(PositionNormalTextured.CreateUV(vertList[indexiesB[0]], normList[indexiesB[2]], uvList[indexiesB[1]]));
+                                        vertexList.Add(PositionNormalTextured.CreateUV(vertList[indexiesC[0]], normList[indexiesC[2]], uvList[indexiesC[1]]));
 
 
-        //           mesh.setObjects(Objects);
+                                        indexList.Add(currentIndex);
+                                        indexList.Add(currentIndex + 1);
+                                        indexList.Add(currentIndex + 2);
+                                        triangleCount++;
 
-        //           //List<ObjectNode> objects = new List<ObjectNode>();
+                                        currentIndex += 3;
+                                        partIndex++;
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
 
-        //           //ObjectNode node = new ObjectNode();
-        //           //node.Name = "Default";
-        //           //node.DrawGroup = matGroups;
-        //           //objects.Add(node);
-        //           //mesh.setObjects(objects);
-        //           //Objects = objects;
+            if (!objectFound)
+            {
+                // add the default object
+                objects.Add(currentObject);
+            }
+
+            if (currentMaterialIndex == -1 && currentIndex > 0)
+            {
+                addMaterial(currentMaterial);
+                currentMaterialIndex++;
+            }
+
+            if (currentMaterialIndex > -1)
+            {
+                currentGroup.indexCount = (int)(currentIndex - currentGroup.startIndex);
+                currentObject.DrawGroup.Add(currentGroup);
+            }
+
+            if (normList.Count < 2)
+            {
+                double degtorag = Math.PI / 180;
+                double  creaseAngleRad = (Smooth ? 170.0f * degtorag : 45.0f * degtorag);
+
+                Vector3d[] vertexNormals = CalculateVertexNormalsMerged(vertexList, indexList, creaseAngleRad);
+                List<PositionNormalTextured> newVertexList = new List<PositionNormalTextured>();
+                int newVertexCount = indexList.Count;
+
+                for (int vertexIndex = 0; vertexIndex < newVertexCount; ++vertexIndex)
+                {
+                    PositionNormalTextured v = vertexList[indexList[vertexIndex]];
+                    v.Normal = vertexNormals[vertexIndex];
+                    newVertexList.Add(v);
+                }
+
+                vertexList = newVertexList;
+            }
+
+            mesh = Mesh.Create(vertexList, indexList);
+            ObjectNode rootDummy = new ObjectNode();
+            rootDummy.Name = "Root";
+            rootDummy.Parent = null;
+            rootDummy.Level = -1;
+            rootDummy.DrawGroup = null;
+            rootDummy.Children = objects;
+
+            Objects = new List<ObjectNode>();
+            Objects.Add(rootDummy);
 
 
-        //           mesh.commitToDevice(RenderContext.PrepDevice);
+            mesh.setObjects(Objects);
 
-        //           dirty = false;
+            //List<ObjectNode> objects = new List<ObjectNode>();
 
-        //       }
+            //ObjectNode node = new ObjectNode();
+            //node.Name = "Default";
+            //node.DrawGroup = matGroups;
+            //objects.Add(node);
+            //mesh.setObjects(objects);
+            //Objects = objects;
+
+
+            mesh.commitToDevice();
+
+            dirty = false;
+            readyToRender = true;
+        }
 
         //private Texture LoadTexture(string filename)
         //{
@@ -2369,119 +2430,137 @@ namespace wwtlib
 
         Dictionary<string, Material> matLib = new Dictionary<string, Material>();
         Dictionary<string, string> textureLib = new Dictionary<string, string>();
-        //void LoadMatLib(string filename)
-        //{
-        //    if (!File.Exists(filename))
-        //    {
-        //        return;
-        //    }
+        void LoadMatLib(string data)
+        {
+            if (matFileIndex < matFiles.Length)
+            {
 
-        //    meshFilenames.Add(filename.Substring(filename.LastIndexOf("\\") + 1));
+                string filename = matFiles[matFileIndex++];
 
-        //    try
-        //    {
-        //        Material currentMaterial = new Material();
-        //        string materialName = "";
+                Blob blob = tourDocument.GetFileBlob(filename);
+                FileReader chunck = new FileReader();
+                chunck.OnLoadEnd = delegate (FileProgressEvent e)
+                    {
+                        ReadMatLibFromBin(chunck.Result as string);
 
-        //        matLib = new Dictionary<string, Material>();
-        //        textureLib = new Dictionary<string, string>();
+                        LoadMatLib(data);
+                    };
+                chunck.ReadAsText(blob);
+            }
+            else
+            {
+                ReadObjFromBin(data);
+            }
+        }
+
+        private void ReadMatLibFromBin(string data)
+        {
+
+            
+
+            try
+            {
+                Material currentMaterial = new Material();
+                string materialName = "";
+
+                matLib = new Dictionary<string, Material>();
+                textureLib = new Dictionary<string, string>();
 
 
-        //        using (Stream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-        //        {
-        //            StreamReader sr = new StreamReader(fs);
+                string[] lines = data.Split("\n");
+                {
 
-        //            while (!sr.EndOfStream)
-        //            {
-        //                string line = sr.ReadLine();
+                    foreach (string lineraw in lines)
+                    {
+                        string line = lineraw;
 
-        //                string[] parts = line.Trim().Split(' ');
+                        string[] parts = line.Trim().Split(" ");
 
-        //                if (parts.Length > 0)
-        //                {
-        //                    switch (parts[0])
-        //                    {
-        //                        case "newmtl":
-        //                            if (!string.IsNullOrEmpty(materialName))
-        //                            {
-        //                                matLib[materialName] = currentMaterial;
-        //                            }
+                        if (parts.Length > 0)
+                        {
+                            switch (parts[0])
+                            {
+                                case "newmtl":
+                                    if (!string.IsNullOrEmpty(materialName))
+                                    {
+                                        matLib[materialName] = currentMaterial;
+                                    }
 
-        //                            currentMaterial = new Material();
-        //                            currentMaterial.Diffuse = Colors.White;
-        //                            currentMaterial.Ambient = Colors.White;
-        //                            currentMaterial.Specular = Colors.Black;
-        //                            currentMaterial.SpecularSharpness = 30.0f;
-        //                            currentMaterial.Opacity = 1.0f;
-        //                            materialName = parts[1];
-        //                            break;
-        //                        case "Ka":
-        //                            currentMaterial.Ambient = Color.FromArgb(255,(int)(Math.Min(float.Parse(parts[1]) * 255, 255)), (int)(Math.Min(float.Parse(parts[2]) * 255, 255)), (int)(Math.Min(float.Parse(parts[3]) * 255, 255)));
-        //                            break;
-        //                        case "map_Kd":
-        //                            //ENDURE TEXTURES ARE NOT BLACK!    
-        //                            currentMaterial.Diffuse = Colors.White;
+                                    currentMaterial = new Material();
+                                    currentMaterial.Diffuse = Colors.White;
+                                    currentMaterial.Ambient = Colors.White;
+                                    currentMaterial.Specular = Colors.Black;
+                                    currentMaterial.SpecularSharpness = 30.0f;
+                                    currentMaterial.Opacity = 1.0f;
+                                    materialName = parts[1];
+                                    break;
+                                case "Ka":
+                                    currentMaterial.Ambient = Color.FromArgb(255, (int)(Math.Min(float.Parse(parts[1]) * 255, 255)), (int)(Math.Min(float.Parse(parts[2]) * 255, 255)), (int)(Math.Min(float.Parse(parts[3]) * 255, 255)));
+                                    break;
+                                case "map_Kd":
+                                    //ENDURE TEXTURES ARE NOT BLACK!    
+                                    currentMaterial.Diffuse = Colors.White;
 
-        //                            string textureFilename = parts[1];
-        //                            for (int i = 2; i < parts.Length; i++)
-        //                            {
-        //                                textureFilename += " " + parts[i];
-        //                            }
-        //                            string path = filename.Substring(0, filename.LastIndexOf('\\') + 1);
+                                    string textureFilename = parts[1];
+                                    for (int i = 2; i < parts.Length; i++)
+                                    {
+                                        textureFilename += " " + parts[i];
+                                    }
+                                    string path = Filename.Substring(0, Filename.LastIndexOf('\\') + 1);
 
-        //                            textureFilename = textureFilename.Replace("/", "\\");
-        //                            if (textureFilename.IndexOf("\\") != -1)
-        //                            {
-        //                                textureFilename = textureFilename.Substring(textureFilename.LastIndexOf("\\") + 1);
-        //                            }
+                                    textureFilename = textureFilename.Replace("/", "\\");
+                                    if (textureFilename.IndexOf("\\") != -1)
+                                    {
+                                        textureFilename = textureFilename.Substring(textureFilename.LastIndexOf("\\") + 1);
+                                    }
 
-        //                            //if (File.Exists(path + "\\" + textureFilename))
-        //                            {
-        //                                //textureLib.Add(materialName, path + "\\" + textureFilename);
-        //                                textureLib[materialName] = textureFilename;
-        //                            }
-        //                            break;
-        //                        case "Kd":
-        //                            currentMaterial.Diffuse = Color.FromArgb(255,(int)(Math.Min(float.Parse(parts[1]) * 255, 255)), (int)(Math.Min(float.Parse(parts[2]) * 255, 255)), (int)(Math.Min(float.Parse(parts[3]) * 255, 255)));
-        //                            break;
-        //                        case "Ks":
-        //                            currentMaterial.Specular = Color.FromArgb(255,(int)(Math.Min(float.Parse(parts[1]) * 255,255)), (int)(Math.Min(float.Parse(parts[2]) * 255,255)), (int)(Math.Min(float.Parse(parts[3]) * 255,255)));
-        //                            break;
-        //                        case "d":
-        //                            // Where does this map?
-        //                            currentMaterial.Opacity = float.Parse(parts[1]);
-        //                            break;
-        //                        case "Tr":
-        //                            // Where does this map?
-        //                            currentMaterial.Opacity = 1-float.Parse(parts[1]);
-        //                            break;
+                                    //if (File.Exists(path + "\\" + textureFilename))
+                                    {
+                                        //textureLib.Add(materialName, path + "\\" + textureFilename);
+                                        textureLib[materialName] = textureFilename;
+                                    }
+                                    break;
+                                case "Kd":
+                                    currentMaterial.Diffuse = Color.FromArgb(255, (int)(Math.Min(float.Parse(parts[1]) * 255, 255)), (int)(Math.Min(float.Parse(parts[2]) * 255, 255)), (int)(Math.Min(float.Parse(parts[3]) * 255, 255)));
+                                    break;
+                                case "Ks":
+                                    currentMaterial.Specular = Color.FromArgb(255, (int)(Math.Min(float.Parse(parts[1]) * 255, 255)), (int)(Math.Min(float.Parse(parts[2]) * 255, 255)), (int)(Math.Min(float.Parse(parts[3]) * 255, 255)));
+                                    break;
+                                case "d":
+                                    // Where does this map?
+                                    currentMaterial.Opacity = float.Parse(parts[1]);
+                                    break;
+                                case "Tr":
+                                    // Where does this map?
+                                    currentMaterial.Opacity = 1 - float.Parse(parts[1]);
+                                    break;
 
-        //                        case "illum":
-        //                            // Where does this map?
-        //                            int illuminationMode = int.Parse(parts[1]);
-        //                            break;
+                                case "illum":
+                                    // Where does this map?
+                                    int illuminationMode = int.Parse(parts[1]);
+                                    break;
 
-        //                        case "sharpness":
-        //                            currentMaterial.SpecularSharpness = float.Parse(parts[1]);
-        //                            break;
-        //                        case "Ns":
-        //                            currentMaterial.SpecularSharpness = 1.0f + 2 * float.Parse(parts[1]);
-        //                            currentMaterial.SpecularSharpness = Math.Max(10.0f, currentMaterial.SpecularSharpness);
-        //                            break;
-        //                    }
-        //                }
-        //            }
-        //        }
+                                case "sharpness":
+                                    currentMaterial.SpecularSharpness = float.Parse(parts[1]);
+                                    break;
+                                case "Ns":
+                                    currentMaterial.SpecularSharpness = 1.0f + 2 * float.Parse(parts[1]);
+                                    currentMaterial.SpecularSharpness = Math.Max(10.0f, currentMaterial.SpecularSharpness);
+                                    break;
+                            }
+                        }
+                    }
+                }
 
-        //        if (!string.IsNullOrEmpty(materialName))
-        //        {
-        //            matLib[materialName] =currentMaterial;
-        //        }
-        //    }
-        //    catch
-        //    {
-        //    }
-        //}
+                if (!string.IsNullOrEmpty(materialName))
+                {
+                    matLib[materialName] = currentMaterial;
+                }
+            }
+            catch
+            {
+            }
+        }
 
         int[] GetIndexies(string data)
         {
@@ -3086,7 +3165,7 @@ namespace wwtlib
 
             // Use the triangle mesh and material assignments to create a single
             // index list for the mesh.
-            List<uint> newIndexList = new List<uint>();
+            List<int> newIndexList = new List<int>();
 
             foreach (ObjectNode node in objects)
             {
@@ -3097,9 +3176,9 @@ namespace wwtlib
                     int startIndex = newIndexList.Count;
                     foreach (int triangleIndex in node.ApplyLists[i])
                     {
-                        newIndexList.Add((uint)(triangleIndex * 3));
-                        newIndexList.Add((uint)(triangleIndex * 3 + 1));
-                        newIndexList.Add((uint)(triangleIndex * 3 + 2));
+                        newIndexList.Add((int)(triangleIndex * 3));
+                        newIndexList.Add((int)(triangleIndex * 3 + 1));
+                        newIndexList.Add((int)(triangleIndex * 3 + 2));
                     }
 
                     Group group = new Group();
@@ -3364,7 +3443,7 @@ namespace wwtlib
             {
                 unitScale = 1.0f / mesh.BoundingSphere.Radius;
             }
-            renderContext.World = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.Translation(Vector3d.Create(-offset.X, -offset.Y, -offset.Z)), Matrix3d.Scaling(unitScale, unitScale, unitScale)), oldWorld);
+            renderContext.World = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Math.PI),Matrix3d.Translation(Vector3d.Create(-offset.X, -offset.Y, -offset.Z))), Matrix3d.Scaling(unitScale, unitScale, unitScale)), oldWorld);
 
             Matrix3d worldView = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
             Vector3d v = worldView.Transform(Vector3d.Empty);
@@ -3420,7 +3499,7 @@ namespace wwtlib
                 return;
             }
 
-
+            ModelShader.MinLightingBrightness = .1f;
 
             //renderContext.DepthStencilMode = DepthStencilMode.ZReadWrite;
             //renderContext.BlendMode = BlendMode.Alpha;
@@ -3441,8 +3520,15 @@ namespace wwtlib
                     }
                     // Set the material and texture for this subset
                     renderContext.SetMaterial(meshMaterials[i], meshTextures[i], meshSpecularTextures[i], meshNormalMaps[i], opacity);
+                    if (mesh.vertexBuffer != null)
+                    {
+                        ModelShader.Use(renderContext, mesh.vertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i]!= null ? meshTextures[i].Texture2d : null, opacity, false,32);
+                    }
+                    else
+                    {
+                        ModelShader.Use(renderContext, mesh.tangentVertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i] != null ? meshTextures[i].Texture2d : null, opacity, false,44);
 
-                    ModelShader.Use(renderContext, mesh.vertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i].Texture2d, opacity, false);
+                    }
                     renderContext.PreDraw();
                     //todo                   renderContext.setSamplerState(0, renderContext.WrapSampler);
                     mesh.drawSubset(renderContext, i);
@@ -3459,7 +3545,15 @@ namespace wwtlib
                     if (meshTextures[i] != null)
                     {
                         renderContext.MainTexture = meshTextures[i];
-                        ModelShader.Use(renderContext, mesh.vertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i].Texture2d, opacity, false);
+                        if (mesh.vertexBuffer != null)
+                        {
+                            ModelShader.Use(renderContext, mesh.vertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i] != null ? meshTextures[i].Texture2d : null, opacity, false, 32);
+                        }
+                        else
+                        {
+                            ModelShader.Use(renderContext, mesh.tangentVertexBuffer.VertexBuffer, mesh.indexBuffer.Buffer, meshTextures[i] != null ? meshTextures[i].Texture2d : null, opacity, false, 44);
+
+                        }
                     }
                     renderContext.PreDraw();
                     mesh.drawSubset(renderContext, i);
