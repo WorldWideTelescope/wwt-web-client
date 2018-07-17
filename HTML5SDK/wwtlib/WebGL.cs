@@ -392,6 +392,7 @@ namespace System.Html
         public object getBufferParameter(int target, int pname) { return null; }
         public object getFramebufferAttachmentParameter(int target, int attachment, int pname) { return null; }
         public object getParameter(int pname) { return null; }
+        public int getExtension(string name) { return 0; }
         public String getProgramInfoLog(WebGLProgram program) { return null; }
         public object getProgramParameter(WebGLProgram program, int pname) { return null; }
         public object getRenderbufferParameter(int target, int pname) { return null; }

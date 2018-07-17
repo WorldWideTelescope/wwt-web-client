@@ -984,7 +984,7 @@ namespace wwtlib
             }
         }
 
-        private Vector3d hemiLightUp;
+        private Vector3d hemiLightUp = new Vector3d();
         public Vector3d HemisphereLightUp
         {
             get
@@ -1015,7 +1015,7 @@ namespace wwtlib
             }
         }
 
-        private Vector3d sunPosition;
+        private Vector3d sunPosition = new Vector3d();
         public Vector3d SunPosition
         {
             get
@@ -1048,7 +1048,7 @@ namespace wwtlib
             }
         }
 
-        private Vector3d reflectedLightPosition;
+        private Vector3d reflectedLightPosition = new Vector3d();
         public Vector3d ReflectedLightPosition
         {
             get
@@ -1078,7 +1078,7 @@ namespace wwtlib
             }
         }
 
-        private Vector3d occludingPlanetPosition;
+        private Vector3d occludingPlanetPosition = new Vector3d();
         public Vector3d OccludingPlanetPosition
         {
             get
@@ -1111,8 +1111,8 @@ namespace wwtlib
                 }
             }
         }
-
-        public Vector3d CameraPosition;
+        
+        public Vector3d CameraPosition = new Vector3d();
 
         public Matrix3d WVP;
         public Matrix3d WV;
@@ -1192,6 +1192,8 @@ namespace wwtlib
             {
                 return;
             }
+
+            int uints_for_indices = gl.getExtension ("OES_element_index_uint");
 
             Tile.uvMultiple = 1;
             Tile.DemEnabled = true;
