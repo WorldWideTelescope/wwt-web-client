@@ -17,6 +17,23 @@ namespace wwtlib
         public Matrix3d orientation;
     }
 
+    public class BodyAngles
+    {
+        public double poleDec;
+        public double poleRa;
+        public double primeMeridian;
+        public double rotationRate;
+
+        public BodyAngles(double poleRa, double poleDec, double primeMeridian, double rotationRate   )
+        {
+            this.poleDec = poleDec;
+            this.poleRa = poleRa;
+            this.primeMeridian = primeMeridian;
+            this.rotationRate = rotationRate;
+        }
+
+    };
+
     public class Planets
     {
         static Texture[] planetTextures;
@@ -336,6 +353,38 @@ namespace wwtlib
         public static Color[] planetColors;
         public static double[] planetRotationPeriod;
         static double jNow = 0;
+
+        // Values taken from version 10 of the SPICE planetary constants file, updated
+        // October 21, 2011: ftp://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00010.tpc
+        //
+        // Precession rates for rotation angles are currently not stored.
+        //
+        // All angles are in degrees.
+
+        static BodyAngles[] planetAngles =
+        {
+            new BodyAngles (286.13,      63.87,      84.176,  14.18440    ), // Sun
+            new BodyAngles (281.0097,    61.4143,   329.548,   6.1385025  ), // Mercury
+            new BodyAngles (272.76,      67.16,     160.20,   -1.4813688 ), // Venus
+            new BodyAngles (317.68143,   52.88650,  176.630, 350.89198226 ), // Mars
+            new BodyAngles (268.056595,  64.495303, 284.95,  870.5360000 ), // Jupiter
+            new BodyAngles ( 40.589,     83.537,     38.90,  810.7939024 ), // Saturn
+            new BodyAngles (257.311,    -15.175,    203.81,  501.1600928 ), // Uranus
+            new BodyAngles (299.36,      43.46,     253.18,  536.3128492 ), // Neptune
+            new BodyAngles (132.993,     -6.163,    302.695,  56.3625225 ), // Pluto
+            new BodyAngles (269.9949,    66.5392,    38.3213, 13.17635815 ), // Moon
+            new BodyAngles (268.05,      64.50,     200.39,  203.4889538 ), // Io
+            new BodyAngles (268.08,      64.51,      36.022, 101.3747235 ), // Europa
+            new BodyAngles (268.20,      64.57,      44.064,  50.3176081 ), // Ganymede
+            new BodyAngles (268.72,      64.83,     259.51,   21.5710715 ), // Callisto
+            new BodyAngles (  0.0,      0.0, 0.0, 0.0 ), // UNUSED - IoShadow
+            new BodyAngles (  0.0,      0.0, 0.0, 0.0 ), // UNUSED - EuropaShadow
+            new BodyAngles (  0.0,      0.0, 0.0, 0.0 ), // UNUSED - GanymedeShadow
+            new BodyAngles (  0.0,      0.0, 0.0, 0.0 ), // UNUSED - CallistoShadow
+            new BodyAngles (  0.0,      0.0, 0.0, 0.0 ), // UNUSED - SunEclipsed
+            new BodyAngles (  0.0,      90.0, 190.147, 360.9856235 ) // Earth
+        };
+
         public static void UpdatePlanetLocations(bool threeDee)
         {
             jNow = SpaceTimeController.JNow;
@@ -964,6 +1013,135 @@ namespace wwtlib
             }
 
             return true;
+        }
+
+
+        // Compute the rotation of a planet at the J2000 epoch.
+        //
+        // The rotation at some instant in can be computed by multiplying the
+        // the returned matrix by Y(W * t)
+        public static Matrix3d GetPlanetOrientationAtEpoch(int planetID)
+        {
+            Matrix3d m = Matrix3d.Identity;
+
+            // Rotational elements for the planets are in the form used by the
+            // IAU Working Group on Cartographic Coordinates and Rotational Elements:
+            //
+            // a : Right ascension of north pole
+            // d : Declination of north pole
+            // W0 : Prime meridian angle at epoch J2000.0
+            //
+            // The canonical Euler angle sequence is: Z(a - 90) * X(90 - d) * Z(W0)
+            //
+            // The following transformations are required to convert it to a rotation for WWT:
+            //    * WWT uses a coordinate system with +Y = ecliptic north, +X = equinox of J2000
+            //      This system is rotated 90 degrees about the X axis from the standard ecliptic
+            //      system based on the Earth Mean Equinox of J2000 (EMEJ2000)
+            //    * WWT uses row vectors instead of column vectors, so the order of transformations
+            //      is reversed
+            //    * WWT has planet maps with longitude 0 at the edge rather than the middle. This
+            //      requires an extra 180 degrees to be added to W0
+
+            const double obliquityOfEcliptic = 23.4392794;
+
+            if (planetID == (int)SolarSystemObjects.Earth)
+            {
+                // Different calculation for Earth, since the meridian offset
+                // is already included in the Mean Sidereal Time function.
+                m.Multiply(Matrix3d.RotationX(obliquityOfEcliptic * RC)); // equatorial to ecliptic transformation
+            }
+            else
+            {
+                m.Multiply(Matrix3d.RotationX(-90 * RC));    // 90 degree rotation from WWT coord sys
+
+                m.Multiply(Matrix3d.RotationZ((180 + planetAngles[planetID].primeMeridian) * RC));
+                m.Multiply(Matrix3d.RotationX((90 - planetAngles[planetID].poleDec) * RC));
+                m.Multiply(Matrix3d.RotationZ((planetAngles[planetID].poleRa - 90) * RC));
+                m.Multiply(Matrix3d.RotationX(obliquityOfEcliptic * RC)); // equatorial to ecliptic transformation
+
+                m.Multiply(Matrix3d.RotationX(90 * RC));     // 90 degree rotation back to WWT coord sys
+            }
+
+            return m;
+        }
+
+        public static void SetupPlanetMatrix(RenderContext renderContext, int planetID, Vector3d centerPoint, bool makeFrustum)
+        {
+            Matrix3d matNonRotating = renderContext.World;
+
+            SetupMatrixForPlanetGeometry(renderContext, planetID, centerPoint, makeFrustum);
+
+            if (planetID == (int)SolarSystemObjects.Sun)
+            {
+                // Don't apply the Sun's orientation to its non-rotating frame; this means that
+                // the Sun's reference frame will be the ecliptic frame.
+                double radius = GetAdjustedPlanetRadius(planetID);
+                matNonRotating.Scale(Vector3d.Create(radius, radius, radius));
+                Vector3d translation = Vector3d.SubtractVectors(planet3dLocations[planetID], centerPoint);
+                matNonRotating.Multiply(Matrix3d.Translation(translation));
+                renderContext.WorldBaseNonRotating = matNonRotating;
+            }
+        }
+
+        public static Matrix3d EarthMatrix = new Matrix3d();
+        public static Matrix3d EarthMatrixInv = new Matrix3d();
+
+        private static double SetupMatrixForPlanetGeometry(RenderContext renderContext, int planetID, Vector3d centerPoint, bool makeFrustum)
+        {
+            double radius = GetAdjustedPlanetRadius(planetID);
+
+
+            double rotationCurrent = 0;
+            if (planetID == (int)SolarSystemObjects.Earth)
+            {
+                rotationCurrent = Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
+            }
+            else
+            {
+                rotationCurrent = (((jNow - 2451545.0) / planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
+            }
+
+            if (planetID == (int)SolarSystemObjects.Moon)
+            {
+                rotationCurrent -= Math.PI / 2;
+            }
+
+            Matrix3d matLocal = renderContext.World;
+            Matrix3d matNonRotating = renderContext.World;
+            Vector3d translation = Vector3d.SubtractVectors(planet3dLocations[planetID],centerPoint);
+
+            Matrix3d orientationAtEpoch = GetPlanetOrientationAtEpoch(planetID);
+
+            matLocal.Scale(Vector3d.Create(radius, radius, radius));
+            matLocal.Multiply(Matrix3d.RotationY(-rotationCurrent));
+            matLocal.Multiply(orientationAtEpoch);
+
+
+            if (planetID == (int)renderContext.ViewCamera.Target)
+            {
+                EarthMatrix = Matrix3d.Identity;
+                EarthMatrix.Multiply(Matrix3d.RotationY(-rotationCurrent));
+                EarthMatrix.Multiply(orientationAtEpoch);
+
+                EarthMatrixInv = EarthMatrix;
+                EarthMatrixInv.Invert();
+            }
+
+            matLocal.Multiply(Matrix3d.Translation(translation));
+            renderContext.World = matLocal;
+            renderContext.WorldBase = renderContext.World;
+            renderContext.NominalRadius = GetPlanetRadiusInMeters(planetID);
+
+
+            if (makeFrustum)
+            {
+                renderContext.MakeFrustum();
+            }
+            matNonRotating.Scale(Vector3d.Create(radius, radius, radius));
+            matNonRotating.Multiply(orientationAtEpoch);
+            matNonRotating.Multiply(Matrix3d.Translation(translation));
+            renderContext.WorldBaseNonRotating = matNonRotating;
+            return rotationCurrent;
         }
 
         public static void InitPlanetResources(RenderContext renderContext)
@@ -2154,6 +2332,22 @@ namespace wwtlib
 
             return radius;
         }
+
+        public static double GetPlanetRadiusInMeters(int planetID)
+        {
+            if (planetID > planetDiameters.Length - 1)
+            {
+                planetID = (int)SolarSystemObjects.Earth;
+            }
+
+
+            double diameter = planetDiameters[planetID];
+
+
+            return (diameter / 2.0) * UiTools.KilometersPerAu * 1000;
+
+        }
+
         static AstroRaDec[] planetLocations;
 
         static Sprite2d planetSprite = new Sprite2d();

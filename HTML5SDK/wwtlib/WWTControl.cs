@@ -2594,6 +2594,8 @@ namespace wwtlib
                 player.Stop(false);
             }
 
+            //LayerManager.TourLayers = true;
+
             tour = TourDocument.FromUrl(url, delegate
                     {
                         //TourPlayer player = new TourPlayer();
@@ -2602,7 +2604,7 @@ namespace wwtlib
                         //uiController = player;
                         //WWTControl.scriptInterface.FireTourReady();
                         //player.Play();
-
+                        
                         SetupTour();
                         TourEdit.PlayNow(true);
                         WWTControl.scriptInterface.FireTourReady();

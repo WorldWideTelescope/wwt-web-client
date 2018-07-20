@@ -1638,7 +1638,8 @@ window.wwtlib = function(){
     ganymede: 16, 
     callisto: 17, 
     custom: 18, 
-    identity: 19
+    identity: 19, 
+    sandbox: 20
   };
 
 
@@ -1647,7 +1648,8 @@ window.wwtlib = function(){
   var ReferenceFrameTypes = {
     fixedSherical: 0, 
     orbital: 1, 
-    trajectory: 2
+    trajectory: 2, 
+    synodic: 3
   };
 
 
@@ -11278,6 +11280,7 @@ window.wwtlib = function(){
       else if (!ss.emptyString(map.frame.parent) && ss.keyExists(LayerManager.get_allMaps(), map.frame.parent)) {
         if (!ss.keyExists(LayerManager.get_allMaps()[map.frame.parent].childMaps, map.frame.name)) {
           LayerManager.get_allMaps()[map.frame.parent].childMaps[map.frame.name] = map;
+          map.parent = LayerManager.get_allMaps()[map.frame.parent];
         }
       }
     }
@@ -11299,6 +11302,57 @@ window.wwtlib = function(){
     else {
       return false;
     }
+  };
+  LayerManager._getFrameTarget = function(renderContext, TrackingFrame) {
+    var target = new FrameTarget();
+    var targetPoint = Vector3d.get_empty();
+    target.target = Vector3d.get_empty();
+    target.matrix = Matrix3d.get_identity();
+    if (!ss.keyExists(LayerManager.get_allMaps(), TrackingFrame)) {
+      return target;
+    }
+    var mapList = [];
+    var current = LayerManager.get_allMaps()[TrackingFrame];
+    mapList.push(current);
+    while (current.frame.reference === 18) {
+      current = current.parent;
+      mapList.splice(0, 0, current);
+    }
+    var matOld = renderContext.get_world();
+    var matOldNonRotating = renderContext.get_worldBaseNonRotating();
+    var matOldBase = renderContext.get_worldBase();
+    var oldNominalRadius = renderContext.get_nominalRadius();
+    var $enum1 = ss.enumerate(mapList);
+    while ($enum1.moveNext()) {
+      var map = $enum1.current;
+      if (map.frame.reference !== 18 && map.frame.reference !== 20) {
+        Planets.setupPlanetMatrix(renderContext, Enums.parse('SolarSystemObjects', map.frame.name), Vector3d.get_empty(), false);
+      }
+      else {
+        map.computeFrame(renderContext);
+        if (map.frame.useRotatingParentFrame()) {
+          renderContext.set_world(Matrix3d.multiplyMatrix(map.frame.worldMatrix, renderContext.get_world()));
+        }
+        else {
+          renderContext.set_world(Matrix3d.multiplyMatrix(map.frame.worldMatrix, renderContext.get_worldBaseNonRotating()));
+        }
+        if (map.frame.referenceFrameType === 3) {
+          renderContext.set_worldBaseNonRotating(renderContext.get_world());
+        }
+        renderContext.set_nominalRadius(map.frame.meanRadius);
+      }
+    }
+    targetPoint = renderContext.get_world().transform(targetPoint);
+    var lookAt = renderContext.get_world().transform(Vector3d.create(0, 0, 1));
+    var lookUp = renderContext.get_world().transform(Vector3d.subtractVectors(Vector3d.create(0, 1, 0), targetPoint));
+    lookUp.normalize();
+    target.matrix = Matrix3d.lookAtLH(new Vector3d(), Vector3d.subtractVectors(lookAt, targetPoint), lookUp);
+    renderContext.set_nominalRadius(oldNominalRadius);
+    renderContext.set_world(matOld);
+    renderContext.set_worldBaseNonRotating(matOldNonRotating);
+    renderContext.set_worldBase(matOldBase);
+    target.target = targetPoint;
+    return target;
   };
   LayerManager._prepTourLayers = function() {
     if (TourPlayer.get_playing()) {
@@ -11353,7 +11407,7 @@ window.wwtlib = function(){
     var matOld = renderContext.get_world();
     var matOldNonRotating = renderContext.get_worldBaseNonRotating();
     var oldNominalRadius = renderContext.get_nominalRadius();
-    if (thisMap.frame.reference === 18) {
+    if ((thisMap.frame.reference === 18 | thisMap.frame.reference === 18) === 1) {
       thisMap.computeFrame(renderContext);
       if (thisMap.frame.referenceFrameType !== 1 && thisMap.frame.referenceFrameType !== 2) {
         renderContext.set_world(Matrix3d.multiplyMatrix(thisMap.frame.worldMatrix, renderContext.get_world()));
@@ -11370,7 +11424,11 @@ window.wwtlib = function(){
       while ($enum2.moveNext()) {
         var layer = $enum2.current;
         if ((!pass && ss.canCast(layer, ImageSetLayer)) || (pass === 1 && !(ss.canCast(layer, ImageSetLayer)))) {
-          if (layer.enabled) {
+          var skipLayer = false;
+          if (!pass) {
+            skipLayer = !astronomical && (layer).get_overrideDefaultLayer();
+          }
+          if (layer.enabled && !skipLayer) {
             var layerStart = SpaceTimeController.utcToJulian(layer.get_startTime());
             var layerEnd = SpaceTimeController.utcToJulian(layer.get_endTime());
             var fadeIn = SpaceTimeController.utcToJulian(layer.get_startTime()) - ((layer.get_fadeType() === 1 || layer.get_fadeType() === 3) ? (layer.get_fadeSpan() / 864000000) : 0);
@@ -11404,7 +11462,7 @@ window.wwtlib = function(){
         if (!(ss.canCast(map, LayerMap))) {
           continue;
         }
-        if (map.frame.showOrbitPath && Settings.get_active().get_solarSystemOrbits() && Settings.get_active().get_solarSystemMinorOrbits()) {
+        if (map.enabled && map.frame.showOrbitPath && Settings.get_active().get_solarSystemOrbits() && Settings.get_active().get_solarSystemMinorOrbits()) {
           if (map.frame.referenceFrameType === 1) {
             if (map.frame.get_orbit() == null) {
               map.frame.set_orbit(new Orbit(map.frame.get_elements(), 360, map.frame.get_representativeColor(), 1, map.parent.frame.meanRadius));
@@ -12082,6 +12140,15 @@ window.wwtlib = function(){
   function OrbitLayer() {
   }
   var OrbitLayer$ = {
+
+  };
+
+
+  // wwtlib.FrameTarget
+
+  function FrameTarget() {
+  }
+  var FrameTarget$ = {
 
   };
 
@@ -14136,6 +14203,16 @@ window.wwtlib = function(){
           break;
       }
     },
+    useRotatingParentFrame: function() {
+      switch (this.referenceFrameType) {
+        case 1:
+        case 2:
+        case 3:
+          return false;
+        default:
+          return true;
+      }
+    },
     _computeFixedRectangular: function(renderContext) {
     },
     _computeFixedSherical: function(renderContext) {
@@ -15060,6 +15137,23 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.BodyAngles
+
+  function BodyAngles(poleRa, poleDec, primeMeridian, rotationRate) {
+    this.poleDec = 0;
+    this.poleRa = 0;
+    this.primeMeridian = 0;
+    this.rotationRate = 0;
+    this.poleDec = poleDec;
+    this.poleRa = poleRa;
+    this.primeMeridian = primeMeridian;
+    this.rotationRate = rotationRate;
+  }
+  var BodyAngles$ = {
+
+  };
+
+
   // wwtlib.Planets
 
   function Planets() {
@@ -15646,6 +15740,72 @@ window.wwtlib = function(){
     }
     return true;
   };
+  Planets.getPlanetOrientationAtEpoch = function(planetID) {
+    var m = Matrix3d.get_identity();
+    var obliquityOfEcliptic = 23.4392794;
+    if (planetID === 19) {
+      m._multiply(Matrix3d._rotationX(obliquityOfEcliptic * Planets.RC));
+    }
+    else {
+      m._multiply(Matrix3d._rotationX(-90 * Planets.RC));
+      m._multiply(Matrix3d._rotationZ((180 + Planets._planetAngles[planetID].primeMeridian) * Planets.RC));
+      m._multiply(Matrix3d._rotationX((90 - Planets._planetAngles[planetID].poleDec) * Planets.RC));
+      m._multiply(Matrix3d._rotationZ((Planets._planetAngles[planetID].poleRa - 90) * Planets.RC));
+      m._multiply(Matrix3d._rotationX(obliquityOfEcliptic * Planets.RC));
+      m._multiply(Matrix3d._rotationX(90 * Planets.RC));
+    }
+    return m;
+  };
+  Planets.setupPlanetMatrix = function(renderContext, planetID, centerPoint, makeFrustum) {
+    var matNonRotating = renderContext.get_world();
+    Planets._setupMatrixForPlanetGeometry(renderContext, planetID, centerPoint, makeFrustum);
+    if (planetID === 0) {
+      var radius = Planets.getAdjustedPlanetRadius(planetID);
+      matNonRotating.scale(Vector3d.create(radius, radius, radius));
+      var translation = Vector3d.subtractVectors(Planets._planet3dLocations[planetID], centerPoint);
+      matNonRotating._multiply(Matrix3d.translation(translation));
+      renderContext.set_worldBaseNonRotating(matNonRotating);
+    }
+  };
+  Planets._setupMatrixForPlanetGeometry = function(renderContext, planetID, centerPoint, makeFrustum) {
+    var radius = Planets.getAdjustedPlanetRadius(planetID);
+    var rotationCurrent = 0;
+    if (planetID === 19) {
+      rotationCurrent = Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
+    }
+    else {
+      rotationCurrent = (((Planets._jNow - 2451545) / Planets.planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
+    }
+    if (planetID === 9) {
+      rotationCurrent -= Math.PI / 2;
+    }
+    var matLocal = renderContext.get_world();
+    var matNonRotating = renderContext.get_world();
+    var translation = Vector3d.subtractVectors(Planets._planet3dLocations[planetID], centerPoint);
+    var orientationAtEpoch = Planets.getPlanetOrientationAtEpoch(planetID);
+    matLocal.scale(Vector3d.create(radius, radius, radius));
+    matLocal._multiply(Matrix3d._rotationY(-rotationCurrent));
+    matLocal._multiply(orientationAtEpoch);
+    if (planetID === renderContext.viewCamera.target) {
+      Planets.earthMatrix = Matrix3d.get_identity();
+      Planets.earthMatrix._multiply(Matrix3d._rotationY(-rotationCurrent));
+      Planets.earthMatrix._multiply(orientationAtEpoch);
+      Planets.earthMatrixInv = Planets.earthMatrix;
+      Planets.earthMatrixInv.invert();
+    }
+    matLocal._multiply(Matrix3d.translation(translation));
+    renderContext.set_world(matLocal);
+    renderContext.set_worldBase(renderContext.get_world());
+    renderContext.set_nominalRadius(Planets.getPlanetRadiusInMeters(planetID));
+    if (makeFrustum) {
+      renderContext.makeFrustum();
+    }
+    matNonRotating.scale(Vector3d.create(radius, radius, radius));
+    matNonRotating._multiply(orientationAtEpoch);
+    matNonRotating._multiply(Matrix3d.translation(translation));
+    renderContext.set_worldBaseNonRotating(matNonRotating);
+    return rotationCurrent;
+  };
   Planets.initPlanetResources = function(renderContext) {
   };
   Planets._drawSingleOrbit = function(renderContext, eclipticColor, id, centerPoint, startAngle, planetNow, opacity) {
@@ -16199,6 +16359,13 @@ window.wwtlib = function(){
       radius = radius * (1 + (0.3 * (Settings.get_active().get_solarSystemScale() - 1)));
     }
     return radius;
+  };
+  Planets.getPlanetRadiusInMeters = function(planetID) {
+    if (planetID > Planets._planetDiameters.length - 1) {
+      planetID = 19;
+    }
+    var diameter = Planets._planetDiameters[planetID];
+    return (diameter / 2) * 149598000 * 1000;
   };
   Planets._drawPlanet = function(renderContext, planetID, opacity) {
     var planetPosition = Planets._planetLocations[planetID];
@@ -16780,7 +16947,15 @@ window.wwtlib = function(){
       var trackingMatrix = Matrix3d.get_identity();
       cameraDistance -= 1E-06;
       var activeTrackingFrame = false;
-      this.set_trackingFrame('');
+      if (this.get_solarSystemTrack() === 20 && !ss.emptyString(this.get_trackingFrame())) {
+        activeTrackingFrame = true;
+        var target = LayerManager._getFrameTarget(this, this.get_trackingFrame());
+        this.viewCamera.viewTarget = target.target;
+        trackingMatrix = target.matrix;
+      }
+      else if (!ss.emptyString(this.get_trackingFrame())) {
+        this.set_trackingFrame('');
+      }
       var center = this.viewCamera.viewTarget;
       var localZoom = this.viewCamera.zoom * 20;
       var lookAt = new Vector3d();
@@ -34972,6 +35147,9 @@ window.wwtlib = function(){
     if (place.attributes.getNamedItem('ViewTarget') != null) {
       newPlace._camParams.viewTarget = Vector3d.parse(place.attributes.getNamedItem('ViewTarget').nodeValue);
     }
+    if (place.attributes.getNamedItem('TargetReferenceFrame') != null) {
+      newPlace._camParams.targetReferenceFrame = place.attributes.getNamedItem('TargetReferenceFrame').nodeValue;
+    }
     var descriptionNode = Util.selectSingleNode(place, 'Description');
     if (descriptionNode != null) {
       newPlace.htmlDescription = descriptionNode.nodeValue;
@@ -44022,6 +44200,7 @@ window.wwtlib = function(){
       SkyOverlays: [ SkyOverlays, SkyOverlays$, null ],
       GroundOverlayLayer: [ GroundOverlayLayer, GroundOverlayLayer$, null ],
       OrbitLayer: [ OrbitLayer, OrbitLayer$, null ],
+      FrameTarget: [ FrameTarget, FrameTarget$, null ],
       LayerUI: [ LayerUI, LayerUI$, null ],
       LayerUIMenuItem: [ LayerUIMenuItem, LayerUIMenuItem$, null ],
       LayerUITreeNode: [ LayerUITreeNode, LayerUITreeNode$, null ],
@@ -44040,6 +44219,7 @@ window.wwtlib = function(){
       VoColumn: [ VoColumn, VoColumn$, null ],
       WcsImage: [ WcsImage, WcsImage$, null ],
       KeplerianElements: [ KeplerianElements, KeplerianElements$, null ],
+      BodyAngles: [ BodyAngles, BodyAngles$, null ],
       Planets: [ Planets, Planets$, null ],
       Material: [ Material, Material$, null ],
       RenderContext: [ RenderContext, RenderContext$, null ],
@@ -44459,10 +44639,13 @@ window.wwtlib = function(){
   Planets.showActualSize = Settings.get_active().get_actualPlanetScale();
   Planets.RC = (Math.PI / 180);
   Planets._jNow = 0;
+  Planets._planetAngles = [ new BodyAngles(286.13, 63.87, 84.176, 14.1844), new BodyAngles(281.0097, 61.4143, 329.548, 6.1385025), new BodyAngles(272.76, 67.16, 160.2, -1.4813688), new BodyAngles(317.68143, 52.8865, 176.63, 350.89198226), new BodyAngles(268.056595, 64.495303, 284.95, 870.536), new BodyAngles(40.589, 83.537, 38.9, 810.7939024), new BodyAngles(257.311, -15.175, 203.81, 501.1600928), new BodyAngles(299.36, 43.46, 253.18, 536.3128492), new BodyAngles(132.993, -6.163, 302.695, 56.3625225), new BodyAngles(269.9949, 66.5392, 38.3213, 13.17635815), new BodyAngles(268.05, 64.5, 200.39, 203.4889538), new BodyAngles(268.08, 64.51, 36.022, 101.3747235), new BodyAngles(268.2, 64.57, 44.064, 50.3176081), new BodyAngles(268.72, 64.83, 259.51, 21.5710715), new BodyAngles(0, 0, 0, 0), new BodyAngles(0, 0, 0, 0), new BodyAngles(0, 0, 0, 0), new BodyAngles(0, 0, 0, 0), new BodyAngles(0, 0, 0, 0), new BodyAngles(0, 90, 190.147, 360.9856235) ];
   Planets._lastPlanetCenterID = -2;
   Planets._orbitalSampleRate = 256;
   Planets._obliquity = 23.5 * Planets.RC;
   Planets._drawOrder = {};
+  Planets.earthMatrix = new Matrix3d();
+  Planets.earthMatrixInv = new Matrix3d();
   Planets._lastUpdate = new Date();
   Planets._ringsTriangleLists = new Array(2);
   Planets._ringImage = null;

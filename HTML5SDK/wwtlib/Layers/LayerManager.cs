@@ -558,6 +558,7 @@ namespace wwtlib
                     if (!AllMaps[map.Frame.Parent].ChildMaps.ContainsKey(map.Frame.Name))
                     {
                         AllMaps[map.Frame.Parent].ChildMaps[map.Frame.Name] = map;
+                        map.Parent = AllMaps[map.Frame.Parent];
                     }
                 }
             }
@@ -586,6 +587,90 @@ namespace wwtlib
                 return false;
             }
 
+        }
+
+        internal static FrameTarget GetFrameTarget(RenderContext renderContext, string TrackingFrame)
+        {
+
+            FrameTarget target = new FrameTarget();
+
+            Vector3d targetPoint = Vector3d.Empty;
+         
+            target.Target = Vector3d.Empty;
+            target.Matrix = Matrix3d.Identity;
+
+            if (!AllMaps.ContainsKey(TrackingFrame))
+            {
+                return target;
+            }
+
+            List<LayerMap> mapList = new List<LayerMap>();
+
+            LayerMap current = AllMaps[TrackingFrame];
+
+            mapList.Add(current);
+
+            while (current.Frame.Reference == ReferenceFrames.Custom)
+            {
+                current = current.Parent;
+                mapList.Insert(0, current);
+            }
+
+            Matrix3d matOld = renderContext.World;
+            Matrix3d matOldNonRotating = renderContext.WorldBaseNonRotating;
+            Matrix3d matOldBase = renderContext.WorldBase;
+            double oldNominalRadius = renderContext.NominalRadius;
+
+            foreach (LayerMap map in mapList)
+            {
+                if (map.Frame.Reference != ReferenceFrames.Custom && map.Frame.Reference != ReferenceFrames.Sandbox)
+                {
+                    
+                    Planets.SetupPlanetMatrix(renderContext, (int)Enums.Parse("SolarSystemObjects", map.Frame.Name), Vector3d.Empty, false);
+                }
+                else
+                {
+                    map.ComputeFrame(renderContext);
+                    if (map.Frame.useRotatingParentFrame())
+                    {
+                        renderContext.World = Matrix3d.MultiplyMatrix(map.Frame.WorldMatrix, renderContext.World);
+                    }
+                    else
+                    {
+                        renderContext.World = Matrix3d.MultiplyMatrix(map.Frame.WorldMatrix, renderContext.WorldBaseNonRotating);
+
+                    }
+                    if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Synodic)
+                    {
+                        renderContext.WorldBaseNonRotating = renderContext.World;
+                    }
+
+                    renderContext.NominalRadius = map.Frame.MeanRadius;
+                }
+            }
+
+            targetPoint = renderContext.World.Transform(targetPoint);
+
+            Vector3d lookAt = renderContext.World.Transform(Vector3d.Create(0, 0, 1));
+                                                                    
+            Vector3d lookUp = renderContext.World.Transform(Vector3d.SubtractVectors(Vector3d.Create(0, 1, 0),targetPoint));
+
+
+            lookUp.Normalize();
+
+
+            target.Matrix = Matrix3d.LookAtLH(new Vector3d(), Vector3d.SubtractVectors(lookAt, targetPoint), lookUp);
+
+
+            renderContext.NominalRadius = oldNominalRadius;
+            renderContext.World = matOld;
+            renderContext.WorldBaseNonRotating = matOldNonRotating;
+            renderContext.WorldBase = matOldBase;
+
+
+           
+            target.Target = targetPoint;
+            return target;
         }
 
         internal static void PrepTourLayers()
@@ -667,7 +752,7 @@ namespace wwtlib
             Matrix3d matOld = renderContext.World;
             Matrix3d matOldNonRotating = renderContext.WorldBaseNonRotating;
             double oldNominalRadius = renderContext.NominalRadius;
-            if (thisMap.Frame.Reference == ReferenceFrames.Custom)
+            if (thisMap.Frame.Reference == ReferenceFrames.Custom | thisMap.Frame.Reference == ReferenceFrames.Custom)
             {
                 thisMap.ComputeFrame(renderContext);
                 if (thisMap.Frame.ReferenceFrameType != ReferenceFrameTypes.Orbital && thisMap.Frame.ReferenceFrameType != ReferenceFrameTypes.Trajectory)
@@ -701,7 +786,14 @@ namespace wwtlib
                 {
                     if ((pass == 0 && layer is ImageSetLayer) || (pass == 1 && !(layer is ImageSetLayer)))
                     {
-                        if (layer.Enabled) // && astronomical == layer.Astronomical)
+                        bool skipLayer = false;
+                        if (pass == 0)
+                        {
+                            // Skip default image set layer so that it's not drawn twice
+                            skipLayer = !astronomical && ((ImageSetLayer)layer).OverrideDefaultLayer;
+                        }
+
+                        if (layer.Enabled && !skipLayer) // && astronomical == layer.Astronomical)
                         {
                             double layerStart = SpaceTimeController.UtcToJulian(layer.StartTime);
                             double layerEnd = SpaceTimeController.UtcToJulian(layer.EndTime);
@@ -721,10 +813,7 @@ namespace wwtlib
                                     fadeOpacity = (float)((fadeOut - SpaceTimeController.JNow) / (layer.FadeSpan / 864000000));
                                 }
                                 layer.Astronomical = astronomical;
-                                //if (thisMap.Frame.Reference == ReferenceFrames.Sky)
-                                //{
-                                //    layer.Astronomical = true;
-                                //}
+
                                 if (layer is SpreadSheetLayer)
                                 {
                                     SpreadSheetLayer tsl = layer as SpreadSheetLayer;
@@ -748,7 +837,7 @@ namespace wwtlib
                     {
                         continue;
                     }
-                    if (map.Frame.ShowOrbitPath && Settings.Active.SolarSystemOrbits && Settings.Active.SolarSystemMinorOrbits)
+                    if (map.Enabled && map.Frame.ShowOrbitPath && Settings.Active.SolarSystemOrbits && Settings.Active.SolarSystemMinorOrbits)
                     {
                         if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Orbital)
                         {
@@ -2195,7 +2284,8 @@ namespace wwtlib
         Ganymede = 16,
         Callisto = 17,
         Custom = 18,
-        Identity = 19
+        Identity = 19,
+        Sandbox = 20
     };
 
     public class SkyOverlays
@@ -2209,5 +2299,11 @@ namespace wwtlib
     public class OrbitLayer
     {
 
+    }
+
+    public class FrameTarget
+    {
+        public Vector3d Target;
+        public Matrix3d Matrix;
     }
 }
