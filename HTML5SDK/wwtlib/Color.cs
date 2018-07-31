@@ -39,7 +39,7 @@ namespace wwtlib
 
         public static Color FromName(string name)
         {
-            Color temp = FromWindowsNamedColor(name);
+            Color temp = Load(name);
             return temp;
         }
         public string ToFormat()

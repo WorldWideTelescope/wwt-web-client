@@ -213,7 +213,7 @@ namespace wwtlib
             set
             {
                 Annotation.BatchDirty = true;
-                lineColor = Color.FromName(value);
+                lineColor = Color.Load(value);
             }
         }
         Color fillColor = Colors.White;

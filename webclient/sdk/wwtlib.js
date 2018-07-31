@@ -12464,6 +12464,7 @@ window.wwtlib = function(){
     this._systemGenerated = false;
     this.meanAnomoly = 0;
     this.orbitalYears = 0;
+    this.observingLocation = false;
     this.reference = 18;
     this.parentsRoationalBase = false;
     this.referenceFrameType = 0;
@@ -12700,6 +12701,24 @@ window.wwtlib = function(){
     _computeFixedRectangular: function(renderContext) {
     },
     _computeFixedSherical: function(renderContext) {
+      if (this.observingLocation) {
+        this.lat = SpaceTimeController.get_location().get_lat();
+        this.lng = SpaceTimeController.get_location().get_lng();
+        this.altitude = SpaceTimeController.get_altitude();
+      }
+      this.worldMatrix = Matrix3d.get_identity();
+      this.worldMatrix.translate(this.translation);
+      var localScale = (1 / renderContext.get_nominalRadius()) * this.scale * this.meanRadius;
+      this.worldMatrix.scale(Vector3d.create(localScale, localScale, localScale));
+      this.worldMatrix._multiply(Matrix3d.rotationYawPitchRoll((this.heading / 180 * Math.PI), (this.pitch / 180 * Math.PI), (this.roll / 180 * Math.PI)));
+      this.worldMatrix._multiply(Matrix3d._rotationZ(-90 / 180 * Math.PI));
+      if (!!this.rotationalPeriod) {
+        var rotationCurrent = (((SpaceTimeController.get_jNow() - this.zeroRotationDate) / this.rotationalPeriod) * Math.PI * 2) % (Math.PI * 2);
+        this.worldMatrix._multiply(Matrix3d._rotationX(-rotationCurrent));
+      }
+      this.worldMatrix.translate(Vector3d.create(1 + (this.altitude / renderContext.get_nominalRadius()), 0, 0));
+      this.worldMatrix._multiply(Matrix3d._rotationZ(this.lat / 180 * Math.PI));
+      this.worldMatrix._multiply(Matrix3d._rotationY(-this.lng / 180 * Math.PI));
     },
     _computeFrameTrajectory: function(renderContext) {
     },
@@ -28361,7 +28380,7 @@ window.wwtlib = function(){
     return temp;
   };
   Color.fromName = function(name) {
-    var temp = Color._fromWindowsNamedColor(name);
+    var temp = Color.load(name);
     return temp;
   };
   Color.load = function(color) {
@@ -30627,6 +30646,12 @@ window.wwtlib = function(){
     mat3d.set_m33(mat.m33);
     mat3d._isNotKnownToBeIdentity = true;
     return mat3d;
+  };
+  Matrix3d.rotationYawPitchRoll = function(heading, pitch, roll) {
+    var matX = Matrix3d._rotationX(pitch);
+    var matY = Matrix3d._rotationY(heading);
+    var matZ = Matrix3d._rotationZ(roll);
+    return Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(matY, matX), matZ);
   };
   Matrix3d._rotationY = function(p) {
     var v = p;
@@ -41496,7 +41521,7 @@ window.wwtlib = function(){
     },
     set_lineColor: function(value) {
       Annotation.batchDirty = true;
-      this._lineColor$1 = Color.fromName(value);
+      this._lineColor$1 = Color.load(value);
       return value;
     },
     get_fillColor: function() {

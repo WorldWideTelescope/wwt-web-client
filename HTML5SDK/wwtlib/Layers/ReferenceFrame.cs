@@ -25,6 +25,7 @@ namespace wwtlib
         public Matrix3d WorldMatrix;
         public double OrbitalYears;
 
+        public bool ObservingLocation = false;
 
         // Serialized
         public string Name;
@@ -402,21 +403,47 @@ namespace wwtlib
         }
         private void ComputeFixedSherical(RenderContext renderContext)
         {
-          ////  Vector3d offset = Coordinates.GeoTo3dDouble(Lat, Lng, 1 + (Altitude / renderContext.NominalRadius));
-          //  WorldMatrix = Matrix3d.Identity;
-          //  double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
-          //  WorldMatrix.Scale(new Vector3d(localScale, localScale, localScale));
-          //  //WorldMatrix.Scale(new Vector3d(1000, 1000, 1000));
-          //  WorldMatrix.Rotate(Quaternion.RotationYawPitchRoll((float)((Heading-90)/180.0*Math.PI), (float)Pitch, (float)Roll));
-          //  WorldMatrix.Multiply(Matrix3d.RotationZ(-90.0));
-          //  if (RotationalPeriod != 0)
-          //  {
-          //      double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
-          //      WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
-          //  }
-          //  WorldMatrix.Translate(new Vector3d(1 + (Altitude / renderContext.NominalRadius), 0, 0));
-          //  WorldMatrix.Multiply(Matrix3d.RotationZ(Lat));
-          //  WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng) ));
+            if (ObservingLocation)
+            {
+                Lat = SpaceTimeController.Location.Lat;
+                Lng = SpaceTimeController.Location.Lng;
+                Altitude = SpaceTimeController.Altitude;
+            }
+
+
+            WorldMatrix = Matrix3d.Identity;
+            WorldMatrix.Translate(Translation);
+            double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
+            WorldMatrix.Scale( Vector3d.Create(localScale, localScale, localScale));
+            //WorldMatrix.Scale(new Vector3d(1000, 1000, 1000));
+            WorldMatrix.Multiply( Matrix3d.RotationYawPitchRoll((float)((Heading) / 180.0 * Math.PI), (float)(Pitch / 180.0 * Math.PI), (float)(Roll / 180.0 * Math.PI)));
+            WorldMatrix.Multiply(Matrix3d.RotationZ(-90.0 / 180.0 * Math.PI));
+            if (RotationalPeriod != 0)
+            {
+                double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * Math.PI * 2) % (Math.PI * 2);
+                WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
+            }
+            WorldMatrix.Translate( Vector3d.Create(1 + (Altitude / renderContext.NominalRadius), 0, 0));
+            WorldMatrix.Multiply(Matrix3d.RotationZ(Lat / 180 * Math.PI));
+            WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng) / 180 * Math.PI));
+
+
+
+            ////  Vector3d offset = Coordinates.GeoTo3dDouble(Lat, Lng, 1 + (Altitude / renderContext.NominalRadius));
+            //  WorldMatrix = Matrix3d.Identity;
+            //  double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
+            //  WorldMatrix.Scale(new Vector3d(localScale, localScale, localScale));
+            //  //WorldMatrix.Scale(new Vector3d(1000, 1000, 1000));
+            //  WorldMatrix.Rotate(Quaternion.RotationYawPitchRoll((float)((Heading-90)/180.0*Math.PI), (float)Pitch, (float)Roll));
+            //  WorldMatrix.Multiply(Matrix3d.RotationZ(-90.0));
+            //  if (RotationalPeriod != 0)
+            //  {
+            //      double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
+            //      WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
+            //  }
+            //  WorldMatrix.Translate(new Vector3d(1 + (Altitude / renderContext.NominalRadius), 0, 0));
+            //  WorldMatrix.Multiply(Matrix3d.RotationZ(Lat));
+            //  WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng) ));
         }
 
         private void ComputeFrameTrajectory(RenderContext renderContext)

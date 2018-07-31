@@ -2599,6 +2599,15 @@ namespace wwtlib
             s_identity = CreateIdentity();
         }
 
+        public static Matrix3d RotationYawPitchRoll(double heading, double pitch, double roll)
+        {
+            Matrix3d matX = RotationX(pitch);
+            Matrix3d matY = RotationY(heading);
+            Matrix3d matZ = RotationZ(roll);
+
+            return Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(matY, matX), matZ);
+        }
+
         internal static Matrix3d RotationY(double p)
         {
             double v = p;
