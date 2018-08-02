@@ -9,7 +9,7 @@ using System.Html.Media.Graphics;
 
 namespace wwtlib
 {
-    public enum ReferenceFrameTypes { FixedSherical=0, Orbital=1, Trajectory = 2 /*,FixedRectangular*/ };
+    public enum ReferenceFrameTypes { FixedSherical=0, Orbital=1, Trajectory = 2, Synodic = 3 /*,FixedRectangular*/ };
     public class ReferenceFrame
     {
         public ReferenceFrame()
@@ -369,7 +369,7 @@ namespace wwtlib
                 case ReferenceFrameTypes.Trajectory:
                     ComputeFrameTrajectory(renderContext);
                     break;
-
+    // todo port synodic for JWST orbits..
                 //case ReferenceFrameTypes.FixedRectangular:
                 //    ComputeFixedRectangular(renderContext);
                 //    break;
@@ -378,7 +378,18 @@ namespace wwtlib
             }
         }
 
-
+        public bool useRotatingParentFrame()
+        {
+            switch (ReferenceFrameType)
+            {
+                case ReferenceFrameTypes.Orbital:
+                case ReferenceFrameTypes.Trajectory:
+                case ReferenceFrameTypes.Synodic:
+                    return false;
+                default:
+                    return true;
+            }
+        }
 
         private void ComputeFixedRectangular(RenderContext renderContext)
         {

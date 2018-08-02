@@ -737,12 +737,14 @@ namespace wwtlib
             cameraDistance -= 0.000001;
 
             bool activeTrackingFrame = false;
-            //if (SolarSystemTrack == SolarSystemObjects.Custom && !string.IsNullOrEmpty(TrackingFrame))
-            //{
-            //    activeTrackingFrame = true;
-            //    viewCamera.ViewTarget = LayerManager.GetFrameTarget(RenderContext, TrackingFrame, out trackingMatrix);
-            //}
-            //else if (!string.IsNullOrEmpty(TrackingFrame))
+            if (SolarSystemTrack == SolarSystemObjects.Custom && !string.IsNullOrEmpty(TrackingFrame))
+            {
+                activeTrackingFrame = true;
+                FrameTarget target = LayerManager.GetFrameTarget(this, TrackingFrame);
+                ViewCamera.ViewTarget = target.Target;
+                trackingMatrix = target.Matrix;
+            }
+            else if (!string.IsNullOrEmpty(TrackingFrame))
             {
                 TrackingFrame = "";
             }

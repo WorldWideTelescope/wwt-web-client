@@ -536,10 +536,10 @@ namespace wwtlib
                 newPlace.camParams.ViewTarget = Vector3d.Parse(place.Attributes.GetNamedItem("ViewTarget").Value);
             }
 
-            //if (place.Attributes.GetNamedItem("TargetReferenceFrame") != null)
-            //{
-            //    newPlace.camParams.TargetReferenceFrame = place.Attributes.GetNamedItem("TargetReferenceFrame").Value;
-            //}
+            if (place.Attributes.GetNamedItem("TargetReferenceFrame") != null)
+            {
+                newPlace.camParams.TargetReferenceFrame = place.Attributes.GetNamedItem("TargetReferenceFrame").Value;
+            }
 
             XmlNode descriptionNode = Util.SelectSingleNode(place, "Description");
             if (descriptionNode != null)
