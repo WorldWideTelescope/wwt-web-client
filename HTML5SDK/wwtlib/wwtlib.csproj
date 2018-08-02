@@ -119,6 +119,7 @@
     <Compile Include="Layers\Orbit.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\OrbitLayer.cs" />
     <Compile Include="Layers\ReferenceFrame.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -176,7 +176,7 @@ namespace wwtlib
                 iss.Frame.MeanRadius = 130;
                 iss.Frame.Oblateness = 0;
                 iss.Frame.ShowOrbitPath = true;
-                iss.ChildMaps
+
                 string[] isstle = new string[0];
 
                 //This is downloaded now on startup
@@ -2175,7 +2175,21 @@ namespace wwtlib
 
         }
 
-
+        internal static Layer LoadOrbitsFile(string path, string currentMap)
+        {
+            OrbitLayer layer = new OrbitLayer();
+            //todo fix this
+            layer.LoadData(null, path);
+            layer.Enabled = true;
+            layer.Name = path.Substring(path.LastIndexOf('\\') + 1);
+            LayerList[layer.ID] = layer;
+            layer.ReferenceFrame = currentMap;
+            AllMaps[currentMap].Layers.Add(layer);
+            AllMaps[currentMap].Open = true;
+            version++;
+            LoadTree();
+            return layer;
+        }
 
 
 
@@ -2324,10 +2338,7 @@ namespace wwtlib
     public class GroundOverlayLayer
     {
     }
-    public class OrbitLayer
-    {
 
-    }
 
     public class FrameTarget
     {
