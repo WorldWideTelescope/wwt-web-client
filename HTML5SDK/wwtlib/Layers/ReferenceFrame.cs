@@ -40,7 +40,7 @@ namespace wwtlib
         public double Roll;
         public double Scale = 1;
         public double Tilt;
-        public Vector3d Translation;
+        public Vector3d Translation = new Vector3d();
 
         // For Sphetical Offset
         public double Lat;
@@ -425,7 +425,7 @@ namespace wwtlib
             }
             WorldMatrix.Translate( Vector3d.Create(1 + (Altitude / renderContext.NominalRadius), 0, 0));
             WorldMatrix.Multiply(Matrix3d.RotationZ(Lat / 180 * Math.PI));
-            WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng) / 180 * Math.PI));
+            WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng+180) / 180 * Math.PI));
 
 
 
@@ -555,8 +555,7 @@ namespace wwtlib
 
             Vector3d direction =  Vector3d.SubtractVectors(point, pointInstantLater);
 
-            direction.Normalize();
-            Vector3d up = point;
+            Vector3d up = point.Copy();
             up.Normalize();
             direction.Normalize();
 
@@ -600,17 +599,19 @@ namespace wwtlib
             scaleFactor *= 1/renderContext.NominalRadius;
 
  
-            WorldMatrix = Matrix3d.Identity ;
             Matrix3d look = Matrix3d.LookAtLH(Vector3d.Create(0,0,0), direction, up);
             look.Invert();
 
             WorldMatrix = Matrix3d.Identity;
-            
+            WorldMatrix.Translate(Translation);
 
             double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
             WorldMatrix.Scale(Vector3d.Create(localScale, localScale, localScale));
 
-            Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading / 180.0 * Math.PI), Matrix3d.RotationX(Pitch / 180.0 * Math.PI)),Matrix3d.RotationZ(Roll / 180.0 * Math.PI));
+            //Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading / 180.0 * Math.PI), Matrix3d.RotationX(Pitch / 180.0 * Math.PI)),Matrix3d.RotationZ(Roll / 180.0 * Math.PI));
+
+            WorldMatrix.Multiply(Matrix3d.RotationYawPitchRoll((float)((Heading) / 180.0 * Math.PI), (float)(Pitch / 180.0 * Math.PI), (float)(Roll / 180.0 * Math.PI)));
+
             if (RotationalPeriod != 0)
             {
                 double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * Math.PI * 2) % (Math.PI * 2);

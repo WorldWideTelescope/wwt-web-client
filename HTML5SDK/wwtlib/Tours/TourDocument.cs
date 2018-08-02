@@ -78,6 +78,16 @@ namespace wwtlib
             return temp;
         }
 
+        public static TourDocument FromUrlRaw(string url, Action callMe)
+        {
+            TourDocument temp = new TourDocument();
+            temp.Url = url;
+            temp.callMe = callMe;
+
+            temp.cabinet = FileCabinet.FromUrl(url, callMe);
+            return temp;
+        }
+
         private void LoadXmlDocument()
         {
             string master = cabinet.MasterFile;

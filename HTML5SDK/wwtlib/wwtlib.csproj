@@ -89,17 +89,6 @@
     <Compile Include="AstroCalc\AAUranus.cs" />
     <Compile Include="AstroCalc\AAVenus.cs" />
     <Compile Include="AstroCalc\AstroCalc.cs" />
-    <Compile Include="FormsUi\Form.cs" />
-    <Compile Include="FormsUi\Object3dProperties.cs" />
-    <Compile Include="FormsUi\Object3dProperties.Designer.cs">
-      <DependentUpon>Object3dProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormsUi\WwtButton.cs" />
-    <Compile Include="FormsUi\WwtButton.Designer.cs" />
-    <Compile Include="FormsUi\WWTCheckbox.cs" />
-    <Compile Include="FormsUi\WWTCheckbox.Designer.cs" />
-    <Compile Include="FormsUi\WwtCombo.cs" />
-    <Compile Include="FormsUi\WwtCombo.Designer.cs" />
     <Compile Include="Graphics\GlBuffers.cs" />
     <Compile Include="Graphics\Primatives3d.cs" />
     <Compile Include="Graphics\Shaders.cs" />
@@ -116,6 +105,7 @@
     <Compile Include="Layers\ImageSetLayer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\ISSLayer.cs" />
     <Compile Include="Layers\Layer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -229,7 +219,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ScriptSharp.Lib.HTML.0.8\lib\Script.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

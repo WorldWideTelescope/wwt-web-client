@@ -1179,7 +1179,7 @@ namespace wwtlib
                 sp.Normalize();
 
 
-                gl.uniform3f(sunLoc, -(float)sp.X, -(float)sp.Y, -(float)sp.Z);
+                gl.uniform3f(sunLoc, (float)sp.X, (float)sp.Y, (float)sp.Z);
 
                 gl.uniform1i(sampLoc, 0);
                 if (renderContext.Space || noDepth)

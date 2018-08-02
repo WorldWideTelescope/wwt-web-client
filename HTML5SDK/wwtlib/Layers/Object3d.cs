@@ -632,6 +632,8 @@ namespace wwtlib
             renderContext.World = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(rotation, Matrix3d.Scaling(scale.X, scale.Y, scale.Z)), Matrix3d.Translation(translate)), oldWorld);
             renderContext.TwoSidedLighting = TwoSidedGeometry;
             //todo           renderContext.setRasterizerState(TwoSidedGeometry ? TriangleCullMode.Off : TriangleCullMode.CullCounterClockwise);
+
+            Planets.DrawPointPlanet(renderContext, new Vector3d(), 1.0, Colors.Red, false);
             if (lightID > 0)
             {
                 //draw light
@@ -1215,7 +1217,7 @@ namespace wwtlib
             Vector3d[] points = new Vector3d[vertices.Length];
             for (int i = 0; i < vertices.Length; ++i)
                 points[i] = vertices[i].Position;
-            mesh.BoundingSphere = ConvexHull.FindEnclosingSphere(points);
+            mesh.BoundingSphere = ConvexHull.FindEnclosingSphereFast(points);
             return mesh;
         }
 
@@ -1246,7 +1248,7 @@ namespace wwtlib
             Vector3d[] points = new Vector3d[mesh.tangentVertices.Length];
             for (int i = 0; i < mesh.tangentVertices.Length; ++i)
                 points[i] = mesh.tangentVertices[i].Position;
-            mesh.BoundingSphere = ConvexHull.FindEnclosingSphere(points);
+            mesh.BoundingSphere = ConvexHull.FindEnclosingSphereFast(points);
 
             return mesh;
         }
@@ -3443,7 +3445,8 @@ namespace wwtlib
             {
                 unitScale = 1.0f / mesh.BoundingSphere.Radius;
             }
-            renderContext.World = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Math.PI),Matrix3d.Translation(Vector3d.Create(-offset.X, -offset.Y, -offset.Z))), Matrix3d.Scaling(unitScale, unitScale, unitScale)), oldWorld);
+            //renderContext.World = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Math.PI),Matrix3d.Translation(Vector3d.Create(-offset.X, -offset.Y, -offset.Z))), Matrix3d.Scaling(unitScale, unitScale, unitScale)), oldWorld);
+            renderContext.World = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.Translation(Vector3d.Create(-offset.X, -offset.Y, -offset.Z)), Matrix3d.Scaling(unitScale, unitScale, unitScale)), oldWorld);
 
             Matrix3d worldView = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
             Vector3d v = worldView.Transform(Vector3d.Empty);
@@ -3467,7 +3470,7 @@ namespace wwtlib
             if (radiusInPixels < 0.5f)
             {
                 // Too small to be visible; skip rendering
-             //todo   return;
+                return;
             }
 
             // These colors can be modified by shadows, distance from planet, etc. Restore

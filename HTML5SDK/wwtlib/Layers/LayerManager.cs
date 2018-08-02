@@ -156,43 +156,54 @@ namespace wwtlib
         static public void InitLayers()
         {
             ClearLayers();
-            //LayerMap iss = null;
-            //if (!TourLayers)
-            //{
-            //    string[] isstle = new string[0];
-            //    try
-            //    {
-            //        //This is downloaded now on startup
-            //        string url = "//worldwidetelescope.org/wwtweb/isstle.aspx";
-            //        string filename = string.Format(@"{0}data\isstle.txt", Properties.Settings.Default.CahceDirectory);
-            //        DataSetManager.DownloadFile(url, filename, false, false);
+            LayerMap iss = null;
+            if (!TourLayers)
+            {
 
-            //        isstle = File.ReadAllLines(filename);
-            //    }
-            //    catch
-            //    {
-            //    }
 
-            //    iss = new LayerMap("ISS", ReferenceFrames.Custom);
-            //    iss.Frame.Epoch = SpaceTimeController.TwoLineDateToJulian("10184.51609218");
-            //    iss.Frame.SemiMajorAxis = 6728829.41;
-            //    iss.Frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
-            //    iss.Frame.Inclination = 51.6442;
-            //    iss.Frame.LongitudeOfAscendingNode = 147.0262;
-            //    iss.Frame.Eccentricity = .0009909;
-            //    iss.Frame.MeanAnomolyAtEpoch = 325.5563;
-            //    iss.Frame.MeanDailyMotion = 360 * 15.72172655;
-            //    iss.Frame.ArgumentOfPeriapsis = 286.4623;
-            //    iss.Frame.Scale = 1;
-            //    iss.Frame.SemiMajorAxisUnits = AltUnits.Meters;
-            //    iss.Frame.MeanRadius = 130;
-            //    iss.Frame.Oblateness = 0;
-            //    iss.Frame.ShowOrbitPath = true;
-            //    if (isstle.Length > 1)
-            //    {
-            //        iss.Frame.FromTLE(isstle[0], isstle[1], 398600441800000);
-            //    }
-            //}
+                iss = new LayerMap("ISS", ReferenceFrames.Custom);
+                iss.Frame.Epoch = SpaceTimeController.TwoLineDateToJulian("10184.51609218");
+                iss.Frame.SemiMajorAxis = 6728829.41;
+                iss.Frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
+                iss.Frame.Inclination = 51.6442;
+                iss.Frame.LongitudeOfAscendingNode = 147.0262;
+                iss.Frame.Eccentricity = .0009909;
+                iss.Frame.MeanAnomolyAtEpoch = 325.5563;
+                iss.Frame.MeanDailyMotion = 360 * 15.72172655;
+                iss.Frame.ArgumentOfPeriapsis = 286.4623;
+                iss.Frame.Scale = 1;
+                iss.Frame.SemiMajorAxisUnits = AltUnits.Meters;
+                iss.Frame.MeanRadius = 130;
+                iss.Frame.Oblateness = 0;
+                iss.Frame.ShowOrbitPath = true;
+                iss.ChildMaps
+                string[] isstle = new string[0];
+
+                //This is downloaded now on startup
+                string url = "http://worldwidetelescope.org/wwtweb/isstle.aspx";
+
+                WebFile webFile;
+
+                webFile = new WebFile(url);
+                //webFile.ResponseType = "text";
+                webFile.OnStateChange = delegate 
+                {
+                    if (webFile.State == StateType.Received)
+                    {
+                        string data = webFile.GetText();
+                        isstle = data.Split("\n");
+                        if (isstle.Length > 1)
+                        {
+                            iss.Frame.FromTLE(isstle[0], isstle[1], 398600441800000);
+                        }
+                    }
+                };
+
+                webFile.Send();
+                iss.Enabled = true;
+
+
+            }
 
             LayerMaps["Sun"] = new LayerMap("Sun", ReferenceFrames.Sun);
             LayerMaps["Sun"].AddChild(new LayerMap("Mercury", ReferenceFrames.Mercury));
@@ -200,10 +211,10 @@ namespace wwtlib
             LayerMaps["Sun"].AddChild(new LayerMap("Earth", ReferenceFrames.Earth));
             LayerMaps["Sun"].ChildMaps["Earth"].AddChild(new LayerMap("Moon", ReferenceFrames.Moon));
 
-            //if (!TourLayers)
-            //{
-            //    LayerMaps["Sun"].ChildMaps["Earth"].ChildMaps.Add("ISS", iss);
-            //}
+            if (!TourLayers)
+            {
+                LayerMaps["Sun"].ChildMaps["Earth"].AddChild(iss);
+            }
 
             //LayerMaps["Sun"].ChildMaps["Earth"].AddChild(ol);
             //LayerMaps["Sun"].ChildMaps["Earth"].AddChild(l1);
@@ -228,10 +239,27 @@ namespace wwtlib
             allMaps = new Dictionary<string, LayerMap>();
 
             AddAllMaps(LayerMaps, null);
+            if (!TourLayers)
+            {
+                AddIss();
+            }
+
 
             version++;
             LoadTree();
 
+        }
+
+        static void AddIss()
+        {
+            ISSLayer layer = new ISSLayer();
+
+            layer.Name = Language.GetLocalizedText(1314, "ISS Model  (Toshiyuki Takahei)");
+            layer.Enabled = Settings.Active.ShowISSModel;
+            LayerList[layer.ID] = layer;
+            layer.ReferenceFrame = "ISS";
+            AllMaps["ISS"].Layers.Add(layer);
+            AllMaps["ISS"].Open = true;
         }
 
         private static void AddAllMaps(Dictionary<string, LayerMap> maps, String parent)
@@ -616,7 +644,7 @@ namespace wwtlib
                 mapList.Insert(0, current);
             }
 
-            Matrix3d matOld = renderContext.World;
+            Matrix3d matOld = renderContext.World.Clone();
             Matrix3d matOldNonRotating = renderContext.WorldBaseNonRotating;
             Matrix3d matOldBase = renderContext.WorldBase;
             double oldNominalRadius = renderContext.NominalRadius;
@@ -642,7 +670,7 @@ namespace wwtlib
                     }
                     if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Synodic)
                     {
-                        renderContext.WorldBaseNonRotating = renderContext.World;
+                        renderContext.WorldBaseNonRotating = renderContext.World.Clone();
                     }
 
                     renderContext.NominalRadius = map.Frame.MeanRadius;
@@ -652,8 +680,8 @@ namespace wwtlib
             targetPoint = renderContext.World.Transform(targetPoint);
 
             Vector3d lookAt = renderContext.World.Transform(Vector3d.Create(0, 0, 1));
-                                                                    
-            Vector3d lookUp = renderContext.World.Transform(Vector3d.SubtractVectors(Vector3d.Create(0, 1, 0),targetPoint));
+
+            Vector3d lookUp = Vector3d.SubtractVectors(renderContext.World.Transform(Vector3d.Create(0, 1, 0)), targetPoint);
 
 
             lookUp.Normalize();

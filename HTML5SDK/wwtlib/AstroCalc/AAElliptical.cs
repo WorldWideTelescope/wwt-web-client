@@ -459,7 +459,7 @@ public class  ELL // was CAAElliptical
       double z = r * c * Math.Sin(C + w + v);
 
       //elements.meanAnnomolyOut contains the mean annomoly 
-      return Vector3d.Create(x, y, z);
+      return Vector3d.Create(x, z, y);
   }
   public static Vector3d CalculateRectangular(EOE elements, double meanAnomoly)
   {
@@ -501,7 +501,7 @@ public class  ELL // was CAAElliptical
       double y = r * b * Math.Sin(B + w + v);
       double z = r * c * Math.Sin(C + w + v);
 
-      return Vector3d.Create(x, y, z);
+      return Vector3d.Create(x, z, y);
 
   }
 

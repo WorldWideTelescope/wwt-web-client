@@ -2685,6 +2685,9 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
+      console.assert(Degrees >= 0);
+      console.assert(Minutes >= 0);
+      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -2781,6 +2784,7 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
+    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -2945,6 +2949,7 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
+      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -3901,6 +3906,7 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
+          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -3995,7 +4001,7 @@ window.wwtlib = function(){
     var x = r * a * Math.sin(A + w + v);
     var y = r * b * Math.sin(B + w + v);
     var z = r * c * Math.sin(C + w + v);
-    return Vector3d.create(x, y, z);
+    return Vector3d.create(x, z, y);
   };
   ELL.calculateRectangular = function(elements, meanAnomoly) {
     var omega = CT.d2R(elements.omega);
@@ -4028,7 +4034,7 @@ window.wwtlib = function(){
     var x = r * a * Math.sin(A + w + v);
     var y = r * b * Math.sin(B + w + v);
     var z = r * c * Math.sin(C + w + v);
-    return Vector3d.create(x, y, z);
+    return Vector3d.create(x, z, y);
   };
   ELL.calculateElements = function(JD, elements) {
     var Epsilon = CAANutation.meanObliquityOfEcliptic(elements.jdEquinox);
@@ -5357,6 +5363,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
+    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -5391,6 +5398,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
+    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -5427,6 +5435,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
+    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -5743,6 +5752,7 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
+      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -8754,7 +8764,7 @@ window.wwtlib = function(){
       mvInv.set_m44(1);
       var sp = Vector3d._transformCoordinate(ModelShader.sunPosition, mvInv);
       sp.normalize();
-      gl.uniform3f(ModelShader.sunLoc, -sp.x, -sp.y, -sp.z);
+      gl.uniform3f(ModelShader.sunLoc, sp.x, sp.y, sp.z);
       gl.uniform1i(ModelShader.sampLoc, 0);
       if (renderContext.space || noDepth) {
         gl.disable(2929);
@@ -11010,11 +11020,47 @@ window.wwtlib = function(){
   };
   LayerManager.initLayers = function() {
     LayerManager._clearLayers();
+    var iss = null;
+    if (!LayerManager.get_tourLayers()) {
+      iss = new LayerMap('ISS', 18);
+      iss.frame.epoch = SpaceTimeController._twoLineDateToJulian('10184.51609218');
+      iss.frame.semiMajorAxis = 6728829.41;
+      iss.frame.referenceFrameType = 1;
+      iss.frame.inclination = 51.6442;
+      iss.frame.longitudeOfAscendingNode = 147.0262;
+      iss.frame.eccentricity = 0.0009909;
+      iss.frame.meanAnomolyAtEpoch = 325.5563;
+      iss.frame.meanDailyMotion = 360 * 15.72172655;
+      iss.frame.argumentOfPeriapsis = 286.4623;
+      iss.frame.scale = 1;
+      iss.frame.semiMajorAxisUnits = 1;
+      iss.frame.meanRadius = 130;
+      iss.frame.oblateness = 0;
+      iss.frame.showOrbitPath = true;
+      var isstle = new Array(0);
+      var url = 'http://worldwidetelescope.org/wwtweb/isstle.aspx';
+      var webFile;
+      webFile = new WebFile(url);
+      webFile.onStateChange = function() {
+        if (webFile.get_state() === 1) {
+          var data = webFile.getText();
+          isstle = data.split('\n');
+          if (isstle.length > 1) {
+            iss.frame.fromTLE(isstle[0], isstle[1], 398600441800000);
+          }
+        }
+      };
+      webFile.send();
+      iss.enabled = true;
+    }
     LayerManager.get_layerMaps()['Sun'] = new LayerMap('Sun', 3);
     LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Mercury', 4));
     LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Venus', 5));
     LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Earth', 6));
     LayerManager.get_layerMaps()['Sun'].childMaps['Earth'].addChild(new LayerMap('Moon', 13));
+    if (!LayerManager.get_tourLayers()) {
+      LayerManager.get_layerMaps()['Sun'].childMaps['Earth'].addChild(iss);
+    }
     LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Mars', 7));
     LayerManager.get_layerMaps()['Sun'].addChild(new LayerMap('Jupiter', 8));
     LayerManager.get_layerMaps()['Sun'].childMaps['Jupiter'].addChild(new LayerMap('Io', 14));
@@ -11030,8 +11076,20 @@ window.wwtlib = function(){
     LayerManager.get_layerMaps()['Sun'].open = true;
     LayerManager._allMaps = {};
     LayerManager._addAllMaps(LayerManager.get_layerMaps(), null);
+    if (!LayerManager.get_tourLayers()) {
+      LayerManager._addIss();
+    }
     LayerManager._version++;
     LayerManager.loadTree();
+  };
+  LayerManager._addIss = function() {
+    var layer = new ISSLayer();
+    layer.set_name(Language.getLocalizedText(1314, 'ISS Model  (Toshiyuki Takahei)'));
+    layer.enabled = Settings.get_active().get_showISSModel();
+    LayerManager.get_layerList()[layer.id] = layer;
+    layer.set_referenceFrame('ISS');
+    LayerManager.get_allMaps()['ISS'].layers.push(layer);
+    LayerManager.get_allMaps()['ISS'].open = true;
   };
   LayerManager._addAllMaps = function(maps, parent) {
     var $enum1 = ss.enumerate(ss.keys(maps));
@@ -11318,7 +11376,7 @@ window.wwtlib = function(){
       current = current.parent;
       mapList.splice(0, 0, current);
     }
-    var matOld = renderContext.get_world();
+    var matOld = renderContext.get_world().clone();
     var matOldNonRotating = renderContext.get_worldBaseNonRotating();
     var matOldBase = renderContext.get_worldBase();
     var oldNominalRadius = renderContext.get_nominalRadius();
@@ -11337,14 +11395,14 @@ window.wwtlib = function(){
           renderContext.set_world(Matrix3d.multiplyMatrix(map.frame.worldMatrix, renderContext.get_worldBaseNonRotating()));
         }
         if (map.frame.referenceFrameType === 3) {
-          renderContext.set_worldBaseNonRotating(renderContext.get_world());
+          renderContext.set_worldBaseNonRotating(renderContext.get_world().clone());
         }
         renderContext.set_nominalRadius(map.frame.meanRadius);
       }
     }
     targetPoint = renderContext.get_world().transform(targetPoint);
     var lookAt = renderContext.get_world().transform(Vector3d.create(0, 0, 1));
-    var lookUp = renderContext.get_world().transform(Vector3d.subtractVectors(Vector3d.create(0, 1, 0), targetPoint));
+    var lookUp = Vector3d.subtractVectors(renderContext.get_world().transform(Vector3d.create(0, 1, 0)), targetPoint);
     lookUp.normalize();
     target.matrix = Matrix3d.lookAtLH(new Vector3d(), Vector3d.subtractVectors(lookAt, targetPoint), lookUp);
     renderContext.set_nominalRadius(oldNominalRadius);
@@ -12405,7 +12463,7 @@ window.wwtlib = function(){
     for (var i = 0; i < vertices.length; ++i) {
       points[i] = vertices[i].get_position();
     }
-    mesh.boundingSphere = ConvexHull.findEnclosingSphere(points);
+    mesh.boundingSphere = ConvexHull.findEnclosingSphereFast(points);
     return mesh;
   };
   Mesh.createTangent = function(vertices, indices) {
@@ -12416,7 +12474,7 @@ window.wwtlib = function(){
     for (var i = 0; i < mesh.tangentVertices.length; ++i) {
       points[i] = mesh.tangentVertices[i].get_position();
     }
-    mesh.boundingSphere = ConvexHull.findEnclosingSphere(points);
+    mesh.boundingSphere = ConvexHull.findEnclosingSphereFast(points);
     return mesh;
   };
   var Mesh$ = {
@@ -13752,7 +13810,7 @@ window.wwtlib = function(){
       if (this._mesh.boundingSphere.radius > 0) {
         unitScale = 1 / this._mesh.boundingSphere.radius;
       }
-      renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationY(Math.PI), Matrix3d.translation(Vector3d.create(-offset.x, -offset.y, -offset.z))), Matrix3d._scaling(unitScale, unitScale, unitScale)), oldWorld));
+      renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.translation(Vector3d.create(-offset.x, -offset.y, -offset.z)), Matrix3d._scaling(unitScale, unitScale, unitScale)), oldWorld));
       var worldView = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
       var v = worldView.transform(Vector3d.get_empty());
       var scaleFactor = Math.sqrt(worldView.get_m11() * worldView.get_m11() + worldView.get_m22() * worldView.get_m22() + worldView.get_m33() * worldView.get_m33()) / unitScale;
@@ -13766,6 +13824,7 @@ window.wwtlib = function(){
       var pixelsPerUnit = (p11 / w) * viewportHeight;
       var radiusInPixels = (radius * pixelsPerUnit);
       if (radiusInPixels < 0.5) {
+        return;
       }
       var savedSunlightColor = renderContext.get_sunlightColor();
       var savedReflectedColor = renderContext.get_reflectedLightColor();
@@ -13991,6 +14050,7 @@ window.wwtlib = function(){
     this.roll = 0;
     this.scale = 1;
     this.tilt = 0;
+    this.translation = new Vector3d();
     this.lat = 0;
     this.lng = 0;
     this.altitude = 0;
@@ -14234,7 +14294,7 @@ window.wwtlib = function(){
       }
       this.worldMatrix.translate(Vector3d.create(1 + (this.altitude / renderContext.get_nominalRadius()), 0, 0));
       this.worldMatrix._multiply(Matrix3d._rotationZ(this.lat / 180 * Math.PI));
-      this.worldMatrix._multiply(Matrix3d._rotationY(-this.lng / 180 * Math.PI));
+      this.worldMatrix._multiply(Matrix3d._rotationY(-(this.lng + 180) / 180 * Math.PI));
     },
     _computeFrameTrajectory: function(renderContext) {
     },
@@ -14244,8 +14304,7 @@ window.wwtlib = function(){
       this.meanAnomoly = ee.meanAnnomolyOut;
       var pointInstantLater = ELL.calculateRectangular(ee, this.meanAnomoly + 0.001);
       var direction = Vector3d.subtractVectors(point, pointInstantLater);
-      direction.normalize();
-      var up = point;
+      var up = point.copy();
       up.normalize();
       direction.normalize();
       var dist = point.length();
@@ -14285,13 +14344,13 @@ window.wwtlib = function(){
           break;
       }
       scaleFactor *= 1 / renderContext.get_nominalRadius();
-      this.worldMatrix = Matrix3d.get_identity();
       var look = Matrix3d.lookAtLH(Vector3d.create(0, 0, 0), direction, up);
       look.invert();
       this.worldMatrix = Matrix3d.get_identity();
+      this.worldMatrix.translate(this.translation);
       var localScale = (1 / renderContext.get_nominalRadius()) * this.scale * this.meanRadius;
       this.worldMatrix.scale(Vector3d.create(localScale, localScale, localScale));
-      var mat = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationY(this.heading / 180 * Math.PI), Matrix3d._rotationX(this.pitch / 180 * Math.PI)), Matrix3d._rotationZ(this.roll / 180 * Math.PI));
+      this.worldMatrix._multiply(Matrix3d.rotationYawPitchRoll((this.heading / 180 * Math.PI), (this.pitch / 180 * Math.PI), (this.roll / 180 * Math.PI)));
       if (!!this.rotationalPeriod) {
         var rotationCurrent = (((SpaceTimeController.get_jNow() - this.zeroRotationDate) / this.rotationalPeriod) * Math.PI * 2) % (Math.PI * 2);
         this.worldMatrix._multiply(Matrix3d._rotationX(-rotationCurrent));
@@ -15776,7 +15835,7 @@ window.wwtlib = function(){
     return m;
   };
   Planets.setupPlanetMatrix = function(renderContext, planetID, centerPoint, makeFrustum) {
-    var matNonRotating = renderContext.get_world();
+    var matNonRotating = renderContext.get_world().clone();
     Planets._setupMatrixForPlanetGeometry(renderContext, planetID, centerPoint, makeFrustum);
     if (planetID === 0) {
       var radius = Planets.getAdjustedPlanetRadius(planetID);
@@ -15790,16 +15849,16 @@ window.wwtlib = function(){
     var radius = Planets.getAdjustedPlanetRadius(planetID);
     var rotationCurrent = 0;
     if (planetID === 19) {
-      rotationCurrent = Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
+      rotationCurrent = Math.PI + Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
     }
     else {
-      rotationCurrent = (((Planets._jNow - 2451545) / Planets.planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
+      rotationCurrent = Math.PI + (((Planets._jNow - 2451545) / Planets.planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
     }
     if (planetID === 9) {
       rotationCurrent -= Math.PI / 2;
     }
-    var matLocal = renderContext.get_world();
-    var matNonRotating = renderContext.get_world();
+    var matLocal = renderContext.get_world().clone();
+    var matNonRotating = renderContext.get_world().clone();
     var translation = Vector3d.subtractVectors(Planets._planet3dLocations[planetID], centerPoint);
     var orientationAtEpoch = Planets.getPlanetOrientationAtEpoch(planetID);
     matLocal.scale(Vector3d.create(radius, radius, radius));
@@ -15809,12 +15868,12 @@ window.wwtlib = function(){
       Planets.earthMatrix = Matrix3d.get_identity();
       Planets.earthMatrix._multiply(Matrix3d._rotationY(-rotationCurrent));
       Planets.earthMatrix._multiply(orientationAtEpoch);
-      Planets.earthMatrixInv = Planets.earthMatrix;
+      Planets.earthMatrixInv = Planets.earthMatrix.clone();
       Planets.earthMatrixInv.invert();
     }
     matLocal._multiply(Matrix3d.translation(translation));
     renderContext.set_world(matLocal);
-    renderContext.set_worldBase(renderContext.get_world());
+    renderContext.set_worldBase(renderContext.get_world().clone());
     renderContext.set_nominalRadius(Planets.getPlanetRadiusInMeters(planetID));
     if (makeFrustum) {
       renderContext.makeFrustum();
@@ -16099,40 +16158,27 @@ window.wwtlib = function(){
         TileShader.atmosphereColor = Color.fromArgb(0, 0, 0, 0);
       }
     }
-    var radius = Planets.getAdjustedPlanetRadius(planetID);
-    var rotationCurrent = 0;
-    if (planetID === 19) {
-      rotationCurrent = Math.PI + Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
-    }
-    else {
-      rotationCurrent = (((Planets._jNow - 2451545) / Planets.planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
-    }
     var matOld = renderContext.get_world();
     var matOldBase = renderContext.get_worldBase();
     var matOldNonRotating = renderContext.get_worldBaseNonRotating();
-    var matLocal = renderContext.get_world().clone();
-    var matLocalNR = renderContext.get_world().clone();
-    var translation = Vector3d.subtractVectors(Planets._planet3dLocations[planetID], centerPoint);
-    matLocal.scale(Vector3d.create(radius, radius, radius));
-    matLocal._multiply(Matrix3d._rotationY(-rotationCurrent));
-    matLocal._multiply(Matrix3d._rotationX((Planets._planetTilts[planetID] * Planets.RC)));
-    matLocal._multiply(Matrix3d.translation(translation));
-    matLocalNR.scale(Vector3d.create(radius, radius, radius));
-    matLocalNR._multiply(Matrix3d._rotationX((Planets._planetTilts[planetID] * Planets.RC)));
-    matLocalNR._multiply(Matrix3d.translation(translation));
-    renderContext.set_world(matLocal);
-    renderContext.set_worldBase(matLocal.clone());
-    renderContext.set_worldBaseNonRotating(matLocalNR);
-    renderContext.makeFrustum();
+    var radius = Planets.getAdjustedPlanetRadius(planetID);
+    Planets.setupPlanetMatrix(renderContext, planetID, centerPoint, true);
     var planetWidth = 1;
     if (planetID === 5) {
       planetWidth = 3;
     }
     if (Planets.isPlanetInFrustum(renderContext, planetWidth)) {
+      var matOld2 = renderContext.get_world();
+      var matOldBase2 = renderContext.get_worldBase();
+      var matOldNonRotating2 = renderContext.get_worldBaseNonRotating();
       var sun = Planets._planet3dLocations[0].copy();
       var planet = Planets._planet3dLocations[planetID].copy();
       sun = matOld.transform(sun);
       planet = matOld.transform(planet);
+      renderContext.set_world(matOld);
+      renderContext.set_worldBase(matOldBase);
+      renderContext.set_worldBaseNonRotating(matOldNonRotating);
+      Planets._setupMatrixForPlanetGeometry(renderContext, planetID, centerPoint, true);
       var sunPosition = Vector3d.subtractVectors(sun, planet);
       sunPosition.normalize();
       renderContext.set_sunPosition(sunPosition);
@@ -17007,7 +17053,8 @@ window.wwtlib = function(){
       this._cameraOffset = Vector3d._transformCoordinate(this._cameraOffset, tmp);
       lookUp = viewAdjust.transform(lookUp);
       this.set_world(Matrix3d.get_identity());
-      this.set_worldBase(this.get_world().clone());
+      this.set_worldBase(Matrix3d.get_identity());
+      this.set_worldBaseNonRotating(Matrix3d.get_identity());
       this.set_view(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(trackingMatrix, Matrix3d.lookAtLH(this.cameraPosition, lookAt, lookUp)), lookAtAdjust));
       this.set_viewBase(this.get_view().clone());
       var temp = Vector3d.subtractVectors(lookAt, this.cameraPosition);
@@ -21108,6 +21155,13 @@ window.wwtlib = function(){
     temp.url = url;
     temp._callMe = callMe;
     temp._cabinet = FileCabinet.fromUrl(url, ss.bind('_loadXmlDocument', temp));
+    return temp;
+  };
+  TourDocument.fromUrlRaw = function(url, callMe) {
+    var temp = new TourDocument();
+    temp.url = url;
+    temp._callMe = callMe;
+    temp._cabinet = FileCabinet.fromUrl(url, callMe);
     return temp;
   };
   var TourDocument$ = {
@@ -33295,6 +33349,26 @@ window.wwtlib = function(){
 
   function ConvexHull() {
   }
+  ConvexHull.findEnclosingSphereFast = function(points) {
+    var result = new SphereHull();
+    var count = points.length;
+    var center = Vector3d.zero;
+    for (var i = 0; i < count; ++i) {
+      center.add(points[i]);
+    }
+    center.multiply(1 / count);
+    var radius = 0;
+    for (var i = 0; i < count; ++i) {
+      var distance = Vector3d.getLengthSq(Vector3d.subtractVectors(points[i], center));
+      if (distance > radius) {
+        radius = distance;
+      }
+    }
+    radius = Math.sqrt(radius);
+    result.center = center;
+    result.radius = radius;
+    return result;
+  };
   ConvexHull.findEnclosingSphere = function(list) {
     var Center = new Vector3d();
     var Radius = 0;
@@ -37357,6 +37431,7 @@ window.wwtlib = function(){
       var rotation = Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d._rotationZ(-this._roll$1 / 180 * Math.PI), Matrix3d._rotationX(-this._pitch$1 / 180 * Math.PI)), Matrix3d._rotationY(this._heading$1 / 180 * Math.PI));
       renderContext.set_world(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(Matrix3d.multiplyMatrix(rotation, Matrix3d._scaling(this._scale$1.x, this._scale$1.y, this._scale$1.z)), Matrix3d.translation(this._translate$1)), oldWorld));
       renderContext.set_twoSidedLighting(this.get_twoSidedGeometry());
+      Planets.drawPointPlanet(renderContext, new Vector3d(), 1, Colors.get_red(), false);
       if (this._lightID$1 > 0) {
       }
       else {
@@ -43940,6 +44015,69 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ISSLayer
+
+  function ISSLayer() {
+    Object3dLayer.call(this);
+    this.id = ISSLayer.issGuid;
+  }
+  ISSLayer.loadBackground = function() {
+    if (ISSLayer._loading$2) {
+      return;
+    }
+    ISSLayer._loading$2 = true;
+    var url = 'http://www.worldwidetelescope.org/data/iss.wtt';
+    ISSLayer._doc$2 = TourDocument.fromUrlRaw(url, function() {
+      ISSLayer.createSpaceStation();
+    });
+  };
+  ISSLayer.createSpaceStation = function() {
+    ISSLayer._doc$2.set_id('28016047-97a9-4b33-a226-cd820262a151');
+    var filename = '0c10ae54-b6da-4282-bfda-f34562d403bc.3ds';
+    var o3d = new Object3d(ISSLayer._doc$2, filename, true, false, true, Colors.get_white());
+    if (o3d != null) {
+      o3d.issLayer = true;
+      ISSLayer._issmodel$2 = o3d;
+    }
+  };
+  var ISSLayer$ = {
+    draw: function(renderContext, opacity, flat) {
+      if (this.object3d == null && ISSLayer._issmodel$2 == null) {
+        if (!ISSLayer._loading$2) {
+          var worldView = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+          var v = worldView.transform(Vector3d.get_empty());
+          var scaleFactor = Math.sqrt(worldView.get_m11() * worldView.get_m11() + worldView.get_m22() * worldView.get_m22() + worldView.get_m33() * worldView.get_m33());
+          var dist = v.length();
+          var radius = scaleFactor;
+          var viewportHeight = ss.truncate(renderContext.height);
+          var p11 = renderContext.get_projection().get_m11();
+          var p34 = renderContext.get_projection().get_m34();
+          var p44 = renderContext.get_projection().get_m44();
+          var w = Math.abs(p34) * dist + p44;
+          var pixelsPerUnit = (p11 / w) * viewportHeight;
+          var radiusInPixels = (radius * pixelsPerUnit);
+          if (radiusInPixels > 0.5) {
+            ISSLayer.loadBackground();
+          }
+        }
+      }
+      this.object3d = ISSLayer._issmodel$2;
+      return Object3dLayer.prototype.draw.call(this, renderContext, opacity, flat);
+    },
+    getPrimaryUI: function() {
+      return null;
+    },
+    addFilesToCabinet: function(fc) {
+      return;
+    },
+    loadData: function(doc, filename) {
+      return;
+    },
+    cleanUp: function() {
+    }
+  };
+
+
   // wwtlib.SlideChangedEventArgs
 
   function SlideChangedEventArgs(caption) {
@@ -44371,6 +44509,7 @@ window.wwtlib = function(){
       PolyLine: [ PolyLine, PolyLine$, Annotation ],
       EquirectangularTile: [ EquirectangularTile, EquirectangularTile$, Tile ],
       MercatorTile: [ MercatorTile, MercatorTile$, Tile ],
+      ISSLayer: [ ISSLayer, ISSLayer$, Object3dLayer ],
       SlideChangedEventArgs: [ SlideChangedEventArgs, SlideChangedEventArgs$, ss.EventArgs ],
       ArrivedEventArgs: [ ArrivedEventArgs, ArrivedEventArgs$, ss.EventArgs ],
       AnnotationClickEventArgs: [ AnnotationClickEventArgs, AnnotationClickEventArgs$, ss.EventArgs ],
@@ -44808,6 +44947,10 @@ window.wwtlib = function(){
   ToastTile.slashIndexBuffer = new Array(64);
   ToastTile.backSlashIndexBuffer = new Array(64);
   ToastTile.rootIndexBuffer = new Array(4);
+  ISSLayer.issGuid = Guid.fromString('00000001-0002-0003-0405-060708090a0b');
+  ISSLayer._loading$2 = false;
+  ISSLayer._issmodel$2 = null;
+  ISSLayer._doc$2 = null;
 
   return $exports;
 }();
