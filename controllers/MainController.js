@@ -431,6 +431,9 @@ wwt.controllers.controller('MainController',
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
+        if (util.getQSParam('tour')) { 
+          $scope.playTour(decodeURIComponent(util.getQSParam('tour')));
+        }
         uiLibrary.addDialogHooks();
         wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
       };

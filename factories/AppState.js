@@ -1,4 +1,4 @@
-﻿wwt.app.factory('AppState', function() {
+wwt.app.factory('AppState', function() {
 	var api = {
 		set: setKey,
 		get: getKey,
@@ -6,7 +6,7 @@
 	};
 
 	var data;
-
+ 
 	function setKey(key, val) {
         try {
             if (val === null && data[key]) {
