@@ -1515,7 +1515,7 @@ function module(name, implementation, exports) {
 })(this);
 
 "use strict";
-
+ 
 window.wwtlib = function(){
   var $global = this;
 

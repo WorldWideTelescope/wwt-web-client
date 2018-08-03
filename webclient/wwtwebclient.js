@@ -1516,7 +1516,7 @@ wwt.app.factory('AppState', function() {
 	};
 
 	var data;
-
+ 
 	function setKey(key, val) {
         try {
             if (val === null && data[key]) {
@@ -1545,6 +1545,7 @@ wwt.app.factory('AppState', function() {
 	init();
 	return api;
 });  
+
 wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScope,appState) {
     var api = {init:init};
 
@@ -4640,6 +4641,9 @@ wwt.controllers.controller('MainController',
         wwt.resize();
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
+        }
+        if (util.getQSParam('tour')) { 
+          $scope.playTour(decodeURIComponent(util.getQSParam('tour')));
         }
         uiLibrary.addDialogHooks();
         wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });

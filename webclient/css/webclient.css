@@ -7864,6 +7864,7 @@ body .layer-manager div.collapsed div.indent .checkbox {
 }
 body .layer-manager .tree {
   width: 100%;
+  white-space: nowrap;
   overflow: auto;
 }
 body .layer-manager .tree div.checkbox {
