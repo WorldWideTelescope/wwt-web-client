@@ -587,7 +587,7 @@ namespace wwtlib
 
 
 
-                if (RenderType == ImageSetType.Sky)
+                if (RenderType == ImageSetType.Sky && Settings.Active.ShowSolarSystem)
                 {
                     Planets.DrawPlanets(RenderContext, 1);
 
@@ -595,13 +595,38 @@ namespace wwtlib
 
                     DrawSkyOverlays();
 
-                    LayerManager.Draw(RenderContext, 1.0f, true, "Sky", true, true);
+                    //LayerManager.Draw(RenderContext, 1.0f, true, "Sky", true, true);
                 }
 
-                if (RenderType == ImageSetType.Earth)
-                {
+                //  if (RenderType == ImageSetType.Earth)
+                //{
 
-                    LayerManager.Draw(RenderContext, 1.0f, false, "Earth", false, false);
+                //    LayerManager.Draw(RenderContext, 1.0f, false, "Earth", false, false);
+                //}
+
+                if (PlanetLike || Space)
+                {
+                    if (!Space)
+                    {
+                        //todo fix this for other planets..
+                        double angle = Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
+                        RenderContext.WorldBaseNonRotating = Matrix3d.MultiplyMatrix(Matrix3d.RotationY(angle), RenderContext.WorldBase);
+                        if (targetBackgroundImageset != null)
+                        {
+                            RenderContext.NominalRadius = targetBackgroundImageset.MeanRadius;
+                        }
+                    }
+                    else
+                    {
+                        RenderContext.WorldBaseNonRotating = RenderContext.World;
+                        if (targetBackgroundImageset != null)
+                        {
+                            RenderContext.NominalRadius = targetBackgroundImageset.MeanRadius;
+                        }
+                    }
+
+                    string referenceFrame = GetCurrentReferenceFrame();
+                    LayerManager.Draw(RenderContext, 1.0f, Space, referenceFrame, true, Space);
                 }
 
 
@@ -688,6 +713,102 @@ namespace wwtlib
 
             //TileCache.PurgeLRU();
             Script.SetTimeout(delegate () { Render(); }, 10);
+        }
+
+        private string GetCurrentReferenceFrame()
+        {
+            if (targetBackgroundImageset == null)
+            {
+                return "Sun";
+            }
+
+            if (!string.IsNullOrEmpty(targetBackgroundImageset.ReferenceFrame))
+            {
+                return targetBackgroundImageset.ReferenceFrame;
+            }
+            if (targetBackgroundImageset.DataSetType == ImageSetType.Earth)
+            {
+                return "Earth";
+            }
+            if (targetBackgroundImageset.Name == "Visible Imagery" && targetBackgroundImageset.Url.ToLowerCase().IndexOf("mars") > -1 )
+            {
+
+                targetBackgroundImageset.ReferenceFrame = "Mars";
+                return targetBackgroundImageset.ReferenceFrame;
+            }
+
+            if (targetBackgroundImageset.DataSetType == ImageSetType.Planet)
+            {
+                foreach (string name in SolarSystemObjectsNames)
+                {
+                    if (targetBackgroundImageset.Name.ToLowerCase().IndexOf(name.ToLowerCase()) > -1 )
+                    {
+                        targetBackgroundImageset.ReferenceFrame = name;
+                        return name;
+                    }
+                }
+            }
+            if (targetBackgroundImageset.DataSetType == ImageSetType.Sky)
+            {
+                return "Sky";
+            }
+            return "";
+        }
+
+        public static string[] SolarSystemObjectsNames =
+                {
+                    "Sun",
+                    "Mercury",
+                    "Venus",
+                    "Mars",
+                    "Jupiter",
+                    "Saturn",
+                    "Uranus",
+                    "Neptune",
+                    "Pluto",
+                    "Moon",
+                    "Io",
+                    "Europa",
+                    "Ganymede",
+                    "Callisto",
+                    "IoShadow",
+                    "EuropaShadow",
+                    "GanymedeShadow",
+                    "CallistoShadow",
+                    "SunEclipsed",
+                    "Earth",
+                    "Custom",
+                    "Undefined"
+                };
+
+        public bool PlanetLike
+        {
+            get
+            {
+                if (targetBackgroundImageset != null)
+                {
+                    return targetBackgroundImageset.DataSetType == ImageSetType.Earth || targetBackgroundImageset.DataSetType == ImageSetType.Planet;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        public bool Space
+        {
+            get
+            {
+                if (targetBackgroundImageset != null)
+                {
+                    return targetBackgroundImageset.DataSetType == ImageSetType.Sky;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         private void DrawSkyOverlays()

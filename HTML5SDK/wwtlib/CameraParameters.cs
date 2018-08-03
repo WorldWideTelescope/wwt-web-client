@@ -31,6 +31,7 @@ namespace wwtlib
         Undefined = 65536
     };
 
+    
 
     public enum InterpolationType { Linear = 0, EaseIn = 1, EaseOut = 2, EaseInOut = 3, Exponential = 4, DefaultV = 5 };
     public class CameraParameters

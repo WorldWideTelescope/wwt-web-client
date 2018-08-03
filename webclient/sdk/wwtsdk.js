@@ -28549,14 +28549,27 @@ window.wwtlib = function(){
             this.renderContext.drawImageSet(this.renderContext.get_foregroundImageset(), this.renderContext.viewCamera.opacity);
           }
         }
-        if (this.renderType === 2) {
+        if (this.renderType === 2 && Settings.get_active().get_showSolarSystem()) {
           Planets.drawPlanets(this.renderContext, 1);
           this.constellation = Constellations.containment.findConstellationForPoint(this.renderContext.viewCamera.get_RA(), this.renderContext.viewCamera.get_dec());
           this._drawSkyOverlays();
-          LayerManager._draw(this.renderContext, 1, true, 'Sky', true, true);
         }
-        if (!this.renderType) {
-          LayerManager._draw(this.renderContext, 1, false, 'Earth', false, false);
+        if (this.get_planetLike() || this.get_space()) {
+          if (!this.get_space()) {
+            var angle = Coordinates.mstFromUTC2(SpaceTimeController.get_now(), 0) / 180 * Math.PI;
+            this.renderContext.set_worldBaseNonRotating(Matrix3d.multiplyMatrix(Matrix3d._rotationY(angle), this.renderContext.get_worldBase()));
+            if (this._targetBackgroundImageset != null) {
+              this.renderContext.set_nominalRadius(this._targetBackgroundImageset.get_meanRadius());
+            }
+          }
+          else {
+            this.renderContext.set_worldBaseNonRotating(this.renderContext.get_world());
+            if (this._targetBackgroundImageset != null) {
+              this.renderContext.set_nominalRadius(this._targetBackgroundImageset.get_meanRadius());
+            }
+          }
+          var referenceFrame = this._getCurrentReferenceFrame();
+          LayerManager._draw(this.renderContext, 1, this.get_space(), referenceFrame, true, this.get_space());
         }
       }
       var worldSave = this.renderContext.get_world();
@@ -28611,6 +28624,51 @@ window.wwtlib = function(){
       setTimeout(function() {
         $this.render();
       }, 10);
+    },
+    _getCurrentReferenceFrame: function() {
+      if (this._targetBackgroundImageset == null) {
+        return 'Sun';
+      }
+      if (!ss.emptyString(this._targetBackgroundImageset.get_referenceFrame())) {
+        return this._targetBackgroundImageset.get_referenceFrame();
+      }
+      if (!this._targetBackgroundImageset.get_dataSetType()) {
+        return 'Earth';
+      }
+      if (this._targetBackgroundImageset.get_name() === 'Visible Imagery' && this._targetBackgroundImageset.get_url().toLowerCase().indexOf('mars') > -1) {
+        this._targetBackgroundImageset.set_referenceFrame('Mars');
+        return this._targetBackgroundImageset.get_referenceFrame();
+      }
+      if (this._targetBackgroundImageset.get_dataSetType() === 1) {
+        var $enum1 = ss.enumerate(WWTControl.solarSystemObjectsNames);
+        while ($enum1.moveNext()) {
+          var name = $enum1.current;
+          if (this._targetBackgroundImageset.get_name().toLowerCase().indexOf(name.toLowerCase()) > -1) {
+            this._targetBackgroundImageset.set_referenceFrame(name);
+            return name;
+          }
+        }
+      }
+      if (this._targetBackgroundImageset.get_dataSetType() === 2) {
+        return 'Sky';
+      }
+      return '';
+    },
+    get_planetLike: function() {
+      if (this._targetBackgroundImageset != null) {
+        return !this._targetBackgroundImageset.get_dataSetType() || this._targetBackgroundImageset.get_dataSetType() === 1;
+      }
+      else {
+        return true;
+      }
+    },
+    get_space: function() {
+      if (this._targetBackgroundImageset != null) {
+        return this._targetBackgroundImageset.get_dataSetType() === 2;
+      }
+      else {
+        return true;
+      }
     },
     _drawSkyOverlays: function() {
       if (Settings.get_active().get_showConstellationPictures()) {
@@ -45123,6 +45181,7 @@ window.wwtlib = function(){
   WWTControl._renderNeeded = false;
   WWTControl.constellationsFigures = null;
   WWTControl.constellationsBoundries = null;
+  WWTControl.solarSystemObjectsNames = [ 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Moon', 'Io', 'Europa', 'Ganymede', 'Callisto', 'IoShadow', 'EuropaShadow', 'GanymedeShadow', 'CallistoShadow', 'SunEclipsed', 'Earth', 'Custom', 'Undefined' ];
   WWTControl.singleton = new WWTControl();
   WWTControl.singleton.renderContext = new RenderContext();
   SpaceTimeController.last = ss.now();
