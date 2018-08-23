@@ -101,6 +101,7 @@ namespace wwtlib
             xdr.Open("get", _url);
             xdr.Send();
         }
+        private bool triedOnce = false;
 
         private void CORS()
         {
@@ -118,14 +119,28 @@ namespace wwtlib
                 {
                     if (xhr.ReadyState == ReadyState.Loaded)
                     {
-                        if (ResponseType == "")
+                        if (xhr.Status == 0)
                         {
-                            LoadData(xhr.ResponseText);
+                            if (!triedOnce)
+                            {
+                                triedOnce = true;
+                                xhr.OnReadyStateChange = null;
+                                _url = Util.GetProxiedUrl(_url);
+                                CORS();
+                            }
                         }
                         else
                         {
-                            LoadBlob(xhr.Response);
+                            if (ResponseType == "")
+                            {
+                                LoadData(xhr.ResponseText);
+                            }
+                            else
+                            {
+                                LoadBlob(xhr.Response);
+                            }
                         }
+
                     }
                 };
 

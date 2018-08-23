@@ -26475,6 +26475,7 @@ window.wwtlib = function(){
   function WebFile(url) {
     this._state = 0;
     this.responseType = '';
+    this._triedOnce = false;
     this._url = url;
   }
   var WebFile$ = {
@@ -26540,11 +26541,21 @@ window.wwtlib = function(){
         }
         this._xhr.onreadystatechange = function() {
           if ($this._xhr.readyState === 4) {
-            if (!$this.responseType) {
-              $this._loadData($this._xhr.responseText);
+            if (!$this._xhr.status) {
+              if (!$this._triedOnce) {
+                $this._triedOnce = true;
+                $this._xhr.onreadystatechange = null;
+                $this._url = Util.getProxiedUrl($this._url);
+                $this._CORS();
+              }
             }
             else {
-              $this._loadBlob($this._xhr.response);
+              if (!$this.responseType) {
+                $this._loadData($this._xhr.responseText);
+              }
+              else {
+                $this._loadBlob($this._xhr.response);
+              }
             }
           }
         };
