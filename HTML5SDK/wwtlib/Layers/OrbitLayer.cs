@@ -176,7 +176,14 @@ namespace wwtlib
             doc.OnLoadEnd = delegate (FileProgressEvent ee)
             {
                 dataFile = doc.Result as string;
+                LoadString(dataFile);
+               
+            };
+            doc.ReadAsText(blob);
+        }
 
+        public void LoadString(string dataFile)
+        {
                 string[] data = dataFile.Split("\n");
                 frames.Clear();
                 for (int i = 0; i < data.Length; i += 2)
@@ -220,10 +227,10 @@ namespace wwtlib
                         i -= 1;
                     }
                 }
-            };
-            doc.ReadAsText(blob);
         }
     }
+
+   
 
     public class OrbitLayerUI : LayerUI
     {
