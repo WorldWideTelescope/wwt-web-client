@@ -10375,6 +10375,7 @@ window.wwtlib = function(){
       }
       if (!Sky) {
       }
+      LayerManager._contextMenu.items.push(pasteMenu);
       if (map.frame.reference === 19) {
         LayerManager._contextMenu.items.push(deleteFrameMenu);
       }
@@ -10548,6 +10549,23 @@ window.wwtlib = function(){
     LayerManager.loadTree();
   };
   LayerManager._pasteLayer_Click = function(sender, e) {
+    var clip = function(clipText) {
+      LayerManager.createSpreadsheetLayer(LayerManager.get_currentMap(), 'Clipboard', clipText);
+    };
+    navigator.clipboard.readText().then(clip);
+  };
+  LayerManager.createSpreadsheetLayer = function(frame, name, data) {
+    var layer = new SpreadSheetLayer();
+    layer.loadFromString(data, false, false, false, true);
+    layer.enabled = true;
+    layer.set_name(name);
+    LayerManager.get_layerList()[layer.id] = layer;
+    layer.set_referenceFrame(LayerManager.get_currentMap());
+    LayerManager.get_allMaps()[frame].layers.push(layer);
+    LayerManager.get_allMaps()[frame].open = true;
+    LayerManager._version++;
+    LayerManager.loadTree();
+    return layer;
   };
   LayerManager._showOrbitPlanet_Click = function(sender, e) {
     try {
@@ -43219,8 +43237,7 @@ window.wwtlib = function(){
       TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, VertexBufferBase ],
       PositionColoredVertexBuffer: [ PositionColoredVertexBuffer, PositionColoredVertexBuffer$, VertexBufferBase ],
       PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, VertexBufferBase ],
-      LayerCollection: [ LayerCollection, LayerCollection$, Layer ],
-      SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, Layer ]
+      LayerCollection: [ LayerCollection, LayerCollection$, Layer ]
     },
     {
       DAY_OF_WEEK: DAY_OF_WEEK,
@@ -43508,6 +43525,7 @@ window.wwtlib = function(){
       Object3dLayerUI: [ Object3dLayerUI, Object3dLayerUI$, LayerUI ],
       OrbitLayer: [ OrbitLayer, OrbitLayer$, Layer ],
       OrbitLayerUI: [ OrbitLayerUI, OrbitLayerUI$, LayerUI ],
+      SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, Layer ],
       TimeSeriesLayer: [ TimeSeriesLayer, TimeSeriesLayer$, Layer ],
       VoTableLayer: [ VoTableLayer, VoTableLayer$, Layer ],
       PlotTile: [ PlotTile, PlotTile$, Tile ],

@@ -519,12 +519,48 @@ namespace wwtlib
         [ScriptName("geolocation")]
         public static GeoLocation Geolocation { get { return null; } }
 
+        [ScriptField]
+        [ScriptName("clipboard")]
+        public static Clipboard Clipboard { get { return null; } }
 
         [ScriptField]
         [ScriptName("userAgent")]
         public static string UserAgent { get { return null; } }
 
     }
+
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
+    public delegate void ClipbaordDelegate(string clipText);
+
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
+    [ScriptName("clipboard")]
+    public class Clipboard
+    {
+
+        [ScriptName("readText")]
+        public Promise ReadText()
+        {
+            return null;
+        }
+
+    }
+
+
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
+    [ScriptName("promise")]
+    public class Promise
+    {
+
+        [ScriptName("then")]
+        public void Then(Delegate handler)
+        {
+        }
+
+    }
+
 
     [ScriptIgnoreNamespace]
     [ScriptImport]

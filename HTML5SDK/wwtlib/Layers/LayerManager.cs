@@ -1527,7 +1527,7 @@ namespace wwtlib
                 }
 
 
-                //contextMenu.Items.Add(pasteMenu);
+                contextMenu.Items.Add(pasteMenu);
 
 
                 if (map.Frame.Reference == ReferenceFrames.Identity)
@@ -2030,6 +2030,13 @@ namespace wwtlib
         static void pasteLayer_Click(object sender, EventArgs e)
         {
 
+            ClipbaordDelegate clip = delegate (string clipText)
+            {
+                CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
+            };
+            
+            Navigator.Clipboard.ReadText().Then(clip);
+
 
             //IDataObject dataObject = Clipboard.GetDataObject();
             //if (dataObject.GetDataPresent(DataFormats.UnicodeText))
@@ -2058,6 +2065,22 @@ namespace wwtlib
             //}
 
         }
+        public static SpreadSheetLayer CreateSpreadsheetLayer(string frame, string name, string data)
+        {
+            SpreadSheetLayer layer = new SpreadSheetLayer();
+            layer.LoadFromString(data, false, false, false, true);
+            layer.Enabled = true;
+            layer.Name = name;
+
+            LayerList[layer.ID] =  layer;
+            layer.ReferenceFrame = CurrentMap;
+            AllMaps[frame].Layers.Add(layer);
+            AllMaps[frame].Open = true;
+            version++;
+            LoadTree();
+            return layer;
+        }
+
         static void showOrbitPlanet_Click(object sender, EventArgs e)
         {
             try
