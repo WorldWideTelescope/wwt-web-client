@@ -785,7 +785,7 @@ namespace wwtlib
         {
             get
             {
-                if (targetBackgroundImageset != null)
+                if (RenderContext.BackgroundImageset != null)
                 {
                     return RenderContext.BackgroundImageset.DataSetType == ImageSetType.Earth || RenderContext.BackgroundImageset.DataSetType == ImageSetType.Planet;
                 }
