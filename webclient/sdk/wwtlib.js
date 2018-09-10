@@ -27375,45 +27375,45 @@ window.wwtlib = function(){
       }, 10);
     },
     _getCurrentReferenceFrame: function() {
-      if (this._targetBackgroundImageset == null) {
+      if (this.renderContext.get_backgroundImageset() == null) {
         return 'Sun';
       }
-      if (!ss.emptyString(this._targetBackgroundImageset.get_referenceFrame())) {
-        return this._targetBackgroundImageset.get_referenceFrame();
+      if (!ss.emptyString(this.renderContext.get_backgroundImageset().get_referenceFrame())) {
+        return this.renderContext.get_backgroundImageset().get_referenceFrame();
       }
-      if (!this._targetBackgroundImageset.get_dataSetType()) {
+      if (!this.renderContext.get_backgroundImageset().get_dataSetType()) {
         return 'Earth';
       }
-      if (this._targetBackgroundImageset.get_name() === 'Visible Imagery' && this._targetBackgroundImageset.get_url().toLowerCase().indexOf('mars') > -1) {
-        this._targetBackgroundImageset.set_referenceFrame('Mars');
-        return this._targetBackgroundImageset.get_referenceFrame();
+      if (this.renderContext.get_backgroundImageset().get_name() === 'Visible Imagery' && this.renderContext.get_backgroundImageset().get_url().toLowerCase().indexOf('mars') > -1) {
+        this.renderContext.get_backgroundImageset().set_referenceFrame('Mars');
+        return this.renderContext.get_backgroundImageset().get_referenceFrame();
       }
-      if (this._targetBackgroundImageset.get_dataSetType() === 1) {
+      if (this.renderContext.get_backgroundImageset().get_dataSetType() === 1) {
         var $enum1 = ss.enumerate(WWTControl.solarSystemObjectsNames);
         while ($enum1.moveNext()) {
           var name = $enum1.current;
-          if (this._targetBackgroundImageset.get_name().toLowerCase().indexOf(name.toLowerCase()) > -1) {
-            this._targetBackgroundImageset.set_referenceFrame(name);
+          if (this.renderContext.get_backgroundImageset().get_name().toLowerCase().indexOf(name.toLowerCase()) > -1) {
+            this.renderContext.get_backgroundImageset().set_referenceFrame(name);
             return name;
           }
         }
       }
-      if (this._targetBackgroundImageset.get_dataSetType() === 2) {
+      if (this.renderContext.get_backgroundImageset().get_dataSetType() === 2) {
         return 'Sky';
       }
       return '';
     },
     get_planetLike: function() {
       if (this._targetBackgroundImageset != null) {
-        return !this._targetBackgroundImageset.get_dataSetType() || this._targetBackgroundImageset.get_dataSetType() === 1;
+        return !this.renderContext.get_backgroundImageset().get_dataSetType() || this.renderContext.get_backgroundImageset().get_dataSetType() === 1;
       }
       else {
         return true;
       }
     },
     get_space: function() {
-      if (this._targetBackgroundImageset != null) {
-        return this._targetBackgroundImageset.get_dataSetType() === 2;
+      if (this.renderContext.get_backgroundImageset() != null) {
+        return this.renderContext.get_backgroundImageset().get_dataSetType() === 2;
       }
       else {
         return true;
