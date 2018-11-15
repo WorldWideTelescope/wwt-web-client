@@ -125,6 +125,115 @@ namespace wwtlib
         }
     }
 
+    public class SimpleLineShader2D
+    {
+        public SimpleLineShader2D()
+        {
+
+        }
+
+        internal static WebGLShader frag;
+        internal static WebGLShader vert;
+
+
+        public static int vertLoc;
+        public static WebGLUniformLocation lineColorLoc;
+
+        public static bool initialized = false;
+        public static void Init(RenderContext renderContext)
+        {
+            GL gl = renderContext.gl;
+
+            String fragShaderText =
+                      "   precision highp float;                                                          \n" +
+                      "   uniform vec4 lineColor;                                                         \n" +
+                      "                                                                                   \n" +
+                      "   void main(void) {                                                               \n" +
+                      "       gl_FragColor = lineColor;                                                   \n" +
+                      "   }                                                                               \n";
+
+
+            String vertexShaderText =
+                      "     attribute vec3 aVertexPosition;                                              \n" +
+                      "                                                                                  \n" +
+                      "                                                                                  \n" +
+                      "     void main(void) {                                                            \n" +
+                      "         gl_Position = vec4(aVertexPosition, 1.0);                                \n" +
+                      "     }                                                                            \n" +
+                      "                                                                                  \n";
+            frag = gl.createShader(GL.FRAGMENT_SHADER);
+            gl.shaderSource(frag, fragShaderText);
+            gl.compileShader(frag);
+
+            object stat = gl.getShaderParameter(frag, GL.COMPILE_STATUS);
+
+
+            vert = gl.createShader(GL.VERTEX_SHADER);
+            gl.shaderSource(vert, vertexShaderText);
+            gl.compileShader(vert);
+            object stat1 = gl.getShaderParameter(vert, GL.COMPILE_STATUS);
+
+            prog = gl.createProgram();
+
+            gl.attachShader(prog, vert);
+            gl.attachShader(prog, frag);
+            gl.linkProgram(prog);
+            object errcode = gl.getProgramParameter(prog, GL.LINK_STATUS);
+
+
+            gl.useProgram(prog);
+
+            vertLoc = gl.getAttribLocation(prog, "aVertexPosition");
+            lineColorLoc = gl.getUniformLocation(prog, "lineColor");
+      
+            gl.enable(GL.BLEND);
+            gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            initialized = true;
+        }
+
+        private static WebGLProgram prog = null;
+
+        public static void Use(RenderContext renderContext, WebGLBuffer vertex, Color lineColor, bool useDepth)
+        {
+            GL gl = renderContext.gl;
+            if (gl != null)
+            {
+                if (!initialized)
+                {
+                    Init(renderContext);
+                }
+
+                gl.useProgram(prog);
+
+                Matrix3d mvMat = Matrix3d.MultiplyMatrix(renderContext.World, renderContext.View);
+
+                gl.uniform4f(lineColorLoc, lineColor.R / 255, lineColor.G / 255, lineColor.B / 255, 1);
+                if (renderContext.Space || !useDepth)
+                {
+                    gl.disable(GL.DEPTH_TEST);
+                }
+                else
+                {
+                    gl.enable(GL.DEPTH_TEST);
+                }
+                gl.disableVertexAttribArray(0);
+                gl.disableVertexAttribArray(1);
+                gl.disableVertexAttribArray(2);
+                gl.disableVertexAttribArray(3);
+
+
+                gl.enableVertexAttribArray(vertLoc);
+
+                gl.bindBuffer(GL.ARRAY_BUFFER, vertex);
+                gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
+                gl.vertexAttribPointer(vertLoc, 3, GL.FLOAT, false, 0, 0);
+                gl.lineWidth(1.0f);
+                gl.enable(GL.BLEND);
+                gl.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+            }
+        }
+    }
+
     public class OrbitLineShader
     {
         public OrbitLineShader()

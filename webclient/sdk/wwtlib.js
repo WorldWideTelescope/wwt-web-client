@@ -6022,6 +6022,7 @@ window.wwtlib = function(){
     this._usingLocalCenter = false;
     this.sky = true;
     this.aaFix = true;
+    this.pure2D = false;
     this.viewTransform = Matrix3d.get_identity();
     this._lineBuffers = [];
     this._lineBufferCounts = [];
@@ -6075,7 +6076,12 @@ window.wwtlib = function(){
         var $enum1 = ss.enumerate(this._lineBuffers);
         while ($enum1.moveNext()) {
           var lineBuffer = $enum1.current;
-          SimpleLineShader.use(renderContext, lineBuffer.vertexBuffer, color, this._zBuffer);
+          if (this.pure2D) {
+            SimpleLineShader2D.use(renderContext, lineBuffer.vertexBuffer, color, this._zBuffer);
+          }
+          else {
+            SimpleLineShader.use(renderContext, lineBuffer.vertexBuffer, color, this._zBuffer);
+          }
           renderContext.gl.drawArrays(1, 0, lineBuffer.count);
         }
       }
@@ -6771,6 +6777,67 @@ window.wwtlib = function(){
     }
   };
   var SimpleLineShader$ = {
+
+  };
+
+
+  // wwtlib.SimpleLineShader2D
+
+  function SimpleLineShader2D() {
+  }
+  SimpleLineShader2D.init = function(renderContext) {
+    var gl = renderContext.gl;
+    var fragShaderText = '   precision highp float;                                                          \n' + '   uniform vec4 lineColor;                                                         \n' + '                                                                                   \n' + '   void main(void) {                                                               \n' + '       gl_FragColor = lineColor;                                                   \n' + '   }                                                                               \n';
+    var vertexShaderText = '     attribute vec3 aVertexPosition;                                              \n' + '                                                                                  \n' + '                                                                                  \n' + '     void main(void) {                                                            \n' + '         gl_Position = vec4(aVertexPosition, 1.0);                                \n' + '     }                                                                            \n' + '                                                                                  \n';
+    SimpleLineShader2D._frag = gl.createShader(35632);
+    gl.shaderSource(SimpleLineShader2D._frag, fragShaderText);
+    gl.compileShader(SimpleLineShader2D._frag);
+    var stat = gl.getShaderParameter(SimpleLineShader2D._frag, 35713);
+    SimpleLineShader2D._vert = gl.createShader(35633);
+    gl.shaderSource(SimpleLineShader2D._vert, vertexShaderText);
+    gl.compileShader(SimpleLineShader2D._vert);
+    var stat1 = gl.getShaderParameter(SimpleLineShader2D._vert, 35713);
+    SimpleLineShader2D._prog = gl.createProgram();
+    gl.attachShader(SimpleLineShader2D._prog, SimpleLineShader2D._vert);
+    gl.attachShader(SimpleLineShader2D._prog, SimpleLineShader2D._frag);
+    gl.linkProgram(SimpleLineShader2D._prog);
+    var errcode = gl.getProgramParameter(SimpleLineShader2D._prog, 35714);
+    gl.useProgram(SimpleLineShader2D._prog);
+    SimpleLineShader2D.vertLoc = gl.getAttribLocation(SimpleLineShader2D._prog, 'aVertexPosition');
+    SimpleLineShader2D.lineColorLoc = gl.getUniformLocation(SimpleLineShader2D._prog, 'lineColor');
+    gl.enable(3042);
+    gl.blendFunc(770, 771);
+    SimpleLineShader2D.initialized = true;
+  };
+  SimpleLineShader2D.use = function(renderContext, vertex, lineColor, useDepth) {
+    var gl = renderContext.gl;
+    if (gl != null) {
+      if (!SimpleLineShader2D.initialized) {
+        SimpleLineShader2D.init(renderContext);
+      }
+      gl.useProgram(SimpleLineShader2D._prog);
+      var mvMat = Matrix3d.multiplyMatrix(renderContext.get_world(), renderContext.get_view());
+      gl.uniform4f(SimpleLineShader2D.lineColorLoc, lineColor.r / 255, lineColor.g / 255, lineColor.b / 255, 1);
+      if (renderContext.space || !useDepth) {
+        gl.disable(2929);
+      }
+      else {
+        gl.enable(2929);
+      }
+      gl.disableVertexAttribArray(0);
+      gl.disableVertexAttribArray(1);
+      gl.disableVertexAttribArray(2);
+      gl.disableVertexAttribArray(3);
+      gl.enableVertexAttribArray(SimpleLineShader2D.vertLoc);
+      gl.bindBuffer(34962, vertex);
+      gl.bindBuffer(34963, null);
+      gl.vertexAttribPointer(SimpleLineShader2D.vertLoc, 3, 5126, false, 0, 0);
+      gl.lineWidth(1);
+      gl.enable(3042);
+      gl.blendFunc(770, 771);
+    }
+  };
+  var SimpleLineShader2D$ = {
 
   };
 
@@ -26657,6 +26724,7 @@ window.wwtlib = function(){
     this._targetBackgroundImageset = null;
     this.tour = null;
     this.tourEdit = null;
+    this._crossHarirs = null;
   }
   WWTControl.get_renderNeeded = function() {
     return WWTControl._renderNeeded;
@@ -28106,6 +28174,16 @@ window.wwtlib = function(){
         ctx.lineTo(x - halfLength, y);
         ctx.stroke();
         ctx.restore();
+      }
+      else {
+        if (this._crossHarirs == null) {
+          this._crossHarirs = new SimpleLineList();
+          this._crossHarirs.set_depthBuffered(false);
+          this._crossHarirs.pure2D = true;
+          this._crossHarirs.addLine(Vector3d.create(-0.02, 0, 0), Vector3d.create(0.02, 0, 0));
+          this._crossHarirs.addLine(Vector3d.create(0, -0.03, 0), Vector3d.create(0, 0.03, 0));
+        }
+        this._crossHarirs.drawLines(context, 1, Colors.get_white());
       }
     },
     captureThumbnail: function(blobReady) {
@@ -43103,6 +43181,7 @@ window.wwtlib = function(){
       TimeSeriesLineVertex: [ TimeSeriesLineVertex, TimeSeriesLineVertex$, null ],
       TimeSeriesPointVertex: [ TimeSeriesPointVertex, TimeSeriesPointVertex$, null ],
       SimpleLineShader: [ SimpleLineShader, SimpleLineShader$, null ],
+      SimpleLineShader2D: [ SimpleLineShader2D, SimpleLineShader2D$, null ],
       OrbitLineShader: [ OrbitLineShader, OrbitLineShader$, null ],
       LineShaderNormalDates: [ LineShaderNormalDates, LineShaderNormalDates$, null ],
       TimeSeriesPointSpriteShader: [ TimeSeriesPointSpriteShader, TimeSeriesPointSpriteShader$, null ],
@@ -43442,6 +43521,9 @@ window.wwtlib = function(){
   SimpleLineShader.vertLoc = 0;
   SimpleLineShader.initialized = false;
   SimpleLineShader._prog = null;
+  SimpleLineShader2D.vertLoc = 0;
+  SimpleLineShader2D.initialized = false;
+  SimpleLineShader2D._prog = null;
   OrbitLineShader.vertLoc = 0;
   OrbitLineShader.colorLoc = 0;
   OrbitLineShader.initialized = false;

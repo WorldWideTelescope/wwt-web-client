@@ -2794,6 +2794,8 @@ namespace wwtlib
             }
         }
 
+        private SimpleLineList crossHarirs = null;
+
         private void DrawCrosshairs(RenderContext context)
         {
             if (context.gl == null)
@@ -2815,6 +2817,18 @@ namespace wwtlib
 
                 ctx.Stroke();
                 ctx.Restore();
+            }
+            else
+            {
+                if (crossHarirs == null)
+                {
+                    crossHarirs = new SimpleLineList();
+                    crossHarirs.DepthBuffered = false;
+                    crossHarirs.Pure2D = true;
+                    crossHarirs.AddLine(Vector3d.Create(-.02, .0, 0), Vector3d.Create(.02, 0, 0));
+                    crossHarirs.AddLine(Vector3d.Create(0,-.03, 0), Vector3d.Create(0, .03, 0));
+                }
+                crossHarirs.DrawLines(context, 1.0f, Colors.White);
             }
         }
 
