@@ -27472,7 +27472,7 @@ window.wwtlib = function(){
       return '';
     },
     get_planetLike: function() {
-      if (this._targetBackgroundImageset != null) {
+      if (this.renderContext.get_backgroundImageset() != null) {
         return !this.renderContext.get_backgroundImageset().get_dataSetType() || this.renderContext.get_backgroundImageset().get_dataSetType() === 1;
       }
       else {
