@@ -13,7 +13,7 @@ namespace wwtlib
      // public enum PointScaleTypes { Linear=0, Power=1, Log=2, Constant=3, StellarMagnitude=4 }; 
     
     
-    class SpreadSheetLayer : Layer
+    public class SpreadSheetLayer : Layer
     {
         public SpreadSheetLayer()
         {

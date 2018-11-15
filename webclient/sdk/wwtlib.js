@@ -10436,11 +10436,13 @@ window.wwtlib = function(){
         LayerManager._contextMenu.items.push(addGirdLayer);
       }
       if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
+        LayerManager._contextMenu.items.push(addMpc);
       }
       if (map.frame.reference === 18 && map.frame.referenceFrameType === 1 && map.parent != null && map.parent.frame.name === 'Sun') {
       }
       if (!Sky) {
       }
+      LayerManager._contextMenu.items.push(pasteMenu);
       if (map.frame.reference === 19) {
         LayerManager._contextMenu.items.push(deleteFrameMenu);
       }
@@ -10488,7 +10490,21 @@ window.wwtlib = function(){
   };
   LayerManager._importTLEFile = function(filename) {
   };
-  LayerManager._makeLayerGroup = function(name) {
+  LayerManager._makeLayerGroupNow = function(name) {
+    var target = LayerManager._selectedLayer;
+    LayerManager._makeLayerGroup(name, target);
+  };
+  LayerManager._makeLayerGroup = function(name, target) {
+    var frame = new ReferenceFrame();
+    frame.name = name;
+    frame.reference = 19;
+    var newMap = new LayerMap(frame.name, 19);
+    newMap.frame = frame;
+    newMap.frame._systemGenerated = false;
+    target.addChild(newMap);
+    newMap.frame.parent = target.get_name();
+    LayerManager.get_allMaps()[frame.name] = newMap;
+    LayerManager._version++;
   };
   LayerManager._lifeTimeMenu_Click = function(sender, e) {
   };
@@ -10600,6 +10616,23 @@ window.wwtlib = function(){
     LayerManager.loadTree();
   };
   LayerManager._pasteLayer_Click = function(sender, e) {
+    var clip = function(clipText) {
+      LayerManager.createSpreadsheetLayer(LayerManager.get_currentMap(), 'Clipboard', clipText);
+    };
+    navigator.clipboard.readText().then(clip);
+  };
+  LayerManager.createSpreadsheetLayer = function(frame, name, data) {
+    var layer = new SpreadSheetLayer();
+    layer.loadFromString(data, false, false, false, true);
+    layer.enabled = true;
+    layer.set_name(name);
+    LayerManager.get_layerList()[layer.id] = layer;
+    layer.set_referenceFrame(LayerManager.get_currentMap());
+    LayerManager.get_allMaps()[frame].layers.push(layer);
+    LayerManager.get_allMaps()[frame].open = true;
+    LayerManager._version++;
+    LayerManager.loadTree();
+    return layer;
   };
   LayerManager._showOrbitPlanet_Click = function(sender, e) {
     try {
@@ -10622,16 +10655,122 @@ window.wwtlib = function(){
     LayerManager._addGreatCircleLayer();
   };
   LayerManager._addMpc_Click = function(sender, e) {
+    var target = LayerManager._selectedLayer;
+    var input = new SimpleInput(Language.getLocalizedText(1302, 'Minor planet name or designation'), Language.getLocalizedText(238, 'Name'), '', 32);
+    var retry = false;
+    do {
+      if (input.showDialog() === 1) {
+        if (ss.keyExists(target.childMaps, input.text)) {
+          retry = true;
+        }
+        else {
+          try {
+            LayerManager._getMpc(input.text, target);
+            retry = false;
+          }
+          catch ($e1) {
+            retry = true;
+          }
+        }
+      }
+      else {
+        retry = false;
+      }
+    } while (retry);
+    return;
   };
   LayerManager._asOrbitalLines_Click = function(sender, e) {
+    var target = LayerManager._selectedLayer;
+    var input = new SimpleInput(Language.getLocalizedText(1302, 'Minor planet name or designation'), Language.getLocalizedText(238, 'Name'), '', 32);
+    input.show(Cursor.get_position(), function() {
+      if (ss.keyExists(target.childMaps, input.text)) {
+      }
+      else {
+        LayerManager._getMpcAsTLE(input.text, target);
+      }
+    });
+  };
+  LayerManager._getMpcAsTLE = function(id, target) {
+    var file = new WebFile('https://www.minorplanetcenter.net/db_search/show_object?object_id=' + id);
+    file.onStateChange = function() {
+      if (file.get_state() !== 1) {
+        return;
+      }
+      var data = file.getText();
+      var startform = data.indexOf('show-orbit-button');
+      var lastForm = data.indexOf('/form', startform);
+      var formpart = data.substring(startform, lastForm);
+      var name = id;
+      var frame = new ReferenceFrame();
+      frame.oblateness = 0;
+      frame.showOrbitPath = true;
+      frame.showAsPoint = true;
+      frame.epoch = SpaceTimeController.utcToJulian(ss.date(LayerManager._getValueByID(formpart, 'epoch').substring(0, 10)));
+      frame.semiMajorAxis = parseFloat(LayerManager._getValueByID(formpart, 'a')) * 149598000 * 1000;
+      frame.referenceFrameType = 1;
+      frame.inclination = parseFloat(LayerManager._getValueByID(formpart, 'incl'));
+      frame.longitudeOfAscendingNode = parseFloat(LayerManager._getValueByID(formpart, 'node'));
+      frame.eccentricity = parseFloat(LayerManager._getValueByID(formpart, 'e'));
+      frame.meanAnomolyAtEpoch = parseFloat(LayerManager._getValueByID(formpart, 'm'));
+      frame.meanDailyMotion = ELL.meanMotionFromSemiMajorAxis(parseFloat(LayerManager._getValueByID(formpart, 'a')));
+      frame.argumentOfPeriapsis = parseFloat(LayerManager._getValueByID(formpart, 'peri'));
+      frame.scale = 1;
+      frame.semiMajorAxisUnits = 1;
+      frame.meanRadius = 10;
+      frame.oblateness = 0;
+      var TLE = name + '\n' + frame.toTLE();
+      LayerManager._loadOrbitsFile(id, TLE, target.get_name());
+      LayerManager.loadTree();
+    };
+    file.send();
+  };
+  LayerManager._getMpc = function(id, target) {
+    var file = new WebFile('https://www.minorplanetcenter.net/db_search/show_object?object_id=' + id);
+    file.onStateChange = function() {
+      var data = file.getText();
+      var startform = data.indexOf('show-orbit-button');
+      var lastForm = data.indexOf('/form', startform);
+      var formpart = data.substring(startform, lastForm);
+      var name = id;
+      var orbit = new LayerMap(ss.trim(name), 18);
+      orbit.frame.oblateness = 0;
+      orbit.frame.showOrbitPath = true;
+      orbit.frame.showAsPoint = true;
+      orbit.frame.epoch = SpaceTimeController.utcToJulian(ss.date(LayerManager._getValueByID(formpart, 'epoch').substring(0, 10)));
+      orbit.frame.semiMajorAxis = parseFloat(LayerManager._getValueByID(formpart, 'a')) * 149598000 * 1000;
+      orbit.frame.referenceFrameType = 1;
+      orbit.frame.inclination = parseFloat(LayerManager._getValueByID(formpart, 'incl'));
+      orbit.frame.longitudeOfAscendingNode = parseFloat(LayerManager._getValueByID(formpart, 'node'));
+      orbit.frame.eccentricity = parseFloat(LayerManager._getValueByID(formpart, 'e'));
+      orbit.frame.meanAnomolyAtEpoch = parseFloat(LayerManager._getValueByID(formpart, 'm'));
+      orbit.frame.meanDailyMotion = ELL.meanMotionFromSemiMajorAxis(parseFloat(LayerManager._getValueByID(formpart, 'a')));
+      orbit.frame.argumentOfPeriapsis = parseFloat(LayerManager._getValueByID(formpart, 'peri'));
+      orbit.frame.scale = 1;
+      orbit.frame.semiMajorAxisUnits = 1;
+      orbit.frame.meanRadius = 10;
+      orbit.frame.oblateness = 0;
+      if (!ss.keyExists(LayerManager.get_allMaps()[target.get_name()].childMaps, ss.trim(name))) {
+        LayerManager.get_allMaps()[target.get_name()].addChild(orbit);
+      }
+      LayerManager.get_allMaps()[orbit.get_name()] = orbit;
+      orbit.frame.parent = target.get_name();
+      LayerManager._makeLayerGroup('Minor Planet', orbit);
+      LayerManager.loadTree();
+    };
+  };
+  LayerManager._getValueByID = function(data, id) {
+    var valStart = data.indexOf('id="' + id + '"');
+    valStart = data.indexOf('value=', valStart) + 7;
+    var valEnd = data.indexOf('"', valStart);
+    return data.substr(valStart, valEnd - valStart);
   };
   LayerManager._addGreatCircleLayer = function() {
   };
-  LayerManager._loadOrbitsFile = function(path, currentMap) {
+  LayerManager._loadOrbitsFile = function(name, data, currentMap) {
     var layer = new OrbitLayer();
-    layer.loadData(null, path);
+    layer.loadString(data);
     layer.enabled = true;
-    layer.set_name(path.substring(path.lastIndexOf('\\') + 1));
+    layer.set_name(name);
     LayerManager.get_layerList()[layer.id] = layer;
     layer.set_referenceFrame(currentMap);
     LayerManager.get_allMaps()[currentMap].layers.push(layer);
@@ -12673,6 +12812,66 @@ window.wwtlib = function(){
     }
     return ('0' + (checksum % 10)) === line.charAt(68);
   };
+  ReferenceFrame.toTLEExponential = function(num, size) {
+    var exp = num.toExponential(size);
+    if (exp.length < size + 6) {
+      exp = exp.substring(0, size + 4) + '0' + exp.substr(size + 4, 1);
+    }
+    return exp;
+  };
+  ReferenceFrame.tleNumberString = function(num, left, right) {
+    var formated = num.toFixed(right);
+    var point = formated.indexOf('.');
+    if (point === -1) {
+      point = formated.length;
+      formated += '.0';
+    }
+    var len = formated.length - point - 1;
+    var fill = '00000000';
+    formated = fill.substr(0, left - point) + formated + fill.substr(0, right - len);
+    return formated;
+  };
+  ReferenceFrame.computeTLECheckSum = function(line) {
+    if (line.length !== 68) {
+      return '0';
+    }
+    var checksum = 0;
+    for (var i = 0; i < 68; i++) {
+      switch (line[i]) {
+        case '1':
+          checksum += 1;
+          break;
+        case '2':
+          checksum += 2;
+          break;
+        case '3':
+          checksum += 3;
+          break;
+        case '4':
+          checksum += 4;
+          break;
+        case '5':
+          checksum += 5;
+          break;
+        case '6':
+          checksum += 6;
+          break;
+        case '7':
+          checksum += 7;
+          break;
+        case '8':
+          checksum += 8;
+          break;
+        case '9':
+          checksum += 9;
+          break;
+        case '-':
+          checksum += 1;
+          break;
+      }
+    }
+    return ((checksum % 10));
+  };
   var ReferenceFrame$ = {
     get_representativeColor: function() {
       return this.representativeColor;
@@ -12786,6 +12985,30 @@ window.wwtlib = function(){
       var part = (86400 / revs) / (Math.PI * 2);
       this.semiMajorAxis = Math.pow((part * part) * gravity, 1 / 3);
       this.semiMajorAxisUnits = 1;
+    },
+    toTLE: function() {
+      var line1 = new ss.StringBuilder();
+      line1.append('1 99999U 00111AAA ');
+      line1.append(SpaceTimeController.julianToTwoLineDate(this.epoch));
+      line1.append(' ');
+      line1.append(this.semiMajorAxis.toExponential(4));
+      line1.append(' 00000-0 ');
+      line1.append(ReferenceFrame.toTLEExponential(this.meanDailyMotion, 5));
+      line1.append('  001');
+      line1.append(ReferenceFrame.computeTLECheckSum(line1.toString()));
+      line1.appendLine('');
+      var line2 = new ss.StringBuilder();
+      line2.append('2 99999 ');
+      line2.append(ReferenceFrame.tleNumberString(this.inclination, 3, 4) + ' ');
+      line2.append(ReferenceFrame.tleNumberString(this.longitudeOfAscendingNode, 3, 4) + ' ');
+      line2.append((ReferenceFrame.tleNumberString(this.eccentricity, 1, 7) + ' ').substring(2));
+      line2.append(ReferenceFrame.tleNumberString(this.argumentOfPeriapsis, 3, 4) + ' ');
+      line2.append(ReferenceFrame.tleNumberString(this.meanAnomolyAtEpoch, 3, 4) + ' ');
+      line2.append(ReferenceFrame.toTLEExponential(this.meanDailyMotion / 207732, 5));
+      line2.append('00001');
+      line2.append(ReferenceFrame.computeTLECheckSum(line2.toString()));
+      line2.appendLine('');
+      return line1.toString() + line2.toString();
     },
     get_elements: function() {
       this._elements.a = this.semiMajorAxis;
@@ -17423,6 +17646,12 @@ window.wwtlib = function(){
     SpaceTimeController._location = value;
     return value;
   };
+  SpaceTimeController.julianToUtc = function(jDate) {
+    var date = new DT();
+    date.setJD(jDate, true);
+    var ms = (date.second() - ss.truncate(date.second())) * 1000;
+    return new Date(date.year(), date.month() - 1, date.day(), date.hour(), date.minute(), ss.truncate(date.second()), ss.truncate(ms));
+  };
   SpaceTimeController._twoLineDateToJulian = function(p) {
     var pre1950 = parseInt(p.substring(0, 1)) < 6;
     var year = parseInt(((pre1950) ? ' 20' : '19') + p.substring(0, 2));
@@ -17430,6 +17659,31 @@ window.wwtlib = function(){
     var fraction = parseFloat(p.substr(5));
     var date = new Date(year, 0, 1, 0, 0);
     return SpaceTimeController.utcToJulian(date) + (days - 1 + fraction);
+  };
+  SpaceTimeController.julianToTwoLineDate = function(jDate) {
+    return SpaceTimeController.dateToTwoLineDate(SpaceTimeController.julianToUtc(jDate));
+  };
+  SpaceTimeController.dateToTwoLineDate = function(date) {
+    var sb = new ss.StringBuilder();
+    sb.append(date.getFullYear() % 100);
+    var fullYear = new Date(date.getFullYear(), 0, 1, 0, 0);
+    var dayofyear = Math.floor((date - fullYear) / (60 * 60 * 24 * 1000)) + 2;
+    var day = dayofyear + date.getHours() / 24 + date.getMinutes() / 60 / 24 + date.getSeconds() / 60 / 60 / 24 + date.getMilliseconds() / 1000 / 60 / 60 / 24;
+    var sDay = SpaceTimeController.tleDayString(day);
+    sb.append(sDay);
+    return sb.toString();
+  };
+  SpaceTimeController.tleDayString = function(day) {
+    var formated = day.toString();
+    var point = formated.indexOf('.');
+    if (point === -1) {
+      point = formated.length;
+      formated += '.0';
+    }
+    var len = formated.length - point - 1;
+    var fill = '00000000';
+    formated = fill.substr(0, 3 - point) + formated + fill.substr(0, 8 - len);
+    return formated;
   };
   SpaceTimeController.utcToJulian = function(utc) {
     var year = utc.getUTCFullYear();
@@ -26542,6 +26796,7 @@ window.wwtlib = function(){
   function WebFile(url) {
     this._state = 0;
     this.responseType = '';
+    this._triedOnce = false;
     this._url = url;
   }
   var WebFile$ = {
@@ -26607,11 +26862,21 @@ window.wwtlib = function(){
         }
         this._xhr.onreadystatechange = function() {
           if ($this._xhr.readyState === 4) {
-            if (!$this.responseType) {
-              $this._loadData($this._xhr.responseText);
+            if (!$this._xhr.status) {
+              if (!$this._triedOnce) {
+                $this._triedOnce = true;
+                $this._xhr.onreadystatechange = null;
+                $this._url = Util.getProxiedUrl($this._url);
+                $this._CORS();
+              }
             }
             else {
-              $this._loadBlob($this._xhr.response);
+              if (!$this.responseType) {
+                $this._loadData($this._xhr.responseText);
+              }
+              else {
+                $this._loadBlob($this._xhr.response);
+              }
             }
           }
         };
@@ -27178,45 +27443,45 @@ window.wwtlib = function(){
       }, 10);
     },
     _getCurrentReferenceFrame: function() {
-      if (this._targetBackgroundImageset == null) {
+      if (this.renderContext.get_backgroundImageset() == null) {
         return 'Sun';
       }
-      if (!ss.emptyString(this._targetBackgroundImageset.get_referenceFrame())) {
-        return this._targetBackgroundImageset.get_referenceFrame();
+      if (!ss.emptyString(this.renderContext.get_backgroundImageset().get_referenceFrame())) {
+        return this.renderContext.get_backgroundImageset().get_referenceFrame();
       }
-      if (!this._targetBackgroundImageset.get_dataSetType()) {
+      if (!this.renderContext.get_backgroundImageset().get_dataSetType()) {
         return 'Earth';
       }
-      if (this._targetBackgroundImageset.get_name() === 'Visible Imagery' && this._targetBackgroundImageset.get_url().toLowerCase().indexOf('mars') > -1) {
-        this._targetBackgroundImageset.set_referenceFrame('Mars');
-        return this._targetBackgroundImageset.get_referenceFrame();
+      if (this.renderContext.get_backgroundImageset().get_name() === 'Visible Imagery' && this.renderContext.get_backgroundImageset().get_url().toLowerCase().indexOf('mars') > -1) {
+        this.renderContext.get_backgroundImageset().set_referenceFrame('Mars');
+        return this.renderContext.get_backgroundImageset().get_referenceFrame();
       }
-      if (this._targetBackgroundImageset.get_dataSetType() === 1) {
+      if (this.renderContext.get_backgroundImageset().get_dataSetType() === 1) {
         var $enum1 = ss.enumerate(WWTControl.solarSystemObjectsNames);
         while ($enum1.moveNext()) {
           var name = $enum1.current;
-          if (this._targetBackgroundImageset.get_name().toLowerCase().indexOf(name.toLowerCase()) > -1) {
-            this._targetBackgroundImageset.set_referenceFrame(name);
+          if (this.renderContext.get_backgroundImageset().get_name().toLowerCase().indexOf(name.toLowerCase()) > -1) {
+            this.renderContext.get_backgroundImageset().set_referenceFrame(name);
             return name;
           }
         }
       }
-      if (this._targetBackgroundImageset.get_dataSetType() === 2) {
+      if (this.renderContext.get_backgroundImageset().get_dataSetType() === 2) {
         return 'Sky';
       }
       return '';
     },
     get_planetLike: function() {
       if (this._targetBackgroundImageset != null) {
-        return !this._targetBackgroundImageset.get_dataSetType() || this._targetBackgroundImageset.get_dataSetType() === 1;
+        return !this.renderContext.get_backgroundImageset().get_dataSetType() || this.renderContext.get_backgroundImageset().get_dataSetType() === 1;
       }
       else {
         return true;
       }
     },
     get_space: function() {
-      if (this._targetBackgroundImageset != null) {
-        return this._targetBackgroundImageset.get_dataSetType() === 2;
+      if (this.renderContext.get_backgroundImageset() != null) {
+        return this.renderContext.get_backgroundImageset().get_dataSetType() === 2;
       }
       else {
         return true;
@@ -36482,44 +36747,47 @@ window.wwtlib = function(){
       var doc = new FileReader();
       doc.onloadend = function(ee) {
         $this._dataFile$1 = ss.safeCast(doc.result, String);
-        var data = $this._dataFile$1.split('\n');
-        $this._frames$1.length = 0;
-        for (var i = 0; i < data.length; i += 2) {
-          var line1 = i;
-          var line2 = i + 1;
-          if (data[i].length > 0) {
-            var frame = new ReferenceFrame();
-            if (data[i].substring(0, 1) !== '1') {
-              line1++;
-              line2++;
-              frame.name = ss.trim(data[i]);
-              i++;
-            }
-            else if (data[i].substring(0, 1) === '1') {
-              frame.name = data[i].substring(2, 5);
-            }
-            else {
-              i -= 2;
-              continue;
-            }
-            frame.reference = 18;
-            frame.oblateness = 0;
-            frame.showOrbitPath = true;
-            frame.showAsPoint = true;
-            frame.referenceFrameType = 1;
-            frame.scale = 1;
-            frame.semiMajorAxisUnits = 1;
-            frame.meanRadius = 10;
-            frame.oblateness = 0;
-            frame.fromTLE(data[line1], data[line2], 398600441800000);
-            $this._frames$1.push(frame);
-          }
-          else {
-            i -= 1;
-          }
-        }
+        $this.loadString($this._dataFile$1);
       };
       doc.readAsText(blob);
+    },
+    loadString: function(dataFile) {
+      var data = dataFile.split('\n');
+      this._frames$1.length = 0;
+      for (var i = 0; i < data.length; i += 2) {
+        var line1 = i;
+        var line2 = i + 1;
+        if (data[i].length > 0) {
+          var frame = new ReferenceFrame();
+          if (data[i].substring(0, 1) !== '1') {
+            line1++;
+            line2++;
+            frame.name = ss.trim(data[i]);
+            i++;
+          }
+          else if (data[i].substring(0, 1) === '1') {
+            frame.name = data[i].substring(2, 5);
+          }
+          else {
+            i -= 2;
+            continue;
+          }
+          frame.reference = 18;
+          frame.oblateness = 0;
+          frame.showOrbitPath = true;
+          frame.showAsPoint = true;
+          frame.referenceFrameType = 1;
+          frame.scale = 1;
+          frame.semiMajorAxisUnits = 1;
+          frame.meanRadius = 10;
+          frame.oblateness = 0;
+          frame.fromTLE(data[line1], data[line2], 398600441800000);
+          this._frames$1.push(frame);
+        }
+        else {
+          i -= 1;
+        }
+      }
     }
   };
 
@@ -43047,8 +43315,7 @@ window.wwtlib = function(){
       TimeSeriesPointVertexBuffer: [ TimeSeriesPointVertexBuffer, TimeSeriesPointVertexBuffer$, VertexBufferBase ],
       PositionColoredVertexBuffer: [ PositionColoredVertexBuffer, PositionColoredVertexBuffer$, VertexBufferBase ],
       PositionColoredTexturedVertexBuffer: [ PositionColoredTexturedVertexBuffer, PositionColoredTexturedVertexBuffer$, VertexBufferBase ],
-      LayerCollection: [ LayerCollection, LayerCollection$, Layer ],
-      SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, Layer ]
+      LayerCollection: [ LayerCollection, LayerCollection$, Layer ]
     },
     {
       DAY_OF_WEEK: DAY_OF_WEEK,
@@ -43337,6 +43604,7 @@ window.wwtlib = function(){
       Object3dLayerUI: [ Object3dLayerUI, Object3dLayerUI$, LayerUI ],
       OrbitLayer: [ OrbitLayer, OrbitLayer$, Layer ],
       OrbitLayerUI: [ OrbitLayerUI, OrbitLayerUI$, LayerUI ],
+      SpreadSheetLayer: [ SpreadSheetLayer, SpreadSheetLayer$, Layer ],
       TimeSeriesLayer: [ TimeSeriesLayer, TimeSeriesLayer$, Layer ],
       VoTableLayer: [ VoTableLayer, VoTableLayer$, Layer ],
       PlotTile: [ PlotTile, PlotTile$, Tile ],

@@ -717,38 +717,38 @@ namespace wwtlib
 
         private string GetCurrentReferenceFrame()
         {
-            if (targetBackgroundImageset == null)
+            if (RenderContext.BackgroundImageset == null)
             {
                 return "Sun";
             }
 
-            if (!string.IsNullOrEmpty(targetBackgroundImageset.ReferenceFrame))
+            if (!string.IsNullOrEmpty(RenderContext.BackgroundImageset.ReferenceFrame))
             {
-                return targetBackgroundImageset.ReferenceFrame;
+                return RenderContext.BackgroundImageset.ReferenceFrame;
             }
-            if (targetBackgroundImageset.DataSetType == ImageSetType.Earth)
+            if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Earth)
             {
                 return "Earth";
             }
-            if (targetBackgroundImageset.Name == "Visible Imagery" && targetBackgroundImageset.Url.ToLowerCase().IndexOf("mars") > -1 )
+            if (RenderContext.BackgroundImageset.Name == "Visible Imagery" && RenderContext.BackgroundImageset.Url.ToLowerCase().IndexOf("mars") > -1 )
             {
 
-                targetBackgroundImageset.ReferenceFrame = "Mars";
-                return targetBackgroundImageset.ReferenceFrame;
+                RenderContext.BackgroundImageset.ReferenceFrame = "Mars";
+                return RenderContext.BackgroundImageset.ReferenceFrame;
             }
 
-            if (targetBackgroundImageset.DataSetType == ImageSetType.Planet)
+            if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Planet)
             {
                 foreach (string name in SolarSystemObjectsNames)
                 {
-                    if (targetBackgroundImageset.Name.ToLowerCase().IndexOf(name.ToLowerCase()) > -1 )
+                    if (RenderContext.BackgroundImageset.Name.ToLowerCase().IndexOf(name.ToLowerCase()) > -1 )
                     {
-                        targetBackgroundImageset.ReferenceFrame = name;
+                        RenderContext.BackgroundImageset.ReferenceFrame = name;
                         return name;
                     }
                 }
             }
-            if (targetBackgroundImageset.DataSetType == ImageSetType.Sky)
+            if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Sky)
             {
                 return "Sky";
             }
@@ -785,9 +785,9 @@ namespace wwtlib
         {
             get
             {
-                if (targetBackgroundImageset != null)
+                if (RenderContext.BackgroundImageset != null)
                 {
-                    return targetBackgroundImageset.DataSetType == ImageSetType.Earth || targetBackgroundImageset.DataSetType == ImageSetType.Planet;
+                    return RenderContext.BackgroundImageset.DataSetType == ImageSetType.Earth || RenderContext.BackgroundImageset.DataSetType == ImageSetType.Planet;
                 }
                 else
                 {
@@ -800,9 +800,9 @@ namespace wwtlib
         {
             get
             {
-                if (targetBackgroundImageset != null)
+                if (RenderContext.BackgroundImageset != null)
                 {
-                    return targetBackgroundImageset.DataSetType == ImageSetType.Sky;
+                    return RenderContext.BackgroundImageset.DataSetType == ImageSetType.Sky;
                 }
                 else
                 {

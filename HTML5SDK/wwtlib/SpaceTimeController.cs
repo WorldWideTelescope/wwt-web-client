@@ -186,7 +186,18 @@ namespace wwtlib
             }
         }
 
+        public static Date JulianToUtc(double jDate)
+        {
+            DT date = new DT();
+            date.SetJD(jDate, true);
 
+            //date.Get(ref year, ref month, ref day, ref hour, ref minute, ref second);
+
+            
+            double ms = (date.Second() - ((int)date.Second())) * 1000;
+
+            return new Date(date.Year(), date.Month()-1, date.Day(), date.Hour(), date.Minute(), (int)date.Second(), (int)ms);
+        }
 
         internal static double TwoLineDateToJulian(string p)
         {
@@ -202,6 +213,51 @@ namespace wwtlib
             Date date = new Date(year, 0, 1, 0, 0);
             return UtcToJulian(date) + (days-1 + fraction);
         }
+
+        public static string JulianToTwoLineDate(double jDate)
+        {
+            return DateToTwoLineDate(JulianToUtc(jDate));
+        }
+
+        public static string DateToTwoLineDate(Date date)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(date.GetFullYear() % 100);
+
+            Date fullYear = new Date(date.GetFullYear(), 0, 1, 0, 0);
+
+            double dayofyear = Math.Floor((date - fullYear) / (60 * 60 * 24 * 1000))+2;
+
+            double day = dayofyear + date.GetHours() / 24 + date.GetMinutes() / 60 / 24 + date.GetSeconds() / 60 / 60 / 24 + date.GetMilliseconds() / 1000 / 60 / 60 / 24;
+
+            string sDay = TLEDayString(day);
+
+            sb.Append(sDay);
+
+            return sb.ToString();
+        }
+
+        public static string TLEDayString(double day)
+        {
+            string formated = day.ToString();
+
+            int point = formated.IndexOf(".");
+            if (point == -1)
+            {
+                point = formated.Length;
+                formated += ".0";
+            }
+            int len = formated.Length-point-1;
+
+            string fill = "00000000";
+
+            formated = fill.Substr(0, 3 - point) + formated + fill.Substr(0, 8 - len);
+
+            return formated;
+        }
+
+
 
         public static double UtcToJulian(Date utc)
         {
