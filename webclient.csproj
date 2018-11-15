@@ -372,7 +372,9 @@
     </Content>
     <Content Include="packages.config" />
     <Content Include="Hubble.wtml" />
-    <Content Include="ESO.wtml" />
+    <Content Include="ESO.wtml">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -422,7 +424,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>26993</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:26993/</IISUrl>
+          <IISUrl>http://localhost:26995/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
