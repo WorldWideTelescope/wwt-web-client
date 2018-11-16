@@ -225,6 +225,10 @@
                       action: 'showPrecessionChart'
                     })
                   ]
+                }), new treeNode({
+                  name: $scope.getFromEn('Crosshairs'),
+                  checked: true,
+                  action: 'showCrosshairs'
                 })
               ]
             }),
@@ -332,8 +336,9 @@
       };
 
       $scope.isObjectNode = function(node){
+        if (!node){return false;}
         return node.action == undefined || node.layers || node.childMaps;
-      }
+      };
 
       $scope.nodeChange = function (node) {
         //appState.set('layerManager', $scope.tree);
