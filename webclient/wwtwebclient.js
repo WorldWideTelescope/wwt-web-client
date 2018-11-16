@@ -3136,7 +3136,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
             var addFile = function () {
                 var addTx = store.put(file, key);
                 addTx.onsuccess = readFile;
-            }
+            };
             var readFile = function () {
                 var mediaReq = store.get(key);
                 mediaReq.onsuccess = function (e) {
@@ -3234,6 +3234,7 @@ wwt.app.factory('MediaFile', ['$q', function ($q) {
 
     return api;
 }]);
+
 wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 	function ($http, $q, $timeout, util) {
 		
@@ -3773,7 +3774,7 @@ wwt.app.factory('SearchData', [
 			        console.error(er);
 			    }
 			}
-		}
+		};
 
 		$.each(pl.get_names(), function (n, name) {
 			if (name.indexOf(' ') !== -1) {
@@ -3786,13 +3787,13 @@ wwt.app.factory('SearchData', [
 				addPlace(name, pl);
 			}
 		});
-	}
+	};
 
 	function importWtml(wtmlPath) {
-	    var deferred = $q.defer();
+	  var deferred = $q.defer();
 		
 		$.ajax({
-			url: wtmlPath+'?v=1'
+			url: wtmlPath + '?v=' + $('body').data('resVersion')
 		}).done(function() {
 			var wtml = $($.parseXML(arguments[0]));
 			wtml.find('Place').each(function(i, place) {
@@ -7955,8 +7956,7 @@ wwt.controllers.controller('OpenItemController',
 	'AppState',
 	'Places',
 	'Util',
-	'Astrometry',
-    'MediaFile',
+	'Astrometry', 'MediaFile',
 	function ($rootScope, $scope, appState, places, util, astrometry, media) {
 
 	    $rootScope.$on('openItem', function () {
@@ -8016,7 +8016,7 @@ wwt.controllers.controller('OpenItemController',
 	            $scope.openItem();
 	        });
 
-	    }
+	    };
 
 		$scope.astrometryStatusText = '';
 		$scope.astroCallback = function(data) {

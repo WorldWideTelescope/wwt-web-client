@@ -2,7 +2,7 @@
 <Folder Name="Spitzer" Group="Explorer">
   <Place Name="Sculptor Galaxy" RA="0.79283726" Dec="-25.2995642" ZoomLevel="2.95089422336" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Spitzer-ssc2013-07a1.jpg" Constellation="">
     <ForegroundImageSet>
-      <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Spitzer-ssc2013-07a1L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-37.19" Projection="Tan" FileType=".png" CenterY="-25.2995642" CenterX="11.8925589" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.73772355584">
+      <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Spitzer-ssc2013-07a1L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-37.19" Projection="Tan" FileType=".png" CenterY="-25.2995642" CenterX="11.8925589" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.73772355584">
         <Credits>NASA/JPL-Caltech</Credits>
         <CreditsUrl>http://www.spitzer.caltech.edu/images/5631-ssc2013-07a1-The-Barred-Sculptor-Galaxy</CreditsUrl>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Spitzer-ssc2013-07a1.jpg</ThumbnailUrl>
