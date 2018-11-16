@@ -123,7 +123,7 @@ wwt.controllers.controller('MainController',
           if (window.ss) {
             window.ss.canCast = Type.canCast;
           } else {
-            window.ss = {canCast: Type.canCast};
+            window.ss = { canCast: Type.canCast };
 
           }
         }
@@ -159,7 +159,12 @@ wwt.controllers.controller('MainController',
         ctl.settings.set_showConstellationBoundries(false);
 
         util.resetCamera(true);
-        $(window).on('resize', wwt.resize);
+        $(window).on('resize', function () {
+          wwt.resize();
+          $scope.$applyAsync(function () {
+            $scope.smallVP = wwt.smallVP;
+          });
+        });
         ctl.endInit();
         $rootScope.singleton = wwtlib.WWTControl.singleton;
         initContext();
@@ -168,18 +173,22 @@ wwt.controllers.controller('MainController',
         $timeout(function () {
           var hash = hashManager.getHashObject();
           $rootScope.$broadcast('hashChange', hash);
+          $scope.smallVP = wwt.smallVP;
+          if (wwt.definitelyMobile && !util.isMobile) {
+            location.href = util.mobileLink();
+          }
         }, 100);
 
         //hashChange(null, hashManager.getHashObject());
       };
 
       var hashChange = function (e, obj) {
-        if (!obj){
-          obj =hashManager.getHashObject();
+        if (!obj) {
+          obj = hashManager.getHashObject();
         }
         var goto = function () {
-          if (!obj){
-            obj =hashManager.getHashObject();
+          if (!obj) {
+            obj = hashManager.getHashObject();
           }
           console.log('goto', parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
@@ -257,11 +266,11 @@ wwt.controllers.controller('MainController',
           }
         }
         else if (obj['ra'] !== undefined) {
-          goto();
+          setTimeout(goto, 500);
         }
         try {
-          if (!obj){
-            obj =hashManager.getHashObject();
+          if (!obj) {
+            obj = hashManager.getHashObject();
           }
           if (obj['lookAt']) {
             setLookAtHash();
@@ -273,8 +282,8 @@ wwt.controllers.controller('MainController',
             }, 2000);
 
           }
-        }catch (ex){
-          setTimeout(hashChange,2000);
+        } catch (ex) {
+          setTimeout(hashChange, 2000);
           console.log(ex);
         }
 
@@ -332,7 +341,7 @@ wwt.controllers.controller('MainController',
                 }],
                 'VO Cone Search': [function () {
                   var modalScope = $rootScope.$new();
-                  modalScope.customClass='vo-cone-modal';
+                  modalScope.customClass = 'vo-cone-modal';
                   var coneSearchModal = $modal({
                     scope: modalScope,
                     templateUrl: 'views/modals/centered-modal-template.html',
@@ -431,11 +440,14 @@ wwt.controllers.controller('MainController',
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
-        if (util.getQSParam('tour')) { 
+        if (util.getQSParam('tour')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tour')));
         }
         uiLibrary.addDialogHooks();
-        wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
+        wwt.wc.add_refreshLayerManager(function () {
+          $scope.$applyAsync(function () { });
+        });
+
       };
       //#endregion
 
@@ -1075,5 +1087,6 @@ wwt.controllers.controller('MainController',
         $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 
       }
+      $scope.mobileLink = util.mobileLink();
     }
   ]);
