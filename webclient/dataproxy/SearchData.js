@@ -113,7 +113,10 @@
 			        importWtml('ESO.wtml').then(function () {
 			            console.log('eso loaded');
 			            importWtml('Chandra.wtml').then(function () {
-			                console.log('chandra loaded'); 
+                      console.log('chandra loaded');
+                      importWtml('Spitzer.wtml').then(function () {
+                        console.log('spitzer loaded');
+                      });
 			            });
 			        });
 			    });
@@ -162,7 +165,7 @@
 	    var deferred = $q.defer();
 		
 		$.ajax({
-			url: wtmlPath
+			url: wtmlPath+'?v=1'
 		}).done(function() {
 			var wtml = $($.parseXML(arguments[0]));
 			wtml.find('Place').each(function(i, place) {

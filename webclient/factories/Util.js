@@ -25,7 +25,8 @@
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
-		parseHms: parseHms
+      parseHms: parseHms,
+        mobileLink:mobileLink
 		
 };
 	var fullscreen = false;
@@ -190,7 +191,21 @@
 		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 			results = regex.exec(location.search);
 		return results == null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+    }
+
+  function mobileLink() {
+    var delim='?'
+    if (location.search.split('=').length > 1) {
+      delim = '&';
+    }
+    var url = location.href;
+
+    var bit = api.isMobile ? 0 : 1;
+    if (getQSParam('mobile')) {
+      return url.replace('mobile=' + getQSParam('mobile'), 'mobile=' + bit);
+    }
+    return location.href + delim + 'mobile=' + bit;
+  }
 
 	function getImageset(place) {
 		if (!place) {

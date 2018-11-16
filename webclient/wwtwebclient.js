@@ -2237,7 +2237,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
-		parseHms: parseHms
+      parseHms: parseHms,
+        mobileLink:mobileLink
 		
 };
 	var fullscreen = false;
@@ -2402,7 +2403,21 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 			results = regex.exec(location.search);
 		return results == null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+    }
+
+  function mobileLink() {
+    var delim='?'
+    if (location.search.split('=').length > 1) {
+      delim = '&';
+    }
+    var url = location.href;
+
+    var bit = api.isMobile ? 0 : 1;
+    if (getQSParam('mobile')) {
+      return url.replace('mobile=' + getQSParam('mobile'), 'mobile=' + bit);
+    }
+    return location.href + delim + 'mobile=' + bit;
+  }
 
 	function getImageset(place) {
 		if (!place) {
@@ -3725,7 +3740,10 @@ wwt.app.factory('SearchData', [
 			        importWtml('ESO.wtml').then(function () {
 			            console.log('eso loaded');
 			            importWtml('Chandra.wtml').then(function () {
-			                console.log('chandra loaded'); 
+                      console.log('chandra loaded');
+                      importWtml('Spitzer.wtml').then(function () {
+                        console.log('spitzer loaded');
+                      });
 			            });
 			        });
 			    });
@@ -3774,7 +3792,7 @@ wwt.app.factory('SearchData', [
 	    var deferred = $q.defer();
 		
 		$.ajax({
-			url: wtmlPath
+			url: wtmlPath+'?v=1'
 		}).done(function() {
 			var wtml = $($.parseXML(arguments[0]));
 			wtml.find('Place').each(function(i, place) {
@@ -3849,6 +3867,7 @@ wwt.app.factory('SearchData', [
 	
 	return api;
 }]);
+
 wwt.app.factory('Astrometry', [
 	'$http', '$q', '$timeout', 'Util', function ($http, $q, $timeout, util) {
 		var api = {
@@ -4334,7 +4353,7 @@ wwt.controllers.controller('MainController',
           if (window.ss) {
             window.ss.canCast = Type.canCast;
           } else {
-            window.ss = {canCast: Type.canCast};
+            window.ss = { canCast: Type.canCast };
 
           }
         }
@@ -4370,7 +4389,12 @@ wwt.controllers.controller('MainController',
         ctl.settings.set_showConstellationBoundries(false);
 
         util.resetCamera(true);
-        $(window).on('resize', wwt.resize);
+        $(window).on('resize', function () {
+          wwt.resize();
+          $scope.$applyAsync(function () {
+            $scope.smallVP = wwt.smallVP;
+          });
+        });
         ctl.endInit();
         $rootScope.singleton = wwtlib.WWTControl.singleton;
         initContext();
@@ -4379,18 +4403,22 @@ wwt.controllers.controller('MainController',
         $timeout(function () {
           var hash = hashManager.getHashObject();
           $rootScope.$broadcast('hashChange', hash);
+          $scope.smallVP = wwt.smallVP;
+          if (wwt.definitelyMobile && !util.isMobile) {
+            location.href = util.mobileLink();
+          }
         }, 100);
 
         //hashChange(null, hashManager.getHashObject());
       };
 
       var hashChange = function (e, obj) {
-        if (!obj){
-          obj =hashManager.getHashObject();
+        if (!obj) {
+          obj = hashManager.getHashObject();
         }
         var goto = function () {
-          if (!obj){
-            obj =hashManager.getHashObject();
+          if (!obj) {
+            obj = hashManager.getHashObject();
           }
           console.log('goto', parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
@@ -4468,11 +4496,11 @@ wwt.controllers.controller('MainController',
           }
         }
         else if (obj['ra'] !== undefined) {
-          goto();
+          setTimeout(goto, 500);
         }
         try {
-          if (!obj){
-            obj =hashManager.getHashObject();
+          if (!obj) {
+            obj = hashManager.getHashObject();
           }
           if (obj['lookAt']) {
             setLookAtHash();
@@ -4484,8 +4512,8 @@ wwt.controllers.controller('MainController',
             }, 2000);
 
           }
-        }catch (ex){
-          setTimeout(hashChange,2000);
+        } catch (ex) {
+          setTimeout(hashChange, 2000);
           console.log(ex);
         }
 
@@ -4543,7 +4571,7 @@ wwt.controllers.controller('MainController',
                 }],
                 'VO Cone Search': [function () {
                   var modalScope = $rootScope.$new();
-                  modalScope.customClass='vo-cone-modal';
+                  modalScope.customClass = 'vo-cone-modal';
                   var coneSearchModal = $modal({
                     scope: modalScope,
                     templateUrl: 'views/modals/centered-modal-template.html',
@@ -4642,11 +4670,14 @@ wwt.controllers.controller('MainController',
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
-        if (util.getQSParam('tour')) { 
+        if (util.getQSParam('tour')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tour')));
         }
         uiLibrary.addDialogHooks();
-        wwt.wc.add_refreshLayerManager(function () { $scope.$apply(); });
+        wwt.wc.add_refreshLayerManager(function () {
+          $scope.$applyAsync(function () { });
+        });
+
       };
       //#endregion
 
@@ -5286,6 +5317,7 @@ wwt.controllers.controller('MainController',
         $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
 
       }
+      $scope.mobileLink = util.mobileLink();
     }
   ]);
 
@@ -7128,19 +7160,23 @@ wwt.controllers.controller('CurrentTourController', [
         if (!$rootScope.loggedIn) {
           var loginModalData = $scope.$new({});
           loginModalData.canLogin = location.href.indexOf('localhost') < 0;
+
           if (appState.get('remindEditTourLogin') !== false) {
             appState.set('remindEditTourLogin', true);
+          }else{
+            return;
           }
           loginModalData.remindEditTourLogin = appState.get('remindEditTourLogin');
 
-          loginModalData.remindPrefChange = function () {
-            appState.set(!appState.get('remindEditTourLogin'));
-          }
+          loginModalData.remindPrefChange = function (checked) {
+            appState.set('remindEditTourLogin',checked);
+
+          };
 
           loginModalData.loginThenEdit = function () {
             appState.set('editTourOnLogin', tour.url);
             $rootScope.login();
-          }
+          };
 
           $modal({
             scope: loginModalData,
@@ -7150,7 +7186,6 @@ wwt.controllers.controller('CurrentTourController', [
             placement: 'center',
             backdrop: 'static'
           });
-
         }
         tour._editMode = true;
         tourEdit.pauseTour();
@@ -8476,7 +8511,7 @@ wwt.Move = function (createArgs) {
 				}
 				event.preventDefault();
 				event.stopPropagation();
-				if (event.pointerId) {
+				if (event.pointerId !== undefined) {
 					pointerId = event.pointerId;
 				}
 				
@@ -8484,7 +8519,7 @@ wwt.Move = function (createArgs) {
 
 				document.body.addEventListener(pointerUpName, unbind, false);
 				document.body.addEventListener(pointerMoveName, function (evt) {
-					if (pointerId && evt.pointerId === pointerId) {
+					if (pointerId !== undefined && evt.pointerId === pointerId) {
 						motionHandler(evt);
 					} 
 				}, false);
