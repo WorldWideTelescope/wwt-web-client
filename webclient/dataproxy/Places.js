@@ -110,7 +110,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 			}
 			root = wwt.wc.createFolder();
 		
-			root.loadFromUrl('//worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot', function () {
+			root.loadFromUrl('//worldwidetelescope.org/wwtweb/catalog.aspx?W=WCExploreRoot', function () {
 				var collection;
 				if (util.getQSParam('wtml') != null) {
 					openCollectionsFolder = wwt.wc.createFolder();
@@ -120,17 +120,17 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 						collection.get_children();
 						openCollectionsFolder.addChildFolder(collection);
 						root.addChildFolder(openCollectionsFolder);
-					    addVampFeeds();
+					    //addVampFeeds();
 						deferred.resolve(root.get_children());
 					});
 				} else if (location.href.indexOf('?image=') !== -1) {
-				    addVampFeeds();
+				    //addVampFeeds();
 					importImage(location.href.split('?image=')[1]).then(function(data) {
 						deferred.resolve(root.get_children());
 					});
 
 				} else {
-				    addVampFeeds();
+				    //addVampFeeds();
 					deferred.resolve(root.get_children());
 				}
 			});
@@ -166,7 +166,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 
 	function addVampFeeds() {
 	    var vampFolder = wwt.wc.createFolder();
-	    vampFolder.set_name('New VAMP Feeds');
+	    vampFolder.set_name('New Imagery');
 	    vampFolder.guid = '0v0';
 	    vampFolder.set_url('//worldwidetelescope.org/wwtweb/catalog.aspx?W=vampfeeds');
 	    root.addChildFolder(vampFolder);
