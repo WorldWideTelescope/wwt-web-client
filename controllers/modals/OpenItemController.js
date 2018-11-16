@@ -4,8 +4,7 @@
 	'AppState',
 	'Places',
 	'Util',
-	'Astrometry',
-    'MediaFile',
+	'Astrometry', 'MediaFile',
 	function ($rootScope, $scope, appState, places, util, astrometry, media) {
 
 	    $rootScope.$on('openItem', function () {
@@ -65,7 +64,7 @@
 	            $scope.openItem();
 	        });
 
-	    }
+	    };
 
 		$scope.astrometryStatusText = '';
 		$scope.astroCallback = function(data) {

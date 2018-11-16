@@ -146,7 +146,7 @@
 			        console.error(er);
 			    }
 			}
-		}
+		};
 
 		$.each(pl.get_names(), function (n, name) {
 			if (name.indexOf(' ') !== -1) {
@@ -159,13 +159,13 @@
 				addPlace(name, pl);
 			}
 		});
-	}
+	};
 
 	function importWtml(wtmlPath) {
-	    var deferred = $q.defer();
+	  var deferred = $q.defer();
 		
 		$.ajax({
-			url: wtmlPath+'?v=1'
+			url: wtmlPath + '?v=' + $('body').data('resVersion')
 		}).done(function() {
 			var wtml = $($.parseXML(arguments[0]));
 			wtml.find('Place').each(function(i, place) {
