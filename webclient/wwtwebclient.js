@@ -6540,7 +6540,6 @@ wwt.controllers.controller('SearchController',
 	function ($scope, $rootScope, $timeout, util, searchUtil, thumbList) {
 
 	    $scope.goto = { RA: '', Dec: '' };
-	    
 
 	    var init = function () {
 	        thumbList.init($scope, 'search');
@@ -6551,7 +6550,7 @@ wwt.controllers.controller('SearchController',
 	            $scope.SearchType = 'J2000';
 	            $('#txtSearch').focus();
 	        }, 123);
-	    }
+	    };
 
 	    $scope.clickThumb = function (item,instant) {
 	      $rootScope.instant = !!instant;
