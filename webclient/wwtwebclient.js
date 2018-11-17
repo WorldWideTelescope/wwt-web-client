@@ -1124,8 +1124,11 @@ var wwt = {
 			.width($('#WorldWideTelescopeControlHost').width());
 		$('body.desktop #WWTCanvas')
 			.height($(window).height())
-			.width($(window).width());	
-	}
+          .width($(window).width());
+      wwt.smallVP = ($(window).height() < 600 || $(window).width() < 700);
+      wwt.definitelyMobile = wwt.smallVP && ($(window).height() < 900 && $(window).width() < 600);
+  },
+    smallVP:false
 };
 
 
@@ -2021,7 +2024,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
     function clickThumb(item, scope, outParams, callback) {
       setTimeout(function(){
         $rootScope.instant = false;
-      },1000);
+      },2222);
       if (item.contextMenuEvent) {
         return outParams;
       }
@@ -4171,7 +4174,7 @@ wwt.controllers.controller('ContextPanelController',
 
 	    $scope.clickThumb = function (item,instant) {
         $rootScope.instant = !!instant;
-	        thumbList.clickThumb(item, $scope);
+	      thumbList.clickThumb(item, $scope);
 	    };
 
 	    $scope.hoverThumb = function (item) {
@@ -4357,7 +4360,7 @@ wwt.controllers.controller('MainController',
           if (window.ss) {
             window.ss.canCast = Type.canCast;
           } else {
-            window.ss = { canCast: Type.canCast };
+            window.ss = {canCast: Type.canCast};
 
           }
         }
@@ -4549,8 +4552,8 @@ wwt.controllers.controller('MainController',
                 'Getting Started (Help)': [util.nav, '/Learn/'],
                 'WorldWide Telescope Terms of Use': [util.nav, '/Terms'],
                 'About WorldWide Telescope': [util.nav, '/About']/*,
-						sep2: null,
-						'Exit': [util.nav, 'Exit'],*/
+          sep2: null,
+          'Exit': [util.nav, 'Exit'],*/
               }
             }, {
               label: 'Guided Tours',
@@ -4679,7 +4682,8 @@ wwt.controllers.controller('MainController',
         }
         uiLibrary.addDialogHooks();
         wwt.wc.add_refreshLayerManager(function () {
-          $scope.$applyAsync(function () { });
+          $scope.$applyAsync(function () {
+          });
         });
 
       };
@@ -4889,8 +4893,6 @@ wwt.controllers.controller('MainController',
           $('.finder-scope').hide();
           //$('.cross-fader').parent().toggle(imageSet!=null);
           $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
-
-
         } else if (!item.isEarth) {
           ctl.setForegroundImageByName(imageSet.get_name());
         } else {
