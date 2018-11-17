@@ -24,7 +24,8 @@
 	        $scope.$watch('lookAt', findNearbyObjects);
 	    };
 
-	    $scope.clickThumb = function (item) {
+	    $scope.clickThumb = function (item,instant) {
+        $rootScope.instant = !!instant;
 	        thumbList.clickThumb(item, $scope);
 	    };
 

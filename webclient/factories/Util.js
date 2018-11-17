@@ -25,9 +25,8 @@
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
-      parseHms: parseHms,
-        mobileLink:mobileLink
-		
+    parseHms: parseHms,
+    mobileLink:mobileLink
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {

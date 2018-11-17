@@ -2019,6 +2019,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
     }
 
     function clickThumb(item, scope, outParams, callback) {
+      setTimeout(function(){
+        $rootScope.instant = false;
+      },1000);
       if (item.contextMenuEvent) {
         return outParams;
       }
@@ -2237,9 +2240,8 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		toggleFullScreen: toggleFullScreen,
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
-      parseHms: parseHms,
-        mobileLink:mobileLink
-		
+    parseHms: parseHms,
+    mobileLink:mobileLink
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -2652,16 +2654,16 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 		return $(window).height() - (168 + $('body.desktop .context-panel').height());
 	};
 
-	$rootScope.copyLink = function (event) {
+	$rootScope.copyLink = function (event, selector) {
 	    var src = $(event.currentTarget);
-	    var input = src.prev();
+	    var input = selector ? src.parent().find(selector) : src.prev();
 	    input[0].select();
 	    document.execCommand('copy');
 	    var flyout = $('<div class=clipboard-status>Copied successfully</div>');
 	    input.parent().css('position', 'relative').append(flyout);
 	    //flyout.fadeIn(200).show();
 	    setTimeout(function () { flyout.fadeOut(1111); }, 3333);
-	}
+	};
 
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 
@@ -4167,7 +4169,8 @@ wwt.controllers.controller('ContextPanelController',
 	        $scope.$watch('lookAt', findNearbyObjects);
 	    };
 
-	    $scope.clickThumb = function (item) {
+	    $scope.clickThumb = function (item,instant) {
+        $rootScope.instant = !!instant;
 	        thumbList.clickThumb(item, $scope);
 	    };
 
@@ -4885,7 +4888,7 @@ wwt.controllers.controller('MainController',
         if (!item.isSurvey && ss.canCast(item, wwtlib.Place)) {
           $('.finder-scope').hide();
           //$('.cross-fader').parent().toggle(imageSet!=null);
-          $rootScope.singleton.gotoTarget(item, false, false, true);
+          $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
 
 
         } else if (!item.isEarth) {
@@ -4903,7 +4906,7 @@ wwt.controllers.controller('MainController',
           $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
         }
         if (!item.isSurvey) {
-          $rootScope.singleton.gotoTarget(item, false, false, true);
+          $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
         }
       };
       //#endregion
@@ -6464,9 +6467,12 @@ wwt.controllers.controller('ExploreController',
 	        thumbList.calcPageSize($scope, false);
 	    };
 	    $scope.clickThumb = function (item, folderCallback) {
+	      if (typeof folderCallback === 'boolean'){
+	        $rootScope.instant = folderCallback;
+        }
 	        var outParams = {
 	            breadCrumb: bc,
-                depth:depth,
+              depth:depth,
 	            cache: cache,
 	            openCollection: openCollection,
 	            newCollectionUrl: newCollectionUrl
@@ -6531,7 +6537,8 @@ wwt.controllers.controller('SearchController',
 	        }, 123);
 	    }
 
-	    $scope.clickThumb = function (item) {
+	    $scope.clickThumb = function (item,instant) {
+	      $rootScope.instant = !!instant;
 	        thumbList.clickThumb(item, $scope);
 	    }; 
          

@@ -87,6 +87,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
     }
 
     function clickThumb(item, scope, outParams, callback) {
+      setTimeout(function(){
+        $rootScope.instant = false;
+      },1000);
       if (item.contextMenuEvent) {
         return outParams;
       }

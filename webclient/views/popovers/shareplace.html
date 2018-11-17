@@ -11,7 +11,10 @@
 					<i class="fa fa-copy" bs-tooltip="'Copy to clipboard'"></i>
 				</span>-->
 			</div>
-			<span localize="Copy the above link to your clipboard">(Copy the above link to your clipboard)</span>
+    <a ng-click="copyLink($event, 'textarea')" style="cursor: pointer">
+      <i class="fa fa-copy"></i>
+      <span localize="Copy to clipboard">Copy the above link to your clipboard</span>
+    </a>
 
 		<p>
 			<div class="checkbox">
