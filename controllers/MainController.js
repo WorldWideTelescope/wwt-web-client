@@ -654,7 +654,7 @@ wwt.controllers.controller('MainController',
         if (!item.isSurvey && ss.canCast(item, wwtlib.Place)) {
           $('.finder-scope').hide();
           //$('.cross-fader').parent().toggle(imageSet!=null);
-          $rootScope.singleton.gotoTarget(item, false, false, true);
+          $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
 
 
         } else if (!item.isEarth) {
@@ -672,7 +672,7 @@ wwt.controllers.controller('MainController',
           $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
         }
         if (!item.isSurvey) {
-          $rootScope.singleton.gotoTarget(item, false, false, true);
+          $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
         }
       };
       //#endregion
