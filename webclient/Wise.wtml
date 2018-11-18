@@ -1,988 +1,930 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Folder Name="Wise" Group="Explorer">
-<Place Name="NGC 5907" RA="15.2649444666667" Dec="56.328889" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020g.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 5907" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020gL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="56.328889" CenterX="228.974167" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020g.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Jellyfish Nebula" RA="6.2986748" Dec="22.716667" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-044.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Jellyfish Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-044L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="22.716667" CenterX="94.480122" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits></Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-044.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Lagoon Nebula" RA="18.0550434666667" Dec="-24.231111" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-001.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Lagoon Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-001L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-24.231111" CenterX="270.825652" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-001.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Messier 81" RA="9.92888866666667" Dec="69.36667" ZoomLevel="6.25777769088614" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-002.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Messier 81" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-002L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="69.36667" CenterX="148.93333" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272154">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-002.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Zeta Ophiuchi" RA="16.6153687333333" Dec="-10.601111" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-003.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Zeta Ophiuchi" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-003L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-10.601111" CenterX="249.230531" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-003.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Messier 59" RA="12.7173483333333" Dec="11.7831805556" ZoomLevel="3.117056" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-005.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Messier 59" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-005L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-156.30919348814" Projection="Tan" FileType=".png" CenterY="11.7831805556" CenterX="190.760225" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.779264">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-005.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="WISE Final Frame" RA="1.8378484" Dec="54.270602" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-006.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="WISE Final Frame" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-006L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-207.441541" Projection="Tan" FileType=".png" CenterY="54.270602" CenterX="27.567726" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-006.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="CE Camelopardalis" RA="3.45600493333333" Dec="59.063333" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-007.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="CE Camelopardalis" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-007L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="90" Projection="Tan" FileType=".png" CenterY="59.063333" CenterX="51.840074" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-007.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Veil Nebula" RA="20.8333333333333" Dec="31.01" ZoomLevel="25.03081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-008.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Veil Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-008L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="31.01" CenterX="312.5" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25770496">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-008.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Alpha Camelopardalis" RA="4.90404507333333" Dec="66.3686201" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-010.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Alpha Camelopardalis" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-010L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-90.7" Projection="Tan" FileType=".png" CenterY="66.3686201" CenterX="73.5606761" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-010.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="TGU H942 P8" RA="3.87916365333333" Dec="53.4825577" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-011.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="TGU H942 P8" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-011L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="53.4825577" CenterX="58.1874548" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-011.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Circinus Galaxy" RA="14.2194740466667" Dec="-65.3392836" ZoomLevel="3.13460277248" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-012.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Circinus Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-012L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-65.3392836" CenterX="213.2921107" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78365069312">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-012.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 1491" RA="4.10351482" Dec="51.2563556" ZoomLevel="6.25716822016" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-018.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 1491" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-018L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.15" Projection="Tan" FileType=".png" CenterY="51.2563556" CenterX="61.5527223" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56429205504">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-018.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 2259" RA="6.65693655333333" Dec="10.8694721" ZoomLevel="6.26031443968" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-019.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 2259" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-019L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="10.8694721" CenterX="99.8540483" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56507860992">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-019.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Cygnus" RA="20.3299846560667" Dec="38.45891535" ZoomLevel="25.031081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-021.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Cygnus" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-021L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-23.851232457" Projection="Tan" FileType=".png" CenterY="38.45891535" CenterX="304.949769841" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.257770496">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-021.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="GUM 25" RA="9.01055934" Dec="-47.8528682" ZoomLevel="6.25915052032" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-023.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="GUM 25" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-023L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="34.35" Projection="Tan" FileType=".png" CenterY="-47.8528682" CenterX="135.1583901" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56478763008">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-023.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="CG4" RA="7.57369446666667" Dec="-46.9025" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-024.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="CG4" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-024L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-46.9025" CenterX="113.605417" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-024.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036B.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036BL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036B.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036C.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036CL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036C.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036D.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036DL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036D.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036E.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036EL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036E.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Cocoon Nebula" RA="21.8881558733333" Dec="47.256508" ZoomLevel="6.25745936384" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-037.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Cocoon Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-037L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-106.27" Projection="Tan" FileType=".png" CenterY="47.256508" CenterX="328.3223381" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56436484096">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-037.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-
-
-<Place Name="WISE 1828+2650" RA="18.4789436666667" Dec="27.26" ZoomLevel="1.56444442272195" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b1.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="WISE 1828+2650" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-ydwarf-b1L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="27.26" CenterX="277.184155" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680486">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b1.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="WISE 1828+2650" RA="18.4789436666667" Dec="27.26" ZoomLevel="1.56444442272195" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b2.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="WISE 1828+2650" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-ydwarf-b2L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="27.26" CenterX="277.184155" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680486">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b2.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Y dwarf" RA="0" Dec="0" ZoomLevel="0.4" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-a.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Y dwarf" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-ydwarf-aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="0" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.1">
-<Credits>NASA/JPL-Caltech/R. Hurt (SSC)</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-a.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-
-<Place Name="Pinwheel Galaxy" RA="14.0535206733333" Dec="54.3485233" ZoomLevel="3.130642432" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-025.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Pinwheel Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-025L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="42.5" Projection="Tan" FileType=".png" CenterY="54.3485233" CenterX="210.8028101" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782660608">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-025.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="2010 TK7" RA="6.24671161605135" Dec="-44.7897943899041" ZoomLevel="4.15748860586667" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-026.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="2010 TK7" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-026L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="4.0406916335953" Projection="Tan" FileType=".png" CenterY="-44.7897943899041" CenterX="93.7006742407703" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.03937215146667">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-026.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="RCW 86" RA="14.7168674216903" Dec="-62.4631333802834" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028a.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="RCW 86" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-028aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.4631333802834" CenterX="220.753011325354" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/B. Williams (NCSU)</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028a.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="RCW 86" RA="14.7168674216903" Dec="-62.4631333802834" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028b.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="RCW 86" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-028bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.4631333802834" CenterX="220.753011325354" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/B. Williams (NCSU)</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028b.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Image File" RA="18.133369" Dec="-19.687778" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-027.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Image File" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-027L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-90" Projection="Tan" FileType=".png" CenterY="-19.687778" CenterX="272.000535" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-027.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IC 4601" RA="16.34551428" Dec="-20.1264044" ZoomLevel="12.51145580544" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-030.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IC 4601" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-030L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="3.26" Projection="Tan" FileType=".png" CenterY="-20.1264044" CenterX="245.1827142" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12786395136">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-030.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IC 4592" RA="16.2668587701333" Dec="-19.695995679" ZoomLevel="25.031081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-031.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IC 4592" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-031L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="7.63" Projection="Tan" FileType=".png" CenterY="-19.695995679" CenterX="244.002881552" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.257770496">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-031.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Barnard 3" RA="3.66666666666667" Dec="31.96667" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Barnard 3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-033L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="31.96667" CenterX="55" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Barnard 3" RA="3.66666666666667" Dec="31.96667" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033b.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Barnard 3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-033bL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="31.96667" CenterX="55" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033b.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Puppis A" RA="8.37116926666667" Dec="-42.752932879" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-032.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Puppis A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-032L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-42.752932879" CenterX="125.567539" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-032.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 281" RA="0.9059865304" Dec="56.795085913" ZoomLevel="6.25817468928" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-029.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 281" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-029L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-89.76250079753" Projection="Tan" FileType=".png" CenterY="56.795085913" CenterX="13.589797956" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56454367232">
-<Credits>NASA/JPL-Caltech/UCLA
-</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-029.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Lambda Centauri Nebula" RA="11.6699656" Dec="-63.606667" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-046.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Lambda Centauri Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-046L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-63.606667" CenterX="175.049484" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-046.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Cassiopeia A" RA="23.4201272966667" Dec="59.140912964" ZoomLevel="25.02562086912" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-002.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Cassiopeia A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-002L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-89.78104190124" Projection="Tan" FileType=".png" CenterY="59.140912964" CenterX="351.30190945" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25640521728">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>//wise.ssl.berkeley.edu/gallery_CassiopeiaA.html</CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-002.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Triangulum Galaxy" RA="1.56287747333333" Dec="30.6695389" ZoomLevel="6.258294784" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-047.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Triangulum Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-047L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.53" Projection="Tan" FileType=".png" CenterY="30.6695389" CenterX="23.4431621" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.564573696">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-047.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IRAS 22298" RA="22.5134606666667" Dec="65.5943518" ZoomLevel="12.51377905664" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-034.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IRAS 22298" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-034L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-145.95" Projection="Tan" FileType=".png" CenterY="65.5943518" CenterX="337.70191" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12844476416">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-034.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="A.2.2." RA="21.1411679333333" Dec="-1.157829" ZoomLevel="4.6143685899043" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-035.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="A.2.2." BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-035L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-1.157829" CenterX="317.117519" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.15359214747607">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-035.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="LBN 113-55" RA="23.6723200666667" Dec="61.930653" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-032.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="LBN 113-55" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-032L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-224.749752" Projection="Tan" FileType=".png" CenterY="61.930653" CenterX="355.084801" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-032.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="DG 129" RA="15.9359340466667" Dec="-26.1450811" ZoomLevel="12.51036430336" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-033.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="DG 129" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-033L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="168" Projection="Tan" FileType=".png" CenterY="-26.1450811" CenterX="239.0390107" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12759107584">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-033.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Rosette Nebula" RA="6.52373609333333" Dec="4.9746608" ZoomLevel="12.51485548544" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-030.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Rosette Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-030L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="93.01" Projection="Tan" FileType=".png" CenterY="4.9746608" CenterX="97.8560414" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12871387136">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-030.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Messier 74" RA="1.6115542" Dec="15.7827803" ZoomLevel="3.12865890304" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-031.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Messier 74" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-031L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="15.7827803" CenterX="24.173313" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78216472576">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-031.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Small Magellanic Cloud" RA="0.87363744" Dec="-73.2921265" ZoomLevel="25.0347518918656" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-028.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Small Magellanic Cloud" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-028L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="24.94" Projection="Tan" FileType=".png" CenterY="-73.2921265" CenterX="13.1045616" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.2586879729664">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-028.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="SH 2-235" RA="5.66156651473333" Dec="35.593310912" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-014.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="SH 2-235" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-014L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-359.967783525" Projection="Tan" FileType=".png" CenterY="35.593310912" CenterX="84.923497721" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits></Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-014.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Omega Centauri" RA="13.4482471333333" Dec="-47.4594445" ZoomLevel="6.25777983488" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-029.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Omega Centauri" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-029L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-153.21" Projection="Tan" FileType=".png" CenterY="-47.4594445" CenterX="201.723707" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444495872">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-029.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Vela A Region" RA="9.24445434" Dec="-47.6880084" ZoomLevel="6.25491836928" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-026.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Vela A Region" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-026L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-144.68" Projection="Tan" FileType=".png" CenterY="-47.6880084" CenterX="138.6668151" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56372959232">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-026.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="AFGL 490" RA="3.46053074" Dec="58.7848445" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-027.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="AFGL 490" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-027L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="72" Projection="Tan" FileType=".png" CenterY="58.7848445" CenterX="51.9079611" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-027.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Tycho's Supernova" RA="0.432226266666667" Dec="64.753869" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-024.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Tycho's Supernova" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-024L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-222.602802" Projection="Tan" FileType=".png" CenterY="64.753869" CenterX="6.483394" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-024.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Pleiades" RA="3.76513926666667" Dec="24.170254" ZoomLevel="12.4700441360466" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-025.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Pleiades" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-025L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-180" Projection="Tan" FileType=".png" CenterY="24.170254" CenterX="56.477089" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.11751103401165">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-025.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Circinus Molecular Cloud" RA="15.1523972" Dec="-62.940694" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-039.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Circinus Molecular Cloud" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-039L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.940694" CenterX="227.285958" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>//wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-039.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Southern Pinwheel Galaxy" RA="13.61690108" Dec="-29.8655453" ZoomLevel="3.12523350016" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-022.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Southern Pinwheel Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-022L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="22.28" Projection="Tan" FileType=".png" CenterY="-29.8655453" CenterX="204.2535162" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78130837504">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-022.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Tarantula Nebula" RA="5.66566847333333" Dec="-69.0757604" ZoomLevel="6.26220597248" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-023.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Tarantula Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-023L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="37.77" Projection="Tan" FileType=".png" CenterY="-69.0757604" CenterX="84.9850271" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56555149312">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-023.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Comet 65P/Gunn" RA="20.5584834666667" Dec="-24.911567" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-020.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Comet 65P/Gunn" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-020L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-14.566644" Projection="Tan" FileType=".png" CenterY="-24.911567" CenterX="308.377252" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-020.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="v385 Car" RA="11.1046347733333" Dec="-65.5021662" ZoomLevel="12.51723313152" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-021.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="v385 Car" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-021L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-127.24" Projection="Tan" FileType=".png" CenterY="-65.5021662" CenterX="166.5695216" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12930828288">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-021.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Heart and Soul Nebula" RA="2.69812933333333" Dec="61.16347" ZoomLevel="24.8490657806385" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-018.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Heart and Soul Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-018L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="61.16347" CenterX="40.47194" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.21226644515963">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-018.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 6744" RA="19.1629095733333" Dec="-63.8574312" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-019.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 6744" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-019L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-188.995949" Projection="Tan" FileType=".png" CenterY="-63.8574312" CenterX="287.4436436" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-019.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 1893" RA="5.38089467333333" Dec="33.4935159" ZoomLevel="6.26202591232" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-016.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 1893" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-016L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="176.07" Projection="Tan" FileType=".png" CenterY="33.4935159" CenterX="80.7134201" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56550647808">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-016.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Seagull Nebula" RA="7.067881" Dec="-11.0015147" ZoomLevel="12.5244932096" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-017.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Seagull Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-017L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="277.36" Projection="Tan" FileType=".png" CenterY="-11.0015147" CenterX="106.018215" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.1311233024">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-017.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Thor's Helmet" RA="7.30936882" Dec="-13.2255641" ZoomLevel="3.12797945856" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-014.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Thor's Helmet" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-014L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-80.81" Projection="Tan" FileType=".png" CenterY="-13.2255641" CenterX="109.6405323" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78199486464">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-014.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="California Nebula" RA="4.01448433333333" Dec="36.462685" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-015.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="California Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-015L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-191.848172" Projection="Tan" FileType=".png" CenterY="36.462685" CenterX="60.217265" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-015.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IC 1795" RA="2.39581" Dec="61.209793" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-012.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IC 1795" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-012L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-206.563778" Projection="Tan" FileType=".png" CenterY="61.209793" CenterX="35.93715" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-012.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 6723" RA="18.9933157333333" Dec="-37.011655" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-013.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 6723" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-013L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-96.048305" Projection="Tan" FileType=".png" CenterY="-37.011655" CenterX="284.899736" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-013.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="W5" RA="2.87091900666667" Dec="60.3979115" ZoomLevel="7.28069423104" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-010.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="W5" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-010L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-112.78" Projection="Tan" FileType=".png" CenterY="60.3979115" CenterX="43.0637851" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.82017355776">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-010.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IC 342" RA="3.78013886666667" Dec="68.096111" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-011.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IC 342" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-011L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-199.5" Projection="Tan" FileType=".png" CenterY="68.096111" CenterX="56.702083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-011.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="M3" RA="13.69576272" Dec="27.786068" ZoomLevel="6.24527777792" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-009.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="M3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-009L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-64.02" Projection="Tan" FileType=".png" CenterY="27.786068" CenterX="205.4364408" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56131944448">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-009.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="AFGL 3193" RA="0.0158654666666667" Dec="67.3128741" ZoomLevel="3.13182461952" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-008.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="AFGL 3193" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-008L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="131.45" Projection="Tan" FileType=".png" CenterY="67.3128741" CenterX="0.237982" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78295615488">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-008.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Maffei 1" RA="2.58431728666667" Dec="60.2065345" ZoomLevel="12.5153624064" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-005.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Maffei 1" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-005L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="65.16" Projection="Tan" FileType=".png" CenterY="60.2065345" CenterX="38.7647593" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.1288406016">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-005.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 7380" RA="22.7898454733333" Dec="58.1078422" ZoomLevel="6.26448719872" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-006.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 7380" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-006L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="44.51" Projection="Tan" FileType=".png" CenterY="58.1078422" CenterX="341.8476821" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56612179968">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-006.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 3603" RA="11.2524666666667" Dec="-61.2713" ZoomLevel="12.2880001068122" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004b.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 3603" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-61.2713" CenterX="168.787" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.07200002670305">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004b.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Andromeda Galaxy" RA="0.712305533333333" Dec="41.269167" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c2.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Andromeda Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004c2L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-207" Projection="Tan" FileType=".png" CenterY="41.269167" CenterX="10.684583" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c2.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Andromeda Galaxy" RA="0.712305533333333" Dec="41.269167" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c1.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Andromeda Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004c1L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-207" Projection="Tan" FileType=".png" CenterY="41.269167" CenterX="10.684583" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c1.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Andromeda Galaxy" RA="0.712305533333333" Dec="41.269167" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Andromeda Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004cL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-207" Projection="Tan" FileType=".png" CenterY="41.269167" CenterX="10.684583" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Comet Siding Spring" RA="14.0682026381651" Dec="29.4066230437515" ZoomLevel="0.4" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004a.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Comet Siding Spring" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="29.4066230437515" CenterX="211.023039572476" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.1">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004a.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Fornax Cluster" RA="3.64141113333333" Dec="-35.45075" ZoomLevel="12.2880001068122" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004d.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Fornax Cluster" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004dL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-35.45075" CenterX="54.621167" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.07200002670305">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004d.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="WISE NEO" RA="12.7288059448933" Dec="-26.0704305833866" ZoomLevel="3.13344" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-002.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="WISE NEO" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-002L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="24.378938848563" Projection="Tan" FileType=".png" CenterY="-26.0704305833866" CenterX="190.9320891734" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78336">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-002.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="P/2010 B2" RA="0" Dec="0" ZoomLevel="0.4" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-003.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="P/2010 B2" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-003L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="0" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.1">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-003.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="V482 Car" RA="9.51726381676153" Dec="-58.5161846862573" ZoomLevel="3.124337778688" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-001.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="V482 Car" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-001L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="49.15241424139" Projection="Tan" FileType=".png" CenterY="-58.5161846862573" CenterX="142.758957251423" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.781084444671999">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-001.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 1514" RA="4.15471946666667" Dec="30.775956" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 1514" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-041L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="30.775956" CenterX="62.320792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>//wise.ssl.berkeley.edu</CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Flaming Star Nebula" RA="5.2536976" Dec="34.136889" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-042.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Flaming Star Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-042L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-184.518448" Projection="Tan" FileType=".png" CenterY="34.136889" CenterX="78.805464" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-042.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 2174" RA="6.16471154" Dec="20.7673331" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-017.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 2174" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-017L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-0.1566" Projection="Tan" FileType=".png" CenterY="20.7673331" CenterX="92.4706731" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-017.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IRAS12116-6001" RA="12.2916837333333" Dec="-60.198492" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-038.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IRAS12116-6001" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-038L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-140.679607" Projection="Tan" FileType=".png" CenterY="-60.198492" CenterX="184.375256" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-038.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 1514" RA="4.15471946666667" Dec="30.775956" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041b.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 1514" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-041bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="30.775956" CenterX="62.320792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>Caltech/Palomar</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041b.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="WISEPC J045853.90+643451.9" RA="4.98170434666667" Dec="64.5814312" ZoomLevel="1.56547334144" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-040.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="WISEPC J045853.90+643451.9" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-040L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="172" Projection="Tan" FileType=".png" CenterY="64.5814312" CenterX="74.7255652" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.39136833536">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>//wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-040.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Flame Nebula" RA="5.69614107333333" Dec="-1.9528598" ZoomLevel="12.51791208448" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-043.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Flame Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-043L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-1.9528598" CenterX="85.4421161" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12947802112">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-043.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Whirlpool Nebula" RA="13.4988055333333" Dec="47.231389" ZoomLevel="1.56444442272195" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045E.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Whirlpool Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-045EL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="35.7" Projection="Tan" FileType=".png" CenterY="47.231389" CenterX="202.482083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680486">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045E.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Messier 60" RA="12.7278140266667" Dec="11.5542836" ZoomLevel="3.12887762944" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045D.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Messier 60" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-045DL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-156.35" Projection="Tan" FileType=".png" CenterY="11.5542836" CenterX="190.9172104" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78221940736">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045D.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Sombrero Galaxy" RA="12.6664932733333" Dec="-11.6232199" ZoomLevel="3.12519532544" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045C.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Sombrero Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-045CL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-11.6232199" CenterX="189.9973991" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78129883136">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045C.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 300" RA="0.9144933" Dec="-37.6817331" ZoomLevel="3.12948867072" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045B.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 300" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-045BL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-37.6817331" CenterX="13.7173995" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78237216768">
-<Credits>NASA/JPL-Caltech/WISE Team</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045B.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Rho Ophiuchus cloud complex" RA="16.4213962678" Dec="-24.246930934" ZoomLevel="25.031081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-013.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Rho Ophiuchus cloud complex" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-013L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.129662388" Projection="Tan" FileType=".png" CenterY="-24.246930934" CenterX="246.320944017" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.257770496">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-013.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<!--<Place Name="Milky Way" RA="24" Dec="0" ZoomLevel="838.8608" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Milky Way" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-016L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="360" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="209.7152">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>-->
-<Place Name="Lambda Orionis" RA="5.58563266666667" Dec="83.78449" ZoomLevel="-48.9167056440503" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-015.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Lambda Orionis" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-015L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-20" Projection="Tan" FileType=".png" CenterY="83.78449" CenterX="83.78449" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="-12.2291764110126">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-015.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IC 1396" RA="21.6224494497333" Dec="57.320779371" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-022.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IC 1396" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-022L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-317.189031419" Projection="Tan" FileType=".png" CenterY="57.320779371" CenterX="324.336741746" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-022.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="IC 342" RA="3.78013886666667" Dec="68.096111" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020h.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="IC 342" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020hL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-199.5" Projection="Tan" FileType=".png" CenterY="68.096111" CenterX="56.702083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020h.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 6822" RA="19.7490626666667" Dec="-14.78929" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020i.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 6822" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020iL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-14.78929" CenterX="296.23594" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020i.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="LBN 211.91-01.37" RA="6.75632806666667" Dec="0" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-009.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="LBN 211.91-01.37" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-009L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="101.344921" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-009.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Whirlpool Galaxy" RA="13.4988055333333" Dec="47.231389" ZoomLevel="1.56444442272154" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020a.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Whirlpool Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="35.7" Projection="Tan" FileType=".png" CenterY="47.231389" CenterX="202.482083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020a.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Messier 74" RA="1.6116028" Dec="15.783472" ZoomLevel="1.56444442272154" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020b.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Messier 74" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020bL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="15.783472" CenterX="24.174042" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020b.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Messier 81" RA="9.92588886666667" Dec="69.065278" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020c.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Messier 81" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020cL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="69.065278" CenterX="148.888333" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020c.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Southern Pinwheel Galaxy" RA="13.6169305333333" Dec="-29.865417" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020d.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Southern Pinwheel Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020dL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-29.865417" CenterX="204.253958" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020d.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 1398" RA="3.647792" Dec="-26.3375" ZoomLevel="1.56444442272154" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020e.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 1398" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020eL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-144.3" Projection="Tan" FileType=".png" CenterY="-26.3375" CenterX="54.71688" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680384">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020e.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="NGC 2403" RA="7.6142778" Dec="65.6025" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020f.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="NGC 2403" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020fL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-166.5" Projection="Tan" FileType=".png" CenterY="65.6025" CenterX="114.214167" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020f.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="WISE J18103305" RA="18.14814638" Dec="-33.2974232" ZoomLevel="6.25872224256" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-003.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="WISE J18103305" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-003L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.01" Projection="Tan" FileType=".png" CenterY="-33.2974232" CenterX="272.2221957" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56468056064">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>//wise.ssl.berkeley.edu/gallery_dusty_star.html</CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-003.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Flame Nebula" RA="5.69519466666667" Dec="-1.91222" ZoomLevel="18.204459008" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-004.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Flame Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-004L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-1.91222" CenterX="85.42792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.551114752">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl>//wise.ssl.berkeley.edu/gallery_FlameNebula2.html</CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-004.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Orion Nebula" RA="5.58813866666667" Dec="-5.39111" ZoomLevel="18.204459008" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-001.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Orion Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2013-001L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-5.39111" CenterX="83.82208" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.551114752">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-001.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="1998 KN3" RA="5.35061048666667" Dec="8.3168695" ZoomLevel="3.08567539712" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-002.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="1998 KN3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2013-002L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="176.49" Projection="Tan" FileType=".png" CenterY="8.3168695" CenterX="80.2591573" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.77141884928">
-<Credits>NASA/JPL-Caltech</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-002.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
-<Place Name="Witch Head Nebula" RA="5.08206733333333" Dec="-7.26563" ZoomLevel="25.0311107635511" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-003.jpg" Constellation="">
- <ForegroundImageSet>
- <ImageSet DataSetType="Sky" Name="Witch Head Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2013-003L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-180" Projection="Tan" FileType=".png" CenterY="-7.26563" CenterX="76.23101" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25777769088778">
-<Credits>NASA/JPL-Caltech/UCLA</Credits>
-<CreditsUrl></CreditsUrl>
-<ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-003.jpg</ThumbnailUrl>
-</ImageSet>
-</ForegroundImageSet>
-</Place>
+  <Place Name="NGC 5907" RA="15.2649444666667" Dec="56.328889" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020g.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 5907" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020gL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="56.328889" CenterX="228.974167" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
+        <Credits>NASA/JPL-Caltech/UCLA; This galaxy's face is angled about 90 degrees from our view, so it appears edge-on and thin as a splinter, or knife. It was disc...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020g.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Jellyfish Nebula" RA="6.2986748" Dec="22.716667" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-044.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Jellyfish Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-044L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="22.716667" CenterX="94.480122" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>Spitzer Space Telescope; This oddly colorful nebula is the supernova remnant IC 443 as seen by NASAs Wide-field Infrared Survey Explorer, or WISE. Also k...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-044.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Lagoon Nebula" RA="18.0550434666667" Dec="-24.231111" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-001.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Lagoon Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-001L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-24.231111" CenterX="270.825652" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This colorful picture is a mosaic of the Lagoon nebula taken by NASAs Wide-field Infrared Survey Explorer, or WISE. Normally, yo...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-001.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Messier 81" RA="9.92888866666667" Dec="69.36667" ZoomLevel="6.25777769088614" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-002.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Messier 81" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-002L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="69.36667" CenterX="148.93333" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272154">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from NASAs Wide-Field Infrared Survey Explorer, or WISE, features two stunning galaxies engaged in an intergalactic d...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-002.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Zeta Ophiuchi" RA="16.6153687333333" Dec="-10.601111" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-003.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Zeta Ophiuchi" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-003L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-10.601111" CenterX="249.230531" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; The blue star near the center of this image is Zeta Ophiuchi. When seen in visible light it appears as a relatively dim red star...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-003.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Messier 59" RA="12.7173483333333" Dec="11.7831805556" ZoomLevel="3.117056" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-005.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Messier 59" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-005L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-156.30919348814" Projection="Tan" FileType=".png" CenterY="11.7831805556" CenterX="190.760225" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.779264">
+        <Credits>NASA/JPL-Caltech/WISE Team; This image from NASA's Wide-field Infrared Survey Explorer, or WISE, shows four galaxies in the Virgo cluster: Messier 59, Messi...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-005.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="WISE Final Frame" RA="1.8378484" Dec="54.270602" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-006.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="WISE Final Frame" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-006L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-207.441541" Projection="Tan" FileType=".png" CenterY="54.270602" CenterX="27.567726" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
+        <Credits>NASA/JPL-Caltech/UCLA; On the morning of February 1st, 2011, NASAs Wide-field Infrared Survey Explorer, or WISE, took its last snapshot of the sky. Thi...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-006.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="CE Camelopardalis" RA="3.45600493333333" Dec="59.063333" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-007.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="CE Camelopardalis" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-007L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="90" Projection="Tan" FileType=".png" CenterY="59.063333" CenterX="51.840074" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; NASA's Wide-field Infrared Survey Explorer, or WISE, captured this colorful image of the nebula BFS 29 surrounding the star CE-C...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-007.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Veil Nebula" RA="20.8333333333333" Dec="31.01" ZoomLevel="25.03081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-008.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Veil Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-008L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="31.01" CenterX="312.5" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25770496">
+        <Credits>NASA/JPL-Caltech/UCLA; This large mosaic image from NASAs Wide-field Infrared Survey Explorer, or WISE, features the wreckage of an exploded star, as w...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-008.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Alpha Camelopardalis" RA="4.90404507333333" Dec="66.3686201" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-010.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Alpha Camelopardalis" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-010L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-90.7" Projection="Tan" FileType=".png" CenterY="66.3686201" CenterX="73.5606761" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; Just as some drivers obey the speed limit while others treat every road as if it were the autobahn, some stars move through spac...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-010.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="TGU H942 P8" RA="3.87916365333333" Dec="53.4825577" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-011.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="TGU H942 P8" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-011L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="53.4825577" CenterX="58.1874548" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>NASA/JPL-Caltech/UCLA; Many consider the shamrock to be a symbol of rebirth and life, making it a fitting symbol for St. Patricks Day, which happens to...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-011.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Circinus Galaxy" RA="14.2194740466667" Dec="-65.3392836" ZoomLevel="3.13460277248" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-012.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Circinus Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-012L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-65.3392836" CenterX="213.2921107" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78365069312">
+        <Credits>NASA/JPL-Caltech/UCLA; Theres something special going on in the nearby Circinus galaxy, as revealed by this image from NASA's Wide-field Infrared Surve...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-012.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 1491" RA="4.10351482" Dec="51.2563556" ZoomLevel="6.25716822016" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-018.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1491" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-018L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.15" Projection="Tan" FileType=".png" CenterY="51.2563556" CenterX="61.5527223" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56429205504">
+        <Credits>NASA/JPL-Caltech/UCLA; This latest image from NASAs Wide-field Infrared Survey Explorer, or WISE, shows three different nebulae located in the constell...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-018.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 2259" RA="6.65693655333333" Dec="10.8694721" ZoomLevel="6.26031443968" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-019.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 2259" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-019L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="10.8694721" CenterX="99.8540483" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56507860992">
+        <Credits>NASA/JPL-Caltech/UCLA; Star clusters such as the Pleiades are often considered some of the most beautiful objects in the sky. Yet in this image taken b...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-019.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Cygnus" RA="20.3299846560667" Dec="38.45891535" ZoomLevel="25.031081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-021.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Cygnus" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-021L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-23.851232457" Projection="Tan" FileType=".png" CenterY="38.45891535" CenterX="304.949769841" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.257770496">
+        <Credits>NASA/JPL-Caltech/UCLA; NASAs Wide-field Infrared Survey Explorer, or WISE, captured this image of a huge complex of star-forming clouds and stellar clu...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-021.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="GUM 25" RA="9.01055934" Dec="-47.8528682" ZoomLevel="6.25915052032" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-023.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="GUM 25" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-023L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="34.35" Projection="Tan" FileType=".png" CenterY="-47.8528682" CenterX="135.1583901" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56478763008">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from NASAs Wide-field Infrared Survey Explorer, or WISE, highlights several star-forming regions. There are five dist...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-023.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="CG4" RA="7.57369446666667" Dec="-46.9025" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-024.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="CG4" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-024L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-46.9025" CenterX="113.605417" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; Many people enjoy the summer pastime of imagining pictures in clouds in the sky. The same can be done with clouds in the Univers...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-024.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036B.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036BL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
+        <Credits>NASA/JPL-Caltech/UCLA; The Sculptor galaxy is shown in different infrared hues, in this new mosaic from NASA's Wide-field Infrared Survey Explorer, or ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036B.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036C.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036CL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from NASA's Wide-field Infrared Survey Explorer, or WISE, was taken with the two shortest-wavelength detectors (3.4 a...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036C.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036D.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036DL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
+        <Credits>NASA/JPL-Caltech/UCLA; This image of the Sculptor Galaxy from NASA's Wide-field Infrared Survey Explorer, or WISE, reveals the galaxy's emerging young ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036D.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Sculptor Galaxy" RA="0.79267574" Dec="-25.2890457" ZoomLevel="1.5644444225536" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036E.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Sculptor Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-036EL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="-26.26356316" Projection="Tan" FileType=".png" CenterY="-25.2890457" CenterX="11.8901361" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.3911111056384">
+        <Credits>NASA/JPL-Caltech/UCLA; This image of the Sculptor Galaxy from NASA's Wide-field Infrared Survey Explorer, or WISE, shows the galaxy's active side. Infa...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-036E.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Cocoon Nebula" RA="21.8881558733333" Dec="47.256508" ZoomLevel="6.25745936384" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-037.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Cocoon Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-037L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-106.27" Projection="Tan" FileType=".png" CenterY="47.256508" CenterX="328.3223381" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56436484096">
+        <Credits>NASA/JPL-Caltech/UCLA; The aptly named Cocoon nebula is featured in this image from NASAs Wide-field Infrared Survey Explorer, or WISE. This cloud of d...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-037.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="WISE 1828+2650" RA="18.4789436666667" Dec="27.26" ZoomLevel="1.56444442272195" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b1.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="WISE 1828+2650" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-ydwarf-b1L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="27.26" CenterX="277.184155" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680486">
+        <Credits>NASA/JPL-Caltech/UCLA; NASA's Wide-field Infrared Survey Explorer, or WISE, has uncovered the coldest brown dwarf known so far (green dot in very cente...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b1.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="WISE 1828+2650" RA="18.4789436666667" Dec="27.26" ZoomLevel="1.56444442272195" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b2.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="WISE 1828+2650" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-ydwarf-b2L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="27.26" CenterX="277.184155" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680486">
+        <Credits>NASA/JPL-Caltech/UCLA; NASA's Wide-field Infrared Survey Explorer, or WISE, has uncovered the coldest brown dwarf known so far (green dot in very cente...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-ydwarf-b2.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Pinwheel Galaxy" RA="14.0535206733333" Dec="54.3485233" ZoomLevel="3.130642432" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-025.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Pinwheel Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-025L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="42.5" Projection="Tan" FileType=".png" CenterY="54.3485233" CenterX="210.8028101" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782660608">
+        <Credits>NASA/JPL-Caltech/UCLA; A large spiral galaxy dominates this view from NASA’s Wide-field Infrared Survey Explorer, or WISE. The galaxy, often called the...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-025.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="2010 TK7" RA="6.24671161605135" Dec="-44.7897943899041" ZoomLevel="4.15748860586667" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-026.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="2010 TK7" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-026L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="4.0406916335953" Projection="Tan" FileType=".png" CenterY="-44.7897943899041" CenterX="93.7006742407703" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.03937215146667">
+        <Credits>NASA/JPL-Caltech/UCLA; Asteroid 2010 TK7 is circled in green, in this single frame taken by NASA's Wide-field Infrared Survey Explorer, or WISE. The ma...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-026.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="RCW 86" RA="14.7168674216903" Dec="-62.4631333802834" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="RCW 86" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-028aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.4631333802834" CenterX="220.753011325354" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/B. Williams (NCSU); This image combines data from four different space telescopes to create a multi-wavelength view of all that remains of the oldes...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="RCW 86" RA="14.7168674216903" Dec="-62.4631333802834" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="RCW 86" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-028bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.4631333802834" CenterX="220.753011325354" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/B. Williams (NC; This image combines data from four different space telescopes to create a multi-wavelength view of all that remains of the oldes...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-028b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Image File" RA="18.133369" Dec="-19.687778" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-027.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Image File" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-027L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-90" Projection="Tan" FileType=".png" CenterY="-19.687778" CenterX="272.000535" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; Typically if an astronomer wants to look into or through a thick dark cloud in space, they will choose to look in infrared light...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-027.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IC 4601" RA="16.34551428" Dec="-20.1264044" ZoomLevel="12.51145580544" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-030.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IC 4601" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-030L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="3.26" Projection="Tan" FileType=".png" CenterY="-20.1264044" CenterX="245.1827142" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12786395136">
+        <Credits>NASA/JPL-Caltech/UCLA; Between the claws of the dreaded scorpion imagined by the ancient Greeks lies this giant dust cloud, imaged by the Wide-field In...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-030.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IC 4592" RA="16.2668587701333" Dec="-19.695995679" ZoomLevel="25.031081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-031.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IC 4592" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-031L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="7.63" Projection="Tan" FileType=".png" CenterY="-19.695995679" CenterX="244.002881552" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.257770496">
+        <Credits>NASA/JPL-Caltech/UCLA; No, it’s not a gang of intergalactic mobsters from the famous Star Wars movies. Jabbah is the name of the bright star right of c...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-031.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Milky Way" RA="23.7245763686667" Dec="61.82043152" ZoomLevel="125.1555540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-001.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Milky Way" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-001L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-15" Projection="Tan" FileType=".png" CenterY="61.82043152" CenterX="355.86864553" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="31.2888885248">
+        <Credits>NASA/JPL-Caltech/UCLA; This enormous section of the Milky Way Galaxy is a mosaic of images from NASA’s Wide-field Infrared Survey Explorer, or WISE. Th...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-001.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Barnard 3" RA="3.66666666666667" Dec="31.96667" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Barnard 3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-033L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="31.96667" CenterX="55" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>NASA/JPL-Caltech/UCLA; In keeping with the spirit of the holidays, NASA’s Wide-field Infrared Survey Explorer (WISE) mission presents the “Wreath Nebul...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Barnard 3" RA="3.66666666666667" Dec="31.96667" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Barnard 3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-033bL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="31.96667" CenterX="55" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>NASA/JPL-Caltech/UCLA; In keeping with the spirit of the holidays, NASA’s Wide-field Infrared Survey Explorer (WISE) mission presents the “Wreath Nebul...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-033b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Puppis A" RA="8.37116926666667" Dec="-42.752932879" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-032.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Puppis A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-032L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-42.752932879" CenterX="125.567539" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>NASA/JPL-Caltech/UCLA; About 3,700 years ago, people on Earth would have seen a brand-new bright star in the sky. As it slowly dimmed out of sight, it ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-032.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 281" RA="0.9059865304" Dec="56.795085913" ZoomLevel="6.25817468928" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-029.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 281" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-029L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-89.76250079753" Projection="Tan" FileType=".png" CenterY="56.795085913" CenterX="13.589797956" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56454367232">
+        <Credits>NASA/JPL-Caltech/UCLA&#xD;; In visible light, the star-forming cloud catalogued as NGC 281 in the constellation of Cassiopeia appears to be chomping through...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-029.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Lambda Centauri Nebula" RA="11.6699656" Dec="-63.606667" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-046.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Lambda Centauri Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-046L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-63.606667" CenterX="175.049484" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from the Wide-field Infrared Survey Explorer, or WISE, is an infrared view of a star forming cloud in our Galaxy call...</Credits>
+        <CreditsUrl>http://www.spitzer.caltech.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-046.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Cassiopeia A" RA="23.4201272966667" Dec="59.140912964" ZoomLevel="25.02562086912" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-002.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Cassiopeia A" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-002L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-89.78104190124" Projection="Tan" FileType=".png" CenterY="59.140912964" CenterX="351.30190945" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25640521728">
+        <Credits>NASA/JPL-Caltech/UCLA; Over 11,000 years ago, a massive, supergiant star in our Galaxy came to the end of its life. The star’s core collapsed to form a...</Credits>
+        <CreditsUrl>http://wise.ssl.berkeley.edu/gallery_CassiopeiaA.html</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-002.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Triangulum Galaxy" RA="1.56287747333333" Dec="30.6695389" ZoomLevel="6.258294784" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-047.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Triangulum Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-047L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.53" Projection="Tan" FileType=".png" CenterY="30.6695389" CenterX="23.4431621" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.564573696">
+        <Credits>NASA/JPL-Caltech/UCLA; This image captured by NASA’s Wide-field Infrared Survey Explorer, or WISE, shows of one of our closest neighboring galaxies, Me...</Credits>
+        <CreditsUrl>http://www.spitzer.caltech.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-047.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IRAS 22298" RA="22.5134606666667" Dec="65.5943518" ZoomLevel="12.51377905664" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-034.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IRAS 22298" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-034L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-145.95" Projection="Tan" FileType=".png" CenterY="65.5943518" CenterX="337.70191" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12844476416">
+        <Credits>NASA/JPL-Caltech/UCLA; NASA’s Wide-field Infrared Survey Explorer, or WISE, captured this image of a hidden star-forming cloud complex of dust and gas ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-034.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Comet 103P/Hartley 2" RA="21.1411679333333" Dec="-1.157829" ZoomLevel="4.6143685899043" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-035.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Comet 103P/Hartley 2" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-035L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-1.157829" CenterX="317.117519" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.15359214747607">
+        <Credits>NASA/JPL-Caltech/UCLA; This visitor from deep space, seen here by NASA's Wide-field Infrared Survey Explorer, or WISE, is comet Hartley 2 -- the destin...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-035.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="LBN 113-55" RA="23.6723200666667" Dec="61.930653" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-032.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="LBN 113-55" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-032L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-224.749752" Projection="Tan" FileType=".png" CenterY="61.930653" CenterX="355.084801" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; Nebulae are enormous clouds of dust and gas occupying the space between the stars. Some have pretty names to match their good lo...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-032.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="DG 129" RA="15.9359340466667" Dec="-26.1450811" ZoomLevel="12.51036430336" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-033.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="DG 129" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-033L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="168" Projection="Tan" FileType=".png" CenterY="-26.1450811" CenterX="239.0390107" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12759107584">
+        <Credits>NASA/JPL-Caltech/UCLA; Gripped in the claw of the constellation Scorpius, sits the reflection nebula DG 129, a cloud of gas and dust that reflects ligh...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-033.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Rosette Nebula" RA="6.52373609333333" Dec="4.9746608" ZoomLevel="12.51485548544" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-030.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Rosette Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-030L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="93.01" Projection="Tan" FileType=".png" CenterY="4.9746608" CenterX="97.8560414" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12871387136">
+        <Credits>NASA/JPL-Caltech/UCLA; Unicorns and roses are usually the stuff of fairy tales, but a new cosmic image taken by NASA’s Wide-field Infrared Explorer (WI...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-030.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Small Magellanic Cloud" RA="0.87363744" Dec="-73.2921265" ZoomLevel="25.0347518918656" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-028.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Small Magellanic Cloud" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-028L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="24.94" Projection="Tan" FileType=".png" CenterY="-73.2921265" CenterX="13.1045616" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.2586879729664">
+        <Credits>NASA/JPL-Caltech/UCLA; This image captured by NASA’s Wide-field Infrared Survey Explorer (WISE) highlights the Small Magellanic Cloud.  Also known as N...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-028.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="SH 2-235" RA="5.66156651473333" Dec="35.593310912" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-014.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="SH 2-235" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-014L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-359.967783525" Projection="Tan" FileType=".png" CenterY="35.593310912" CenterX="84.923497721" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>Spitzer Science Center; In the Perseus spiral arm of the Milky Way Galaxy, opposite the galactic center, lies the nebula SH 2-235. As seen in visible li...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-014.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Omega Centauri" RA="13.4482471333333" Dec="-47.4594445" ZoomLevel="6.25777983488" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-029.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Omega Centauri" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-029L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-153.21" Projection="Tan" FileType=".png" CenterY="-47.4594445" CenterX="201.723707" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444495872">
+        <Credits>NASA/JPL-Caltech/UCLA; NASA’s Wide-field Infrared Survey Explorer, or WISE, has captured a favorite observing target of amateur astronomers -- Omega Ce...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-029.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Vela A Region" RA="9.24445434" Dec="-47.6880084" ZoomLevel="6.25491836928" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-026.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Vela A Region" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-026L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-144.68" Projection="Tan" FileType=".png" CenterY="-47.6880084" CenterX="138.6668151" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56372959232">
+        <Credits>NASA/JPL-Caltech/UCLA; New stars are forming inside this giant cloud of dust and gas as seen in infrared light by NASA’s Wide-field Infrared Survey Exp...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-026.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="AFGL 490" RA="3.46053074" Dec="58.7848445" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-027.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="AFGL 490" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-027L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="72" Projection="Tan" FileType=".png" CenterY="58.7848445" CenterX="51.9079611" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; The Wide-field Infrared Survey Explorer, or WISE, has seen a cluster of newborn stars enclosed in a cocoon of dust and gas in th...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-027.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Tycho's Supernova" RA="0.432226266666667" Dec="64.753869" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-024.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Tycho's Supernova" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-024L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-222.602802" Projection="Tan" FileType=".png" CenterY="64.753869" CenterX="6.483394" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from NASA's Wide-field Infrared Survey Explorer (WISE) takes in several interesting objects in the constellation Cass...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-024.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Pleiades" RA="3.76513926666667" Dec="24.170254" ZoomLevel="12.4700441360466" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-025.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Pleiades" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-025L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-180" Projection="Tan" FileType=".png" CenterY="24.170254" CenterX="56.477089" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.11751103401165">
+        <Credits>NASA/JPL-Caltech/UCLA; This image shows the famous Pleiades cluster of stars as seen through the eyes of WISE, or NASA's Wide-field Infrared Survey Exp...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-025.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Circinus Molecular Cloud" RA="15.1523972" Dec="-62.940694" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-039.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Circinus Molecular Cloud" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-039L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-62.940694" CenterX="227.285958" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
+        <Credits>NASA/JPL-Caltech/UCLA; The Wide-Field Infrared Survey Explorer, or WISE, has uncovered a striking population of young stellar objects in a complex of d...</Credits>
+        <CreditsUrl>http://wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-039.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Southern Pinwheel Galaxy" RA="13.61690108" Dec="-29.8655453" ZoomLevel="3.12523350016" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-022.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Southern Pinwheel Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-022L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="22.28" Projection="Tan" FileType=".png" CenterY="-29.8655453" CenterX="204.2535162" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78130837504">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from the Wide-field Infrared Survey Explorer (WISE) is of the nearby galaxy Messier 83, or M83 for short. It is a spi...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-022.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Tarantula Nebula" RA="5.66566847333333" Dec="-69.0757604" ZoomLevel="6.26220597248" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-023.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Tarantula Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-023L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="37.77" Projection="Tan" FileType=".png" CenterY="-69.0757604" CenterX="84.9850271" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56555149312">
+        <Credits>NASA/JPL-Caltech/UCLA; Sending chills down the spine of all arachnophobes is the Tarantula Nebula in this image from NASA's Wide-field Infrared Survey ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-023.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Comet 65P/Gunn" RA="20.5584834666667" Dec="-24.911567" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-020.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Comet 65P/Gunn" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-020L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-14.566644" Projection="Tan" FileType=".png" CenterY="-24.911567" CenterX="308.377252" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from NASA’s Wide-field Infrared Survey Explorer (WISE) features comet 65P/Gunn. Comets are balls of dust and ice left...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-020.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="v385 Car" RA="11.1046347733333" Dec="-65.5021662" ZoomLevel="12.51723313152" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-021.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="v385 Car" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-021L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-127.24" Projection="Tan" FileType=".png" CenterY="-65.5021662" CenterX="166.5695216" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.12930828288">
+        <Credits>NASA/JPL-Caltech/UCLA; Some might see a blood-red jellyfish in a forest of seaweed, while others might see a big, red eye or a pair of lips. In fact, t...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-021.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Heart and Soul Nebula" RA="2.69812933333333" Dec="61.16347" ZoomLevel="24.8490657806385" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-018.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Heart and Soul Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-018L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="61.16347" CenterX="40.47194" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.21226644515963">
+        <Credits>NASA/JPL-Caltech/UCLA; The Heart and Soul nebulae are seen in this infrared mosaic from NASA’s Wide-field Infrared Survey Explorer, or WISE.  The image...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-018.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 6744" RA="19.1629095733333" Dec="-63.8574312" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-019.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 6744" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-019L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-188.995949" Projection="Tan" FileType=".png" CenterY="-63.8574312" CenterX="287.4436436" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
+        <Credits>NASA/JPL-Caltech/UCLA; This image of spiral galaxy NGC 6744 from NASA’s WISE (Wide-field Infrared Survey Explorer) is a mosaic of frames covering an ar...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-019.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 1893" RA="5.38089467333333" Dec="33.4935159" ZoomLevel="6.26202591232" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-016.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1893" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-016L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="176.07" Projection="Tan" FileType=".png" CenterY="33.4935159" CenterX="80.7134201" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56550647808">
+        <Credits>NASA/JPL-Caltech/WISE Team; A new infrared image from NASA's Wide-field Infrared Survey Explorer, or WISE, showcases the Tadpole nebula, a star-forming hub ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-016.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Seagull Nebula" RA="7.067881" Dec="-11.0015147" ZoomLevel="12.5244932096" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-017.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Seagull Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-017L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="277.36" Projection="Tan" FileType=".png" CenterY="-11.0015147" CenterX="106.018215" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.1311233024">
+        <Credits>NASA/JPL-Caltech/UCLA; The Seagull nebula, seen in this infrared mosaic from NASA’s Wide-field Infrared Survey Explorer, or WISE, draws its common name...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-017.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Thor's Helmet" RA="7.30936882" Dec="-13.2255641" ZoomLevel="3.12797945856" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-014.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Thor's Helmet" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-014L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-80.81" Projection="Tan" FileType=".png" CenterY="-13.2255641" CenterX="109.6405323" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78199486464">
+        <Credits>NASA/JPL-Caltech/UCLA; This heroic image from WISE is of a special cloud of dust and gas in the constellation Canis Major catalogued as NGC 2359. The n...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-014.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="California Nebula" RA="4.01448433333333" Dec="36.462685" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-015.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="California Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-015L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-191.848172" Projection="Tan" FileType=".png" CenterY="36.462685" CenterX="60.217265" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This infrared image from NASA’s WISE (Wide-field Infrared Survey Explorer) features one of the bright stars in the constellation...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-015.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IC 1795" RA="2.39581" Dec="61.209793" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-012.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IC 1795" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-012L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-206.563778" Projection="Tan" FileType=".png" CenterY="61.209793" CenterX="35.93715" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This image from WISE is a view within the constellation Cassiopeia of another portion of the vast star forming complex that make...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-012.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="W5" RA="2.87091900666667" Dec="60.3979115" ZoomLevel="7.28069423104" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-010.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="W5" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-010L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-112.78" Projection="Tan" FileType=".png" CenterY="60.3979115" CenterX="43.0637851" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.82017355776">
+        <Credits>NASA/JPL-Caltech/WISE Team; This WISE mosaic is of the Soul Nebula (a.k.a. the Embryo Nebula, IC 1848, or W5). It is an open cluster of stars surrounded by ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-010.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IC 342" RA="3.78013886666667" Dec="68.096111" ZoomLevel="3.12888884544389" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-011.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IC 342" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-011L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-199.5" Projection="Tan" FileType=".png" CenterY="68.096111" CenterX="56.702083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360973">
+        <Credits>NASA/JPL-Caltech/UCLA; A leggy cosmic creature comes out of hiding in this new infrared view from NASA's Wide-field Infrared Survey Explorer, or WISE. ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-011.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="M3" RA="13.69576272" Dec="27.786068" ZoomLevel="6.24527777792" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-009.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="M3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-009L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-64.02" Projection="Tan" FileType=".png" CenterY="27.786068" CenterX="205.4364408" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56131944448">
+        <Credits>NASA/JPL-Caltech/WISE Team; This image from the WISE mission was taken on January 2nd, 2010, during the check-out phase, before the start of the WISE survey...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-009.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="AFGL 3193" RA="0.0158654666666667" Dec="67.3128741" ZoomLevel="3.13182461952" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-008.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="AFGL 3193" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-008L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="131.45" Projection="Tan" FileType=".png" CenterY="67.3128741" CenterX="0.237982" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78295615488">
+        <Credits>NASA/JPL-Caltech/UCLA; A new infrared image from NASA's Wide-field Infrared Survey Explorer, or WISE, shows a cosmic rosebud blossoming with new stars....</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-008.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Maffei 1" RA="2.58431728666667" Dec="60.2065345" ZoomLevel="12.5153624064" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-005.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Maffei 1" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-005L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="65.16" Projection="Tan" FileType=".png" CenterY="60.2065345" CenterX="38.7647593" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.1288406016">
+        <Credits>NASA/JPL-Caltech/UCLA; A mosaic of images from WISE in the constellation of Cassiopeia. This region contains a large star forming nebula within the Mil...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-005.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 7380" RA="22.7898454733333" Dec="58.1078422" ZoomLevel="6.26448719872" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-006.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 7380" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-006L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="44.51" Projection="Tan" FileType=".png" CenterY="58.1078422" CenterX="341.8476821" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56612179968">
+        <Credits>NASA/JPL-Caltech/UCLA; This picture of the open star cluster NGC 7380 is a mosaic of images from the WISE mission spanning an area on the sky of about ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-006.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 3603" RA="11.2524666666667" Dec="-61.2713" ZoomLevel="12.2880001068122" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 3603" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-61.2713" CenterX="168.787" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.07200002670305">
+        <Credits>NASA/JPL-Caltech/UCLA; This dramatic image of a nebula containing young, massive stars was captured by NASA's Wide-Field Infrared Survey Explorer, or W...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Andromeda Galaxy" RA="0.712305533333333" Dec="41.269167" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c2.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Andromeda Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004c2L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-207" Projection="Tan" FileType=".png" CenterY="41.269167" CenterX="10.684583" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
+        <Credits>NASA/JPL-Caltech/WISE Team; This image from NASA's Wide-field Infrared Survey Explorer, or WISE, highlights the dust that speckles the Andromeda galaxy's sp...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c2.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Andromeda Galaxy" RA="0.712305533333333" Dec="41.269167" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c1.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Andromeda Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004c1L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-207" Projection="Tan" FileType=".png" CenterY="41.269167" CenterX="10.684583" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
+        <Credits>NASA/JPL-Caltech/WISE Team; This image from NASA's Wide-field Infrared Survey Explorer, or WISE, highlights the Andromeda galaxy's older stellar population ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c1.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Andromeda Galaxy" RA="0.712305533333333" Dec="41.269167" ZoomLevel="24.5760002136244" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Andromeda Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004cL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-207" Projection="Tan" FileType=".png" CenterY="41.269167" CenterX="10.684583" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.14400005340611">
+        <Credits>NASA/JPL-Caltech/WISE Team</Credits>
+        <CreditsUrl/>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Fornax Cluster" RA="3.64141113333333" Dec="-35.45075" ZoomLevel="12.2880001068122" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004d.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Fornax Cluster" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-004dL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-35.45075" CenterX="54.621167" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.07200002670305">
+        <Credits>NASA/JPL-Caltech/UCLA; WISE's large field of view and multi-wavelength infrared sight allowed it to form this complete view of the cluster, containing ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-004d.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="WISE NEO" RA="12.7288059448933" Dec="-26.0704305833866" ZoomLevel="3.13344" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-002.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="WISE NEO" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-002L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="24.378938848563" Projection="Tan" FileType=".png" CenterY="-26.0704305833866" CenterX="190.9320891734" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78336">
+        <Credits>NASA/JPL-Caltech/UCLA; The red dot at the center of this image is the first near-Earth asteroid discovered by NASA's Wide-Field Infrared Survey Explore...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-002.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="V482 Car" RA="9.51726381676153" Dec="-58.5161846862573" ZoomLevel="3.124337778688" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-001.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="V482 Car" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-001L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="49.15241424139" Projection="Tan" FileType=".png" CenterY="-58.5161846862573" CenterX="142.758957251423" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.781084444671999">
+        <Credits>NASA/JPL-Caltech/WISE Team; This infrared snapshot of a region in the constellation Carina near the Milky Way was taken shortly after NASA's Wide-field Infr...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-001.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 1514" RA="4.15471946666667" Dec="30.775956" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1514" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-041L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="30.775956" CenterX="62.320792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This image shows a puffy, dying star, or planetary nebula, known as NGC 1514. The object is actually a pair of stars -- one star...</Credits>
+        <CreditsUrl>http://wise.ssl.berkeley.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Flaming Star Nebula" RA="5.2536976" Dec="34.136889" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-042.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Flaming Star Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-042L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-184.518448" Projection="Tan" FileType=".png" CenterY="34.136889" CenterX="78.805464" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; At a time of year when many people travel long distances to be with their families for the holidays, NASAs Wide-field Infrared S...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-042.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 2174" RA="6.16471154" Dec="20.7673331" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-017.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 2174" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-017L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-0.1566" Projection="Tan" FileType=".png" CenterY="20.7673331" CenterX="92.4706731" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>NASA/JPL-Caltech/UCLA; NASAs Wide-field Infrared Survey Explorer, or WISE, is a little like the Vincent van Gogh of the infrared sky. Just like the fam...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-017.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IRAS12116-6001" RA="12.2916837333333" Dec="-60.198492" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-038.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IRAS12116-6001" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-038L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-140.679607" Projection="Tan" FileType=".png" CenterY="-60.198492" CenterX="184.375256" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; NASAs Wide-field Infrared Survey Explorer, or WISE, captured this colorful image of the reflection nebula IRAS 12116-6001. This ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-038.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 1514" RA="4.15471946666667" Dec="30.775956" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1514" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-041bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="30.775956" CenterX="62.320792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>Caltech/Palomar; This visible-light image is from the Digitized Sky Survey, based at the Space Telescope Science Institute in Baltimore, Md. The ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-041b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="WISEPC J045853.90+643451.9" RA="4.98170434666667" Dec="64.5814312" ZoomLevel="1.56547334144" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-040.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="WISEPC J045853.90+643451.9" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-040L{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="172" Projection="Tan" FileType=".png" CenterY="64.5814312" CenterX="74.7255652" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.39136833536">
+        <Credits>NASA/JPL-Caltech/UCLA; That green dot in the middle of this image might look like an emerald amidst glittering diamonds, but it is actually a dim star ...</Credits>
+        <CreditsUrl>http://wise.ssl.berkeley.edu/gallery_images.html</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-040.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Whirlpool Nebula" RA="13.4988055333333" Dec="47.231389" ZoomLevel="1.56444442272195" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045E.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Whirlpool Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-045EL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="35.7" Projection="Tan" FileType=".png" CenterY="47.231389" CenterX="202.482083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680486">
+        <Credits>NASA/JPL-Caltech/UCLA; Messier 51, or NGC 5194, is also frequently referred to as the Whirlpool galaxy. The Whirlpool is a "grand design" spiral galaxy...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045E.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Messier 60" RA="12.7278140266667" Dec="11.5542836" ZoomLevel="3.12887762944" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045D.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Messier 60" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-045DL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-156.35" Projection="Tan" FileType=".png" CenterY="11.5542836" CenterX="190.9172104" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.78221940736">
+        <Credits>NASA/JPL-Caltech/UCLA; This galaxy does not have a spiral disk, just a bulge, making it a massive elliptical galaxy. M60 is about 20 percent larger tha...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-045D.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Rho Ophiuchus cloud complex" RA="16.4213962678" Dec="-24.246930934" ZoomLevel="25.031081984" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-013.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Rho Ophiuchus cloud complex" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-013L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.129662388" Projection="Tan" FileType=".png" CenterY="-24.246930934" CenterX="246.320944017" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.257770496">
+        <Credits>NASA/JPL-Caltech/UCLA; A rich collection of colorful astronomical objects is revealed in this picturesque image of the Rho Ophiuchi cloud complex from ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-013.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Milky Way" RA="24" Dec="0" ZoomLevel="838.8608" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Milky Way" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-016L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="360" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="209.7152">
+        <Credits>NASA/JPL-Caltech/UCLA; This image is a map of the portion of the sky covered by the preliminary release of WISE data. WISE surveyed the entire sky in f...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-016.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IC 1396" RA="21.6224494497333" Dec="57.320779371" ZoomLevel="12.515540992" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-022.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IC 1396" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-022L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-317.189031419" Projection="Tan" FileType=".png" CenterY="57.320779371" CenterX="324.336741746" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="3.128885248">
+        <Credits>NASA/JPL-Caltech/UCLA; In the same way that dust is blown around by the wind here on Earth, space dust can be blown around by the wind and radiation fr...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-022.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="IC 342" RA="3.78013886666667" Dec="68.096111" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020h.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="IC 342" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020hL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-199.5" Projection="Tan" FileType=".png" CenterY="68.096111" CenterX="56.702083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
+        <Credits>NASA/JPL-Caltech/UCLA; Sometimes called the Hidden Galaxy, this spiral beauty is shrouded behind our own galaxy, the Milky Way. Stargazers and professi...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020h.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 6822" RA="19.7490626666667" Dec="-14.78929" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020i.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 6822" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020iL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-14.78929" CenterX="296.23594" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
+        <Credits>NASA/JPL-Caltech/UCLA; Barnard's Galaxy is known as a dwarf for its small size -- it has only about one percent of the mass of the Milky Way. The galax...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020i.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="LBN 211.91-01.37" RA="6.75632806666667" Dec="0" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-009.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="LBN 211.91-01.37" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-009L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="0" CenterX="101.344921" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; NASAs Wide-field Infrared Survey Explorer, or WISE, captured this image of a star-forming cloud of dust and gas located in the c...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-009.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Whirlpool Galaxy" RA="13.4988055333333" Dec="47.231389" ZoomLevel="1.56444442272154" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Whirlpool Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="35.7" Projection="Tan" FileType=".png" CenterY="47.231389" CenterX="202.482083" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680384">
+        <Credits>NASA/JPL-Caltech/UCLA; Known by astronomers as M51, this beauty is a grand design spiral, which are galaxies with well-defined spiral arms. Its smaller...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Messier 74" RA="1.6116028" Dec="15.783472" ZoomLevel="1.56444442272154" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Messier 74" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020bL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="15.783472" CenterX="24.174042" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680384">
+        <Credits>NASA/JPL-Caltech/UCLA; Some astronomers call the grand design spiral Messier 74 the "perfect spiral," for its exceptional symmetry. It is suspected to ...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Messier 81" RA="9.92588886666667" Dec="69.065278" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Messier 81" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020cL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="69.065278" CenterX="148.888333" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
+        <Credits>NASA/JPL-Caltech/UCLA; M81 is another grand design spiral galaxy, with pronounced arms spiraling into its core. WISE highlights areas where gas and dus...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Southern Pinwheel Galaxy" RA="13.6169305333333" Dec="-29.865417" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020d.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Southern Pinwheel Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020dL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-29.865417" CenterX="204.253958" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
+        <Credits>NASA/JPL-Caltech/UCLA; At about 55,500 light-years across, M83 is s a bit more than half the size of our Milky Way Galaxy, but it has a similar overall...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020d.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 1398" RA="3.647792" Dec="-26.3375" ZoomLevel="1.56444442272154" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020e.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1398" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020eL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-144.3" Projection="Tan" FileType=".png" CenterY="-26.3375" CenterX="54.71688" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.391111105680384">
+        <Credits>NASA/JPL-Caltech/UCLA; This barred spiral has a dense inner ring that surrounds a bright, central core. The ring is actually two spiral arms that are c...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020e.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 2403" RA="7.6142778" Dec="65.6025" ZoomLevel="3.12888884544307" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020f.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 2403" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2011-020fL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-166.5" Projection="Tan" FileType=".png" CenterY="65.6025" CenterX="114.214167" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.782222211360768">
+        <Credits>NASA/JPL-Caltech/UCLA; This fuzzy-looking galaxy is a flocculent, or patchy, spiral. It is largely veiled by gas and dust at visible-light wavelengths,...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2011-020f.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="WISE J18103305" RA="18.14814638" Dec="-33.2974232" ZoomLevel="6.25872224256" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-003.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="WISE J18103305" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-003L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.01" Projection="Tan" FileType=".png" CenterY="-33.2974232" CenterX="272.2221957" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56468056064">
+        <Credits>NASA/JPL-Caltech/UCLA; It's a dust bunny of cosmic proportions. Astronomers used images from NASA's Wide-field Infrared Survey Explorer, or WISE, to lo...</Credits>
+        <CreditsUrl>http://wise.ssl.berkeley.edu/gallery_dusty_star.html</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-003.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Flame Nebula" RA="5.69519466666667" Dec="-1.91222" ZoomLevel="18.204459008" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-004.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Flame Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2012-004L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-1.91222" CenterX="85.42792" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.551114752">
+        <Credits>NASA/JPL-Caltech/UCLA; The Flame Nebula sits on the eastern hip of Orion the Hunter, a constellation most easily visible in the northern hemisphere dur...</Credits>
+        <CreditsUrl>http://wise.ssl.berkeley.edu/gallery_FlameNebula2.html</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2012-004.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Orion Nebula" RA="5.58813866666667" Dec="-5.39111" ZoomLevel="18.204459008" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-001.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Orion Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2013-001L{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-5.39111" CenterX="83.82208" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.551114752">
+        <Credits>NASA/JPL-Caltech/UCLA; The Great Nebula in Orion is featured in this sweeping image from NASA’s Wide-field Infrared Survey Explorer, or WISE. The const...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-001.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="1998 KN3" RA="5.35061048666667" Dec="8.3168695" ZoomLevel="3.08567539712" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-002.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="1998 KN3" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2013-002L{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="176.49" Projection="Tan" FileType=".png" CenterY="8.3168695" CenterX="80.2591573" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.77141884928">
+        <Credits>NASA/JPL-Caltech; This image shows the potentially hazardous near-Earth object 1998 KN3 as it zips past a cloud of dense gas and dust near the Ori...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-002.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Witch Head Nebula" RA="5.08206733333333" Dec="-7.26563" ZoomLevel="25.0311107635511" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-003.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Witch Head Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2013-003L{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-180" Projection="Tan" FileType=".png" CenterY="-7.26563" CenterX="76.23101" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="6.25777769088778">
+        <Credits>NASA/JPL-Caltech/UCLA; A witch appears to be screaming out into space in this new image from NASA's Wide-Field Infrared Survey Explorer, or WISE. The i...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2013-003.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Trifid Nebula" RA="18.0272416" Dec="-22.716667" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2014-001.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Trifid Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2014-001L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-22.716667" CenterX="270.408624" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; A storm of stars is brewing in the Trifid nebula, as seen in this view from NASA's Wide-field Infrared Survey Explorer, or WISE....</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2014-001.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 6723" RA="18.9933157333333" Dec="-37.011655" ZoomLevel="6.25777769088778" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-013.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 6723" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Wise-WISE2010-013L{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-96.048305" Projection="Tan" FileType=".png" CenterY="-37.011655" CenterX="284.899736" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.56444442272195">
+        <Credits>NASA/JPL-Caltech/UCLA; This colorful image from WISE (Wide-field Infrared Survey Explorer) is a view of an area of the sky over 12 times the size of th...</Credits>
+        <CreditsUrl> http://wise.astro.ucla.edu</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Wise-WISE2010-013.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
 </Folder>
