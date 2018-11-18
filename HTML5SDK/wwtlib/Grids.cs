@@ -1291,7 +1291,7 @@ namespace wwtlib
             if (planetLineList == null)
             {
                 planetLineList = new SimpleLineList();
-                planetLineList.DepthBuffered = false;
+                planetLineList.DepthBuffered = true;
 
                 Color col = drawColor;
                 for (double lng = 0; lng < 360; lng += 10)
@@ -1352,7 +1352,7 @@ namespace wwtlib
                 }
             }
             planetLineList.aaFix = false;
-            planetLineList.DepthBuffered = false;
+            planetLineList.DepthBuffered = true;
             planetLineList.Sky = false;
             planetLineList.DrawLines(renderContext, opacity, drawColor);
 
