@@ -38,7 +38,7 @@
             var addFile = function () {
                 var addTx = store.put(file, key);
                 addTx.onsuccess = readFile;
-            }
+            };
             var readFile = function () {
                 var mediaReq = store.get(key);
                 mediaReq.onsuccess = function (e) {

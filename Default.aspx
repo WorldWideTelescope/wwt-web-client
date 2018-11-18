@@ -265,6 +265,7 @@
     data-ng-app="wwtApp"
     data-res-location="<%= ResourcesLocation%>"
     data-version="1"
+    data-res-version="<%= ResourcesVersion%>"
     data-liveId="<%=ConfigurationManager.AppSettings["LiveClientId"]%>"
     data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
