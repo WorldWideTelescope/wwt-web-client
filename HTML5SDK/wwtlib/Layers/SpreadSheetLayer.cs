@@ -654,7 +654,7 @@ namespace wwtlib
                                 }
                                 if (bufferIsFlat)
                                 {
-                                 //   Xcoord += 180;
+                                    Xcoord += 180;
                                 }
                                 
                             }
