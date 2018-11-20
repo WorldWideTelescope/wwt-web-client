@@ -44,5 +44,5 @@ bower_components
 node_modules
 App_Data
 Content
-App_Readme
-Introspector
+
+sdk/wwtlib.dll

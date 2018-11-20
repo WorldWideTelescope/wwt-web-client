@@ -58,14 +58,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.9.0.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.9.0.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.js" />
