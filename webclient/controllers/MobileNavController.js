@@ -5,7 +5,7 @@ wwt.controllers.controller('MobileNavController',
 	'$modal',
 	'Localization',
   function ($rootScope, $scope, util, $modal, loc) {
-    var v = '?v=3';
+    var v = '?v='+$(document.body).data('resourcesVersion');
 		$scope.showModal = function (modalButton) {
 			$scope.hideMenu();
 			if (typeof modalButton.modal == 'object') {
@@ -13,7 +13,7 @@ wwt.controllers.controller('MobileNavController',
 			} else {
 				$(modalButton.modal).modal('show');
 			}
-		}
+		};
 
 		$rootScope.languagePromise.then(function() {
 

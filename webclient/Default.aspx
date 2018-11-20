@@ -507,7 +507,7 @@
     </div>
     <ng-include src="'views/modals/mobile-nearby-objects.html?v=<%=ResourcesVersion%>'"></ng-include>
     <div class="context-panel">
-        <div class="nearby-objects" ng-if="nbo.length && lookAt == 'Sky'" ng-show="!tourPlaying">
+        <div class="nearby-objects" ng-if="nbo.length && (lookAt == 'Sky' || lookAt=='SolarSystem')" ng-show="!tourPlaying">
             <a ng-click="showNbo()" title="{{nbo[0].get_name()}}" class="thumbnail">
                 <img ng-src="{{nbo[0].get_thumbnailUrl()}}" alt="Thumbnail of {{nbo[0].get_name()}}" />
                 <label localize="Nearby"></label>

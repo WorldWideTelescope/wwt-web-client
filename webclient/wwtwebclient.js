@@ -1549,7 +1549,7 @@ wwt.app.factory('AppState', function() {
 	return api;
 });  
 
-wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScope,appState) {
+wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState','Util', function ($rootScope,appState,util) {
     var api = {init:init};
 
     var  tourPlaying = false,
@@ -1565,6 +1565,9 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
     hideTimeout = 1200;
 
     function init() {
+      if (util.isMobile){
+        return;
+      }
         panels = {
             tabs: $('#topPanel, .layer-manager'),
             context: $('.context-panel')
@@ -1574,7 +1577,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
             console.log('init', panels.tabs);
             return;
         }
-        context = $('.context-panel');
+        //context = $('.context-panel');
         bindEvents();
         settingChange();
     };
@@ -1715,6 +1718,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScop
     
     return api;
 }]);
+
 wwt.app.factory('Localization', ['$http','$q','Util', function($http, $q, util) {
 	var api = {
 		setLanguage: setLanguage,
@@ -5707,7 +5711,7 @@ wwt.controllers.controller('MobileNavController',
 	'$modal',
 	'Localization',
   function ($rootScope, $scope, util, $modal, loc) {
-    var v = '?v=3';
+    var v = '?v='+$(document.body).data('resourcesVersion');
 		$scope.showModal = function (modalButton) {
 			$scope.hideMenu();
 			if (typeof modalButton.modal == 'object') {
@@ -5715,7 +5719,7 @@ wwt.controllers.controller('MobileNavController',
 			} else {
 				$(modalButton.modal).modal('show');
 			}
-		}
+		};
 
 		$rootScope.languagePromise.then(function() {
 
