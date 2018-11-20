@@ -10511,7 +10511,7 @@ window.wwtlib = function(){
   Grids.drawPlanetGrid = function(renderContext, opacity, drawColor) {
     if (Grids._planetLineList == null) {
       Grids._planetLineList = new SimpleLineList();
-      Grids._planetLineList.set_depthBuffered(false);
+      Grids._planetLineList.set_depthBuffered(true);
       var col = drawColor;
       for (var lng = 0; lng < 360; lng += 10) {
         for (var lat = -80; lat < 80; lat += 2) {
@@ -10556,7 +10556,7 @@ window.wwtlib = function(){
       }
     }
     Grids._planetLineList.aaFix = false;
-    Grids._planetLineList.set_depthBuffered(false);
+    Grids._planetLineList.set_depthBuffered(true);
     Grids._planetLineList.sky = false;
     Grids._planetLineList.drawLines(renderContext, opacity, drawColor);
     return true;
