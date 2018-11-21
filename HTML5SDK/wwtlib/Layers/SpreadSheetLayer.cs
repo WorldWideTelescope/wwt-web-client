@@ -1297,18 +1297,19 @@ namespace wwtlib
             table.LoadFromString(data, isUpdate, purgeAll, hasHeader);
             if (!isUpdate)
             {
+
                 GuessHeaderAssignments();
-            }
 
-            if (astronomical && lngColumn > -1)
-            {
-                double max = GetMaxValue(lngColumn);
-                if (max > 24)
+                if (astronomical && lngColumn > -1)
                 {
-                    RaUnits = RAUnits.Degrees;
+                    double max = GetMaxValue(lngColumn);
+                    if (max > 24)
+                    {
+                        RaUnits = RAUnits.Degrees;
+                    }
                 }
-            }
 
+            }
 
             if (purgeOld)
             {
