@@ -11,15 +11,18 @@ namespace wwtlib
     public class LayerManager
     {
         static int version = 0;
-
+        
         public static int Version
         {
             get { return LayerManager.version; }
             set { LayerManager.version = value; }
         }
 
-
-
+        static FrameWizard _frameWizardDialog = new FrameWizard();
+        public static FrameWizard FrameWizardDialog
+        {
+            get { return _frameWizardDialog; }
+        }
         static bool tourLayers = false;
 
         public static bool TourLayers
@@ -1801,10 +1804,15 @@ namespace wwtlib
             //}
         }
 
+        
+
         static void newMenu_Click(object sender, EventArgs e)
         {
-            //LayerMap target = (LayerMap)selectedLayer;
-            //ReferenceFrame frame = new ReferenceFrame();
+            
+            LayerMap target = (LayerMap)selectedLayer;
+            ReferenceFrame frame = new ReferenceFrame();
+
+            LayerManager.FrameWizardDialog.Show(frame, e);
             //frame.SystemGenerated = false;
             //if (FrameWizard.ShowWizard(frame) == DialogResult.OK)
             //{

@@ -1,0 +1,33 @@
+﻿using System;
+
+
+namespace wwtlib
+{
+    public class Dialog
+    {
+        public Dialog() { }
+
+        public event EventHandler<EventArgs> ShowDialogHook;
+
+        public void Show(object dialogArgs, EventArgs e)
+        {
+            
+            if (ShowDialogHook != null)
+            {
+                ShowDialogHook.Invoke(dialogArgs, e);
+            }
+        }
+    }
+
+    public class FrameWizard : Dialog
+    {
+        public FrameWizard()
+        {
+
+        }
+        public void OK(object args)
+        {
+
+        }
+    }
+}
