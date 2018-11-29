@@ -3910,7 +3910,7 @@ wwt.app.factory('Astrometry', [
         jobSuccess: 'Job Succeeded',
         calibrationFail: 'Calibration Results Failed'
     };
-		var uploadUrl, // "//www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
+		var uploadUrl, // "https://upload.wikimedia.org/wikipedia/commons/8/8b/M81.jpg",
 			statusCallback,
 			sessionId = null,
 			submissionId = null,
@@ -3926,7 +3926,7 @@ wwt.app.factory('Astrometry', [
 		function login() {
 			showStatus(statusTypes.connecting);
 			var loginData = {};
-			loginData.apikey = "mxzoqrhqsvkwtybb"; // this may change we should put it in the web.config
+			loginData.apikey = "grgfoujnylhbwtjw"; // this may change we should put it in the web.config
 
 			var loginJson = encodeURIComponent(JSON.stringify(loginData));
 
@@ -3958,7 +3958,7 @@ wwt.app.factory('Astrometry', [
 			var uploadJson = encodeURIComponent(JSON.stringify(uploadData));
 
 			$.ajax({
-				url: "//supernova.astrometry.net/api/url_upload",
+				url: "//nova.astrometry.net/api/url_upload",
 				type: "POST",
 				data: "request-json=" + uploadJson,
 				dataType: "json",
@@ -3977,7 +3977,7 @@ wwt.app.factory('Astrometry', [
 		function checkStatus() {
 			showStatus(statusTypes.statusCheck);
 			$.ajax({
-				url: "//supernova.astrometry.net/api/submissions/" + submissionId,
+				url: "//nova.astrometry.net/api/submissions/" + submissionId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -4004,7 +4004,7 @@ wwt.app.factory('Astrometry', [
 		function checkJobStatus() {
 			//showStatus("Checking Job Status: " + jobId);
 			$.ajax({
-				url: "//supernova.astrometry.net/api/jobs/" + jobId,
+				url: "//nova.astrometry.net/api/jobs/" + jobId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -4040,7 +4040,7 @@ wwt.app.factory('Astrometry', [
 
 		function getCalibration() {
 			$.ajax({
-				url: "//supernova.astrometry.net/api/jobs/" + jobId + "/calibration",
+				url: "//nova.astrometry.net/api/jobs/" + jobId + "/calibration",
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -4081,6 +4081,7 @@ wwt.app.factory('Astrometry', [
 
 		return api;
 	}]);
+
 wwt.app.factory('Community', ['$http', '$q', '$timeout', 'Util',
 	function ($http, $q, $timeout, util) {
 		
@@ -7979,119 +7980,122 @@ wwt.controllers.controller('ShareController',
 ]);
 
 wwt.controllers.controller('OpenItemController',
-	['$rootScope',
-	'$scope',
-	'AppState',
-	'Places',
-	'Util',
-	'Astrometry', 'MediaFile',
-	function ($rootScope, $scope, appState, places, util, astrometry, media) {
+  ['$rootScope',
+    '$scope',
+    'AppState',
+    'Places',
+    'Util',
+    'Astrometry', 'MediaFile',
+    function ($rootScope, $scope, appState, places, util, astrometry, media) {
 
-	    $rootScope.$on('openItem', function () {
-	        $scope.openItemUrl = '';
-	        setTimeout(function () {
-	            $('#txtOpenItem').focus();
-	        },100);
-	    });
+      $rootScope.$on('openItem', function () {
+        $scope.openItemUrl = '';
+        setTimeout(function () {
+          $('#txtOpenItem').focus();
+        }, 100);
+      });
 
-	    $scope.openItem = function () {
-	        var itemType = $rootScope.openType;
-	        if (itemType === 'collection') {
-	            places.openCollection($scope.openItemUrl).then(function (folder) {
-	                util.log('initExplorer broadcast', folder);
-	                $rootScope.newFolder = folder;
-	                $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-	                $('#openModal').modal('hide');
-	            });
-	        } else if (itemType === 'tour') {
-            $scope.playTour($scope.openItemUrl);
+      $scope.openItem = function () {
+        var itemType = $rootScope.openType;
+        if (itemType === 'collection') {
+          places.openCollection($scope.openItemUrl).then(function (folder) {
+            util.log('initExplorer broadcast', folder);
+            $rootScope.newFolder = folder;
+            $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
             $('#openModal').modal('hide');
-          } else if (itemType === 'FITS image') {
-            wwt.wc.loadFits($scope.openItemUrl);
-            setTimeout(wwt.detectNewLayers,555);
-            $('#openModal').modal('hide');
+          });
+        } else if (itemType === 'tour') {
+          $scope.playTour($scope.openItemUrl);
+          $('#openModal').modal('hide');
+        } else if (itemType === 'FITS image') {
+          wwt.wc.loadFits($scope.openItemUrl);
+          setTimeout(wwt.detectNewLayers, 555);
+          $('#openModal').modal('hide');
+        } else {
+          //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
+          //$scope.openItemUrl = '//www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
+          places.importImage($scope.openItemUrl).then(function (folder) {
+            //var imported = folder.get_children()[0];
+            if (folder) {
+              util.log('initExplorer broadcast', folder);
+              $rootScope.newFolder = folder;
+              $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+              $('#openModal').modal('hide');
+            } else {
+              $scope.importState = 'notAVMTagged';
+              $scope.imageFail = true;
+            }
+          });
+        }
+      };
+
+      $scope.mediaFileChange = function (e) {
+        var type = $rootScope.openType;
+        console.time('openLocal: ' + type);
+        var file = e.target.files[0];
+        if (!file.name) {
+          return;
+        }
+
+        $scope[type + 'FileName'] = file.name;
+
+        media.addLocalMedia(type, file).then(function (mediaResult) {
+          console.timeEnd('openLocal: ' + type);
+          $scope.openItemUrl = mediaResult.url;
+          $scope.openItem();
+        });
+
+      };
+
+      $scope.astrometryStatusText = '';
+      $scope.astroCallback = function (data) {
+
+        $scope.$applyAsync(function () {
+          if ($scope.astrometryStatusText.indexOf(data.message) == 0) {
+            $scope.astrometryStatusText += ' .';
           } else {
-	            //var qs = '&ra=202.45355674088898&dec=47.20018130592933&scale=' + (0.3413275776344843 / 3600) + '&rotation=122.97953942448784';
-	            //$scope.openItemUrl = '//www.noao.edu/outreach/aop/observers/m51rolfe.jpg';
-	            places.importImage($scope.openItemUrl).then(function (folder) {
-	                //var imported = folder.get_children()[0];
-	                if (folder) {
-	                    util.log('initExplorer broadcast', folder);
-	                    $rootScope.newFolder = folder;
-	                    $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-	                    $('#openModal').modal('hide');
-	                } else {
-	                    $scope.importState = 'notAVMTagged';
-	                    $scope.imageFail = true;
-	                }
-	            });
+            $scope.astrometryStatusText = data.message;
           }
-	    };
+        });
+        if (data.calibration) {
+          /*calibration.ra = result.ra; // in degrees devide 15 for hours
+          calibration.dec = result.dec; // in degrees
+          calibration.rotation = result.orientation;
+          calibration.scale = result.pixscale;
+          calibration.parity = result.parity;
+          calibration.radius = result.radius;*/
+          $scope.importState = 'astrometrySuccess';
+          var qs = '&ra=' + data.calibration.ra +
+            '&dec=' + data.calibration.dec +
+            '&scale=' + (data.calibration.scale / 3600) +
+            '&rotation=' + data.calibration.rotation;
+          if (data.calibration.parity !== 1) {
+            qs += '&reverseparity=true';
+          }
 
-	    $scope.mediaFileChange = function (e) {
-	        var type = $rootScope.openType;
-	        console.time('openLocal: ' + type);
-	        var file = e.target.files[0];
-	        if (!file.name) {
-	            return;
-	        }
+          places.importImage($scope.openItemUrl, qs).then(function (folder) {
 
-	        $scope[type + 'FileName'] = file.name;
+            $rootScope.newFolder = folder;
+            $rootScope.$broadcast('initExplorer', $scope.openItemUrl);
+            $scope.imageFail = false;
+            $scope.importState = '';
+            $('#openModal').modal('hide');
+            return;
+          });
+        }
+        if (data.status.toLowerCase().indexOf('fail') != -1) {
+          $scope.importState = 'astrometryFail';
 
-	        media.addLocalMedia(type, file).then(function (mediaResult) {
-	            console.timeEnd('openLocal: ' + type);
-	            $scope.openItemUrl = mediaResult.url;
-	            $scope.openItem();
-	        });
-
-	    };
-
-		$scope.astrometryStatusText = '';
-		$scope.astroCallback = function(data) {
-			if ($scope.astrometryStatusText.indexOf(data.message) == 0) {
-				$scope.astrometryStatusText += ' .';
-			} else {
-				$scope.astrometryStatusText = data.message;
-			}
-			if (data.calibration) {
-				/*calibration.ra = result.ra; // in degrees devide 15 for hours
-				calibration.dec = result.dec; // in degrees
-				calibration.rotation = result.orientation;
-				calibration.scale = result.pixscale;
-				calibration.parity = result.parity;
-				calibration.radius = result.radius;*/
-				$scope.importState = 'astrometrySuccess';
-				var qs = '&ra=' + data.calibration.ra +
-					'&dec=' + data.calibration.dec +
-					'&scale=' + (data.calibration.scale / 3600) +
-					'&rotation=' + data.calibration.rotation;
-				if (data.calibration.parity !== 1) {
-					qs += '&reverseparity=true';
-				}
-
-				places.importImage($scope.openItemUrl, qs).then(function (folder) {
-
-          $rootScope.newFolder = folder;
-					$rootScope.$broadcast('initExplorer', $scope.openItemUrl);
-					$scope.imageFail = false;
-					$scope.importState = '';
-					$('#openModal').modal('hide');
-					return;
-				});
-			}
-			if (data.status.toLowerCase().indexOf('fail') != -1) {
-				$scope.importState = 'astrometryFail';
-
+        }
       }
-		}
 
-		$scope.solveAstrometry = function () {
-		    $scope.importState = 'astrometryProgress';
-		    astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
-		};
+      $scope.solveAstrometry = function () {
+        $scope.importState = 'astrometryProgress';
+        astrometry.submitImage($scope.openItemUrl, $scope.astroCallback, false);
+      };
 
-  }
-]);
+    }
+  ]);
 
 
 wwt.controllers.controller('ObservingTimeController',
