@@ -933,15 +933,16 @@ namespace wwtlib
             return true;
         }
 
+        public int lastVersion = 0;
         public override bool Draw(RenderContext renderContext, float opacity, bool flat)
         {
 
             RenderContext device = renderContext;
 
-            //if (shaderA == null)
-            //{
-            //    MakeVertexShaderA(device);
-            //}
+            if (version != lastVersion)
+            {
+                CleanUp();
+            }
 
             if (bufferIsFlat != flat)
             {

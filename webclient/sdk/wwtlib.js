@@ -36899,6 +36899,7 @@ window.wwtlib = function(){
     this.bufferIsFlat = false;
     this.baseDate = new Date(2010, 0, 1, 12, 0, 0);
     this.dirty = true;
+    this.lastVersion = 0;
     Layer.call(this);
   }
   SpreadSheetLayer._getDatafromFeed$1 = function(url) {
@@ -38106,6 +38107,9 @@ window.wwtlib = function(){
     },
     draw: function(renderContext, opacity, flat) {
       var device = renderContext;
+      if (this.version !== this.lastVersion) {
+        this.cleanUp();
+      }
       if (this.bufferIsFlat !== flat) {
         this.cleanUp();
         this.bufferIsFlat = flat;
@@ -38249,6 +38253,7 @@ window.wwtlib = function(){
     this.bufferIsFlat = false;
     this.baseDate = new Date(2010, 0, 1, 12, 0, 0);
     this.dirty = true;
+    this.lastVersion = 0;
     Layer.call(this);
   }
   TimeSeriesLayer.get__circleTexture$1 = function() {
@@ -38850,6 +38855,9 @@ window.wwtlib = function(){
     },
     draw: function(renderContext, opacity, flat) {
       var device = renderContext;
+      if (this.version !== this.lastVersion) {
+        this.cleanUp();
+      }
       if (this.bufferIsFlat !== flat) {
         this.cleanUp();
         this.bufferIsFlat = flat;
