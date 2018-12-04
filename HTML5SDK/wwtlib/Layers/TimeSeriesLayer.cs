@@ -977,7 +977,6 @@ namespace wwtlib
 
             if (triangleList != null)
             {
-
                 triangleList.Decay = decay;
                 triangleList.Sky = this.Astronomical;
                 triangleList.TimeSeries = timeSeries;

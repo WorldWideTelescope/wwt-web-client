@@ -664,6 +664,11 @@ namespace wwtlib
 
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, bool zBuffer, float jNow, float decay, Vector3d camera, float scale, float minSize, bool showFarSide, bool sky)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -902,6 +907,11 @@ namespace wwtlib
 
         public static void Use(RenderContext renderContext, Matrix3d worldView, WebGLBuffer vertex, WebGLTexture texture, Color lineColor, float opacity, bool zBuffer, float jNow, float MM, Vector3d camera, float scale, float minSize)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -1251,7 +1261,11 @@ namespace wwtlib
         public static Color AtmosphereColor = Color.FromArgb(0, 0, 0, 0);
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index,  WebGLTexture texture, float opacity, bool noDepth, int stride)
         {
-            
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -1460,7 +1474,11 @@ namespace wwtlib
         public static Color AtmosphereColor = Color.FromArgb(0, 0, 0, 0);
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index,  WebGLTexture texture, float opacity, bool noDepth, int stride)
         {
-            
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -1668,6 +1686,11 @@ namespace wwtlib
         public static Color AtmosphereColor = Color.FromArgb(0, 0, 0, 0);
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity, bool noDepth)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -1848,6 +1871,11 @@ namespace wwtlib
 
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity, bool noDepth)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -2007,6 +2035,11 @@ namespace wwtlib
 
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLBuffer index, WebGLTexture texture, float opacity, bool noDepth)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -2157,6 +2190,11 @@ namespace wwtlib
 
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -2409,6 +2447,11 @@ namespace wwtlib
         //todo add color rendering
         public static void Use(RenderContext renderContext, WebGLBuffer vertex, WebGLTexture texture)
         {
+            if (texture == null)
+            {
+                texture = Texture.GetEmpty();
+            }
+
             GL gl = renderContext.gl;
             if (gl != null)
             {
@@ -2452,5 +2495,4 @@ namespace wwtlib
             }
         }
     }
-
 }

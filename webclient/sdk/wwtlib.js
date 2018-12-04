@@ -7016,6 +7016,9 @@ window.wwtlib = function(){
     TimeSeriesPointSpriteShader.initialized = true;
   };
   TimeSeriesPointSpriteShader.use = function(renderContext, vertex, texture, lineColor, zBuffer, jNow, decay, camera, scale, minSize, showFarSide, sky) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TimeSeriesPointSpriteShader.initialized) {
@@ -7111,6 +7114,9 @@ window.wwtlib = function(){
     KeplerPointSpriteShader.initialized = true;
   };
   KeplerPointSpriteShader.use = function(renderContext, worldView, vertex, texture, lineColor, opacity, zBuffer, jNow, MM, camera, scale, minSize) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!KeplerPointSpriteShader.initialized) {
@@ -7280,6 +7286,9 @@ window.wwtlib = function(){
     ModelShader.initialized = true;
   };
   ModelShader.use = function(renderContext, vertex, index, texture, opacity, noDepth, stride) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!ModelShader.initialized) {
@@ -7386,6 +7395,9 @@ window.wwtlib = function(){
     ModelShaderTan.initialized = true;
   };
   ModelShaderTan.use = function(renderContext, vertex, index, texture, opacity, noDepth, stride) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!ModelShaderTan.initialized) {
@@ -7491,6 +7503,9 @@ window.wwtlib = function(){
     TileShader.initialized = true;
   };
   TileShader.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TileShader.initialized) {
@@ -7591,6 +7606,9 @@ window.wwtlib = function(){
     ImageShader.initialized = true;
   };
   ImageShader.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!ImageShader.initialized) {
@@ -7675,6 +7693,9 @@ window.wwtlib = function(){
     ImageShader2.initialized = true;
   };
   ImageShader2.use = function(renderContext, vertex, index, texture, opacity, noDepth) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!ImageShader2.initialized) {
@@ -7753,6 +7774,9 @@ window.wwtlib = function(){
     SpriteShader.initialized = true;
   };
   SpriteShader.use = function(renderContext, vertex, texture) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!SpriteShader.initialized) {
@@ -7884,6 +7908,9 @@ window.wwtlib = function(){
     TextShader.initialized = true;
   };
   TextShader.use = function(renderContext, vertex, texture) {
+    if (texture == null) {
+      texture = Texture.getEmpty();
+    }
     var gl = renderContext.gl;
     if (gl != null) {
       if (!TextShader.initialized) {
@@ -8103,6 +8130,15 @@ window.wwtlib = function(){
     this._errored = false;
     this.URL = '';
   }
+  Texture.getEmpty = function() {
+    if (Texture.empty == null) {
+      Texture.empty = Tile.prepDevice.createTexture();
+      Tile.prepDevice.bindTexture(3553, Texture.empty);
+      Tile.prepDevice.texImage2D(3553, 0, 6408, 1, 1, 0, 6408, 5121, new Uint8Array([ 0, 0, 0, 0 ]));
+      Tile.prepDevice.bindTexture(3553, null);
+    }
+    return Texture.empty;
+  };
   Texture.fromUrl = function(url) {
     var tex = new Texture();
     tex.load(url);
@@ -43864,6 +43900,7 @@ window.wwtlib = function(){
   TextShader.textureLoc = 0;
   TextShader.initialized = false;
   TextShader._prog = null;
+  Texture.empty = null;
   Grids._galaxyImageIndexBuffer = null;
   Grids._galaxyImageTriangleCount = 0;
   Grids._milkyWayImage = null;
