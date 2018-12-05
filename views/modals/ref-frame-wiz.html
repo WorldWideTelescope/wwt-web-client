@@ -1,0 +1,30 @@
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+  <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
+    <span localize="Reference Frame"></span>
+  </h5>
+</div>
+<div class="modal-body">
+  <div ng-show="page=='welcome'">
+    <div class="titlebar"><h3 localize="Welcome"></h3></div>
+    <div class="page">
+      <p localize="This wizard will guide you through the process of creating a new reference frame. A reference frame allows you to have local coordinates, scale and time relative to the rest of the universe. The reference can be based on fixed offsets, spherical coordinates, Keplarian orbits, or a interpolated values from a list of data/time and position offsets."></p>
+      <div class="iblock">
+        <label localize="Reference Frame Name"></label>
+        <input type="text" ng-model="refFrameName" data-ng-change="buttonsEnabled.next = refFrameName.length > 0"/>
+      </div>
+      <div class="iblock">
+        <label localize="Offset type"></label>
+        <select ng-change="setOffsetType()" ng-model="offsetType" ng-options="c.type as c.label for c in offsetTypes"></select>
+
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <a class="btn" ng-class="{'disabled':!buttonsEnabled.back}" localize="Back" ng-disabled="!buttonsEnabled.back"></a>
+    <a class="btn" ng-class="{'disabled':!buttonsEnabled.next}" localize="Next" ng-disabled="!buttonsEnabled.next"></a>
+    <a class="btn" ng-class="{'disabled':!buttonsEnabled.finish}" localize="Finish" ng-disabled="!buttonsEnabled.finish"></a>
+  </div>
+
+
+</div>
