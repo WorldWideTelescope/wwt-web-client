@@ -12,6 +12,21 @@ namespace wwtlib
         public ImageElement ImageElement = null;
         public WebGLTexture Texture2d = null;
 
+        public static WebGLTexture empty = null;
+
+        public static WebGLTexture GetEmpty()
+        {
+            if (empty == null)
+            {
+                empty = Tile.PrepDevice.createTexture();
+                Tile.PrepDevice.bindTexture(GL.TEXTURE_2D, empty);
+                Tile.PrepDevice.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, (System.Html.WebGLArray)(object)(new Uint8Array(new Byte[] { 0, 0, 0, 0 })));
+                Tile.PrepDevice.bindTexture(GL.TEXTURE_2D, null);
+            }
+
+            return empty;
+        }
+
         public Texture()
         {
 
@@ -125,6 +140,7 @@ namespace wwtlib
                 }
             }
         }
+
 
         public static bool IsPowerOfTwo(int val)
         {
