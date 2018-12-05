@@ -101,11 +101,16 @@
     }, 888)
 
   }
-
+  var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
+  var showFrameWizardDialog = function(){
+    console.log({frameWizArgs:arguments});
+  };
+  
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       wwt.wc.add_colorPickerDisplay(showColorpicker);
+      frameWizardDialog.add_showDialogHook(showFrameWizardDialog);
     }
   };
 }]);
