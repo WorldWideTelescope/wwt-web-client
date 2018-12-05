@@ -7712,6 +7712,42 @@ table.table tbody td {
 .wwt-modal.vo-cone-modal .modal-dialog .modal-content {
   width: 1120px;
 }
+.wwt-modal.ref-frame .modal-dialog {
+  width: 800px;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content {
+  width: inherit;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body {
+  padding: 0;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body p {
+  margin: 15px 0;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .titlebar {
+  background-color: rgba(222, 222, 222, 0.05);
+  padding: 2px 16px;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page {
+  height: 280px;
+  padding: 16px;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page .iblock {
+  margin-right: 8px;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page label {
+  display: block;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .footer {
+  background-color: rgba(107, 169, 230, 0.15);
+  height: 48px;
+  padding: 12px;
+  text-align: right;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .footer .btn {
+  width: 80px;
+  margin-left: 8px;
+}
 #simplemodal #simpleinput {
   width: 271px !important;
 }

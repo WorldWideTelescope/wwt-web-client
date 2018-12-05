@@ -61,7 +61,7 @@
     });
   };
 
-	var showColorpicker = function(colorpicker,e){
+  var showColorpicker = function(colorpicker,e){
     var modalScope = $rootScope.$new();
     modalScope.colorpicker = colorpicker;
     modalScope.mouse = e;
@@ -102,10 +102,23 @@
 
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
-  var showFrameWizardDialog = function(){
-    console.log({frameWizArgs:arguments});
+  var showFrameWizardDialog = function(refFrame){
+    console.log({refFrame:refFrame});
+    var modalScope = $rootScope.$new();
+    modalScope.refFrame = refFrame;
+    //modalScope.mouse = e;
+    modalScope.customClass = 'ref-frame';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html',
+      contentTemplate: 'views/modals/ref-frame-wiz.html',
+      show: true,
+      placement: 'center',
+      backdrop: false,
+      controller:'refFrameController'
+    });
   };
-  
+
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);

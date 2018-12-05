@@ -84,6 +84,7 @@ module.exports = function (grunt) {
           'controllers/modals/VoConeSearchController.js',
           'controllers/modals/VOTableViewerController.js',
           'controllers/modals/colorpickerController.js',
+          'controllers/modals/refframeController.js',
           'controllers/LoginController.js',
           'controls/move.js',
           'controls/util.js'

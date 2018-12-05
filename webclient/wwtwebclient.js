@@ -2689,7 +2689,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
     });
   };
 
-	var showColorpicker = function(colorpicker,e){
+  var showColorpicker = function(colorpicker,e){
     var modalScope = $rootScope.$new();
     modalScope.colorpicker = colorpicker;
     modalScope.mouse = e;
@@ -2730,10 +2730,23 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
-  var showFrameWizardDialog = function(){
-    console.log({frameWizArgs:arguments});
+  var showFrameWizardDialog = function(refFrame){
+    console.log({refFrame:refFrame});
+    var modalScope = $rootScope.$new();
+    modalScope.refFrame = refFrame;
+    //modalScope.mouse = e;
+    modalScope.customClass = 'ref-frame';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html',
+      contentTemplate: 'views/modals/ref-frame-wiz.html',
+      show: true,
+      placement: 'center',
+      backdrop: false,
+      controller:'refFrameController'
+    });
   };
-  
+
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
@@ -8438,6 +8451,32 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
 
   setTimeout($scope.init,800);
   }]);
+
+wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
+
+  $scope.page = 'welcome';
+  $scope.offsetTypes = [{
+    type:'FixedSherical',
+    label:'Fixed Spherical'
+  },{
+    type: 'Orbital',
+    label:'Orbital'
+  },{
+    type: 'Trajectory',
+    label:'Trajectory'
+  },{
+    type: 'Synodic',
+    label:'Synodic'
+  }];
+  $scope.offsetType='FixedSherical';
+  $scope.buttonsEnabled = {
+    next:false,
+    back:false,
+    finish:false
+  };
+
+  $scope.refFrameName = '';
+}]);
 
 wwt.controllers.controller('LoginController',
     ['$scope',
