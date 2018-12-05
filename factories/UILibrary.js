@@ -105,7 +105,7 @@
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
-      wwt.wc.add_colorPickerDisplay(showColorpicker)
+      wwt.wc.add_colorPickerDisplay(showColorpicker);
     }
   };
 }]);
