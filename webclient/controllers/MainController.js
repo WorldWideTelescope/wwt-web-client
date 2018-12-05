@@ -452,7 +452,6 @@ wwt.controllers.controller('MainController',
       };
       //#endregion
 
-
       //#region viewport/finderscope
       var viewportChange = function (event, viewport) {
         if (viewport.isDirty || viewport.init) {

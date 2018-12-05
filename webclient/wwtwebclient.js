@@ -2733,7 +2733,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
-      wwt.wc.add_colorPickerDisplay(showColorpicker)
+      wwt.wc.add_colorPickerDisplay(showColorpicker);
     }
   };
 }]);
@@ -4693,7 +4693,6 @@ wwt.controllers.controller('MainController',
 
       };
       //#endregion
-
 
       //#region viewport/finderscope
       var viewportChange = function (event, viewport) {
