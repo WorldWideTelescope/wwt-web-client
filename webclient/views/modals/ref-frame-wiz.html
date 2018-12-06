@@ -20,10 +20,85 @@
       </div>
     </div>
   </div>
+  <div ng-show="page=='options'">
+    <div class="titlebar"><h3 localize="General Options"></h3></div>
+    <div class="page">
+      <p localize="The Mean allows you to specify the primary bounds of the reference frame such as the surface height of a planet, or the bounding sphere of a 3d model of a spacecraft. Rotation period and zero rotation day allow the specification of a rotating frame of reference. Heading Pitch and roll allow for orientation relative to the parent reference frame. Station Keeping automatically orients the reference frame to track the Earth rather than tumble in orbit."></p>
+      <table style="table-layout: fixed;width:90%">
+        <colgroup>
+          <col style="width:27%">
+          <col style="width:27%">
+          <col style="width:19%">
+          <col style="width:27%">
+        </colgroup>
+        <tr>
+          <td>
+            <label localize="Mean Radius (meters)"></label>
+            <input type="number" value="0"/>
+          </td>
+          <td><label localize="Rotation Period (days)"></label>
+            <input type="number" value="0"/>
+          </td>
+          <td><label localize="Heading"></label>
+            <input type="number" value="0"/>
+          </td>
+          <td rowspan="3">
+            <label localize="Orbit/Point Color"></label>
+            <input type="color" value="#eeeeee"/>
+            <p><label localize="Show as Point at Distance"></label></p>
+            <p><label localize="Show Orbit Path"></label></p>
+          </td>
+        </tr>
+        <tr>
+          <td><label localize="Oblateness (Percent)"></label>
+            <input type="number" value="0"/>
+          </td>
+          <td><label localize="Zero Rotation (Julian Day)"></label>
+            <input type="number" value="0"/>
+          </td>
+          <td><label localize="Pitch"></label>
+            <input type="number" value="0"/>
+          </td>
+        </tr>
+        <tr>
+          <td><label localize="Scale (Meters to Units)"></label>
+            <input type="number" value="0"/>
+          </td>
+          <td><label localize="Station Keeping"></label></td>
+          <td><label localize="Roll"></label>
+            <input type="number" value="0"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div ng-show="page=='position'">
+    <div class="titlebar"><h3 localize="Position"></h3></div>
+    <div class="page">
+      <p localize="Select the Latitude, Longitude, and Altitude"></p>
+
+    </div>
+  </div>
+  <div ng-show="page=='trajectory'">
+    <div class="titlebar"><h3 localize="Trajectory"></h3></div>
+    <div class="page">
+      <p localize="Trajectory..."></p>
+
+    </div>
+  </div>
   <div class="footer">
-    <a class="btn" ng-class="{'disabled':!buttonsEnabled.back}" localize="Back" ng-disabled="!buttonsEnabled.back"></a>
-    <a class="btn" ng-class="{'disabled':!buttonsEnabled.next}" localize="Next" ng-disabled="!buttonsEnabled.next"></a>
-    <a class="btn" ng-class="{'disabled':!buttonsEnabled.finish}" localize="Finish" ng-disabled="!buttonsEnabled.finish"></a>
+    <a class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
+       localize="Back" ng-disabled="!buttonsEnabled.back"
+      ng-click="back()"
+    ></a>
+    <a class="btn" ng-class="{'disabled':!buttonsEnabled.next}"
+       localize="Next" ng-disabled="!buttonsEnabled.next"
+      ng-click="next()"
+    ></a>
+    <a class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
+       localize="Finish" ng-disabled="!buttonsEnabled.finish"
+      ng-click="finish()"
+    ></a>
   </div>
 
 

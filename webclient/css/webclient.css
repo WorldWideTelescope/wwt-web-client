@@ -7738,6 +7738,12 @@ table.table tbody td {
 .wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page label {
   display: block;
 }
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td {
+  padding-right: 12px;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td input {
+  max-width: 95%;
+}
 .wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .footer {
   background-color: rgba(107, 169, 230, 0.15);
   height: 48px;
