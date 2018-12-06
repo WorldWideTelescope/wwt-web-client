@@ -34,39 +34,54 @@
         <tr>
           <td>
             <label localize="Mean Radius (meters)"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.meanRadius"/>
           </td>
           <td><label localize="Rotation Period (days)"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.rotationalPeriod"/>
           </td>
           <td><label localize="Heading"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.heading"/>
           </td>
           <td rowspan="3">
             <label localize="Orbit/Point Color"></label>
-            <input type="color" value="#eeeeee"/>
-            <p><label localize="Show as Point at Distance"></label></p>
-            <p><label localize="Show Orbit Path"></label></p>
+            <input type="color" ng-change="colorChange()" ng-model="hexColor"/>
+            <div class="checkbox">
+              <label ng-class="refFrame.showAsPoint ? 'checked' : ''">
+                <input type="checkbox" ng-model="refFrame.showAsPoint"  />
+                <span localize="Show as Point at Distance"></span>
+              </label>
+            </div>
+            <div class="checkbox">
+              <label ng-class="refFrame.showOrbitPath ? 'checked' : ''">
+                <input type="checkbox" ng-model="refFrame.showOrbitPath"  />
+                <span localize="Show Orbit Path"></span>
+              </label>
+            </div>
           </td>
         </tr>
         <tr>
           <td><label localize="Oblateness (Percent)"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.oblateness"/>
           </td>
           <td><label localize="Zero Rotation (Julian Day)"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.zeroRotationDate"/>
           </td>
           <td><label localize="Pitch"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.pitch"/>
           </td>
         </tr>
         <tr>
           <td><label localize="Scale (Meters to Units)"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.scale"/>
           </td>
-          <td><label localize="Station Keeping"></label></td>
+          <td><div class="checkbox">
+            <label ng-class="refFrame.stationKeeping ? 'checked' : ''">
+              <input type="checkbox" ng-model="refFrame.stationKeeping"  />
+              <span localize="Station Keeping"></span>
+            </label>
+          </div></td>
           <td><label localize="Roll"></label>
-            <input type="number" value="0"/>
+            <input type="number" ng-model="refFrame.roll"/>
           </td>
         </tr>
       </table>
