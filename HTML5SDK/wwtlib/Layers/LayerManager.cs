@@ -404,6 +404,23 @@ namespace wwtlib
             return layer;
         }
 
+        public static ImageSetLayer AddFitsImageSetLayer(ImageSetLayer layer, string title)
+        {
+            layer.DoneLoading(null);
+            layer.Name = title;
+            layer.Astronomical = true;
+            layer.ReferenceFrame = "Sky";
+            LayerList[layer.ID] = layer;
+            AllMaps["Sky"].Layers.Add(layer);
+            AllMaps["Sky"].Open = true;
+            layer.Enabled = true;
+            version++;
+            LoadTree();
+            return layer;
+        }
+
+
+
         public static string GetNextFitsName()
         {
             int currentNumber = 0;
