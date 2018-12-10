@@ -37560,7 +37560,7 @@ window.wwtlib = function(){
         Histogram.updateScale(this, scaleType, min, max);
       }
     },
-    setImageZ: function(scaleType, z) {
+    setImageZ: function(z) {
       if (ss.canCast(this._imageSet$1.get_wcsImage(), FitsImage)) {
         Histogram.updateImage(this, z);
       }
