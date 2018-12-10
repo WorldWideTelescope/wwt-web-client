@@ -5,6 +5,7 @@ using System.Html;
 using System.Html.Media.Graphics;
 namespace wwtlib
 {
+    public delegate void ImagesetLoaded(ImageSetLayer imageset);
     public class ScriptInterface
     {
         bool missedReady = false;
@@ -246,10 +247,10 @@ namespace wwtlib
 
         public ImageSetLayer LoadFits(string url)
         {
-            return LoadFitsLayer(url, "", true);
+            return LoadFitsLayer(url, "", true, null);
         }
 
-        public ImageSetLayer LoadFitsLayer(string url, string name, bool gotoTarget)
+        public ImageSetLayer LoadFitsLayer(string url, string name, bool gotoTarget, ImagesetLoaded loaded)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -302,6 +303,10 @@ namespace wwtlib
                 if (gotoTarget)
                 {
                     WWTControl.Singleton.GotoRADecZoom(wcsImage.CenterX / 15, wcsImage.CenterY, 10 * wcsImage.ScaleY * height, false);
+                }
+                if (loaded != null)
+                {
+                    loaded(imagesetLayer);
                 }
             });
 
