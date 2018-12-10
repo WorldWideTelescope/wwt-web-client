@@ -244,53 +244,70 @@ namespace wwtlib
 
         }
 
-        public void LoadFits(string url)
+        public ImageSetLayer LoadFits(string url)
         {
-            FitsImage img = new FitsImage(url, null, OnWcsLoad);
-           
+            return LoadFitsLayer(url, "", true);
         }
 
-        private void OnWcsLoad(WcsImage wcsImage)
+        public ImageSetLayer LoadFitsLayer(string url, string name, bool gotoTarget)
         {
-            int width = (int)wcsImage.SizeX;
-            int height = (int)wcsImage.SizeY;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = LayerManager.GetNextFitsName();
+            }
 
-            Imageset imageset = Imageset.Create(
-                        wcsImage.Description,
-                        Util.GetHashCode(wcsImage.Filename).ToString(),
-                        ImageSetType.Sky,
-                        BandPass.Visible,
-                        ProjectionType.SkyImage,
-                        Util.GetHashCode(wcsImage.Filename),
-                        0,
-                        0,
-                        256,
-                        wcsImage.ScaleY,
-                        ".tif",
-                        wcsImage.ScaleX > 0,
-                        "",
-                        wcsImage.CenterX,
-                        wcsImage.CenterY,
-                        wcsImage.Rotation,
-                        false,
-                        "",
-                        false,
-                        false,
-                        1,
-                        wcsImage.ReferenceX,
-                        wcsImage.ReferenceY,
-                        wcsImage.Copyright,
-                        wcsImage.CreditsUrl,
-                        "",
-                        "",
-                        0,
-                        ""
-                        );
-            imageset.WcsImage = wcsImage;
-            LayerManager.AddImageSetLayer(imageset, LayerManager.GetNextFitsName());
-            LayerManager.LoadTree();
-            WWTControl.Singleton.GotoRADecZoom(wcsImage.CenterX/15, wcsImage.CenterY, 10 * wcsImage.ScaleY * height, false);
+            ImageSetLayer imagesetLayer = new ImageSetLayer();
+
+            FitsImage img = new FitsImage(url, null, delegate (WcsImage wcsImage)
+            {
+                int width = (int)wcsImage.SizeX;
+                int height = (int)wcsImage.SizeY;
+
+                Imageset imageset = Imageset.Create(
+                            wcsImage.Description,
+                            Util.GetHashCode(wcsImage.Filename).ToString(),
+                            ImageSetType.Sky,
+                            BandPass.Visible,
+                            ProjectionType.SkyImage,
+                            Util.GetHashCode(wcsImage.Filename),
+                            0,
+                            0,
+                            256,
+                            wcsImage.ScaleY,
+                            ".tif",
+                            wcsImage.ScaleX > 0,
+                            "",
+                            wcsImage.CenterX,
+                            wcsImage.CenterY,
+                            wcsImage.Rotation,
+                            false,
+                            "",
+                            false,
+                            false,
+                            1,
+                            wcsImage.ReferenceX,
+                            wcsImage.ReferenceY,
+                            wcsImage.Copyright,
+                            wcsImage.CreditsUrl,
+                            "",
+                            "",
+                            0,
+                            ""
+                            );
+
+                imageset.WcsImage = wcsImage;
+                imagesetLayer.ImageSet = imageset;
+                LayerManager.AddFitsImageSetLayer(imagesetLayer, name);
+                LayerManager.LoadTree();
+                if (gotoTarget)
+                {
+                    WWTControl.Singleton.GotoRADecZoom(wcsImage.CenterX / 15, wcsImage.CenterY, 10 * wcsImage.ScaleY * height, false);
+                }
+            });
+
+            return imagesetLayer;
         }
+
 
         public bool hideTourFeedback = false;
         public bool HideTourFeedback

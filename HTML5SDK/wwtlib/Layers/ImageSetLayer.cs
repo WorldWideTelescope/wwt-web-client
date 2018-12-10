@@ -166,6 +166,26 @@ namespace wwtlib
             base.SetParams(paramList);
         }
 
+        public void SetImageScale(ScaleTypes scaleType, double min, double max)
+        {
+            this.min = min;
+            this.max = max;
+            this.lastScale = scaleType;
+
+            if (imageSet.WcsImage is FitsImage)
+            {
+                Histogram.UpdateScale(this, scaleType, min, max);
+            }
+        }
+    
+        public void SetImageZ(ScaleTypes scaleType, double z)
+        {
+            if (imageSet.WcsImage is FitsImage)
+            {
+                Histogram.UpdateImage(this, z);
+            }
+        }
+
         public override void LoadData(TourDocument tourDoc, string filename)
         {
             if (extension.ToLowerCase().StartsWith(".fit"))

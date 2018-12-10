@@ -72,10 +72,17 @@ namespace wwtlib
         {
             FitsImage image = isl.ImageSet.WcsImage as FitsImage;
             SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
-            double factor = (image.MaxVal - image.MinVal) / 256.0;
             double low = image.lastBitmapMin;
             double hi = image.lastBitmapMax;
             Tile.texture2d = image.GetScaledBitmap(low, hi, image.lastScale, Math.Floor(z* (image.Depth-1))).GetTexture();
+        }
+
+        public static void UpdateScale(ImageSetLayer isl, ScaleTypes scale, double low, double hi)
+        {
+            FitsImage image = isl.ImageSet.WcsImage as FitsImage;
+            SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
+            int z = image.lastBitmapZ;
+            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z).GetTexture();
         }
 
         public void IgnoreMe(ElementEvent e)
@@ -91,7 +98,7 @@ namespace wwtlib
             ignoreNextClick = true;
         }
 
-            int downPosition = 0;
+        int downPosition = 0;
         int lowPosition = 0;
         int highPosition = 255;
         int center = 127;
