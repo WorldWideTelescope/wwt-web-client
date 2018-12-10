@@ -51,7 +51,7 @@ namespace wwtlib
             XmlNode imageSetNode = Util.SelectSingleNode(node, "ImageSet");
 
             imageSet = Imageset.FromXMLNode(imageSetNode);
-                       
+
 
             if (node.Attributes.GetNamedItem("Extension") != null)
             {
@@ -144,10 +144,10 @@ namespace wwtlib
             if (imageSet.WcsImage is FitsImage)
             {
                 string fName = ((WcsImage)imageSet.WcsImage).Filename;
-                
+
                 string fileName = fc.TempDirectory + string.Format("{0}\\{1}{2}", fc.PackageID, this.ID.ToString(), extension);
 
-                fc.AddFile(fileName,((FitsImage)imageSet.WcsImage).sourceBlob);
+                fc.AddFile(fileName, ((FitsImage)imageSet.WcsImage).sourceBlob);
             }
         }
 
@@ -177,8 +177,8 @@ namespace wwtlib
                 Histogram.UpdateScale(this, scaleType, min, max);
             }
         }
-    
-        public void SetImageZ(ScaleTypes scaleType, double z)
+
+        public void SetImageZ(double z)
         {
             if (imageSet.WcsImage is FitsImage)
             {
