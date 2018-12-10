@@ -16607,9 +16607,9 @@ window.wwtlib = function(){
       }
     },
     loadFits: function(url) {
-      return this.loadFitsLayer(url, '', true);
+      return this.loadFitsLayer(url, '', true, null);
     },
-    loadFitsLayer: function(url, name, gotoTarget) {
+    loadFitsLayer: function(url, name, gotoTarget, loaded) {
       if (ss.whitespace(name)) {
         name = LayerManager.getNextFitsName();
       }
@@ -16624,6 +16624,9 @@ window.wwtlib = function(){
         LayerManager.loadTree();
         if (gotoTarget) {
           WWTControl.singleton.gotoRADecZoom(wcsImage.get_centerX() / 15, wcsImage.get_centerY(), 10 * wcsImage.get_scaleY() * height, false);
+        }
+        if (loaded != null) {
+          loaded(imagesetLayer);
         }
       });
       return imagesetLayer;
