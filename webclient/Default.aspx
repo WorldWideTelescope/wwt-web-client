@@ -35,6 +35,8 @@
 
       if (Request.QueryString["debug"] != null)
       {
+        Random rnd = new Random();
+        ResourcesVersion = rnd.Next(1, 999999).ToString();
         DebugQs = "?debug=true&v=" + ResourcesVersion;
         Debug = true;
         DotMin = ".js";

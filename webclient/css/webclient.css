@@ -7732,13 +7732,25 @@ table.table tbody td {
   height: 280px;
   padding: 16px;
 }
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page p {
+  font-size: 13px;
+  margin-top: 3px;
+}
 .wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page .iblock {
   margin-right: 8px;
 }
 .wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page label {
   display: block;
 }
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page table {
+  table-layout: fixed;
+  width: 90%;
+}
+.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page table.v-pad td {
+  height: 65px;
+}
 .wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td {
+  height: 50px;
   vertical-align: top;
   padding-right: 12px;
 }

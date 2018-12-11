@@ -8,14 +8,15 @@
   <div ng-show="page=='welcome'">
     <div class="titlebar"><h3 localize="Welcome"></h3></div>
     <div class="page">
-      <p localize="This wizard will guide you through the process of creating a new reference frame. A reference frame allows you to have local coordinates, scale and time relative to the rest of the universe. The reference can be based on fixed offsets, spherical coordinates, Keplarian orbits, or a interpolated values from a list of data/time and position offsets."></p>
+      <p
+        localize="This wizard will guide you through the process of creating a new reference frame. A reference frame allows you to have local coordinates, scale and time relative to the rest of the universe. The reference can be based on fixed offsets, spherical coordinates, Keplarian orbits, or a interpolated values from a list of data/time and position offsets."></p>
       <div class="iblock">
         <label localize="Reference Frame Name"></label>
-        <input type="text" ng-model="refFrameName" data-ng-change="buttonsEnabled.next = refFrameName.length > 0"/>
+        <input type="text" ng-model="refFrame.name" data-ng-change="buttonsEnabled.next = refFrame.name.length > 0"/>
       </div>
       <div class="iblock">
         <label localize="Offset type"></label>
-        <select ng-change="setOffsetType()" ng-model="offsetType" ng-options="c.type as c.label for c in offsetTypes"></select>
+        <select ng-model="refFrame.referenceFrameType" ng-options="c.type as c.label for c in offsetTypes"></select>
 
       </div>
     </div>
@@ -23,7 +24,8 @@
   <div ng-show="page=='options'">
     <div class="titlebar"><h3 localize="General Options"></h3></div>
     <div class="page">
-      <p localize="The Mean allows you to specify the primary bounds of the reference frame such as the surface height of a planet, or the bounding sphere of a 3d model of a spacecraft. Rotation period and zero rotation day allow the specification of a rotating frame of reference. Heading Pitch and roll allow for orientation relative to the parent reference frame. Station Keeping automatically orients the reference frame to track the Earth rather than tumble in orbit."></p>
+      <p
+        localize="The Mean allows you to specify the primary bounds of the reference frame such as the surface height of a planet, or the bounding sphere of a 3d model of a spacecraft. Rotation period and zero rotation day allow the specification of a rotating frame of reference. Heading Pitch and roll allow for orientation relative to the parent reference frame. Station Keeping automatically orients the reference frame to track the Earth rather than tumble in orbit."></p>
       <table style="table-layout: fixed;width:90%">
         <colgroup>
           <col style="width:27%">
@@ -47,13 +49,13 @@
             <input type="color" ng-change="colorChange()" ng-model="hexColor"/>
             <div class="checkbox">
               <label ng-class="refFrame.showAsPoint ? 'checked' : ''">
-                <input type="checkbox" ng-model="refFrame.showAsPoint"  />
+                <input type="checkbox" ng-model="refFrame.showAsPoint"/>
                 <span localize="Show as Point at Distance"></span>
               </label>
             </div>
             <div class="checkbox">
               <label ng-class="refFrame.showOrbitPath ? 'checked' : ''">
-                <input type="checkbox" ng-model="refFrame.showOrbitPath"  />
+                <input type="checkbox" ng-model="refFrame.showOrbitPath"/>
                 <span localize="Show Orbit Path"></span>
               </label>
             </div>
@@ -74,12 +76,14 @@
           <td><label localize="Scale (Meters to Units)"></label>
             <input type="number" ng-model="refFrame.scale"/>
           </td>
-          <td><div class="checkbox">
-            <label ng-class="refFrame.stationKeeping ? 'checked' : ''">
-              <input type="checkbox" ng-model="refFrame.stationKeeping"  />
-              <span localize="Station Keeping"></span>
-            </label>
-          </div></td>
+          <td>
+            <div class="checkbox">
+              <label ng-class="refFrame.stationKeeping ? 'checked' : ''">
+                <input type="checkbox" ng-model="refFrame.stationKeeping"/>
+                <span localize="Station Keeping"></span>
+              </label>
+            </div>
+          </td>
           <td><label localize="Roll"></label>
             <input type="number" ng-model="refFrame.roll"/>
           </td>
@@ -89,9 +93,96 @@
   </div>
   <div ng-show="page=='position'">
     <div class="titlebar"><h3 localize="Position"></h3></div>
-    <div class="page">
-      <p localize="Select the Latitude, Longitude, and Altitude"></p>
+    <div class="page" ng-show="refFrame.referenceFrameType">
+      <p localize="A Keplarian orbit is an elliptical orbit defined by at least 6 parameters. There are some variations in how those parameters are described, but most orbits can be translated into the terms below."></p>
+      <table style="width:100%;margin-top:13px;">
+        <colgroup>
+          <col style="width:27%">
+          <col style="width:27%">
+          <col style="width:27%">
+          <col style="width:19%">
+        </colgroup>
+        <tr>
+          <td>
+            <label localize="Semimajor Axis (a)"></label>
+            <input type="number" ng-model="refFrame.semiMajorAxis"/>
+          </td>
+          <td>
+            <label localize="Semimajor Axis Units"></label>
+            <select ng-model="refFrame.semiMajorAxisUnits" ng-options="u.type as u.label for u in altUnits"></select>
+          </td>
+          <td>
+            <label localize="Mean anomaly at epoch"></label>
+            <input type="number" ng-model="refFrame.meanAnomolyAtEpoch"/>
+          </td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>
+            <label localize="Eccentricity (e)"></label>
+            <input type="number" ng-model="refFrame.eccentricity"/>
+          </td>
+          <td>
+            <label localize="Argument of periapsis"></label>
+            <input type="number" ng-model="refFrame.argumentOfPeriapsis"/>
+          </td>
+          <td>
+            <label localize="Epoch (Julian Date)"></label>
+            <input type="number" ng-model="refFrame.epoch"/>
+          </td>
+          <td>
+            &nbsp;
+          </td>
 
+        </tr>
+        <tr>
+          <td>
+            <label localize="Inclination"></label>
+            <input type="number" ng-model="refFrame.inclination"/>
+          </td>
+          <td>
+            <label localize="Longitude of the Ascending Node"></label>
+            <input type="number" ng-model="refFrame.longitudeOfAscendingNode"/>
+          </td>
+          <td>
+            <label localize="Mean Daily Motion"></label>
+            <input type="number" ng-model="refFrame.meanDailyMotion"/>
+          </td>
+          <td>
+            <label>Paste TLE</label>
+            <input type="text" />
+          </td>
+
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="refFrame.referenceFrameType==0">
+      <p localize="Select the Latitude, Longitude, and Altitude"></p>
+      <table class="v-pad">
+        <colgroup>
+          <col style="width:27%"/>
+          <col style="width:27%"/>
+          <col style="width:46%"/>
+        </colgroup>
+        <tr>
+          <td>
+            <label localize="Latitude (Decimal Degrees)"></label>
+            <input type="number" ng-model="refFrame.lat"/>
+          </td>
+          <td><label localize="Altitude (Meters)"></label>
+            <input type="number" ng-model="refFrame.altitude"/>
+          </td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>
+            <label localize="Longitude (Decimal Degrees)"></label>
+            <input type="number" ng-model="refFrame.lng"/>
+          </td>
+          <td colspan="2"><label>&nbsp;</label>
+            <!--??<a class="btn" localize="Get From View" ng-click=""></a>-->
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div ng-show="page=='trajectory'">
@@ -104,15 +195,15 @@
   <div class="footer">
     <a class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
        localize="Back" ng-disabled="!buttonsEnabled.back"
-      ng-click="back()"
+       ng-click="back()"
     ></a>
     <a class="btn" ng-class="{'disabled':!buttonsEnabled.next}"
        localize="Next" ng-disabled="!buttonsEnabled.next"
-      ng-click="next()"
+       ng-click="next()"
     ></a>
     <a class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
        localize="Finish" ng-disabled="!buttonsEnabled.finish"
-      ng-click="finish()"
+       ng-click="finish()"
     ></a>
   </div>
 

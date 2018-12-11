@@ -55,6 +55,10 @@
           padding:2px 16px;
         }
         .page{
+          p{
+            font-size:13px;
+            margin-top:3px;
+          }
           .iblock{
             margin-right:8px;
           }
@@ -63,7 +67,17 @@
           }
           height:280px;
           padding:16px;
+          table{
+            table-layout: fixed;
+            width:90%;
+            &.v-pad {
+              td {
+                height: 65px;
+              }
+            }
+          }
           td{
+            height:50px;
             vertical-align: top;
             padding-right:12px;
             input{
