@@ -26,7 +26,8 @@
 		getImageSetType: getImageSetType,
 		trackViewportChanges: trackViewportChanges,
     parseHms: parseHms,
-    mobileLink:mobileLink
+    mobileLink:mobileLink,
+    resVersion:getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999)
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {

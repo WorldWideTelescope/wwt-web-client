@@ -53,8 +53,8 @@
 
 	  $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html',
-      contentTemplate: 'views/modals/vo-table-viewer.html',
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/vo-table-viewer.html?v='+util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false
@@ -68,14 +68,14 @@
     modalScope.customClass = 'colorpicker-modal';
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html',
-      contentTemplate: 'views/modals/colorpicker.html',
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/colorpicker.html?v='+util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
       controller:'colorpickerController'
     });
-  }
+  };
 
   var loadingModal;
 	$rootScope.loading = function(flag,content){
@@ -84,7 +84,7 @@
 	    loadingModal = null;
     }if (flag){
       loadingModal = $modal({
-        templateUrl: 'views/modals/loading-content.html',
+        templateUrl: 'views/modals/loading-content.html?v='+util.resVersion,
         show: true,
         content:content || 'Content Loading. Please Wait...',
         placement: 'center'
@@ -95,7 +95,7 @@
     setTimeout(function () {
       wwtlib.WWTControl.singleton.render = function () {
         console.log('fixed render loop :)');
-      }
+      };
       //testing only:
       $('#WorldWideTelescopeControlHost').html('');
     }, 888)
@@ -105,13 +105,14 @@
   var showFrameWizardDialog = function(refFrame){
     console.log({refFrame:refFrame});
     var modalScope = $rootScope.$new();
+    refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
     //modalScope.mouse = e;
     modalScope.customClass = 'ref-frame';
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html',
-      contentTemplate: 'views/modals/ref-frame-wiz.html',
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/ref-frame-wiz.html?v='+util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
