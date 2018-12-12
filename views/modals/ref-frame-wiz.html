@@ -92,8 +92,11 @@
     </div>
   </div>
   <div ng-show="page=='position'">
-    <div class="titlebar"><h3 localize="Position"></h3></div>
-    <div class="page" ng-show="refFrame.referenceFrameType">
+    <div class="titlebar">
+      <h3 localize="Position" ng-show="refFrame.referenceFrameType!=2"></h3>
+      <h3 localize="Trajectory" ng-show="refFrame.referenceFrameType==2"></h3>
+    </div>
+    <div class="page" ng-show="refFrame.referenceFrameType==1">
       <p localize="A Keplarian orbit is an elliptical orbit defined by at least 6 parameters. There are some variations in how those parameters are described, but most orbits can be translated into the terms below."></p>
       <table style="width:100%;margin-top:13px;">
         <colgroup>
@@ -130,10 +133,7 @@
             <label localize="Epoch (Julian Date)"></label>
             <input type="number" ng-model="refFrame.epoch"/>
           </td>
-          <td>
-            &nbsp;
-          </td>
-
+          <td>&nbsp;</td>
         </tr>
         <tr>
           <td>
@@ -149,10 +149,9 @@
             <input type="number" ng-model="refFrame.meanDailyMotion"/>
           </td>
           <td>
-            <label>Paste TLE</label>
+            <label localize="Paste TLE"></label>
             <input type="text" />
           </td>
-
         </tr>
       </table>
     </div>
@@ -184,14 +183,41 @@
         </tr>
       </table>
     </div>
-  </div>
-  <div ng-show="page=='trajectory'">
-    <div class="titlebar"><h3 localize="Trajectory"></h3></div>
-    <div class="page">
-      <p localize="Trajectory..."></p>
-
+    <div class="page" ng-show="refFrame.referenceFrameType==2">
+      <p localize="Trajectory Reference Frames are based on a time series table of Julian Date/Times and heliocentric X,Y,Z coordinates in the referenced units. The reference frame will orient itself on the path described based on interpolating positions for the current time."></p>
+      <table>
+        <colgroup>
+          <col style="width:27%"/>
+          <col style="width:27%"/>
+          <col style="width:46%"/>
+        </colgroup>
+        <tr>
+          <td>
+            <label>&nbsp;</label>
+            <a class="btn" localize="Import Path" style="width:111px;"></a>
+          </td>
+          <td><label localize="Units"></label>
+            <select ng-model="refFrame.semiMajorAxisUnits" ng-options="u.type as u.label for u in altUnits"></select>
+          </td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td colspan="2">
+            <label localize="Begin Date Range"></label>
+            <input type="date" ng-model="refFrame.beginDate" class="wwtinput">
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td colspan="2">
+            <label localize="End Date Range"></label>
+            <input type="date" ng-model="refFrame.endDate">
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
+
   <div class="footer">
     <a class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
        localize="Back" ng-disabled="!buttonsEnabled.back"
@@ -203,7 +229,7 @@
     ></a>
     <a class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
        localize="Finish" ng-disabled="!buttonsEnabled.finish"
-       ng-click="finish()"
+       ng-click="finish();$hide()"
     ></a>
   </div>
 

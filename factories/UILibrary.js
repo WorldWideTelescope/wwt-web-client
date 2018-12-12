@@ -107,6 +107,7 @@
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
+    modalScope.dialog = frameWizardDialog;
     //modalScope.mouse = e;
     modalScope.customClass = 'ref-frame';
     $modal({
