@@ -1130,8 +1130,7 @@ body.wwt-webclient-wrapper.mobile{
     opacity: 0;
     transition: all linear 1200ms;
   }
-
-  input[type=search], input[type=number], input[type=text], textarea, textarea[readonly] {
+  .wwtinput{
     background: rgba(123,123,123,.5);
     border: solid 1px #394558;
     border-radius: 3px;
@@ -1139,6 +1138,9 @@ body.wwt-webclient-wrapper.mobile{
     color: @text-color;
     box-sizing: border-box;
     height: 22px;
+  }
+  input[type=search], input[type=number], input[type=text], input[type=date], textarea, textarea[readonly] {
+    .wwtinput();
   }
 
   textarea.form-control {

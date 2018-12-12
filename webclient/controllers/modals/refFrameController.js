@@ -1,7 +1,7 @@
 wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
 
   $scope.page = 'welcome';
-  $scope.pages = ['welcome', 'options', 'position', 'trajectory'];
+  $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
   $scope.offsetTypes = [{
     type: 0,
     label: 'Fixed Spherical'
@@ -65,7 +65,8 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     calcButtonState();
   };
   $scope.finish = function () {
-    alert('tba');
+    console.log($scope.dialog);
+    $scope.dialog.OK($scope.refFrame);
   };
 
   calcButtonState();

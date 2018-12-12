@@ -2736,6 +2736,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
+    modalScope.dialog = frameWizardDialog;
     //modalScope.mouse = e;
     modalScope.customClass = 'ref-frame';
     $modal({
@@ -8457,7 +8458,7 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
 wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
 
   $scope.page = 'welcome';
-  $scope.pages = ['welcome', 'options', 'position', 'trajectory'];
+  $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
   $scope.offsetTypes = [{
     type: 0,
     label: 'Fixed Spherical'
@@ -8521,7 +8522,8 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     calcButtonState();
   };
   $scope.finish = function () {
-    alert('tba');
+    console.log($scope.dialog);
+    $scope.dialog.OK($scope.refFrame);
   };
 
   calcButtonState();

@@ -1807,29 +1807,26 @@ namespace wwtlib
         
 
         static void newMenu_Click(object sender, EventArgs e)
-        {
-            
-            LayerMap target = (LayerMap)selectedLayer;
+        {   
             ReferenceFrame frame = new ReferenceFrame();
-
             LayerManager.FrameWizardDialog.Show(frame, e);
-            //frame.SystemGenerated = false;
-            //if (FrameWizard.ShowWizard(frame) == DialogResult.OK)
-            //{
-            //    LayerMap newMap = new LayerMap(frame.Name, ReferenceFrames.Custom);
-            //    if (!AllMaps.ContainsKey(frame.Name))
-            //    {
-            //        newMap.Frame = frame;
-
-            //        target.AddChild(newMap);
-            //        newMap.Frame.Parent = target.Name;
-            //        AllMaps.Add(frame.Name, newMap);
-            //        version++;
-            //        LoadTreeLocal();
-            //    }
-            //}
         }
 
+        public static void referemceFrameWizardFinished(ReferenceFrame frame)
+        {
+            LayerMap target = (LayerMap)selectedLayer;
+            LayerMap newMap = new LayerMap(frame.Name, ReferenceFrames.Custom);
+            if (!AllMaps.ContainsKey(frame.Name))
+            {
+                newMap.Frame = frame;
+
+                target.AddChild(newMap);
+                newMap.Frame.Parent = target.Name;
+                AllMaps[frame.Name] = newMap;
+                version++;
+                //LoadTreeLocal();
+            }
+        }
 
 
 

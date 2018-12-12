@@ -9168,9 +9168,21 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
        -o-transition: all linear 1200ms;
           transition: all linear 1200ms;
 }
+.wwt-webclient-wrapper .wwtinput {
+  background: rgba(123, 123, 123, 0.5);
+  border: solid 1px #394558;
+  border-radius: 3px;
+  padding: 1px 3px;
+  color: rgba(255, 255, 255, 0.8);
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 22px;
+}
 .wwt-webclient-wrapper input[type=search],
 .wwt-webclient-wrapper input[type=number],
 .wwt-webclient-wrapper input[type=text],
+.wwt-webclient-wrapper input[type=date],
 .wwt-webclient-wrapper textarea,
 .wwt-webclient-wrapper textarea[readonly] {
   background: rgba(123, 123, 123, 0.5);
