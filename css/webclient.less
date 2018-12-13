@@ -1127,7 +1127,7 @@ body.wwt-webclient-wrapper.mobile{
     transition: all linear 1200ms;
   }
   .wwtinput{
-    background: rgba(123,123,123,.5);
+    background: fade(@brand-blue, 15%);
     border: solid 1px #394558;
     border-radius: 3px;
     padding: 1px 3px;
@@ -1135,8 +1135,13 @@ body.wwt-webclient-wrapper.mobile{
     box-sizing: border-box;
     height: 22px;
   }
-  input[type=search], input[type=number], input[type=text], input[type=date], textarea, textarea[readonly] {
+  input[type=search], input[type=number], input[type=text], input[type=date], textarea, textarea[readonly],.paste-control {
     .wwtinput();
+  }
+  .paste-control{
+    display: inline-block;
+    width:110px;
+    overflow:hidden;
   }
 
   textarea.form-control {
