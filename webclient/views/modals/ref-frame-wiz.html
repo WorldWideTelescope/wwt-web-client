@@ -6,7 +6,8 @@
 </div>
 <div class="modal-body">
   <div ng-show="page=='welcome'">
-    <div class="titlebar"><h3 localize="Welcome"></h3></div>
+    <div class="titlebar" ng-if="!propertyMode"><h3 localize="Welcome"></h3></div>
+
     <div class="page">
       <p
         localize="This wizard will guide you through the process of creating a new reference frame. A reference frame allows you to have local coordinates, scale and time relative to the rest of the universe. The reference can be based on fixed offsets, spherical coordinates, Keplarian orbits, or a interpolated values from a list of data/time and position offsets."></p>
@@ -22,7 +23,28 @@
     </div>
   </div>
   <div ng-show="page=='options'">
-    <div class="titlebar"><h3 localize="General Options"></h3></div>
+    <div class="ribbon" ng-if="propertyMode">
+      <ul class="wwt-tabs">
+        <li class="active">
+          <div class="outer">
+            <a href="javascript:void(0)">
+              <span class="label" localize="General"></span>
+
+            </a>
+          </div>
+        </li>
+        <li>
+          <div class="outer" ng-click="next()">
+            <a href="javascript:void(0)">
+              <span class="label" localize="Position" ng-if="refFrame.referenceFrameType!=2"></span>
+              <span class="label" localize="Trajectory" ng-if="refFrame.referenceFrameType==2"></span>
+
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="titlebar" ng-if="!propertyMode"><h3 localize="General Options"></h3></div>
     <div class="page">
       <p
         localize="The Mean allows you to specify the primary bounds of the reference frame such as the surface height of a planet, or the bounding sphere of a 3d model of a spacecraft. Rotation period and zero rotation day allow the specification of a rotating frame of reference. Heading Pitch and roll allow for orientation relative to the parent reference frame. Station Keeping automatically orients the reference frame to track the Earth rather than tumble in orbit."></p>
@@ -92,7 +114,28 @@
     </div>
   </div>
   <div ng-show="page=='position'">
-    <div class="titlebar">
+    <div class="ribbon" ng-if="propertyMode">
+      <ul class="wwt-tabs">
+        <li >
+          <div class="outer" ng-click="back()">
+            <a href="javascript:void(0)">
+              <span class="label" localize="General"></span>
+
+            </a>
+          </div>
+        </li>
+        <li class="active">
+          <div class="outer">
+            <a href="javascript:void(0)">
+              <span class="label" localize="Position" ng-if="refFrame.referenceFrameType!=2"></span>
+              <span class="label" localize="Trajectory" ng-if="refFrame.referenceFrameType==2"></span>
+
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="titlebar" ng-if="!propertyMode">
       <h3 localize="Position" ng-show="refFrame.referenceFrameType!=2"></h3>
       <h3 localize="Trajectory" ng-show="refFrame.referenceFrameType==2"></h3>
     </div>
@@ -219,18 +262,19 @@
   </div>
 
   <div class="footer">
-    <a class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
        localize="Back" ng-disabled="!buttonsEnabled.back"
        ng-click="back()"
     ></a>
-    <a class="btn" ng-class="{'disabled':!buttonsEnabled.next}"
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.next}"
        localize="Next" ng-disabled="!buttonsEnabled.next"
        ng-click="next()"
     ></a>
-    <a class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
        localize="Finish" ng-disabled="!buttonsEnabled.finish"
        ng-click="finish();$hide()"
     ></a>
+    <a ng-if="propertyMode" class="btn" localize="Done" ng-click="$hide()"></a>
   </div>
 
 

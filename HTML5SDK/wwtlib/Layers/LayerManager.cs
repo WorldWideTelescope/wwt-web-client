@@ -23,6 +23,12 @@ namespace wwtlib
         {
             get { return _frameWizardDialog; }
         }
+
+        static ReferenceFrameProps _referenceFramePropsDialog = new ReferenceFrameProps();
+        public static ReferenceFrameProps ReferenceFramePropsDialog
+        {
+            get { return _referenceFramePropsDialog; }
+        }
         static bool tourLayers = false;
 
         public static bool TourLayers
@@ -52,6 +58,8 @@ namespace wwtlib
                 WWTControl.scriptInterface.RefreshLayerManagerNow();
             }
         }
+
+
 
         static Dictionary<string, LayerMap> layerMaps = new Dictionary<string, LayerMap>();
         static Dictionary<string, LayerMap> layerMapsTours = new Dictionary<string, LayerMap>();
@@ -1248,7 +1256,7 @@ namespace wwtlib
                 ToolStripMenuItem colorMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(458, "Color/Opacity"));
                 ToolStripMenuItem opacityMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(305, "Opacity"));
 
-                ToolStripMenuItem popertiesMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(20, "Properties"));
+                ToolStripMenuItem propertiesMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(20, "Properties"));
                 ToolStripMenuItem scaleMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(1291, "Scale/Histogram"));
                 ToolStripMenuItem lifeTimeMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(683, "Lifetime"));
                 ToolStripSeparator spacer1 = new ToolStripSeparator();
@@ -1276,7 +1284,7 @@ namespace wwtlib
                 colorMenu.Click = colorMenu_Click;
                 deleteMenu.Click = deleteMenu_Click;
                 renameMenu.Click = renameMenu_Click;
-                popertiesMenu.Click = popertiesMenu_Click;
+                propertiesMenu.Click = propertiesMenu_Click;
                 scaleMenu.Click = scaleMenu_click;
 
 
@@ -1498,7 +1506,7 @@ namespace wwtlib
 
                     if (!Sky)
                     {
-                        //contextMenu.Items.Add(newMenu);
+                        contextMenu.Items.Add(newMenu);
                     }
                     //contextMenu.Items.Add(newLayerGroupMenu);
 
@@ -1542,7 +1550,7 @@ namespace wwtlib
                 {
                     contextMenu.Items.Add(deleteFrameMenu);
 
-                    //contextMenu.Items.Add(popertiesMenu);
+                    contextMenu.Items.Add(popertiesMenu);
 
                 }
 
@@ -1790,18 +1798,11 @@ namespace wwtlib
 
         }
 
-
-
-
         static void FramePropertiesMenu_Click(object sender, EventArgs e)
         {
-            //LayerMap target = (LayerMap)selectedLayer;
-
-            //ReferenceFrame frame = new ReferenceFrame();
-            //if (FrameWizard.ShowPropertiesSheet(target.Frame) == DialogResult.OK)
-            //{
-
-            //}
+            LayerMap target = (LayerMap)selectedLayer;
+            LayerManager.ReferenceFramePropsDialog.Show(target.Frame, e);
+            
         }
 
         
@@ -1824,7 +1825,7 @@ namespace wwtlib
                 newMap.Frame.Parent = target.Name;
                 AllMaps[frame.Name] = newMap;
                 version++;
-                //LoadTreeLocal();
+                LoadTree();
             }
         }
 
@@ -1849,8 +1850,9 @@ namespace wwtlib
             isl.OverrideDefaultLayer = !isl.OverrideDefaultLayer;
         }
 
-        static void popertiesMenu_Click(object sender, EventArgs e)
+        static void propertiesMenu_Click(object sender, EventArgs e)
         {
+            LayerManager.ReferenceFramePropsDialog.Show(sender, e);
             //if (selectedLayer is SpreadSheetLayer)
             //{
             //    SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;

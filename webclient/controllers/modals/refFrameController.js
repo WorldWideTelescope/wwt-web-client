@@ -1,6 +1,6 @@
 wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
 
-  $scope.page = 'welcome';
+  $scope.page = $scope.propertyMode?'options':'welcome';
   $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
   $scope.offsetTypes = [{
     type: 0,
@@ -33,6 +33,7 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     back: false,
     finish: false
   };
+
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };
@@ -68,6 +69,9 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     console.log($scope.dialog);
     $scope.dialog.OK($scope.refFrame);
   };
-
+  if ($scope.propertyMode){
+    $scope.pages.splice(0,1);
+    console.log({pages:$scope.pages});
+  }
   calcButtonState();
 }]);

@@ -2731,12 +2731,13 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
-  var showFrameWizardDialog = function(refFrame){
+  var showFrameWizardDialog = function(refFrame, propertyMode){
     console.log({refFrame:refFrame});
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
     modalScope.dialog = frameWizardDialog;
+    modalScope.propertyMode = propertyMode;
     //modalScope.mouse = e;
     modalScope.customClass = 'ref-frame';
     $modal({
@@ -2750,11 +2751,19 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
     });
   };
 
+  var refFrameDialog = wwtlib.LayerManager.get_referenceFramePropsDialog();
+  console.log(refFrameDialog);
+  var showRefFrameProps = function(refFrame){
+    showFrameWizardDialog(refFrame,true);
+  };
+
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       wwt.wc.add_colorPickerDisplay(showColorpicker);
+      console.log({refFrameDialog:refFrameDialog,frameWizardDialog:frameWizardDialog});
       frameWizardDialog.add_showDialogHook(showFrameWizardDialog);
+      refFrameDialog.add_showDialogHook(showRefFrameProps);
     }
   };
 }]);
@@ -8457,7 +8466,7 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
 
 wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
 
-  $scope.page = 'welcome';
+  $scope.page = $scope.propertyMode?'options':'welcome';
   $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
   $scope.offsetTypes = [{
     type: 0,
@@ -8490,6 +8499,7 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     back: false,
     finish: false
   };
+
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };
@@ -8525,7 +8535,10 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     console.log($scope.dialog);
     $scope.dialog.OK($scope.refFrame);
   };
-
+  if ($scope.propertyMode){
+    $scope.pages.splice(0,1);
+    console.log({pages:$scope.pages});
+  }
   calcButtonState();
 }]);
 

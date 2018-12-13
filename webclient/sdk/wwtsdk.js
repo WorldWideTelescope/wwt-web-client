@@ -11049,6 +11049,9 @@ window.wwtlib = function(){
   LayerManager.get_frameWizardDialog = function() {
     return LayerManager._frameWizardDialog;
   };
+  LayerManager.get_referenceFramePropsDialog = function() {
+    return LayerManager._referenceFramePropsDialog;
+  };
   LayerManager.get_tourLayers = function() {
     return LayerManager._tourLayers;
   };
@@ -11834,7 +11837,7 @@ window.wwtlib = function(){
       var publishMenu = ToolStripMenuItem.create(Language.getLocalizedText(983, 'Publish to Community...'));
       var colorMenu = ToolStripMenuItem.create(Language.getLocalizedText(458, 'Color/Opacity'));
       var opacityMenu = ToolStripMenuItem.create(Language.getLocalizedText(305, 'Opacity'));
-      var popertiesMenu = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
+      var propertiesMenu = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
       var scaleMenu = ToolStripMenuItem.create(Language.getLocalizedText(1291, 'Scale/Histogram'));
       var lifeTimeMenu = ToolStripMenuItem.create(Language.getLocalizedText(683, 'Lifetime'));
       var spacer1 = new ToolStripSeparator();
@@ -11857,7 +11860,7 @@ window.wwtlib = function(){
       colorMenu.click = LayerManager._colorMenu_Click;
       deleteMenu.click = LayerManager._deleteMenu_Click;
       renameMenu.click = LayerManager._renameMenu_Click;
-      popertiesMenu.click = LayerManager._popertiesMenu_Click;
+      propertiesMenu.click = LayerManager._propertiesMenu_Click;
       scaleMenu.click = LayerManager.scaleMenu_click;
       defaultImageset.click = LayerManager._defaultImageset_Click;
       opacityMenu.click = LayerManager._opacityMenu_Click;
@@ -11985,6 +11988,7 @@ window.wwtlib = function(){
           }
         }
         if (!Sky) {
+          LayerManager._contextMenu.items.push(newMenu);
         }
       }
       if (!Sky) {
@@ -12003,6 +12007,7 @@ window.wwtlib = function(){
       }
       if (map.frame.reference === 18) {
         LayerManager._contextMenu.items.push(deleteFrameMenu);
+        LayerManager._contextMenu.items.push(popertiesMenu);
       }
       LayerManager._contextMenu.items.push(spacer1);
       LayerManager._contextMenu._show(Vector2d.create(x, y));
@@ -12066,6 +12071,8 @@ window.wwtlib = function(){
   LayerManager._deleteFrameMenu_Click = function(sender, e) {
   };
   LayerManager._framePropertiesMenu_Click = function(sender, e) {
+    var target = LayerManager._selectedLayer;
+    LayerManager.get_referenceFramePropsDialog().show(target.frame, e);
   };
   LayerManager._newMenu_Click = function(sender, e) {
     var frame = new ReferenceFrame();
@@ -12080,6 +12087,7 @@ window.wwtlib = function(){
       newMap.frame.parent = target.get_name();
       LayerManager.get_allMaps()[frame.name] = newMap;
       LayerManager._version++;
+      LayerManager.loadTree();
     }
   };
   LayerManager._opacityMenu_Click = function(sender, e) {
@@ -12088,7 +12096,8 @@ window.wwtlib = function(){
     var isl = ss.safeCast(LayerManager._selectedLayer, ImageSetLayer);
     isl.set_overrideDefaultLayer(!isl.get_overrideDefaultLayer());
   };
-  LayerManager._popertiesMenu_Click = function(sender, e) {
+  LayerManager._propertiesMenu_Click = function(sender, e) {
+    LayerManager.get_referenceFramePropsDialog().show(sender, e);
   };
   LayerManager._renameMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
@@ -43780,6 +43789,18 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.ReferenceFrameProps
+
+  function ReferenceFrameProps() {
+    Dialog.call(this);
+  }
+  var ReferenceFrameProps$ = {
+    OK: function(frame) {
+      LayerManager.loadTree();
+    }
+  };
+
+
   // wwtlib.Circle
 
   function Circle() {
@@ -45227,6 +45248,7 @@ window.wwtlib = function(){
       FlipbookOverlay: [ FlipbookOverlay, FlipbookOverlay$, Overlay ],
       ToolStripSeparator: [ ToolStripSeparator, ToolStripSeparator$, ToolStripMenuItem ],
       FrameWizard: [ FrameWizard, FrameWizard$, Dialog ],
+      ReferenceFrameProps: [ ReferenceFrameProps, ReferenceFrameProps$, Dialog ],
       Circle: [ Circle, Circle$, Annotation ],
       Poly: [ Poly, Poly$, Annotation ],
       PolyLine: [ PolyLine, PolyLine$, Annotation ],
@@ -45502,6 +45524,7 @@ window.wwtlib = function(){
   KeplerVertex.baseDate = ss.truncate(SpaceTimeController.utcToJulian(ss.now()));
   LayerManager._version = 0;
   LayerManager._frameWizardDialog = new FrameWizard();
+  LayerManager._referenceFramePropsDialog = new ReferenceFrameProps();
   LayerManager._tourLayers = false;
   LayerManager._layerMaps = {};
   LayerManager._layerMapsTours = {};

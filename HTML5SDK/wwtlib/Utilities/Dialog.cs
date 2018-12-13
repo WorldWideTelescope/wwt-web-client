@@ -30,4 +30,15 @@ namespace wwtlib
             LayerManager.referemceFrameWizardFinished(frame);
         }
     }
+    public class ReferenceFrameProps : Dialog
+    {
+        public ReferenceFrameProps()
+        {
+
+        }
+        public void OK(ReferenceFrame frame)
+        {
+            LayerManager.LoadTree();
+        }
+    }
 }
