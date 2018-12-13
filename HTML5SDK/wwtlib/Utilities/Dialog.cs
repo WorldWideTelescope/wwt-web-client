@@ -30,6 +30,7 @@ namespace wwtlib
             LayerManager.referemceFrameWizardFinished(frame);
         }
     }
+
     public class ReferenceFrameProps : Dialog
     {
         public ReferenceFrameProps()
@@ -39,6 +40,18 @@ namespace wwtlib
         public void OK(ReferenceFrame frame)
         {
             LayerManager.LoadTree();
+        }
+    }
+
+    public class GreatCircleDialog : Dialog
+    {
+        public GreatCircleDialog()
+        {
+
+        }
+        public void OK(ReferenceFrame frame)
+        {
+            
         }
     }
 }

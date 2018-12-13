@@ -11052,6 +11052,9 @@ window.wwtlib = function(){
   LayerManager.get_referenceFramePropsDialog = function() {
     return LayerManager._referenceFramePropsDialog;
   };
+  LayerManager.get_greatCircleDlg = function() {
+    return LayerManager._greatCircleDialog;
+  };
   LayerManager.get_tourLayers = function() {
     return LayerManager._tourLayers;
   };
@@ -11992,6 +11995,7 @@ window.wwtlib = function(){
         }
       }
       if (!Sky) {
+        LayerManager._contextMenu.items.push(addGreatCircle);
         LayerManager._contextMenu.items.push(addGirdLayer);
       }
       if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
@@ -12097,7 +12101,6 @@ window.wwtlib = function(){
     isl.set_overrideDefaultLayer(!isl.get_overrideDefaultLayer());
   };
   LayerManager._propertiesMenu_Click = function(sender, e) {
-    LayerManager.get_referenceFramePropsDialog().show(sender, e);
   };
   LayerManager._renameMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
@@ -12342,6 +12345,22 @@ window.wwtlib = function(){
     return data.substr(valStart, valEnd - valStart);
   };
   LayerManager._addGreatCircleLayer = function() {
+    var layer = new GreatCirlceRouteLayer();
+    var camera = WWTControl.singleton.renderContext.viewCamera;
+    layer.set_latStart(camera.lat);
+    layer.set_latEnd(camera.lat - 5);
+    layer.set_lngStart(camera.lng);
+    layer.set_lngEnd(camera.lng + 5);
+    layer.set_width(4);
+    layer.enabled = true;
+    layer.set_name(Language.getLocalizedText(1144, 'Great Circle Route'));
+    LayerManager.get_layerList()[layer.id] = layer;
+    layer.set_referenceFrame(LayerManager._currentMap);
+    LayerManager.get_allMaps()[LayerManager._currentMap].layers.push(layer);
+    LayerManager.get_allMaps()[LayerManager._currentMap].open = true;
+    LayerManager._version++;
+    LayerManager.loadTree();
+    LayerManager.get_greatCircleDlg().show(layer, new ss.EventArgs());
   };
   LayerManager._loadOrbitsFile = function(name, data, currentMap) {
     var layer = new OrbitLayer();
@@ -43801,6 +43820,17 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.GreatCircleDialog
+
+  function GreatCircleDialog() {
+    Dialog.call(this);
+  }
+  var GreatCircleDialog$ = {
+    OK: function(frame) {
+    }
+  };
+
+
   // wwtlib.Circle
 
   function Circle() {
@@ -45249,6 +45279,7 @@ window.wwtlib = function(){
       ToolStripSeparator: [ ToolStripSeparator, ToolStripSeparator$, ToolStripMenuItem ],
       FrameWizard: [ FrameWizard, FrameWizard$, Dialog ],
       ReferenceFrameProps: [ ReferenceFrameProps, ReferenceFrameProps$, Dialog ],
+      GreatCircleDialog: [ GreatCircleDialog, GreatCircleDialog$, Dialog ],
       Circle: [ Circle, Circle$, Annotation ],
       Poly: [ Poly, Poly$, Annotation ],
       PolyLine: [ PolyLine, PolyLine$, Annotation ],
@@ -45525,6 +45556,7 @@ window.wwtlib = function(){
   LayerManager._version = 0;
   LayerManager._frameWizardDialog = new FrameWizard();
   LayerManager._referenceFramePropsDialog = new ReferenceFrameProps();
+  LayerManager._greatCircleDialog = new GreatCircleDialog();
   LayerManager._tourLayers = false;
   LayerManager._layerMaps = {};
   LayerManager._layerMapsTours = {};

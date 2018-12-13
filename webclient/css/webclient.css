@@ -7719,6 +7719,12 @@ table.table tbody td {
 .wwt-modal.vo-cone-modal .modal-dialog .modal-content {
   width: 1120px;
 }
+.wwt-modal.great-circle .modal-dialog {
+  width: 444px;
+}
+.wwt-modal.great-circle .modal-dialog .modal-content {
+  width: 444px;
+}
 .wwt-modal.ref-frame .modal-dialog {
   width: 800px;
 }

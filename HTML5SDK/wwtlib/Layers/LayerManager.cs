@@ -29,6 +29,13 @@ namespace wwtlib
         {
             get { return _referenceFramePropsDialog; }
         }
+
+        static GreatCircleDialog _greatCircleDialog = new GreatCircleDialog();
+        public static GreatCircleDialog GreatCircleDlg
+        {
+            get { return _greatCircleDialog; }
+        }
+
         static bool tourLayers = false;
 
         public static bool TourLayers
@@ -1516,7 +1523,7 @@ namespace wwtlib
                 //contextMenu.Items.Add(addFeedMenu);
                 if (!Sky)
                 {
-                    //contextMenu.Items.Add(addGreatCircle);
+                    contextMenu.Items.Add(addGreatCircle);
                     contextMenu.Items.Add(addGirdLayer);
                 }
 
@@ -1852,7 +1859,7 @@ namespace wwtlib
 
         static void propertiesMenu_Click(object sender, EventArgs e)
         {
-            LayerManager.ReferenceFramePropsDialog.Show(sender, e);
+            
             //if (selectedLayer is SpreadSheetLayer)
             //{
             //    SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;
@@ -2318,25 +2325,24 @@ namespace wwtlib
 
         private static void AddGreatCircleLayer()
         {
-            //GreatCirlceRouteLayer layer = new GreatCirlceRouteLayer();
-            //layer.LatStart = RenderEngine.Engine.viewCamera.Lat;
-            //layer.LatEnd = RenderEngine.Engine.viewCamera.Lat - 5;
-            //layer.LngStart = RenderEngine.Engine.viewCamera.Lng;
-            //layer.LngEnd = RenderEngine.Engine.viewCamera.Lng + 5;
-            //layer.Width = 4;
-            //layer.Enabled = true;
-            //layer.Name = Language.GetLocalizedText(1144, "Great Circle Route");
-            //LayerList.Add(layer.ID, layer);
-            //layer.ReferenceFrame = currentMap;
-            //AllMaps[currentMap].Layers.Add(layer);
-            //AllMaps[currentMap].Open = true;
-            //version++;
-            //LoadTree();
+            
+            GreatCirlceRouteLayer layer = new GreatCirlceRouteLayer();
+            CameraParameters camera = WWTControl.Singleton.RenderContext.ViewCamera;
+            layer.LatStart = camera.Lat;
+            layer.LatEnd = camera.Lat - 5;
+            layer.LngStart = camera.Lng;
+            layer.LngEnd = camera.Lng + 5;
+            layer.Width = 4;
+            layer.Enabled = true;
+            layer.Name = Language.GetLocalizedText(1144, "Great Circle Route");
+            LayerList[layer.ID] = layer;
+            layer.ReferenceFrame = currentMap;
+            AllMaps[currentMap].Layers.Add(layer);
+            AllMaps[currentMap].Open = true;
+            version++;
+            LoadTree();
 
-            //GreatCircleProperties props = new GreatCircleProperties();
-            //props.Layer = layer;
-            //props.Owner = Earth3d.MainWindow;
-            //props.Show();
+            GreatCircleDlg.Show(layer, new EventArgs());
 
         }
 
