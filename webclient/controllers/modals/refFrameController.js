@@ -33,7 +33,10 @@ wwt.controllers.controller('refFrameController', ['$scope','Util', function ($sc
     back: false,
     finish: false
   };
-
+$scope.pasteTLE = function(e){
+  var ev = e.originalEvent;
+  console.log({pasteEventData:ev.clipboardData.getData('Text')});
+};
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };

@@ -1278,7 +1278,10 @@ wwt.app.directive('contenteditable', [function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var isDuration = (element.hasClass('duration'));
+          if (element.hasClass('paste-control')){
+            return;
+          }
+          var isDuration = (element.hasClass('duration'));
             var hasFocused = false;
             var isLabel = !isDuration;
             var stop = scope.stop;
@@ -1430,6 +1433,7 @@ wwt.app.directive('contenteditable', [function() {
         }
     };
 }]);
+
 wwt.app.directive('movable', ['AppState',function (appState) {
     return {
         restrict: 'A',
@@ -8540,7 +8544,10 @@ wwt.controllers.controller('refFrameController', ['$scope','Util', function ($sc
     back: false,
     finish: false
   };
-
+$scope.pasteTLE = function(e){
+  var ev = e.originalEvent;
+  console.log({pasteEventData:ev.clipboardData.getData('Text')});
+};
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };

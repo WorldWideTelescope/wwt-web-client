@@ -9323,7 +9323,7 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
           transition: all linear 1200ms;
 }
 .wwt-webclient-wrapper .wwtinput {
-  background: rgba(123, 123, 123, 0.5);
+  background: rgba(107, 169, 230, 0.15);
   border: solid 1px #394558;
   border-radius: 3px;
   padding: 1px 3px;
@@ -9338,8 +9338,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper input[type=text],
 .wwt-webclient-wrapper input[type=date],
 .wwt-webclient-wrapper textarea,
-.wwt-webclient-wrapper textarea[readonly] {
-  background: rgba(123, 123, 123, 0.5);
+.wwt-webclient-wrapper textarea[readonly],
+.wwt-webclient-wrapper .paste-control {
+  background: rgba(107, 169, 230, 0.15);
   border: solid 1px #394558;
   border-radius: 3px;
   padding: 1px 3px;
@@ -9348,6 +9349,11 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   height: 22px;
+}
+.wwt-webclient-wrapper .paste-control {
+  display: inline-block;
+  width: 110px;
+  overflow: hidden;
 }
 .wwt-webclient-wrapper textarea.form-control {
   height: auto;
