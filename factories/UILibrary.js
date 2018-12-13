@@ -102,12 +102,13 @@
 
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
-  var showFrameWizardDialog = function(refFrame){
+  var showFrameWizardDialog = function(refFrame, propertyMode){
     console.log({refFrame:refFrame});
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
     modalScope.dialog = frameWizardDialog;
+    modalScope.propertyMode = propertyMode;
     //modalScope.mouse = e;
     modalScope.customClass = 'ref-frame';
     $modal({
@@ -121,11 +122,19 @@
     });
   };
 
+  var refFrameDialog = wwtlib.LayerManager.get_referenceFramePropsDialog();
+  console.log(refFrameDialog);
+  var showRefFrameProps = function(refFrame){
+    showFrameWizardDialog(refFrame,true);
+  };
+
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       wwt.wc.add_colorPickerDisplay(showColorpicker);
+      console.log({refFrameDialog:refFrameDialog,frameWizardDialog:frameWizardDialog});
       frameWizardDialog.add_showDialogHook(showFrameWizardDialog);
+      refFrameDialog.add_showDialogHook(showRefFrameProps);
     }
   };
 }]);
