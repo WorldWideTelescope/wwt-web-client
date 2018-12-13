@@ -1,4 +1,4 @@
-wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
+wwt.controllers.controller('refFrameController', ['$scope','Util', function ($scope,util) {
 
   $scope.page = $scope.propertyMode?'options':'welcome';
   $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
@@ -37,15 +37,9 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };
-  $scope.hexColor = '#ffffff';
+  $scope.hexColor = util.argb2Hex($scope.refFrame.representativeColor);
   $scope.colorChange = function () {
-    var hex = $scope.hexColor;
-    var rgb = hex.match(/[A-Za-z0-9]{2}/g).map(function (v) {
-      return parseInt(v, 16)
-    });
-    $scope.refFrame.representativeColor.r = rgb[0];
-    $scope.refFrame.representativeColor.g = rgb[1];
-    $scope.refFrame.representativeColor.b = rgb[2];
+    util.hex2argb($scope.hexColor,$scope.refFrame.representativeColor);
   };
   var calcButtonState = function () {
     var i = $scope.pages.indexOf($scope.page);

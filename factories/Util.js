@@ -27,7 +27,9 @@
 		trackViewportChanges: trackViewportChanges,
     parseHms: parseHms,
     mobileLink:mobileLink,
-    resVersion:getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999)
+    resVersion:getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999),
+    argb2Hex:argb2Hex,
+    hex2argb:hex2argb
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -371,7 +373,26 @@
 		});
 	}
 
-	
+  function argb2Hex(argb){
+	  var convChannel = function(cbyte){
+	    var h = cbyte.toString(16);
+	    return h.length == 2 ? h : '0'+h;
+    };
+    return '#'+
+      convChannel(argb.r) +
+      convChannel(argb.g) +
+      convChannel(argb.b)
+
+  }
+  function hex2argb(hex,argb){
+    var rgb = hex.match(/[A-Za-z0-9]{2}/g).map(function (v) {
+      return parseInt(v, 16)
+    });
+    argb.r = rgb[0];
+    argb.g = rgb[1];
+    argb.b = rgb[2];
+    return argb;
+  }
 	
 	var dirtyViewport = function () {
 		var wasDirty = viewport.isDirty;
