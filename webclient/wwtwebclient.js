@@ -2249,7 +2249,9 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		trackViewportChanges: trackViewportChanges,
     parseHms: parseHms,
     mobileLink:mobileLink,
-    resVersion:getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999)
+    resVersion:getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999),
+    argb2Hex:argb2Hex,
+    hex2argb:hex2argb
 };
 	var fullscreen = false;
 	function getClassificationText(clsid) {
@@ -2593,7 +2595,26 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 		});
 	}
 
-	
+  function argb2Hex(argb){
+	  var convChannel = function(cbyte){
+	    var h = cbyte.toString(16);
+	    return h.length == 2 ? h : '0'+h;
+    };
+    return '#'+
+      convChannel(argb.r) +
+      convChannel(argb.g) +
+      convChannel(argb.b)
+
+  }
+  function hex2argb(hex,argb){
+    var rgb = hex.match(/[A-Za-z0-9]{2}/g).map(function (v) {
+      return parseInt(v, 16)
+    });
+    argb.r = rgb[0];
+    argb.g = rgb[1];
+    argb.b = rgb[2];
+    return argb;
+  }
 	
 	var dirtyViewport = function () {
 		var wasDirty = viewport.isDirty;
@@ -2634,11 +2655,11 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 	$rootScope.toggleLayerManager = function () {
 		$rootScope.layerManagerHidden = !$rootScope.layerManagerHidden;
 		appState.set('layerManagerHidden', $rootScope.layerManagerHidden);
-	}
+	};
 
 	$rootScope.getCreditsText = function (place) {
 		return util.getCreditsText(place);
-	}
+	};
 	$rootScope.getCreditsUrl = function (place) {
 		return util.getCreditsUrl(place);
 	}
@@ -2650,7 +2671,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 
 	$rootScope.secondsToTime = function (secs) {
 		return util.secondsToTime(secs);
-	}
+	};
 
 	$rootScope.isMobile = util.isMobile;
 
@@ -2732,7 +2753,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
   var showFrameWizardDialog = function(refFrame, propertyMode){
-    //console.log({refFrame:refFrame});
+    console.log({refFrame:refFrame});
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
@@ -2760,6 +2781,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
   var greatCircleDlg = wwtlib.LayerManager.get_greatCircleDlg();
   console.log(greatCircleDlg);
   var showGreatCircleDlg = function(layer){
+    console.log(layer);
     var modalScope = $rootScope.$new();
     modalScope.layer = layer;
     modalScope.customClass = 'great-circle';
@@ -8467,8 +8489,7 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
       $scope.$applyAsync(function () {
       $scope.previewColor = 'rgba(' + $scope.rgb.join(',') + ',' + opacity + ')';
     });
-
-  }
+  };
 
   $scope.commitColor = function(){
     cp.color.a = Math.min(255,Math.max(0,Math.round(opacity*255)));
@@ -8484,7 +8505,7 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
   setTimeout($scope.init,800);
   }]);
 
-wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
+wwt.controllers.controller('refFrameController', ['$scope','Util', function ($scope,util) {
 
   $scope.page = $scope.propertyMode?'options':'welcome';
   $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
@@ -8523,15 +8544,9 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };
-  $scope.hexColor = '#ffffff';
+  $scope.hexColor = util.argb2Hex($scope.refFrame.representativeColor);
   $scope.colorChange = function () {
-    var hex = $scope.hexColor;
-    var rgb = hex.match(/[A-Za-z0-9]{2}/g).map(function (v) {
-      return parseInt(v, 16)
-    });
-    $scope.refFrame.representativeColor.r = rgb[0];
-    $scope.refFrame.representativeColor.g = rgb[1];
-    $scope.refFrame.representativeColor.b = rgb[2];
+    util.hex2argb($scope.hexColor,$scope.refFrame.representativeColor);
   };
   var calcButtonState = function () {
     var i = $scope.pages.indexOf($scope.page);
@@ -8557,6 +8572,26 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
   };
 
   calcButtonState();
+}]);
+
+wwt.controllers.controller('greatCircleController', ['$scope', '$rootScope', 'Util',function ($scope, $rootScope,util) {
+  $scope.getFromView = function (key) {
+    var cam = $rootScope.singleton.renderContext.viewCamera;
+    $scope.layer['_lat' + key + '$1'] = cam.lat;
+    $scope.layer['_lng' + key + '$1'] = cam.lng;
+  };
+
+  $scope.hexColor = util.argb2Hex($scope.layer.color);
+  $scope.colorChange = function () {
+    util.hex2argb($scope.hexColor,$scope.layer.color);
+
+  };
+  $scope.ok = function(layer){
+    layer.opened = true;
+    console.log(layer);
+    $scope.$hide();
+  };
+  console.log($scope.layer);
 }]);
 
 wwt.controllers.controller('LoginController',

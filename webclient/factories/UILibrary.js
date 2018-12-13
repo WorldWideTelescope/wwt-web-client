@@ -5,11 +5,11 @@
 	$rootScope.toggleLayerManager = function () {
 		$rootScope.layerManagerHidden = !$rootScope.layerManagerHidden;
 		appState.set('layerManagerHidden', $rootScope.layerManagerHidden);
-	}
+	};
 
 	$rootScope.getCreditsText = function (place) {
 		return util.getCreditsText(place);
-	}
+	};
 	$rootScope.getCreditsUrl = function (place) {
 		return util.getCreditsUrl(place);
 	}
@@ -21,7 +21,7 @@
 
 	$rootScope.secondsToTime = function (secs) {
 		return util.secondsToTime(secs);
-	}
+	};
 
 	$rootScope.isMobile = util.isMobile;
 
@@ -103,7 +103,7 @@
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
   var showFrameWizardDialog = function(refFrame, propertyMode){
-    //console.log({refFrame:refFrame});
+    console.log({refFrame:refFrame});
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
@@ -131,6 +131,7 @@
   var greatCircleDlg = wwtlib.LayerManager.get_greatCircleDlg();
   console.log(greatCircleDlg);
   var showGreatCircleDlg = function(layer){
+    console.log(layer);
     var modalScope = $rootScope.$new();
     modalScope.layer = layer;
     modalScope.customClass = 'great-circle';

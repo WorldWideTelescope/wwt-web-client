@@ -7711,6 +7711,56 @@ table.table tbody td {
   -webkit-box-shadow: 0 0 8px #a1c2f9b0;
           box-shadow: 0 0 8px #a1c2f9b0;
 }
+.wwt-modal div.modal-dialog div.modal-content table {
+  table-layout: fixed;
+  width: 90%;
+}
+.wwt-modal div.modal-dialog div.modal-content table.v-pad td {
+  height: 65px;
+}
+.wwt-modal div.modal-dialog div.modal-content td {
+  height: 50px;
+  vertical-align: top;
+  padding-right: 12px;
+}
+.wwt-modal div.modal-dialog div.modal-content td label {
+  display: block;
+}
+.wwt-modal div.modal-dialog div.modal-content td input {
+  max-width: 95%;
+}
+.wwt-modal div.modal-dialog div.modal-content td input[type=color] {
+  -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  border: solid 1px #566783;
+  background: transparent;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77;
+          box-shadow: inset 0 1px 4px #4d5d77;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
+  background-image: -o-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d9b9b9b', endColorstr='#99000000', GradientType=0);
+  display: inline-block;
+  height: 18px;
+  width: 100px;
+}
+.wwt-modal div.modal-dialog div.modal-content td div.checkbox {
+  margin: 22px 0;
+}
+.wwt-modal div.modal-dialog div.modal-content .footer {
+  background-color: rgba(107, 169, 230, 0.15);
+  height: 48px;
+  padding: 12px;
+  text-align: right;
+}
+.wwt-modal div.modal-dialog div.modal-content .footer .btn {
+  width: 80px;
+  margin-left: 8px;
+}
 .wwt-modal.vo-tbl-modal .modal-dialog,
 .wwt-modal.vo-cone-modal .modal-dialog {
   width: 1120px;
@@ -7754,53 +7804,6 @@ table.table tbody td {
 }
 .wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page label {
   display: block;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page table {
-  table-layout: fixed;
-  width: 90%;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page table.v-pad td {
-  height: 65px;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td {
-  height: 50px;
-  vertical-align: top;
-  padding-right: 12px;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td input {
-  max-width: 95%;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td input[type=color] {
-  -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  border: solid 1px #566783;
-  background: transparent;
-  -webkit-box-shadow: inset 0 1px 4px #4d5d77;
-          box-shadow: inset 0 1px 4px #4d5d77;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
-  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
-  background-image: -o-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
-  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
-  background-repeat: no-repeat;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d9b9b9b', endColorstr='#99000000', GradientType=0);
-  display: inline-block;
-  height: 18px;
-  width: 100px;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page td div.checkbox {
-  margin: 22px 0;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .footer {
-  background-color: rgba(107, 169, 230, 0.15);
-  height: 48px;
-  padding: 12px;
-  text-align: right;
-}
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .footer .btn {
-  width: 80px;
-  margin-left: 8px;
 }
 #simplemodal #simpleinput {
   width: 271px !important;
