@@ -69,9 +69,6 @@ wwt.controllers.controller('refFrameController', ['$scope', function ($scope) {
     console.log($scope.dialog);
     $scope.dialog.OK($scope.refFrame);
   };
-  if ($scope.propertyMode){
-    $scope.pages.splice(0,1);
-    console.log({pages:$scope.pages});
-  }
+
   calcButtonState();
 }]);

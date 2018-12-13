@@ -103,7 +103,7 @@
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
   var showFrameWizardDialog = function(refFrame, propertyMode){
-    console.log({refFrame:refFrame});
+    //console.log({refFrame:refFrame});
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
@@ -128,13 +128,33 @@
     showFrameWizardDialog(refFrame,true);
   };
 
+  var greatCircleDlg = wwtlib.LayerManager.get_greatCircleDlg();
+  console.log(greatCircleDlg);
+  var showGreatCircleDlg = function(layer){
+    var modalScope = $rootScope.$new();
+    modalScope.layer = layer;
+    modalScope.customClass = 'great-circle';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/great-circle.html?v='+util.resVersion,
+      show: true,
+      placement: 'center',
+      backdrop: false,
+      controller:'greatCircleController'
+    });
+  };
+
 	return {
 	  addDialogHooks:function(){
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       wwt.wc.add_colorPickerDisplay(showColorpicker);
       console.log({refFrameDialog:refFrameDialog,frameWizardDialog:frameWizardDialog});
-      frameWizardDialog.add_showDialogHook(showFrameWizardDialog);
+      frameWizardDialog.add_showDialogHook(function(frame){
+        showFrameWizardDialog(frame,false);
+      });
       refFrameDialog.add_showDialogHook(showRefFrameProps);
+      greatCircleDlg.add_showDialogHook(showGreatCircleDlg);
     }
   };
 }]);
