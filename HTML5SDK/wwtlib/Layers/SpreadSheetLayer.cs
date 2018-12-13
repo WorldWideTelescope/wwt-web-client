@@ -2146,6 +2146,9 @@ namespace wwtlib
                 CleanUp();
             }
 
+            lastVersion = version;
+
+
             if (bufferIsFlat != flat)
             {
                 CleanUp();

@@ -39706,6 +39706,7 @@ window.wwtlib = function(){
       if (this.version !== this.lastVersion) {
         this.cleanUp();
       }
+      this.lastVersion = this.version;
       if (this.bufferIsFlat !== flat) {
         this.cleanUp();
         this.bufferIsFlat = flat;
