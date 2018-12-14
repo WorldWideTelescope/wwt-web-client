@@ -2,7 +2,10 @@
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var isDuration = (element.hasClass('duration'));
+          if (element.hasClass('paste-control')){
+            return;
+          }
+          var isDuration = (element.hasClass('duration'));
             var hasFocused = false;
             var isLabel = !isDuration;
             var stop = scope.stop;

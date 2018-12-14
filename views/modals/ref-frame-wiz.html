@@ -161,7 +161,13 @@
             <label localize="Mean anomaly at epoch"></label>
             <input type="number" ng-model="refFrame.meanAnomolyAtEpoch"/>
           </td>
-          <td>&nbsp;</td>
+          <td rowspan="2">
+            <label>
+              <em ng-if="tleError">
+                The pasted data does not appear to contain a valid TLE set. Paste the contents of a Two Line Elements (TLE) set from your source again.
+              </em>
+            </label>
+          </td>
         </tr>
         <tr>
           <td>
@@ -176,7 +182,6 @@
             <label localize="Epoch (Julian Date)"></label>
             <input type="number" ng-model="refFrame.epoch"/>
           </td>
-          <td>&nbsp;</td>
         </tr>
         <tr>
           <td>
