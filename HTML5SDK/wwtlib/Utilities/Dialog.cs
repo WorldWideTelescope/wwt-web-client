@@ -27,7 +27,7 @@ namespace wwtlib
         }
         public void OK(ReferenceFrame frame)
         {
-            LayerManager.referemceFrameWizardFinished(frame);
+            LayerManager.referenceFrameWizardFinished(frame);
         }
     }
 

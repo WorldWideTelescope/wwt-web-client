@@ -7775,34 +7775,34 @@ table.table tbody td {
 .wwt-modal.great-circle .modal-dialog .modal-content {
   width: 444px;
 }
-.wwt-modal.ref-frame .modal-dialog {
+.wwt-modal.wizard .modal-dialog {
   width: 800px;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content {
+.wwt-modal.wizard .modal-dialog .modal-content {
   width: inherit;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body {
   padding: 0;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body p {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body p {
   margin: 15px 0;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .titlebar {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .titlebar {
   background-color: rgba(222, 222, 222, 0.05);
   padding: 2px 16px;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page {
   height: 280px;
   padding: 16px;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page p {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page p {
   font-size: 13px;
   margin-top: 3px;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page .iblock {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page .iblock {
   margin-right: 8px;
 }
-.wwt-modal.ref-frame .modal-dialog .modal-content .modal-body .page label {
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page label {
   display: block;
 }
 #simplemodal #simpleinput {

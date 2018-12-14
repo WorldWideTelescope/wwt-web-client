@@ -1,6 +1,6 @@
-wwt.controllers.controller('refFrameController', ['$scope','Util', function ($scope,util) {
+wwt.controllers.controller('refFrameController', ['$scope', 'Util', function ($scope, util) {
 
-  $scope.page = $scope.propertyMode?'options':'welcome';
+  $scope.page = $scope.propertyMode ? 'options' : 'welcome';
   $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
   $scope.offsetTypes = [{
     type: 0,
@@ -19,11 +19,11 @@ wwt.controllers.controller('refFrameController', ['$scope','Util', function ($sc
     {type: 1, label: 'Meters'},
     {type: 2, label: 'Feet'},
     {type: 3, label: 'Inches'},
-    {type: 4, label: 'Miles' },
+    {type: 4, label: 'Miles'},
     {type: 5, label: 'Kilometers'},
     {type: 6, label: 'Astronomical Units'},
     {type: 7, label: 'Light Years'},
-    {type: 8, label: 'Parsecs' },
+    {type: 8, label: 'Parsecs'},
     {type: 9, label: 'MegaParsecs'},
     {type: 10, label: 'Custom'}
   ];
@@ -33,16 +33,20 @@ wwt.controllers.controller('refFrameController', ['$scope','Util', function ($sc
     back: false,
     finish: false
   };
-$scope.pasteTLE = function(e){
-  var ev = e.originalEvent;
-  console.log({pasteEventData:ev.clipboardData.getData('Text')});
-};
+  $scope.pasteTLE = function (e) {
+    var ev = e.originalEvent;
+    var pasteData = ev.clipboardData.getData('Text');
+    var lines = pasteData.split(/[\n\r]/).filter(function(l){return l.length>1});
+    $scope.tleError = !wwtlib.LayerManager.pasteFromTle(lines, $scope.refFrame);
+    console.log(lines);
+    setTimeout(function(){$('table .paste-control').html('');},1);
+  };
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };
   $scope.hexColor = util.argb2Hex($scope.refFrame.representativeColor);
   $scope.colorChange = function () {
-    util.hex2argb($scope.hexColor,$scope.refFrame.representativeColor);
+    util.hex2argb($scope.hexColor, $scope.refFrame.representativeColor);
   };
   var calcButtonState = function () {
     var i = $scope.pages.indexOf($scope.page);

@@ -2764,7 +2764,28 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
     modalScope.dialog = frameWizardDialog;
     modalScope.propertyMode = propertyMode;
     //modalScope.mouse = e;
-    modalScope.customClass = 'ref-frame';
+    modalScope.customClass = 'wizard';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/ref-frame-wiz.html?v='+util.resVersion,
+      show: true,
+      placement: 'center',
+      backdrop: false,
+      controller:'refFrameController'
+    });
+  };
+
+  var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
+  var showFrameWizardDialog = function(refFrame, propertyMode){
+    console.log({refFrame:refFrame});
+    var modalScope = $rootScope.$new();
+    refFrame.name = refFrame.name || '';
+    modalScope.refFrame = refFrame;
+    modalScope.dialog = frameWizardDialog;
+    modalScope.propertyMode = propertyMode;
+    //modalScope.mouse = e;
+    modalScope.customClass = 'wizard';
     $modal({
       scope: modalScope,
       templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
@@ -8509,9 +8530,9 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
   setTimeout($scope.init,800);
   }]);
 
-wwt.controllers.controller('refFrameController', ['$scope','Util', function ($scope,util) {
+wwt.controllers.controller('refFrameController', ['$scope', 'Util', function ($scope, util) {
 
-  $scope.page = $scope.propertyMode?'options':'welcome';
+  $scope.page = $scope.propertyMode ? 'options' : 'welcome';
   $scope.pages = ['welcome', 'options', 'position'/*, 'trajectory'*/];
   $scope.offsetTypes = [{
     type: 0,
@@ -8530,11 +8551,11 @@ wwt.controllers.controller('refFrameController', ['$scope','Util', function ($sc
     {type: 1, label: 'Meters'},
     {type: 2, label: 'Feet'},
     {type: 3, label: 'Inches'},
-    {type: 4, label: 'Miles' },
+    {type: 4, label: 'Miles'},
     {type: 5, label: 'Kilometers'},
     {type: 6, label: 'Astronomical Units'},
     {type: 7, label: 'Light Years'},
-    {type: 8, label: 'Parsecs' },
+    {type: 8, label: 'Parsecs'},
     {type: 9, label: 'MegaParsecs'},
     {type: 10, label: 'Custom'}
   ];
@@ -8544,16 +8565,20 @@ wwt.controllers.controller('refFrameController', ['$scope','Util', function ($sc
     back: false,
     finish: false
   };
-$scope.pasteTLE = function(e){
-  var ev = e.originalEvent;
-  console.log({pasteEventData:ev.clipboardData.getData('Text')});
-};
+  $scope.pasteTLE = function (e) {
+    var ev = e.originalEvent;
+    var pasteData = ev.clipboardData.getData('Text');
+    var lines = pasteData.split(/[\n\r]/).filter(function(l){return l.length>1});
+    $scope.tleError = !wwtlib.LayerManager.pasteFromTle(lines, $scope.refFrame);
+    console.log(lines);
+    setTimeout(function(){$('table .paste-control').html('');},1);
+  };
   $scope.offsetTypeChange = function () {
     $scope.refFrame.referenceFrameType = $scope.offsetType;
   };
   $scope.hexColor = util.argb2Hex($scope.refFrame.representativeColor);
   $scope.colorChange = function () {
-    util.hex2argb($scope.hexColor,$scope.refFrame.representativeColor);
+    util.hex2argb($scope.hexColor, $scope.refFrame.representativeColor);
   };
   var calcButtonState = function () {
     var i = $scope.pages.indexOf($scope.page);
@@ -8591,7 +8616,6 @@ wwt.controllers.controller('greatCircleController', ['$scope', '$rootScope', 'Ut
   $scope.hexColor = util.argb2Hex($scope.layer.color);
   $scope.colorChange = function () {
     util.hex2argb($scope.hexColor,$scope.layer.color);
-
   };
   $scope.ok = function(layer){
     layer.opened = true;

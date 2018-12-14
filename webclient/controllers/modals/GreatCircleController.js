@@ -8,7 +8,6 @@ wwt.controllers.controller('greatCircleController', ['$scope', '$rootScope', 'Ut
   $scope.hexColor = util.argb2Hex($scope.layer.color);
   $scope.colorChange = function () {
     util.hex2argb($scope.hexColor,$scope.layer.color);
-
   };
   $scope.ok = function(layer){
     layer.opened = true;

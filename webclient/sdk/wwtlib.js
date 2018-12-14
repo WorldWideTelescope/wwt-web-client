@@ -10370,6 +10370,9 @@ window.wwtlib = function(){
         var isl = ss.safeCast(selected, ImageSetLayer);
         defaultImageset.checked = isl.get_overrideDefaultLayer();
       }
+      if (ss.canCast(selected, GreatCirlceRouteLayer)) {
+        LayerManager._contextMenu.items.push(propertiesMenu);
+      }
       if (ss.canCast(selected, VoTableLayer)) {
         LayerManager._contextMenu.items.push(showViewer);
       }
@@ -10566,7 +10569,7 @@ window.wwtlib = function(){
     var frame = new ReferenceFrame();
     LayerManager.get_frameWizardDialog().show(frame, e);
   };
-  LayerManager.referemceFrameWizardFinished = function(frame) {
+  LayerManager.referenceFrameWizardFinished = function(frame) {
     var target = LayerManager._selectedLayer;
     var newMap = new LayerMap(frame.name, 18);
     if (!ss.keyExists(LayerManager.get_allMaps(), frame.name)) {
@@ -10578,6 +10581,26 @@ window.wwtlib = function(){
       LayerManager.loadTree();
     }
   };
+  LayerManager.pasteFromTle = function(lines, frame) {
+    var line1 = '';
+    var line2 = '';
+    for (var i = 0; i < lines.length; i++) {
+      lines[i] = ss.trim(lines[i]);
+      if (lines[i].length === 69 && ReferenceFrame.isTLECheckSumGood(lines[i])) {
+        if (!line1.length && lines[i].substring(0, 1) === '1') {
+          line1 = lines[i];
+        }
+        if (!line2.length && lines[i].substring(0, 1) === '2') {
+          line2 = lines[i];
+        }
+      }
+    }
+    if (line1.length === 69 && line2.length === 69) {
+      frame.fromTLE(line1, line2, 398600441800000);
+      return true;
+    }
+    return false;
+  };
   LayerManager._opacityMenu_Click = function(sender, e) {
   };
   LayerManager._defaultImageset_Click = function(sender, e) {
@@ -10585,6 +10608,9 @@ window.wwtlib = function(){
     isl.set_overrideDefaultLayer(!isl.get_overrideDefaultLayer());
   };
   LayerManager._propertiesMenu_Click = function(sender, e) {
+    if (ss.canCast(LayerManager._selectedLayer, GreatCirlceRouteLayer)) {
+      LayerManager.get_greatCircleDlg().show(LayerManager._selectedLayer, new ss.EventArgs());
+    }
   };
   LayerManager._renameMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
@@ -12890,7 +12916,7 @@ window.wwtlib = function(){
           break;
       }
     }
-    return ('0' + (checksum % 10)) === line.charAt(68);
+    return (checksum % 10).toString() === line.charAt(68).toString();
   };
   ReferenceFrame.toTLEExponential = function(num, size) {
     var exp = num.toExponential(size);
@@ -42287,7 +42313,7 @@ window.wwtlib = function(){
   }
   var FrameWizard$ = {
     OK: function(frame) {
-      LayerManager.referemceFrameWizardFinished(frame);
+      LayerManager.referenceFrameWizardFinished(frame);
     }
   };
 

@@ -1345,10 +1345,10 @@ namespace wwtlib
                     ImageSetLayer isl = selected as ImageSetLayer;
                     defaultImageset.Checked = isl.OverrideDefaultLayer;
                 }
-
-                //  if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
+                /*selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is OrbitLayer */
+               if (selected is GreatCirlceRouteLayer)
                 {
-                    //contextMenu.Items.Add(popertiesMenu);
+                    contextMenu.Items.Add(propertiesMenu);
                 }
 
                 if (selected is VoTableLayer)
@@ -1820,7 +1820,7 @@ namespace wwtlib
             LayerManager.FrameWizardDialog.Show(frame, e);
         }
 
-        public static void referemceFrameWizardFinished(ReferenceFrame frame)
+        public static void referenceFrameWizardFinished(ReferenceFrame frame)
         {
             LayerMap target = (LayerMap)selectedLayer;
             LayerMap newMap = new LayerMap(frame.Name, ReferenceFrames.Custom);
@@ -1837,8 +1837,36 @@ namespace wwtlib
         }
 
 
+        public static bool PasteFromTle(string[] lines, ReferenceFrame frame)
+        {
+            
+            string line1 = "";
+            string line2 = "";
+            for (int i = 0; i < lines.Length; i++)
+            {
+                lines[i] = lines[i].Trim();
+                if (lines[i].Length == 69 && ReferenceFrame.IsTLECheckSumGood(lines[i]))
+                {
+                    if (line1.Length == 0 && lines[i].Substring(0, 1) == "1")
+                    {
+                        line1 = lines[i];
+                    }
+                    if (line2.Length == 0 && lines[i].Substring(0, 1) == "2")
+                    {
+                        line2 = lines[i];
+                    }
+                }
+            }
 
+            if (line1.Length == 69 && line2.Length == 69)
+            {
+                frame.FromTLE(line1, line2, 398600441800000);
+                return true;
 
+            }
+            return false;
+
+        }
 
 
         static void opacityMenu_Click(object sender, EventArgs e)
@@ -1884,13 +1912,12 @@ namespace wwtlib
             //    props.Owner = Earth3d.MainWindow;
             //    props.Show();
             //}
-            //else if (selectedLayer is GreatCirlceRouteLayer)
-            //{
-            //    GreatCircleProperties props = new GreatCircleProperties();
-            //    props.Layer = ((GreatCirlceRouteLayer)selectedLayer);
-            //    props.Owner = Earth3d.MainWindow;
-            //    props.Show();
-            //}
+            if (selectedLayer is GreatCirlceRouteLayer)
+            {
+                
+                GreatCircleDlg.Show((GreatCirlceRouteLayer)selectedLayer, new EventArgs());
+                
+            }
         }
 
         static void renameMenu_Click(object sender, EventArgs e)

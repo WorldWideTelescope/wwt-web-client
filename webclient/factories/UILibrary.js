@@ -110,7 +110,28 @@
     modalScope.dialog = frameWizardDialog;
     modalScope.propertyMode = propertyMode;
     //modalScope.mouse = e;
-    modalScope.customClass = 'ref-frame';
+    modalScope.customClass = 'wizard';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/ref-frame-wiz.html?v='+util.resVersion,
+      show: true,
+      placement: 'center',
+      backdrop: false,
+      controller:'refFrameController'
+    });
+  };
+
+  var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
+  var showFrameWizardDialog = function(refFrame, propertyMode){
+    console.log({refFrame:refFrame});
+    var modalScope = $rootScope.$new();
+    refFrame.name = refFrame.name || '';
+    modalScope.refFrame = refFrame;
+    modalScope.dialog = frameWizardDialog;
+    modalScope.propertyMode = propertyMode;
+    //modalScope.mouse = e;
+    modalScope.customClass = 'wizard';
     $modal({
       scope: modalScope,
       templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
