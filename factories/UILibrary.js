@@ -43,6 +43,31 @@
 	    //flyout.fadeIn(200).show();
 	    setTimeout(function () { flyout.fadeOut(1111); }, 3333);
 	};
+  $rootScope.altUnits = [
+    {type: 1, label: 'Meters'},
+    {type: 2, label: 'Feet'},
+    {type: 3, label: 'Inches'},
+    {type: 4, label: 'Miles'},
+    {type: 5, label: 'Kilometers'},
+    {type: 6, label: 'Astronomical Units'},
+    {type: 7, label: 'Light Years'},
+    {type: 8, label: 'Parsecs'},
+    {type: 9, label: 'MegaParsecs'},
+    {type: 10, label: 'Custom'}
+  ];
+
+  $rootScope.coordTypes = Object.keys(wwtlib.CoordinatesTypes).map(function(label,type){
+    return {
+      type:type,
+      label:label.charAt(0).toUpperCase()+label.substr(1)
+    }
+  });
+  $rootScope.altTypes = Object.keys(wwtlib.AltTypes).map(function(label,type){
+    return {
+      type:type,
+      label:label.charAt(0).toUpperCase()+label.substr(1)
+    }
+  });
 
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 
@@ -122,24 +147,22 @@
     });
   };
 
-  var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
-  var showFrameWizardDialog = function(refFrame, propertyMode){
-    console.log({refFrame:refFrame});
+
+
+  var dataVizWiz = wwtlib.LayerManager.get_dataVizWizardDialog();
+  var showDataVizWiz = function(layerMap){
+    console.log(layerMap);
     var modalScope = $rootScope.$new();
-    refFrame.name = refFrame.name || '';
-    modalScope.refFrame = refFrame;
-    modalScope.dialog = frameWizardDialog;
-    modalScope.propertyMode = propertyMode;
-    //modalScope.mouse = e;
+    modalScope.layerMap = layerMap;
     modalScope.customClass = 'wizard';
     $modal({
       scope: modalScope,
       templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
-      contentTemplate: 'views/modals/ref-frame-wiz.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/data-viz-wiz.html?v='+util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
-      controller:'refFrameController'
+      controller:'DataVizController'
     });
   };
 
@@ -177,6 +200,7 @@
       });
       refFrameDialog.add_showDialogHook(showRefFrameProps);
       greatCircleDlg.add_showDialogHook(showGreatCircleDlg);
+      dataVizWiz.add_showDialogHook(showDataVizWiz);
     }
   };
 }]);
