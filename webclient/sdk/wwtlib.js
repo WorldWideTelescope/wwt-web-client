@@ -9533,6 +9533,9 @@ window.wwtlib = function(){
   LayerManager.get_frameWizardDialog = function() {
     return LayerManager._frameWizardDialog;
   };
+  LayerManager.get_dataVizWizardDialog = function() {
+    return LayerManager._dataVizWizardDialog;
+  };
   LayerManager.get_referenceFramePropsDialog = function() {
     return LayerManager._referenceFramePropsDialog;
   };
@@ -10722,7 +10725,7 @@ window.wwtlib = function(){
     var clip = function(clipText) {
       LayerManager.createSpreadsheetLayer(LayerManager.get_currentMap(), 'Clipboard', clipText);
     };
-    navigator.clipboard.readText().then(clip);
+    LayerManager.get_dataVizWizardDialog().show(LayerManager.get_currentMap(), e);
   };
   LayerManager.createSpreadsheetLayer = function(frame, name, data) {
     var layer = new SpreadSheetLayer();
@@ -42386,6 +42389,17 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.DataVizWizard
+
+  function DataVizWizard() {
+    Dialog.call(this);
+  }
+  var DataVizWizard$ = {
+    OK: function() {
+    }
+  };
+
+
   // wwtlib.Circle
 
   function Circle() {
@@ -43835,6 +43849,7 @@ window.wwtlib = function(){
       FrameWizard: [ FrameWizard, FrameWizard$, Dialog ],
       ReferenceFrameProps: [ ReferenceFrameProps, ReferenceFrameProps$, Dialog ],
       GreatCircleDialog: [ GreatCircleDialog, GreatCircleDialog$, Dialog ],
+      DataVizWizard: [ DataVizWizard, DataVizWizard$, Dialog ],
       Circle: [ Circle, Circle$, Annotation ],
       Poly: [ Poly, Poly$, Annotation ],
       PolyLine: [ PolyLine, PolyLine$, Annotation ],
@@ -44110,6 +44125,7 @@ window.wwtlib = function(){
   KeplerVertex.baseDate = ss.truncate(SpaceTimeController.utcToJulian(ss.now()));
   LayerManager._version = 0;
   LayerManager._frameWizardDialog = new FrameWizard();
+  LayerManager._dataVizWizardDialog = new DataVizWizard();
   LayerManager._referenceFramePropsDialog = new ReferenceFrameProps();
   LayerManager._greatCircleDialog = new GreatCircleDialog();
   LayerManager._tourLayers = false;

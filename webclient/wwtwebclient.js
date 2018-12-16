@@ -2697,6 +2697,31 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
 	    //flyout.fadeIn(200).show();
 	    setTimeout(function () { flyout.fadeOut(1111); }, 3333);
 	};
+  $rootScope.altUnits = [
+    {type: 1, label: 'Meters'},
+    {type: 2, label: 'Feet'},
+    {type: 3, label: 'Inches'},
+    {type: 4, label: 'Miles'},
+    {type: 5, label: 'Kilometers'},
+    {type: 6, label: 'Astronomical Units'},
+    {type: 7, label: 'Light Years'},
+    {type: 8, label: 'Parsecs'},
+    {type: 9, label: 'MegaParsecs'},
+    {type: 10, label: 'Custom'}
+  ];
+
+  $rootScope.coordTypes = Object.keys(wwtlib.CoordinatesTypes).map(function(label,type){
+    return {
+      type:type,
+      label:label.charAt(0).toUpperCase()+label.substr(1)
+    }
+  });
+  $rootScope.altTypes = Object.keys(wwtlib.AltTypes).map(function(label,type){
+    return {
+      type:type,
+      label:label.charAt(0).toUpperCase()+label.substr(1)
+    }
+  });
 
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 
@@ -2776,24 +2801,22 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
     });
   };
 
-  var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
-  var showFrameWizardDialog = function(refFrame, propertyMode){
-    console.log({refFrame:refFrame});
+
+
+  var dataVizWiz = wwtlib.LayerManager.get_dataVizWizardDialog();
+  var showDataVizWiz = function(layerMap){
+    console.log(layerMap);
     var modalScope = $rootScope.$new();
-    refFrame.name = refFrame.name || '';
-    modalScope.refFrame = refFrame;
-    modalScope.dialog = frameWizardDialog;
-    modalScope.propertyMode = propertyMode;
-    //modalScope.mouse = e;
+    modalScope.layerMap = layerMap;
     modalScope.customClass = 'wizard';
     $modal({
       scope: modalScope,
       templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
-      contentTemplate: 'views/modals/ref-frame-wiz.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/data-viz-wiz.html?v='+util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
-      controller:'refFrameController'
+      controller:'DataVizController'
     });
   };
 
@@ -2831,6 +2854,7 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
       });
       refFrameDialog.add_showDialogHook(showRefFrameProps);
       greatCircleDlg.add_showDialogHook(showGreatCircleDlg);
+      dataVizWiz.add_showDialogHook(showDataVizWiz);
     }
   };
 }]);
@@ -8547,18 +8571,7 @@ wwt.controllers.controller('refFrameController', ['$scope', 'Util', function ($s
     type: 3,
     label: 'Synodic'
   }];
-  $scope.altUnits = [
-    {type: 1, label: 'Meters'},
-    {type: 2, label: 'Feet'},
-    {type: 3, label: 'Inches'},
-    {type: 4, label: 'Miles'},
-    {type: 5, label: 'Kilometers'},
-    {type: 6, label: 'Astronomical Units'},
-    {type: 7, label: 'Light Years'},
-    {type: 8, label: 'Parsecs'},
-    {type: 9, label: 'MegaParsecs'},
-    {type: 10, label: 'Custom'}
-  ];
+
   $scope.offsetType = 1;
   $scope.buttonsEnabled = {
     next: false,
@@ -8623,6 +8636,52 @@ wwt.controllers.controller('greatCircleController', ['$scope', '$rootScope', 'Ut
     $scope.$hide();
   };
   console.log($scope.layer);
+}]);
+
+wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',function ($scope, $rootScope,util) {
+  $scope.pages = ['welcome','position','scale','markers','colormap','date','hover'];
+  $scope.page = 'welcome';
+  $scope.buttonsEnabled = {
+    next: false,
+    back: false,
+    finish: false
+  };
+  $scope.pasteExcel = function (e) {
+    var ev = e.originalEvent;
+    var pasteData = ev.clipboardData.getData('Text');
+    var lines = pasteData.split(/[\n\r]/).filter(function(l){return l.length>1});
+    $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, "clipboard", pasteData);
+    console.log($scope.layer);
+    $scope.columns = $scope.layer._table$1.header.map(function(c,i){
+      return {label:c,index:i};
+    });
+    var none = {label:'None',index:-1};
+    $scope.columns.splice(0,0,none);
+    $scope.buttonsEnabled.next = 1;
+    setTimeout(function(){$('table .paste-control').html('');},1);
+  };
+
+  var calcButtonState = function () {
+    var i = $scope.pages.indexOf($scope.page);
+    $scope.buttonsEnabled.next = $scope.page === 'welcome' ? !!$scope.layer : i < $scope.pages.length - 1;
+    $scope.buttonsEnabled.back = i > 0;
+    $scope.buttonsEnabled.finish = i === $scope.pages.length - 1;
+  };
+  calcButtonState();
+  $scope.next = function () {
+    var i = $scope.pages.indexOf($scope.page);
+    $scope.page = $scope.pages[i + 1];
+    calcButtonState();
+  };
+  $scope.back = function () {
+    var i = $scope.pages.indexOf($scope.page);
+    $scope.page = $scope.pages[i - 1];
+    calcButtonState();
+  };
+  $scope.finish = function () {
+    //console.log($scope.dialog);
+    $scope.dialog.OK($scope.layer);
+  };
 }]);
 
 wwt.controllers.controller('LoginController',

@@ -24,6 +24,12 @@ namespace wwtlib
             get { return _frameWizardDialog; }
         }
 
+        static DataVizWizard _dataVizWizardDialog = new DataVizWizard();
+        public static DataVizWizard DataVizWizardDialog
+        {
+            get { return _dataVizWizardDialog; }
+        }
+
         static ReferenceFrameProps _referenceFramePropsDialog = new ReferenceFrameProps();
         public static ReferenceFrameProps ReferenceFramePropsDialog
         {
@@ -2084,16 +2090,18 @@ namespace wwtlib
             LoadTree();
         }
 
-
+        
         static void pasteLayer_Click(object sender, EventArgs e)
         {
-
             ClipbaordDelegate clip = delegate (string clipText)
             {
                 CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
             };
+            DataVizWizardDialog.Show(clip, e);
+
             
-            Navigator.Clipboard.ReadText().Then(clip);
+            
+            //Navigator.Clipboard.ReadText().Then(clip);
 
 
             //IDataObject dataObject = Clipboard.GetDataObject();

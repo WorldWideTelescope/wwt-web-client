@@ -7726,6 +7726,9 @@ table.table tbody td {
 .wwt-modal div.modal-dialog div.modal-content td label {
   display: block;
 }
+.wwt-modal div.modal-dialog div.modal-content td select {
+  min-width: 135px;
+}
 .wwt-modal div.modal-dialog div.modal-content td input {
   max-width: 95%;
 }

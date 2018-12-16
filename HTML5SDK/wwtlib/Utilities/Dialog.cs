@@ -51,7 +51,18 @@ namespace wwtlib
         }
         public void OK(ReferenceFrame frame)
         {
-            
+
+        }
+    }
+    public class DataVizWizard : Dialog
+    {
+        public DataVizWizard()
+        {
+
+        }
+        public void OK()
+        {
+
         }
     }
 }

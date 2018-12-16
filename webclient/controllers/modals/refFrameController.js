@@ -15,18 +15,7 @@ wwt.controllers.controller('refFrameController', ['$scope', 'Util', function ($s
     type: 3,
     label: 'Synodic'
   }];
-  $scope.altUnits = [
-    {type: 1, label: 'Meters'},
-    {type: 2, label: 'Feet'},
-    {type: 3, label: 'Inches'},
-    {type: 4, label: 'Miles'},
-    {type: 5, label: 'Kilometers'},
-    {type: 6, label: 'Astronomical Units'},
-    {type: 7, label: 'Light Years'},
-    {type: 8, label: 'Parsecs'},
-    {type: 9, label: 'MegaParsecs'},
-    {type: 10, label: 'Custom'}
-  ];
+
   $scope.offsetType = 1;
   $scope.buttonsEnabled = {
     next: false,
