@@ -9340,6 +9340,7 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper input[type=number],
 .wwt-webclient-wrapper input[type=text],
 .wwt-webclient-wrapper input[type=date],
+.wwt-webclient-wrapper input[type=datetime-local],
 .wwt-webclient-wrapper textarea,
 .wwt-webclient-wrapper textarea[readonly],
 .wwt-webclient-wrapper .paste-control {
@@ -9561,7 +9562,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider,
 .wwt-webclient-wrapper .planetary-scale,
 .wwt-webclient-wrapper .sound-level,
-.wwt-webclient-wrapper .scrubber-slider {
+.wwt-webclient-wrapper .scrubber-slider,
+.wwt-webclient-wrapper .scale-factor,
+.wwt-webclient-wrapper .time-decay {
   -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
@@ -9586,7 +9589,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider a.btn,
 .wwt-webclient-wrapper .planetary-scale a.btn,
 .wwt-webclient-wrapper .sound-level a.btn,
-.wwt-webclient-wrapper .scrubber-slider a.btn {
+.wwt-webclient-wrapper .scrubber-slider a.btn,
+.wwt-webclient-wrapper .scale-factor a.btn,
+.wwt-webclient-wrapper .time-decay a.btn {
   position: absolute;
   left: 100px;
   margin: -6px 0 0 -6px;
@@ -9604,7 +9609,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider a.btn.disabled,
 .wwt-webclient-wrapper .planetary-scale a.btn.disabled,
 .wwt-webclient-wrapper .sound-level a.btn.disabled,
-.wwt-webclient-wrapper .scrubber-slider a.btn.disabled {
+.wwt-webclient-wrapper .scrubber-slider a.btn.disabled,
+.wwt-webclient-wrapper .scale-factor a.btn.disabled,
+.wwt-webclient-wrapper .time-decay a.btn.disabled {
   background-image: none;
   background-color: #ccc;
   opacity: .9;
@@ -9613,7 +9620,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider.disabled,
 .wwt-webclient-wrapper .planetary-scale.disabled,
 .wwt-webclient-wrapper .sound-level.disabled,
-.wwt-webclient-wrapper .scrubber-slider.disabled {
+.wwt-webclient-wrapper .scrubber-slider.disabled,
+.wwt-webclient-wrapper .scale-factor.disabled,
+.wwt-webclient-wrapper .time-decay.disabled {
   background-image: none;
   opacity: .5;
 }

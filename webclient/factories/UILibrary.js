@@ -56,18 +56,20 @@
     {type: 10, label: 'Custom'}
   ];
 
-  $rootScope.coordTypes = Object.keys(wwtlib.CoordinatesTypes).map(function(label,type){
-    return {
-      type:type,
-      label:label.charAt(0).toUpperCase()+label.substr(1)
+  var initTypeList = function(typeKey, scopeKey){
+    if (typeof scopeKey != 'string'){
+      scopeKey = util.firstCharLower(typeKey)
     }
-  });
-  $rootScope.altTypes = Object.keys(wwtlib.AltTypes).map(function(label,type){
-    return {
-      type:type,
-      label:label.charAt(0).toUpperCase()+label.substr(1)
-    }
-  });
+    $rootScope[scopeKey] = Object.keys(wwtlib[typeKey]).map(function(label,type){
+      return {
+        type:type,
+        label:util.firstCharUpper(label)
+      }
+    });
+  };
+  initTypeList('CoordinatesTypes','coordTypes');
+  var enums = ['AltTypes','PointScaleTypes','MarkerScales','MarkerMixes','PlotTypes','ColorMaps'];
+  enums.forEach(initTypeList);
 
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 
@@ -153,8 +155,15 @@
   var showDataVizWiz = function(layerMap){
     console.log(layerMap);
     var modalScope = $rootScope.$new();
-    modalScope.layerMap = layerMap;
+    var propertyMode = typeof layerMap !== 'string';
+    modalScope.propertyMode = propertyMode;
+    if (!propertyMode) {
+      modalScope.layerMap = layerMap;
+    }else{
+      modalScope.layer = layerMap;
+    }
     modalScope.customClass = 'wizard';
+    modalScope.dialog = dataVizWiz;
     $modal({
       scope: modalScope,
       templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,

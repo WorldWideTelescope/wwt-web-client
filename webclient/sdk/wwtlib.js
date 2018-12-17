@@ -10386,7 +10386,7 @@ window.wwtlib = function(){
         var isl = ss.safeCast(selected, ImageSetLayer);
         defaultImageset.checked = isl.get_overrideDefaultLayer();
       }
-      if (ss.canCast(selected, GreatCirlceRouteLayer)) {
+      if (ss.canCast(selected, SpreadSheetLayer) || ss.canCast(selected, GreatCirlceRouteLayer)) {
         LayerManager._contextMenu.items.push(propertiesMenu);
       }
       if (ss.canCast(selected, VoTableLayer)) {
@@ -10624,6 +10624,10 @@ window.wwtlib = function(){
     isl.set_overrideDefaultLayer(!isl.get_overrideDefaultLayer());
   };
   LayerManager._propertiesMenu_Click = function(sender, e) {
+    if (ss.canCast(LayerManager._selectedLayer, SpreadSheetLayer)) {
+      var target = LayerManager._selectedLayer;
+      LayerManager.get_dataVizWizardDialog().show(target, e);
+    }
     if (ss.canCast(LayerManager._selectedLayer, GreatCirlceRouteLayer)) {
       LayerManager.get_greatCircleDlg().show(LayerManager._selectedLayer, new ss.EventArgs());
     }
@@ -10722,9 +10726,6 @@ window.wwtlib = function(){
     LayerManager.loadTree();
   };
   LayerManager._pasteLayer_Click = function(sender, e) {
-    var clip = function(clipText) {
-      LayerManager.createSpreadsheetLayer(LayerManager.get_currentMap(), 'Clipboard', clipText);
-    };
     LayerManager.get_dataVizWizardDialog().show(LayerManager.get_currentMap(), e);
   };
   LayerManager.createSpreadsheetLayer = function(frame, name, data) {
