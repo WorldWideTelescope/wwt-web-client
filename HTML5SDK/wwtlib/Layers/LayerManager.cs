@@ -1368,8 +1368,8 @@ namespace wwtlib
                     ImageSetLayer isl = selected as ImageSetLayer;
                     defaultImageset.Checked = isl.OverrideDefaultLayer;
                 }
-                /*selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is OrbitLayer */
-               if (selected is GreatCirlceRouteLayer)
+                /*selected is Object3dLayer || selected is GroundOverlayLayer || selected is OrbitLayer */
+                if (selected is SpreadSheetLayer || selected is GreatCirlceRouteLayer)
                 {
                     contextMenu.Items.Add(propertiesMenu);
                 }
@@ -1911,14 +1911,15 @@ namespace wwtlib
         static void propertiesMenu_Click(object sender, EventArgs e)
         {
             
-            //if (selectedLayer is SpreadSheetLayer)
-            //{
-            //    SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;
-            //    DataWizard.ShowPropertiesSheet(target);
+            if (selectedLayer is SpreadSheetLayer)
+            {
+                SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;
+                DataVizWizardDialog.Show(target, e);
+                //    DataWizard.ShowPropertiesSheet(target);
 
-            //    target.CleanUp();
-            //    LoadTree();
-            //}
+                //    target.CleanUp();
+                //    LoadTree();
+            }
             //else if (selectedLayer is SpreadSheetLayer || selectedLayer is Object3dLayer)
             //{
             //    Object3dProperties props = new Object3dProperties();
@@ -2093,14 +2094,12 @@ namespace wwtlib
         
         static void pasteLayer_Click(object sender, EventArgs e)
         {
-            ClipbaordDelegate clip = delegate (string clipText)
-            {
-                CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
-            };
-            DataVizWizardDialog.Show(clip, e);
+            //ClipbaordDelegate clip = delegate (string clipText)
+            //{
+            //    CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
+            //};
+            DataVizWizardDialog.Show(CurrentMap, e);
 
-            
-            
             //Navigator.Clipboard.ReadText().Then(clip);
 
 
