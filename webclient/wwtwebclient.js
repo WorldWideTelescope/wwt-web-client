@@ -8675,7 +8675,8 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
   };
   $scope.pasteExcel = function (e) {
     var ev = e.originalEvent;
-    var pasteData = ev.clipboardData.getData('Text');
+    var pasteData = ev.clipboardData.getData('Text')
+      .replace(/(\r\n|\r|\n)/g,'\r\n');//normalize line endings
     l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, "clipboard", pasteData);
     initColumns();
     $scope.buttonsEnabled.next = $scope.buttonsEnabled.finish = 1;
