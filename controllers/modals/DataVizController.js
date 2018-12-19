@@ -21,12 +21,15 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
     var ev = e.originalEvent;
     var pasteData = ev.clipboardData.getData('Text')
       .replace(/(\r\n|\r|\n)/g,'\r\n');//normalize line endings
-    l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, "clipboard", pasteData);
-    initColumns();
-    $scope.buttonsEnabled.next = $scope.buttonsEnabled.finish = 1;
-    setTimeout(function () {
-      $('table .paste-control').html('');
-    }, 1);
+    console.log('paste data ok');
+    $('#pasteRow').remove();
+    //setTimeout(function () {
+      //gc
+      console.log('cleaned');
+      l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, "clipboard", pasteData);
+      initColumns();
+      $scope.buttonsEnabled.next = $scope.buttonsEnabled.finish = 1;
+    //}, 1);
   };
 
   function initColumns() {
