@@ -2526,15 +2526,22 @@ namespace wwtlib
                 RenderContext.TargetCamera = cameraParams.Copy();
                 RenderContext.ViewCamera = RenderContext.TargetCamera.Copy();
 
-                //if (Space && Settings.Active.LocalHorizonMode)
-                //{
-                //    Coordinates currentAltAz = Coordinates.EquitorialToHorizon(Coordinates.FromRaDec(viewCamera.RA, viewCamera.Dec), SpaceTimeController.Location, SpaceTimeController.Now);
+                if (RenderContext.Space && Settings.Active.GalacticMode)
+                {
+                    double[] gPoint = Coordinates.J2000toGalactic(RenderContext.ViewCamera.RA * 15, RenderContext.ViewCamera.Dec);
 
-                //    targetAlt = alt = currentAltAz.Alt;
-                //    targetAz = az = currentAltAz.Az;
-                //}
+                    RenderContext.targetAlt = RenderContext.alt = gPoint[1];
+                    RenderContext.targetAz = RenderContext.az = gPoint[0];
+                }
+                else if (RenderContext.Space && Settings.Active.LocalHorizonMode)
+                {
+                    Coordinates currentAltAz = Coordinates.EquitorialToHorizon(Coordinates.FromRaDec(RenderContext.ViewCamera.RA, RenderContext.ViewCamera.Dec), SpaceTimeController.Location, SpaceTimeController.Now);
+
+                    RenderContext.targetAlt = RenderContext.alt = currentAltAz.Alt;
+                    RenderContext.targetAz = RenderContext.az = currentAltAz.Az;
+                }
+
                 mover_Midpoint();
-                moving = true;
             }
             else
             {
