@@ -554,38 +554,40 @@ namespace wwtlib
                     RenderContext.SetupMatricesSpace3d(RenderContext.Width, RenderContext.Height);
                 }
 
-
-
                 RenderContext.DrawImageSet(RenderContext.BackgroundImageset, 100);
 
                 if (RenderContext.ForegroundImageset != null)
                 {
-                    if (RenderContext.ViewCamera.Opacity != 100 && RenderContext.gl == null)
+                    if (RenderContext.ForegroundImageset.DataSetType != RenderContext.BackgroundImageset.DataSetType)
                     {
-                        if (foregroundCanvas.Width != RenderContext.Width || foregroundCanvas.Height != RenderContext.Height)
-                        {
-                            foregroundCanvas.Width = (int)RenderContext.Width;
-                            foregroundCanvas.Height = (int)RenderContext.Height;
-                        }
-
-                        CanvasContext2D saveDevice = RenderContext.Device;
-                        fgDevice.ClearRect(0, 0, RenderContext.Width, RenderContext.Height);
-                        RenderContext.Device = fgDevice;
-                        RenderContext.DrawImageSet(RenderContext.ForegroundImageset, 100);
-                        RenderContext.Device = saveDevice;
-                        RenderContext.Device.Save();
-                        RenderContext.Device.Alpha = RenderContext.ViewCamera.Opacity / 100;
-                        RenderContext.Device.DrawImage(foregroundCanvas, 0, 0);
-                        RenderContext.Device.Restore();
+                        RenderContext.ForegroundImageset = null;
                     }
                     else
                     {
-                        RenderContext.DrawImageSet(RenderContext.ForegroundImageset, RenderContext.ViewCamera.Opacity);
+                        if (RenderContext.ViewCamera.Opacity != 100 && RenderContext.gl == null)
+                        {
+                            if (foregroundCanvas.Width != RenderContext.Width || foregroundCanvas.Height != RenderContext.Height)
+                            {
+                                foregroundCanvas.Width = (int)RenderContext.Width;
+                                foregroundCanvas.Height = (int)RenderContext.Height;
+                            }
+
+                            CanvasContext2D saveDevice = RenderContext.Device;
+                            fgDevice.ClearRect(0, 0, RenderContext.Width, RenderContext.Height);
+                            RenderContext.Device = fgDevice;
+                            RenderContext.DrawImageSet(RenderContext.ForegroundImageset, 100);
+                            RenderContext.Device = saveDevice;
+                            RenderContext.Device.Save();
+                            RenderContext.Device.Alpha = RenderContext.ViewCamera.Opacity / 100;
+                            RenderContext.Device.DrawImage(foregroundCanvas, 0, 0);
+                            RenderContext.Device.Restore();
+                        }
+                        else
+                        {
+                            RenderContext.DrawImageSet(RenderContext.ForegroundImageset, RenderContext.ViewCamera.Opacity);
+                        }
                     }
-
                 }
-
-
 
                 if (RenderType == ImageSetType.Sky && Settings.Active.ShowSolarSystem)
                 {
