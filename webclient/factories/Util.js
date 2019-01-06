@@ -73,7 +73,7 @@
 		return ([int2(hours), int2(minutes)]).join(join);
 	}
 	function int2(dec) {
-		return Math.abs(Math.floor(dec)) < 10 ? dec < 0 ?  '-0' + Math.abs(Math.floor(dec)) : '0' + Math.floor(dec) : Math.floor(dec);
+		return Math.floor(Math.abs(dec)) < 10 ? dec < 0 ?  '-0' + Math.floor(Math.abs(dec)) : '0' + Math.floor(dec) : Math.floor(dec);
 	}
 
 	function truncate(n) {

@@ -27507,23 +27507,28 @@ window.wwtlib = function(){
         }
         this.renderContext.drawImageSet(this.renderContext.get_backgroundImageset(), 100);
         if (this.renderContext.get_foregroundImageset() != null) {
-          if (this.renderContext.viewCamera.opacity !== 100 && this.renderContext.gl == null) {
-            if (this._foregroundCanvas.width !== this.renderContext.width || this._foregroundCanvas.height !== this.renderContext.height) {
-              this._foregroundCanvas.width = ss.truncate(this.renderContext.width);
-              this._foregroundCanvas.height = ss.truncate(this.renderContext.height);
-            }
-            var saveDevice = this.renderContext.device;
-            this._fgDevice.clearRect(0, 0, this.renderContext.width, this.renderContext.height);
-            this.renderContext.device = this._fgDevice;
-            this.renderContext.drawImageSet(this.renderContext.get_foregroundImageset(), 100);
-            this.renderContext.device = saveDevice;
-            this.renderContext.device.save();
-            this.renderContext.device.globalAlpha = this.renderContext.viewCamera.opacity / 100;
-            this.renderContext.device.drawImage(this._foregroundCanvas, 0, 0);
-            this.renderContext.device.restore();
+          if (this.renderContext.get_foregroundImageset().get_dataSetType() !== this.renderContext.get_backgroundImageset().get_dataSetType()) {
+            this.renderContext.set_foregroundImageset(null);
           }
           else {
-            this.renderContext.drawImageSet(this.renderContext.get_foregroundImageset(), this.renderContext.viewCamera.opacity);
+            if (this.renderContext.viewCamera.opacity !== 100 && this.renderContext.gl == null) {
+              if (this._foregroundCanvas.width !== this.renderContext.width || this._foregroundCanvas.height !== this.renderContext.height) {
+                this._foregroundCanvas.width = ss.truncate(this.renderContext.width);
+                this._foregroundCanvas.height = ss.truncate(this.renderContext.height);
+              }
+              var saveDevice = this.renderContext.device;
+              this._fgDevice.clearRect(0, 0, this.renderContext.width, this.renderContext.height);
+              this.renderContext.device = this._fgDevice;
+              this.renderContext.drawImageSet(this.renderContext.get_foregroundImageset(), 100);
+              this.renderContext.device = saveDevice;
+              this.renderContext.device.save();
+              this.renderContext.device.globalAlpha = this.renderContext.viewCamera.opacity / 100;
+              this.renderContext.device.drawImage(this._foregroundCanvas, 0, 0);
+              this.renderContext.device.restore();
+            }
+            else {
+              this.renderContext.drawImageSet(this.renderContext.get_foregroundImageset(), this.renderContext.viewCamera.opacity);
+            }
           }
         }
         if (this.renderType === 2 && Settings.get_active().get_showSolarSystem()) {
@@ -28427,8 +28432,17 @@ window.wwtlib = function(){
         this.set__mover(null);
         this.renderContext.targetCamera = cameraParams.copy();
         this.renderContext.viewCamera = this.renderContext.targetCamera.copy();
+        if (this.renderContext.space && Settings.get_active().get_galacticMode()) {
+          var gPoint = Coordinates.j2000toGalactic(this.renderContext.viewCamera.get_RA() * 15, this.renderContext.viewCamera.get_dec());
+          this.renderContext.targetAlt = this.renderContext.alt = gPoint[1];
+          this.renderContext.targetAz = this.renderContext.az = gPoint[0];
+        }
+        else if (this.renderContext.space && Settings.get_active().get_localHorizonMode()) {
+          var currentAltAz = Coordinates.equitorialToHorizon(Coordinates.fromRaDec(this.renderContext.viewCamera.get_RA(), this.renderContext.viewCamera.get_dec()), SpaceTimeController.get_location(), SpaceTimeController.get_now());
+          this.renderContext.targetAlt = this.renderContext.alt = currentAltAz.get_alt();
+          this.renderContext.targetAz = this.renderContext.az = currentAltAz.get_az();
+        }
         this._mover_Midpoint();
-        this._moving = true;
       }
       else {
         this.set__mover(ViewMoverSlew.create(this.renderContext.viewCamera, cameraParams));

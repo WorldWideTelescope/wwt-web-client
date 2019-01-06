@@ -554,38 +554,40 @@ namespace wwtlib
                     RenderContext.SetupMatricesSpace3d(RenderContext.Width, RenderContext.Height);
                 }
 
-
-
                 RenderContext.DrawImageSet(RenderContext.BackgroundImageset, 100);
 
                 if (RenderContext.ForegroundImageset != null)
                 {
-                    if (RenderContext.ViewCamera.Opacity != 100 && RenderContext.gl == null)
+                    if (RenderContext.ForegroundImageset.DataSetType != RenderContext.BackgroundImageset.DataSetType)
                     {
-                        if (foregroundCanvas.Width != RenderContext.Width || foregroundCanvas.Height != RenderContext.Height)
-                        {
-                            foregroundCanvas.Width = (int)RenderContext.Width;
-                            foregroundCanvas.Height = (int)RenderContext.Height;
-                        }
-
-                        CanvasContext2D saveDevice = RenderContext.Device;
-                        fgDevice.ClearRect(0, 0, RenderContext.Width, RenderContext.Height);
-                        RenderContext.Device = fgDevice;
-                        RenderContext.DrawImageSet(RenderContext.ForegroundImageset, 100);
-                        RenderContext.Device = saveDevice;
-                        RenderContext.Device.Save();
-                        RenderContext.Device.Alpha = RenderContext.ViewCamera.Opacity / 100;
-                        RenderContext.Device.DrawImage(foregroundCanvas, 0, 0);
-                        RenderContext.Device.Restore();
+                        RenderContext.ForegroundImageset = null;
                     }
                     else
                     {
-                        RenderContext.DrawImageSet(RenderContext.ForegroundImageset, RenderContext.ViewCamera.Opacity);
+                        if (RenderContext.ViewCamera.Opacity != 100 && RenderContext.gl == null)
+                        {
+                            if (foregroundCanvas.Width != RenderContext.Width || foregroundCanvas.Height != RenderContext.Height)
+                            {
+                                foregroundCanvas.Width = (int)RenderContext.Width;
+                                foregroundCanvas.Height = (int)RenderContext.Height;
+                            }
+
+                            CanvasContext2D saveDevice = RenderContext.Device;
+                            fgDevice.ClearRect(0, 0, RenderContext.Width, RenderContext.Height);
+                            RenderContext.Device = fgDevice;
+                            RenderContext.DrawImageSet(RenderContext.ForegroundImageset, 100);
+                            RenderContext.Device = saveDevice;
+                            RenderContext.Device.Save();
+                            RenderContext.Device.Alpha = RenderContext.ViewCamera.Opacity / 100;
+                            RenderContext.Device.DrawImage(foregroundCanvas, 0, 0);
+                            RenderContext.Device.Restore();
+                        }
+                        else
+                        {
+                            RenderContext.DrawImageSet(RenderContext.ForegroundImageset, RenderContext.ViewCamera.Opacity);
+                        }
                     }
-
                 }
-
-
 
                 if (RenderType == ImageSetType.Sky && Settings.Active.ShowSolarSystem)
                 {
@@ -2526,15 +2528,22 @@ namespace wwtlib
                 RenderContext.TargetCamera = cameraParams.Copy();
                 RenderContext.ViewCamera = RenderContext.TargetCamera.Copy();
 
-                //if (Space && Settings.Active.LocalHorizonMode)
-                //{
-                //    Coordinates currentAltAz = Coordinates.EquitorialToHorizon(Coordinates.FromRaDec(viewCamera.RA, viewCamera.Dec), SpaceTimeController.Location, SpaceTimeController.Now);
+                if (RenderContext.Space && Settings.Active.GalacticMode)
+                {
+                    double[] gPoint = Coordinates.J2000toGalactic(RenderContext.ViewCamera.RA * 15, RenderContext.ViewCamera.Dec);
 
-                //    targetAlt = alt = currentAltAz.Alt;
-                //    targetAz = az = currentAltAz.Az;
-                //}
+                    RenderContext.targetAlt = RenderContext.alt = gPoint[1];
+                    RenderContext.targetAz = RenderContext.az = gPoint[0];
+                }
+                else if (RenderContext.Space && Settings.Active.LocalHorizonMode)
+                {
+                    Coordinates currentAltAz = Coordinates.EquitorialToHorizon(Coordinates.FromRaDec(RenderContext.ViewCamera.RA, RenderContext.ViewCamera.Dec), SpaceTimeController.Location, SpaceTimeController.Now);
+
+                    RenderContext.targetAlt = RenderContext.alt = currentAltAz.Alt;
+                    RenderContext.targetAz = RenderContext.az = currentAltAz.Az;
+                }
+
                 mover_Midpoint();
-                moving = true;
             }
             else
             {
