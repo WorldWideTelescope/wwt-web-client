@@ -1421,7 +1421,7 @@ namespace wwtlib
                 ToolStripMenuItem newLight = ToolStripMenuItem.Create("Add Light");
                 ToolStripMenuItem addFeedMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(956, "Add OData/table feed as Layer"));
                 ToolStripMenuItem addWmsLayer = ToolStripMenuItem.Create(Language.GetLocalizedText(987, "New WMS Layer"));
-                ToolStripMenuItem addGirdLayer = ToolStripMenuItem.Create(Language.GetLocalizedText(1300, "New Lat/Lng Grid"));
+                ToolStripMenuItem addGridLayer = ToolStripMenuItem.Create(Language.GetLocalizedText(1300, "New Lat/Lng Grid"));
                 ToolStripMenuItem addGreatCircle = ToolStripMenuItem.Create(Language.GetLocalizedText(988, "New Great Circle"));
                 ToolStripMenuItem importTLE = ToolStripMenuItem.Create(Language.GetLocalizedText(989, "Import Orbital Elements"));
                 ToolStripMenuItem addMpc = ToolStripMenuItem.Create(Language.GetLocalizedText(1301, "Add Minor Planet"));
@@ -1464,7 +1464,7 @@ namespace wwtlib
                 addGreatCircle.Click = addGreatCircle_Click;
                 //    saveMenu.Click = SaveLayers_Click;
                 //   publishLayers.Click = publishLayers_Click;
-                addGirdLayer.Click = addGirdLayer_Click;
+                addGridLayer.Click = addGirdLayer_Click;
 
 
                 ToolStripMenuItem convertToOrbit = ToolStripMenuItem.Create("Extract Orbit Layer");
@@ -1547,7 +1547,7 @@ namespace wwtlib
                 if (!Sky)
                 {
                     contextMenu.Items.Add(addGreatCircle);
-                    contextMenu.Items.Add(addGirdLayer);
+                    contextMenu.Items.Add(addGridLayer);
                 }
 
                 if ((map.Frame.Reference != ReferenceFrames.Identity && map.Frame.Name == "Sun") ||
