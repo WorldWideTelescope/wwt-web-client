@@ -5,7 +5,6 @@
 	'Places',
 	'$timeout',
 	'Util',
-	
 	'ThumbList',
 	function ($scope, $rootScope, appState, places, $timeout, util,  thumbList) {
 	    var exploreRoot;
@@ -53,7 +52,7 @@
 	                cache = [result];
 	                calcPageSize();
 	                $.each(result, function (i, item) {
-	                    if (item.get_name() === 'Open Collections'||item.get_name() === 'New VAMP Feeds') {
+	                    if (item.get_name() === 'Open Collections') {
 	                        result.splice(0, 0, result.splice(i, 1)[0]);
 	                        if (item.get_name() === 'Open Collections') {
 	                            openCollection = true;
