@@ -1516,6 +1516,7 @@ function module(name, implementation, exports) {
 
 "use strict";
 
+
 window.wwtlib = function(){
   var $global = this;
 
@@ -2685,6 +2686,9 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
+      console.assert(Degrees >= 0);
+      console.assert(Minutes >= 0);
+      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -2781,6 +2785,7 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
+    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -2945,6 +2950,7 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
+      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -3901,6 +3907,7 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
+          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -5357,6 +5364,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
+    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -5391,6 +5399,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
+    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -5427,6 +5436,7 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
+    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -5743,6 +5753,7 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
+      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -11036,6 +11047,18 @@ window.wwtlib = function(){
     LayerManager._version = value;
     return value;
   };
+  LayerManager.get_frameWizardDialog = function() {
+    return LayerManager._frameWizardDialog;
+  };
+  LayerManager.get_dataVizWizardDialog = function() {
+    return LayerManager._dataVizWizardDialog;
+  };
+  LayerManager.get_referenceFramePropsDialog = function() {
+    return LayerManager._referenceFramePropsDialog;
+  };
+  LayerManager.get_greatCircleDlg = function() {
+    return LayerManager._greatCircleDialog;
+  };
   LayerManager.get_tourLayers = function() {
     return LayerManager._tourLayers;
   };
@@ -11834,7 +11857,7 @@ window.wwtlib = function(){
       var publishMenu = ToolStripMenuItem.create(Language.getLocalizedText(983, 'Publish to Community...'));
       var colorMenu = ToolStripMenuItem.create(Language.getLocalizedText(458, 'Color/Opacity'));
       var opacityMenu = ToolStripMenuItem.create(Language.getLocalizedText(305, 'Opacity'));
-      var popertiesMenu = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
+      var propertiesMenu = ToolStripMenuItem.create(Language.getLocalizedText(20, 'Properties'));
       var scaleMenu = ToolStripMenuItem.create(Language.getLocalizedText(1291, 'Scale/Histogram'));
       var lifeTimeMenu = ToolStripMenuItem.create(Language.getLocalizedText(683, 'Lifetime'));
       var spacer1 = new ToolStripSeparator();
@@ -11857,7 +11880,7 @@ window.wwtlib = function(){
       colorMenu.click = LayerManager._colorMenu_Click;
       deleteMenu.click = LayerManager._deleteMenu_Click;
       renameMenu.click = LayerManager._renameMenu_Click;
-      popertiesMenu.click = LayerManager._popertiesMenu_Click;
+      propertiesMenu.click = LayerManager._propertiesMenu_Click;
       scaleMenu.click = LayerManager.scaleMenu_click;
       defaultImageset.click = LayerManager._defaultImageset_Click;
       opacityMenu.click = LayerManager._opacityMenu_Click;
@@ -11879,6 +11902,9 @@ window.wwtlib = function(){
         LayerManager._contextMenu.items.push(defaultImageset);
         var isl = ss.safeCast(selected, ImageSetLayer);
         defaultImageset.checked = isl.get_overrideDefaultLayer();
+      }
+      if (ss.canCast(selected, SpreadSheetLayer) || ss.canCast(selected, GreatCirlceRouteLayer)) {
+        LayerManager._contextMenu.items.push(propertiesMenu);
       }
       if (ss.canCast(selected, VoTableLayer)) {
         LayerManager._contextMenu.items.push(showViewer);
@@ -11985,9 +12011,11 @@ window.wwtlib = function(){
           }
         }
         if (!Sky) {
+          LayerManager._contextMenu.items.push(newMenu);
         }
       }
       if (!Sky) {
+        LayerManager._contextMenu.items.push(addGreatCircle);
         LayerManager._contextMenu.items.push(addGirdLayer);
       }
       if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
@@ -12003,6 +12031,7 @@ window.wwtlib = function(){
       }
       if (map.frame.reference === 18) {
         LayerManager._contextMenu.items.push(deleteFrameMenu);
+        LayerManager._contextMenu.items.push(popertiesMenu);
       }
       LayerManager._contextMenu.items.push(spacer1);
       LayerManager._contextMenu._show(Vector2d.create(x, y));
@@ -12066,8 +12095,44 @@ window.wwtlib = function(){
   LayerManager._deleteFrameMenu_Click = function(sender, e) {
   };
   LayerManager._framePropertiesMenu_Click = function(sender, e) {
+    var target = LayerManager._selectedLayer;
+    LayerManager.get_referenceFramePropsDialog().show(target.frame, e);
   };
   LayerManager._newMenu_Click = function(sender, e) {
+    var frame = new ReferenceFrame();
+    LayerManager.get_frameWizardDialog().show(frame, e);
+  };
+  LayerManager.referenceFrameWizardFinished = function(frame) {
+    var target = LayerManager._selectedLayer;
+    var newMap = new LayerMap(frame.name, 18);
+    if (!ss.keyExists(LayerManager.get_allMaps(), frame.name)) {
+      newMap.frame = frame;
+      target.addChild(newMap);
+      newMap.frame.parent = target.get_name();
+      LayerManager.get_allMaps()[frame.name] = newMap;
+      LayerManager._version++;
+      LayerManager.loadTree();
+    }
+  };
+  LayerManager.pasteFromTle = function(lines, frame) {
+    var line1 = '';
+    var line2 = '';
+    for (var i = 0; i < lines.length; i++) {
+      lines[i] = ss.trim(lines[i]);
+      if (lines[i].length === 69 && ReferenceFrame.isTLECheckSumGood(lines[i])) {
+        if (!line1.length && lines[i].substring(0, 1) === '1') {
+          line1 = lines[i];
+        }
+        if (!line2.length && lines[i].substring(0, 1) === '2') {
+          line2 = lines[i];
+        }
+      }
+    }
+    if (line1.length === 69 && line2.length === 69) {
+      frame.fromTLE(line1, line2, 398600441800000);
+      return true;
+    }
+    return false;
   };
   LayerManager._opacityMenu_Click = function(sender, e) {
   };
@@ -12075,7 +12140,14 @@ window.wwtlib = function(){
     var isl = ss.safeCast(LayerManager._selectedLayer, ImageSetLayer);
     isl.set_overrideDefaultLayer(!isl.get_overrideDefaultLayer());
   };
-  LayerManager._popertiesMenu_Click = function(sender, e) {
+  LayerManager._propertiesMenu_Click = function(sender, e) {
+    if (ss.canCast(LayerManager._selectedLayer, SpreadSheetLayer)) {
+      var target = LayerManager._selectedLayer;
+      LayerManager.get_dataVizWizardDialog().show(target, e);
+    }
+    if (ss.canCast(LayerManager._selectedLayer, GreatCirlceRouteLayer)) {
+      LayerManager.get_greatCircleDlg().show(LayerManager._selectedLayer, new ss.EventArgs());
+    }
   };
   LayerManager._renameMenu_Click = function(sender, e) {
     var layer = LayerManager._selectedLayer;
@@ -12171,10 +12243,7 @@ window.wwtlib = function(){
     LayerManager.loadTree();
   };
   LayerManager._pasteLayer_Click = function(sender, e) {
-    var clip = function(clipText) {
-      LayerManager.createSpreadsheetLayer(LayerManager.get_currentMap(), 'Clipboard', clipText);
-    };
-    navigator.clipboard.readText().then(clip);
+    LayerManager.get_dataVizWizardDialog().show(LayerManager.get_currentMap(), e);
   };
   LayerManager.createSpreadsheetLayer = function(frame, name, data) {
     var layer = new SpreadSheetLayer();
@@ -12320,6 +12389,22 @@ window.wwtlib = function(){
     return data.substr(valStart, valEnd - valStart);
   };
   LayerManager._addGreatCircleLayer = function() {
+    var layer = new GreatCirlceRouteLayer();
+    var camera = WWTControl.singleton.renderContext.viewCamera;
+    layer.set_latStart(camera.lat);
+    layer.set_latEnd(camera.lat - 5);
+    layer.set_lngStart(camera.lng);
+    layer.set_lngEnd(camera.lng + 5);
+    layer.set_width(4);
+    layer.enabled = true;
+    layer.set_name(Language.getLocalizedText(1144, 'Great Circle Route'));
+    LayerManager.get_layerList()[layer.id] = layer;
+    layer.set_referenceFrame(LayerManager._currentMap);
+    LayerManager.get_allMaps()[LayerManager._currentMap].layers.push(layer);
+    LayerManager.get_allMaps()[LayerManager._currentMap].open = true;
+    LayerManager._version++;
+    LayerManager.loadTree();
+    LayerManager.get_greatCircleDlg().show(layer, new ss.EventArgs());
   };
   LayerManager._loadOrbitsFile = function(name, data, currentMap) {
     var layer = new OrbitLayer();
@@ -14365,7 +14450,7 @@ window.wwtlib = function(){
           break;
       }
     }
-    return ('0' + (checksum % 10)) === line.charAt(68);
+    return (checksum % 10).toString() === line.charAt(68).toString();
   };
   ReferenceFrame.toTLEExponential = function(num, size) {
     var exp = num.toExponential(size);
@@ -27852,6 +27937,25 @@ window.wwtlib = function(){
   }
   var TagMe$ = {
 
+  };
+
+
+  // wwtlib.Dialog
+
+  function Dialog() {
+  }
+  var Dialog$ = {
+    add_showDialogHook: function(value) {
+      this.__showDialogHook = ss.bindAdd(this.__showDialogHook, value);
+    },
+    remove_showDialogHook: function(value) {
+      this.__showDialogHook = ss.bindSub(this.__showDialogHook, value);
+    },
+    show: function(dialogArgs, e) {
+      if (this.__showDialogHook != null) {
+        this.__showDialogHook(dialogArgs, e);
+      }
+    }
   };
 
 
@@ -43782,6 +43886,52 @@ window.wwtlib = function(){
   };
 
 
+  // wwtlib.FrameWizard
+
+  function FrameWizard() {
+    Dialog.call(this);
+  }
+  var FrameWizard$ = {
+    OK: function(frame) {
+      LayerManager.referenceFrameWizardFinished(frame);
+    }
+  };
+
+
+  // wwtlib.ReferenceFrameProps
+
+  function ReferenceFrameProps() {
+    Dialog.call(this);
+  }
+  var ReferenceFrameProps$ = {
+    OK: function(frame) {
+      LayerManager.loadTree();
+    }
+  };
+
+
+  // wwtlib.GreatCircleDialog
+
+  function GreatCircleDialog() {
+    Dialog.call(this);
+  }
+  var GreatCircleDialog$ = {
+    OK: function(frame) {
+    }
+  };
+
+
+  // wwtlib.DataVizWizard
+
+  function DataVizWizard() {
+    Dialog.call(this);
+  }
+  var DataVizWizard$ = {
+    OK: function() {
+    }
+  };
+
+
   // wwtlib.Circle
 
   function Circle() {
@@ -45159,6 +45309,7 @@ window.wwtlib = function(){
       ContextMenuStrip: [ ContextMenuStrip, ContextMenuStrip$, null ],
       ToolStripMenuItem: [ ToolStripMenuItem, ToolStripMenuItem$, null ],
       TagMe: [ TagMe, TagMe$, null ],
+      Dialog: [ Dialog, Dialog$, null ],
       Histogram: [ Histogram, Histogram$, null ],
       SimpleInput: [ SimpleInput, SimpleInput$, null ],
       XmlTextWriter: [ XmlTextWriter, XmlTextWriter$, null ],
@@ -45227,6 +45378,10 @@ window.wwtlib = function(){
       AudioOverlay: [ AudioOverlay, AudioOverlay$, Overlay ],
       FlipbookOverlay: [ FlipbookOverlay, FlipbookOverlay$, Overlay ],
       ToolStripSeparator: [ ToolStripSeparator, ToolStripSeparator$, ToolStripMenuItem ],
+      FrameWizard: [ FrameWizard, FrameWizard$, Dialog ],
+      ReferenceFrameProps: [ ReferenceFrameProps, ReferenceFrameProps$, Dialog ],
+      GreatCircleDialog: [ GreatCircleDialog, GreatCircleDialog$, Dialog ],
+      DataVizWizard: [ DataVizWizard, DataVizWizard$, Dialog ],
       Circle: [ Circle, Circle$, Annotation ],
       Poly: [ Poly, Poly$, Annotation ],
       PolyLine: [ PolyLine, PolyLine$, Annotation ],
@@ -45501,6 +45656,10 @@ window.wwtlib = function(){
   KeplerVertex._degrad = Math.PI / 180;
   KeplerVertex.baseDate = ss.truncate(SpaceTimeController.utcToJulian(ss.now()));
   LayerManager._version = 0;
+  LayerManager._frameWizardDialog = new FrameWizard();
+  LayerManager._dataVizWizardDialog = new DataVizWizard();
+  LayerManager._referenceFramePropsDialog = new ReferenceFrameProps();
+  LayerManager._greatCircleDialog = new GreatCircleDialog();
   LayerManager._tourLayers = false;
   LayerManager._layerMaps = {};
   LayerManager._layerMapsTours = {};

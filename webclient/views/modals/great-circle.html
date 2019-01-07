@@ -1,0 +1,55 @@
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+  <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
+    <span localize="Great Circle Properties"></span>
+  </h5>
+</div>
+<div class="modal-body" style="padding:0">
+  <table style="margin:8px 12px;">
+    <tr>
+      <td>
+        <label localize="Lat"></label>
+        <input type="number" ng-model="layer._latStart$1"/>
+      </td>
+      <td>
+        <label localize="Lng"></label>
+        <input type="number" ng-model="layer._lngStart$1"/>
+      </td>
+      <td><label>&nbsp;</label>
+        <a class="btn" localize="<< Get From View" ng-click="getFromView('Start')"></a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label localize="Lat"></label>
+        <input type="number" ng-model="layer._latEnd$1"/>
+      </td>
+      <td>
+        <label localize="Lng"></label>
+        <input type="number" ng-model="layer._lngEnd$1"/>
+      </td>
+      <td><label>&nbsp;</label>
+        <a class="btn" localize="<< Get From View" ng-click="getFromView('End')"></a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label localize="Percent"></label>
+        <input type="number" ng-model="layer._percentComplete$1"/>
+      </td>
+      <td>
+        <label localize="Width"></label>
+        <input type="number" ng-model="layer._width$1"/>
+      </td>
+      <td>
+        <label localize="Color"></label>
+        <input type="color" ng-change="colorChange()" ng-model="hexColor"/>
+
+      </td>
+    </tr>
+
+  </table>
+  <div class="footer">
+    <a class="btn" localize="OK" ng-click="ok(layer)"></a>
+  </div>
+</div>

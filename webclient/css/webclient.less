@@ -502,15 +502,13 @@ body.wwt-webclient-wrapper.mobile{
     max-height: 377px;
   }
 
-  #ribbon {
+  #ribbon, .ribbon {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1;
     height: 34px;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     padding-left: 100px;
     border-bottom: solid 1px black;
@@ -579,8 +577,6 @@ body.wwt-webclient-wrapper.mobile{
               font-size: 14px;
               font-weight: 600;
               line-height: 1;
-              //width: 96px;
-              -webkit-text-shadow: 0 1px 1px #333;
               text-shadow: 0 1px 1px #333;
             }
 
@@ -1130,15 +1126,22 @@ body.wwt-webclient-wrapper.mobile{
     opacity: 0;
     transition: all linear 1200ms;
   }
-
-  input[type=search], input[type=number], input[type=text], textarea, textarea[readonly] {
-    background: rgba(123,123,123,.5);
+  .wwtinput{
+    background: fade(@brand-blue, 15%);
     border: solid 1px #394558;
     border-radius: 3px;
     padding: 1px 3px;
     color: @text-color;
     box-sizing: border-box;
     height: 22px;
+  }
+  input[type=search], input[type=number], input[type=text], input[type=date], input[type=datetime-local], textarea, textarea[readonly],.paste-control {
+    .wwtinput();
+  }
+  .paste-control{
+    display: inline-block;
+    width:110px;
+    overflow:hidden;
   }
 
   textarea.form-control {
@@ -1371,7 +1374,7 @@ body.wwt-webclient-wrapper.mobile{
     }
   }
 
-  .cross-fader, .year-slider, .planetary-scale, .sound-level,.scrubber-slider{
+  .cross-fader, .year-slider, .planetary-scale, .sound-level,.scrubber-slider,.scale-factor,.time-decay{
     .boxGradient();
     width: 100px;
     height: 6px;

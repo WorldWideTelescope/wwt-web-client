@@ -1,0 +1,286 @@
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+  <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
+    <span localize="Reference Frame"></span>
+  </h5>
+</div>
+<div class="modal-body">
+  <div ng-show="page=='welcome'">
+    <div class="titlebar" ng-if="!propertyMode"><h3 localize="Welcome"></h3></div>
+
+    <div class="page">
+      <p
+        localize="This wizard will guide you through the process of creating a new reference frame. A reference frame allows you to have local coordinates, scale and time relative to the rest of the universe. The reference can be based on fixed offsets, spherical coordinates, Keplarian orbits, or a interpolated values from a list of data/time and position offsets."></p>
+      <div class="iblock">
+        <label localize="Reference Frame Name"></label>
+        <input type="text" ng-model="refFrame.name" data-ng-change="buttonsEnabled.next = refFrame.name.length > 0"/>
+      </div>
+      <div class="iblock">
+        <label localize="Offset type"></label>
+        <select ng-model="refFrame.referenceFrameType" ng-options="c.type as c.label for c in offsetTypes"></select>
+
+      </div>
+    </div>
+  </div>
+  <div ng-show="page=='options'">
+    <div class="ribbon" ng-if="propertyMode">
+      <ul class="wwt-tabs">
+        <li class="active">
+          <div class="outer">
+            <a href="javascript:void(0)">
+              <span class="label" localize="General"></span>
+
+            </a>
+          </div>
+        </li>
+        <li>
+          <div class="outer" ng-click="next()">
+            <a href="javascript:void(0)">
+              <span class="label" localize="Position" ng-if="refFrame.referenceFrameType!=2"></span>
+              <span class="label" localize="Trajectory" ng-if="refFrame.referenceFrameType==2"></span>
+
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="titlebar" ng-if="!propertyMode"><h3 localize="General Options"></h3></div>
+    <div class="page">
+      <p
+        localize="The Mean allows you to specify the primary bounds of the reference frame such as the surface height of a planet, or the bounding sphere of a 3d model of a spacecraft. Rotation period and zero rotation day allow the specification of a rotating frame of reference. Heading Pitch and roll allow for orientation relative to the parent reference frame. Station Keeping automatically orients the reference frame to track the Earth rather than tumble in orbit."></p>
+      <table style="table-layout: fixed;width:90%">
+        <colgroup>
+          <col style="width:27%">
+          <col style="width:27%">
+          <col style="width:19%">
+          <col style="width:27%">
+        </colgroup>
+        <tr>
+          <td>
+            <label localize="Mean Radius (meters)"></label>
+            <input type="number" ng-model="refFrame.meanRadius"/>
+          </td>
+          <td><label localize="Rotation Period (days)"></label>
+            <input type="number" ng-model="refFrame.rotationalPeriod"/>
+          </td>
+          <td><label localize="Heading"></label>
+            <input type="number" ng-model="refFrame.heading"/>
+          </td>
+          <td rowspan="3">
+            <label localize="Orbit/Point Color"></label>
+            <input type="color" ng-change="colorChange()" ng-model="hexColor"/>
+            <div class="checkbox">
+              <label ng-class="refFrame.showAsPoint ? 'checked' : ''">
+                <input type="checkbox" ng-model="refFrame.showAsPoint"/>
+                <span localize="Show as Point at Distance"></span>
+              </label>
+            </div>
+            <div class="checkbox">
+              <label ng-class="refFrame.showOrbitPath ? 'checked' : ''">
+                <input type="checkbox" ng-model="refFrame.showOrbitPath"/>
+                <span localize="Show Orbit Path"></span>
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label localize="Oblateness (Percent)"></label>
+            <input type="number" ng-model="refFrame.oblateness"/>
+          </td>
+          <td><label localize="Zero Rotation (Julian Day)"></label>
+            <input type="number" ng-model="refFrame.zeroRotationDate"/>
+          </td>
+          <td><label localize="Pitch"></label>
+            <input type="number" ng-model="refFrame.pitch"/>
+          </td>
+        </tr>
+        <tr>
+          <td><label localize="Scale (Meters to Units)"></label>
+            <input type="number" ng-model="refFrame.scale"/>
+          </td>
+          <td>
+            <div class="checkbox">
+              <label ng-class="refFrame.stationKeeping ? 'checked' : ''">
+                <input type="checkbox" ng-model="refFrame.stationKeeping"/>
+                <span localize="Station Keeping"></span>
+              </label>
+            </div>
+          </td>
+          <td><label localize="Roll"></label>
+            <input type="number" ng-model="refFrame.roll"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div ng-show="page=='position'">
+    <div class="ribbon" ng-if="propertyMode">
+      <ul class="wwt-tabs">
+        <li >
+          <div class="outer" ng-click="back()">
+            <a href="javascript:void(0)">
+              <span class="label" localize="General"></span>
+
+            </a>
+          </div>
+        </li>
+        <li class="active">
+          <div class="outer">
+            <a href="javascript:void(0)">
+              <span class="label" localize="Position" ng-if="refFrame.referenceFrameType!=2"></span>
+              <span class="label" localize="Trajectory" ng-if="refFrame.referenceFrameType==2"></span>
+
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="titlebar" ng-if="!propertyMode">
+      <h3 localize="Position" ng-show="refFrame.referenceFrameType!=2"></h3>
+      <h3 localize="Trajectory" ng-show="refFrame.referenceFrameType==2"></h3>
+    </div>
+    <div class="page" ng-show="refFrame.referenceFrameType==1">
+      <p localize="A Keplarian orbit is an elliptical orbit defined by at least 6 parameters. There are some variations in how those parameters are described, but most orbits can be translated into the terms below."></p>
+      <table style="width:100%;margin-top:13px;">
+        <colgroup>
+          <col style="width:27%">
+          <col style="width:27%">
+          <col style="width:27%">
+          <col style="width:19%">
+        </colgroup>
+        <tr>
+          <td>
+            <label localize="Semimajor Axis (a)"></label>
+            <input type="number" ng-model="refFrame.semiMajorAxis"/>
+          </td>
+          <td>
+            <label localize="Semimajor Axis Units"></label>
+            <select ng-model="refFrame.semiMajorAxisUnits" ng-options="u.type as u.label for u in altUnits"></select>
+          </td>
+          <td>
+            <label localize="Mean anomaly at epoch"></label>
+            <input type="number" ng-model="refFrame.meanAnomolyAtEpoch"/>
+          </td>
+          <td rowspan="2">
+            <label>
+              <em ng-if="tleError">
+                The pasted data does not appear to contain a valid TLE set. Paste the contents of a Two Line Elements (TLE) set from your source again.
+              </em>
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label localize="Eccentricity (e)"></label>
+            <input type="number" ng-model="refFrame.eccentricity"/>
+          </td>
+          <td>
+            <label localize="Argument of periapsis"></label>
+            <input type="number" ng-model="refFrame.argumentOfPeriapsis"/>
+          </td>
+          <td>
+            <label localize="Epoch (Julian Date)"></label>
+            <input type="number" ng-model="refFrame.epoch"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label localize="Inclination"></label>
+            <input type="number" ng-model="refFrame.inclination"/>
+          </td>
+          <td>
+            <label localize="Longitude of the Ascending Node"></label>
+            <input type="number" ng-model="refFrame.longitudeOfAscendingNode"/>
+          </td>
+          <td>
+            <label localize="Mean Daily Motion"></label>
+            <input type="number" ng-model="refFrame.meanDailyMotion"/>
+          </td>
+          <td>
+            <label localize="Paste TLE"></label>
+            <div class="paste-control" contenteditable="true" ng-paste="pasteTLE($event)"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="refFrame.referenceFrameType==0">
+      <p localize="Select the Latitude, Longitude, and Altitude"></p>
+      <table class="v-pad">
+        <colgroup>
+          <col style="width:27%"/>
+          <col style="width:27%"/>
+          <col style="width:46%"/>
+        </colgroup>
+        <tr>
+          <td>
+            <label localize="Latitude (Decimal Degrees)"></label>
+            <input type="number" ng-model="refFrame.lat"/>
+          </td>
+          <td><label localize="Altitude (Meters)"></label>
+            <input type="number" ng-model="refFrame.altitude"/>
+          </td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>
+            <label localize="Longitude (Decimal Degrees)"></label>
+            <input type="number" ng-model="refFrame.lng"/>
+          </td>
+          <td colspan="2"><label>&nbsp;</label>
+            <!--??<a class="btn" localize="Get From View" ng-click=""></a>-->
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="refFrame.referenceFrameType==2">
+      <p localize="Trajectory Reference Frames are based on a time series table of Julian Date/Times and heliocentric X,Y,Z coordinates in the referenced units. The reference frame will orient itself on the path described based on interpolating positions for the current time."></p>
+      <table>
+        <colgroup>
+          <col style="width:27%"/>
+          <col style="width:27%"/>
+          <col style="width:46%"/>
+        </colgroup>
+        <tr>
+          <td>
+            <label>&nbsp;</label>
+            <a class="btn" localize="Import Path" style="width:111px;"></a>
+          </td>
+          <td><label localize="Units"></label>
+            <select ng-model="refFrame.semiMajorAxisUnits" ng-options="u.type as u.label for u in altUnits"></select>
+          </td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td colspan="2">
+            <label localize="Begin Date Range"></label>
+            <input type="date" ng-model="refFrame.beginDate" class="wwtinput">
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td colspan="2">
+            <label localize="End Date Range"></label>
+            <input type="date" ng-model="refFrame.endDate">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
+       localize="Back" ng-disabled="!buttonsEnabled.back"
+       ng-click="back()"
+    ></a>
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.next}"
+       localize="Next" ng-disabled="!buttonsEnabled.next"
+       ng-click="next()"
+    ></a>
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
+       localize="Finish" ng-disabled="!buttonsEnabled.finish"
+       ng-click="finish();$hide()"
+    ></a>
+    <a ng-if="propertyMode" class="btn" localize="Done" ng-click="$hide()"></a>
+  </div>
+
+
+</div>

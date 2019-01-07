@@ -1,5 +1,176 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Folder Name="ESO" Group="Explorer">
+  <Place Name="R Aquarii" RA="23.7304324401333" Dec="-15.2850909022" ZoomLevel="0.435092120416256" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-raqr-ntt.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="R Aquarii" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-raqr-nttL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-15.2850909022" CenterX="355.956486602" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.108773030104064">
+        <Credits>Romano Corradi; R Aquarii observed using the New Technology Telescope in 1991. The white vertical line in the middle is caused by light from the...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/raqr-ntt/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-raqr-ntt.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="R Aquarii" RA="23.7304185256" Dec="-15.2846435076" ZoomLevel="0.0041610800495657" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1840a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="R Aquarii" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1840aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-2.12" Projection="Tan" FileType=".png" CenterY="-15.2846435076" CenterX="355.956277884" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.00104027001239142">
+        <Credits>ESO/Schmid et al.; While testing a new subsystem on the SPHERE planet-hunting instrument on ESO’s Very Large telescope, astronomers were able to ca...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1840a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1840a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="R Aquarii" RA="23.7304438447333" Dec="-15.2865758279" ZoomLevel="0.436331321624166" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1850a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="R Aquarii" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-potw1850aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-0.0599999999999814" Projection="Tan" FileType=".png" CenterY="-15.2865758279" CenterX="355.956657671" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.109082830406042">
+        <Credits>ESO; This image reveals a dramatic binary star system named R Aquarii, located 700 light-years from Earth, as seen in 2012 by ESO’s V...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/potw1850a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1850a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="M 83" RA="13.6167284576" Dec="-29.8629338402" ZoomLevel="0.79019503129641" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1839h.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="M 83" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1839hL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-90.2200000000001" Projection="Tan" FileType=".png" CenterY="-29.8629338402" CenterX="204.250926864" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.197548757824102">
+        <Credits>SPECULOOS Team/E. Jehin/ESO; This first light image from the Europa telescope at the  SPECULOOS Southern Observatory  (SSO) shows M83,  the Southern Pinwheel...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1839h/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1839h.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Horsehead Nebula" RA="5.68458941101333" Dec="-2.45691835621" ZoomLevel="0.789444471456563" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1839i.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Horsehead Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1839iL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="-89.1800000000001" Projection="Tan" FileType=".png" CenterY="-2.45691835621" CenterX="85.2688411652" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.197361117864141">
+        <Credits>SPECULOOS Team/E. Jehin/ESO; This first light image from the Callisto telescope at the  SPECULOOS Southern Observatory  (SSO) shows the famous  Horsehead Neb...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1839i/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1839i.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Carina Nebula" RA="10.7447788243333" Dec="-59.665583877" ZoomLevel="0.79004266138583" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1839b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Carina Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1839bL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="179.82" Projection="Tan" FileType=".png" CenterY="-59.665583877" CenterX="161.171682365" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.197510665346458">
+        <Credits>SPECULOOS Team/E. Jehin/ESO; This first light image from the Europa telescope at the SPECULOOS Southern Observatory (SSO) shows the heart of the Carina Nebul...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1839b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1839b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Barnard's Star b" RA="17.9635435027333" Dec="4.67417191033" ZoomLevel="18.572800234881" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1837d.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Barnard's Star b" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1837dL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.22" Projection="Tan" FileType=".png" CenterY="4.67417191033" CenterX="269.453152541" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.64320005872026">
+        <Credits>ESO/Digitized Sky Survey 2 Ackno; This wide-field image shows the surroundings of the red dwarf known as Barnard’s Star in the constellation of Ophiuchus (the Ser...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1837d/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1837d.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Image File" RA="16.0155139282" Dec="-51.715596635" ZoomLevel="18.3696517968691" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1838c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Image File" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1838cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0.4" Projection="Tan" FileType=".png" CenterY="-51.715596635" CenterX="240.232708923" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.59241294921728">
+        <Credits>ESO/Digitized Sky Survey 2. Ackn; The image is a colour composite made from exposures from the Digitized Sky Survey 2 (DSS2), and shows the region surrounding  2X...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1838c/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1838c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Apep" RA="16.0140231036" Dec="-51.7124824843" ZoomLevel="0.0244365304505139" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1838a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Apep" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1838aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-51.7124824843" CenterX="240.210346554" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.00610913261262848">
+        <Credits>ESO/Callingham et al.; The VISIR instrument on ESO’s VLT captured this stunning image of a newly-discovered massive binary star system. Nicknamed Apep ...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1838a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1838a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 4993" RA="13.1631502714667" Dec="-23.3808836092" ZoomLevel="9.29173767815168" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733i.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 4993" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1733iL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0.46" Projection="Tan" FileType=".png" CenterY="-23.3808836092" CenterX="197.447254072" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="2.32293441953792">
+        <Credits>ESO and Digitized Sky Survey 2; This wide-field image generated from the Digitized Sky Survey 2 shows the sky around the galaxy NGC 4993. This galaxy was the ho...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1733i/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733i.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 4993" RA="13.1639903460667" Dec="-23.376977509" ZoomLevel="0.359877420997837" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733h.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 4993" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1733hL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0.32" Projection="Tan" FileType=".png" CenterY="-23.376977509" CenterX="197.459855191" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0899693552494592">
+        <Credits>ESO/S. Smartt &amp; T.-W. Chen; Image obtained by ESO's Gamma-ray Burst Optical/Near-infrared Detector (GROND) attached to the MPG/ESO 2.2-metre telescope at La...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1733h/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733h.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 4993" RA="13.1632732044" Dec="-23.3825101942" ZoomLevel="0.0945431382433792" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733d.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 4993" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1733dL{1}X{2}Y{3}.png" TileLevels="2" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-23.3825101942" CenterX="197.449098066" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0236357845608448">
+        <Credits>ESO/J.D. Lyman, A.J. Levan, N.R.; This image from the MUSE instrument on ESO’s Very Large Telescope at the Paranal Observatory in Chile shows the galaxy NGC 4993,...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1733d/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733d.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 4993" RA="13.1632313622667" Dec="-23.3839098088" ZoomLevel="0.469630704310682" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 4993" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1733bL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0.12" Projection="Tan" FileType=".png" CenterY="-23.3839098088" CenterX="197.448470434" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.11740767607767">
+        <Credits>ESO/A.J. Levan, N.R. Tanvir; This image from the VIMOS instrument on ESO’s Very Large Telescope at the Paranal Observatory in Chile shows the galaxy NGC 4993...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1733b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Westerlund 1" RA="16.7844389513333" Dec="-45.8480466253" ZoomLevel="0.204927279045837" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1849a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Westerlund 1" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-potw1849aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="44.2400000000002" Projection="Tan" FileType=".png" CenterY="-45.8480466253" CenterX="251.76658427" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0512318197614592">
+        <Credits>ESO/D. Fenech et al.; ALMA (ESO/; This spectacular Picture of the Week was produced from data gathered by the Atacama Large Millimeter/submillimeter Array (ALMA) ...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/potw18xx-weterlunda/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1849a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Westerlund 1" RA="16.78445" Dec="-45.851219" ZoomLevel="0.54126731264" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso0510a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Westerlund 1" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso0510aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0.05724586659" Projection="Tan" FileType=".png" CenterY="-45.851219" CenterX="251.76675" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.13531682816">
+        <Credits>ESO; Composite image of the super star cluster "Westerlund 1" from 2.2-m MPG/ESO Wide-Field Imager (WFI) observations. The image cove...</Credits>
+        <CreditsUrl>http://www.eso.org/public/images/eso0510a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso0510a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 6397" RA="17.6783608" Dec="-53.674218" ZoomLevel="1.11007940608" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso0425a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 6397" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso0425aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0.01896852663" Projection="Tan" FileType=".png" CenterY="-53.674218" CenterX="265.175412" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.27751985152">
+        <Credits>ESO; The globular cluster NGC 6397, located at a distance of approx. 7,200 light-years in the southern constellation Ara. It has unde...</Credits>
+        <CreditsUrl>http://www.eso.org/public/images/eso0425a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso0425a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="W26" RA="16.7842331094" Dec="-45.8457657962" ZoomLevel="0.969062395173274" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1341a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="W26" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-potw1341aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-0.338786457431534" Projection="Tan" FileType=".png" CenterY="-45.8457657962" CenterX="251.763496641" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.242265598793318">
+        <Credits>ESO/VPHAS+ Survey/N. Wright; This new picture from the VLT Survey Telescope (VST) at ESO's Paranal Observatory shows the remarkable super star cluster Wester...</Credits>
+        <CreditsUrl>http://www.eso.org/public/images/potw1341a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1341a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="COSMOS Field" RA="9.99191223546667" Dec="2.60133566246" ZoomLevel="18.3481374777978" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1124c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="COSMOS Field" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1124cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="2.60133566246" CenterX="149.878683532" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.58703436944944">
+        <Credits>ESO and Digitized Sky Survey 2. Acknowledgement: Davide De Martin.; This  visible-light wide-field image of the region around the COSMOS field  was created from photographs taken through red and b...</Credits>
+        <CreditsUrl>http://www.eso.org/public/images/eso1124c/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1124c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Rosette Nebula" RA="6.51189005544" Dec="5.00622358979" ZoomLevel="0.573949902545715" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1847a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Rosette Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-potw1847aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="90.0000000000001" Projection="Tan" FileType=".png" CenterY="5.00622358979" CenterX="97.6783508316" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.143487475636429">
+        <Credits>ESO; This colourful image shows a part of the Rosette Nebula in the constellation of Monoceros (The Unicorn). It is an emission nebul...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/potw1847a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1847a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="NGC 2467" RA="7.87204097306667" Dec="-26.4408748709" ZoomLevel="0.7634716817408" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1834a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="NGC 2467" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1834aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-26.4408748709" CenterX="118.080614596" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.1908679204352">
@@ -27,12 +198,12 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
-  <Place Name="COSMOS Field" RA="9.99191223546667" Dec="2.60133566246" ZoomLevel="18.3481374777978" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1124c.jpg" Constellation="">
+  <Place Name="Hubble Ultra Deep Field" RA="3.54271674847333" Dec="-27.8328079064" ZoomLevel="9.17508360224768" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1832b.jpg" Constellation="">
     <ForegroundImageSet>
-      <ImageSet DataSetType="Sky" Name="COSMOS Field" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1124cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="2.60133566246" CenterX="149.878683532" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.58703436944944">
-        <Credits>ESO and Digitized Sky Survey 2. Acknowledgement: Davide De Martin.; This  visible-light wide-field image of the region around the COSMOS field  was created from photographs taken through red and b...</Credits>
-        <CreditsUrl>http://www.eso.org/public/images/eso1124c/</CreditsUrl>
-        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1124c.jpg</ThumbnailUrl>
+      <ImageSet DataSetType="Sky" Name="Hubble Ultra Deep Field" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1832bL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-0.36" Projection="Tan" FileType=".png" CenterY="-27.8328079064" CenterX="53.1407512271" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="2.29377090056192">
+        <Credits>ESO/Digitized Sky Survey 2. Ackn; This image is a colour composite made from exposures from the Digitized Sky Survey 2 (DSS2). The field of view is approximately ...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1832b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1832b.jpg</ThumbnailUrl>
       </ImageSet>
     </ForegroundImageSet>
   </Place>
@@ -234,12 +405,30 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
+  <Place Name="Carina Nebula" RA="10.7779108809333" Dec="-59.8244880881" ZoomLevel="6.21871751430799" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1828b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Carina Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1828bL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.22" Projection="Tan" FileType=".png" CenterY="-59.8244880881" CenterX="161.668663214" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.554679378577">
+        <Credits>ESO/J. Emerson/M. Irwin/J. Lewis; This wider coverage area reveals even more stars from the crowded neighbourhood surrounding the Carina nebula. Captured by VISTA...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1828b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1828b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="Carina Nebula" RA="10.7544207758667" Dec="-59.8247155086" ZoomLevel="6.20671594206331" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1828a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="Carina Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1828aL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0.1" Projection="Tan" FileType=".png" CenterY="-59.8247155086" CenterX="161.316311638" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.55167898551583">
         <Credits>ESO/J. Emerson/M. Irwin/J. Lewis; This spectacular image of the Carina nebula reveals the dynamic cloud of interstellar matter and thinly spread gas and dust as n...</Credits>
         <CreditsUrl>https://www.eso.org/public/images/eso1828a/</CreditsUrl>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1828a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 3199" RA="10.3017735786" Dec="-57.924795328" ZoomLevel="3.89399169500447" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1831a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 3199" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-potw1831aL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="89.9" Projection="Tan" FileType=".png" CenterY="-57.924795328" CenterX="154.526603679" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.973497923751117">
+        <Credits>ESO; This ESO Picture of the Week shows a crescent-shaped cocoon of gas and dust  — a nebula known as NGC 3199, which lies 12 000 lig...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/potw1831a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-potw1831a.jpg</ThumbnailUrl>
       </ImageSet>
     </ForegroundImageSet>
   </Place>
@@ -495,6 +684,15 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
+  <Place Name="Coalsack Nebula" RA="12.5642808709333" Dec="-63.8096395364" ZoomLevel="18.3836027038597" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1539c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Coalsack Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1539cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.66" Projection="Tan" FileType=".png" CenterY="-63.8096395364" CenterX="188.464213064" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.59590067596493">
+        <Credits>ESO/Digitized Sky Survey 2. Ackn; This rich landscape is part of the small constellation of Crux (The Southern Cross). The very bright star is Alpha Crucis, also ...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1539c/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1539c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="Orion Nebula" RA="5.58870437310667" Dec="-5.25207172625" ZoomLevel="0.971168150768845" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1809a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="Orion Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1809aL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="103.32" Projection="Tan" FileType=".png" CenterY="-5.25207172625" CenterX="83.8305655966" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.242792037692211">
@@ -558,6 +756,15 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
+  <Place Name="HD 212087" RA="22.3793020792667" Dec="-45.9429135242" ZoomLevel="18.5564891752038" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1741b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="HD 212087" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1741bL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0.76" Projection="Tan" FileType=".png" CenterY="-45.9429135242" CenterX="335.689531189" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.63912229380096">
+        <Credits>ESO/Digitized Sky Survey 2. Ackn; This colourful image shows the sky around the bright pair of stars π1 Gruis (centre-right, very red) and π2 Gruis (centre-left, ...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1741b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1741b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="HD 212087" RA="22.3789460310667" Dec="-45.947947647" ZoomLevel="0.000409201589510963" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1741a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="HD 212087" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1741aL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-45.947947647" CenterX="335.684190466" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.000102300397377741">
@@ -606,7 +813,7 @@
   <Place Name="Omega Centauri" RA="23.841832373" Dec="-43.4341564592" ZoomLevel="0.732086870637747" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso9411a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="Omega Centauri" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso9411aL{1}X{2}Y{3}.png" TileLevels="1" WidthFactor="1" Rotation="1.57845208236" Projection="Tan" FileType=".png" CenterY="-43.4341564592" CenterX="357.627485595" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.183021717659437">
-        <Credits/>
+        <Credits>ESO; ...</Credits>
         <CreditsUrl/>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso9411a.jpg</ThumbnailUrl>
       </ImageSet>
@@ -2664,12 +2871,12 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
-  <Place Name="NGC 4993" RA="13.1631502714667" Dec="-23.3808836092" ZoomLevel="9.29173767815168" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733i.jpg" Constellation="">
+  <Place Name="Sculptor Dwarf Galaxy" RA="1.00062459593333" Dec="-33.7318828419" ZoomLevel="18.3511611772764" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1536c.jpg" Constellation="">
     <ForegroundImageSet>
-      <ImageSet DataSetType="Sky" Name="NGC 4993" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1733iL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="0.46" Projection="Tan" FileType=".png" CenterY="-23.3808836092" CenterX="197.447254072" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="2.32293441953792">
-        <Credits>ESO and Digitized Sky Survey 2; This wide-field image generated from the Digitized Sky Survey 2 shows the sky around the galaxy NGC 4993. This galaxy was the ho...</Credits>
-        <CreditsUrl>https://www.eso.org/public/images/eso1733i/</CreditsUrl>
-        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1733i.jpg</ThumbnailUrl>
+      <ImageSet DataSetType="Sky" Name="Sculptor Dwarf Galaxy" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1536cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-1.32" Projection="Tan" FileType=".png" CenterY="-33.7318828419" CenterX="15.009368939" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.5877902943191">
+        <Credits>ESO/Digitized Sky Survey 2; This image of the sky around the Sculptor Dwarf Galaxy was created from pictures from the Digitized Sky Survey 2. The galaxy app...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1536c/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1536c.jpg</ThumbnailUrl>
       </ImageSet>
     </ForegroundImageSet>
   </Place>
@@ -4860,6 +5067,15 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
+  <Place Name="M 20" RA="18.0072957796" Dec="-23.0196873626" ZoomLevel="6.20603668955136" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1504e.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="M 20" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1504eL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-60.2200000000001" Projection="Tan" FileType=".png" CenterY="-23.0196873626" CenterX="270.109436694" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.55150917238784">
+        <Credits>ESO/VVV consortium/D. Minniti; This extract from the VISTA VVV survey of the central parts of the Milky Way shows the famous Trifid Nebula at the bottom. It ap...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1504e/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1504e.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="M 20" RA="18.0341388784667" Dec="-22.9561623215" ZoomLevel="1.55198474811638" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1504a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="M 20" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1504aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-129.6" Projection="Tan" FileType=".png" CenterY="-22.9561623215" CenterX="270.512083177" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.387996187029094">
@@ -4938,6 +5154,15 @@
         <Credits>ESO/Digitized Sky Survey 2; This image shows the sky around the star 51 Pegasi in the northern constellation of Pegasus (The Winged Horse).  In 1995 the fir...</Credits>
         <CreditsUrl>https://www.eso.org/public/images/eso1517c/</CreditsUrl>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1517c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Eagle Nebula" RA="18.3130914049333" Dec="-13.85271669" ZoomLevel="18.3430592743342" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1518e.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Eagle Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1518eL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-5.75999999999999" Projection="Tan" FileType=".png" CenterY="-13.85271669" CenterX="274.696371074" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.58576481858355">
+        <Credits>ESO/Digitized Sky Survey 2. Ackn; This image is a colour composite of the Eagle Nebula (M 16)  made from exposures from the Digitized Sky Survey 2 (DSS2). The fie...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1518e/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1518e.jpg</ThumbnailUrl>
       </ImageSet>
     </ForegroundImageSet>
   </Place>
@@ -5139,12 +5364,30 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
+  <Place Name="Au Mic" RA="20.7544453564667" Dec="-30.9454045247" ZoomLevel="18.3702424622203" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1538c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Au Mic" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1538cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0.66" Projection="Tan" FileType=".png" CenterY="-30.9454045247" CenterX="311.316680347" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.59256061555507">
+        <Credits>ESO/Digitized Sky Survey 2; This image shows the sky around the nearby young star AU Microscopii. It was created from images forming part of the Digitized S...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1538c/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1538c.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="Coalsack Nebula" RA="12.5234496805333" Dec="-63.7597650184" ZoomLevel="4.33353757759242" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1539a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="Coalsack Nebula" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1539aL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="-63.7597650184" CenterX="187.851745208" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.08338439439811">
         <Credits>ESO; This image from the Wide Field Imager on the MPG/ESO 2.2-metre telescope shows part of the huge cloud of dust and gas known as t...</Credits>
         <CreditsUrl>https://www.eso.org/public/images/eso1539a/</CreditsUrl>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1539a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="VY Canis Majoris" RA="7.38301195873333" Dec="-25.7730558543" ZoomLevel="18.3556826086113" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1546c.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="VY Canis Majoris" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1546cL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.12" Projection="Tan" FileType=".png" CenterY="-25.7730558543" CenterX="110.745179381" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="4.58892065215283">
+        <Credits>ESO/Digitized Sky Survey 2. Ackn; This wide-field view shows the sky around the very brilliant red hypergiant star VY Canis Majoris, one of the largest stars know...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1546c/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1546c.jpg</ThumbnailUrl>
       </ImageSet>
     </ForegroundImageSet>
   </Place>
@@ -5361,6 +5604,15 @@
         <Credits>ESO; This richly detailed view of the star formation region Messier 78, in the constellation of Orion (The Hunter), was taken with th...</Credits>
         <CreditsUrl>https://www.eso.org/public/images/eso1635a/</CreditsUrl>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1635a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="RR Lyr" RA="17.7309870862667" Dec="-29.2966065816" ZoomLevel="6.20390424997396" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1636a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="RR Lyr" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/ESO-eso1636aL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-58.5599999999999" Projection="Tan" FileType=".png" CenterY="-29.2966065816" CenterX="265.964806294" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="1.55097606249349">
+        <Credits>ESO/VVV Survey/D. Minniti; This image, captured with the VISTA infrared survey telescope, as part of the Variables in the Via Lactea (VVV) ESO public surve...</Credits>
+        <CreditsUrl>https://www.eso.org/public/images/eso1636a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-ESO-eso1636a.jpg</ThumbnailUrl>
       </ImageSet>
     </ForegroundImageSet>
   </Place>

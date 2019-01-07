@@ -329,7 +329,7 @@ namespace wwtlib
                         break;
                 }
             }
-            return ('0' + (char)(checksum % 10)) == line.CharAt(68);
+            return (checksum % 10).ToString() == line.CharAt(68).ToString();
 
         }
 

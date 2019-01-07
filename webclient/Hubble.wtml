@@ -1,5 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Folder Name="Hubble" Group="Explorer">
+  <Place Name="NGC 1466" RA="3.74249730183333" Dec="-71.6710902524" ZoomLevel="0.227649173590835" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1852a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1466" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1852aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-104.94" Projection="Tan" FileType=".png" CenterY="-71.6710902524" CenterX="56.1374595275" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0569122933977088">
+        <Credits>ESA/Hubble &amp; NASA; This image from the NASA/ESA Hubble Space Telescope reveals an ancient, glimmering ball of stars called NGC 1466. It is a globul...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/potw1852a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1852a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="2MASS J03285694+3116222" RA="3.4835649729" Dec="31.2628511158" ZoomLevel="0.227493096398848" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1853a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="2MASS J03285694+3116222" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1853aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="73.02" Projection="Tan" FileType=".png" CenterY="31.2628511158" CenterX="52.2534745935" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.056873274099712">
+        <Credits>ESA/Hubble &amp; NASA, K. Stapelfeld; In this image the NASA/ESA Hubble Space Telescope has captured the smoking gun of a newborn star, the Herbig–Haro objects number...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/potw1853a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1853a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="MACS J0416.1-2403" RA="4.26911046868667" Dec="-24.0746335883" ZoomLevel="0.246897348681728" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1820b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="MACS J0416.1-2403" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1820bL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-24.02" Projection="Tan" FileType=".png" CenterY="-24.0746335883" CenterX="64.0366570303" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.061724337170432">
+        <Credits>NASA, ESA, and M. Montes (Univer; This image from the NASA/ESA Hubble Space Telescope shows the galaxy cluster MACS J0416. This is one of six being studied by the...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/heic1820b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1820b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Abell S1063" RA="22.8123452454" Dec="-44.5300593385" ZoomLevel="0.176573145432064" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1820a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Abell S1063" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1820aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="7.34000000000001" Projection="Tan" FileType=".png" CenterY="-44.5300593385" CenterX="342.185178681" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.044143286358016">
+        <Credits>NASA, ESA, and M. Montes (Univer; Abell S1063, a galaxy cluster, was observed by the NASA/ESA Hubble Space Telescope as part of the Frontier Fields programme. The...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/heic1820a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1820a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Coma Cluster" RA="12.9983273950667" Dec="27.9767014192" ZoomLevel="0.910305862857523" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1849a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Coma Cluster" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1849aL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="-0.02" Projection="Tan" FileType=".png" CenterY="27.9767014192" CenterX="194.974910926" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.227576465714381">
+        <Credits>NASA, ESA, J. Mack, and J. Madri; This image, from the NASA/ESA Hubble Space Telescope’s Advanced Camera for Surveys (ACS), reveals thousands of globular clusters...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/potw1849a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1849a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="Abell S1063" RA="22.8123439201333" Dec="-44.5300561316" ZoomLevel="0.252552545794458" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1615a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="Abell S1063" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1615aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="7.31999999999999" Projection="Tan" FileType=".png" CenterY="-44.5300561316" CenterX="342.185158802" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0631381364486144">
+        <Credits>NASA, ESA, and J. Lotz (STScI); Abell S1063, a galaxy cluster, was observed by the NASA/ESA Hubble Space Telescope as part of the Frontier Fields programme. The...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/heic1615a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1615a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="MACS J0416.1-2403" RA="4.26915340634667" Dec="-24.0745410931" ZoomLevel="0.273081798328648" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1523a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="MACS J0416.1-2403" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1523aL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="21.7" Projection="Tan" FileType=".png" CenterY="-24.0745410931" CenterX="64.0373010952" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0682704495821619">
+        <Credits>NASA, ESA and the HST Frontier F; This image from the NASA/ESA Hubble Space Telescope shows the galaxy cluster MACS J0416.1–2403. This is one of six being studied...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/heic1523a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1523a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="SNR 0454-67.2" RA="4.90870123517333" Dec="-67.2154785342" ZoomLevel="0.360569925874483" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1848a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="SNR 0454-67.2" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1848aL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-185.48" Projection="Tan" FileType=".png" CenterY="-67.2154785342" CenterX="73.6305185276" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0901424814686208">
+        <Credits>ESA/Hubble, NASA; This dark, tangled web is an object named SNR 0454-67.2. It formed in a very violent fashion — it is a supernova remnant, create...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/potw1848a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1848a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="NGC 1866" RA="5.22738984548667" Dec="-65.4647222538" ZoomLevel="0.180371085331661" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1847a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="NGC 1866" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1847aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="-140.98" Projection="Tan" FileType=".png" CenterY="-65.4647222538" CenterX="78.4108476823" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0450927713329152">
+        <Credits>ESA/Hubble &amp; NASA; Star clusters are common structures throughout the Universe, each made up of hundreds of thousands of stars all bound together b...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/potw1847a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1847a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="SDSS J1110+6459" RA="11.1705762590667" Dec="64.9968206039" ZoomLevel="0.180397565530931" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1846a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="SDSS J1110+6459" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1846aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="94.8000000000001" Projection="Tan" FileType=".png" CenterY="64.9968206039" CenterX="167.558643886" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0450993913827328">
+        <Credits>ESA/Hubble &amp; NASAAcknowledgement; At first glance, a bright blue crescent immediately jumps out of this NASA/ESA Hubble Space Telescope image: is it a bird? A pla...</Credits>
+        <CreditsUrl>https://www.spacetelescope.org/images/potw1846a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1846a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="NGC 4858" RA="12.9843727291333" Dec="28.126814608" ZoomLevel="0.180226380451021" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-potw1838a.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="NGC 4858" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-potw1838aL{1}X{2}Y{3}.png" TileLevels="4" WidthFactor="1" Rotation="111" Projection="Tan" FileType=".png" CenterY="28.126814608" CenterX="194.765590937" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0450565951127552">
@@ -4023,6 +4113,24 @@
       </ImageSet>
     </ForegroundImageSet>
   </Place>
+  <Place Name="MACS J0717.5+3745" RA="7.29549968013333" Dec="37.7068207373" ZoomLevel="0.909605361732813" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1215b.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="MACS J0717.5+3745" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1215bL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="47.7399999999999" Projection="Tan" FileType=".png" CenterY="37.7068207373" CenterX="109.432495202" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.227401340433203">
+        <Credits>NASA, ESA, Harald Ebeling(Univer; This enormous image shows Hubble’s view of massive galaxy cluster MACS J0717.5+3745. The large field of view is a combination of...</Credits>
+        <CreditsUrl>http://www.spacetelescope.org/images/heic1215b/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1215b.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
+  <Place Name="MACS J0717.5+3745" RA="7.29549968013333" Dec="37.7068207373" ZoomLevel="0.909605361732813" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1215a.jpg" Constellation="">
+    <ForegroundImageSet>
+      <ImageSet DataSetType="Sky" Name="MACS J0717.5+3745" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1215aL{1}X{2}Y{3}.png" TileLevels="6" WidthFactor="1" Rotation="47.7399999999999" Projection="Tan" FileType=".png" CenterY="37.7068207373" CenterX="109.432495202" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.227401340433203">
+        <Credits>NASA, ESA, Harald Ebeling (Unive; This enormous image shows Hubble’s view of massive galaxy cluster MACS J0717.5+3745. The large field of view is a combination of...</Credits>
+        <CreditsUrl>http://www.spacetelescope.org/images/heic1215a/</CreditsUrl>
+        <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1215a.jpg</ThumbnailUrl>
+      </ImageSet>
+    </ForegroundImageSet>
+  </Place>
   <Place Name="SpARCS1049+56" RA="10.8241260404667" Dec="56.6791331949" ZoomLevel="9.1687965588521" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-heic1519c.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="SpARCS1049+56" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-heic1519cL{1}X{2}Y{3}.png" TileLevels="5" WidthFactor="1" Rotation="-2.78" Projection="Tan" FileType=".png" CenterY="56.6791331949" CenterX="162.361890607" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="2.29219913971302">
@@ -7482,7 +7590,7 @@
   <Place Name="Image File" RA="6.77930411333333" Dec="27.3083438" ZoomLevel="0.158647887323944" DataSetType="Sky" Opacity="100" Thumbnail="https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo1007b.jpg" Constellation="">
     <ForegroundImageSet>
       <ImageSet DataSetType="Sky" Name="Image File" BandPass="Visible" Url="https://wwtfiles.blob.core.windows.net/vamp/Hubble-opo1007bL{1}X{2}Y{3}.png" TileLevels="3" WidthFactor="1" Rotation="0" Projection="Tan" FileType=".png" CenterY="27.3083438" CenterX="101.6895617" BottomsUp="False" OffsetX="0" OffsetY="0" BaseTileLevel="0" BaseDegreesPerTile="0.0396619718309859">
-        <Credits/>
+        <Credits>Hubble; ...</Credits>
         <CreditsUrl/>
         <ThumbnailUrl>https://wwtfiles.blob.core.windows.net/vamp/thumb-Hubble-opo1007b.jpg</ThumbnailUrl>
       </ImageSet>

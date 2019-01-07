@@ -202,6 +202,7 @@ ModelManifest.xml
 nbproject
 Thumbs.db
 COPYING.txt
+.vs/*
 
 # Komodo
 .komodotools

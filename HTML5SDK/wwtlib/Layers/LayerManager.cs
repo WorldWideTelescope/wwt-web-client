@@ -11,14 +11,36 @@ namespace wwtlib
     public class LayerManager
     {
         static int version = 0;
-
+        
         public static int Version
         {
             get { return LayerManager.version; }
             set { LayerManager.version = value; }
         }
 
+        static FrameWizard _frameWizardDialog = new FrameWizard();
+        public static FrameWizard FrameWizardDialog
+        {
+            get { return _frameWizardDialog; }
+        }
 
+        static DataVizWizard _dataVizWizardDialog = new DataVizWizard();
+        public static DataVizWizard DataVizWizardDialog
+        {
+            get { return _dataVizWizardDialog; }
+        }
+
+        static ReferenceFrameProps _referenceFramePropsDialog = new ReferenceFrameProps();
+        public static ReferenceFrameProps ReferenceFramePropsDialog
+        {
+            get { return _referenceFramePropsDialog; }
+        }
+
+        static GreatCircleDialog _greatCircleDialog = new GreatCircleDialog();
+        public static GreatCircleDialog GreatCircleDlg
+        {
+            get { return _greatCircleDialog; }
+        }
 
         static bool tourLayers = false;
 
@@ -49,6 +71,8 @@ namespace wwtlib
                 WWTControl.scriptInterface.RefreshLayerManagerNow();
             }
         }
+
+
 
         static Dictionary<string, LayerMap> layerMaps = new Dictionary<string, LayerMap>();
         static Dictionary<string, LayerMap> layerMapsTours = new Dictionary<string, LayerMap>();
@@ -1262,7 +1286,7 @@ namespace wwtlib
                 ToolStripMenuItem colorMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(458, "Color/Opacity"));
                 ToolStripMenuItem opacityMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(305, "Opacity"));
 
-                ToolStripMenuItem popertiesMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(20, "Properties"));
+                ToolStripMenuItem propertiesMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(20, "Properties"));
                 ToolStripMenuItem scaleMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(1291, "Scale/Histogram"));
                 ToolStripMenuItem lifeTimeMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(683, "Lifetime"));
                 ToolStripSeparator spacer1 = new ToolStripSeparator();
@@ -1290,7 +1314,7 @@ namespace wwtlib
                 colorMenu.Click = colorMenu_Click;
                 deleteMenu.Click = deleteMenu_Click;
                 renameMenu.Click = renameMenu_Click;
-                popertiesMenu.Click = popertiesMenu_Click;
+                propertiesMenu.Click = propertiesMenu_Click;
                 scaleMenu.Click = scaleMenu_click;
 
 
@@ -1344,10 +1368,10 @@ namespace wwtlib
                     ImageSetLayer isl = selected as ImageSetLayer;
                     defaultImageset.Checked = isl.OverrideDefaultLayer;
                 }
-
-                //  if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
+                /*selected is Object3dLayer || selected is GroundOverlayLayer || selected is OrbitLayer */
+                if (selected is SpreadSheetLayer || selected is GreatCirlceRouteLayer)
                 {
-                    //contextMenu.Items.Add(popertiesMenu);
+                    contextMenu.Items.Add(propertiesMenu);
                 }
 
                 if (selected is VoTableLayer)
@@ -1397,7 +1421,7 @@ namespace wwtlib
                 ToolStripMenuItem newLight = ToolStripMenuItem.Create("Add Light");
                 ToolStripMenuItem addFeedMenu = ToolStripMenuItem.Create(Language.GetLocalizedText(956, "Add OData/table feed as Layer"));
                 ToolStripMenuItem addWmsLayer = ToolStripMenuItem.Create(Language.GetLocalizedText(987, "New WMS Layer"));
-                ToolStripMenuItem addGirdLayer = ToolStripMenuItem.Create(Language.GetLocalizedText(1300, "New Lat/Lng Grid"));
+                ToolStripMenuItem addGridLayer = ToolStripMenuItem.Create(Language.GetLocalizedText(1300, "New Lat/Lng Grid"));
                 ToolStripMenuItem addGreatCircle = ToolStripMenuItem.Create(Language.GetLocalizedText(988, "New Great Circle"));
                 ToolStripMenuItem importTLE = ToolStripMenuItem.Create(Language.GetLocalizedText(989, "Import Orbital Elements"));
                 ToolStripMenuItem addMpc = ToolStripMenuItem.Create(Language.GetLocalizedText(1301, "Add Minor Planet"));
@@ -1440,7 +1464,7 @@ namespace wwtlib
                 addGreatCircle.Click = addGreatCircle_Click;
                 //    saveMenu.Click = SaveLayers_Click;
                 //   publishLayers.Click = publishLayers_Click;
-                addGirdLayer.Click = addGirdLayer_Click;
+                addGridLayer.Click = addGirdLayer_Click;
 
 
                 ToolStripMenuItem convertToOrbit = ToolStripMenuItem.Create("Extract Orbit Layer");
@@ -1512,7 +1536,7 @@ namespace wwtlib
 
                     if (!Sky)
                     {
-                        //contextMenu.Items.Add(newMenu);
+                        contextMenu.Items.Add(newMenu);
                     }
                     //contextMenu.Items.Add(newLayerGroupMenu);
 
@@ -1522,8 +1546,8 @@ namespace wwtlib
                 //contextMenu.Items.Add(addFeedMenu);
                 if (!Sky)
                 {
-                    //contextMenu.Items.Add(addGreatCircle);
-                    contextMenu.Items.Add(addGirdLayer);
+                    contextMenu.Items.Add(addGreatCircle);
+                    contextMenu.Items.Add(addGridLayer);
                 }
 
                 if ((map.Frame.Reference != ReferenceFrames.Identity && map.Frame.Name == "Sun") ||
@@ -1556,7 +1580,7 @@ namespace wwtlib
                 {
                     contextMenu.Items.Add(deleteFrameMenu);
 
-                    //contextMenu.Items.Add(popertiesMenu);
+                    contextMenu.Items.Add(popertiesMenu);
 
                 }
 
@@ -1804,45 +1828,68 @@ namespace wwtlib
 
         }
 
-
-
-
         static void FramePropertiesMenu_Click(object sender, EventArgs e)
         {
-            //LayerMap target = (LayerMap)selectedLayer;
-
-            //ReferenceFrame frame = new ReferenceFrame();
-            //if (FrameWizard.ShowPropertiesSheet(target.Frame) == DialogResult.OK)
-            //{
-
-            //}
+            LayerMap target = (LayerMap)selectedLayer;
+            LayerManager.ReferenceFramePropsDialog.Show(target.Frame, e);
+            
         }
+
+        
 
         static void newMenu_Click(object sender, EventArgs e)
-        {
-            //LayerMap target = (LayerMap)selectedLayer;
-            //ReferenceFrame frame = new ReferenceFrame();
-            //frame.SystemGenerated = false;
-            //if (FrameWizard.ShowWizard(frame) == DialogResult.OK)
-            //{
-            //    LayerMap newMap = new LayerMap(frame.Name, ReferenceFrames.Custom);
-            //    if (!AllMaps.ContainsKey(frame.Name))
-            //    {
-            //        newMap.Frame = frame;
+        {   
+            ReferenceFrame frame = new ReferenceFrame();
+            LayerManager.FrameWizardDialog.Show(frame, e);
+        }
 
-            //        target.AddChild(newMap);
-            //        newMap.Frame.Parent = target.Name;
-            //        AllMaps.Add(frame.Name, newMap);
-            //        version++;
-            //        LoadTreeLocal();
-            //    }
-            //}
+        public static void referenceFrameWizardFinished(ReferenceFrame frame)
+        {
+            LayerMap target = (LayerMap)selectedLayer;
+            LayerMap newMap = new LayerMap(frame.Name, ReferenceFrames.Custom);
+            if (!AllMaps.ContainsKey(frame.Name))
+            {
+                newMap.Frame = frame;
+
+                target.AddChild(newMap);
+                newMap.Frame.Parent = target.Name;
+                AllMaps[frame.Name] = newMap;
+                version++;
+                LoadTree();
+            }
         }
 
 
+        public static bool PasteFromTle(string[] lines, ReferenceFrame frame)
+        {
+            
+            string line1 = "";
+            string line2 = "";
+            for (int i = 0; i < lines.Length; i++)
+            {
+                lines[i] = lines[i].Trim();
+                if (lines[i].Length == 69 && ReferenceFrame.IsTLECheckSumGood(lines[i]))
+                {
+                    if (line1.Length == 0 && lines[i].Substring(0, 1) == "1")
+                    {
+                        line1 = lines[i];
+                    }
+                    if (line2.Length == 0 && lines[i].Substring(0, 1) == "2")
+                    {
+                        line2 = lines[i];
+                    }
+                }
+            }
 
+            if (line1.Length == 69 && line2.Length == 69)
+            {
+                frame.FromTLE(line1, line2, 398600441800000);
+                return true;
 
+            }
+            return false;
 
+        }
 
 
         static void opacityMenu_Click(object sender, EventArgs e)
@@ -1861,16 +1908,18 @@ namespace wwtlib
             isl.OverrideDefaultLayer = !isl.OverrideDefaultLayer;
         }
 
-        static void popertiesMenu_Click(object sender, EventArgs e)
+        static void propertiesMenu_Click(object sender, EventArgs e)
         {
-            //if (selectedLayer is SpreadSheetLayer)
-            //{
-            //    SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;
-            //    DataWizard.ShowPropertiesSheet(target);
+            
+            if (selectedLayer is SpreadSheetLayer)
+            {
+                SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;
+                DataVizWizardDialog.Show(target, e);
+                //    DataWizard.ShowPropertiesSheet(target);
 
-            //    target.CleanUp();
-            //    LoadTree();
-            //}
+                //    target.CleanUp();
+                //    LoadTree();
+            }
             //else if (selectedLayer is SpreadSheetLayer || selectedLayer is Object3dLayer)
             //{
             //    Object3dProperties props = new Object3dProperties();
@@ -1887,13 +1936,12 @@ namespace wwtlib
             //    props.Owner = Earth3d.MainWindow;
             //    props.Show();
             //}
-            //else if (selectedLayer is GreatCirlceRouteLayer)
-            //{
-            //    GreatCircleProperties props = new GreatCircleProperties();
-            //    props.Layer = ((GreatCirlceRouteLayer)selectedLayer);
-            //    props.Owner = Earth3d.MainWindow;
-            //    props.Show();
-            //}
+            if (selectedLayer is GreatCirlceRouteLayer)
+            {
+                
+                GreatCircleDlg.Show((GreatCirlceRouteLayer)selectedLayer, new EventArgs());
+                
+            }
         }
 
         static void renameMenu_Click(object sender, EventArgs e)
@@ -2043,16 +2091,16 @@ namespace wwtlib
             LoadTree();
         }
 
-
+        
         static void pasteLayer_Click(object sender, EventArgs e)
         {
+            //ClipbaordDelegate clip = delegate (string clipText)
+            //{
+            //    CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
+            //};
+            DataVizWizardDialog.Show(CurrentMap, e);
 
-            ClipbaordDelegate clip = delegate (string clipText)
-            {
-                CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
-            };
-            
-            Navigator.Clipboard.ReadText().Then(clip);
+            //Navigator.Clipboard.ReadText().Then(clip);
 
 
             //IDataObject dataObject = Clipboard.GetDataObject();
@@ -2328,25 +2376,24 @@ namespace wwtlib
 
         private static void AddGreatCircleLayer()
         {
-            //GreatCirlceRouteLayer layer = new GreatCirlceRouteLayer();
-            //layer.LatStart = RenderEngine.Engine.viewCamera.Lat;
-            //layer.LatEnd = RenderEngine.Engine.viewCamera.Lat - 5;
-            //layer.LngStart = RenderEngine.Engine.viewCamera.Lng;
-            //layer.LngEnd = RenderEngine.Engine.viewCamera.Lng + 5;
-            //layer.Width = 4;
-            //layer.Enabled = true;
-            //layer.Name = Language.GetLocalizedText(1144, "Great Circle Route");
-            //LayerList.Add(layer.ID, layer);
-            //layer.ReferenceFrame = currentMap;
-            //AllMaps[currentMap].Layers.Add(layer);
-            //AllMaps[currentMap].Open = true;
-            //version++;
-            //LoadTree();
+            
+            GreatCirlceRouteLayer layer = new GreatCirlceRouteLayer();
+            CameraParameters camera = WWTControl.Singleton.RenderContext.ViewCamera;
+            layer.LatStart = camera.Lat;
+            layer.LatEnd = camera.Lat - 5;
+            layer.LngStart = camera.Lng;
+            layer.LngEnd = camera.Lng + 5;
+            layer.Width = 4;
+            layer.Enabled = true;
+            layer.Name = Language.GetLocalizedText(1144, "Great Circle Route");
+            LayerList[layer.ID] = layer;
+            layer.ReferenceFrame = currentMap;
+            AllMaps[currentMap].Layers.Add(layer);
+            AllMaps[currentMap].Open = true;
+            version++;
+            LoadTree();
 
-            //GreatCircleProperties props = new GreatCircleProperties();
-            //props.Layer = layer;
-            //props.Owner = Earth3d.MainWindow;
-            //props.Show();
+            GreatCircleDlg.Show(layer, new EventArgs());
 
         }
 

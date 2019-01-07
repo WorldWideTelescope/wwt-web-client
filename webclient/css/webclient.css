@@ -7689,6 +7689,13 @@ table.table tbody td {
 .wwt-modal .modal-content {
   pointer-events: all;
 }
+.wwt-modal .modal-content .ribbon {
+  padding-left: 16px;
+  position: static;
+}
+.wwt-modal .modal-content .ribbon ul.wwt-tabs li div.outer a span.label {
+  padding: 5px 16px 11px;
+}
 .wwt-modal .modal-header {
   background: rgba(255, 255, 255, 0.85);
   color: #333;
@@ -7704,6 +7711,59 @@ table.table tbody td {
   -webkit-box-shadow: 0 0 8px #a1c2f9b0;
           box-shadow: 0 0 8px #a1c2f9b0;
 }
+.wwt-modal div.modal-dialog div.modal-content table {
+  table-layout: fixed;
+  width: 90%;
+}
+.wwt-modal div.modal-dialog div.modal-content table.v-pad td {
+  height: 65px;
+}
+.wwt-modal div.modal-dialog div.modal-content td {
+  height: 50px;
+  vertical-align: top;
+  padding-right: 12px;
+}
+.wwt-modal div.modal-dialog div.modal-content td label {
+  display: block;
+}
+.wwt-modal div.modal-dialog div.modal-content td select {
+  min-width: 135px;
+}
+.wwt-modal div.modal-dialog div.modal-content td input {
+  max-width: 95%;
+}
+.wwt-modal div.modal-dialog div.modal-content td input[type=color] {
+  -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  border: solid 1px #566783;
+  background: transparent;
+  -webkit-box-shadow: inset 0 1px 4px #4d5d77;
+          box-shadow: inset 0 1px 4px #4d5d77;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), color-stop(55%, rgba(155, 155, 155, 0.3)), color-stop(55.1%, rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.6)));
+  background-image: -o-linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(155, 155, 155, 0.3) 55%, rgba(0, 0, 0, 0.3) 55.1%, rgba(0, 0, 0, 0.6));
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d9b9b9b', endColorstr='#99000000', GradientType=0);
+  display: inline-block;
+  height: 18px;
+  width: 100px;
+}
+.wwt-modal div.modal-dialog div.modal-content td div.checkbox {
+  margin: 22px 0;
+}
+.wwt-modal div.modal-dialog div.modal-content .footer {
+  background-color: rgba(107, 169, 230, 0.15);
+  height: 48px;
+  padding: 12px;
+  text-align: right;
+}
+.wwt-modal div.modal-dialog div.modal-content .footer .btn {
+  width: 80px;
+  margin-left: 8px;
+}
 .wwt-modal.vo-tbl-modal .modal-dialog,
 .wwt-modal.vo-cone-modal .modal-dialog {
   width: 1120px;
@@ -7711,6 +7771,42 @@ table.table tbody td {
 .wwt-modal.vo-tbl-modal .modal-dialog .modal-content,
 .wwt-modal.vo-cone-modal .modal-dialog .modal-content {
   width: 1120px;
+}
+.wwt-modal.great-circle .modal-dialog {
+  width: 444px;
+}
+.wwt-modal.great-circle .modal-dialog .modal-content {
+  width: 444px;
+}
+.wwt-modal.wizard .modal-dialog {
+  width: 800px;
+}
+.wwt-modal.wizard .modal-dialog .modal-content {
+  width: inherit;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body {
+  padding: 0;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body p {
+  margin: 15px 0;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .titlebar {
+  background-color: rgba(222, 222, 222, 0.05);
+  padding: 2px 16px;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page {
+  height: 280px;
+  padding: 16px;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page p {
+  font-size: 13px;
+  margin-top: 3px;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page .iblock {
+  margin-right: 8px;
+}
+.wwt-modal.wizard .modal-dialog .modal-content .modal-body .page label {
+  display: block;
 }
 #simplemodal #simpleinput {
   width: 271px !important;
@@ -8373,16 +8469,17 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   height: 377px;
   max-height: 377px;
 }
-.wwt-webclient-wrapper #ribbon {
+.wwt-webclient-wrapper #ribbon,
+.wwt-webclient-wrapper .ribbon {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1;
   height: 34px;
-  -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
   padding-left: 100px;
   border-bottom: solid 1px black;
   overflow: hidden;
@@ -8394,22 +8491,27 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   background-repeat: no-repeat;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff22262f', endColorstr='#ff263048', GradientType=0);
 }
-.wwt-webclient-wrapper #ribbon .home-icon {
+.wwt-webclient-wrapper #ribbon .home-icon,
+.wwt-webclient-wrapper .ribbon .home-icon {
   position: absolute;
   left: 12px;
   top: 4px;
 }
-.wwt-webclient-wrapper #ribbon .home-icon .fa {
+.wwt-webclient-wrapper #ribbon .home-icon .fa,
+.wwt-webclient-wrapper .ribbon .home-icon .fa {
   font-size: 24px;
 }
-.wwt-webclient-wrapper #ribbon a.btn.pull-right {
+.wwt-webclient-wrapper #ribbon a.btn.pull-right,
+.wwt-webclient-wrapper .ribbon a.btn.pull-right {
   margin: 3px 16px 0 0;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs {
   padding: 0;
   margin: 0;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li {
   display: inline-block;
   list-style: none;
   border-top-right-radius: 4px;
@@ -8422,7 +8524,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer {
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   border: solid 1px transparent;
@@ -8430,7 +8533,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   overflow: hidden;
   position: relative;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a {
   text-align: center;
   display: block;
   color: white;
@@ -8439,7 +8543,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   overflow: hidden;
   top: -4px;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a .label {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a .label {
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   border: solid 1px transparent;
@@ -8451,10 +8556,10 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
-  -webkit-text-shadow: 0 1px 1px #333;
   text-shadow: 0 1px 1px #333;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a .menu {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a .menu {
   height: 9px;
   border: solid 1px transparent;
   -moz-box-sizing: border-box;
@@ -8462,7 +8567,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   box-sizing: border-box;
   display: block;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a .menu i {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a .menu i {
   visibility: hidden;
   color: white;
   position: relative;
@@ -8471,13 +8577,18 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   text-shadow: 0 1px 1px #333;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a:active,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a:active,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a:focus,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a:focus,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a:visited {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer a:visited,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer a:visited {
   text-decoration: none;
   color: white;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer .close-tour {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer .close-tour,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer .close-tour {
   font-weight: 100;
   position: absolute;
   top: 0px;
@@ -8488,18 +8599,22 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   cursor: pointer;
   display: inline-block;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer .close-tour:hover {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li div.outer .close-tour:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li div.outer .close-tour:hover {
   background-color: #006;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active {
   border: solid 1px #8e96af;
   border-bottom: 0;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer {
   border: solid 1px black;
   border-bottom: 0;
 }
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a {
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer a {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#799ee1), color-stop(50%, #617ec0), color-stop(50.1%, #1b419f), to(#3e9dce));
   background-image: -webkit-linear-gradient(#799ee1, #617ec0 50%, #1b419f 50.1%, #3e9dce);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#799ee1), color-stop(50%, #617ec0), color-stop(50.1%, #1b419f), to(#3e9dce));
@@ -8509,37 +8624,56 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff617ec0', endColorstr='#ff3e9dce', GradientType=0);
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .label,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .label:hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer a .label,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer a .label:hover {
   border: solid 1px rgba(0, 0, 0, 0.4);
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer a .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .menu:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .menu.hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer a .menu:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active div.outer a .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active div.outer a .menu.hover {
   border: solid 1px rgba(0, 0, 0, 0.4);
   border-bottom: 0;
   border-top: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover {
   border: solid 1px #8e96af;
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover {
   border: solid 1px black;
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5e95ff), color-stop(50%, #466dd9), color-stop(50.1%, #133fc0), to(#6bd3fe));
   background-image: -webkit-linear-gradient(#5e95ff, #466dd9 50%, #133fc0 50.1%, #6bd3fe);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#5e95ff), color-stop(50%, #466dd9), color-stop(50.1%, #133fc0), to(#6bd3fe));
@@ -8549,48 +8683,88 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff466dd9', endColorstr='#ff6bd3fe', GradientType=0);
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .label:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .label:hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .label:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .label:hover {
   border: solid 1px rgba(0, 0, 0, 0.4);
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu.hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu.hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu.hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu.hover {
   background: none;
   border: solid 1px rgba(0, 0, 0, 0.4);
   border-bottom: 0;
@@ -8598,45 +8772,77 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   position: relative;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a:hover .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a:hover .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a:hover .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a:hover .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer:hover a.hover .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer:hover a.hover .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu.hover i,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu.hover i {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active:hover div.outer.hover a.hover .menu.hover i,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.active.hover div.outer.hover a.hover .menu.hover i {
   visibility: visible;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou {
   border: solid 1px transparent;
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer {
   border: solid 1px rgba(0, 0, 0, 0.8);
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#8e98ac), color-stop(50%, #37415b), color-stop(50.1%, #131e2f), to(#131e2f));
   background-image: -webkit-linear-gradient(#8e98ac, #37415b 50%, #131e2f 50.1%, #131e2f);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#8e98ac), color-stop(50%, #37415b), color-stop(50.1%, #131e2f), to(#131e2f));
@@ -8647,26 +8853,42 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   text-decoration: none;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .label:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .label:hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .label:hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .label:hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .label:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .label:hover {
   border: solid 1px #bfc4ce;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .label,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .label,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .label {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .label,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .label,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .label {
   border: solid 1px #8e98ac;
   border-bottom: 0;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu:hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu:hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .menu.hover,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .menu.hover,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu.hover {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .menu.hover,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu.hover,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu.hover {
   border: solid 1px #6983a8;
   /* FF3.6+ */
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(18%, #3778c5), color-stop(100%, #1a2745));
@@ -8681,19 +8903,31 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
   background: radial-gradient(ellipse at center, #3778c5 18%, #1a2745 100%);
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu:hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu:hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .menu.hover i,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .menu.hover i,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu.hover i {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .menu.hover i,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu.hover i,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu.hover i {
   visibility: visible;
 }
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a .menu,
 .wwt-webclient-wrapper #ribbon ul.wwt-tabs li:hover div.outer a:hover .menu,
-.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu {
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li:hover div.outer a:hover .menu,
+.wwt-webclient-wrapper #ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu,
+.wwt-webclient-wrapper .ribbon ul.wwt-tabs li.hovertou div.outer a:hover .menu {
   /* FF3.6+ */
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(48%, #2e5480), color-stop(100%, #334258));
   /* Chrome,Safari4+ */
@@ -9091,12 +9325,8 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
        -o-transition: all linear 1200ms;
           transition: all linear 1200ms;
 }
-.wwt-webclient-wrapper input[type=search],
-.wwt-webclient-wrapper input[type=number],
-.wwt-webclient-wrapper input[type=text],
-.wwt-webclient-wrapper textarea,
-.wwt-webclient-wrapper textarea[readonly] {
-  background: rgba(123, 123, 123, 0.5);
+.wwt-webclient-wrapper .wwtinput {
+  background: rgba(107, 169, 230, 0.15);
   border: solid 1px #394558;
   border-radius: 3px;
   padding: 1px 3px;
@@ -9105,6 +9335,29 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   height: 22px;
+}
+.wwt-webclient-wrapper input[type=search],
+.wwt-webclient-wrapper input[type=number],
+.wwt-webclient-wrapper input[type=text],
+.wwt-webclient-wrapper input[type=date],
+.wwt-webclient-wrapper input[type=datetime-local],
+.wwt-webclient-wrapper textarea,
+.wwt-webclient-wrapper textarea[readonly],
+.wwt-webclient-wrapper .paste-control {
+  background: rgba(107, 169, 230, 0.15);
+  border: solid 1px #394558;
+  border-radius: 3px;
+  padding: 1px 3px;
+  color: rgba(255, 255, 255, 0.8);
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 22px;
+}
+.wwt-webclient-wrapper .paste-control {
+  display: inline-block;
+  width: 110px;
+  overflow: hidden;
 }
 .wwt-webclient-wrapper textarea.form-control {
   height: auto;
@@ -9309,7 +9562,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider,
 .wwt-webclient-wrapper .planetary-scale,
 .wwt-webclient-wrapper .sound-level,
-.wwt-webclient-wrapper .scrubber-slider {
+.wwt-webclient-wrapper .scrubber-slider,
+.wwt-webclient-wrapper .scale-factor,
+.wwt-webclient-wrapper .time-decay {
   -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
@@ -9334,7 +9589,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider a.btn,
 .wwt-webclient-wrapper .planetary-scale a.btn,
 .wwt-webclient-wrapper .sound-level a.btn,
-.wwt-webclient-wrapper .scrubber-slider a.btn {
+.wwt-webclient-wrapper .scrubber-slider a.btn,
+.wwt-webclient-wrapper .scale-factor a.btn,
+.wwt-webclient-wrapper .time-decay a.btn {
   position: absolute;
   left: 100px;
   margin: -6px 0 0 -6px;
@@ -9352,7 +9609,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider a.btn.disabled,
 .wwt-webclient-wrapper .planetary-scale a.btn.disabled,
 .wwt-webclient-wrapper .sound-level a.btn.disabled,
-.wwt-webclient-wrapper .scrubber-slider a.btn.disabled {
+.wwt-webclient-wrapper .scrubber-slider a.btn.disabled,
+.wwt-webclient-wrapper .scale-factor a.btn.disabled,
+.wwt-webclient-wrapper .time-decay a.btn.disabled {
   background-image: none;
   background-color: #ccc;
   opacity: .9;
@@ -9361,7 +9620,9 @@ body.wwt-webclient-wrapper.mobile .modal .modal-dialog .modal-content.thumbnails
 .wwt-webclient-wrapper .year-slider.disabled,
 .wwt-webclient-wrapper .planetary-scale.disabled,
 .wwt-webclient-wrapper .sound-level.disabled,
-.wwt-webclient-wrapper .scrubber-slider.disabled {
+.wwt-webclient-wrapper .scrubber-slider.disabled,
+.wwt-webclient-wrapper .scale-factor.disabled,
+.wwt-webclient-wrapper .time-decay.disabled {
   background-image: none;
   opacity: .5;
 }
