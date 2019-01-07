@@ -113,7 +113,10 @@
 			        importWtml('ESO.wtml').then(function () {
 			            console.log('eso loaded');
 			            importWtml('Chandra.wtml').then(function () {
-			                console.log('chandra loaded'); 
+                      console.log('chandra loaded');
+                      importWtml('Spitzer.wtml').then(function () {
+                        console.log('spitzer loaded');
+                      });
 			            });
 			        });
 			    });
@@ -143,7 +146,7 @@
 			        console.error(er);
 			    }
 			}
-		}
+		};
 
 		$.each(pl.get_names(), function (n, name) {
 			if (name.indexOf(' ') !== -1) {
@@ -156,13 +159,13 @@
 				addPlace(name, pl);
 			}
 		});
-	}
+	};
 
 	function importWtml(wtmlPath) {
-	    var deferred = $q.defer();
+	  var deferred = $q.defer();
 		
 		$.ajax({
-			url: wtmlPath
+			url: wtmlPath + '?v=' + $('body').data('resVersion')
 		}).done(function() {
 			var wtml = $($.parseXML(arguments[0]));
 			wtml.find('Place').each(function(i, place) {

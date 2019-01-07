@@ -1,7 +1,7 @@
 <%@ Page Language="C#" %>
 <%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="System.Security.Cryptography.X509Certificates" %>
-<%@ Import Namespace="WURFL" %>
+
 <script runat="server">
 
     public bool Debug = false;
@@ -18,105 +18,106 @@
     public string ImgDir = "https://wwtweb.blob.core.windows.net/webclient/";
     public enum Clients
     {
-        Html5 = 0,
-        Silverlight = 1,
-        WWT = 2,
-        Mobile = 3
+      Html5 = 0,
+      Silverlight = 1,
+      WWT = 2,
+      Mobile = 3
     };
     public Clients Client = Clients.Html5;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        var device = WURFLManagerBuilder.Instance.GetDeviceForRequest(Request.UserAgent);
 
-        ResourcesLocation = ConfigurationManager.AppSettings["WebClientResourcesLocation"] ?? ConfigurationManager.AppSettings["ResourcesLocation"] + "/webclient";
-        bool isMobile = device.GetCapability("is_smartphone") == "true";
+      ResourcesLocation = ConfigurationManager.AppSettings["WebClientResourcesLocation"] ?? ConfigurationManager.AppSettings["ResourcesLocation"] + "/webclient";
+      bool isMobile = Request.QueryString["mobile"] != null && Request.QueryString["mobile"] != "0";
 
-        BodyClass = string.Format("fs-player wwt-webclient-wrapper {0}", isMobile ? "mobile" : "desktop");
+      BodyClass = string.Format("fs-player wwt-webclient-wrapper {0}", isMobile ? "mobile" : "desktop");
 
-        if (Request.QueryString["debug"] != null)
+      if (Request.QueryString["debug"] != null)
+      {
+        DebugQs = "?debug=true&v=" + ResourcesVersion;
+        Debug = true;
+        DotMin = ".js";
+        if (Request.QueryString["debug"] == "chrome")
         {
-            DebugQs = "?debug=true&v=" + ResourcesVersion;
-            Debug = true;
-            DotMin = ".js";
-            if (Request.QueryString["debug"] == "chrome")
-            {
-                Debug = false;
-                DebugChrome = true;
-                DebugQs = "";
-            }
-            else if (Request.QueryString["debug"] == "local")
-            {
-                SDKLocation = "sdk/wwtsdk.js" + DebugQs;
-            }
-            else if (Request.QueryString["debug"] == "localmin")
-            {
-                SDKLocation = "wwtsdk.min.js" + DebugQs;
-            }
-            else
-            {
-                SDKLocation += "?debug=true";
-            }
+          Debug = false;
+          DebugChrome = true;
+          DebugQs = "";
         }
-        if (Request.QueryString["ads"] != null)
+        else if (Request.QueryString["debug"] == "local")
         {
-            ADS = true;
+          SDKLocation = "sdk/wwtsdk.js" + DebugQs;
         }
-        if (Request.Cookies["preferredClient"] != null)
+        else if (Request.QueryString["debug"] == "localmin")
         {
-            switch (Request.Cookies["preferredClient"].Value)
-            {
-                case "SL":
-                    Client = Clients.Silverlight;
-                    break;
-                case "WWT":
-                    Client = Clients.WWT;
-                    break;
-                case "Mobile":
-                    Client = Clients.Mobile;
-                    break;
-                default:
-                    Client = Clients.Html5;
-                    break;
-            }
+          SDKLocation = "wwtsdk.min.js" + DebugQs;
         }
-        if (Request.QueryString["client"] != null)
+        else
         {
-            HttpCookie cookie = Request.Cookies["preferredClient"] ?? new HttpCookie("preferredClient");
-            char c = Request.QueryString["client"].ToString(CultureInfo.InvariantCulture).ToLower().ToCharArray()[0];
-            if (c == 'h')
-            {
-                Client = Clients.Html5;
-                cookie.Value = "HTML5";
-            }
-            else if (c == 's')
-            {
-                Client = Clients.Silverlight;
-                cookie.Value = "SL";
-            }
-            else if (c == 'm')
-            {
-                Client = Clients.Mobile;
-                cookie.Value = "Mobile";
-            }
-            else if (c == 'w')
-            {
-                Client = Clients.WWT;
-                cookie.Value = "WWT";
-            }
-
-            HttpContext.Current.Response.Cookies.Add(cookie);
-
+          SDKLocation += "?debug=true";
+        }
+      }
+      if (Request.QueryString["ads"] != null)
+      {
+        ADS = true;
+      }
+      if (Request.Cookies["preferredClient"] != null)
+      {
+        switch (Request.Cookies["preferredClient"].Value)
+        {
+          case "SL":
+            Client = Clients.Silverlight;
+            break;
+          case "WWT":
+            Client = Clients.WWT;
+            break;
+          case "Mobile":
+            Client = Clients.Mobile;
+            break;
+          default:
+            Client = Clients.Html5;
+            break;
+        }
+      }
+      if (Request.QueryString["client"] != null && !isMobile)
+      {
+        HttpCookie cookie = Request.Cookies["preferredClient"] ?? new HttpCookie("preferredClient");
+        char c = Request.QueryString["client"].ToString(CultureInfo.InvariantCulture).ToLower().ToCharArray()[0];
+        if (c == 'h')
+        {
+          Client = Clients.Html5;
+          cookie.Value = "HTML5";
+        }
+        else if (c == 's')
+        {
+          Client = Clients.Silverlight;
+          cookie.Value = "SL";
+        }
+        else if (c == 'm')
+        {
+          Client = Clients.Mobile;
+          cookie.Value = "Mobile";
+        }
+        else if (c == 'w')
+        {
+          Client = Clients.WWT;
+          cookie.Value = "WWT";
         }
 
-        if (Client == Clients.Html5 && isMobile)
-        {
-            Response.Redirect(string.Format("/webclient/?client=mobile{0}", Debug ? "&debug=true" : ""));
-        }
-        else if (Client == Clients.Mobile && !isMobile)
-        {
-            Response.Redirect(string.Format("/webclient/?client=html5{0}", Debug ? "&debug=true" : ""));
-        }
+        HttpContext.Current.Response.Cookies.Add(cookie);
+
+      }
+      else if (isMobile) {
+        Client = Clients.Mobile;
+      }
+      //if (Client == Clients.Html5 && isMobile)
+      //{
+      //    Response.Redirect(string.Format("/webclient/?client=mobile{0}", Debug ? "&debug=true" : ""));
+      //}
+      //else if (Client == Clients.Mobile && !isMobile)
+      //{
+      //    Response.Redirect(string.Format("/webclient/?client=html5{0}", Debug ? "&debug=true" : ""));
+      //}
 
     }
 </script>
@@ -265,6 +266,7 @@
     data-ng-app="wwtApp"
     data-res-location="<%= ResourcesLocation%>"
     data-version="1"
+    data-res-version="<%= ResourcesVersion%>"
     data-liveId="<%=ConfigurationManager.AppSettings["LiveClientId"]%>"
     data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
@@ -363,7 +365,7 @@
     <a  data-bs-popover="popover" tabindex="0"
         localize="Share this place"
         localize-only="title"
-        data-content-template="views/popovers/shareplace.html"
+        data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
         data-ng-class="searchModal ? 'hide':'btn share-button'"
         data-placement="bottom-left"
         data-ng-hide="showMobileTracking()"
@@ -378,7 +380,7 @@
         <a class="btn" data-bs-popover="popover" tabindex="0"
             localize="Share this place"
             localize-only="title"
-            data-content-template="views/popovers/shareplace.html"
+            data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
             data-container="body"
             data-placement="bottom-left"
             >
@@ -386,7 +388,7 @@
             <span localize="Share"></span>
         </a>
     </div>
-    <ng-include src="'views/modals/mobile-explore.html'"></ng-include>
+    <ng-include src="'views/modals/mobile-explore.html?v=<%=ResourcesVersion%>'"></ng-include>
 
     <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
         <div class="container">
@@ -503,9 +505,9 @@
             </label>
         </div>
     </div>
-    <ng-include src="'views/modals/mobile-nearby-objects.html'"></ng-include>
+    <ng-include src="'views/modals/mobile-nearby-objects.html?v=<%=ResourcesVersion%>'"></ng-include>
     <div class="context-panel">
-        <div class="nearby-objects" ng-if="nbo.length && lookAt == 'Sky'" ng-show="!tourPlaying">
+        <div class="nearby-objects" ng-if="nbo.length && (lookAt == 'Sky' || lookAt=='SolarSystem')" ng-show="!tourPlaying">
             <a ng-click="showNbo()" title="{{nbo[0].get_name()}}" class="thumbnail">
                 <img ng-src="{{nbo[0].get_thumbnailUrl()}}" alt="Thumbnail of {{nbo[0].get_name()}}" />
                 <label localize="Nearby"></label>
@@ -536,8 +538,8 @@
     <% } %>
     <%if (Client == Clients.Html5)
    { %>
-    <ng-include src="'views/research-menu.html'"></ng-include>
-    <ng-include src="'views/modals/finder-scope.html'" onload="initFinder()"></ng-include>
+    <ng-include src="'views/research-menu.html?v=<%=ResourcesVersion%>'"></ng-include>
+    <ng-include src="'views/modals/finder-scope.html?v=<%=ResourcesVersion%>'" onload="initFinder()"></ng-include>
 
 
     <div data-ng-controller="ViewController"></div>
@@ -597,7 +599,7 @@
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
             <div class="explore-thumbs">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-                    <ng-include src="'views/thumbnail.html'"></ng-include>
+                    <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
                 </div>
 
             </div>
@@ -619,15 +621,6 @@
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
 
             <div class="ribbon-thumbs" ng-repeat="item in tourList">
-                <%--<a ng-if="$index==currentPage * pageSize" id="popTrigger"
-                   data-title="{{tour.get_name()}}"
-                   bs-popover="popover" data-placement="bottom-left"
-                   data-content-template="views/popovers/tour-info.html"
-                   data-template="views/popovers/tour-template.html"
-                   data-trigger="hover" data-animation="am-fade"
-                   data-delay="200">
-                    &nbsp;
-                </a>--%>
 
                 <span class="tour-thumb" id="tourthumb{{$index}}" ng-if="item.thumb.length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
                     <a ng-click="clickThumb(item)" ng-mouseenter="tourPreview($event, item)"
@@ -683,7 +676,7 @@
             </div>
             <div class="search-results">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-                    <ng-include src="'views/thumbnail.html'"></ng-include>
+                    <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
                 </div>
             </div>
             <label class="wwt-pager" ng-show="collection.length > 0">
@@ -711,7 +704,7 @@
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
             <div class="explore-thumbs">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-                    <ng-include src="'views/thumbnail.html'"></ng-include>
+                    <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
                 </div>
 
             </div>
@@ -770,7 +763,7 @@
                 <a class="btn" bs-popover
                    localize="Observing Time"
                    localize-only="title"
-                   data-content-template="views/popovers/observing-time.html"
+                   data-content-template="views/popovers/observing-time.html?v=<%=ResourcesVersion%>"
                    ng-controller="ObservingTimeController"
                    data-animation="am-flip-x"
                    data-placement="bottom-right">
@@ -1009,12 +1002,12 @@
                             <div class="stops-container">
                                 <a class="btn" bs-popover
                                     style="position:absolute;top:110px;left:190px;visibility:hidden"
-                                    template-url="views/popovers/tour-properties.html"
+                                    template-url="views/popovers/tour-properties.html?v=<%=ResourcesVersion%>"
                                     trigger="click" placement="bottom-left" data-content="{tour}"
                                     data-container="body" id="newTourProps"></a>
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
                                     <div class="transition-choice {{stop.transHover ? 'active' : ''}}"
-                                        bs-popover template-url="views/popovers/transition-type.html"
+                                        bs-popover template-url="views/popovers/transition-type.html?v=<%=ResourcesVersion%>"
                                         trigger="click" placement="bottom-left" data-content="{1}"
                                         title="Transition" data-container="body" data-auto-close="true"
                                         data-on-show="testfn()" data-on-hide="testfn()">
@@ -1089,13 +1082,13 @@
                             <div class="left">
                                 <a class="btn" bs-popover
                                     localize="Tour Properties" style="width:98px;"
-                                    template-url="views/popovers/tour-properties.html"
+                                    template-url="views/popovers/tour-properties.html?v=<%=ResourcesVersion%>"
                                     trigger="click" placement="bottom-left" data-content="{tour}"
                                     title="Tour Properties" data-container="body"></a>
                                 <a class="btn" localize="Save" style="width:48px;" ng-click="saveTour()"></a>
 
                                 <div>
-                                    <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html"
+                                    <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html?v=<%=ResourcesVersion%>"
                                     trigger="click" data-content="{tour}" id="editTourText" placement="center"
                                     title="Enter Text" data-container="body">
                                         <div class="icon">
@@ -1171,7 +1164,7 @@
                 </tr>
             </table>
 
-            <ng-include src="'views/popovers/slide-overlays.html'"></ng-include>
+            <ng-include src="'views/popovers/slide-overlays.html?v=<%=ResourcesVersion%>'"></ng-include>
 
         </div>
     </div>
@@ -1242,7 +1235,7 @@
                 style="position:absolute; top:6px;left:-33px;z-index:3"
                 localize="Share this view"
                 localize-only="title"
-                data-content-template="views/popovers/shareplace.html"
+                data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
                 data-container="body"
                 data-placement="top-right"
                 >
@@ -1314,17 +1307,7 @@
                     <option value="?">&nbsp;</option>
                 </select>
             </div>
-            <%--
 
-            <div class="control" ng-click="setSurveyProperties()">
-                <label localize="Info"></label>
-                <a class="btn"
-                   bs-popover
-                localize="Information" localize-only="title
-
-                   data-content-template="views/popovers/property-panel.html"l
-                   data-placement="top"><i class="fa fa-info-circle"></i></a>
-            </div>--%>
             <div ng-show="showCrossfader()" class="control" style="padding-right:10px">
                 <label localize="Image Crossfade"></label>
                 <div class="cross-fader">
@@ -1336,7 +1319,7 @@
         </div>
         <div class="thumbnails nearby-objects rel" data-ng-controller="ContextPanelController" ng-style="{width: bottomControlsWidth()}">
             <div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
-                <ng-include src="'views/thumbnail.html'"></ng-include>
+                <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
             </div>
             <label class="wwt-pager">
                 <a class="btn"
@@ -1345,7 +1328,7 @@
                     style="position:absolute; top:0;right:-204px"
                     localize="Share this view"
                     localize-only="title"
-                    data-content-template="views/popovers/shareplace.html"
+                    data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
                     data-container="body"
                     data-placement="top-right"
                     >
@@ -1358,7 +1341,7 @@
                         style="position:absolute; top:0;left:-40px"
                         localize="Share this place"
                         localize-only="title"
-                        data-content-template="views/popovers/shareplace.html"
+                        data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
                         data-container="body"
                         data-placement="top-right"
                         >
@@ -1379,7 +1362,7 @@
 
     </div>
 
-<ng-include src="'views/modals/intro.html'"></ng-include>
+<ng-include src="'views/modals/intro.html?v=<%=ResourcesVersion%>'"></ng-include>
 <div class="modal" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1419,7 +1402,7 @@
 </div>
 
 <a href="javascript:void(0)" data-toggle="modal" data-target="#loadingModal" id="loadingModalLink">&nbsp;</a>
-    <ng-include src="'views/modals/open-item.html'"></ng-include>
+    <ng-include src="'views/modals/open-item.html?v=<%=ResourcesVersion%>'"></ng-include>
     <div ng-intro-autostart="false"
         ng-intro-onbeforechange="beforeChange"
         ng-intro-onafterchange="afterChange"

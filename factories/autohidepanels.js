@@ -1,4 +1,4 @@
-﻿wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState', function ($rootScope,appState) {
+﻿wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState','Util', function ($rootScope,appState,util) {
     var api = {init:init};
 
     var  tourPlaying = false,
@@ -14,6 +14,9 @@
     hideTimeout = 1200;
 
     function init() {
+      if (util.isMobile){
+        return;
+      }
         panels = {
             tabs: $('#topPanel, .layer-manager'),
             context: $('.context-panel')
@@ -23,7 +26,7 @@
             console.log('init', panels.tabs);
             return;
         }
-        context = $('.context-panel');
+        //context = $('.context-panel');
         bindEvents();
         settingChange();
     };

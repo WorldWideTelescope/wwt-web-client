@@ -33,16 +33,16 @@
 		return $(window).height() - (168 + $('body.desktop .context-panel').height());
 	};
 
-	$rootScope.copyLink = function (event) {
+	$rootScope.copyLink = function (event, selector) {
 	    var src = $(event.currentTarget);
-	    var input = src.prev();
+	    var input = selector ? src.parent().find(selector) : src.prev();
 	    input[0].select();
 	    document.execCommand('copy');
 	    var flyout = $('<div class=clipboard-status>Copied successfully</div>');
 	    input.parent().css('position', 'relative').append(flyout);
 	    //flyout.fadeIn(200).show();
 	    setTimeout(function () { flyout.fadeOut(1111); }, 3333);
-	}
+	};
 
 	$rootScope.loadVOTableModal = wwt.loadVOTableModal = function(votable){
 

@@ -2,23 +2,20 @@
 	<h4 style="margin-top:-5px" localize="Share"></h4>
 	<h5>{{trackingObj.get_name()}}</h5>
 	<div>
-		<p>
-			<div class="form-group">
-				<textarea class="form-control" ng-model="shareUrlReadOnly" id="shareUrl" ng-change="init()" rows="5" style="resize:vertical"></textarea>
-				<!--
-					Copying to clipboard costs too much - best to tell users to do it.
-					<span class="input-group-addon">
-					<i class="fa fa-copy" bs-tooltip="'Copy to clipboard'"></i>
-				</span>-->
-			</div>
-			<span localize="Copy the above link to your clipboard">(Copy the above link to your clipboard)</span>
+
+    <div class="form-group">
+      <textarea class="form-control" ng-model="shareUrlReadOnly" id="shareUrl" ng-change="init()" rows="5" style="resize:vertical"></textarea>
+    </div>
+    <a ng-click="copyLink($event, 'textarea')" style="cursor: pointer">
+      <i class="fa fa-copy"></i>
+      <span localize="Copy to clipboard">Copy the above link to your clipboard</span>
+    </a>
 
 		<p>
 			<div class="checkbox">
 				<label data-ng-class="includeViewport ? 'checked' : ''">
 					<input type="checkbox" ng-model="includeViewport" data-ng-change="includeViewportChange()" />
 					<span localize="Include current viewport (coordinates / zoom level)"></span>
-
 				</label>
 			</div>
 		</p>

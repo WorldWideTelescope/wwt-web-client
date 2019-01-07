@@ -58,20 +58,11 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Wurfl, Version=1.9.0.1, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Wurfl.Aspnet.Extensions, Version=1.9.0.0, Culture=neutral, PublicKeyToken=816aeec277aa13b9, processorArchitecture=MSIL">
-      <HintPath>..\packages\WURFL_Official_API.1.9.0.1\lib\Wurfl.Aspnet.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.js" />
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
-    <Content Include="App_Readme\Readme.txt" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="controllers\LoginController.js" />
     <Content Include="controllers\modals\colorpickerController.js" />
@@ -305,12 +296,7 @@
     <Content Include="css\mixins.less" />
     <Content Include="css\layermanager.less" />
     <Content Include="css\modals.less" />
-    <Content Include="Introspector\Introspector.pdf" />
-    <Content Include="Introspector\Introspector.ashx" />
-    <Content Include="COPYING.evaluation" />
-    <Content Include="App_Readme\WURFL.chm" />
-    <Content Include="App_Readme\wurfl-latest.zip" />
-    <Content Include="App_Data\wurfl-latest.zip" />
+    <Content Include="wwtwebclient.min.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -372,7 +358,9 @@
     </Content>
     <Content Include="packages.config" />
     <Content Include="Hubble.wtml" />
-    <Content Include="ESO.wtml" />
+    <Content Include="ESO.wtml">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -385,6 +373,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="sdk\wwtsdk.min.js.map" />
+    <Content Include="Spitzer.wtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
@@ -422,9 +411,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>26993</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:26993/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:26993/?debug=local</IISAppRootUrl>
+          <IISUrl>http://localhost:26995/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

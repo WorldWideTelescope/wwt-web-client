@@ -30,7 +30,7 @@
         jobSuccess: 'Job Succeeded',
         calibrationFail: 'Calibration Results Failed'
     };
-		var uploadUrl, // "//www.noao.edu/outreach/aop/observers/m51rolfe.jpg",
+		var uploadUrl, // "https://upload.wikimedia.org/wikipedia/commons/8/8b/M81.jpg",
 			statusCallback,
 			sessionId = null,
 			submissionId = null,
@@ -46,7 +46,7 @@
 		function login() {
 			showStatus(statusTypes.connecting);
 			var loginData = {};
-			loginData.apikey = "mxzoqrhqsvkwtybb"; // this may change we should put it in the web.config
+			loginData.apikey = "grgfoujnylhbwtjw"; // this may change we should put it in the web.config
 
 			var loginJson = encodeURIComponent(JSON.stringify(loginData));
 
@@ -78,7 +78,7 @@
 			var uploadJson = encodeURIComponent(JSON.stringify(uploadData));
 
 			$.ajax({
-				url: "//supernova.astrometry.net/api/url_upload",
+				url: "//nova.astrometry.net/api/url_upload",
 				type: "POST",
 				data: "request-json=" + uploadJson,
 				dataType: "json",
@@ -97,7 +97,7 @@
 		function checkStatus() {
 			showStatus(statusTypes.statusCheck);
 			$.ajax({
-				url: "//supernova.astrometry.net/api/submissions/" + submissionId,
+				url: "//nova.astrometry.net/api/submissions/" + submissionId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -124,7 +124,7 @@
 		function checkJobStatus() {
 			//showStatus("Checking Job Status: " + jobId);
 			$.ajax({
-				url: "//supernova.astrometry.net/api/jobs/" + jobId,
+				url: "//nova.astrometry.net/api/jobs/" + jobId,
 				type: "GET",
 				dataType: "json",
 				crossDomain: true
@@ -160,7 +160,7 @@
 
 		function getCalibration() {
 			$.ajax({
-				url: "//supernova.astrometry.net/api/jobs/" + jobId + "/calibration",
+				url: "//nova.astrometry.net/api/jobs/" + jobId + "/calibration",
 				type: "GET",
 				dataType: "json",
 				crossDomain: true

@@ -1,5 +1,6 @@
 ﻿<div ng-if="item.get_thumbnailUrl().length > 15" class="thumbwrap">
     <div ng-click="clickThumb(item)"
+         ng-dblclick="clickThumb(item,true)"
         ng-context-menu="showMenu"
         index="{{$index}}" 
         title="{{item.get_name()}}"

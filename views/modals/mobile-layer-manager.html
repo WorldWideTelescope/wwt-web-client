@@ -1,5 +1,34 @@
 <div class="layer-manager mobile" ng-controller="LayerManagerController" ng-hide="layerManagerHidden" ng-init="initLayerManager()">
+  <script type="text/ng-template" id="tree-toggle">
+    <i class="fa" ng-if="hasChildren(node)"
+       ng-class="collapsed(node) ? 'fa-plus-square-o' : 'fa-minus-square-o'"
+       ng-click="collapse(node)"></i>
+    <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
+  </script>
+  <script type="text/ng-template" id="tree-node">
+    <div ng-show="name || node.name">
+      <ng-include src="'tree-toggle'"></ng-include>
+      <div ng-if="isObjectNode(node)" class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
+        <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}" ng-click="selectionChanged(node,$event)"
+               localize-only="title">
+          <input type="checkbox" ng-model="node.enabled"/>
+          <span localize="{{name}}"></span>
+        </label>
+      </div>
+      <div class="checkbox" ng-if="!isObjectNode(node)" ng-class="{activelayer:node.active}">
+        <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title" ng-click="selectionChanged(node,$event)">
+          <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  ng-change="nodeChange(node)" />
+          <span localize="{{node.name}}"></span>
+        </label>
+      </div>
+      <div class="indent"
+           ng-class="collapsed(node) ? ' collapsed' : ''"
+           ng-repeat="(name,node) in getChildren(node)"
+           ng-include="'tree-node'">
+      </div>
+    </div>
 
+  </script>
 	<button aria-hidden="true" class="close pull-right" type="button" ng-click="$hide()" style="margin-right:10px;">×</button>
 	<h5 localize="Layers"></h5>
   <div class="tree" ng-class="tree.collapsed ? 'collapsed' : ''"
