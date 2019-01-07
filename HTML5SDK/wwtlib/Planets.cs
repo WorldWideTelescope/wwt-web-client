@@ -1067,7 +1067,7 @@ namespace wwtlib
 
         public static void SetupPlanetMatrix(RenderContext renderContext, int planetID, Vector3d centerPoint, bool makeFrustum)
         {
-            Matrix3d matNonRotating = renderContext.World;
+            Matrix3d matNonRotating = renderContext.World.Clone();
 
             SetupMatrixForPlanetGeometry(renderContext, planetID, centerPoint, makeFrustum);
 
@@ -1094,11 +1094,11 @@ namespace wwtlib
             double rotationCurrent = 0;
             if (planetID == (int)SolarSystemObjects.Earth)
             {
-                rotationCurrent = Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
+                rotationCurrent = Math.PI + Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
             }
             else
             {
-                rotationCurrent = (((jNow - 2451545.0) / planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
+                rotationCurrent = Math.PI + (((jNow - 2451545.0) / planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
             }
 
             if (planetID == (int)SolarSystemObjects.Moon)
@@ -1106,8 +1106,8 @@ namespace wwtlib
                 rotationCurrent -= Math.PI / 2;
             }
 
-            Matrix3d matLocal = renderContext.World;
-            Matrix3d matNonRotating = renderContext.World;
+            Matrix3d matLocal = renderContext.World.Clone();
+            Matrix3d matNonRotating = renderContext.World.Clone();
             Vector3d translation = Vector3d.SubtractVectors(planet3dLocations[planetID],centerPoint);
 
             Matrix3d orientationAtEpoch = GetPlanetOrientationAtEpoch(planetID);
@@ -1123,13 +1123,13 @@ namespace wwtlib
                 EarthMatrix.Multiply(Matrix3d.RotationY(-rotationCurrent));
                 EarthMatrix.Multiply(orientationAtEpoch);
 
-                EarthMatrixInv = EarthMatrix;
+                EarthMatrixInv = EarthMatrix.Clone();
                 EarthMatrixInv.Invert();
             }
 
             matLocal.Multiply(Matrix3d.Translation(translation));
             renderContext.World = matLocal;
-            renderContext.WorldBase = renderContext.World;
+            renderContext.WorldBase = renderContext.World.Clone();
             renderContext.NominalRadius = GetPlanetRadiusInMeters(planetID);
 
 
@@ -1720,44 +1720,45 @@ namespace wwtlib
              //   device.RenderState.Lighting = Settings.Active.SolarSystemLighting;
             }
 
-            double radius = GetAdjustedPlanetRadius(planetID);
-
-
-
-            double rotationCurrent = 0;
-            if (planetID == (int)SolarSystemObjects.Earth)
-            {
-                rotationCurrent = Math.PI + Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
-            }
-            else
-            {
-                rotationCurrent = (((jNow - 2451545.0) / planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
-            }
-
-            //Matrix3d matOldWV = renderContext.WV.Clone();
-
             Matrix3d matOld = renderContext.World;
             Matrix3d matOldBase = renderContext.WorldBase;
             Matrix3d matOldNonRotating = renderContext.WorldBaseNonRotating;
 
-            Matrix3d matLocal = renderContext.World.Clone();
-            Matrix3d matLocalNR = renderContext.World.Clone();
-            Vector3d translation = Vector3d.SubtractVectors(planet3dLocations[planetID], centerPoint);
-            
-            matLocal.Scale(Vector3d.Create(radius, radius, radius));
-            matLocal.Multiply(Matrix3d.RotationY((double)-rotationCurrent));
-            matLocal.Multiply(Matrix3d.RotationX((double)(planetTilts[planetID] * RC)));
-            matLocal.Multiply(Matrix3d.Translation(translation));
-       
-            
-            matLocalNR.Scale(Vector3d.Create(radius, radius, radius));
-            matLocalNR.Multiply(Matrix3d.RotationX((double)(planetTilts[planetID] * RC)));
-            matLocalNR.Multiply(Matrix3d.Translation(translation));
-             
-            renderContext.World = matLocal;
-            renderContext.WorldBase = matLocal.Clone();
-            renderContext.WorldBaseNonRotating = matLocalNR;
-            renderContext.MakeFrustum();
+            double radius = GetAdjustedPlanetRadius(planetID);
+
+            SetupPlanetMatrix(renderContext, planetID, centerPoint, true);
+
+            //double rotationCurrent = 0;
+            //if (planetID == (int)SolarSystemObjects.Earth)
+            //{
+            //    rotationCurrent = Math.PI + Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
+            //}
+            //else
+            //{
+            //    rotationCurrent = (((jNow - 2451545.0) / planetRotationPeriod[planetID]) * Math.PI * 2) % (Math.PI * 2);
+            //}
+
+            ////Matrix3d matOldWV = renderContext.WV.Clone();
+
+
+            //Matrix3d matLocal = renderContext.World.Clone();
+            //Matrix3d matLocalNR = renderContext.World.Clone();
+            //Vector3d translation = Vector3d.SubtractVectors(planet3dLocations[planetID], centerPoint);
+
+            //matLocal.Scale(Vector3d.Create(radius, radius, radius));
+            //matLocal.Multiply(Matrix3d.RotationY((double)-rotationCurrent));
+            //matLocal.Multiply(Matrix3d.RotationX((double)(planetTilts[planetID] * RC)));
+            //matLocal.Multiply(Matrix3d.Translation(translation));
+
+
+            //matLocalNR.Scale(Vector3d.Create(radius, radius, radius));
+            //matLocalNR.Multiply(Matrix3d.RotationX((double)(planetTilts[planetID] * RC)));
+            //matLocalNR.Multiply(Matrix3d.Translation(translation));
+
+            //renderContext.World = matLocal;
+            //renderContext.WorldBase = matLocal.Clone();
+            //renderContext.WorldBaseNonRotating = matLocalNR;
+            //renderContext.MakeFrustum();
 
             float planetWidth = 1;
 
@@ -1768,16 +1769,23 @@ namespace wwtlib
 
             if (IsPlanetInFrustum(renderContext,planetWidth))
             {
-                //Matrix3d matOld2 = renderContext.World.Clone();
-                //Matrix3d matOldBase2 = renderContext.WorldBase.Clone();
-                //Matrix3d matOldNonRotating2 = renderContext.WorldBaseNonRotating;
+                // Save all matrices modified by SetupMatrix...
+                Matrix3d matOld2 = renderContext.World;
+                Matrix3d matOldBase2 = renderContext.WorldBase;
+                Matrix3d matOldNonRotating2 = renderContext.WorldBaseNonRotating;
+
 
                 Vector3d sun = planet3dLocations[0].Copy();
                 Vector3d planet = planet3dLocations[planetID].Copy();
 
                 sun = matOld.Transform(sun);
                 planet = matOld.Transform(planet);
-               
+
+                renderContext.World = matOld;
+                renderContext.WorldBase = matOldBase;
+                renderContext.WorldBaseNonRotating = matOldNonRotating;
+
+                SetupMatrixForPlanetGeometry(renderContext, planetID, centerPoint, true);
 
                 Vector3d sunPosition = Vector3d.SubtractVectors(sun, planet);
                 sunPosition.Normalize();
@@ -1892,9 +1900,6 @@ namespace wwtlib
                         DrawPointPlanet(renderContext, new Vector3d(), (double)Math.Max(.05, Math.Min(.1f, size)), planetColors[planetID], true);
                     }
                 }
-                //renderContext.World = matOld2;
-                //renderContext.WorldBase = matOldBase2;
-                //renderContext.WorldBaseNonRotating = matOldNonRotating2;
             }
 
             LayerManager.Draw(renderContext, 1.0f, false, GetNameFrom3dId(planetID), true, false);

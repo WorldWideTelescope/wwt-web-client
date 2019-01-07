@@ -39,8 +39,11 @@ var wwt = {
 			.width($('#WorldWideTelescopeControlHost').width());
 		$('body.desktop #WWTCanvas')
 			.height($(window).height())
-			.width($(window).width());	
-	}
+          .width($(window).width());
+      wwt.smallVP = ($(window).height() < 600 || $(window).width() < 700);
+      wwt.definitelyMobile = wwt.smallVP && ($(window).height() < 900 && $(window).width() < 600);
+  },
+    smallVP:false
 };
 
 

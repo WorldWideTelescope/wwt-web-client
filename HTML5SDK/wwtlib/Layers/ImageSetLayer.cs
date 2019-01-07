@@ -51,7 +51,7 @@ namespace wwtlib
             XmlNode imageSetNode = Util.SelectSingleNode(node, "ImageSet");
 
             imageSet = Imageset.FromXMLNode(imageSetNode);
-                       
+
 
             if (node.Attributes.GetNamedItem("Extension") != null)
             {
@@ -144,10 +144,10 @@ namespace wwtlib
             if (imageSet.WcsImage is FitsImage)
             {
                 string fName = ((WcsImage)imageSet.WcsImage).Filename;
-                
+
                 string fileName = fc.TempDirectory + string.Format("{0}\\{1}{2}", fc.PackageID, this.ID.ToString(), extension);
 
-                fc.AddFile(fileName,((FitsImage)imageSet.WcsImage).sourceBlob);
+                fc.AddFile(fileName, ((FitsImage)imageSet.WcsImage).sourceBlob);
             }
         }
 
@@ -164,6 +164,26 @@ namespace wwtlib
         public override void SetParams(double[] paramList)
         {
             base.SetParams(paramList);
+        }
+
+        public void SetImageScale(ScaleTypes scaleType, double min, double max)
+        {
+            this.min = min;
+            this.max = max;
+            this.lastScale = scaleType;
+
+            if (imageSet.WcsImage is FitsImage)
+            {
+                Histogram.UpdateScale(this, scaleType, min, max);
+            }
+        }
+
+        public void SetImageZ(double z)
+        {
+            if (imageSet.WcsImage is FitsImage)
+            {
+                Histogram.UpdateImage(this, z);
+            }
         }
 
         public override void LoadData(TourDocument tourDoc, string filename)

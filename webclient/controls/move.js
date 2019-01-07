@@ -48,7 +48,7 @@
 				}
 				event.preventDefault();
 				event.stopPropagation();
-				if (event.pointerId) {
+				if (event.pointerId !== undefined) {
 					pointerId = event.pointerId;
 				}
 				
@@ -56,7 +56,7 @@
 
 				document.body.addEventListener(pointerUpName, unbind, false);
 				document.body.addEventListener(pointerMoveName, function (evt) {
-					if (pointerId && evt.pointerId === pointerId) {
+					if (pointerId !== undefined && evt.pointerId === pointerId) {
 						motionHandler(evt);
 					} 
 				}, false);

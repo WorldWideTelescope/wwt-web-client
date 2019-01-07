@@ -24,9 +24,9 @@ namespace wwtlib
                 milkyWayImage = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/milkywaybar.jpg");
             }
 
-  
+
             int subdivs = 50;
-            
+
             double lat, lng;
 
             int index = 0;
@@ -116,8 +116,8 @@ namespace wwtlib
                 CreateGalaxyImage(renderContext);
             }
 
- //           renderContext.setRasterizerState(TriangleCullMode.Off);
-//            renderContext.BlendMode = BlendMode.Additive;
+            //           renderContext.setRasterizerState(TriangleCullMode.Off);
+            //            renderContext.BlendMode = BlendMode.Additive;
 
             double zoom = renderContext.ViewCamera.Zoom;
             double log = Math.Log(Math.Max(1, zoom)) / Math.Log(4);
@@ -151,7 +151,7 @@ namespace wwtlib
         public static void DrawStars3D(RenderContext renderContext, float opacity)
         {
             double zoom = renderContext.ViewCamera.Zoom;
- 
+
             double distAlpha = Math.Max(Math.Min(255, (Math.Log(zoom) - 15.5) * 40.8), 0);
 
             int alpha = Math.Min(255, Math.Max(0, (int)distAlpha));
@@ -160,7 +160,7 @@ namespace wwtlib
                 return;
             }
 
-    
+
             alpha = (int)((255 - alpha) * opacity);
 
             if (starSprites == null)
@@ -203,7 +203,7 @@ namespace wwtlib
                     pos.RotateX(ecliptic);
                     star.Position = pos;
                     double radDec = (1200000) / Math.Pow(1.6, star.AbsoluteMagnitude);
-                    starSprites.AddPoint(pos, star.Col, new Dates(0, 1), (float)radDec*100);      
+                    starSprites.AddPoint(pos, star.Col, new Dates(0, 1), (float)radDec * 100);
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace wwtlib
                         if (star.Magnitude < limitingMagnitude && star.Par > .001)
                         {
                             stars.Add(star);
-                            hipparcosIndex[star.ID] =  star;
+                            hipparcosIndex[star.ID] = star;
                         }
                     }
 
@@ -257,7 +257,7 @@ namespace wwtlib
             }
             else if (webFileStar.State == StateType.Received)
             {
-                InitializeStarDB(webFileStar.GetText());   
+                InitializeStarDB(webFileStar.GetText());
             }
 
         }
@@ -303,7 +303,7 @@ namespace wwtlib
         {
             GL device = renderContext.gl;
             double zoom = renderContext.ViewCamera.Zoom;
-            double distAlpha = ((Math.Log(Math.Max(1, zoom))/Math.Log(4)) - 15.5) * 90;
+            double distAlpha = ((Math.Log(Math.Max(1, zoom)) / Math.Log(4)) - 15.5) * 90;
 
             int alpha = Math.Min(255, Math.Max(0, (int)distAlpha));
 
@@ -345,7 +345,7 @@ namespace wwtlib
 
                     //cosmosSprites[i].MinPointSize = 1;
                     cosmosSprites[i].DrawTextured(renderContext, galaxyTextures[i].Texture2d, (alpha * opacity) / 255.0f);
-                   // cosmosSprites[i].Draw(renderContext,  (alpha * opacity) / 255.0f, false);
+                    // cosmosSprites[i].Draw(renderContext,  (alpha * opacity) / 255.0f, false);
                 }
             }
 
@@ -374,7 +374,7 @@ namespace wwtlib
                 {
                     if (cosmosSprites[ij] != null)
                     {
-                       cosmosSprites[ij] = null;
+                        cosmosSprites[ij] = null;
                     }
                 }
             }
@@ -400,7 +400,7 @@ namespace wwtlib
                 Vector3d pos = Coordinates.RADecTo3dAu(galaxy.RA, galaxy.Dec, (galaxy.Distance * UiTools.AuPerParsec * 1000000.0) / .73);
                 pos.RotateX(ecliptic);
                 galaxy.Position = pos;
-                cosmosSprites[bucket].AddPoint(pos, Colors.White, new Dates(0, 1), (float)(1000000000f * galaxy.Size*100));
+                cosmosSprites[bucket].AddPoint(pos, Colors.White, new Dates(0, 1), (float)(1000000000f * galaxy.Size * 100));
                 indexList[bucket]++;
             }
 
@@ -424,7 +424,7 @@ namespace wwtlib
                     try
                     {
                         int count = 0;
-                        while (br.Position < br.Length )
+                        while (br.Position < br.Length)
                         {
                             galaxy = new Galaxy(br);
                             cosmos.Add(galaxy);
@@ -662,10 +662,10 @@ namespace wwtlib
                         double dd = d;// +180;
 
                         eclipticOverviewLineList.AddLine(
-                                    Vector3d.TransformCoordinate( Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
+                                    Vector3d.TransformCoordinate(Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
                                     width,
                                     (Math.Sin((dd * Math.PI * 2.0) / 360))), mat),
-                                    Vector3d.TransformCoordinate( Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
+                                    Vector3d.TransformCoordinate(Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
                                     -width,
                                     (Math.Sin((dd * Math.PI * 2.0) / 360))), mat)
                                                          );
@@ -709,7 +709,7 @@ namespace wwtlib
 
                 double daysPerYear = 365.25;
 
-                if (DT.IsLeap(year,true))
+                if (DT.IsLeap(year, true))
                 {
                     monthDays[1] = 29;
 
@@ -743,10 +743,10 @@ namespace wwtlib
 
                         if (i == Math.Floor(daysThisMonth / 2.0))
                         {
-                            Vector3d center = Vector3d.TransformCoordinate( Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
+                            Vector3d center = Vector3d.TransformCoordinate(Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
                                                          .025f,
                                                          (Math.Sin((dd * Math.PI * 2.0) / 360))), mat);
-                            Vector3d up = Vector3d.TransformCoordinate( Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
+                            Vector3d up = Vector3d.TransformCoordinate(Vector3d.Create((Math.Cos((dd * Math.PI * 2.0) / 360)),
                                                          .045f,
                                                          (Math.Sin((dd * Math.PI * 2.0) / 360))), mat);
                             up.Subtract(center);
@@ -868,7 +868,7 @@ namespace wwtlib
                 {
                     for (double b = -80; b < 80; b += 2)
                     {
-                        altAzLineList.AddLine(Coordinates.RADecTo3dAu(l / 15 , b, 1), Coordinates.RADecTo3dAu(l / 15 , b + 2, 1));
+                        altAzLineList.AddLine(Coordinates.RADecTo3dAu(l / 15, b, 1), Coordinates.RADecTo3dAu(l / 15, b + 2, 1));
                     }
                 }
 
@@ -876,7 +876,7 @@ namespace wwtlib
                 {
                     for (double l = 0; l < 360; l += 5)
                     {
-                        altAzLineList.AddLine(Coordinates.RADecTo3dAu(l / 15 , b, 1), Coordinates.RADecTo3dAu((l + 5) / 15 , b, 1));
+                        altAzLineList.AddLine(Coordinates.RADecTo3dAu(l / 15, b, 1), Coordinates.RADecTo3dAu((l + 5) / 15, b, 1));
                     }
                 }
 
@@ -896,7 +896,7 @@ namespace wwtlib
                     }
                     counter++;
 
-                    altAzLineList.AddLine(Coordinates.RADecTo3dAu(l / 15 , b, 1), Coordinates.RADecTo3dAu(l / 15, -b, 1));
+                    altAzLineList.AddLine(Coordinates.RADecTo3dAu(l / 15, b, 1), Coordinates.RADecTo3dAu(l / 15, -b, 1));
                 }
 
                 counter = 0;
@@ -917,7 +917,7 @@ namespace wwtlib
                         }
                         counter++;
 
-                        altAzLineList.AddLine(Coordinates.RADecTo3dAu((l + width) / 15 , b, 1), Coordinates.RADecTo3dAu((l - width) / 15 , b, 1));
+                        altAzLineList.AddLine(Coordinates.RADecTo3dAu((l + width) / 15, b, 1), Coordinates.RADecTo3dAu((l - width) / 15, b, 1));
                     }
                 }
             }
@@ -929,7 +929,7 @@ namespace wwtlib
             renderContext.MakeFrustum();
 
             altAzLineList.ViewTransform = Matrix3d.InvertMatrix(mat);
- 
+
             altAzLineList.DrawLines(renderContext, opacity, drawColor);
 
             renderContext.WorldBase = matOldWorldBase;
@@ -944,7 +944,7 @@ namespace wwtlib
             Coordinates zenithAltAz = new Coordinates(0, 0);
             Coordinates zenith = Coordinates.HorizonToEquitorial(zenithAltAz, SpaceTimeController.Location, SpaceTimeController.Now);
 
-            double raPart = -((zenith.RA -6) / 24.0 * (Math.PI * 2));
+            double raPart = -((zenith.RA - 6) / 24.0 * (Math.PI * 2));
             double decPart = -(((zenith.Dec)) / 360.0 * (Math.PI * 2));
             string raText = Coordinates.FormatDMS(zenith.RA);
             Matrix3d mat = Matrix3d.RotationY((float)-raPart - Math.PI);
@@ -1033,7 +1033,7 @@ namespace wwtlib
                 double obliquity = Coordinates.MeanObliquityOfEcliptic(2451545);
                 Matrix3d mat = Matrix3d.RotationX((-obliquity / 360.0 * (Math.PI * 2)));
 
-        
+
                 for (double l = 0; l < 360; l += 10)
                 {
                     for (double b = -80; b < 80; b += 2)
@@ -1291,7 +1291,7 @@ namespace wwtlib
             if (planetLineList == null)
             {
                 planetLineList = new SimpleLineList();
-                planetLineList.DepthBuffered = false;
+                planetLineList.DepthBuffered = true;
 
                 Color col = drawColor;
                 for (double lng = 0; lng < 360; lng += 10)
@@ -1352,7 +1352,7 @@ namespace wwtlib
                 }
             }
             planetLineList.aaFix = false;
-            planetLineList.DepthBuffered = false;
+            planetLineList.DepthBuffered = true;
             planetLineList.Sky = false;
             planetLineList.DrawLines(renderContext, opacity, drawColor);
 

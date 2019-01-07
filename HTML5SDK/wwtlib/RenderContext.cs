@@ -811,10 +811,9 @@ namespace wwtlib
             lookUp = viewAdjust.Transform(lookUp);
 
 
-           // WorldMatrix = Matrix3d.Identity;
             World = Matrix3d.Identity;
-            WorldBase = World.Clone();
-
+            WorldBase = Matrix3d.Identity;
+            WorldBaseNonRotating = Matrix3d.Identity;
 
             View = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(trackingMatrix, Matrix3d.LookAtLH(CameraPosition, lookAt, lookUp)), lookAtAdjust);
                  

@@ -105,6 +105,7 @@
     <Compile Include="Layers\ImageSetLayer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\ISSLayer.cs" />
     <Compile Include="Layers\Layer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,6 +119,7 @@
     <Compile Include="Layers\Orbit.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\OrbitLayer.cs" />
     <Compile Include="Layers\ReferenceFrame.cs">
       <SubType>Code</SubType>
     </Compile>

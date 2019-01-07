@@ -67,7 +67,7 @@ namespace wwtlib
         Vector3d localCenter;
         public bool Sky = true;
         public bool aaFix = true;
-
+        public bool Pure2D = false;
         public Matrix3d ViewTransform = Matrix3d.Identity;
 
         public void DrawLines(RenderContext renderContext, float opacity, Color color)
@@ -116,7 +116,14 @@ namespace wwtlib
             {
                 foreach (PositionVertexBuffer lineBuffer in lineBuffers)
                 {
-                    SimpleLineShader.Use(renderContext, lineBuffer.VertexBuffer, color, zBuffer);
+                    if (Pure2D)
+                    {
+                        SimpleLineShader2D.Use(renderContext, lineBuffer.VertexBuffer, color, zBuffer);
+                    }
+                    else
+                    {
+                        SimpleLineShader.Use(renderContext, lineBuffer.VertexBuffer, color, zBuffer);
+                    }
                     renderContext.gl.drawArrays(GL.LINES, 0, lineBuffer.Count);
                 }
             }

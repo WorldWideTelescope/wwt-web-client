@@ -13,7 +13,7 @@ namespace wwtlib
      // public enum PointScaleTypes { Linear=0, Power=1, Log=2, Constant=3, StellarMagnitude=4 }; 
     
     
-    class SpreadSheetLayer : Layer
+    public class SpreadSheetLayer : Layer
     {
         public SpreadSheetLayer()
         {
@@ -654,7 +654,7 @@ namespace wwtlib
                                 }
                                 if (bufferIsFlat)
                                 {
-                                 //   Xcoord += 180;
+                                    Xcoord += 180;
                                 }
                                 
                             }
@@ -1297,18 +1297,19 @@ namespace wwtlib
             table.LoadFromString(data, isUpdate, purgeAll, hasHeader);
             if (!isUpdate)
             {
+
                 GuessHeaderAssignments();
-            }
 
-            if (astronomical && lngColumn > -1)
-            {
-                double max = GetMaxValue(lngColumn);
-                if (max > 24)
+                if (astronomical && lngColumn > -1)
                 {
-                    RaUnits = RAUnits.Degrees;
+                    double max = GetMaxValue(lngColumn);
+                    if (max > 24)
+                    {
+                        RaUnits = RAUnits.Degrees;
+                    }
                 }
-            }
 
+            }
 
             if (purgeOld)
             {
@@ -2133,16 +2134,20 @@ namespace wwtlib
         }
         public bool dirty = true;
 
+        public int lastVersion = 0;
 
         public override bool Draw(RenderContext renderContext, float opacity, bool flat)
         {
 
             RenderContext device = renderContext;
+            
+            if (version != lastVersion)
+            {
+                CleanUp();
+            }
 
-            //if (shaderA == null)
-            //{
-            //    MakeVertexShaderA(device);
-            //}
+            lastVersion = version;
+
 
             if (bufferIsFlat != flat)
             {

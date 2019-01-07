@@ -1,17 +1,8 @@
 ﻿<%@ Application Language="C#" %>
-<%@ Import Namespace="WURFL" %>
-<%@ Import Namespace="WURFL.Config" %>
 
 <script runat="server">
-	public const String WurflDataFilePath = "./App_Data/wurfl-latest.zip";
 	void Application_Start(object sender, EventArgs e) 
 	{
-		var wurflDataFile = HttpContext.Current.Server.MapPath(WurflDataFilePath);
-
-		var configurer = new InMemoryConfigurer()
-			.MainFile(wurflDataFile);
-		WURFLManagerBuilder.Build(configurer);
-
 	}
 	
 	void Application_End(object sender, EventArgs e) 

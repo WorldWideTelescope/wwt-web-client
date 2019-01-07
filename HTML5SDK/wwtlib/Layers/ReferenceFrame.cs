@@ -25,6 +25,7 @@ namespace wwtlib
         public Matrix3d WorldMatrix;
         public double OrbitalYears;
 
+        public bool ObservingLocation = false;
 
         // Serialized
         public string Name;
@@ -39,7 +40,7 @@ namespace wwtlib
         public double Roll;
         public double Scale = 1;
         public double Tilt;
-        public Vector3d Translation;
+        public Vector3d Translation = new Vector3d();
 
         // For Sphetical Offset
         public double Lat;
@@ -331,6 +332,124 @@ namespace wwtlib
             return ('0' + (char)(checksum % 10)) == line.CharAt(68);
 
         }
+
+        public string ToTLE()
+        {
+            //Epoch need to convert to TLE time string.
+            // Ecentricity remove "0." from the begin and trim to 7 digits
+            // Inclination decimal degrees 8 digits max
+            // LOAN decimal degrees 8 digits
+            // AOP 
+            // mean anomoly at epoch 8 digits
+            // Mean motion (revs per day) Compute
+            // Convert Semi-major-axis to meters from storage unit
+            // Compute revs
+
+            StringBuilder line1 = new StringBuilder();
+
+            line1.Append("1 99999U 00111AAA ");
+            line1.Append(SpaceTimeController.JulianToTwoLineDate(Epoch));
+            line1.Append(" ");
+            // line1.Append("-.00000001");
+            line1.Append(SemiMajorAxis.ToExponential(4));
+            line1.Append(" 00000-0 ");
+            line1.Append(ToTLEExponential(MeanDailyMotion, 5));
+            //line1.Append("-00000-1 0 ");
+            line1.Append("  001");
+            line1.Append(ComputeTLECheckSum(line1.ToString()));
+            line1.AppendLine("");
+            StringBuilder line2 = new StringBuilder();
+
+            line2.Append("2 99999 ");
+            line2.Append(TLENumberString(Inclination,3,4) + " ");
+            line2.Append(TLENumberString(LongitudeOfAscendingNode, 3, 4) + " ");
+            line2.Append((TLENumberString(Eccentricity, 1, 7) + " ").Substring(2));
+            line2.Append(TLENumberString(ArgumentOfPeriapsis, 3, 4) + " ");
+            line2.Append(TLENumberString(MeanAnomolyAtEpoch, 3, 4) + " ");
+            line2.Append(ToTLEExponential(MeanDailyMotion / 207732, 5));
+            line2.Append("00001");
+            line2.Append(ComputeTLECheckSum(line2.ToString()));
+            line2.AppendLine("");
+            return line1.ToString() + line2.ToString();
+        }
+
+        public static string ToTLEExponential(double num, int size)
+        {
+            string exp = num.ToExponential(size);
+            if (exp.Length < size+6)
+            {
+                exp = exp.Substring(0, size + 4) + "0" + exp.Substr(size + 4, 1);
+            }
+            return exp;
+        }
+
+        public static string TLENumberString(double num, int left, int right)
+        {
+            string formated = num.ToFixed(right);
+
+            int point = formated.IndexOf(".");
+            if (point == -1)
+            {
+                point = formated.Length;
+                formated += ".0";
+            }
+            int len = formated.Length - point - 1;
+
+            string fill = "00000000";
+
+            formated = fill.Substr(0, left - point) + formated + fill.Substr(0, right - len);
+
+            return formated;
+        }
+
+        public static char ComputeTLECheckSum(string line)
+        {
+            if (line.Length != 68)
+            {
+                return '0';
+            }
+
+            int checksum = 0;
+            for (int i = 0; i < 68; i++)
+            {
+                switch (line[i])
+                {
+                    case '1':
+                        checksum += 1;
+                        break;
+                    case '2':
+                        checksum += 2;
+                        break;
+                    case '3':
+                        checksum += 3;
+                        break;
+                    case '4':
+                        checksum += 4;
+                        break;
+                    case '5':
+                        checksum += 5;
+                        break;
+                    case '6':
+                        checksum += 6;
+                        break;
+                    case '7':
+                        checksum += 7;
+                        break;
+                    case '8':
+                        checksum += 8;
+                        break;
+                    case '9':
+                        checksum += 9;
+                        break;
+                    case '-':
+                        checksum += 1;
+
+                        break;
+                }
+            }
+            return (char)( (char)(checksum % 10));
+        }
+
         public EOE Elements
         {
             get
@@ -402,21 +521,47 @@ namespace wwtlib
         }
         private void ComputeFixedSherical(RenderContext renderContext)
         {
-          ////  Vector3d offset = Coordinates.GeoTo3dDouble(Lat, Lng, 1 + (Altitude / renderContext.NominalRadius));
-          //  WorldMatrix = Matrix3d.Identity;
-          //  double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
-          //  WorldMatrix.Scale(new Vector3d(localScale, localScale, localScale));
-          //  //WorldMatrix.Scale(new Vector3d(1000, 1000, 1000));
-          //  WorldMatrix.Rotate(Quaternion.RotationYawPitchRoll((float)((Heading-90)/180.0*Math.PI), (float)Pitch, (float)Roll));
-          //  WorldMatrix.Multiply(Matrix3d.RotationZ(-90.0));
-          //  if (RotationalPeriod != 0)
-          //  {
-          //      double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
-          //      WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
-          //  }
-          //  WorldMatrix.Translate(new Vector3d(1 + (Altitude / renderContext.NominalRadius), 0, 0));
-          //  WorldMatrix.Multiply(Matrix3d.RotationZ(Lat));
-          //  WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng) ));
+            if (ObservingLocation)
+            {
+                Lat = SpaceTimeController.Location.Lat;
+                Lng = SpaceTimeController.Location.Lng;
+                Altitude = SpaceTimeController.Altitude;
+            }
+
+
+            WorldMatrix = Matrix3d.Identity;
+            WorldMatrix.Translate(Translation);
+            double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
+            WorldMatrix.Scale( Vector3d.Create(localScale, localScale, localScale));
+            //WorldMatrix.Scale(new Vector3d(1000, 1000, 1000));
+            WorldMatrix.Multiply( Matrix3d.RotationYawPitchRoll((float)((Heading) / 180.0 * Math.PI), (float)(Pitch / 180.0 * Math.PI), (float)(Roll / 180.0 * Math.PI)));
+            WorldMatrix.Multiply(Matrix3d.RotationZ(-90.0 / 180.0 * Math.PI));
+            if (RotationalPeriod != 0)
+            {
+                double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * Math.PI * 2) % (Math.PI * 2);
+                WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
+            }
+            WorldMatrix.Translate( Vector3d.Create(1 + (Altitude / renderContext.NominalRadius), 0, 0));
+            WorldMatrix.Multiply(Matrix3d.RotationZ(Lat / 180 * Math.PI));
+            WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng+180) / 180 * Math.PI));
+
+
+
+            ////  Vector3d offset = Coordinates.GeoTo3dDouble(Lat, Lng, 1 + (Altitude / renderContext.NominalRadius));
+            //  WorldMatrix = Matrix3d.Identity;
+            //  double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
+            //  WorldMatrix.Scale(new Vector3d(localScale, localScale, localScale));
+            //  //WorldMatrix.Scale(new Vector3d(1000, 1000, 1000));
+            //  WorldMatrix.Rotate(Quaternion.RotationYawPitchRoll((float)((Heading-90)/180.0*Math.PI), (float)Pitch, (float)Roll));
+            //  WorldMatrix.Multiply(Matrix3d.RotationZ(-90.0));
+            //  if (RotationalPeriod != 0)
+            //  {
+            //      double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * 360) % (360);
+            //      WorldMatrix.Multiply(Matrix3d.RotationX(-rotationCurrent));
+            //  }
+            //  WorldMatrix.Translate(new Vector3d(1 + (Altitude / renderContext.NominalRadius), 0, 0));
+            //  WorldMatrix.Multiply(Matrix3d.RotationZ(Lat));
+            //  WorldMatrix.Multiply(Matrix3d.RotationY(-(Lng) ));
         }
 
         private void ComputeFrameTrajectory(RenderContext renderContext)
@@ -528,8 +673,7 @@ namespace wwtlib
 
             Vector3d direction =  Vector3d.SubtractVectors(point, pointInstantLater);
 
-            direction.Normalize();
-            Vector3d up = point;
+            Vector3d up = point.Copy();
             up.Normalize();
             direction.Normalize();
 
@@ -573,17 +717,19 @@ namespace wwtlib
             scaleFactor *= 1/renderContext.NominalRadius;
 
  
-            WorldMatrix = Matrix3d.Identity ;
             Matrix3d look = Matrix3d.LookAtLH(Vector3d.Create(0,0,0), direction, up);
             look.Invert();
 
             WorldMatrix = Matrix3d.Identity;
-            
+            WorldMatrix.Translate(Translation);
 
             double localScale = (1 / renderContext.NominalRadius) * Scale * MeanRadius;
             WorldMatrix.Scale(Vector3d.Create(localScale, localScale, localScale));
 
-            Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading / 180.0 * Math.PI), Matrix3d.RotationX(Pitch / 180.0 * Math.PI)),Matrix3d.RotationZ(Roll / 180.0 * Math.PI));
+            //Matrix3d mat = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(Matrix3d.RotationY(Heading / 180.0 * Math.PI), Matrix3d.RotationX(Pitch / 180.0 * Math.PI)),Matrix3d.RotationZ(Roll / 180.0 * Math.PI));
+
+            WorldMatrix.Multiply(Matrix3d.RotationYawPitchRoll((float)((Heading) / 180.0 * Math.PI), (float)(Pitch / 180.0 * Math.PI), (float)(Roll / 180.0 * Math.PI)));
+
             if (RotationalPeriod != 0)
             {
                 double rotationCurrent = (((SpaceTimeController.JNow - this.ZeroRotationDate) / RotationalPeriod) * Math.PI * 2) % (Math.PI * 2);

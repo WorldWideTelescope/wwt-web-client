@@ -82,19 +82,23 @@ wwt.controllers.controller('CurrentTourController', [
         if (!$rootScope.loggedIn) {
           var loginModalData = $scope.$new({});
           loginModalData.canLogin = location.href.indexOf('localhost') < 0;
+
           if (appState.get('remindEditTourLogin') !== false) {
             appState.set('remindEditTourLogin', true);
+          }else{
+            return;
           }
           loginModalData.remindEditTourLogin = appState.get('remindEditTourLogin');
 
-          loginModalData.remindPrefChange = function () {
-            appState.set(!appState.get('remindEditTourLogin'));
-          }
+          loginModalData.remindPrefChange = function (checked) {
+            appState.set('remindEditTourLogin',checked);
+
+          };
 
           loginModalData.loginThenEdit = function () {
             appState.set('editTourOnLogin', tour.url);
             $rootScope.login();
-          }
+          };
 
           $modal({
             scope: loginModalData,
@@ -104,7 +108,6 @@ wwt.controllers.controller('CurrentTourController', [
             placement: 'center',
             backdrop: 'static'
           });
-
         }
         tour._editMode = true;
         tourEdit.pauseTour();

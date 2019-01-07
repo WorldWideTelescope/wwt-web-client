@@ -540,6 +540,9 @@ namespace wwtlib
                 case "Object3dLayer":
                     newLayer = new Object3dLayer();
                     break;
+                case "OrbitLayer":
+                    newLayer = new OrbitLayer();
+                    break;
                 default:
                     return null;
             }

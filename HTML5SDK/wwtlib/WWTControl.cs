@@ -554,40 +554,42 @@ namespace wwtlib
                     RenderContext.SetupMatricesSpace3d(RenderContext.Width, RenderContext.Height);
                 }
 
-
-
                 RenderContext.DrawImageSet(RenderContext.BackgroundImageset, 100);
 
                 if (RenderContext.ForegroundImageset != null)
                 {
-                    if (RenderContext.ViewCamera.Opacity != 100 && RenderContext.gl == null)
+                    if (RenderContext.ForegroundImageset.DataSetType != RenderContext.BackgroundImageset.DataSetType)
                     {
-                        if (foregroundCanvas.Width != RenderContext.Width || foregroundCanvas.Height != RenderContext.Height)
-                        {
-                            foregroundCanvas.Width = (int)RenderContext.Width;
-                            foregroundCanvas.Height = (int)RenderContext.Height;
-                        }
-
-                        CanvasContext2D saveDevice = RenderContext.Device;
-                        fgDevice.ClearRect(0, 0, RenderContext.Width, RenderContext.Height);
-                        RenderContext.Device = fgDevice;
-                        RenderContext.DrawImageSet(RenderContext.ForegroundImageset, 100);
-                        RenderContext.Device = saveDevice;
-                        RenderContext.Device.Save();
-                        RenderContext.Device.Alpha = RenderContext.ViewCamera.Opacity / 100;
-                        RenderContext.Device.DrawImage(foregroundCanvas, 0, 0);
-                        RenderContext.Device.Restore();
+                        RenderContext.ForegroundImageset = null;
                     }
                     else
                     {
-                        RenderContext.DrawImageSet(RenderContext.ForegroundImageset, RenderContext.ViewCamera.Opacity);
-                    }
+                        if (RenderContext.ViewCamera.Opacity != 100 && RenderContext.gl == null)
+                        {
+                            if (foregroundCanvas.Width != RenderContext.Width || foregroundCanvas.Height != RenderContext.Height)
+                            {
+                                foregroundCanvas.Width = (int)RenderContext.Width;
+                                foregroundCanvas.Height = (int)RenderContext.Height;
+                            }
 
+                            CanvasContext2D saveDevice = RenderContext.Device;
+                            fgDevice.ClearRect(0, 0, RenderContext.Width, RenderContext.Height);
+                            RenderContext.Device = fgDevice;
+                            RenderContext.DrawImageSet(RenderContext.ForegroundImageset, 100);
+                            RenderContext.Device = saveDevice;
+                            RenderContext.Device.Save();
+                            RenderContext.Device.Alpha = RenderContext.ViewCamera.Opacity / 100;
+                            RenderContext.Device.DrawImage(foregroundCanvas, 0, 0);
+                            RenderContext.Device.Restore();
+                        }
+                        else
+                        {
+                            RenderContext.DrawImageSet(RenderContext.ForegroundImageset, RenderContext.ViewCamera.Opacity);
+                        }
+                    }
                 }
 
-
-
-                if (RenderType == ImageSetType.Sky)
+                if (RenderType == ImageSetType.Sky && Settings.Active.ShowSolarSystem)
                 {
                     Planets.DrawPlanets(RenderContext, 1);
 
@@ -595,13 +597,38 @@ namespace wwtlib
 
                     DrawSkyOverlays();
 
-                    LayerManager.Draw(RenderContext, 1.0f, true, "Sky", true, true);
+                    //LayerManager.Draw(RenderContext, 1.0f, true, "Sky", true, true);
                 }
 
-                if (RenderType == ImageSetType.Earth)
-                {
+                //  if (RenderType == ImageSetType.Earth)
+                //{
 
-                    LayerManager.Draw(RenderContext, 1.0f, false, "Earth", false, false);
+                //    LayerManager.Draw(RenderContext, 1.0f, false, "Earth", false, false);
+                //}
+
+                if (PlanetLike || Space)
+                {
+                    if (!Space)
+                    {
+                        //todo fix this for other planets..
+                        double angle = Coordinates.MstFromUTC2(SpaceTimeController.Now, 0) / 180.0 * Math.PI;
+                        RenderContext.WorldBaseNonRotating = Matrix3d.MultiplyMatrix(Matrix3d.RotationY(angle), RenderContext.WorldBase);
+                        if (targetBackgroundImageset != null)
+                        {
+                            RenderContext.NominalRadius = targetBackgroundImageset.MeanRadius;
+                        }
+                    }
+                    else
+                    {
+                        RenderContext.WorldBaseNonRotating = RenderContext.World;
+                        if (targetBackgroundImageset != null)
+                        {
+                            RenderContext.NominalRadius = targetBackgroundImageset.MeanRadius;
+                        }
+                    }
+
+                    string referenceFrame = GetCurrentReferenceFrame();
+                    LayerManager.Draw(RenderContext, 1.0f, Space, referenceFrame, true, Space);
                 }
 
 
@@ -688,6 +715,102 @@ namespace wwtlib
 
             //TileCache.PurgeLRU();
             Script.SetTimeout(delegate () { Render(); }, 10);
+        }
+
+        private string GetCurrentReferenceFrame()
+        {
+            if (RenderContext.BackgroundImageset == null)
+            {
+                return "Sun";
+            }
+
+            if (!string.IsNullOrEmpty(RenderContext.BackgroundImageset.ReferenceFrame))
+            {
+                return RenderContext.BackgroundImageset.ReferenceFrame;
+            }
+            if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Earth)
+            {
+                return "Earth";
+            }
+            if (RenderContext.BackgroundImageset.Name == "Visible Imagery" && RenderContext.BackgroundImageset.Url.ToLowerCase().IndexOf("mars") > -1 )
+            {
+
+                RenderContext.BackgroundImageset.ReferenceFrame = "Mars";
+                return RenderContext.BackgroundImageset.ReferenceFrame;
+            }
+
+            if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Planet)
+            {
+                foreach (string name in SolarSystemObjectsNames)
+                {
+                    if (RenderContext.BackgroundImageset.Name.ToLowerCase().IndexOf(name.ToLowerCase()) > -1 )
+                    {
+                        RenderContext.BackgroundImageset.ReferenceFrame = name;
+                        return name;
+                    }
+                }
+            }
+            if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Sky)
+            {
+                return "Sky";
+            }
+            return "";
+        }
+
+        public static string[] SolarSystemObjectsNames =
+                {
+                    "Sun",
+                    "Mercury",
+                    "Venus",
+                    "Mars",
+                    "Jupiter",
+                    "Saturn",
+                    "Uranus",
+                    "Neptune",
+                    "Pluto",
+                    "Moon",
+                    "Io",
+                    "Europa",
+                    "Ganymede",
+                    "Callisto",
+                    "IoShadow",
+                    "EuropaShadow",
+                    "GanymedeShadow",
+                    "CallistoShadow",
+                    "SunEclipsed",
+                    "Earth",
+                    "Custom",
+                    "Undefined"
+                };
+
+        public bool PlanetLike
+        {
+            get
+            {
+                if (RenderContext.BackgroundImageset != null)
+                {
+                    return RenderContext.BackgroundImageset.DataSetType == ImageSetType.Earth || RenderContext.BackgroundImageset.DataSetType == ImageSetType.Planet;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        public bool Space
+        {
+            get
+            {
+                if (RenderContext.BackgroundImageset != null)
+                {
+                    return RenderContext.BackgroundImageset.DataSetType == ImageSetType.Sky;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         private void DrawSkyOverlays()
@@ -2405,15 +2528,22 @@ namespace wwtlib
                 RenderContext.TargetCamera = cameraParams.Copy();
                 RenderContext.ViewCamera = RenderContext.TargetCamera.Copy();
 
-                //if (Space && Settings.Active.LocalHorizonMode)
-                //{
-                //    Coordinates currentAltAz = Coordinates.EquitorialToHorizon(Coordinates.FromRaDec(viewCamera.RA, viewCamera.Dec), SpaceTimeController.Location, SpaceTimeController.Now);
+                if (RenderContext.Space && Settings.Active.GalacticMode)
+                {
+                    double[] gPoint = Coordinates.J2000toGalactic(RenderContext.ViewCamera.RA * 15, RenderContext.ViewCamera.Dec);
 
-                //    targetAlt = alt = currentAltAz.Alt;
-                //    targetAz = az = currentAltAz.Az;
-                //}
+                    RenderContext.targetAlt = RenderContext.alt = gPoint[1];
+                    RenderContext.targetAz = RenderContext.az = gPoint[0];
+                }
+                else if (RenderContext.Space && Settings.Active.LocalHorizonMode)
+                {
+                    Coordinates currentAltAz = Coordinates.EquitorialToHorizon(Coordinates.FromRaDec(RenderContext.ViewCamera.RA, RenderContext.ViewCamera.Dec), SpaceTimeController.Location, SpaceTimeController.Now);
+
+                    RenderContext.targetAlt = RenderContext.alt = currentAltAz.Alt;
+                    RenderContext.targetAz = RenderContext.az = currentAltAz.Az;
+                }
+
                 mover_Midpoint();
-                moving = true;
             }
             else
             {
@@ -2673,6 +2803,8 @@ namespace wwtlib
             }
         }
 
+        private SimpleLineList crossHarirs = null;
+
         private void DrawCrosshairs(RenderContext context)
         {
             if (context.gl == null)
@@ -2694,6 +2826,18 @@ namespace wwtlib
 
                 ctx.Stroke();
                 ctx.Restore();
+            }
+            else
+            {
+                if (crossHarirs == null)
+                {
+                    crossHarirs = new SimpleLineList();
+                    crossHarirs.DepthBuffered = false;
+                    crossHarirs.Pure2D = true;
+                    crossHarirs.AddLine(Vector3d.Create(-.02, .0, 0), Vector3d.Create(.02, 0, 0));
+                    crossHarirs.AddLine(Vector3d.Create(0,-.03, 0), Vector3d.Create(0, .03, 0));
+                }
+                crossHarirs.DrawLines(context, 1.0f, Colors.White);
             }
         }
 

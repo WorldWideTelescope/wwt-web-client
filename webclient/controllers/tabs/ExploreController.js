@@ -113,9 +113,12 @@
 	        thumbList.calcPageSize($scope, false);
 	    };
 	    $scope.clickThumb = function (item, folderCallback) {
+	      if (typeof folderCallback === 'boolean'){
+	        $rootScope.instant = folderCallback;
+        }
 	        var outParams = {
 	            breadCrumb: bc,
-                depth:depth,
+              depth:depth,
 	            cache: cache,
 	            openCollection: openCollection,
 	            newCollectionUrl: newCollectionUrl

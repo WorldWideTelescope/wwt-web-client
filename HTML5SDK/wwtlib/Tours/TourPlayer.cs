@@ -574,8 +574,8 @@ namespace wwtlib
             }
             WWTControl.Singleton.HideUI(true);
 
-            playing = true;
 
+            playing = true;
 
             if (tour.TourStops.Count > 0)
             {

@@ -1713,7 +1713,7 @@ namespace wwtlib
             }
         }
 
-         public static Matrix3d MultiplyMatrix(Matrix3d matrix1, Matrix3d matrix2)
+        public static Matrix3d MultiplyMatrix(Matrix3d matrix1, Matrix3d matrix2)
         {
             if (matrix1.IsDistinguishedIdentity)
             {
@@ -2599,6 +2599,15 @@ namespace wwtlib
             s_identity = CreateIdentity();
         }
 
+        public static Matrix3d RotationYawPitchRoll(double heading, double pitch, double roll)
+        {
+            Matrix3d matX = RotationX(pitch);
+            Matrix3d matY = RotationY(heading);
+            Matrix3d matZ = RotationZ(roll);
+
+            return Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(matY, matX), matZ);
+        }
+
         internal static Matrix3d RotationY(double p)
         {
             double v = p;
@@ -3395,6 +3404,52 @@ namespace wwtlib
 
     public class ConvexHull
     {
+        public static SphereHull FindEnclosingSphereFast(Vector3d[] points)
+
+        {
+            SphereHull result = new SphereHull();
+            //Find the center of all points.
+
+            int count = points.Length;
+
+            Vector3d center = Vector3d.Zero;
+            for (int i = 0; i <count; ++i)
+            {
+                center.Add(points[i]);
+        
+            }
+
+            //This is the center of our sphere.
+            center.Multiply(1.0 / (double)count);
+
+            //Find the radius of the sphere
+
+            double radius = 0f;
+
+            for (int i = 0; i < count; ++i)
+            {
+                //We are doing a relative distance comparison to find the maximum distance
+                //from the center of our sphere.
+                double distance = Vector3d.GetLengthSq(Vector3d.SubtractVectors(points[i], center));
+
+                if (distance > radius)
+                {
+                    radius = distance;
+                }
+            }
+            
+
+            //Find the real distance from the DistanceSquared.
+
+            radius = Math.Sqrt(radius);
+
+            //Construct the sphere.
+            result.Center = center;
+            result.Radius = radius;
+            return result;
+        }
+
+
         public static SphereHull FindEnclosingSphere(Vector3d[] list)
         {
             Vector3d Center = new Vector3d();

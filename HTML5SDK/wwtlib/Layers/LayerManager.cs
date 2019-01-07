@@ -156,43 +156,54 @@ namespace wwtlib
         static public void InitLayers()
         {
             ClearLayers();
-            //LayerMap iss = null;
-            //if (!TourLayers)
-            //{
-            //    string[] isstle = new string[0];
-            //    try
-            //    {
-            //        //This is downloaded now on startup
-            //        string url = "//worldwidetelescope.org/wwtweb/isstle.aspx";
-            //        string filename = string.Format(@"{0}data\isstle.txt", Properties.Settings.Default.CahceDirectory);
-            //        DataSetManager.DownloadFile(url, filename, false, false);
+            LayerMap iss = null;
+            if (!TourLayers)
+            {
 
-            //        isstle = File.ReadAllLines(filename);
-            //    }
-            //    catch
-            //    {
-            //    }
 
-            //    iss = new LayerMap("ISS", ReferenceFrames.Custom);
-            //    iss.Frame.Epoch = SpaceTimeController.TwoLineDateToJulian("10184.51609218");
-            //    iss.Frame.SemiMajorAxis = 6728829.41;
-            //    iss.Frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
-            //    iss.Frame.Inclination = 51.6442;
-            //    iss.Frame.LongitudeOfAscendingNode = 147.0262;
-            //    iss.Frame.Eccentricity = .0009909;
-            //    iss.Frame.MeanAnomolyAtEpoch = 325.5563;
-            //    iss.Frame.MeanDailyMotion = 360 * 15.72172655;
-            //    iss.Frame.ArgumentOfPeriapsis = 286.4623;
-            //    iss.Frame.Scale = 1;
-            //    iss.Frame.SemiMajorAxisUnits = AltUnits.Meters;
-            //    iss.Frame.MeanRadius = 130;
-            //    iss.Frame.Oblateness = 0;
-            //    iss.Frame.ShowOrbitPath = true;
-            //    if (isstle.Length > 1)
-            //    {
-            //        iss.Frame.FromTLE(isstle[0], isstle[1], 398600441800000);
-            //    }
-            //}
+                iss = new LayerMap("ISS", ReferenceFrames.Custom);
+                iss.Frame.Epoch = SpaceTimeController.TwoLineDateToJulian("10184.51609218");
+                iss.Frame.SemiMajorAxis = 6728829.41;
+                iss.Frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
+                iss.Frame.Inclination = 51.6442;
+                iss.Frame.LongitudeOfAscendingNode = 147.0262;
+                iss.Frame.Eccentricity = .0009909;
+                iss.Frame.MeanAnomolyAtEpoch = 325.5563;
+                iss.Frame.MeanDailyMotion = 360 * 15.72172655;
+                iss.Frame.ArgumentOfPeriapsis = 286.4623;
+                iss.Frame.Scale = 1;
+                iss.Frame.SemiMajorAxisUnits = AltUnits.Meters;
+                iss.Frame.MeanRadius = 130;
+                iss.Frame.Oblateness = 0;
+                iss.Frame.ShowOrbitPath = true;
+
+                string[] isstle = new string[0];
+
+                //This is downloaded now on startup
+                string url = "http://worldwidetelescope.org/wwtweb/isstle.aspx";
+
+                WebFile webFile;
+
+                webFile = new WebFile(url);
+                //webFile.ResponseType = "text";
+                webFile.OnStateChange = delegate
+                {
+                    if (webFile.State == StateType.Received)
+                    {
+                        string data = webFile.GetText();
+                        isstle = data.Split("\n");
+                        if (isstle.Length > 1)
+                        {
+                            iss.Frame.FromTLE(isstle[0], isstle[1], 398600441800000);
+                        }
+                    }
+                };
+
+                webFile.Send();
+                iss.Enabled = true;
+
+
+            }
 
             LayerMaps["Sun"] = new LayerMap("Sun", ReferenceFrames.Sun);
             LayerMaps["Sun"].AddChild(new LayerMap("Mercury", ReferenceFrames.Mercury));
@@ -200,10 +211,10 @@ namespace wwtlib
             LayerMaps["Sun"].AddChild(new LayerMap("Earth", ReferenceFrames.Earth));
             LayerMaps["Sun"].ChildMaps["Earth"].AddChild(new LayerMap("Moon", ReferenceFrames.Moon));
 
-            //if (!TourLayers)
-            //{
-            //    LayerMaps["Sun"].ChildMaps["Earth"].ChildMaps.Add("ISS", iss);
-            //}
+            if (!TourLayers)
+            {
+                LayerMaps["Sun"].ChildMaps["Earth"].AddChild(iss);
+            }
 
             //LayerMaps["Sun"].ChildMaps["Earth"].AddChild(ol);
             //LayerMaps["Sun"].ChildMaps["Earth"].AddChild(l1);
@@ -228,10 +239,27 @@ namespace wwtlib
             allMaps = new Dictionary<string, LayerMap>();
 
             AddAllMaps(LayerMaps, null);
+            if (!TourLayers)
+            {
+                AddIss();
+            }
+
 
             version++;
             LoadTree();
 
+        }
+
+        static void AddIss()
+        {
+            ISSLayer layer = new ISSLayer();
+
+            layer.Name = Language.GetLocalizedText(1314, "ISS Model  (Toshiyuki Takahei)");
+            layer.Enabled = Settings.Active.ShowISSModel;
+            LayerList[layer.ID] = layer;
+            layer.ReferenceFrame = "ISS";
+            AllMaps["ISS"].Layers.Add(layer);
+            AllMaps["ISS"].Open = true;
         }
 
         private static void AddAllMaps(Dictionary<string, LayerMap> maps, String parent)
@@ -344,7 +372,7 @@ namespace wwtlib
         public static ImageSetLayer AddImageSetLayer(Imageset imageset, string title)
         {
             ImageSetLayer layer = ImageSetLayer.Create(imageset);
-            layer.DoneLoading(null);       
+            layer.DoneLoading(null);
             layer.Name = title;
             layer.Astronomical = true;
             layer.ReferenceFrame = "Sky";
@@ -358,10 +386,27 @@ namespace wwtlib
             return layer;
         }
 
+        public static ImageSetLayer AddFitsImageSetLayer(ImageSetLayer layer, string title)
+        {
+            layer.DoneLoading(null);
+            layer.Name = title;
+            layer.Astronomical = true;
+            layer.ReferenceFrame = "Sky";
+            LayerList[layer.ID] = layer;
+            AllMaps["Sky"].Layers.Add(layer);
+            AllMaps["Sky"].Open = true;
+            layer.Enabled = true;
+            version++;
+            LoadTree();
+            return layer;
+        }
+
+
+
         public static string GetNextFitsName()
         {
             int currentNumber = 0;
-            foreach( Layer layer in AllMaps["Sky"].Layers)
+            foreach (Layer layer in AllMaps["Sky"].Layers)
             {
                 if (layer.Name.StartsWith("Fits Image "))
                 {
@@ -380,7 +425,7 @@ namespace wwtlib
                     }
                 }
             }
-            return string.Format("Fits Image {0}", currentNumber+1);
+            return string.Format("Fits Image {0}", currentNumber + 1);
         }
 
         internal static void CloseAllTourLoadedLayers()
@@ -595,7 +640,7 @@ namespace wwtlib
             FrameTarget target = new FrameTarget();
 
             Vector3d targetPoint = Vector3d.Empty;
-         
+
             target.Target = Vector3d.Empty;
             target.Matrix = Matrix3d.Identity;
 
@@ -616,7 +661,7 @@ namespace wwtlib
                 mapList.Insert(0, current);
             }
 
-            Matrix3d matOld = renderContext.World;
+            Matrix3d matOld = renderContext.World.Clone();
             Matrix3d matOldNonRotating = renderContext.WorldBaseNonRotating;
             Matrix3d matOldBase = renderContext.WorldBase;
             double oldNominalRadius = renderContext.NominalRadius;
@@ -625,7 +670,7 @@ namespace wwtlib
             {
                 if (map.Frame.Reference != ReferenceFrames.Custom && map.Frame.Reference != ReferenceFrames.Sandbox)
                 {
-                    
+
                     Planets.SetupPlanetMatrix(renderContext, (int)Enums.Parse("SolarSystemObjects", map.Frame.Name), Vector3d.Empty, false);
                 }
                 else
@@ -642,7 +687,7 @@ namespace wwtlib
                     }
                     if (map.Frame.ReferenceFrameType == ReferenceFrameTypes.Synodic)
                     {
-                        renderContext.WorldBaseNonRotating = renderContext.World;
+                        renderContext.WorldBaseNonRotating = renderContext.World.Clone();
                     }
 
                     renderContext.NominalRadius = map.Frame.MeanRadius;
@@ -652,8 +697,8 @@ namespace wwtlib
             targetPoint = renderContext.World.Transform(targetPoint);
 
             Vector3d lookAt = renderContext.World.Transform(Vector3d.Create(0, 0, 1));
-                                                                    
-            Vector3d lookUp = renderContext.World.Transform(Vector3d.SubtractVectors(Vector3d.Create(0, 1, 0),targetPoint));
+
+            Vector3d lookUp = Vector3d.SubtractVectors(renderContext.World.Transform(Vector3d.Create(0, 1, 0)), targetPoint);
 
 
             lookUp.Normalize();
@@ -668,7 +713,7 @@ namespace wwtlib
             renderContext.WorldBase = matOldBase;
 
 
-           
+
             target.Target = targetPoint;
             return target;
         }
@@ -1112,7 +1157,7 @@ namespace wwtlib
                 //    return;
                 //}
                 //else
-                
+
                 if (selectedLayer is LayerMap)
                 {
                     LayerMap map = selectedLayer as LayerMap;
@@ -1127,9 +1172,9 @@ namespace wwtlib
                     if (layer != null && layer.ImageSet.WcsImage is FitsImage)
                     {
                         WWTControl.scriptInterface.SetTimeSlider("left", "0");
-                        WWTControl.scriptInterface.SetTimeSlider("right", (layer.GetFitsImage().Depth-1).ToString());
-                        WWTControl.scriptInterface.SetTimeSlider("title", "Velocity");            
-                            //Histogram.UpdateImage(layer, timeScrubber.Value);
+                        WWTControl.scriptInterface.SetTimeSlider("right", (layer.GetFitsImage().Depth - 1).ToString());
+                        WWTControl.scriptInterface.SetTimeSlider("title", "Velocity");
+                        //Histogram.UpdateImage(layer, timeScrubber.Value);
                         //timeSeries.Checked = false;
                         //startDate.Text = "0";
                         //timeScrubber.Maximum = layer.FitsImage.Depth - 1;
@@ -1144,7 +1189,7 @@ namespace wwtlib
 
             WWTControl.scriptInterface.SetTimeSlider("left", "");
             WWTControl.scriptInterface.SetTimeSlider("right", "");
-            WWTControl.scriptInterface.SetTimeSlider("title", Language.GetLocalizedText(667, "Time Scrubber"));      
+            WWTControl.scriptInterface.SetTimeSlider("title", Language.GetLocalizedText(667, "Time Scrubber"));
         }
 
         static public void SetTimeSliderValue(double pos)
@@ -1153,7 +1198,7 @@ namespace wwtlib
             if (layer != null && layer.ImageSet.WcsImage is FitsImage)
             {
                 Histogram.UpdateImage(layer, pos);
-                WWTControl.scriptInterface.SetTimeSlider("title", layer.GetFitsImage().GetZDescription() );
+                WWTControl.scriptInterface.SetTimeSlider("title", layer.GetFitsImage().GetZDescription());
             }
         }
 
@@ -1300,7 +1345,7 @@ namespace wwtlib
                     defaultImageset.Checked = isl.OverrideDefaultLayer;
                 }
 
-              //  if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
+                //  if (selected is SpreadSheetLayer || selected is Object3dLayer || selected is GroundOverlayLayer || selected is GreatCirlceRouteLayer || selected is OrbitLayer)
                 {
                     //contextMenu.Items.Add(popertiesMenu);
                 }
@@ -1484,7 +1529,7 @@ namespace wwtlib
                 if ((map.Frame.Reference != ReferenceFrames.Identity && map.Frame.Name == "Sun") ||
                     (map.Frame.Reference == ReferenceFrames.Identity && map.Parent != null && map.Parent.Frame.Name == "Sun"))
                 {
-                    //contextMenu.Items.Add(addMpc);
+                    contextMenu.Items.Add(addMpc);
                 }
 
                 if (map.Frame.Reference == ReferenceFrames.Custom && map.Frame.ReferenceFrameType == ReferenceFrameTypes.Orbital && map.Parent != null && map.Parent.Frame.Name == "Sun")
@@ -1499,7 +1544,7 @@ namespace wwtlib
                 }
 
 
-                //contextMenu.Items.Add(pasteMenu);
+                contextMenu.Items.Add(pasteMenu);
 
 
                 if (map.Frame.Reference == ReferenceFrames.Identity)
@@ -1601,7 +1646,7 @@ namespace wwtlib
             layer.Name = "Lat-Lng Grid";
             LayerList[layer.ID] = layer;
             layer.ReferenceFrame = currentMap;
-            
+
             AllMaps[currentMap].Layers.Add(layer);
             AllMaps[currentMap].Open = true;
             version++;
@@ -1710,10 +1755,25 @@ namespace wwtlib
             //ImportTLEFile(filename, target);
         }
 
-        static private void MakeLayerGroup(string name)
+        static private void MakeLayerGroupNow(string name)
         {
-            //LayerMap target = (LayerMap)selectedLayer;
-            //MakeLayerGroup(name, target);
+            LayerMap target = (LayerMap)selectedLayer;
+            MakeLayerGroup(name, target);
+        }
+
+        private static void MakeLayerGroup(string name, LayerMap target)
+        {
+            ReferenceFrame frame = new ReferenceFrame();
+            frame.Name = name;
+            frame.Reference = ReferenceFrames.Identity;
+            LayerMap newMap = new LayerMap(frame.Name, ReferenceFrames.Identity);
+            newMap.Frame = frame;
+            newMap.Frame.SystemGenerated = false;
+            target.AddChild(newMap);
+
+            newMap.Frame.Parent = target.Name;
+            AllMaps[frame.Name] = newMap;
+            version++;
         }
 
         static void lifeTimeMenu_Click(object sender, EventArgs e)
@@ -1987,6 +2047,13 @@ namespace wwtlib
         static void pasteLayer_Click(object sender, EventArgs e)
         {
 
+            ClipbaordDelegate clip = delegate (string clipText)
+            {
+                CreateSpreadsheetLayer(CurrentMap, "Clipboard", clipText);
+            };
+            
+            Navigator.Clipboard.ReadText().Then(clip);
+
 
             //IDataObject dataObject = Clipboard.GetDataObject();
             //if (dataObject.GetDataPresent(DataFormats.UnicodeText))
@@ -2015,6 +2082,22 @@ namespace wwtlib
             //}
 
         }
+        public static SpreadSheetLayer CreateSpreadsheetLayer(string frame, string name, string data)
+        {
+            SpreadSheetLayer layer = new SpreadSheetLayer();
+            layer.LoadFromString(data, false, false, false, true);
+            layer.Enabled = true;
+            layer.Name = name;
+
+            LayerList[layer.ID] =  layer;
+            layer.ReferenceFrame = CurrentMap;
+            AllMaps[frame].Layers.Add(layer);
+            AllMaps[frame].Open = true;
+            version++;
+            LoadTree();
+            return layer;
+        }
+
         static void showOrbitPlanet_Click(object sender, EventArgs e)
         {
             try
@@ -2053,74 +2136,194 @@ namespace wwtlib
 
         static void addMpc_Click(object sender, EventArgs e)
         {
-            //LayerMap target = (LayerMap)selectedLayer;
-            //SimpleInput input = new SimpleInput(Language.GetLocalizedText(1302, "Minor planet name or designation"), Language.GetLocalizedText(238, "Name"), "", 32);
-            //bool retry = false;
-            //do
-            //{
-            //    if (input.ShowDialog() == DialogResult.OK)
-            //    {
-            //        if (target.ChildMaps.ContainsKey(input.ResultText))
-            //        {
-            //            retry = true;
-            //            UiTools.ShowMessageBox("That Name already exists");
-            //        }
-            //        else
-            //        {
-            //            try
-            //            {
-            //                GetMpc(input.ResultText, target);
-            //                retry = false;
-            //            }
-            //            catch
-            //            {
-            //                retry = true;
-            //                UiTools.ShowMessageBox(Language.GetLocalizedText(1303, "The designation was not found or the MPC service was unavailable"));
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        retry = false;
-            //    }
-            //} while (retry);
-            //return;
+            LayerMap target = (LayerMap)selectedLayer;
+            SimpleInput input = new SimpleInput(Language.GetLocalizedText(1302, "Minor planet name or designation"), Language.GetLocalizedText(238, "Name"), "", 32);
+            bool retry = false;
+            do
+            {
+                if (input.ShowDialog() == DialogResult.OK)
+                {
+                    if (target.ChildMaps.ContainsKey(input.Text))
+                    {
+                        retry = true;
+                        //UiTools.ShowMessageBox("That Name already exists");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            GetMpc(input.Text, target);
+                            retry = false;
+                        }
+                        catch
+                        {
+                            retry = true;
+                            //  UiTools.ShowMessageBox(Language.GetLocalizedText(1303, "The designation was not found or the MPC service was unavailable"));
+                        }
+                    }
+                }
+                else
+                {
+                    retry = false;
+                }
+            } while (retry);
+            return;
         }
 
         static private void AsOrbitalLines_Click(object sender, EventArgs e)
         {
-            //LayerMap target = (LayerMap)layerTree.SelectedNode.Tag;
-            //SimpleInput input = new SimpleInput(Language.GetLocalizedText(1302, "Minor planet name or designation"), Language.GetLocalizedText(238, "Name"), "", 32);
-            //bool retry = false;
-            //do
-            //{
-            //    if (input.ShowDialog() == DialogResult.OK)
-            //    {
-            //        if (target.ChildMaps.ContainsKey(input.ResultText))
-            //        {
-            //            retry = true;
-            //            UiTools.ShowMessageBox("That Name already exists");
-            //        }
-            //        else
-            //        {
-            //            try
-            //            {
-            //                GetMpcAsTLE(input.ResultText, target);
-            //                retry = false;
-            //            }
-            //            catch
-            //            {
-            //                retry = true;
-            //                UiTools.ShowMessageBox(Language.GetLocalizedText(1303, "The designation was not found or the MPC service was unavailable"));
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        retry = false;
-            //    }
-            //} while (retry);
-            //return;
+            LayerMap target = (LayerMap)selectedLayer;
+            SimpleInput input = new SimpleInput(Language.GetLocalizedText(1302, "Minor planet name or designation"), Language.GetLocalizedText(238, "Name"), "", 32);
+
+            input.Show(Cursor.Position, delegate ()
+             {
+                 if (target.ChildMaps.ContainsKey(input.Text))
+                 {
+
+                     //   UiTools.ShowMessageBox("That Name already exists");
+                 }
+                 else
+                 {
+                     GetMpcAsTLE(input.Text, target);
+                 }
+             });
+        }
+
+        static void GetMpcAsTLE(string id, LayerMap target)
+        {
+            WebFile file = new WebFile("https://www.minorplanetcenter.net/db_search/show_object?object_id=" + id);
+
+            file.OnStateChange = delegate ()
+                {
+                    if (file.State != StateType.Received)
+                    {
+                        return;
+                    }
+
+                    string data = file.GetText();
+
+
+                    int startform = data.IndexOf("show-orbit-button");
+
+                    int lastForm = data.IndexOf("/form", startform);
+
+                    string formpart = data.Substring(startform, lastForm);
+
+                    string name = id;
+
+                    ReferenceFrame frame = new ReferenceFrame();
+
+                    frame.Oblateness = 0;
+                    frame.ShowOrbitPath = true;
+                    frame.ShowAsPoint = true;
+
+                    frame.Epoch = SpaceTimeController.UtcToJulian(Date.Parse(GetValueByID(formpart, "epoch").Substring(0, 10)));
+                    frame.SemiMajorAxis = double.Parse(GetValueByID(formpart, "a")) * UiTools.KilometersPerAu * 1000;
+                    frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
+                    frame.Inclination = double.Parse(GetValueByID(formpart, "incl"));
+                    frame.LongitudeOfAscendingNode = double.Parse(GetValueByID(formpart, "node"));
+                    frame.Eccentricity = double.Parse(GetValueByID(formpart, "e"));
+                    frame.MeanAnomolyAtEpoch = double.Parse(GetValueByID(formpart, "m"));
+                    frame.MeanDailyMotion = ELL.MeanMotionFromSemiMajorAxis(double.Parse(GetValueByID(formpart, "a")));
+                    frame.ArgumentOfPeriapsis = double.Parse(GetValueByID(formpart, "peri"));
+                    frame.Scale = 1;
+                    frame.SemiMajorAxisUnits = AltUnits.Meters;
+                    frame.MeanRadius = 10;
+                    frame.Oblateness = 0;
+
+                    String TLE = name + "\n" + frame.ToTLE();
+                    LoadOrbitsFile(id, TLE, target.Name);
+
+                    LoadTree();
+                };
+            file.Send();
+
+        }
+
+        //string ConvertToTLE(LayerMap map)
+        //{
+
+        //    LayerMap target = map.Parent;
+
+        //    ReferenceFrame frame = map.Frame;
+        //    string name = frame.Name;
+
+        //    String TLE = name + "\n" + frame.ToTLE();
+
+        //    String filename = Path.GetTempPath() + "\\" + name;
+
+        //    File.WriteAllText(filename, TLE);
+
+        //    LoadOrbitsFile(filename, target.Name);
+
+        //    LoadTree();
+
+        //    return null;
+        //}
+
+
+        static void GetMpc(string id, LayerMap target)
+        {
+
+            WebFile file = new WebFile("https://www.minorplanetcenter.net/db_search/show_object?object_id=" + id);
+
+            file.OnStateChange = delegate ()
+            {
+                string data = file.GetText();
+
+
+                int startform = data.IndexOf("show-orbit-button");
+
+                int lastForm = data.IndexOf("/form", startform);
+
+                string formpart = data.Substring(startform, lastForm);
+
+                string name = id;
+
+                LayerMap orbit = new LayerMap(name.Trim(), ReferenceFrames.Custom);
+
+
+                orbit.Frame.Oblateness = 0;
+                orbit.Frame.ShowOrbitPath = true;
+                orbit.Frame.ShowAsPoint = true;
+
+                orbit.Frame.Epoch = SpaceTimeController.UtcToJulian(Date.Parse(GetValueByID(formpart, "epoch").Substring(0, 10)));
+                orbit.Frame.SemiMajorAxis = double.Parse(GetValueByID(formpart, "a")) * UiTools.KilometersPerAu * 1000;
+                orbit.Frame.ReferenceFrameType = ReferenceFrameTypes.Orbital;
+                orbit.Frame.Inclination = double.Parse(GetValueByID(formpart, "incl"));
+                orbit.Frame.LongitudeOfAscendingNode = double.Parse(GetValueByID(formpart, "node"));
+                orbit.Frame.Eccentricity = double.Parse(GetValueByID(formpart, "e"));
+                orbit.Frame.MeanAnomolyAtEpoch = double.Parse(GetValueByID(formpart, "m"));
+                orbit.Frame.MeanDailyMotion = ELL.MeanMotionFromSemiMajorAxis(double.Parse(GetValueByID(formpart, "a")));
+                orbit.Frame.ArgumentOfPeriapsis = double.Parse(GetValueByID(formpart, "peri"));
+                orbit.Frame.Scale = 1;
+                orbit.Frame.SemiMajorAxisUnits = AltUnits.Meters;
+                orbit.Frame.MeanRadius = 10;
+                orbit.Frame.Oblateness = 0;
+
+                if (!AllMaps[target.Name].ChildMaps.ContainsKey(name.Trim()))
+                {
+                    AllMaps[target.Name].AddChild(orbit);
+                }
+
+                AllMaps[orbit.Name] = orbit;
+
+                orbit.Frame.Parent = target.Name;
+
+                MakeLayerGroup("Minor Planet", orbit);
+
+                LoadTree();
+            };
+
+        }
+
+        static string GetValueByID(string data, string id)
+        {
+
+            int valStart = data.IndexOf("id=\"" + id + "\"");
+            valStart = data.IndexOf("value=", valStart) + 7;
+            int valEnd = data.IndexOf("\"", valStart);
+            return data.Substr(valStart, valEnd - valStart);
         }
 
         private static void AddGreatCircleLayer()
@@ -2147,7 +2350,21 @@ namespace wwtlib
 
         }
 
-
+        internal static Layer LoadOrbitsFile(string name, string data, string currentMap)
+        {
+            OrbitLayer layer = new OrbitLayer();
+            //todo fix this
+            layer.LoadString(data);
+            layer.Enabled = true;
+            layer.Name = name;
+            LayerList[layer.ID] = layer;
+            layer.ReferenceFrame = currentMap;
+            AllMaps[currentMap].Layers.Add(layer);
+            AllMaps[currentMap].Open = true;
+            version++;
+            LoadTree();
+            return layer;
+        }
 
 
 
@@ -2296,10 +2513,7 @@ namespace wwtlib
     public class GroundOverlayLayer
     {
     }
-    public class OrbitLayer
-    {
 
-    }
 
     public class FrameTarget
     {

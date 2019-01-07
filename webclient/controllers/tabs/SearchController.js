@@ -8,7 +8,6 @@
 	function ($scope, $rootScope, $timeout, util, searchUtil, thumbList) {
 
 	    $scope.goto = { RA: '', Dec: '' };
-	    
 
 	    var init = function () {
 	        thumbList.init($scope, 'search');
@@ -19,9 +18,10 @@
 	            $scope.SearchType = 'J2000';
 	            $('#txtSearch').focus();
 	        }, 123);
-	    }
+	    };
 
-	    $scope.clickThumb = function (item) {
+	    $scope.clickThumb = function (item,instant) {
+	      $rootScope.instant = !!instant;
 	        thumbList.clickThumb(item, $scope);
 	    }; 
          
