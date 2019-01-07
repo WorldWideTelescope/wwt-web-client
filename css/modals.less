@@ -13,6 +13,17 @@
   pointer-events: none;
   .modal-content {
     pointer-events: all;
+    .ribbon{
+      padding-left:16px;
+      position:static;
+      ul.wwt-tabs li{
+        div.outer{
+          a span.label{
+            padding:5px 16px 11px;
+          }
+        }
+      }
+    }
   }
   .modal-header {
     background: rgba(255, 255, 255, .85);
@@ -28,6 +39,48 @@
     div.modal-content{
       border-radius:3px;
         box-shadow:0 0 8px #a1c2f9b0;
+      table{
+        table-layout: fixed;
+        width:90%;
+        &.v-pad {
+          td {
+            height: 65px;
+          }
+        }
+      }
+      td{
+        height:50px;
+        vertical-align: top;
+        padding-right:12px;
+        label{
+          display:block;
+        }
+        select{
+          min-width:135px;
+        }
+        input{
+          max-width:95%;
+        }
+        input[type=color]{
+          .boxGradient();
+          display:inline-block;
+          height:18px;
+          width:100px;
+        }
+        div.checkbox{
+          margin:22px 0;
+        }
+      }
+      .footer{
+        background-color:fade(@brand-blue, 15%);
+        height:48px;
+        padding:12px;
+        text-align:right;
+        .btn{
+          width:80px;
+          margin-left:8px;
+        }
+      }
     }
   }
 }
@@ -40,6 +93,47 @@
     }
   }
 }
+.wwt-modal.great-circle {
+   .modal-dialog {
+     width: 444px;
+     .modal-content {
+       width: 444px;
+     }
+   }
+ }
+.wwt-modal.wizard {
+  .modal-dialog {
+    width: 800px;
+    .modal-content {
+      width: inherit;
+      .modal-body{
+        padding:0;
+        p{
+          margin:15px 0;
+        }
+        .titlebar{
+          background-color:rgba(222,222,222,.05);
+          padding:2px 16px;
+        }
+        .page{
+          p{
+            font-size:13px;
+            margin-top:3px;
+          }
+          .iblock{
+            margin-right:8px;
+          }
+          label{
+            display:block;
+          }
+          height:280px;
+          padding:16px;
+        }
+      }
+    }
+  }
+}
+
 
 #simplemodal{
   #simpleinput{

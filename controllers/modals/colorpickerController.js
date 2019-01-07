@@ -53,8 +53,7 @@ wwt.controllers.controller('colorpickerController', ['$scope', function ($scope)
       $scope.$applyAsync(function () {
       $scope.previewColor = 'rgba(' + $scope.rgb.join(',') + ',' + opacity + ')';
     });
-
-  }
+  };
 
   $scope.commitColor = function(){
     cp.color.a = Math.min(255,Math.max(0,Math.round(opacity*255)));

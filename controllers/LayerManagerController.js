@@ -99,6 +99,7 @@ wwt.controllers.controller('LayerManagerController',
               });
             });
             $scope.sunTree = sunTree;
+
           }, 123);
         });
         wwt.resize();

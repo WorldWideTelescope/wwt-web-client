@@ -1,0 +1,245 @@
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+  <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
+    <span localize="Data Visualization Layer"></span>
+  </h5>
+</div>
+<div class="modal-body dataviz">
+
+    <div class="titlebar" ng-if="!propertyMode">
+      <h3>{{page}}</h3>
+    </div>
+    <div class="ribbon" ng-if="propertyMode">
+      <ul class="wwt-tabs">
+        <li ng-class="{active: p == page}" ng-repeat="p in pages">
+          <div class="outer" ng-click="setPage(p)">
+            <a href="javascript:void(0)">
+              <span class="label">{{p}}</span>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="page" ng-show="page=='Welcome'">
+      <p localize="This wizard will guide you through the process of importing your data for visualization. On this first step paste your data and enter a friendly name for your layer, this is how it will appear in the Layer Manager. Select a reference frame for the coordinates in your data. This determines how WWT will plot your data and where."></p>
+      <table>
+        <col width="25%">
+        <col width="25%">
+        <col width="50%">
+        <tr id="pasteRow">
+          <td><label localize="Paste Data"></label>
+            <div class="paste-control" contenteditable="true" ng-paste="pasteExcel($event)"></div>
+          </td>
+          <td colspan="2"></td>
+        </tr>
+        <tr ng-show="layer">
+          <td>
+            <label localize="Layer Name"></label>
+            <input type="text" ng-model="layer._name"></td>
+          <td>
+            <label localize="Coordinates Type"></label>
+            <select ng-model="layer._coordinatesType$1" ng-options="c.type as c.label for c in coordTypes"></select>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="page=='Position'">
+      <p
+        localize="Use the drop-downs to select the columns that specify the coordinates, select the altitude/depth mapping type, and optionally the column that specifies the altitude/depth and the units in which the data is specified. Positive depth values offset downward. Positive altitude values offset upward."></p>
+      <table>
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <tr>
+          <td colspan="2">
+            <label localize="Lat:"></label>
+            <select ng-model="layer.latColumn" ng-options="c.type as c.label for c in columns"></select>
+          </td>
+          <td>
+            <label localize="Type"></label>
+            <select ng-model="layer._altType$1" ng-options="c.type as c.label for c in altTypes"></select>
+          </td>
+          <td>
+            <label localize="Units"></label>
+            <select ng-model="layer._altUnit$1" ng-options="c.type as c.label for c in altUnits"></select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label localize="Lng:"></label>
+            <select ng-model="layer.lngColumn" ng-options="c.type as c.label for c in columns"></select>
+          </td>
+          <td colspan="2">
+            <label localize="Altitude/Depth"></label>
+            <select ng-model="layer.altColumn" ng-options="c.type as c.label for c in columns"></select>
+          </td>
+
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="page=='Scale'">
+      <p localize="Use the scale type to specify how you want the markers displayed. You can have markers display relative to the screen., invariant of your zoom, or have them scale relative to the coordinates system. You can optionally select a column to control the scale. Use the scale factor to adjust the relative unit values of the columns to the output marker size."></p>
+      <table>
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <tr>
+          <td>
+            <label localize="Scale Type"></label>
+            <select ng-model="layer.psType" ng-change="layer.set_pointScaleType(layer.psType)" ng-options="c.type as c.label for c in pointScaleTypes"></select>
+          </td>
+          <td>
+            <label localize="Scale Relative"></label>
+            <select ng-model="layer._markerScale$1" ng-change="layer.set_markerScale(layer._markerScale$1)" ng-options="c.type as c.label for c in markerScales"></select>
+          </td>
+          <td>
+            <label localize="Size/Magnitude Column"></label>
+            <select ng-model="layer.sizeColumn" ng-options="c.type as c.label for c in columns"></select>
+          </td>
+          <td>
+            <label localize="Scale Factor"></label>
+            <div class="scale-factor">
+              <a class="btn" style="left:50px"></a>
+            </div>
+            <div style="text-align:center;width:100px;margin-top:7px;">
+              {{scaleFactor}}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="page=='Markers'">
+      <p localize="Select the way you want to organize markers and their shapes. You can use one marker type for all the data or select a column to show different markers for ranges of values, or discrete values."></p>
+      <table>
+        <col width="25%">
+        <col width="25%">
+        <col width="50%">
+        <tr>
+          <td>
+            <label localize="Marker Mix"></label>
+            <select ng-model="layer._markerMix$1" ng-change="layer.set_markerMix(layer._markerMix$1)"
+                    ng-options="c.type as c.label for c in markerMixes"></select>
+          </td>
+          <td>
+            <label localize="Marker Type"></label>
+            <select ng-model="layer._plotType$1" ng-change="layer.set_plotType(layer._plotType$1)"
+                    ng-options="c.type as c.label for c in plotTypes"></select>
+          </td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td colspan="2">
+            <label>&nbsp;</label>
+            <div class="checkbox">
+              <label ng-class="layer._showFarSide$1 ? 'checked' : ''">
+                <input type="checkbox" ng-model="layer._showFarSide$1" ng-change="layer.set_showFarSide(layer._showFarSide$1)"/>
+                <span localize="Show Far Side Markers"></span>
+              </label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="page=='Color Map'">
+      <p localize="A color map allows you to vary the color of a marker based on the value of a selected column using colors for discrete domain values, selecting colors to represent ranges, or using gradients to map a range of colors smoothly to a range of values."></p>
+      <table>
+        <col width="25%">
+        <col width="25%">
+        <col width="50%">
+        <tr>
+          <td>
+            <label localize="Color Map"></label>
+            <select ng-model="layer._colorMap$1" ng-change="layer.set__colorMap(layer._colorMap$1);log(layer._colorMap$1)"
+                    ng-options="c.type as c.label for c in colorMaps"></select>
+          </td>
+          <td>
+            <label localize="Color Map Column"></label>
+            <select ng-model="layer._colorMapColumn$1" ng-change="layer.set_colorMapColumn(layer._colorMapColumn$1);log(layer._colorMapColumn$1)"
+                    ng-options="c.type as c.label for c in columns"></select>
+          </td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="page=='Date Time'">
+      <p localize="The Sart and End Dates used with a Time decay allow you to visualize time series data as anomation using the time controls. The time decay controls how long it takes to fade out an event after it triggers. Select the optional start and end data columns to enable this feature and get a preview of the date range for the column."></p>
+      <table>
+        <col width="25%">
+        <col width="25%">
+        <col width="17%">
+        <col width="33%">
+        <tr>
+          <td>
+            <label localize="Start Date Column"></label>
+            <select ng-model="layer.startDateColumn" ng-change="layer.set_startDateColumn(layer.startDateColumn);"
+                    ng-options="c.type as c.label for c in columns"></select>
+          </td>
+          <td>
+            <label localize="Time Decay"></label>
+            <div class="time-decay">
+              <a class="btn" style="left:66px"></a>
+            </div>
+            <div style="text-align:center;width:100px;margin-top:7px;">
+              {{decay}}
+            </div>
+          </td>
+          <td>&nbsp;</td>
+          <td>
+            <label localize="Begin Date Range"></label>
+            <input type="datetime-local" ng-model="layer._beginRange$1" style="width:100%">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label localize="End Date Column"></label>
+            <select ng-model="layer.endDateColumn" ng-change="layer.set_endDateColumn(layer.endDateColumn);"
+                    ng-options="c.type as c.label for c in columns"></select>
+          </td>
+
+          <td colspan="2">&nbsp;</td>
+          <td>
+            <label localize="End Date Range"></label>
+            <input type="datetime-local" ng-model="layer._endRange$1" style="width:100%">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="page" ng-show="page=='Hover Text'">
+      <p localize="You can select which data column you want shown when hovering over a marker, and optionally add a hyperlink to allow a user to drill into related data through a web page."></p>
+      <table>
+        <col width="25%">
+        <col width="75%">
+        <tr>
+          <td>
+            <label localize="Hover Text Column"></label>
+            <select ng-model="layer.nameColumn" ng-change="layer.set_nameColumn(layer.nameColumn);"
+                    ng-options="c.type as c.label for c in columns"></select>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.back}"
+       localize="Back" ng-disabled="!buttonsEnabled.back"
+       ng-click="back()"
+    ></a>
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.next}"
+       localize="Next" ng-disabled="!buttonsEnabled.next"
+       ng-click="next()"
+    ></a>
+    <a ng-if="!propertyMode" class="btn" ng-class="{'disabled':!buttonsEnabled.finish}"
+       localize="Finish" ng-disabled="!buttonsEnabled.finish"
+       ng-click="finish();$hide()"
+    ></a>
+    <a ng-if="propertyMode" class="btn" localize="Done" ng-click="$hide()"></a>
+  </div>
+
+
+</div>
