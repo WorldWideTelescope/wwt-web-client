@@ -89,7 +89,9 @@ wwt.controllers.controller('LayerManagerController',
             var sunTree = {Sun: (allMaps.Sun)};
 
             sunTree.Sun.collapsed = false;
-
+            $scope.skyNode = allMaps.Sky;
+            //$scope.tree = skyNode;
+            //console.log(skyNode);
             $.each(sunTree.Sun.childMaps, function (name, node) {
               node.collapsed = false;
               //node.name = name;
@@ -139,6 +141,7 @@ wwt.controllers.controller('LayerManagerController',
           name: $scope.getFromEn('Sky'),
           mergeWith: 'Sky',// key of node in wwtlib.LayerManager.get_allMaps() to merge into settings. Set this on any settings node
           action: 'showSkyNode',
+          checked:true,
           children: [
             new treeNode({
               name: $scope.getFromEn('Overlays'),

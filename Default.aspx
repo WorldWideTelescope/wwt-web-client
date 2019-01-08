@@ -1186,12 +1186,24 @@
             ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
             ng-repeat="(name,node) in sunTree"
             ng-include="'tree-node'">
-           </div>
-          <div
-            ng-class="tree.collapsed ? 'collapsed' : ''"
-            ng-repeat="node in [tree]"
+         </div>
+          <i class="fa"
+                 ng-class="collapsed(tree) ? 'fa-plus-square-o' : 'fa-minus-square-o'"
+                 ng-click="collapse(tree)"></i>
+
+         <div class="checkbox" ng-right-click="showMenu(skyNode,$event)" ng-class="{activelayer:skyNode.active}">
+           <label data-ng-class="{checked:tree.checked}" localize="Sky" ng-click="selectionChanged(tree,$event)"
+                  localize-only="title">
+             <input type="checkbox" ng-model="tree.checked"/>
+             <span localize="Sky"></span>
+           </label>
+
+         </div>
+         <div class="indent"
+            ng-class="collapsed(tree) ? ' collapsed' : ''"
+            ng-repeat="(name,node) in getChildren(tree)"
             ng-include="'tree-node'">
-          </div>
+        </div>
       </div>
       <div class="time-scrubber">
         <!--<table class="table">
