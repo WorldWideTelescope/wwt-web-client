@@ -365,7 +365,7 @@ wwt.controllers.controller('LayerManagerController',
       };
 
       $scope.collapsed = function(node){
-        return $scope.isObjectNode(node) ? !node.open : node.collapsed;
+        return !node ? true : $scope.isObjectNode(node) ? !node.open : node.collapsed;
       };
       $scope.collapse = function(node){
         var key = 'collapsed';
@@ -376,7 +376,6 @@ wwt.controllers.controller('LayerManagerController',
         }
         node[key] = collapse;
       };
-
 
       var invokeSetting = function (node) {
         if (!node.disabled && node.action &&
