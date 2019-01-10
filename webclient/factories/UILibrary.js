@@ -1,4 +1,4 @@
-﻿wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$modal', function ($rootScope, appState, util, loc,$modal) {
+﻿wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$modal','$sce', function ($rootScope, appState, util, loc,$modal,$sce) {
 
 	$rootScope.layerManagerHidden = appState.get('layerManagerHidden') ? true : false;
 
@@ -199,10 +199,10 @@
     });
   };
 
-  var embedVideo = function(url){
-
+  var embedVideo = function(videoid){
+console.warn(videoid);
     var modalScope = $rootScope.$new();
-    modalScope.url = url;
+    modalScope.url = $sce.trustAsResourceUrl('//www.youtube.com/embed/' + videoid + '?rel=0?wmode=transparent&amp;fs=1&amp;rel=0&amp;enablejsapi=1&amp;version=3');
     modalScope.customClass = 'wizard';
     $modal({
       scope: modalScope,
@@ -218,9 +218,17 @@
   return {
 	  addDialogHooks:function(){
       wwt.wc.add_annotationClicked(function(interface,event){
-        var videoid = event.get_id().split('?v=')[1];
-        if (videoid)
-        console.log(videoid);{}
+        var s = event.get_id();
+        var split = s.split('?v=');
+        var videoid;
+        if (split[1]){
+          videoid=split[1];
+        }else {
+          split = split[0].split('be/');
+          videoid = split[1];
+        }
+
+        console.log(videoid);
         embedVideo(videoid)
       });
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);

@@ -4,7 +4,7 @@
     <span localize="Video"></span>
   </h5>
 </div>
-<div class="modal-body embed" style="height:500px">
-  <iframe src="//www.youtube.com/embed/{{url}}?rel=0?wmode=transparent&amp;fs=1&amp;rel=0&amp;enablejsapi=1&amp;version=3" frameborder="0" />
+<div class="modal-body embed" style="height:500px" ng-if="url">
+  <iframe ng-src="{{url}}" frameborder="0"></iframe>
 </div>
 

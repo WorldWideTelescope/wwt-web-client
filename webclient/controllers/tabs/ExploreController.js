@@ -133,7 +133,7 @@
       };
 
 	    $scope.expanded = false;
-	    var annotations = null;
+	    var annotations = [];
 	    var checkAnnotations = function(){
 	      if (annotations){
 	        annotations.forEach(function(a){
@@ -143,14 +143,17 @@
 	      var col = $scope.collection;
 	      var hasAnnotations = false;
 	      col.forEach(function(place){
-	        if (ss.canCast(place, wwtlib.Place)/*&&annotationn*/){
+	        if (ss.canCast(place, wwtlib.Place) &&
+            place.annotation && place.annotation.indexOf('embed:') === 0){
 	          hasAnnotations = true;
 
-	          var a = wwt.wc.createCircle({r:255,g:255,b:255,a:127});
-	          a.set_id('?v=lBfCQt6TTms');
+	          var a = wwt.wc.createCircle('#ddffdd');
+	          a.set_id(place.annotation);
+	          annotations.push(place.annotation);
 	          a.setCenter(place.get_RA() * 15, place.get_dec());
+	          a.set_lineColor('#00ff00');
 	          a.set_skyRelative(true);
-	          a.set_radius(.01);
+	          a.set_radius(.005);
 	          wwt.wc.addAnnotation(a);
 	          console.log(a);
           }
