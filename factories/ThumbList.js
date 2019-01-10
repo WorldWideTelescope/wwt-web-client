@@ -131,6 +131,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
             if ($.inArray(el, unique) === -1) unique.push(el);
           });
           scope.collection = unique;
+          console.log({unique:unique});
           calcPageSize(scope, false);
           outParams.cache.push(result);
           if (outParams.openCollection) {

@@ -109,6 +109,7 @@
 	    });
 
 	    var calcPageSize = function () {
+        //console.log('excalccpage')
 	        thumbList.calcPageSize($scope, false);
 	    };
 	    $scope.clickThumb = function (item, folderCallback) {
@@ -128,10 +129,33 @@
 	        openCollection = newParams.openCollection;
 	        newCollectionUrl = newParams.newCollectionUrl;
 	        depth = newParams.depth;
-	    };
+	        checkAnnotations();
+      };
 
 	    $scope.expanded = false;
-	    
+	    var annotations = null;
+	    var checkAnnotations = function(){
+	      if (annotations){
+	        annotations.forEach(function(a){
+	          console.log(a);
+          })
+        }
+	      var col = $scope.collection;
+	      var hasAnnotations = false;
+	      col.forEach(function(place){
+	        if (ss.canCast(place, wwtlib.Place)/*&&annotationn*/){
+	          hasAnnotations = true;
+
+	          var a = wwt.wc.createCircle({r:255,g:255,b:255,a:127});
+	          a.set_id('?v=lBfCQt6TTms');
+	          a.setCenter(place.get_RA() * 15, place.get_dec());
+	          a.set_skyRelative(true);
+	          a.set_radius(.01);
+	          wwt.wc.addAnnotation(a);
+	          console.log(a);
+          }
+        })
+      };
 
 	    $scope.breadCrumbClick = function (index) {
 	        $scope.collection = cache[index];

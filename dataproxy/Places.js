@@ -74,6 +74,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     var transformData = function (items) {
+      console.warn({items:items});
       $.each(items, function (i, item) {
         try {
           if (typeof item.get_type == 'function') {
