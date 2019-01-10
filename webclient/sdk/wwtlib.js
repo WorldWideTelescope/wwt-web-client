@@ -1,7 +1,6 @@
 "use strict";
 
-
-window.wwtlib = function(){
+define('wwtlib', ['ss'], function(ss) {
   var $global = this;
 
   // DAY_OF_WEEK
@@ -1170,9 +1169,6 @@ window.wwtlib = function(){
   };
   CT.dmS2Dp = function(Degrees, Minutes, Seconds, bPositive) {
     if (!bPositive) {
-      console.assert(Degrees >= 0);
-      console.assert(Minutes >= 0);
-      console.assert(Seconds >= 0);
     }
     if (bPositive) {
       return Degrees + Minutes / 60 + Seconds / 3600;
@@ -1269,7 +1265,6 @@ window.wwtlib = function(){
     return JD - DT.dateToJD(Year, 1, 1, bGregorianCalendar) + 1;
   };
   DT.daysInMonthForMonth = function(Month, bLeap) {
-    console.assert(Month >= 1 && Month <= 12);
     var MonthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 ];
     if (bLeap) {
       MonthLength[1]++;
@@ -1434,7 +1429,6 @@ window.wwtlib = function(){
     }
     else if (y < 1998) {
       var Index = ss.truncate(((y - 1620) / 2));
-      console.assert(Index < GFX.deltaTTable.length);
       y = y / 2 - Index - 810;
       Delta = (GFX.deltaTTable[Index] + (GFX.deltaTTable[Index + 1] - GFX.deltaTTable[Index]) * y);
     }
@@ -2391,7 +2385,6 @@ window.wwtlib = function(){
           R = CAAPluto.radiusVector(JD0);
           break;
         default:
-          console.assert(false);
           break;
       }
       if (!bFirstRecalc) {
@@ -3848,7 +3841,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nLCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nLCoefficients);
     var SigmaL = 0;
     for (var i = 0; i < nLCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].a * Math.sin(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -3883,7 +3875,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nBCoefficients = GFX.g_MoonCoefficients3.length;
-    console.assert(GFX.g_MoonCoefficients4.length === nBCoefficients);
     var SigmaB = 0;
     for (var i = 0; i < nBCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients4[i] * Math.sin(GFX.g_MoonCoefficients3[i].d * D + GFX.g_MoonCoefficients3[i].m * M + GFX.g_MoonCoefficients3[i].mdash * Mdash + GFX.g_MoonCoefficients3[i].f * F);
@@ -3920,7 +3911,6 @@ window.wwtlib = function(){
     var A3 = CT.m360(313.45 + 481266.484 * T);
     A3 = CT.d2R(A3);
     var nRCoefficients = GFX.g_MoonCoefficients1.length;
-    console.assert(GFX.g_MoonCoefficients2.length === nRCoefficients);
     var SigmaR = 0;
     for (var i = 0; i < nRCoefficients; i++) {
       var ThisSigma = GFX.g_MoonCoefficients2[i].b * Math.cos(GFX.g_MoonCoefficients1[i].d * D + GFX.g_MoonCoefficients1[i].m * M + GFX.g_MoonCoefficients1[i].mdash * Mdash + GFX.g_MoonCoefficients1[i].f * F);
@@ -4237,7 +4227,6 @@ window.wwtlib = function(){
       JD += DeltaJD;
     }
     else {
-      console.assert(false);
     }
     var DeltaJD2 = 0.000325 * Math.sin(A1) + 0.000165 * Math.sin(A2) + 0.000164 * Math.sin(A3) + 0.000126 * Math.sin(A4) + 0.00011 * Math.sin(A5) + 6.2E-05 * Math.sin(A6) + 6E-05 * Math.sin(A7) + 5.6E-05 * Math.sin(A8) + 4.7E-05 * Math.sin(A9) + 4.2E-05 * Math.sin(A10) + 4E-05 * Math.sin(A11) + 3.7E-05 * Math.sin(A12) + 3.5E-05 * Math.sin(A13) + 2.3E-05 * Math.sin(A14);
     JD += DeltaJD2;
@@ -10424,7 +10413,7 @@ window.wwtlib = function(){
       var newLight = ToolStripMenuItem.create('Add Light');
       var addFeedMenu = ToolStripMenuItem.create(Language.getLocalizedText(956, 'Add OData/table feed as Layer'));
       var addWmsLayer = ToolStripMenuItem.create(Language.getLocalizedText(987, 'New WMS Layer'));
-      var addGirdLayer = ToolStripMenuItem.create(Language.getLocalizedText(1300, 'New Lat/Lng Grid'));
+      var addGridLayer = ToolStripMenuItem.create(Language.getLocalizedText(1300, 'New Lat/Lng Grid'));
       var addGreatCircle = ToolStripMenuItem.create(Language.getLocalizedText(988, 'New Great Circle'));
       var importTLE = ToolStripMenuItem.create(Language.getLocalizedText(989, 'Import Orbital Elements'));
       var addMpc = ToolStripMenuItem.create(Language.getLocalizedText(1301, 'Add Minor Planet'));
@@ -10453,7 +10442,7 @@ window.wwtlib = function(){
       deleteFrameMenu.click = LayerManager._deleteFrameMenu_Click;
       popertiesMenu.click = LayerManager._framePropertiesMenu_Click;
       addGreatCircle.click = LayerManager._addGreatCircle_Click;
-      addGirdLayer.click = LayerManager._addGirdLayer_Click;
+      addGridLayer.click = LayerManager._addGirdLayer_Click;
       var convertToOrbit = ToolStripMenuItem.create('Extract Orbit Layer');
       if (map.frame.reference !== 19) {
         if ((WWTControl.singleton.get_solarSystemMode() | WWTControl.singleton.sandboxMode) === 1) {
@@ -10500,7 +10489,7 @@ window.wwtlib = function(){
       }
       if (!Sky) {
         LayerManager._contextMenu.items.push(addGreatCircle);
-        LayerManager._contextMenu.items.push(addGirdLayer);
+        LayerManager._contextMenu.items.push(addGridLayer);
       }
       if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
         LayerManager._contextMenu.items.push(addMpc);
@@ -34228,6 +34217,7 @@ window.wwtlib = function(){
     this._magnitude = 0;
     this._distnace = 0;
     this.angularSize = 60;
+    this.annotation = '';
     this._thumbNail = null;
     this._studyImageset = null;
     this._backgroundImageSet = null;
@@ -34296,6 +34286,9 @@ window.wwtlib = function(){
     }
     if (place.attributes.getNamedItem('Rotation') != null) {
       newPlace._camParams.rotation = parseFloat(place.attributes.getNamedItem('Rotation').nodeValue);
+    }
+    if (place.attributes.getNamedItem('Annotation') != null) {
+      newPlace.annotation = place.attributes.getNamedItem('Annotation').nodeValue;
     }
     if (place.attributes.getNamedItem('Angle') != null) {
       newPlace._camParams.angle = parseFloat(place.attributes.getNamedItem('Angle').nodeValue);
@@ -34467,6 +34460,13 @@ window.wwtlib = function(){
     },
     set_zoomLevel: function(value) {
       this._camParams.zoom = value;
+      return value;
+    },
+    get_annotation: function() {
+      return this.annotation;
+    },
+    set_annotation: function(value) {
+      this.annotation = value;
       return value;
     },
     get_studyImageset: function() {
@@ -44324,4 +44324,4 @@ window.wwtlib = function(){
   ISSLayer._doc$2 = null;
 
   return $exports;
-}();
+});

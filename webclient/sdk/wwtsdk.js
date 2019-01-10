@@ -1516,7 +1516,6 @@ function module(name, implementation, exports) {
 
 "use strict";
 
-
 window.wwtlib = function(){
   var $global = this;
 
@@ -11940,7 +11939,7 @@ window.wwtlib = function(){
       var newLight = ToolStripMenuItem.create('Add Light');
       var addFeedMenu = ToolStripMenuItem.create(Language.getLocalizedText(956, 'Add OData/table feed as Layer'));
       var addWmsLayer = ToolStripMenuItem.create(Language.getLocalizedText(987, 'New WMS Layer'));
-      var addGirdLayer = ToolStripMenuItem.create(Language.getLocalizedText(1300, 'New Lat/Lng Grid'));
+      var addGridLayer = ToolStripMenuItem.create(Language.getLocalizedText(1300, 'New Lat/Lng Grid'));
       var addGreatCircle = ToolStripMenuItem.create(Language.getLocalizedText(988, 'New Great Circle'));
       var importTLE = ToolStripMenuItem.create(Language.getLocalizedText(989, 'Import Orbital Elements'));
       var addMpc = ToolStripMenuItem.create(Language.getLocalizedText(1301, 'Add Minor Planet'));
@@ -11969,7 +11968,7 @@ window.wwtlib = function(){
       deleteFrameMenu.click = LayerManager._deleteFrameMenu_Click;
       popertiesMenu.click = LayerManager._framePropertiesMenu_Click;
       addGreatCircle.click = LayerManager._addGreatCircle_Click;
-      addGirdLayer.click = LayerManager._addGirdLayer_Click;
+      addGridLayer.click = LayerManager._addGirdLayer_Click;
       var convertToOrbit = ToolStripMenuItem.create('Extract Orbit Layer');
       if (map.frame.reference !== 19) {
         if ((WWTControl.singleton.get_solarSystemMode() | WWTControl.singleton.sandboxMode) === 1) {
@@ -12016,7 +12015,7 @@ window.wwtlib = function(){
       }
       if (!Sky) {
         LayerManager._contextMenu.items.push(addGreatCircle);
-        LayerManager._contextMenu.items.push(addGirdLayer);
+        LayerManager._contextMenu.items.push(addGridLayer);
       }
       if ((map.frame.reference !== 19 && map.frame.name === 'Sun') || (map.frame.reference === 19 && map.parent != null && map.parent.frame.name === 'Sun')) {
         LayerManager._contextMenu.items.push(addMpc);
@@ -35744,6 +35743,7 @@ window.wwtlib = function(){
     this._magnitude = 0;
     this._distnace = 0;
     this.angularSize = 60;
+    this.annotation = '';
     this._thumbNail = null;
     this._studyImageset = null;
     this._backgroundImageSet = null;
@@ -35812,6 +35812,9 @@ window.wwtlib = function(){
     }
     if (place.attributes.getNamedItem('Rotation') != null) {
       newPlace._camParams.rotation = parseFloat(place.attributes.getNamedItem('Rotation').nodeValue);
+    }
+    if (place.attributes.getNamedItem('Annotation') != null) {
+      newPlace.annotation = place.attributes.getNamedItem('Annotation').nodeValue;
     }
     if (place.attributes.getNamedItem('Angle') != null) {
       newPlace._camParams.angle = parseFloat(place.attributes.getNamedItem('Angle').nodeValue);
@@ -35983,6 +35986,13 @@ window.wwtlib = function(){
     },
     set_zoomLevel: function(value) {
       this._camParams.zoom = value;
+      return value;
+    },
+    get_annotation: function() {
+      return this.annotation;
+    },
+    set_annotation: function(value) {
+      this.annotation = value;
       return value;
     },
     get_studyImageset: function() {

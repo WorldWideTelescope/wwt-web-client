@@ -172,6 +172,21 @@ namespace wwtlib
             set { camParams.Zoom = value; }
         }
 
+        public string annotation = "";
+        public string Annotation
+        {
+            get
+            {
+                return annotation;
+            }
+            set
+            {
+                annotation = value;
+            }
+        }
+
+
+
         ImageElement thumbNail = null;
 
         private Imageset studyImageset = null;
@@ -510,6 +525,11 @@ namespace wwtlib
                 newPlace.camParams.Rotation = double.Parse(place.Attributes.GetNamedItem("Rotation").Value);
             }
 
+            if (place.Attributes.GetNamedItem("Annotation") != null)
+            {
+                newPlace.annotation = place.Attributes.GetNamedItem("Annotation").Value;
+            }
+
             if (place.Attributes.GetNamedItem("Angle") != null)
             {
                 newPlace.camParams.Angle = double.Parse(place.Attributes.GetNamedItem("Angle").Value);
@@ -570,6 +590,8 @@ namespace wwtlib
                 newPlace.studyImageset = Imageset.FromXMLNode(study);
 
             }
+
+
             return newPlace;
         }
         //internal static TourPlace FromAstroObjectsRow(AstroObjectsDataset.spGetAstroObjectsRow row)
