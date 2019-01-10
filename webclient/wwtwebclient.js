@@ -2074,6 +2074,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
             if ($.inArray(el, unique) === -1) unique.push(el);
           });
           scope.collection = unique;
+          console.log({unique:unique});
           calcPageSize(scope, false);
           outParams.cache.push(result);
           if (outParams.openCollection) {
@@ -2860,8 +2861,30 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
     });
   };
 
-	return {
+  var embedVideo = function(url){
+
+    var modalScope = $rootScope.$new();
+    modalScope.url = url;
+    modalScope.customClass = 'wizard';
+    $modal({
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html?v='+util.resVersion,
+      contentTemplate: 'views/modals/embed-video.html?v='+util.resVersion,
+      show: true,
+      placement: 'center',
+      backdrop: false
+    });
+  };
+
+
+  return {
 	  addDialogHooks:function(){
+      wwt.wc.add_annotationClicked(function(interface,event){
+        var videoid = event.get_id().split('?v=')[1];
+        if (videoid)
+        console.log(videoid);{}
+        embedVideo(videoid)
+      });
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       wwt.wc.add_colorPickerDisplay(showColorpicker);
       console.log({refFrameDialog:refFrameDialog,frameWizardDialog:frameWizardDialog});
@@ -2871,7 +2894,8 @@ wwt.app.factory('UILibrary', ['$rootScope','AppState','Util', 'Localization','$m
       refFrameDialog.add_showDialogHook(showRefFrameProps);
       greatCircleDlg.add_showDialogHook(showGreatCircleDlg);
       dataVizWiz.add_showDialogHook(showDataVizWiz);
-    }
+    },
+    embedVideo:embedVideo
   };
 }]);
 
@@ -3457,6 +3481,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     var transformData = function (items) {
+      console.warn({items:items});
       $.each(items, function (i, item) {
         try {
           if (typeof item.get_type == 'function') {
@@ -6625,6 +6650,7 @@ wwt.controllers.controller('ExploreController',
 	    });
 
 	    var calcPageSize = function () {
+        //console.log('excalccpage')
 	        thumbList.calcPageSize($scope, false);
 	    };
 	    $scope.clickThumb = function (item, folderCallback) {
@@ -6644,10 +6670,33 @@ wwt.controllers.controller('ExploreController',
 	        openCollection = newParams.openCollection;
 	        newCollectionUrl = newParams.newCollectionUrl;
 	        depth = newParams.depth;
-	    };
+	        checkAnnotations();
+      };
 
 	    $scope.expanded = false;
-	    
+	    var annotations = null;
+	    var checkAnnotations = function(){
+	      if (annotations){
+	        annotations.forEach(function(a){
+	          console.log(a);
+          })
+        }
+	      var col = $scope.collection;
+	      var hasAnnotations = false;
+	      col.forEach(function(place){
+	        if (ss.canCast(place, wwtlib.Place)/*&&annotationn*/){
+	          hasAnnotations = true;
+
+	          var a = wwt.wc.createCircle({r:255,g:255,b:255,a:127});
+	          a.set_id('?v=lBfCQt6TTms');
+	          a.setCenter(place.get_RA() * 15, place.get_dec());
+	          a.set_skyRelative(true);
+	          a.set_radius(.01);
+	          wwt.wc.addAnnotation(a);
+	          console.log(a);
+          }
+        })
+      };
 
 	    $scope.breadCrumbClick = function (index) {
 	        $scope.collection = cache[index];

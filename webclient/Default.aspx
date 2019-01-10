@@ -36,8 +36,8 @@
       if (Request.QueryString["debug"] != null)
       {
         Random rnd = new Random();
-        ResourcesVersion = rnd.Next(1, 999999).ToString();
-        DebugQs = "?debug=true&v=" + ResourcesVersion;
+        //ResourcesVersion = rnd.Next(1, 999999).ToString();
+        //DebugQs = "?debug=true&v=" + ResourcesVersion;
         Debug = true;
         DotMin = ".js";
         if (Request.QueryString["debug"] == "chrome")
@@ -48,16 +48,9 @@
         }
         else if (Request.QueryString["debug"] == "local")
         {
-          SDKLocation = "sdk/wwtsdk.js" + DebugQs;
+          DotMin = ".min.js" + DebugQs;
         }
-        else if (Request.QueryString["debug"] == "localmin")
-        {
-          SDKLocation = "wwtsdk.min.js" + DebugQs;
-        }
-        else
-        {
-          SDKLocation += "?debug=true";
-        }
+        
       }
       if (Request.QueryString["ads"] != null)
       {
