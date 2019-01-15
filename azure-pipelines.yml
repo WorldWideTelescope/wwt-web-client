@@ -1,0 +1,49 @@
+# This is the configuration for Azure pipelines. It currently runs a build of
+# the web client SDK and publishes the wwtsdk.js file as a build artifact.
+
+jobs:
+- job: BuildSDK
+  pool:
+    vmImage: vs2015-win2012r2
+
+  steps:
+
+  - task: MSBuild@1
+    displayName: Building web client
+    inputs:
+      solution: 'Html5Sdk.sln'
+      msbuildVersion: '14.0'
+      msbuildArchitecture: 'x64'
+      clean: true
+
+  - task: NodeTool@0
+    displayName: Setting up node
+
+  - script: npm install
+    workingDirectory: 'webclient'
+    displayName: Install NPM dependencies
+
+  - script: npm install -g grunt-cli
+    workingDirectory: 'webclient'
+    displayName: Installing grunt
+
+  - task: Grunt@0
+    displayName: Running grunt
+    inputs:
+      gruntFile: 'webclient\Gruntfile.js'
+      targets: sdk
+      workingDirectory: 'webclient'
+
+  - task: CopyFiles@2
+    displayName: Copying SDK file to staging directory
+    inputs:
+      sourceFolder: 'webclient\sdk'
+      contents: 'wwtsdk.js'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      cleanTargetFolder: true
+
+  - task: PublishPipelineArtifact@0
+    displayName: Publishing SDK artifact
+    inputs:
+      artifactName: wwtsdk.js
+      targetPath: $(Build.ArtifactStagingDirectory)
