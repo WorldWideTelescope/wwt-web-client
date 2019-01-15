@@ -8,12 +8,12 @@ jobs:
 
   steps:
 
-- task: AzureFileCopy@2
-  inputs:
-    sourcePath: 'webclient\sdk\wwtsdk.js'
-    azureConnectionType: 'ConnectedServiceNameARM'
-    azureSubscription: wwt-connection
-    destination: azureBlob
-    storage: wwtsdkbuilds
-    containerName: builds
-    #blobPrefix: # Optional
+  - task: AzureFileCopy@2
+    inputs:
+      sourcePath: 'webclient\sdk\wwtsdk.js'
+      azureConnectionType: 'ConnectedServiceNameARM'
+      azureSubscription: wwt-connection
+      destination: azureBlob
+      storage: wwtsdkbuilds
+      containerName: builds
+      #blobPrefix: # Optional
