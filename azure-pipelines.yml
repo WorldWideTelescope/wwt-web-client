@@ -8,42 +8,12 @@ jobs:
 
   steps:
 
-  - task: MSBuild@1
-    displayName: Building web client
-    inputs:
-      solution: 'Html5Sdk.sln'
-      msbuildVersion: '14.0'
-      msbuildArchitecture: 'x64'
-      clean: true
-
-  - task: NodeTool@0
-    displayName: Setting up node
-
-  - script: npm install
-    workingDirectory: 'webclient'
-    displayName: Install NPM dependencies
-
-  - script: npm install -g grunt-cli
-    workingDirectory: 'webclient'
-    displayName: Installing grunt
-
-  - task: Grunt@0
-    displayName: Running grunt
-    inputs:
-      gruntFile: 'webclient\Gruntfile.js'
-      targets: sdk
-      workingDirectory: 'webclient'
-
-  - task: CopyFiles@2
-    displayName: Copying SDK file to staging directory
-    inputs:
-      sourceFolder: 'webclient\sdk'
-      contents: 'wwtsdk.js'
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      cleanTargetFolder: true
-
-  - task: PublishPipelineArtifact@0
-    displayName: Publishing SDK artifact
-    inputs:
-      artifactName: wwtsdk.js
-      targetPath: $(Build.ArtifactStagingDirectory)
+- task: AzureFileCopy@2
+  inputs:
+    sourcePath: 'webclient\sdk\wwtsdk.js'
+    azureConnectionType: 'ConnectedServiceNameARM'
+    azureSubscription: wwt-connection
+    destination: azureBlob
+    storage: wwtsdkbuilds
+    containerName: builds
+    #blobPrefix: # Optional
