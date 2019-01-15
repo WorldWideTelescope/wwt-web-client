@@ -16,4 +16,4 @@ jobs:
       destination: azureBlob
       storage: wwtsdkbuilds
       containerName: builds
-      blobPrefix: ${{ coalesce(System.PullRequest.PullRequestNumber, Build.SourceBranchName)- }}
+      blobPrefix: ${{ coalesce(System.PullRequest.PullRequestNumber, Build.SourceBranchName) + '-' }}
