@@ -176,6 +176,7 @@
 		if (event) {
 			event.preventDefault();
 		}
+		el.trigger('movecomplete',moveObj);
 	};
 	//#endregion
 

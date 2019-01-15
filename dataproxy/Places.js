@@ -143,7 +143,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     function openCollection(url) {
-      url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
+      url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org");//.replace("http://", "//");
       var deferred = $q.defer();
       if (!openCollectionsFolder) {
         openCollectionsFolder = wwt.wc.createFolder();
