@@ -100,6 +100,7 @@ wwt.controllers.controller('MainController',
             }
           }
           $scope.setSurveyBg();
+          $rootScope.lookAt = $scope.lookAt;
         }, 100);
       };
       $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {

@@ -7808,6 +7808,15 @@ table.table tbody td {
 .wwt-modal.wizard .modal-dialog .modal-content .modal-body .page label {
   display: block;
 }
+body.wwt-webclient-wrapper .wwt-modal.modal.embed-modal .modal-dialog {
+  margin: 0;
+  left: 300px;
+  top: 160px;
+}
+body.wwt-webclient-wrapper .wwt-modal.modal.embed-modal .embed {
+  position: relative;
+  padding-bottom: 24px;
+}
 #simplemodal #simpleinput {
   width: 271px !important;
 }

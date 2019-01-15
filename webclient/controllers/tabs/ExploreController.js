@@ -6,7 +6,8 @@
 	'$timeout',
 	'Util',
 	'ThumbList',
-	function ($scope, $rootScope, appState, places, $timeout, util,  thumbList) {
+	'UILibrary',
+	function ($scope, $rootScope, appState, places, $timeout, util,  thumbList, uiLib) {
 	    var exploreRoot;
 	    var depth = 1;
 	    var bc;
@@ -123,39 +124,49 @@
 	            openCollection: openCollection,
 	            newCollectionUrl: newCollectionUrl
 	        };
-	        var newParams = thumbList.clickThumb(item, $scope, outParams, folderCallback);
+	        var newParams = thumbList.clickThumb(item, $scope, outParams, checkAnnotations);
 	        bc = newParams.breadCrumb;
 	        cache = newParams.cache;
 	        openCollection = newParams.openCollection;
 	        newCollectionUrl = newParams.newCollectionUrl;
 	        depth = newParams.depth;
-	        checkAnnotations();
+	        //checkAnnotations();
       };
 
 	    $scope.expanded = false;
 	    var annotations = [];
 	    var checkAnnotations = function(){
-	      if (annotations){
+	      if (annotations && annotations.length){
 	        annotations.forEach(function(a){
-	          console.log(a);
-          })
+	          wwt.wc.removeAnnotation(a);
+	          //console.log('remove', a);
+          });
+	        console.log('cleanup ' + annotations.length +' annotations');
+	        annotations = [];
         }
 	      var col = $scope.collection;
 	      var hasAnnotations = false;
-	      col.forEach(function(place){
-	        if (ss.canCast(place, wwtlib.Place) &&
-            place.annotation && place.annotation.indexOf('embed:') === 0){
-	          hasAnnotations = true;
 
-	          var a = wwt.wc.createCircle('#ddffdd');
+	      col.forEach(function(place){
+
+	        if (ss.canCast(place, wwtlib.Place) &&
+            place.annotation && place.annotation.length){
+	          hasAnnotations = true;
+            var opts = uiLib.annotationOpts(place.annotation);
+	          var a = wwt.wc.createCircle(opts.fill);
+	          if (opts.fill){
+	            a.set_fillColor(opts.fill);
+            }
 	          a.set_id(place.annotation);
 	          annotations.push(place.annotation);
 	          a.setCenter(place.get_RA() * 15, place.get_dec());
-	          a.set_lineColor('#00ff00');
+	          a.set_lineColor(opts.linecolor || '#00ff00');
 	          a.set_skyRelative(true);
-	          a.set_radius(.005);
+	          a.set_radius(opts.radius ? parseFloat(opts.radius) : .005);
 	          wwt.wc.addAnnotation(a);
-	          console.log(a);
+	          annotations.push(a);
+
+	          //console.log(opts);
           }
         })
       };
@@ -168,6 +179,7 @@
 	        }
 	        $scope.currentPage = 0;
 	        calcPageSize();
+	        checkAnnotations();
 	    };
 
 

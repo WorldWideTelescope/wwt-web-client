@@ -2,6 +2,7 @@
     <div ng-click="clickThumb(item)"
          ng-dblclick="clickThumb(item,true)"
         ng-context-menu="showMenu"
+         ng-mouseenter="hoverThumb(item)"
         index="{{$index}}" 
         title="{{item.get_name()}}"
         ng-class="item.get_thumbnailUrl() + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'">

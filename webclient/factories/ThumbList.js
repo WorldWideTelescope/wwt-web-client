@@ -87,9 +87,13 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
     }
 
     function clickThumb(item, scope, outParams, callback) {
+
       setTimeout(function(){
         $rootScope.instant = false;
       },2222);
+      if (!item){
+        return console.warn(item);
+      }
       if (item.contextMenuEvent) {
         return outParams;
       }
@@ -98,7 +102,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
       }
       scope.activeItem = item.get_thumbnailUrl() + item.get_name();
       scope.setActiveItem(item);
-      wwt.wc.clearAnnotations();
+      //wwt.wc.clearAnnotations();
       if (item.get_name() === 'Up Level') {
         $('body').append($('#researchMenu'));
         scope.currentPage = 0;
@@ -137,9 +141,9 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
           if (outParams.openCollection) {
             if (outParams.newCollectionUrl) {
               var i = 0;
-              while (result[i].url && result[i].url.indexOf(outParams.newCollectionUrl) === -1) i++;
+              while (result[i] && result[i].url && result[i].url.indexOf(outParams.newCollectionUrl) === -1) i++;
 
-              scope.clickThumb(result[i]);
+              scope.clickThumb(result[i] || result[i - 1]);
               outParams.newCollectionUrl = null;
             } else if (result.length) {
               scope.clickThumb(result[0]);

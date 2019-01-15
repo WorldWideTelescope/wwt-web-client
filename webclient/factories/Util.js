@@ -152,15 +152,19 @@
 		}
 		place.riseSet = riseSet;
 	}
-
+  var circ = null;
 	function drawCircleOverPlace(place) {
-		wwt.wc.clearAnnotations();
-		if ($('#lstLookAt').val() === '2') {
-			var circle = wwt.wc.createCircle();
-			circle.set_center(place.get_location3d());
+	  wwt.wc.removeAnnotation(circ);
+		if ($('#lstLookAt option:selected').prop('index') === 2) {
+		  var circle = wwt.wc.createCircle();
+			circle.set_id('focused');
+			circle.setCenter(place.get_RA() * 15, place.get_dec());//setCenter(place.get_location3d());
 			circle.set_skyRelative(false);
-			
+			circle.set_radius(.22);
+			circle.set_lineWidth(3);
 			wwt.wc.addAnnotation(circle);
+			circ = circle;
+			console.log(circle);
 		}
 	}
 
