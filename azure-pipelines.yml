@@ -12,7 +12,7 @@ jobs:
     inputs:
       sourcePath: 'webclient\sdk\wwtsdk.js'
       azureConnectionType: 'ConnectedServiceNameARM'
-      azureSubscription: wwt-connection
+      azureSubscription: wwt-artifact-upload
       destination: azureBlob
       storage: wwtsdkbuilds
       containerName: builds
