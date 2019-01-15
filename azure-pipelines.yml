@@ -6,6 +6,7 @@ jobs:
   pool:
     vmImage: vs2015-win2012r2
 
+
   steps:
 
   - task: AzureFileCopy@2
