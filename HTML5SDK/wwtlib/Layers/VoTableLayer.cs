@@ -215,6 +215,9 @@ namespace wwtlib
                 case "Parsecs":
                     AltUnit = AltUnits.Parsecs;
                     break;
+                case "KiloParsecs":
+                    AltUnit = AltUnits.KiloParsecs;
+                    break;
                 case "MegaParsecs":
                     AltUnit = AltUnits.MegaParsecs;
                     break;

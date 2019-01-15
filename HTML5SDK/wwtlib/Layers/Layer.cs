@@ -21,7 +21,7 @@ namespace wwtlib
 
 
 
-    public enum AltUnits { Meters=1, Feet=2, Inches=3, Miles=4, Kilometers=5, AstronomicalUnits=6, LightYears=7, Parsecs=8, MegaParsecs=9, Custom=10 };
+    public enum AltUnits { Meters=1, Feet=2, Inches=3, Miles=4, Kilometers=5, AstronomicalUnits=6, LightYears=7, Parsecs=8, MegaParsecs=9, Custom=10 , KiloParsecs=11};
     public enum FadeType { FadeIn=1, FadeOut=2, Both=3, None=4 };
     public abstract class Layer 
     {

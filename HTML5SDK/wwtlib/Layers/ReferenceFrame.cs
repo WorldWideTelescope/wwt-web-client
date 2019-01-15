@@ -705,6 +705,9 @@ namespace wwtlib
                 case AltUnits.Parsecs:
                     scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000;
                     break;
+                case AltUnits.KiloParsecs:
+                    scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000 * 1000;
+                    break;
                 case AltUnits.MegaParsecs:
                     scaleFactor = UiTools.AuPerParsec * UiTools.KilometersPerAu * 1000 * 1000000;
                     break;

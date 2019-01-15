@@ -1194,6 +1194,9 @@ namespace wwtlib
                 case AltUnits.Parsecs:
                     factor = 1000 * UiTools.KilometersPerAu * UiTools.AuPerParsec;
                     break;
+                case AltUnits.KiloParsecs:
+                    factor = 1000 * UiTools.KilometersPerAu * UiTools.AuPerParsec * 1000;
+                    break;
                 case AltUnits.MegaParsecs:
                     factor = 1000 * UiTools.KilometersPerAu * UiTools.AuPerParsec * 1000000;
                     break;
