@@ -6736,6 +6736,10 @@ wwt.controllers.controller('ExploreController',
 	          annotations.push(place.annotation);
 	          a.setCenter(place.get_RA() * 15, place.get_dec());
 	          a.set_lineColor(opts.linecolor || '#00ff00');
+	          a.set_lineWidth(2);
+	          if (opts.linewidth){
+	            a.set_lineWidth(parseFloat(opts.linewidth));
+	          }
 	          a.set_skyRelative(true);
 	          a.set_radius(opts.radius ? parseFloat(opts.radius) : .005);
 	          wwt.wc.addAnnotation(a);
