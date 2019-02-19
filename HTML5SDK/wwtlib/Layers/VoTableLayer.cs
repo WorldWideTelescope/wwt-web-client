@@ -1060,7 +1060,7 @@ namespace wwtlib
             //    //    device.SetTexture(0, null);
             //    //    break;
             //    //case PlotTypes.Custom:
-            //    //    break;  
+            //    //    break;
             //    case PlotTypes.PushPin:
             //        device.SetTexture(0, PushPin.GetPushPinTexture(markerIndex));
             //        break;
@@ -1163,18 +1163,18 @@ namespace wwtlib
         //            " float1 showFarSide;                         " +
         //            " struct VS_IN                                 " +
         //            " {                                            " +
-        //            "     float4 ObjPos   : POSITION;              " + // Object space position 
-        //            "     float1 PointSize   : PSIZE;              " + // Object Point size 
-        //            "     float4 Color    : COLOR;                 " + // Vertex color                 
-        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size 
+        //            "     float4 ObjPos   : POSITION;              " + // Object space position
+        //            "     float1 PointSize   : PSIZE;              " + // Object Point size
+        //            "     float4 Color    : COLOR;                 " + // Vertex color
+        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size
         //            " };                                           " +
         //            "                                              " +
         //            " struct VS_OUT                                " +
         //            " {                                            " +
-        //            "     float4 ProjPos  : POSITION;              " + // Projected space position 
-        //            "     float1 PointSize   : PSIZE;              " + // Object Point size 
+        //            "     float4 ProjPos  : POSITION;              " + // Projected space position
+        //            "     float1 PointSize   : PSIZE;              " + // Object Point size
         //            "     float4 Color    : COLOR;                 " +
-        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size 
+        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size
         //            " };                                           " +
         //            "                                              " +
         //            " VS_OUT main( VS_IN In )                      " +
@@ -1334,7 +1334,7 @@ namespace wwtlib
             //}
         }
         string filename = "";
-     
+
 
         public override void LoadData(TourDocument tourDoc, string filename)
         {
@@ -1349,7 +1349,7 @@ namespace wwtlib
                 LngColumn = table.GetRAColumn().Index;
                 LatColumn = table.GetDecColumn().Index;
             };
-            doc.ReadAsText(blob);    
+            doc.ReadAsText(blob);
         }
 
         public override bool CanCopyToClipboard()
@@ -1559,7 +1559,7 @@ namespace wwtlib
                                 lastItem.Tv = 0;
                             }
 
-                            
+
                             vertList.Add(lastItem);
                             pointList.AddPoint(lastItem.Position, lastItem.color, new Dates(lastItem.Tu, lastItem.Tv), lastItem.PointSize );
                             currentIndex++;
@@ -1582,7 +1582,7 @@ namespace wwtlib
                 {
                     AddSiapStcRow(stcsCol.Name, table.SelectedRow, true);
                 }
-    
+
             }
             return true;
         }
@@ -1622,7 +1622,7 @@ namespace wwtlib
                             {
                                 double Xcoord = Coordinates.ParseRA(parts[i], true) * 15 + 180;
                                 double Ycoord = Coordinates.ParseDec(parts[i + 1]);
-         
+
 
                                 Vector3d pnt = Coordinates.GeoTo3dDouble(Ycoord, Xcoord);
 
@@ -1644,7 +1644,7 @@ namespace wwtlib
                             lineList2d.AddLine(firstPoint, lastPoint, col, new Dates(0,0));
                         }
 
-                        
+
 
                     }
                 }
@@ -1654,7 +1654,7 @@ namespace wwtlib
         public bool IsSiapResultSet()
         {
             return table.GetColumnByUcd("vox:image.title") != null && table.GetColumnByUcd("VOX:Image.AccessReference") != null;
- 
+
         }
 
         public string[] Header
@@ -1683,5 +1683,5 @@ namespace wwtlib
         }
 
     }
- 
+
 }

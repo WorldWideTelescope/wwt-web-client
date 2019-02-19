@@ -138,7 +138,7 @@ namespace wwtlib
             {
                 NodeSelected.Invoke(this);
             }
-        }  
+        }
         public event LayerUITreeNodeActivatedDelegate NodeActivated;
 
         public void FireNodeActivated()

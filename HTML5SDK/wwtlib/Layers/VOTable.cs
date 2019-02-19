@@ -102,7 +102,7 @@ namespace wwtlib
         public string errorText = "";
         public void LoadFromXML(XmlDocument xml)
         {
-            XmlNode voTable = Util.SelectSingleNode(xml, "VOTABLE"); 
+            XmlNode voTable = Util.SelectSingleNode(xml, "VOTABLE");
 
             if (voTable == null)
             {
@@ -362,8 +362,8 @@ namespace wwtlib
             if (node.Attributes.GetNamedItem("ID") != null)
             {
                 Id = node.Attributes.GetNamedItem("ID").Value;
-            }       
-            
+            }
+
             if (node.Attributes.GetNamedItem("name") != null)
             {
                 Name = node.Attributes.GetNamedItem("name").Value;
@@ -378,7 +378,7 @@ namespace wwtlib
                 Unit = node.Attributes.GetNamedItem("unit").Value;
             }
 
-            
+
             if (node.Attributes.GetNamedItem("arraysize") != null)
             {
                 string[] split = node.Attributes.GetNamedItem("arraysize").Value.Split( 'x' );
@@ -400,7 +400,7 @@ namespace wwtlib
                             len = Int32.Parse(lenString);
                         }
                         Sizes[indexer++] = len;
-                        
+
                     }
                 }
             }

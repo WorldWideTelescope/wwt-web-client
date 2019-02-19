@@ -23,7 +23,7 @@ namespace wwtlib
 
     public enum AltUnits { Meters=1, Feet=2, Inches=3, Miles=4, Kilometers=5, AstronomicalUnits=6, LightYears=7, Parsecs=8, MegaParsecs=9, Custom=10 };
     public enum FadeType { FadeIn=1, FadeOut=2, Both=3, None=4 };
-    public abstract class Layer 
+    public abstract class Layer
     {
         public virtual LayerUI GetPrimaryUI()
         {
@@ -46,7 +46,7 @@ namespace wwtlib
         }
 
         protected float opacity = 1.0f;
-        
+
         public virtual float Opacity
         {
             get
@@ -82,7 +82,7 @@ namespace wwtlib
         }
 
         private Date startTime = Date.Parse("01/01/1900");
-        
+
         public Date StartTime
         {
             get { return startTime; }
@@ -97,8 +97,8 @@ namespace wwtlib
         }
         private Date endTime = Date.Parse("01/01/2100");
 
-        
-        
+
+
         public Date EndTime
         {
             get { return endTime; }
@@ -114,7 +114,7 @@ namespace wwtlib
 
         private double fadeSpan = 0;
 
-        
+
         public double FadeSpan
         {
             get { return fadeSpan; }
@@ -127,7 +127,7 @@ namespace wwtlib
 
         private FadeType fadeType = FadeType.None;
 
-        
+
         public FadeType FadeType
         {
             get { return fadeType; }
@@ -140,8 +140,8 @@ namespace wwtlib
             }
         }
         protected int version = 0;
-    
-        
+
+
         public int Version
         {
             get { return version; }
@@ -229,7 +229,7 @@ namespace wwtlib
         }
 
         private string name;
-        
+
         public virtual string Name
         {
             get { return name; }
@@ -286,10 +286,10 @@ namespace wwtlib
         //        else if (pi.PropertyType == typeof(Vector3d))
         //        {
         //            pi.SetValue(this, Vector3d.Parse(value), null);
-        //        }   
+        //        }
         //        else
         //        {
-        //            // todo fix this 
+        //            // todo fix this
         //         //   pi.SetValue(this, Convert.ChangeType(value, pi.PropertyType), null);
         //        }
         //    }
@@ -301,8 +301,8 @@ namespace wwtlib
         //public bool SetProps(string xml)
         //{
         //    XDocument doc = XDocument.Parse(xml);
-            
-         
+
+
 
         //    XElement root = doc.Element("LayerApi");
 
@@ -409,7 +409,7 @@ namespace wwtlib
                     CleanUp();
                     //todo should this invalidate and cleanup
                 }
- 
+
             }
         }
 
@@ -449,7 +449,7 @@ namespace wwtlib
 
         protected bool astronomical = false;
 
-        
+
         public bool Astronomical
         {
             get { return astronomical; }
@@ -473,7 +473,7 @@ namespace wwtlib
 
         //}
         /* Save Load support
-         * 
+         *
          */
         public virtual string GetTypeName()
         {
@@ -520,7 +520,7 @@ namespace wwtlib
             {
                 return null;
             }
- 
+
             Layer newLayer = null;
 
             switch (overLayType)
@@ -550,9 +550,9 @@ namespace wwtlib
             //Force inheritance.
             // TODO: Understand why this breaks in SS .8
             //Script.Literal("for(var method in this){\n /*if (({}).toString.call(this[method]).match(/\\s([a-zA-Z]+)/)[1].toLowerCase() == 'function'){\n*/ newLayer[method] = this[method];/*\n}*/\n}");
-            
+
             newLayer.InitFromXml(layerNode);
-            
+
             return newLayer;
         }
 
@@ -609,7 +609,7 @@ namespace wwtlib
         {
             return;
         }
-        
+
         public virtual void AddFilesToCabinet(FileCabinet fc)
         {
             return;
@@ -638,8 +638,8 @@ namespace wwtlib
             return base.Draw(renderContext, opacity, false);
         }
 
-        
-     
+
+
     }
     //public class MarkerPlot
     //{
@@ -675,6 +675,6 @@ namespace wwtlib
 
     }
 
-   
+
 }
 

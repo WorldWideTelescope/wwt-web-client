@@ -191,7 +191,7 @@ namespace wwtlib
             if (extension.ToLowerCase().StartsWith(".fit"))
             {
                 System.Html.Data.Files.Blob blob = tourDoc.GetFileBlob(filename.Replace(".txt", extension));
-        
+
                 FitsImage fi = new FitsImage("image.fit", blob, DoneLoading);
                 imageSet.WcsImage = fi;
                 if (max > 0 || min > 0)

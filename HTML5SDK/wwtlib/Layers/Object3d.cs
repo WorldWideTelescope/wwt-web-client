@@ -1825,7 +1825,7 @@ namespace wwtlib
             int vertexCount = vertexList.Count;
             int triangleCount = Math.Floor(indexList.Count / 3);
 
-            // vertexInstanceCounts contains the number of times each vertex is referenced in the mesh 
+            // vertexInstanceCounts contains the number of times each vertex is referenced in the mesh
             int[] vertexInstanceCounts = new int[vertexCount];
             foreach (int vertexIndex in indexList)
             {
@@ -1894,7 +1894,7 @@ namespace wwtlib
             return vertexNormals;
         }
 
-        // Add textures to ensure that we have as many textures as 
+        // Add textures to ensure that we have as many textures as
         private void addMaterial(Material material)
         {
             meshMaterials.Add(material);
@@ -1980,7 +1980,7 @@ namespace wwtlib
         {
             this.Filename = filename;
             tourDocument = doc;
-            
+
 
             Blob blob = doc.GetFileBlob(filename);
             FileReader chunck = new FileReader();
@@ -2085,7 +2085,7 @@ namespace wwtlib
 
             string[] lines = data.Split("\n");
             {
-                
+
                 foreach(string lineraw in lines)
                 {
                     string line = lineraw.Replace("  ", " ");
@@ -2383,7 +2383,7 @@ namespace wwtlib
         //    foreach (string f in Directory.GetFiles(path, "*.*", SearchOption.AllDirectories))
         //    {
         //        string fb = f.Substring(f.LastIndexOf("\\") + 1).ToLower();
-        //        string fe = ""; 
+        //        string fe = "";
         //        string ff = "";
         //        if (f.Contains("."))
         //        {
@@ -2458,7 +2458,7 @@ namespace wwtlib
         private void ReadMatLibFromBin(string data)
         {
 
-            
+
 
             try
             {
@@ -2500,7 +2500,7 @@ namespace wwtlib
                                     currentMaterial.Ambient = Color.FromArgb(255, (int)(Math.Min(float.Parse(parts[1]) * 255, 255)), (int)(Math.Min(float.Parse(parts[2]) * 255, 255)), (int)(Math.Min(float.Parse(parts[3]) * 255, 255)));
                                     break;
                                 case "map_Kd":
-                                    //ENDURE TEXTURES ARE NOT BLACK!    
+                                    //ENDURE TEXTURES ARE NOT BLACK!
                                     currentMaterial.Diffuse = Colors.White;
 
                                     string textureFilename = parts[1];
@@ -2686,7 +2686,7 @@ namespace wwtlib
                                 b = br.ReadByte();
                                 if (b > 0)
                                 {
-                                    name += string.FromCharCode(b); 
+                                    name += string.FromCharCode(b);
                                 }
 
                             } while (b != 0);
@@ -2831,7 +2831,7 @@ namespace wwtlib
                                     b2 = br.ReadByte();
                                     if (b2 > 0)
                                     {
-                                        
+
                                         matName += string.FromCharCode(b2);
                                     }
 
@@ -2872,7 +2872,7 @@ namespace wwtlib
 
                         // Specular power
                         case 0xA040:
-                            // This is just a reasonable guess at the mapping from percentage to 
+                            // This is just a reasonable guess at the mapping from percentage to
                             // specular exponent used by 3D Studio.
                             currentMaterial.SpecularSharpness = 1.0f + 2 * LoadPercentageChunk(br);
 
@@ -2882,7 +2882,7 @@ namespace wwtlib
                             currentMaterial.SpecularSharpness = Math.Max(10.0f, currentMaterial.SpecularSharpness);
                             break;
 
-                        //Texture map file 
+                        //Texture map file
                         case 0xA200:
                             break;
 
