@@ -175,7 +175,7 @@ namespace wwtlib
             return true;
         }
 
-        public virtual bool UpadteData(object data, bool purgeOld, bool purgeAll, bool hasHeader)
+        public virtual bool UpdateData(object data, bool purgeOld, bool purgeAll, bool hasHeader)
         {
 
             return true;
