@@ -869,6 +869,7 @@ namespace wwtlib
             colors.Clear();
             points.Clear();
             dates.Clear();
+            sizes.Clear();
             EmptyPointBuffer();
 
         }
