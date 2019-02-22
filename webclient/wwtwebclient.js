@@ -6012,21 +6012,22 @@ wwt.controllers.controller('LayerManagerController',
     '$timeout',
     'Util',
     function ($scope, appState, $timeout, util) {
-    var version = 12;
+      var version = 12;
 
       function treeNode(args) {
         this.name = args.name;
-        this.checked = getSticky(args.name, args.action,args.checked);
+        this.checked = getSticky(args.name, args.action, args.checked);
         this.children = args.children || [];
         this.action = args.action;
         this.collapsed = args.collapsed || false;
         this.disabled = false;
-        if (args.mergeWith){
+        if (args.mergeWith) {
           //console.log({mergedFound:args})
           this.mergeWith = args.mergeWith;
         }
         if (args.v) this.v = args.v;
       }
+
       var getSticky = function (name, action, defaultState) {
         var sticky = appState.get('layerMgr_' + name + action)
         if (name && action && sticky !== undefined) {
@@ -6057,21 +6058,25 @@ wwt.controllers.controller('LayerManagerController',
         });
         $scope.tree = initTree();//appState.get('layerManager');
 
-    $scope.scrubber = {left:' ',right:' ',table:[0,1,2,3,4,5]};
+        $scope.scrubber = {left: ' ', right: ' ', table: [0, 1, 2, 3, 4, 5]};
 
         $timeout(function () {
 
-          wwt.wc.add_timeScrubberHook(function(prop,val){
-            switch (prop){
+          wwt.wc.add_timeScrubberHook(function (prop, val) {
+            if ($scope.activeLayer && $scope.activeLayer.timeSeriesChecked !== undefined){
+              return;
+            }
+            switch (prop) {
               case 'left':
               case 'right':
               case 'title':
-                $scope.$applyAsync(function() {
+                $scope.$applyAsync(function () {
+
                   $scope.scrubber[prop] = val;
                 });
                 break;
               default:
-                var el =  $('.scrubber-slider');
+                var el = $('.scrubber-slider');
                 el.find('.btn').css('left', val * el.width());
                 break;
             }
@@ -6082,18 +6087,28 @@ wwt.controllers.controller('LayerManagerController',
             var w = $('.scrubber-slider').width();
             var bar = $('.scrubber-slider a.btn');
             var scrubberMover = new wwt.Move({
-              el:bar,
+              el: bar,
               bounds: {
                 x: [0, w],
                 y: [0, 0]
               },
-              onmove:function(){
-                wwt.wc.setTimeScrubberPosition(this.css.left/w);
+              onmove: function () {
+                var flt = this.css.left / w;
+                var stc = wwtlib.SpaceTimeController;
+                wwt.wc.setTimeScrubberPosition(flt);
+                var l = $scope.activeLayer;
+                if (l && l.timeSeriesChecked){
+                  //stc.set_syncToClock(false);
+                  var msIntoRange = Math.round((l.scrubber.duration/60000)*flt)*60000;
+                  var date = new Date(l.scrubber.start + msIntoRange);
+                  stc.set_now(date);
+                  bar.attr('title',date.toDateString());
+                }
               }
             });
 
 
-            allMaps = wwtlib.LayerManager.get_allMaps();
+            $scope.allMaps = allMaps = wwtlib.LayerManager.get_allMaps();
             var sunTree = {Sun: (allMaps.Sun)};
 
             sunTree.Sun.collapsed = false;
@@ -6114,14 +6129,14 @@ wwt.controllers.controller('LayerManagerController',
         });
         wwt.resize();
       };
-      $scope.getChildren = function(node){
-        if (!node)return {};
-        var children  = node.children || {};
-        if (children.length){
+      $scope.getChildren = function (node) {
+        if (!node) return {};
+        var children = node.children || {};
+        if (children.length) {
 
-          if (node.mergeWith){
+          if (node.mergeWith) {
             //console.log('mergeWith',node.mergeWith);
-            allMaps = wwtlib.LayerManager.get_allMaps();
+            allMaps = $scope.allMaps = wwtlib.LayerManager.get_allMaps();
             if (allMaps && allMaps[node.mergeWith]) {
               //console.log(allMaps[node.mergeWith]);
               var addedChildren = $scope.getChildren(allMaps[node.mergeWith]);
@@ -6133,15 +6148,15 @@ wwt.controllers.controller('LayerManagerController',
           }
           return children;
         }
-        if (node.childMaps && Object.keys(node.childMaps).length){
+        if (node.childMaps && Object.keys(node.childMaps).length) {
           children = node.childMaps;
         }
-        if (node.layers && node.layers.length){
-          node.layers.forEach(function(l){
+        if (node.layers && node.layers.length) {
+          node.layers.forEach(function (l) {
             children[l._name] = l;
           });
         }
-          return children;
+        return children;
       };
       var initTree = function () {
         return new treeNode({
@@ -6149,7 +6164,7 @@ wwt.controllers.controller('LayerManagerController',
           name: $scope.getFromEn('Sky'),
           mergeWith: 'Sky',// key of node in wwtlib.LayerManager.get_allMaps() to merge into settings. Set this on any settings node
           action: 'showSkyNode',
-          checked:true,
+          checked: true,
           children: [
             new treeNode({
               name: $scope.getFromEn('Overlays'),
@@ -6326,7 +6341,10 @@ wwt.controllers.controller('LayerManagerController',
         }
         $scope.$applyAsync(function () {
           layerMap.active = true;
+          layerMap.loopChecked = layerMap._autoUpdate$1;
+          layerMap.timeSeriesChecked = layerMap.timeSeries;
           $scope.activeLayer = layerMap;
+
         });
 
         //ensure selection is changed first.
@@ -6335,10 +6353,10 @@ wwt.controllers.controller('LayerManagerController',
 
         //console.log('invoke context menu on node', event, layerMap);
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
-      }
+      };
 
       $scope.selectionChanged = function (layerMap, event) {
-        if (event.currentTarget.tagName==='LABEL' && event.offsetX > 17){
+        if (event.currentTarget.tagName === 'LABEL' && event.offsetX > 17) {
           //console.log(event);
           event.preventDefault();
           event.stopImmediatePropagation();
@@ -6357,13 +6375,17 @@ wwt.controllers.controller('LayerManagerController',
       };
 
       $scope.hasChildren = function (node) {
-        if (!node){return false;}
+        if (!node) {
+          return false;
+        }
         var children = $scope.getChildren(node);
         return children.length || Object.keys(children).length > 0;
       };
 
-      $scope.isObjectNode = function(node){
-        if (!node){return false;}
+      $scope.isObjectNode = function (node) {
+        if (!node) {
+          return false;
+        }
         return node.action == undefined || node.layers || node.childMaps;
       };
 
@@ -6372,13 +6394,13 @@ wwt.controllers.controller('LayerManagerController',
         invokeSetting(node);
       };
 
-      $scope.collapsed = function(node){
+      $scope.collapsed = function (node) {
         return !node ? true : $scope.isObjectNode(node) ? !node.open : node.collapsed;
       };
-      $scope.collapse = function(node){
+      $scope.collapse = function (node) {
         var key = 'collapsed';
         var collapse = !$scope.collapsed(node);
-        if ($scope.isObjectNode(node)){
+        if ($scope.isObjectNode(node)) {
           key = 'open';
           collapse = !collapse;
         }
@@ -6409,14 +6431,60 @@ wwt.controllers.controller('LayerManagerController',
         }
       };
 
+      var formatDateTime = function(d){
+        return ss.format('{0:yyyy/MM/dd}', d) + ss.format(' {0:HH:mm:ss}',d);
+      }
+      $scope.setTimeSeries = function(layer,enable){
+        layer.set_timeSeries(enable);
+        if (enable){
+          layer.scrubber = {
+            start:layer.get_beginRange(),
+            duration:layer.get_endRange().valueOf() - layer.get_beginRange().valueOf()
+          };
+          $scope.scrubber.left = formatDateTime(layer.get_beginRange());
+          $scope.scrubber.right = formatDateTime(layer.get_endRange());
+          //wwtlib.SpaceTimeController.set_now(layer.scrubber.start);
+        }else{
+          $scope.scrubber.left = '';
+          delete layer.scrubber;
+          layer.loopChecked = false;
+        }
+      };
+
+      var loopCheckTimer;
+      $scope.setAutoLoop = function(layer,on){
+        layer.set_autoUpdate(on);
+        if (on){
+          $scope.setTimeSeries(layer,true);
+          layer.timeSeriesChecked=true;
+          loopCheckTimer = setInterval(function(){
+            var progress = wwtlib.SpaceTimeController._now - layer.scrubber.start;
+            var dur = layer.scrubber.duration;
+            if (progress > dur || progress < 0){
+              return wwtlib.SpaceTimeController.set_now(layer.scrubber.start)
+            }
+            var flt = progress/dur;
+
+            var w = $('.scrubber-slider').width();
+            var bar = $('.scrubber-slider a.btn');
+            bar.css({left:w*flt})
+          },333);
+
+
+        }else{
+          clearInterval(loopCheckTimer)
+        }
+      }
+
       function initTreeNode(i, node) {
         $.each(node.children, initTreeNode);
         invokeSetting(node);
       }
-      wwt.detectNewLayers = function(){
-        $scope.$applyAsync(function(){
+
+      wwt.detectNewLayers = function () {
+        $scope.$applyAsync(function () {
           //console.log('detecting new layers',wwtlib.LayerManager.get_allMaps(),{newMaps:wwtlib.LayerManager.get_allMaps() !== allMaps});
-          allMaps = wwtlib.LayerManager.get_allMaps();
+          allMaps = $scope.allMaps = wwtlib.LayerManager.get_allMaps();
         })
       }
     }]
@@ -8759,6 +8827,8 @@ wwt.controllers.controller('greatCircleController', ['$scope', '$rootScope', 'Ut
 
 wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util', function ($scope, $rootScope, util) {
   $scope.pages = ['Welcome', 'Position', 'Scale', 'Markers', 'Color Map', 'Date Time', 'Hover Text'];
+
+
   if ($scope.propertyMode) {
     $scope.pages.splice(0, 1);
     $scope.page = 'Position';
@@ -8784,19 +8854,32 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
     $('#pasteRow').remove();
     //setTimeout(function () {
       //gc
-      console.log('cleaned');
-      l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, "clipboard", pasteData);
+      //console.log('cleaned');
+     $scope.layerName = 'clipboard';
+      l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, $scope.layerName, pasteData);
+
       initColumns();
       $scope.buttonsEnabled.next = $scope.buttonsEnabled.finish = 1;
     //}, 1);
   };
-
+  var oldName =  'clipboard';
+  $scope.setName = function(n){
+    setTimeout(function(){
+      l.set_name(n);
+      var maps = wwtlib.LayerManager.get_allMaps()[l.referenceFrame].childMaps;
+      maps[n] = maps[oldName];
+      delete maps[oldName];
+      oldName = n;
+      wwt.detectNewLayers();
+    },123)
+  };
   function initColumns() {
     l = $scope.layer;
     console.log($scope.layer);
     $scope.columns = $scope.layer._table$1.header.map(function (c, i) {
       return {label: c, type: i};
     });
+    l.computeDateDomainRange(0,-1);
     var none = {label: 'None', index: -1};
     $scope.columns.splice(0, 0, none);
     l.psType = l.get_pointScaleType();

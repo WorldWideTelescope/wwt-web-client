@@ -1,5 +1,7 @@
 wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util', function ($scope, $rootScope, util) {
   $scope.pages = ['Welcome', 'Position', 'Scale', 'Markers', 'Color Map', 'Date Time', 'Hover Text'];
+
+
   if ($scope.propertyMode) {
     $scope.pages.splice(0, 1);
     $scope.page = 'Position';
@@ -25,19 +27,32 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
     $('#pasteRow').remove();
     //setTimeout(function () {
       //gc
-      console.log('cleaned');
-      l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, "clipboard", pasteData);
+      //console.log('cleaned');
+     $scope.layerName = 'clipboard';
+      l = $scope.layer = wwtlib.LayerManager.createSpreadsheetLayer($scope.layerMap, $scope.layerName, pasteData);
+
       initColumns();
       $scope.buttonsEnabled.next = $scope.buttonsEnabled.finish = 1;
     //}, 1);
   };
-
+  var oldName =  'clipboard';
+  $scope.setName = function(n){
+    setTimeout(function(){
+      l.set_name(n);
+      var maps = wwtlib.LayerManager.get_allMaps()[l.referenceFrame].childMaps;
+      maps[n] = maps[oldName];
+      delete maps[oldName];
+      oldName = n;
+      wwt.detectNewLayers();
+    },123)
+  };
   function initColumns() {
     l = $scope.layer;
     console.log($scope.layer);
     $scope.columns = $scope.layer._table$1.header.map(function (c, i) {
       return {label: c, type: i};
     });
+    l.computeDateDomainRange(0,-1);
     var none = {label: 'None', index: -1};
     $scope.columns.splice(0, 0, none);
     l.psType = l.get_pointScaleType();
