@@ -1175,7 +1175,7 @@
       class="close pull-right" type="button" ng-click="toggleLayerManager()"
       style="font-weight: 100;font-size: 16px">x</button>
       <h5 localize="Layers"></h5>
-       <div class="tree" ng-style="{ height: layerManagerHeight()-72 }">
+       <div class="tree" ng-style="{ height: layerManagerHeight()-90 }">
          <div
             ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
             ng-repeat="(name,node) in sunTree"
@@ -1231,6 +1231,18 @@
               <a class="btn"></a>
           </div>
 
+          <div class="checkbox iblock" ng-if="activeLayer && activeLayer.constructor.name.indexOf('Spread')==0" style="margin:5px 15px 35px 0;">
+            <label data-ng-class="activeLayer.timeSeries ? 'checked' : ''">
+              <input type="checkbox" ng-model="activeLayer.timeSeriesChecked" ng-change="setTimeSeries(activeLayer, activeLayer.timeSeriesChecked)" />
+              <span localize="Time series"></span>
+            </label>
+          </div>
+          <div class="checkbox iblock" ng-if="activeLayer && activeLayer.constructor.name.indexOf('Spread')==0" style="margin-top:15px;">
+            <label data-ng-class="activeLayer._autoUpdate$1 ? 'checked' : ''">
+              <input type="checkbox" ng-model="activeLayer.loopChecked" ng-change="setAutoLoop(activeLayer,activeLayer.loopChecked)" />
+              <span localize="AutoLoop"></span>
+            </label>
+          </div>
         </div>
       </div>
 

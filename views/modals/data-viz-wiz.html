@@ -35,7 +35,7 @@
         <tr ng-show="layer">
           <td>
             <label localize="Layer Name"></label>
-            <input type="text" ng-model="layer._name"></td>
+            <input type="text" ng-model="layerName" ng-change="setName(layerName)"></td>
           <td>
             <label localize="Coordinates Type"></label>
             <select ng-model="layer._coordinatesType$1" ng-options="c.type as c.label for c in coordTypes"></select>
