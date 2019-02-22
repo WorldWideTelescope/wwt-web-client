@@ -152,7 +152,7 @@
       }
     </style>
     <script src="//js.live.net/v5.0/wl.js"></script>
-    <script src="sdk/wwtsdk<%=DotMin %>"></script>
+    <script src="sdk/wwtsdk<%=DotMin %>?v=<%= ResourcesVersion%>"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap<%=DotMin %>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular<%=DotMin %>"></script>
