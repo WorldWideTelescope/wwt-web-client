@@ -336,6 +336,7 @@ wwt.controllers.controller('LayerManagerController',
           if (layerMap.timeSeries!==undefined && layerMap._autoUpdate$1 !== undefined) {
             layerMap.loopChecked = layerMap._autoUpdate$1;
             layerMap.timeSeriesChecked = layerMap.timeSeries;
+            layerMap.canUseScrubber = true;
           }
           $scope.activeLayer = layerMap;
 
