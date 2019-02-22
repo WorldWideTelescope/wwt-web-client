@@ -1231,13 +1231,13 @@
               <a class="btn"></a>
           </div>
 
-          <div class="checkbox iblock" ng-if="activeLayer && activeLayer.timeSeriesChecked != undefined" style="margin:5px 15px 35px 0;">
+          <div class="checkbox iblock" ng-if="activeLayer && activeLayer.canUseScrubber" style="margin:5px 15px 35px 0;">
             <label data-ng-class="activeLayer.timeSeries ? 'checked' : ''">
               <input type="checkbox" ng-model="activeLayer.timeSeriesChecked" ng-change="setTimeSeries(activeLayer, activeLayer.timeSeriesChecked)" />
               <span localize="Time series"></span>
             </label>
           </div>
-          <div class="checkbox iblock" ng-if="activeLayer && activeLayer.timeSeriesChecked != undefined" style="margin-top:15px;">
+          <div class="checkbox iblock" ng-if="activeLayer && activeLayer.canUseScrubber" style="margin-top:15px;">
             <label data-ng-class="activeLayer._autoUpdate$1 ? 'checked' : ''">
               <input type="checkbox" ng-model="activeLayer.loopChecked" ng-change="setAutoLoop(activeLayer,activeLayer.loopChecked)" />
               <span localize="AutoLoop"></span>
