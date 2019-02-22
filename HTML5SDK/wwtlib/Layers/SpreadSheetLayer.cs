@@ -176,6 +176,7 @@ namespace wwtlib
             LoadFromString(data as string, true, purgeOld, purgeAll, hasHeader);
             ComputeDateDomainRange(-1, -1);
             dataDirty = true;
+            dirty = true;
             return true;
         }
 
@@ -2219,8 +2220,6 @@ namespace wwtlib
                         break;
                 }
 
-
-                pointList.Draw(renderContext, opacity * Opacity, false);
             }
 
             if (lineList != null)

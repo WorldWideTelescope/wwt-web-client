@@ -86,7 +86,8 @@ window.wwtlib = function(){
     lightYears: 7, 
     parsecs: 8, 
     megaParsecs: 9, 
-    custom: 10
+    custom: 10, 
+    kiloParsecs: 11
   };
 
 
@@ -6519,6 +6520,7 @@ window.wwtlib = function(){
       this._colors.length = 0;
       this._points.length = 0;
       this._dates.length = 0;
+      this._sizes.length = 0;
       this._emptyPointBuffer();
     },
     _emptyPointBuffer: function() {
@@ -37168,6 +37170,7 @@ window.wwtlib = function(){
       this.loadFromString(ss.safeCast(data, String), true, purgeOld, purgeAll, hasHeader);
       this.computeDateDomainRange(-1, -1);
       this._dataDirty$1 = true;
+      this.dirty = true;
       return true;
     },
     loadData: function(tourDoc, filename) {
@@ -38371,7 +38374,6 @@ window.wwtlib = function(){
           default:
             break;
         }
-        this.pointList.draw(renderContext, opacity * this.get_opacity(), false);
       }
       if (this.lineList != null) {
         this.lineList.sky = this.get_astronomical();
