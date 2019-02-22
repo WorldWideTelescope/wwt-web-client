@@ -1514,7 +1514,7 @@ function module(name, implementation, exports) {
   global.define ? global.define('ss', [], _ss) : _export();
 })(this);
 
-"use strict";
+"use strict"; 
 
 window.wwtlib = function(){
   var $global = this;

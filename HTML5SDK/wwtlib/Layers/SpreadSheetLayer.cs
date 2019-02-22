@@ -339,7 +339,7 @@ namespace wwtlib
                 {
                     if (columnStart > -1)
                     {
-                        bool sucsess = false;
+                        bool sucsess = true;
                         Date dateTimeStart = new Date("12/31/2100");
                         try
                         {
@@ -420,7 +420,7 @@ namespace wwtlib
                 {
                     if (column > -1)
                     {
-                        bool sucsess = false;
+                        bool sucsess = true;
                         try
                         {
                             double val = double.Parse(row[column]);

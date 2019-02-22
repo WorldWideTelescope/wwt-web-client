@@ -44,5 +44,6 @@ bower_components
 node_modules
 App_Data
 Content
+.vs
 
 sdk/wwtlib.dll
