@@ -2,7 +2,7 @@
 	['$scope',
 	'AppState',
 	'$timeout','Util','$rootScope',
-	function ($scope, appState,$timeout, util,$rootScope) {
+	function ($scope, appState, $timeout, util,$rootScope) {
 		var stc = $scope.spaceTimeController = wwtlib.SpaceTimeController;
 		$scope.galaxyModeChange = function () {
 			if ($scope.galaxyMode && $scope.viewFromLocation) {
@@ -42,7 +42,8 @@
 				});
 			}
 		};
-		
+
+
 
 		$scope.fastBack_Click = function() {
 			var tr = stc.get_timeRate();
@@ -64,7 +65,7 @@
 				stc.set_timeRate(-2);
 				stc.set_syncToClock(true);
 			}
-			if (stc.get_timeRate() == -1) {
+			if (stc.get_timeRate() === -1) {
 				stc.set_timeRate(-2);
 			}
 			updateSpeed();
@@ -112,6 +113,10 @@
 				$scope.TimeMode = $scope.TimeMode + " : " + $scope.loc.paused;
 			}   
 		}
+    $rootScope.updateDateUI = function(){
+		  updateSpeed();
+		  timeDateTimerTick();
+    }
 
 		$scope.timeNow_Click = function() {
 			stc.set_syncToClock(true);
