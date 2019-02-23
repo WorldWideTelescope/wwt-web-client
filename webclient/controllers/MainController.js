@@ -1068,6 +1068,7 @@ wwt.controllers.controller('MainController',
         if ($rootScope.tourPlaying) {
           cls += ' hide';
         }
+        $rootScope.compressed = $scope.compressed = cls.indexOf('compressed')>0;
         return cls;
       }
       $scope.contextPagerRight = function () {

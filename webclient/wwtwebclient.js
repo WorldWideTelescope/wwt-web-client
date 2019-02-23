@@ -5505,6 +5505,7 @@ wwt.controllers.controller('MainController',
         if ($rootScope.tourPlaying) {
           cls += ' hide';
         }
+        $rootScope.compressed = $scope.compressed = cls.indexOf('compressed')>0;
         return cls;
       }
       $scope.contextPagerRight = function () {
@@ -6092,6 +6093,9 @@ wwt.controllers.controller('LayerManagerController',
                 x: [0, w],
                 y: [0, 0]
               },
+              onstart:function(){
+
+              },
               onmove: function () {
                 var flt = this.css.left / w;
                 var stc = wwtlib.SpaceTimeController;
@@ -6373,6 +6377,11 @@ wwt.controllers.controller('LayerManagerController',
             }
             layerMap.active = true;
             $scope.activeLayer = layerMap;
+            if (layerMap.timeSeries!==undefined && layerMap._autoUpdate$1 !== undefined) {
+              layerMap.loopChecked = layerMap._autoUpdate$1;
+              layerMap.timeSeriesChecked = layerMap.timeSeries;
+              layerMap.canUseScrubber = true;
+            }
           });
         }
       };
@@ -6442,6 +6451,7 @@ wwt.controllers.controller('LayerManagerController',
         if (enable){
           layer.scrubber = {
             start:layer.get_beginRange(),
+            end:layer.get_endRange(),
             duration:layer.get_endRange().valueOf() - layer.get_beginRange().valueOf()
           };
           $scope.scrubber.left = formatDateTime(layer.get_beginRange());
@@ -6460,24 +6470,28 @@ wwt.controllers.controller('LayerManagerController',
         if (on){
           $scope.setTimeSeries(layer,true);
           layer.timeSeriesChecked=true;
+          var stc = wwtlib.SpaceTimeController;
           loopCheckTimer = setInterval(function(){
-            var progress = wwtlib.SpaceTimeController._now - layer.scrubber.start;
+            var progress = stc._now - layer.scrubber.start;
             var dur = layer.scrubber.duration;
-            if (progress > dur || progress < 0){
-              return wwtlib.SpaceTimeController.set_now(layer.scrubber.start)
+
+            var inRange = progress < dur && progress > 0;
+            if (!inRange) {
+              var reversePlay = stc.get_timeRate() < 0;
+              return stc.set_now(reversePlay ? layer.scrubber.end : layer.scrubber.start);
             }
             var flt = progress/dur;
 
             var w = $('.scrubber-slider').width();
             var bar = $('.scrubber-slider a.btn');
             bar.css({left:w*flt})
-          },333);
+          },222);
 
 
         }else{
           clearInterval(loopCheckTimer)
         }
-      }
+      };
 
       function initTreeNode(i, node) {
         $.each(node.children, initTreeNode);
@@ -7091,7 +7105,7 @@ wwt.controllers.controller('ViewController',
 				stc.set_timeRate(-2);
 				stc.set_syncToClock(true);
 			}
-			if (stc.get_timeRate() == -1) {
+			if (stc.get_timeRate() === -1) {
 				stc.set_timeRate(-2);
 			}
 			updateSpeed();
@@ -7160,6 +7174,7 @@ wwt.controllers.controller('ViewController',
 
 	}
 ]);
+
 wwt.controllers.controller('ToursController',
 	['$scope',
 		'$rootScope',

@@ -1,9 +1,9 @@
 wwt.controllers.controller('LayerManagerController',
-  ['$scope',
+  ['$scope','$rootScope',
     'AppState',
     '$timeout',
     'Util',
-    function ($scope, appState, $timeout, util) {
+    function ($scope, $rootScope, appState, $timeout, util) {
       var version = 12;
 
       function treeNode(args) {
@@ -78,35 +78,51 @@ wwt.controllers.controller('LayerManagerController',
           $timeout(function () {
             var w = $('.scrubber-slider').width();
             var bar = $('.scrubber-slider a.btn');
-            var scrubberMover = new wwt.Move({
+            var stc = wwtlib.SpaceTimeController;
+            var l;
+
+            var debouncedMove = function(flt) {
+              var stc = wwtlib.SpaceTimeController;
+              wwt.wc.setTimeScrubberPosition(flt);
+              l = $scope.activeLayer;
+              if (l && l.timeSeriesChecked) {
+                var msIntoRange = Math.round(l.scrubber.duration * flt);
+                var date = new Date(l.scrubber.start.valueOf() + msIntoRange);
+                stc.set_now(date);
+                $rootScope.updateDateUI();
+                bar.attr('title', date.toDateString());
+              }
+            };
+            var debounceTimer;
+            var debouncer = function(flt){
+              clearTimeout(debounceTimer);
+              debounceTimer = setTimeout(function(){
+                debouncedMove(flt);
+              },333);
+            };
+            // noinspection JSUnusedLocalSymbols
+              var scrubberMover = new wwt.Move({
               el: bar,
               bounds: {
                 x: [0, w],
                 y: [0, 0]
               },
-              onmove: function () {
-                var flt = this.css.left / w;
-                var stc = wwtlib.SpaceTimeController;
-                wwt.wc.setTimeScrubberPosition(flt);
-                var l = $scope.activeLayer;
-                if (l && l.timeSeriesChecked){
-                  //stc.set_syncToClock(false);
-                  var msIntoRange = Math.round((l.scrubber.duration/60000)*flt)*60000;
-                  var date = new Date(l.scrubber.start + msIntoRange);
-                  stc.set_now(date);
-                  bar.attr('title',date.toDateString());
+              onstart:function(){
+                l = $scope.activeLayer;
+                console.log({onstart:l});
+                if (l && l.canUseScrubber && l.timeSeriesChecked){
+                  stc.set_timeRate(1);
+                  $rootScope.updateDateUI();
                 }
+              },
+              onmove: function () {
+                debouncer(this.css.left / w)
               }
             });
-
-
             $scope.allMaps = allMaps = wwtlib.LayerManager.get_allMaps();
             var sunTree = {Sun: (allMaps.Sun)};
-
             sunTree.Sun.collapsed = false;
             $scope.skyNode = allMaps.Sky;
-            //$scope.tree = skyNode;
-            //console.log(skyNode);
             $.each(sunTree.Sun.childMaps, function (name, node) {
               node.collapsed = false;
               //node.name = name;
@@ -365,6 +381,11 @@ wwt.controllers.controller('LayerManagerController',
             }
             layerMap.active = true;
             $scope.activeLayer = layerMap;
+            if (layerMap.timeSeries!==undefined && layerMap._autoUpdate$1 !== undefined) {
+              layerMap.loopChecked = layerMap._autoUpdate$1;
+              layerMap.timeSeriesChecked = layerMap.timeSeries;
+              layerMap.canUseScrubber = true;
+            }
           });
         }
       };
@@ -434,6 +455,7 @@ wwt.controllers.controller('LayerManagerController',
         if (enable){
           layer.scrubber = {
             start:layer.get_beginRange(),
+            end:layer.get_endRange(),
             duration:layer.get_endRange().valueOf() - layer.get_beginRange().valueOf()
           };
           $scope.scrubber.left = formatDateTime(layer.get_beginRange());
@@ -448,28 +470,34 @@ wwt.controllers.controller('LayerManagerController',
 
       var loopCheckTimer;
       $scope.setAutoLoop = function(layer,on){
+        layer.loopChecked= on;
         layer.set_autoUpdate(on);
+
         if (on){
           $scope.setTimeSeries(layer,true);
           layer.timeSeriesChecked=true;
+          var stc = wwtlib.SpaceTimeController;
           loopCheckTimer = setInterval(function(){
-            var progress = wwtlib.SpaceTimeController._now - layer.scrubber.start;
+            var progress = stc._now - layer.scrubber.start;
             var dur = layer.scrubber.duration;
-            if (progress > dur || progress < 0){
-              return wwtlib.SpaceTimeController.set_now(layer.scrubber.start)
+
+            var inRange = progress < dur && progress > 0;
+            if (!inRange) {
+              var reversePlay = stc.get_timeRate() < 0;
+              return stc.set_now(reversePlay ? layer.scrubber.end : layer.scrubber.start);
             }
             var flt = progress/dur;
 
             var w = $('.scrubber-slider').width();
             var bar = $('.scrubber-slider a.btn');
             bar.css({left:w*flt})
-          },333);
+          },222);
 
 
         }else{
           clearInterval(loopCheckTimer)
         }
-      }
+      };
 
       function initTreeNode(i, node) {
         $.each(node.children, initTreeNode);
