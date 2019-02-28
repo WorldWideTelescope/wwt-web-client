@@ -89,7 +89,7 @@
     this.y = y;
   }
 
-  console.log('skyball');
+  //console.log('skyball');
 
   return api;
 }]);

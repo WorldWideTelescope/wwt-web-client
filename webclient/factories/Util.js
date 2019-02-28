@@ -164,7 +164,7 @@
 			circle.set_lineWidth(3);
 			wwt.wc.addAnnotation(circle);
 			circ = circle;
-			console.log(circle);
+			//console.log(circle);
 		}
 	}
 

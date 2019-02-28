@@ -109,15 +109,28 @@ wwt.controllers.controller('LayerManagerController',
               },
               onstart:function(){
                 l = $scope.activeLayer;
-                console.log({onstart:l});
+                //console.log({onstart:l});
                 if (l && l.canUseScrubber && l.timeSeriesChecked){
+                  l.timeRate = stc.get_timeRate();
                   stc.set_timeRate(1);
+                  $rootScope.updateDateUI();
+                  l.moving = 1;
+                }
+              },
+              oncomplete:function(){
+                l = $scope.activeLayer;
+                //console.log({onstart:l});
+                if (l && l.canUseScrubber && l.moving){
+                  stc.set_timeRate(l.timeRate);
+                  delete l.moving;
+                  delete l.timeRate;
                   $rootScope.updateDateUI();
                 }
               },
               onmove: function () {
                 debouncer(this.css.left / w)
               }
+
             });
             $scope.allMaps = allMaps = wwtlib.LayerManager.get_allMaps();
             var sunTree = {Sun: (allMaps.Sun)};
@@ -478,6 +491,9 @@ wwt.controllers.controller('LayerManagerController',
           layer.timeSeriesChecked=true;
           var stc = wwtlib.SpaceTimeController;
           loopCheckTimer = setInterval(function(){
+            if (layer.moving){
+              return;
+            }
             var progress = stc._now - layer.scrubber.start;
             var dur = layer.scrubber.duration;
 

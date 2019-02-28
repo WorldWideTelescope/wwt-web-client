@@ -38,7 +38,7 @@
                 left: ($(document.body).width() - el.width()) / 2
               });
 
-              console.log({w: el.width()});
+              //console.log({w: el.width()});
               Object.create(wwt.Move({
                 el: el,
                 target: target,

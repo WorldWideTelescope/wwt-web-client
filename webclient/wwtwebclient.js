@@ -1474,7 +1474,7 @@ wwt.app.directive('movable', ['AppState',function (appState) {
                 left: ($(document.body).width() - el.width()) / 2
               });
 
-              console.log({w: el.width()});
+              //console.log({w: el.width()});
               Object.create(wwt.Move({
                 el: el,
                 target: target,
@@ -1663,7 +1663,7 @@ wwt.app.factory('AutohidePanels', ['$rootScope', 'AppState','Util', function ($r
     
 
     var tourStateChange = function () {
-        console.log('tourstatechange - playing:', $rootScope.tourPlaying);
+        //console.log('tourstatechange - playing:', $rootScope.tourPlaying);
         togglePanelGroup(!$rootScope.tourPlaying, 'tabs');
         togglePanelGroup(!$rootScope.tourPlaying, 'context');
         editingTour = $rootScope.editingTour;
@@ -2395,7 +2395,7 @@ wwt.app.factory('Util', ['$rootScope', function ($rootScope) {
 			circle.set_lineWidth(3);
 			wwt.wc.addAnnotation(circle);
 			circ = circle;
-			console.log(circle);
+			//console.log(circle);
 		}
 	}
 
@@ -3151,7 +3151,7 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
     this.y = y;
   }
 
-  console.log('skyball');
+  //console.log('skyball');
 
   return api;
 }]);
@@ -3514,7 +3514,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     var transformData = function (items) {
-      console.warn({items:items});
+      //console.warn({items:items});
       $.each(items, function (i, item) {
         try {
           if (typeof item.get_type == 'function') {
@@ -3831,247 +3831,246 @@ wwt.app.factory('Tours', ['$rootScope', '$http', '$q', '$timeout', 'Util', funct
 
 
 wwt.app.factory('SearchData', [
-	'$http', '$q', '$timeout', 'Places','Util', function($http, $q, $timeout, places, util) {
-		var api = {
-			getData: getData,
-			getIndex: getIndex,
-			importWtml:importWtml
-		};
-		var data,
-			searchIndex = {},
-			initPromise,
-		    constellations = [];
+  '$http', '$q', '$timeout', 'Places', 'Util', function ($http, $q, $timeout, places, util) {
+    var api = {
+      getData: getData,
+      getIndex: getIndex,
+      importWtml: importWtml
+    };
+    var data,
+      searchIndex = {},
+      initPromise,
+      constellations = [];
 
-		function getData() {
-			var deferred = $q.defer();
-			initPromise.then(function () {
-				deferred.resolve(data);
-			});
-			return deferred.promise;
-		};
-		function getIndex() {
-			var deferred = $q.defer();
-			initPromise.then(function () {
-				deferred.resolve(searchIndex);
-			});
-			return deferred.promise;
-		};
+    function getData() {
+      var deferred = $q.defer();
+      initPromise.then(function () {
+        deferred.resolve(data);
+      });
+      return deferred.promise;
+    };
 
-		var deferredInit = $q.defer();
-		var isId = 100;
-	var init = function () {
-		if (wwt.searchData) {
-			wwt.searchDataIndexed = [];
-			data = wwt.searchData;
-			var start = new Date();
-			
-			$.each(data.Constellations, function (i, item) {
-				/*if (item.name === 'SolarSystem') {
-					item.places = ssData;
-					return;
-				}*/
-				constellations[i] = item.name;
-				$.each(item.places, function(j, place) {
-					var fgi = place.fgi,
-						imgSet;
-					if (fgi) {
-						isId++;
-						
-						imgSet = wwtlib.Imageset.create(
-							fgi.n,//name
-							fgi.u,//url
-							fgi.dt || 2,//datasettype -default to sky
-							fgi.bp,//bandPass
-							fgi.pr,//projection
-							isId,//imagesetid
-							fgi.bl,//baseLevel
-							fgi.lv,//levels
-							null,//tilesize
-							fgi.bd,//baseTileDegrees
-							'',//extension
-							fgi.bu,//bottomsUp
-							fgi.q,//quadTreeTileMap,
-							fgi.cX,//centerX
-							fgi.cY,//centerY
-							fgi.r,//rotation
-							true,//sparse
-							fgi.tu,//thumbnailUrl,
-							fgi.ds,//defaultSet,
-							false,//elevationModel
-							fgi.wf,//widthFactor,
-							fgi.oX,//offsetX
-							fgi.oY,//offsetY
-							fgi.ct,//creditsText
-							fgi.cu,//creditsUrl
-							'', '',
-							0,//meanRadius
-							null);
-					}
-					var pl = wwtlib.Place.create(
-						place.n,//name
-						place.d,//dec
-						place.r,//ra
-						place.c,//classification
-						item.name,//constellation
-						fgi ? fgi.dt : 2,//type
-						place.z//zoomfactor
-						);
-					if (imgSet) {
-						pl.set_studyImageset(imgSet);
-					}
+    function getIndex() {
+      var deferred = $q.defer();
+      initPromise.then(function () {
+        deferred.resolve(searchIndex);
+      });
+      return deferred.promise;
+    };
 
-					if (item.name === 'SolarSystem') {
-						$.each(pl, function(k, member) {
-							if (ss.canCast(member, wwtlib.CameraParameters)) {
-								member.target = wwtlib.SolarSystemObjects.undefined;
-							}
-						});
-					}
-					
-					pl.guid = i + "." + j;
-					//re-place js data with place obj
-					item.places[j] = pl;
+    var deferredInit = $q.defer();
+    var isId = 100;
+    var init = function () {
+      if (wwt.searchData) {
+        wwt.searchDataIndexed = [];
+        data = wwt.searchData;
+        var start = new Date();
 
-					indexPlaceNames(pl);
+        $.each(data.Constellations, function (i, item) {
+          /*if (item.name === 'SolarSystem') {
+            item.places = ssData;
+            return;
+          }*/
+          constellations[i] = item.name;
+          $.each(item.places, function (j, place) {
+            var fgi = place.fgi,
+              imgSet;
+            if (fgi) {
+              isId++;
 
-				});
-			});
-			var end = new Date();
-			util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-			importWtml('Wise.wtml').then(function () {
-			    console.log('wise loaded');
-			    importWtml('Hubble.wtml').then(function () {
-			        console.log('hubble loaded');
-			        importWtml('ESO.wtml').then(function () {
-			            console.log('eso loaded');
-			            importWtml('Chandra.wtml').then(function () {
-                      console.log('chandra loaded');
-                      importWtml('Spitzer.wtml').then(function () {
-                        console.log('spitzer loaded');
-                      });
-			            });
-			        });
-			    });
-		        deferredInit.resolve(data);
-		    });
-			
-			
-		} else {
-			setTimeout(init, 333);
-		}
-		return deferredInit.promise;
-	};
+              imgSet = wwtlib.Imageset.create(
+                fgi.n,//name
+                fgi.u,//url
+                fgi.dt || 2,//datasettype -default to sky
+                fgi.bp,//bandPass
+                fgi.pr,//projection
+                isId,//imagesetid
+                fgi.bl,//baseLevel
+                fgi.lv,//levels
+                null,//tilesize
+                fgi.bd,//baseTileDegrees
+                '',//extension
+                fgi.bu,//bottomsUp
+                fgi.q,//quadTreeTileMap,
+                fgi.cX,//centerX
+                fgi.cY,//centerY
+                fgi.r,//rotation
+                true,//sparse
+                fgi.tu,//thumbnailUrl,
+                fgi.ds,//defaultSet,
+                false,//elevationModel
+                fgi.wf,//widthFactor,
+                fgi.oX,//offsetX
+                fgi.oY,//offsetY
+                fgi.ct,//creditsText
+                fgi.cu,//creditsUrl
+                '', '',
+                0,//meanRadius
+                null);
+            }
+            var pl = wwtlib.Place.create(
+              place.n,//name
+              place.d,//dec
+              place.r,//ra
+              place.c,//classification
+              item.name,//constellation
+              fgi ? fgi.dt : 2,//type
+              place.z//zoomfactor
+            );
+            if (imgSet) {
+              pl.set_studyImageset(imgSet);
+            }
 
-	var indexPlaceNames = function(pl) {
-		var addPlace = function(s, place) {
-			var firstChar = s.charAt(0).toLowerCase();
-			if (firstChar === "'") firstChar = s.charAt(1).toLowerCase();
-			if (searchIndex[firstChar]) {
-				if (searchIndex[firstChar][searchIndex[firstChar].length - 1] !== place) {
-					searchIndex[firstChar].push(place);
-					wwt.searchDataIndexed = searchIndex;
-				}
-			} else {
-			    try {
-			        wwt.searchDataIndexed[firstChar] = searchIndex[firstChar] = [place];
-			    } catch (er) {
-			        console.error(er);
-			    }
-			}
-		};
+            if (item.name === 'SolarSystem') {
+              $.each(pl, function (k, member) {
+                if (ss.canCast(member, wwtlib.CameraParameters)) {
+                  member.target = wwtlib.SolarSystemObjects.undefined;
+                }
+              });
+            }
 
-		$.each(pl.get_names(), function (n, name) {
-			if (name.indexOf(' ') !== -1) {
-				var words = name.split(' ');
-				$.each(words, function(w, word) {
-					addPlace(word, pl);
-				});
-			}
-			else if (name.charAt(0)) {
-				addPlace(name, pl);
-			}
-		});
-	};
+            pl.guid = i + "." + j;
+            //re-place js data with place obj
+            item.places[j] = pl;
 
-	function importWtml(wtmlPath) {
-	  var deferred = $q.defer();
-		
-		$.ajax({
-			url: wtmlPath + '?v=' + $('body').data('resVersion')
-		}).done(function() {
-			var wtml = $($.parseXML(arguments[0]));
-			wtml.find('Place').each(function(i, place) {
-				place = $(place);
-				var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
-				if (ra !== 0 || dec !== 0) {
-					constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec); 
-						
-					var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
-					var wwtPlace = wwtlib.Place.create(
-						place.attr('Name'),
-						dec,
-						ra,
-						place.attr('DataSetType'),
-						constellation,
-						fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
-						parseFloat(place.find('ZoomLevel')) //zoomfactor
-					);
-					if (fgi != null) {
-						isId++;
-						wwtPlace.set_studyImageset(wwtlib.Imageset.create(
-								fgi.attr('Name'),
-								fgi.attr('Url'),
-								util.getImageSetType(fgi.attr('DataSetType')),
-								fgi.attr('BandPass'),
-								wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-								isId, //imagesetid
-								parseInt(fgi.attr('BaseTileLevel')),
-								parseInt(fgi.attr('TileLevels')),
-								null, //tilesize
-								parseFloat(fgi.attr('BaseDegreesPerTile')),
-								fgi.attr('FileType'),
-								fgi.attr('BottomsUp') === 'True',
-								'', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
-								parseFloat(fgi.attr('CenterX')),
-								parseFloat(fgi.attr('CenterY')),
-								parseFloat(fgi.attr('Rotation')),
-								true, //sparse
-								fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
-								false, //defaultSet,
-								false, //elevationModel
-								parseFloat(fgi.attr('WidthFactor')), //widthFactor,
-								parseFloat(fgi.attr('OffsetX')),
-								parseFloat(fgi.attr('OffsetY')),
-								fgi.find('Credits').text(),
-								fgi.find('CreditsUrl').text(),
-								'', '',
-								0, //meanRadius
-								null)
-						);
-					}
+            indexPlaceNames(pl);
 
-					indexPlaceNames(wwtPlace);
-					var cIndex = constellations.indexOf(constellation);
-					var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
-					wwtPlace.guid = cIndex + '.' +
-						constellationPlaces.length;
-					constellationPlaces.push(wwtPlace);
-				}
+          });
+        });
+        var end = new Date();
+        util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
+        importWtml('Wise.wtml').then(function () {
+          //console.log('wise loaded');
+          importWtml('Hubble.wtml').then(function () {
+            //console.log('hubble loaded');
+            importWtml('ESO.wtml').then(function () {
+              //console.log('eso loaded');
+              importWtml('Chandra.wtml').then(function () {
+                //console.log('chandra loaded');
+                importWtml('Spitzer.wtml').then(function () {
+                  //console.log('spitzer loaded');
+                });
+              });
+            });
+          });
+          deferredInit.resolve(data);
+        });
 
 
-			});
-			deferred.resolve(true);
-		});
-		
-	    return deferred.promise;
-	}
+      } else {
+        setTimeout(init, 333);
+      }
+      return deferredInit.promise;
+    };
 
-	
+    var indexPlaceNames = function (pl) {
+      var addPlace = function (s, place) {
+        var firstChar = s.charAt(0).toLowerCase();
+        if (firstChar === "'") firstChar = s.charAt(1).toLowerCase();
+        if (searchIndex[firstChar]) {
+          if (searchIndex[firstChar][searchIndex[firstChar].length - 1] !== place) {
+            searchIndex[firstChar].push(place);
+            wwt.searchDataIndexed = searchIndex;
+          }
+        } else {
+          try {
+            wwt.searchDataIndexed[firstChar] = searchIndex[firstChar] = [place];
+          } catch (er) {
+            console.error(er);
+          }
+        }
+      };
 
-	initPromise = init();
-	
-	return api;
-}]);
+      $.each(pl.get_names(), function (n, name) {
+        if (name.indexOf(' ') !== -1) {
+          var words = name.split(' ');
+          $.each(words, function (w, word) {
+            addPlace(word, pl);
+          });
+        } else if (name.charAt(0)) {
+          addPlace(name, pl);
+        }
+      });
+    };
+
+    function importWtml(wtmlPath) {
+      var deferred = $q.defer();
+
+      $.ajax({
+        url: wtmlPath + '?v=' + $('body').data('resVersion')
+      }).done(function () {
+        var wtml = $($.parseXML(arguments[0]));
+        wtml.find('Place').each(function (i, place) {
+          place = $(place);
+          var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
+          if (ra !== 0 || dec !== 0) {
+            constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec);
+
+            var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
+            var wwtPlace = wwtlib.Place.create(
+              place.attr('Name'),
+              dec,
+              ra,
+              place.attr('DataSetType'),
+              constellation,
+              fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
+              parseFloat(place.find('ZoomLevel')) //zoomfactor
+            );
+            if (fgi != null) {
+              isId++;
+              wwtPlace.set_studyImageset(wwtlib.Imageset.create(
+                fgi.attr('Name'),
+                fgi.attr('Url'),
+                util.getImageSetType(fgi.attr('DataSetType')),
+                fgi.attr('BandPass'),
+                wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
+                isId, //imagesetid
+                parseInt(fgi.attr('BaseTileLevel')),
+                parseInt(fgi.attr('TileLevels')),
+                null, //tilesize
+                parseFloat(fgi.attr('BaseDegreesPerTile')),
+                fgi.attr('FileType'),
+                fgi.attr('BottomsUp') === 'True',
+                '', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
+                parseFloat(fgi.attr('CenterX')),
+                parseFloat(fgi.attr('CenterY')),
+                parseFloat(fgi.attr('Rotation')),
+                true, //sparse
+                fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
+                false, //defaultSet,
+                false, //elevationModel
+                parseFloat(fgi.attr('WidthFactor')), //widthFactor,
+                parseFloat(fgi.attr('OffsetX')),
+                parseFloat(fgi.attr('OffsetY')),
+                fgi.find('Credits').text(),
+                fgi.find('CreditsUrl').text(),
+                '', '',
+                0, //meanRadius
+                null)
+              );
+            }
+
+            indexPlaceNames(wwtPlace);
+            var cIndex = constellations.indexOf(constellation);
+            var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
+            wwtPlace.guid = cIndex + '.' +
+              constellationPlaces.length;
+            constellationPlaces.push(wwtPlace);
+          }
+
+
+        });
+        deferred.resolve(true);
+      });
+
+      return deferred.promise;
+    }
+
+
+    initPromise = init();
+
+    return api;
+  }]);
 
 wwt.app.factory('Astrometry', [
 	'$http', '$q', '$timeout', 'Util', function ($http, $q, $timeout, util) {
@@ -6008,11 +6007,11 @@ wwt.controllers.controller('MobileNavController',
 ]);
 
 wwt.controllers.controller('LayerManagerController',
-  ['$scope',
+  ['$scope','$rootScope',
     'AppState',
     '$timeout',
     'Util',
-    function ($scope, appState, $timeout, util) {
+    function ($scope, $rootScope, appState, $timeout, util) {
       var version = 12;
 
       function treeNode(args) {
@@ -6087,38 +6086,64 @@ wwt.controllers.controller('LayerManagerController',
           $timeout(function () {
             var w = $('.scrubber-slider').width();
             var bar = $('.scrubber-slider a.btn');
-            var scrubberMover = new wwt.Move({
+            var stc = wwtlib.SpaceTimeController;
+            var l;
+
+            var debouncedMove = function(flt) {
+              var stc = wwtlib.SpaceTimeController;
+              wwt.wc.setTimeScrubberPosition(flt);
+              l = $scope.activeLayer;
+              if (l && l.timeSeriesChecked) {
+                var msIntoRange = Math.round(l.scrubber.duration * flt);
+                var date = new Date(l.scrubber.start.valueOf() + msIntoRange);
+                stc.set_now(date);
+                $rootScope.updateDateUI();
+                bar.attr('title', date.toDateString());
+              }
+            };
+            var debounceTimer;
+            var debouncer = function(flt){
+              clearTimeout(debounceTimer);
+              debounceTimer = setTimeout(function(){
+                debouncedMove(flt);
+              },333);
+            };
+            // noinspection JSUnusedLocalSymbols
+              var scrubberMover = new wwt.Move({
               el: bar,
               bounds: {
                 x: [0, w],
                 y: [0, 0]
               },
               onstart:function(){
-
+                l = $scope.activeLayer;
+                //console.log({onstart:l});
+                if (l && l.canUseScrubber && l.timeSeriesChecked){
+                  l.timeRate = stc.get_timeRate();
+                  stc.set_timeRate(1);
+                  $rootScope.updateDateUI();
+                  l.moving = 1;
+                }
+              },
+              oncomplete:function(){
+                l = $scope.activeLayer;
+                //console.log({onstart:l});
+                if (l && l.canUseScrubber && l.moving){
+                  stc.set_timeRate(l.timeRate);
+                  delete l.moving;
+                  delete l.timeRate;
+                  $rootScope.updateDateUI();
+                }
               },
               onmove: function () {
-                var flt = this.css.left / w;
-                var stc = wwtlib.SpaceTimeController;
-                wwt.wc.setTimeScrubberPosition(flt);
-                var l = $scope.activeLayer;
-                if (l && l.timeSeriesChecked){
-                  //stc.set_syncToClock(false);
-                  var msIntoRange = Math.round((l.scrubber.duration/60000)*flt)*60000;
-                  var date = new Date(l.scrubber.start + msIntoRange);
-                  stc.set_now(date);
-                  bar.attr('title',date.toDateString());
-                }
+                debouncer(this.css.left / w)
               }
+
             });
-
-
             $scope.allMaps = allMaps = wwtlib.LayerManager.get_allMaps();
             var sunTree = {Sun: (allMaps.Sun)};
-
             sunTree.Sun.collapsed = false;
             $scope.skyNode = allMaps.Sky;
-            //$scope.tree = skyNode;
-            //console.log(skyNode);
             $.each(sunTree.Sun.childMaps, function (name, node) {
               node.collapsed = false;
               //node.name = name;
@@ -6466,12 +6491,17 @@ wwt.controllers.controller('LayerManagerController',
 
       var loopCheckTimer;
       $scope.setAutoLoop = function(layer,on){
+        layer.loopChecked= on;
         layer.set_autoUpdate(on);
+
         if (on){
           $scope.setTimeSeries(layer,true);
           layer.timeSeriesChecked=true;
           var stc = wwtlib.SpaceTimeController;
           loopCheckTimer = setInterval(function(){
+            if (layer.moving){
+              return;
+            }
             var progress = stc._now - layer.scrubber.start;
             var dur = layer.scrubber.duration;
 
@@ -7043,7 +7073,7 @@ wwt.controllers.controller('ViewController',
 	['$scope',
 	'AppState',
 	'$timeout','Util','$rootScope',
-	function ($scope, appState,$timeout, util,$rootScope) {
+	function ($scope, appState, $timeout, util,$rootScope) {
 		var stc = $scope.spaceTimeController = wwtlib.SpaceTimeController;
 		$scope.galaxyModeChange = function () {
 			if ($scope.galaxyMode && $scope.viewFromLocation) {
@@ -7083,7 +7113,8 @@ wwt.controllers.controller('ViewController',
 				});
 			}
 		};
-		
+
+
 
 		$scope.fastBack_Click = function() {
 			var tr = stc.get_timeRate();
@@ -7153,6 +7184,10 @@ wwt.controllers.controller('ViewController',
 				$scope.TimeMode = $scope.TimeMode + " : " + $scope.loc.paused;
 			}   
 		}
+    $rootScope.updateDateUI = function(){
+		  updateSpeed();
+		  timeDateTimerTick();
+    }
 
 		$scope.timeNow_Click = function() {
 			stc.set_syncToClock(true);
@@ -8868,7 +8903,7 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
     var ev = e.originalEvent;
     var pasteData = ev.clipboardData.getData('Text')
       .replace(/(\r\n|\r|\n)/g,'\r\n');//normalize line endings
-    console.log('paste data ok');
+    //console.log('paste data ok');
     $('#pasteRow').remove();
     //setTimeout(function () {
       //gc
@@ -8893,7 +8928,7 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
   };
   function initColumns() {
     l = $scope.layer;
-    console.log($scope.layer);
+    //console.log($scope.layer);
     $scope.columns = $scope.layer._table$1.header.map(function (c, i) {
       return {label: c, type: i};
     });
