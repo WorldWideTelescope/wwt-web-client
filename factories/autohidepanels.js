@@ -108,7 +108,7 @@
     
 
     var tourStateChange = function () {
-        console.log('tourstatechange - playing:', $rootScope.tourPlaying);
+        //console.log('tourstatechange - playing:', $rootScope.tourPlaying);
         togglePanelGroup(!$rootScope.tourPlaying, 'tabs');
         togglePanelGroup(!$rootScope.tourPlaying, 'context');
         editingTour = $rootScope.editingTour;

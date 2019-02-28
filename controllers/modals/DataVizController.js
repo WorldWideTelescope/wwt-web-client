@@ -23,7 +23,7 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
     var ev = e.originalEvent;
     var pasteData = ev.clipboardData.getData('Text')
       .replace(/(\r\n|\r|\n)/g,'\r\n');//normalize line endings
-    console.log('paste data ok');
+    //console.log('paste data ok');
     $('#pasteRow').remove();
     //setTimeout(function () {
       //gc
@@ -48,7 +48,7 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
   };
   function initColumns() {
     l = $scope.layer;
-    console.log($scope.layer);
+    //console.log($scope.layer);
     $scope.columns = $scope.layer._table$1.header.map(function (c, i) {
       return {label: c, type: i};
     });
