@@ -16,3 +16,4 @@ Please see [INSTALL.md](INSTALL.md).
 
 [WorldWide Telescope](http://worldwidetelescope.org) is a [.NET Foundation](http://dotnetfoundation.org) project
 
+### [HTML5SDK Documentation](https://worldwidetelescope.gitbooks.io/worldwide-telescope-web-control-script-reference/content/)
