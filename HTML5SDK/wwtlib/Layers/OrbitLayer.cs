@@ -177,7 +177,7 @@ namespace wwtlib
             {
                 dataFile = doc.Result as string;
                 LoadString(dataFile);
-               
+
             };
             doc.ReadAsText(blob);
         }
@@ -230,7 +230,7 @@ namespace wwtlib
         }
     }
 
-   
+
 
     public class OrbitLayerUI : LayerUI
     {

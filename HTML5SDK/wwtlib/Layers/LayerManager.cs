@@ -11,7 +11,7 @@ namespace wwtlib
     public class LayerManager
     {
         static int version = 0;
-        
+
         public static int Version
         {
             get { return LayerManager.version; }
@@ -539,7 +539,7 @@ namespace wwtlib
                 Layer layer = LayerList[key];
                 if (layer.LoadedFromTour)
                 {
-                    //todo We may want to copy layers into a temp directory later, for now we are just leaving the layer data files in the temp tour directory. 
+                    //todo We may want to copy layers into a temp directory later, for now we are just leaving the layer data files in the temp tour directory.
                     layer.LoadedFromTour = false;
                 }
             }
@@ -1832,13 +1832,13 @@ namespace wwtlib
         {
             LayerMap target = (LayerMap)selectedLayer;
             LayerManager.ReferenceFramePropsDialog.Show(target.Frame, e);
-            
+
         }
 
-        
+
 
         static void newMenu_Click(object sender, EventArgs e)
-        {   
+        {
             ReferenceFrame frame = new ReferenceFrame();
             LayerManager.FrameWizardDialog.Show(frame, e);
         }
@@ -1862,7 +1862,7 @@ namespace wwtlib
 
         public static bool PasteFromTle(string[] lines, ReferenceFrame frame)
         {
-            
+
             string line1 = "";
             string line2 = "";
             for (int i = 0; i < lines.Length; i++)
@@ -1910,7 +1910,7 @@ namespace wwtlib
 
         static void propertiesMenu_Click(object sender, EventArgs e)
         {
-            
+
             if (selectedLayer is SpreadSheetLayer)
             {
                 SpreadSheetLayer target = (SpreadSheetLayer)selectedLayer;
@@ -1938,9 +1938,9 @@ namespace wwtlib
             //}
             if (selectedLayer is GreatCirlceRouteLayer)
             {
-                
+
                 GreatCircleDlg.Show((GreatCirlceRouteLayer)selectedLayer, new EventArgs());
-                
+
             }
         }
 
@@ -2091,7 +2091,7 @@ namespace wwtlib
             LoadTree();
         }
 
-        
+
         static void pasteLayer_Click(object sender, EventArgs e)
         {
             //ClipbaordDelegate clip = delegate (string clipText)
@@ -2376,7 +2376,7 @@ namespace wwtlib
 
         private static void AddGreatCircleLayer()
         {
-            
+
             GreatCirlceRouteLayer layer = new GreatCirlceRouteLayer();
             CameraParameters camera = WWTControl.Singleton.RenderContext.ViewCamera;
             layer.LatStart = camera.Lat;

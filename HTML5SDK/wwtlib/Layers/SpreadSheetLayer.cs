@@ -10,9 +10,9 @@ using System.Html.Data.Files;
 
 namespace wwtlib
 {
-     // public enum PointScaleTypes { Linear=0, Power=1, Log=2, Constant=3, StellarMagnitude=4 }; 
-    
-    
+     // public enum PointScaleTypes { Linear=0, Power=1, Log=2, Constant=3, StellarMagnitude=4 };
+
+
     public class SpreadSheetLayer : Layer
     {
         public SpreadSheetLayer()
@@ -145,7 +145,7 @@ namespace wwtlib
             return "";
         }
 
-        
+
 
         private static string ExecuteQuery(string url)
         {
@@ -204,15 +204,15 @@ namespace wwtlib
 
         public override void AddFilesToCabinet(FileCabinet fc)
         {
- 
+
             fileName = fc.TempDirectory + string.Format("{0}\\{1}.txt", fc.PackageID, this.ID.ToString());
 
             string dir = fileName.Substring(0, fileName.LastIndexOf("\\"));
-           
+
             string data = table.Save();
 
             Blob blob = new Blob(new object[] { data });
-            
+
             fc.AddFile(fileName, blob);
 
             base.AddFilesToCabinet(fc);
@@ -393,18 +393,18 @@ namespace wwtlib
         //    double Count = 0;
         //    int[] Histogram = null;
         //    int Buckets=256;
-        //    double BucketWidth =0; 
+        //    double BucketWidth =0;
         //    bool Computed = false;
 
         //}
 
-      
+
 
         public void CheckState()
         {
 
         }
-      
+
 
 
 
@@ -479,10 +479,10 @@ namespace wwtlib
         }
         double barScaleFactor = 20;
 
-     
+
 
         private double meanRadius = 6371000;
-        
+
         protected bool PrepVertexBuffer(RenderContext renderContext, float opacity)
         {
             table.Lock();
@@ -505,7 +505,7 @@ namespace wwtlib
             {
                 pointList.Clear();
             }
-            
+
 
             if (triangleList2d != null)
             {
@@ -546,9 +546,9 @@ namespace wwtlib
                 triangleList2d.DepthBuffered = false;
             }
 
-          
 
-            
+
+
             positions.Clear();
             UInt32 currentIndex = 0;
          //   device.RenderState.FillMode = FillMode.WireFrame;
@@ -559,7 +559,7 @@ namespace wwtlib
             // for space 3d
             double ecliptic = Coordinates.MeanObliquityOfEcliptic(SpaceTimeController.JNow) / 180.0 * Math.PI;
 
-            
+
 
             Dictionary<string, bool> selectDomain = new Dictionary<string, bool>();
 
@@ -657,7 +657,7 @@ namespace wwtlib
                                 {
                                     Xcoord += 180;
                                 }
-                                
+
                             }
                             double offset = 0; //todo EGM96Geoid.Height(Ycoord, Xcoord);
                             //   if (altitude != 0)
@@ -736,7 +736,7 @@ namespace wwtlib
                             //case ColorMaps.Group_by_Range:
                             //    break;
                             //case ColorMaps.Gradients_by_Range:
-                            //    break;       
+                            //    break;
                             //case ColorMaps.Group_by_Values:
                             //    pointColor = ColorDomainValues[row[ColorMapColumn]].MarkerIndex;
                             //    break;
@@ -758,7 +758,7 @@ namespace wwtlib
                                     break;
                                 case PointScaleTypes.Power:
                                     {
-                                        double size = 0; 
+                                        double size = 0;
 
                                         try
                                         {
@@ -837,7 +837,7 @@ namespace wwtlib
                         }
 
                         pointList.AddPoint(position, pointColor, new Dates(pointStartTime, pointEndTime), pointSize);
-                       
+
 
                         if (geometryColumn > -1)
                         {
@@ -1015,7 +1015,7 @@ namespace wwtlib
             return shapeList;
         }
 
-       
+
 
         private void AddPolygon(bool sky, KmlLineList geo, float lineWidth, Color polyColor, Color lineColor, bool extrude, bool fill, Dates date)
         {
@@ -1024,7 +1024,7 @@ namespace wwtlib
             List<Vector3d> vertexList = new List<Vector3d>();
             List<Vector3d> vertexListGround = new List<Vector3d>();
 
-            //todo list 
+            //todo list
             // We need to Wrap Around for complete polygone
             // we aldo need to do intereor
             //todo space? using RA/DEC
@@ -1149,7 +1149,7 @@ namespace wwtlib
             return dt;
         }
 
-        
+
 
         public static Date ExeclToDateTime(double excelDate)
         {
@@ -1414,7 +1414,7 @@ namespace wwtlib
 
         }
 
-       
+
 
         protected bool isLongIndex = false;
         protected int shapeVertexCount;
@@ -1508,7 +1508,7 @@ namespace wwtlib
             EndRange = new Date(node.Attributes.GetNamedItem("EndRange").Value);
             Decay = Single.Parse(node.Attributes.GetNamedItem("Decay").Value);
             CoordinatesType = (CoordinatesTypes)Enums.Parse("CoordinatesTypes", node.Attributes.GetNamedItem("CoordinatesType").Value);
-           
+
 
             if ((int)CoordinatesType < 0)
             {
@@ -1522,14 +1522,14 @@ namespace wwtlib
             }
 
             AltType = (AltTypes)Enums.Parse("AltTypes", node.Attributes.GetNamedItem("AltType").Value);
-            
+
             MarkerMix = MarkerMixes.Same_For_All;
             ColorMap = (ColorMaps)Enums.Parse("ColorMaps",node.Attributes.GetNamedItem("ColorMap").Value);
 
             MarkerColumn = int.Parse(node.Attributes.GetNamedItem("MarkerColumn").Value);
             ColorMapColumn = int.Parse(node.Attributes.GetNamedItem("ColorMapColumn").Value);
             PlotType = (PlotTypes)Enums.Parse("PlotTypes",node.Attributes.GetNamedItem("PlotType").Value);
-            
+
             MarkerIndex = int.Parse(node.Attributes.GetNamedItem("MarkerIndex").Value);
             MarkerScale = (MarkerScales)Enums.Parse("MarkerScales", node.Attributes.GetNamedItem("MarkerScale").Value);
             AltUnit = (AltUnits)Enums.Parse("AltUnits", node.Attributes.GetNamedItem("AltUnit").Value);
@@ -1541,7 +1541,7 @@ namespace wwtlib
             HyperlinkColumn = int.Parse(node.Attributes.GetNamedItem("HyperlinkColumn").Value);
             ScaleFactor = Single.Parse(node.Attributes.GetNamedItem("ScaleFactor").Value);
             PointScaleType = (PointScaleTypes)Enums.Parse("PointScaleTypes", node.Attributes.GetNamedItem("PointScaleType").Value);
-          
+
             if (node.Attributes.GetNamedItem("ShowFarSide") != null)
             {
                 ShowFarSide = Boolean.Parse(node.Attributes.GetNamedItem("ShowFarSide").Value);
@@ -2141,7 +2141,7 @@ namespace wwtlib
         {
 
             RenderContext device = renderContext;
-            
+
             if (version != lastVersion)
             {
                 CleanUp();
@@ -2204,14 +2204,14 @@ namespace wwtlib
                     case PlotTypes.Gaussian:
                         pointList.Draw(renderContext, opacity * Opacity, false);
                         break;
-                    case PlotTypes.Circle:                    
+                    case PlotTypes.Circle:
                     case PlotTypes.Point:
                         pointList.DrawTextured(renderContext, PushPin.GetPushPinTexture(35), opacity * Opacity);
                         break;
                     case PlotTypes.Square:
                         pointList.DrawTextured(renderContext, PushPin.GetPushPinTexture(67), opacity * Opacity);
                         break;
-                    case PlotTypes.Custom: 
+                    case PlotTypes.Custom:
                     case PlotTypes.PushPin:
                         pointList.DrawTextured(renderContext, PushPin.GetPushPinTexture(markerIndex), opacity * Opacity);
                         break;
@@ -2320,7 +2320,7 @@ namespace wwtlib
             //    //    device.SetTexture(0, null);
             //    //    break;
             //    //case PlotTypes.Custom:
-            //    //    break;  
+            //    //    break;
             //    case PlotTypes.PushPin:
             //        device.SetTexture(0, PushPin.GetPushPinTexture(markerIndex));
             //        break;
@@ -2423,18 +2423,18 @@ namespace wwtlib
         //            " float1 showFarSide;                         " +
         //            " struct VS_IN                                 " +
         //            " {                                            " +
-        //            "     float4 ObjPos   : POSITION;              " + // Object space position 
-        //            "     float1 PointSize   : PSIZE;              " + // Object Point size 
-        //            "     float4 Color    : COLOR;                 " + // Vertex color                 
-        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size 
+        //            "     float4 ObjPos   : POSITION;              " + // Object space position
+        //            "     float1 PointSize   : PSIZE;              " + // Object Point size
+        //            "     float4 Color    : COLOR;                 " + // Vertex color
+        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size
         //            " };                                           " +
         //            "                                              " +
         //            " struct VS_OUT                                " +
         //            " {                                            " +
-        //            "     float4 ProjPos  : POSITION;              " + // Projected space position 
-        //            "     float1 PointSize   : PSIZE;              " + // Object Point size 
+        //            "     float4 ProjPos  : POSITION;              " + // Projected space position
+        //            "     float1 PointSize   : PSIZE;              " + // Object Point size
         //            "     float4 Color    : COLOR;                 " +
-        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size 
+        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size
         //            " };                                           " +
         //            "                                              " +
         //            " VS_OUT main( VS_IN In )                      " +
@@ -2504,7 +2504,7 @@ namespace wwtlib
         //    }
         //}
 
-  
+
 
         public void CleanUpBase()
         {
@@ -2651,7 +2651,7 @@ namespace wwtlib
         static Texture Pins = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/pins.png");
         public static WebGLTexture GetPushPinTexture(int pinId)
         {
-            WebGLTexture texture = null; 
+            WebGLTexture texture = null;
 
             if (pinTextureCache.ContainsKey(pinId))
             {
