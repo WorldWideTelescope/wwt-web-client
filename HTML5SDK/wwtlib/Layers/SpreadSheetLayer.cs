@@ -2220,8 +2220,6 @@ namespace wwtlib
                         break;
                 }
 
-
-                pointList.Draw(renderContext, opacity * Opacity, false);
             }
 
             if (lineList != null)
