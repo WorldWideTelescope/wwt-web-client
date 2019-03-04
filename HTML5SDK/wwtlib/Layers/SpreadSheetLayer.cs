@@ -67,7 +67,7 @@ namespace wwtlib
             string data = GetDatafromFeed(DataSourceUrl);
             if (data != null)
             {
-                UpadteData(data, false, true, true);
+                UpdateData(data, false, true, true);
                 GuessHeaderAssignments();
                 return true;
             }
@@ -170,7 +170,7 @@ namespace wwtlib
             return "";
         }
 
-        public override bool UpadteData(object data, bool purgeOld, bool purgeAll, bool hasHeader)
+        public override bool UpdateData(object data, bool purgeOld, bool purgeAll, bool hasHeader)
         {
 
             LoadFromString(data as string, true, purgeOld, purgeAll, hasHeader);
