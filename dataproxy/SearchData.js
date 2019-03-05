@@ -9,12 +9,20 @@
       searchIndex = {},
       initPromise,
       constellations = [];
-
-    function getData() {
+    var deferredInit = $q.defer();
+    var allDataDeferred = $q.defer();
+    var allDataPromise = (function(){return allDataDeferred.promise;})();
+    function getData(all) {
       var deferred = $q.defer();
-      initPromise.then(function () {
-        deferred.resolve(data);
-      });
+      if (all){
+        allDataPromise.then(function () {
+          deferred.resolve(data);
+        });
+      }else {
+        initPromise.then(function () {
+          deferred.resolve(data);
+        });
+      }
       return deferred.promise;
     };
 
@@ -26,7 +34,7 @@
       return deferred.promise;
     };
 
-    var deferredInit = $q.defer();
+
     var isId = 100;
     var init = function () {
       if (wwt.searchData) {
@@ -107,6 +115,7 @@
         });
         var end = new Date();
         util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
+
         importWtml('Wise.wtml').then(function () {
           //console.log('wise loaded');
           importWtml('Hubble.wtml').then(function () {
@@ -116,13 +125,13 @@
               importWtml('Chandra.wtml').then(function () {
                 //console.log('chandra loaded');
                 importWtml('Spitzer.wtml').then(function () {
-                  //console.log('spitzer loaded');
+                  allDataDeferred.resolve(true);
                 });
               });
             });
           });
-          deferredInit.resolve(data);
         });
+        deferredInit.resolve(data);
 
 
       } else {

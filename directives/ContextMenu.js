@@ -23,7 +23,7 @@ wwt.app.directive('ngRightClick', ['$parse', function ($parse) {
         var fn = $parse(attrs.ngRightClick);
         element.bind('contextmenu', function (event) {
 
-            scope.$apply(function () {
+            scope.$applyAsync(function () {
               wwt.lastmouseContext = event;
                 event.preventDefault();
                 fn(scope, { $event: event });

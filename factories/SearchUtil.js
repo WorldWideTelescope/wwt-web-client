@@ -48,24 +48,48 @@
 	}
 
 	var sortByImagery = function(p1, p2) {
-		return p2.get_constellation() === 'SolarSystem' && p1.get_constellation() !== 'SolarSystem' ? 1 :
+		return p1.fromCenter - p2.fromCenter;/*p2.get_constellation() === 'SolarSystem' && p1.get_constellation() !== 'SolarSystem' ? 1 :
 			p1.get_constellation() === 'SolarSystem' && p2.get_constellation() !== 'SolarSystem' ? -1 :
 			p2.get_studyImageset() && !p1.get_studyImageset() ? 1 :
-			p1.get_studyImageset() && !p2.get_studyImageset() ? -1 :
-			p1.get_name() - p2.get_name();
+			p1.get_studyImageset() && !p2.get_studyImageset() ? -1 :*/
+
 	}
 
-	function getPlaceById(id) {
-		var deferred = $q.defer();
+  function getPlaceById(id) {
+    var deferred = $q.defer();
+    var tryFind = function(all){
+      var deferred2 = $q.defer();
+      searchDataService.getData(all).then(function (d) {
+        var constellationIndex = parseInt(id.split('.')[0]);
+        var placeIndex = parseInt(id.split('.')[1]);
+        var p = d.Constellations[constellationIndex].places[placeIndex];
+        if (p) {
+          deferred2.resolve(p);
+        }else{
+          deferred2.resolve(null);
+        }
+      });
+      return deferred2.promise;
+    };
 
-		searchDataService.getData().then(function (d) {
-			var constellationIndex = parseInt(id.split('.')[0]);
-			var placeIndex = parseInt(id.split('.')[1]);
-			deferred.resolve(d.Constellations[constellationIndex].places[placeIndex]);
-		});
 
-		return deferred.promise;
-	}
+    tryFind().then(function(p){
+      if (p){
+        deferred.resolve(p);
+      }else{
+        console.log('wait for full');
+        tryFind(true).then(function(p) {
+          if (p) {
+            deferred.resolve(p);
+          }
+          else deferred.reject()
+        });
+      }
+    });
+
+
+    return deferred.promise;
+  }
 		
 	function findNearbyObjects(args) {
 		var deferred = $q.defer();
@@ -96,14 +120,23 @@
 
 
 				var results = [];
+        var ss = [];
+        var imgsets = [];
+
 				//console.log(dist);
 				$.each(searchPlaces, function(i, place) {
 					if (place && place.get_name() !== 'Earth') {
 						try {
 							var placeDist = wwtlib.Vector3d.subtractVectors(place.get_location3d(), center);
 							if (dist > placeDist.length()) {
-							    results.push(place);
-							    //if (place.get_constellation() === 'SolarSystem') {
+							    place.fromCenter = placeDist.length();
+							    if (place.get_constellation()==='SolarSystem'){
+							      ss.push(place)
+                  }else if (place.get_studyImageset()){
+							      imgsets.push(place);
+                  }else {
+                    results.push(place);
+                  }//if (place.get_constellation() === 'SolarSystem') {
 							    //    console.log(place.get_name(), placeDist.length());
 							    //}
 							}
@@ -112,7 +145,8 @@
 						}
 					}
 				});
-				deferred.resolve(results.sort(sortByImagery));
+				ss = ss.sort(sortByImagery);
+				deferred.resolve(ss.concat(imgsets.sort(sortByImagery),results.sort(sortByImagery)));
 
 			} else {
 				deferred.resolve([]);

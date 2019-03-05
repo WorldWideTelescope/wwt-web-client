@@ -5,6 +5,7 @@
 		formatDecimalHours: formatDecimalHours,
 		formatHms: formatHms,
 		drawCircleOverPlace: drawCircleOverPlace,
+    removeHoverCircle: removeHoverCircle,
 		getIsPlanet: getIsPlanet,
 		secondsToTime: secondsToTime,
 		getQSParam: getQSParam,
@@ -154,7 +155,7 @@
 	}
   var circ = null;
 	function drawCircleOverPlace(place) {
-	  wwt.wc.removeAnnotation(circ);
+    removeHoverCircle();
 		if ($('#lstLookAt option:selected').prop('index') === 2) {
 		  var circle = wwt.wc.createCircle();
 			circle.set_id('focused');
@@ -167,6 +168,12 @@
 			//console.log(circle);
 		}
 	}
+
+	function removeHoverCircle(){
+	  if (circ){
+      wwt.wc.removeAnnotation(circ);
+    }
+  }
 
 	function getIsPlanet(place) {
 		var cls,isPlanet;

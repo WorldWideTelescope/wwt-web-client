@@ -14,8 +14,11 @@
 			var rowsAboveFold = Math.ceil((st + h) / tn.height());
 			var totalItems = (rowsAboveFold + buffer) * cols;
 			if (scope.scrollDepth < totalItems) {
-				scope.scrollDepth = totalItems;
-				scope.$apply();
+				scope.$applyAsync(function(){
+          scope.scrollDepth = totalItems;
+        });
+
+
 				
 			}
 			
