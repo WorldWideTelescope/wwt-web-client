@@ -27,6 +27,7 @@
 	    $scope.clickThumb = function (item,instant) {
         $rootScope.instant = !!instant;
 	      thumbList.clickThumb(item, $scope);
+	      util.removeHoverCircle();
 	    };
 
 	    $scope.hoverThumb = function (item) {
