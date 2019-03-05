@@ -435,7 +435,7 @@ namespace wwtlib
                 ctx.LineTo(i, 150 - (height * 150));
                 ctx.Stroke();
             }
-           
+
         }
 
         public int[] ComputeHistogram(int count)
@@ -951,7 +951,7 @@ namespace wwtlib
             for (int y = 0; y < AxisSize[1]; y++)
             {
                 int indexY = ((AxisSize[1] - 1) - y);
-              
+
                 for (int x = 0; x < AxisSize[0]; x++)
                 {
                     if (color)

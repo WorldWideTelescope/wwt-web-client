@@ -34,7 +34,7 @@ namespace wwtlib
 
         private bool dynamicData = false;
 
-        
+
         public bool DynamicData
         {
             get { return dynamicData; }
@@ -43,7 +43,7 @@ namespace wwtlib
 
         private bool autoUpdate = false;
 
-        
+
         public bool AutoUpdate
         {
             get { return autoUpdate; }
@@ -51,7 +51,7 @@ namespace wwtlib
         }
 
         string dataSourceUrl = "";
-        
+
         public string DataSourceUrl
         {
             get { return dataSourceUrl; }
@@ -61,7 +61,7 @@ namespace wwtlib
 
 
 
-        
+
         public bool TimeSeries
         {
             get { return timeSeries; }
@@ -75,7 +75,7 @@ namespace wwtlib
             }
         }
 
-        
+
         public virtual List<string> Header
         {
             get
@@ -86,7 +86,7 @@ namespace wwtlib
 
         Date beginRange = new Date("1/1/2100");
 
-        
+
         public Date BeginRange
         {
             get { return beginRange; }
@@ -100,7 +100,7 @@ namespace wwtlib
             }
         }
         Date endRange = new Date("01/01/1800");
-        
+
         public Date EndRange
         {
             get { return endRange; }
@@ -123,7 +123,7 @@ namespace wwtlib
             Decay = Single.Parse(node.Attributes.GetNamedItem("Decay").Value);
 
             CoordinatesType = (CoordinatesTypes)Enums.Parse("CoordinatesTypes", node.Attributes.GetNamedItem("CoordinatesType").Value);
-                     
+
 
             if ((int)CoordinatesType < 0)
             {
@@ -377,7 +377,7 @@ namespace wwtlib
             return new List<string>();
         }
 
-        
+
         public float Decay
         {
             get { return decay; }
@@ -394,7 +394,7 @@ namespace wwtlib
 
         private CoordinatesTypes coordinatesType = CoordinatesTypes.Spherical;
 
-        
+
         public CoordinatesTypes CoordinatesType
         {
             get { return coordinatesType; }
@@ -408,7 +408,7 @@ namespace wwtlib
             }
         }
 
-        
+
         public int LatColumn
         {
             get { return latColumn; }
@@ -423,7 +423,7 @@ namespace wwtlib
         }
         protected int lngColumn = -1;
 
-        
+
         public int LngColumn
         {
             get { return lngColumn; }
@@ -439,7 +439,7 @@ namespace wwtlib
 
         protected int geometryColumn = -1;
 
-        
+
         public int GeometryColumn
         {
             get { return geometryColumn; }
@@ -455,7 +455,7 @@ namespace wwtlib
 
         private int xAxisColumn = -1;
 
-        
+
         public int XAxisColumn
         {
             get { return xAxisColumn; }
@@ -470,7 +470,7 @@ namespace wwtlib
         }
         private int yAxisColumn = -1;
 
-        
+
         public int YAxisColumn
         {
             get { return yAxisColumn; }
@@ -485,7 +485,7 @@ namespace wwtlib
         }
         private int zAxisColumn = -1;
 
-        
+
         public int ZAxisColumn
         {
             get { return zAxisColumn; }
@@ -501,7 +501,7 @@ namespace wwtlib
 
         private bool xAxisReverse = false;
 
-        
+
         public bool XAxisReverse
         {
             get { return xAxisReverse; }
@@ -516,7 +516,7 @@ namespace wwtlib
         }
         private bool yAxisReverse = false;
 
-        
+
         public bool YAxisReverse
         {
             get { return yAxisReverse; }
@@ -531,7 +531,7 @@ namespace wwtlib
         }
         private bool zAxisReverse = false;
 
-        
+
         public bool ZAxisReverse
         {
             get { return zAxisReverse; }
@@ -547,7 +547,7 @@ namespace wwtlib
 
         private AltTypes altType = AltTypes.SeaLevel;
 
-        
+
         public AltTypes AltType
         {
             get { return altType; }
@@ -564,7 +564,7 @@ namespace wwtlib
 
         private MarkerMixes markerMix = MarkerMixes.Same_For_All;
 
-        
+
         public MarkerMixes MarkerMix
         {
             get { return markerMix; }
@@ -579,7 +579,7 @@ namespace wwtlib
         }
 
         RAUnits raUnits = RAUnits.Hours;
-        
+
         public RAUnits RaUnits
         {
             get { return raUnits; }
@@ -596,7 +596,7 @@ namespace wwtlib
 
         private ColorMaps colorMap = ColorMaps.Per_Column_Literal;
 
-        
+
         internal ColorMaps ColorMap
         {
             get { return colorMap; }
@@ -613,7 +613,7 @@ namespace wwtlib
 
         private int markerColumn = -1;
 
-        
+
         public int MarkerColumn
         {
             get { return markerColumn; }
@@ -629,7 +629,7 @@ namespace wwtlib
 
         private int colorMapColumn = -1;
 
-        
+
         public int ColorMapColumn
         {
             get { return colorMapColumn; }
@@ -645,7 +645,7 @@ namespace wwtlib
 
         private PlotTypes plotType = PlotTypes.Gaussian;
 
-        
+
         public PlotTypes PlotType
         {
             get { return plotType; }
@@ -662,7 +662,7 @@ namespace wwtlib
 
         private int markerIndex = 0;
 
-        
+
         public int MarkerIndex
         {
             get { return markerIndex; }
@@ -678,7 +678,7 @@ namespace wwtlib
 
         private bool showFarSide = false;
 
-        
+
         public bool ShowFarSide
         {
             get { return showFarSide; }
@@ -695,7 +695,7 @@ namespace wwtlib
 
         private MarkerScales markerScale = MarkerScales.World;
 
-        
+
         public MarkerScales MarkerScale
         {
             get { return markerScale; }
@@ -712,7 +712,7 @@ namespace wwtlib
 
         private AltUnits altUnit = AltUnits.Meters;
 
-        
+
         public AltUnits AltUnit
         {
             get { return altUnit; }
@@ -727,7 +727,7 @@ namespace wwtlib
         }
         private AltUnits cartesianScale = AltUnits.Meters;
 
-        
+
         public AltUnits CartesianScale
         {
             get { return cartesianScale; }
@@ -743,7 +743,7 @@ namespace wwtlib
 
         private double cartesianCustomScale = 1;
 
-        
+
         public double CartesianCustomScale
         {
             get { return cartesianCustomScale; }
@@ -758,7 +758,7 @@ namespace wwtlib
         }
 
         protected int altColumn = -1;
-        
+
         public int AltColumn
         {
             get { return altColumn; }
@@ -774,7 +774,7 @@ namespace wwtlib
 
         protected int startDateColumn = -1;
 
-        
+
         public int StartDateColumn
         {
             get { return startDateColumn; }
@@ -789,7 +789,7 @@ namespace wwtlib
         }
         protected int endDateColumn = -1;
 
-        
+
         public int EndDateColumn
         {
             get { return endDateColumn; }
@@ -805,7 +805,7 @@ namespace wwtlib
 
         protected int sizeColumn = -1;
 
-        
+
         public int SizeColumn
         {
             get { return sizeColumn; }
@@ -820,7 +820,7 @@ namespace wwtlib
         }
         protected int nameColumn = 0;
 
-        
+
         public int NameColumn
         {
             get { return nameColumn; }
@@ -835,7 +835,7 @@ namespace wwtlib
         }
         private string hyperlinkFormat = "";
 
-        
+
         public string HyperlinkFormat
         {
             get { return hyperlinkFormat; }
@@ -850,7 +850,7 @@ namespace wwtlib
 
         private int hyperlinkColumn = -1;
 
-        
+
         public int HyperlinkColumn
         {
             get { return hyperlinkColumn; }
@@ -867,7 +867,7 @@ namespace wwtlib
 
         protected float scaleFactor = 1.0f;
 
-        
+
         public float ScaleFactor
         {
             get { return scaleFactor; }
@@ -884,7 +884,7 @@ namespace wwtlib
 
         protected PointScaleTypes pointScaleType = PointScaleTypes.Power;
 
-        
+
         public PointScaleTypes PointScaleType
         {
             get { return pointScaleType; }
@@ -1092,7 +1092,7 @@ namespace wwtlib
             //    //    device.SetTexture(0, null);
             //    //    break;
             //    //case PlotTypes.Custom:
-            //    //    break;  
+            //    //    break;
             //    case PlotTypes.PushPin:
             //        device.SetTexture(0, PushPin.GetPushPinTexture(markerIndex));
             //        break;
@@ -1195,18 +1195,18 @@ namespace wwtlib
         //            " float1 showFarSide;                         " +
         //            " struct VS_IN                                 " +
         //            " {                                            " +
-        //            "     float4 ObjPos   : POSITION;              " + // Object space position 
-        //            "     float1 PointSize   : PSIZE;              " + // Object Point size 
-        //            "     float4 Color    : COLOR;                 " + // Vertex color                 
-        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size 
+        //            "     float4 ObjPos   : POSITION;              " + // Object space position
+        //            "     float1 PointSize   : PSIZE;              " + // Object Point size
+        //            "     float4 Color    : COLOR;                 " + // Vertex color
+        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size
         //            " };                                           " +
         //            "                                              " +
         //            " struct VS_OUT                                " +
         //            " {                                            " +
-        //            "     float4 ProjPos  : POSITION;              " + // Projected space position 
-        //            "     float1 PointSize   : PSIZE;              " + // Object Point size 
+        //            "     float4 ProjPos  : POSITION;              " + // Projected space position
+        //            "     float1 PointSize   : PSIZE;              " + // Object Point size
         //            "     float4 Color    : COLOR;                 " +
-        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size 
+        //            "     float2 Time   : TEXCOORD0;              " + // Object Point size
         //            " };                                           " +
         //            "                                              " +
         //            " VS_OUT main( VS_IN In )                      " +

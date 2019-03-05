@@ -47,7 +47,7 @@ namespace wwtlib
                         LoadBackground();
                     }
                 }
-       
+
             }
 
             object3d = issmodel;

@@ -52,7 +52,7 @@ namespace wwtlib
                                                     0.0, 0.0, 0.0, 1.0);
 
         static bool initBegun = false;
-        // ** Begin 
+        // ** Begin
         public void Draw3D(RenderContext renderContext, float opacity, Vector3d centerPoint)
         {
             Matrix3d orbitalPlaneOrientation = Matrix3d.MultiplyMatrix(Matrix3d.RotationZ(Coordinates.DegreesToRadians(elements.w)),
@@ -124,7 +124,7 @@ namespace wwtlib
 
             renderContext.gl.bindBuffer(GL.ARRAY_BUFFER, ellipseVertexBuffer.VertexBuffer);
             renderContext.gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
-           
+
             EllipseShader.Use(renderContext, (float)semiMajorAxis, (float)eccentricity, (float)eccentricAnomaly, color, 1.0f, savedWorld, positionNow);
 
             renderContext.gl.drawArrays(GL.LINE_STRIP, 0, ellipseVertexBuffer.Count);

@@ -225,7 +225,7 @@ namespace wwtlib
             ReferenceFrameType = (ReferenceFrameTypes)Enums.Parse("ReferenceFrameTypes", node.Attributes.GetNamedItem("ReferenceFrameType").Value);
 
             Reference = (ReferenceFrames)Enums.Parse("ReferenceFrames", node.Attributes.GetNamedItem("Reference").Value);
-           
+
             ParentsRoationalBase = Boolean.Parse(node.Attributes.GetNamedItem("ParentsRoationalBase").Value);
             MeanRadius = Double.Parse(node.Attributes.GetNamedItem("MeanRadius").Value);
             Oblateness = Double.Parse(node.Attributes.GetNamedItem("Oblateness").Value);
@@ -257,7 +257,7 @@ namespace wwtlib
                 SemiMajorAxis = Double.Parse(node.Attributes.GetNamedItem("SemiMajorAxis").Value);
 
                 SemiMajorAxisUnits = (AltUnits)Enums.Parse("AltUnits", node.Attributes.GetNamedItem("SemiMajorAxisScale").Value);
-              
+
                 Eccentricity = Double.Parse(node.Attributes.GetNamedItem("Eccentricity").Value);
                 Inclination = Double.Parse(node.Attributes.GetNamedItem("Inclination").Value);
                 ArgumentOfPeriapsis = Double.Parse(node.Attributes.GetNamedItem("ArgumentOfPeriapsis").Value);
@@ -339,7 +339,7 @@ namespace wwtlib
             // Ecentricity remove "0." from the begin and trim to 7 digits
             // Inclination decimal degrees 8 digits max
             // LOAN decimal degrees 8 digits
-            // AOP 
+            // AOP
             // mean anomoly at epoch 8 digits
             // Mean motion (revs per day) Compute
             // Convert Semi-major-axis to meters from storage unit
@@ -716,7 +716,7 @@ namespace wwtlib
             }
             scaleFactor *= 1/renderContext.NominalRadius;
 
- 
+
             Matrix3d look = Matrix3d.LookAtLH(Vector3d.Create(0,0,0), direction, up);
             look.Invert();
 
@@ -743,7 +743,7 @@ namespace wwtlib
             if (StationKeeping)
             {
                 WorldMatrix = Matrix3d.MultiplyMatrix(look, WorldMatrix);
-            }       
+            }
         }
     }
 
