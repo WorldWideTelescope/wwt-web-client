@@ -53,6 +53,7 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
       return {label: c, type: i};
     });
     l.computeDateDomainRange(0,-1);
+    console.log('compute');
     var none = {label: 'None', index: -1};
     $scope.columns.splice(0, 0, none);
     l.psType = l.get_pointScaleType();

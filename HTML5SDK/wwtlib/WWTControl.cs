@@ -717,6 +717,41 @@ namespace wwtlib
             Script.SetTimeout(delegate () { Render(); }, 10);
         }
 
+
+        public double GetEarthAltitude()
+        {
+            double ViewLat = RenderContext.ViewCamera.Lat;
+            double ViewLong = RenderContext.ViewCamera.Lat;
+            if (SolarSystemMode)
+            {
+                
+
+                Vector3d pnt = Coordinates.GeoTo3dDouble(ViewLat, ViewLong + 90);
+
+                Matrix3d EarthMat = Planets.EarthMatrixInv;
+
+                pnt = Vector3d.TransformCoordinate(pnt, EarthMat);
+                pnt.Normalize();
+
+                Vector2d point = Coordinates.CartesianToLatLng(pnt);
+
+                return MercatorTile.GetSurfacePointAltitude(point.Y, point.X, true);
+
+            }
+            else if (currentImageSetfield.DataSetType == ImageSetType.Earth)
+            {
+                return TargetAltitude;
+            }
+            else if (currentImageSetfield.DataSetType == ImageSetType.Planet)
+            {
+                return GetAltitudeForLatLong(ViewLat, ViewLong);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         private string GetCurrentReferenceFrame()
         {
             if (RenderContext.BackgroundImageset == null)

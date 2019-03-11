@@ -458,6 +458,9 @@ wwt.controllers.controller('MainController',
         if (viewport.isDirty || viewport.init) {
           $rootScope.viewport = viewport;
           $scope.coords = wwtlib.Coordinates.fromRaDec(viewport.RA, viewport.Dec);
+          window.coords = $scope.coords;
+          var lng = $scope.coords.get_lng();
+          lng = 180 - ((lng) / 24.0 * 360) - 180;
           $scope.formatted = {
             RA: util.formatHms(viewport.RA, true),
             Dec: util.formatHms(viewport.Dec, false, true),
