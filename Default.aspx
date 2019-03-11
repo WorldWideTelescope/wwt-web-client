@@ -802,6 +802,12 @@
                         <span data-localize="Galactic Plane Mode">Galactic Plane Mode</span>
                     </label>
                 </div>
+                <div style="margin:20px 0 20px 0">
+                  <a bs-tooltip="'See current view in ESASky'"
+                  href="http://sky.esa.int/?action=goto&target={{viewport.RA*15}}%20{{viewport.Dec}}&hips=DSS2%20color&fov={{viewport.Fov}}&cooframe=J2000&sci=true" target="esasky">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAUCAYAAADY6P5TAAAEXElEQVR42tWXa5COZRjHXyuyVmtp16FJGqdKIdTqsIOd0WIwzGiG0Ug25ZDeJFkqlN1IrXE+LKtCOokVOui0ofLFoTKT6kNjmkpiaplGMentf5nfY65uz07TN+8983sP93M/93Odr/tJJGJGKpW6VPQQI8Wj4lXxmBgsZoubRf1EOg4J3k2MEG+LReJZ8Y5IMr9TLBX3ifx0UqyuKMVT96PIC/x/TTwlhoqPxFsoO1VUiKbpoOA9KDJfDBefil1iGGFpYVou5ogFYqXYJsaJZhe7cqPxWpnYKhaixBviSVGMMlvEbaKNuEk0xIMfin617F1HdBFziYpdGDHfoiZmfStksWftFuuQLzdmbRMxRrwk9ooDYhPyNooWZRCKZXjxEzYuJs+qxXtioLjG1tdSlCy8s2KumbDHUxeOGgv7YG178X0qfuwTbd3apqRLbWPrOSX1USimix3idfE4obherCb3jAK3uSl6u3kysGb3QOA+7oFH2b9SfOXmRzgjfczcCTGRaj1Z/BIJ7fZOMvcX3h6EN6O9z4ohCS48wSIrHrNQOBLGQnWs2/gWMZMHmAUfFJcQCcPcukzCMRrdA2NEnvpcZIs8cZi5isBQy6NN3Fw1Uz+J5m5+gPiTa1MTxPgeUwJhrYhsFxOooC+Ldm6Du/BoBRYujHqi5YnlHL9vIAxTGK4BudhZXCfmce0Ue1wmDjqDTEfYTqKlyDmfVxemRw65a/JUuT3mJ/CG5c+bZmWKQi7WX0VxaOk2vJeWkg11As9k8btI/MGDZogHxO8oXYNi0SjmnoeCPDotfhPfiRdFi0A5a1Xvi0OE8ang/iW2aDFV08Kxq6gnehL7ZXiqq9vU2kUHPHStaC2uFFeJjqIx6+5wCpoBR4lvEeYQuWJ8EynIfYM5ZPxALp51Ah93EbImmN9N3ZjkIuecgubSjZTuKnJyLEVnCg9r4QSI2shQvGkhvQwDrXXrOrkHVTsPR+RRNTuEBwWMfAWtyFJiv1PGnnur+/8lYd+QezuHCvancprgz4lXcHuSPmieXBH0NbPSB7QX65PTyEufq1niMydIr0CJDe7acKLn7/PF4d9rB7m143leNCpjwva0V/BqPDgXb5lCS6ieM/BMudsggyJRSqVdQHHKCxu3Nf8gjKyglVCxo/G1nYQoFF8w96uVeA4S17v2kcLjRe7/j7SH3hj7mLu2NIFgd+PBmVTQSg7UG1HEPLXWQiOmil3+H6ekcbU0ehs/B+2jgLyLG2fEM27tu87jqUDhM/yu8ufQNdw0jZNLkm/zzmbybDTto8n/OAaax2/k7HqUBx+m97aNWd+FwnfEKWZt7E5rCW5dDict66MnKWBlHEIe5i2oxG+8kHc/ezV6xCm5g+/lhPAEik9fQtWE75EObxOZxHAV2m+hmOwkL+dwqH6aojCLIjTJWzYdFB1JiJTgzTF8LyIkNpD01lby0vWtvhnNvgiFLQef53eSSpYd92ZxsY1/AFA79CaOvwfwAAAAAElFTkSuQmCC"/>
+                  </a>
+                </div>
             </fieldset>
         </div>
         <div ng-switch-when="Settings" ng-controller="SettingsController">
