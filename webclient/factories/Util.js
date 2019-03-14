@@ -100,16 +100,23 @@
 	function parseHms(input) {
 		var parts;
 		function convertHmstoDec(hours, minutes, seconds) {
-			var dec = parseInt(hours) + parseInt(minutes) / 60 + parseInt(seconds) / (60 * 60);
-			return dec;
+
+			var c = Math.abs(parseInt(hours)) + Math.abs(parseInt(minutes)) / 60 + Math.abs(parseFloat(seconds)) / (60 * 60);
+			if (hours.charAt(0) === '-'){
+        c = 0 - c;
+      }
+			return c;
 		}
 		if (input.indexOf(':') != -1) {
 			parts = input.split(':');
 		}
 		else if (input.indexOf('h') != -1) {
 			parts = input.replace(/h/, ',').replace(/m/, ',').replace(/s/, '').split(',');
-		}
+		}else if ($.trim(input).split(' ').length===3){
+      parts = input.split(' ');
+    }
 		if (parts) {
+		  console.log(convertHmstoDec(parts[0], parts[1], parts[2]));
 			return convertHmstoDec(parts[0], parts[1], parts[2]);
 		} else {
 			return parseFloat(input);
