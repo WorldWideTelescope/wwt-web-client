@@ -1,0 +1,26 @@
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+  <h5 localize="Observing Location Options">
+  </h5>
+</div>
+<div class="modal-body">
+  <table>
+    <col width="50%">
+    <col width="50%">
+    <tr id="pasteRow">
+      <td><label localize="Data Set"></label>
+        <select ng-model="layer.latColumn" ng-options="c.type as c.label for c in columns"></select>
+      </td>
+      <td colspan="2"></td>
+    </tr>
+    <tr ng-show="layer">
+      <td>
+        <label localize="Layer Name"></label>
+        <input type="text" ng-model="layerName" ng-change="setName(layerName)"></td>
+      <td>
+        <label localize="Coordinates Type"></label>
+        <select ng-model="layer._coordinatesType$1" ng-options="c.type as c.label for c in coordTypes"></select>
+      </td>
+      <td></td>
+    </tr>
+  </table>
+</div>
