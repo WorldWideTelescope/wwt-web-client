@@ -58,6 +58,27 @@
     {type: 10, label: 'Custom'}
   ];
 
+  var setObservingLocation = function(props){
+    var earthMap = wwtlib.LayerManager.get_allMaps().Earth;
+    wwtlib.LayerManager.layerSelectionChanged(earthMap);
+    var rf = new wwtlib.ReferenceFrame();
+    rf.name = 'Observing Location';
+    rf.lat = props.lat;
+    rf.lng = props.lng;
+    rf.altitude = props.altitude;
+    rf.stationKeeping = true;
+    wwtlib.LayerManager.referenceFrameWizardFinished(rf);
+    $rootScope.hasSetupObservingLocation = true;
+    var newSettings = {
+      _locationAltitude:props.altitude.toFixed(1) +'m',//0.00000690228892768605
+      _locationLat:props.lat,//47.70409186039239
+      _locationLng:props.lng//-122.30266851233682
+    };
+    Object.assign(wwt.wc.settings,newSettings);
+  };
+
+
+
   var initTypeList = function (typeKey, scopeKey) {
     if (typeof scopeKey != 'string') {
       scopeKey = util.firstCharLower(typeKey)
@@ -150,7 +171,7 @@
   }
   var frameWizardDialog = wwtlib.LayerManager.get_frameWizardDialog();
   var showFrameWizardDialog = function (refFrame, propertyMode) {
-    console.log({refFrame: refFrame});
+    //console.log({refFrame: refFrame});
     var modalScope = $rootScope.$new();
     refFrame.name = refFrame.name || '';
     modalScope.refFrame = refFrame;
@@ -166,7 +187,41 @@
       placement: 'center',
       backdrop: false,
       controller: 'refFrameController'
+
     });
+  };
+//scope,callback,cssClass,controller,template,backdrop - template=required
+  var showModal = function (props) {
+    //console.log({refFrame: refFrame});
+    var modalScope = props.scope || $rootScope.$new();
+
+    var modalConfig = {
+      scope: modalScope,
+      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: 'views/modals/' + props.template + '.html?v=' + util.resVersion,
+      show: true,
+      //placement: 'center',
+      backdrop: props.backdrop !== undefined ? props.backdrop : false,
+      controller: props.controller
+    };
+    if (props.cssClass) {
+      modalScope.customClass = props.cssClass;
+    }
+    if (props.fixedPosition) {
+      modalScope.customClass += ' noreposition';
+      modalConfig.animation = false;
+      modalConfig.backdropAnimation = false;
+      setTimeout(function(){
+        $('.noreposition').removeClass('noreposition').find('.modal-dialog').css({left:300});
+      },2222);
+    } else {
+      modalConfig.placement = 'centered';
+    }
+    var modal = $modal(modalConfig);
+
+    if (props.callback) {
+      props.callback({modal: modal, scope: modalScope, modalConfig: modalConfig});
+    }
   };
 
 
@@ -225,14 +280,14 @@
     modalScope.customClass = 'wizard embed-modal';
     $modal({
       scope: modalScope,
-      animation:false,
-      backdropAnimation:false,
+      animation: false,
+      backdropAnimation: false,
       templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
       contentTemplate: 'views/modals/embed-video.html?v=' + util.resVersion,
       show: true,
       //placement: 'center',
       backdrop: false,
-      controller:'EmbedController'
+      controller: 'EmbedController'
     });
   };
 
@@ -249,7 +304,6 @@
       });
       wwt.wc.add_voTableDisplay(wwt.loadVOTableModal);
       wwt.wc.add_colorPickerDisplay(showColorpicker);
-      //console.log({refFrameDialog: refFrameDialog, frameWizardDialog: frameWizardDialog});
       frameWizardDialog.add_showDialogHook(function (frame) {
         showFrameWizardDialog(frame, false);
       });
@@ -258,7 +312,9 @@
       dataVizWiz.add_showDialogHook(showDataVizWiz);
     },
     embedVideo: embedVideo,
-    annotationOpts: annotationOpts
+    annotationOpts: annotationOpts,
+    showModal: showModal,
+    setObservingLocation:setObservingLocation
   };
 }]);
 

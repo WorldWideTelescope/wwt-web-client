@@ -13,6 +13,7 @@ wwt.app.factory('AppState', function() {
                 delete data[key]
             } else {
                 data[key] = val;
+
             }
 	        if (localStorage) {
 	            localStorage.setItem('appState', JSON.stringify(data));
@@ -31,6 +32,7 @@ wwt.app.factory('AppState', function() {
 	var init = function () {
 		var storedData = localStorage ? localStorage.getItem('appState') : {};
 		data = storedData && localStorage ? JSON.parse(storedData) : {};
+
 	};
 	init();
 	return api;
