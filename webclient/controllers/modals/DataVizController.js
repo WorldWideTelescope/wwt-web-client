@@ -48,7 +48,6 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
   };
   function initColumns() {
     l = $scope.layer;
-    //console.log($scope.layer);
     $scope.columns = $scope.layer._table$1.header.map(function (c, i) {
       return {label: c, type: i};
     });

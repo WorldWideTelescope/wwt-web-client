@@ -15525,7 +15525,7 @@ window.wwtlib = function(){
     temp.viewCamera.target = 65536;
     return temp;
   };
-  RenderContext._getTilesYForLevel = function(layer, level) {
+  RenderContext.getTilesYForLevel = function(layer, level) {
     var maxY = 1;
     switch (layer.get_projection()) {
       case 0:
@@ -15549,7 +15549,7 @@ window.wwtlib = function(){
     }
     return maxY;
   };
-  RenderContext._getTilesXForLevel = function(layer, level) {
+  RenderContext.getTilesXForLevel = function(layer, level) {
     var maxX = 1;
     switch (layer.get_projection()) {
       case 6:
@@ -15716,9 +15716,44 @@ window.wwtlib = function(){
       this._foregroundImageset = value;
       return value;
     },
+    getAltitudeForLatLongForPlanet: function(planetID, viewLat, viewLong) {
+      var layer = WWTControl.singleton.getImagesetByName(Planets.getNameFrom3dId(planetID));
+      if (layer == null) {
+        return 0;
+      }
+      var maxX = RenderContext.getTilesXForLevel(layer, layer.get_baseLevel());
+      var maxY = RenderContext.getTilesYForLevel(layer, layer.get_baseLevel());
+      for (var x = 0; x < maxX; x++) {
+        for (var y = 0; y < maxY; y++) {
+          var tile = TileCache.getTile(layer.get_baseLevel(), x, y, layer, null);
+          if (tile != null) {
+            if (tile.isPointInTile(viewLat, viewLong)) {
+              return tile.getSurfacePointAltitude(viewLat, viewLong, true);
+            }
+          }
+        }
+      }
+      return 0;
+    },
+    getEarthAltitude: function(ViewLat, ViewLong, meters) {
+      if (WWTControl.singleton.get_solarSystemMode()) {
+        var pnt = Coordinates.geoTo3dDouble(ViewLat, ViewLong + 90);
+        var EarthMat = Planets.earthMatrixInv;
+        pnt = Vector3d._transformCoordinate(pnt, EarthMat);
+        pnt.normalize();
+        var point = Coordinates.cartesianToLatLng(pnt);
+        return this.getAltitudeForLatLongForPlanet(this.viewCamera.target, point.y, point.x);
+      }
+      else if (!this.get_backgroundImageset().get_dataSetType()) {
+        return (meters) ? this.getMetersAltitudeForLatLong(ViewLat, ViewLong) : this.getScaledAltitudeForLatLong(ViewLat, ViewLong);
+      }
+      else {
+        return 0;
+      }
+    },
     drawImageSet: function(imageset, opacity) {
-      var maxX = RenderContext._getTilesXForLevel(imageset, imageset.get_baseLevel());
-      var maxY = RenderContext._getTilesYForLevel(imageset, imageset.get_baseLevel());
+      var maxX = RenderContext.getTilesXForLevel(imageset, imageset.get_baseLevel());
+      var maxY = RenderContext.getTilesYForLevel(imageset, imageset.get_baseLevel());
       for (var x = 0; x < maxX; x++) {
         for (var y = 0; y < maxY; y++) {
           var tile = TileCache.getTile(imageset.get_baseLevel(), x, y, imageset, null);
@@ -15728,22 +15763,36 @@ window.wwtlib = function(){
         }
       }
     },
-    getScaledAltitudeForLatLong: function(viewLat, viewLong) {
+    _getTileAtLatLong: function(viewLat, viewLong) {
       var layer = this.get_backgroundImageset();
       if (layer == null) {
-        return 0;
+        return null;
       }
-      var maxX = RenderContext._getTilesXForLevel(layer, layer.get_baseLevel());
-      var maxY = RenderContext._getTilesYForLevel(layer, layer.get_baseLevel());
+      var maxX = RenderContext.getTilesXForLevel(layer, layer.get_baseLevel());
+      var maxY = RenderContext.getTilesYForLevel(layer, layer.get_baseLevel());
       for (var x = 0; x < maxX; x++) {
         for (var y = 0; y < maxY; y++) {
           var tile = TileCache.getTile(layer.get_baseLevel(), x, y, layer, null);
           if (tile != null) {
             if (tile.isPointInTile(viewLat, viewLong)) {
-              return tile.getSurfacePointAltitude(viewLat, viewLong, false);
+              return tile;
             }
           }
         }
+      }
+      return null;
+    },
+    getScaledAltitudeForLatLong: function(viewLat, viewLong) {
+      var tile = this._getTileAtLatLong(viewLat, viewLong);
+      if (tile != null) {
+        return tile.getSurfacePointAltitude(viewLat, viewLong, false);
+      }
+      return 0;
+    },
+    getMetersAltitudeForLatLong: function(viewLat, viewLong) {
+      var tile = this._getTileAtLatLong(viewLat, viewLong);
+      if (tile != null) {
+        return tile.getSurfacePointAltitude(viewLat, viewLong, true);
       }
       return 0;
     },

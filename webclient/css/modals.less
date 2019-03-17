@@ -1,3 +1,4 @@
+
 #loadingContentModal {
   z-index: 9999;
 
@@ -134,6 +135,81 @@
   }
 }
 
+
+
+body.wwt-webclient-wrapper {
+  div.wwt-modal.modal.set-position{
+    div.modal-dialog {
+      margin: 0;
+      left: 300px;
+      top: 160px;
+      width: 433px;
+
+    }
+    &.noreposition{
+      div.modal-dialog {
+        left: 300px !important;
+        top: 160px !important;
+      }
+    }
+  }
+}
+body.wwt-webclient-wrapper {
+  div.wwt-modal.modal.set-position.observing-loc{
+    div.modal-dialog {
+
+      .modal-content{
+        .modal-body{
+          padding:44px 0 5px 5px;
+          .ribbon{
+            position:absolute;
+            border-bottom:solid 1px #60b6ee;
+            box-shadow:0 1px 33px #398fc7;
+          }
+          .choose-globe{
+            table{
+              margin-bottom:12px;
+              td{
+                height:28px;
+                font-size:12px;
+                strong{
+                  font-size:inherit;
+                }
+              }
+            }
+          }
+        }
+        table{
+          width:100%;
+          margin:0 -15px -22px 0;
+          td{
+            input[type=text],select{
+              display:block;
+              width:100%;
+              max-width:100%;
+            }
+            select[multiple]{
+              .boxGradientLite();
+            }
+            a.btn{
+              display:inline-block;
+              float:right;
+              margin:5px 0 0 8px;
+              width:80px;
+            }
+          }
+        }
+      }
+    }
+    &.noreposition{
+      div.modal-dialog {
+        left: 300px !important;
+        top: 160px !important;
+      }
+    }
+  }
+}
+
 body.wwt-webclient-wrapper .wwt-modal.modal.embed-modal{
   .modal-dialog{
     margin:0;
@@ -200,6 +276,19 @@ body.wwt-webclient-wrapper .wwt-modal.modal.embed-modal{
           width: 10px;
           border: solid 1px @bordercolor;
         }
+      }
+    }
+  }
+}
+
+.observing-loc{
+  .modal-dialog {
+    width: 400px;
+
+    .modal-content {
+      width: inherit;
+
+      .modal-body {
       }
     }
   }

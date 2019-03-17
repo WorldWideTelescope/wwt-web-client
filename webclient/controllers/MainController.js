@@ -458,16 +458,21 @@ wwt.controllers.controller('MainController',
         if (viewport.isDirty || viewport.init) {
           $rootScope.viewport = viewport;
           $scope.coords = wwtlib.Coordinates.fromRaDec(viewport.RA, viewport.Dec);
-          window.coords = $scope.coords;
+          wwt.coords = $scope.coords;
+          wwt.viewport = viewport;
           var lng = $scope.coords.get_lng();
-          lng = 180 - ((lng) / 24.0 * 360) - 180;
+          if ($scope.lookAt==='Earth') {
+            lng = (((180 - (($scope.coords.get_RA()) / 24.0 * 360) - 180) + 540) % 360) - 180;
+          }
           $scope.formatted = {
             RA: util.formatHms(viewport.RA, true),
             Dec: util.formatHms(viewport.Dec, false, true),
             Lat: util.formatHms($scope.coords.get_lat(), false, false),
-            Lng: util.formatHms($scope.coords.get_lng(), false, false),
+            Lng: util.formatHms(lng/*$scope.coords.get_lng()*/, false, false),
             Zoom: util.formatHms(viewport.Fov)
-          }
+          };
+
+
           trackConstellation();
           if (viewport.init) {
             $timeout(trackConstellation, 1200);

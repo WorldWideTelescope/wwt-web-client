@@ -229,3 +229,5 @@ COPYING.txt
 /webclient/sdk/Script.Web.dll
 /webclient/sdk/wwtlib.dll
 /.vs/config/applicationhost.config
+/HTML5SDK/.vs/Html5Sdk/v15/Server/sqlite3/storage.ide-wal
+/HTML5SDK/.vs/Html5Sdk/v15/Server/sqlite3/storage.ide-shm

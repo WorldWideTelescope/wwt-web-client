@@ -29,18 +29,18 @@ namespace wwtlib
         public bool Lighting = false;
         public RenderContext()
         {
-           
+
 
             for (int i = 0; i < 6; i++)
             {
-                frustum[i] = new PlaneD(0,0,0,0);
+                frustum[i] = new PlaneD(0, 0, 0, 0);
             }
         }
         public static RenderContext Create(CanvasContext2D device)
         {
             RenderContext temp = new RenderContext();
             temp.Device = device;
-           
+
             temp.ViewCamera.Zoom = 700;
             temp.ViewCamera.Target = SolarSystemObjects.Undefined;
             return temp;
@@ -159,8 +159,8 @@ namespace wwtlib
             {
                 viewBase = value;
             }
-        } 
-        
+        }
+
         private Matrix3d projection;
 
         public Matrix3d Projection
@@ -195,7 +195,7 @@ namespace wwtlib
             Texture tex = null;
 
             return tex;
-            
+
         }
 
         public Matrix3d WorldBase
@@ -205,7 +205,7 @@ namespace wwtlib
             {
                 worldBase = value;
             }
-        }   
+        }
         private Matrix3d worldBaseNonRotating;
 
         public Matrix3d WorldBaseNonRotating
@@ -237,7 +237,7 @@ namespace wwtlib
                     mainTexture = value;
                     gl.bindTexture(GL.TEXTURE_2D, mainTexture.Texture2d);
 
-                   
+
                     //textureStateDirty = true;
                 }
             }
@@ -258,11 +258,11 @@ namespace wwtlib
 
         }
 
-      
- 
+
+
         public void SetTexture(ImageElement texture)
         {
-            
+
         }
 
         public CameraParameters ViewCamera = new CameraParameters();
@@ -289,8 +289,68 @@ namespace wwtlib
             set { foregroundImageset = value; }
         }
 
+        public double GetAltitudeForLatLongForPlanet(int planetID, double viewLat, double viewLong)
+        {
 
-        private static int GetTilesYForLevel(Imageset layer, int level)
+            Imageset layer = WWTControl.Singleton.GetImagesetByName(Planets.GetNameFrom3dId(planetID));
+
+            if (layer == null)
+            {
+                return 0;
+            }
+
+            int maxX = GetTilesXForLevel(layer, layer.BaseLevel);
+            int maxY = GetTilesYForLevel(layer, layer.BaseLevel);
+
+            for (int x = 0; x < maxX; x++)
+            {
+                for (int y = 0; y < maxY; y++)
+                {
+                    Tile tile = TileCache.GetTile(layer.BaseLevel, x, y, layer, null);
+                    if (tile != null)
+                    {
+                        if (tile.IsPointInTile(viewLat, viewLong))
+                        {
+                            return tile.GetSurfacePointAltitude(viewLat, viewLong, true);
+                        }
+                    }
+                }
+            }
+            return 0;
+        }
+
+        public double GetEarthAltitude(double ViewLat, double ViewLong, bool meters)
+        {
+            if (WWTControl.Singleton.SolarSystemMode)
+            {
+
+                Vector3d pnt = Coordinates.GeoTo3dDouble(ViewLat, ViewLong + 90);
+
+                Matrix3d EarthMat = Planets.EarthMatrixInv;
+
+                pnt = Vector3d.TransformCoordinate(pnt, EarthMat);
+                pnt.Normalize();
+
+                Vector2d point = Coordinates.CartesianToLatLng(pnt);
+
+                return GetAltitudeForLatLongForPlanet((int)ViewCamera.Target, point.Y, point.X);
+
+            }
+            else if (BackgroundImageset.DataSetType == ImageSetType.Earth)
+            {
+                return meters ? GetMetersAltitudeForLatLong(ViewLat, ViewLong) : GetScaledAltitudeForLatLong(ViewLat, ViewLong);
+            }
+            //else if (RenderContext.BackgroundImageset.DataSetType == ImageSetType.Planet)
+            //{
+            //    return GetAltitudeForLatLong(ViewLat, ViewLong);
+            //}
+            else
+            {
+                return 0;
+            }
+        }
+
+        public static int GetTilesYForLevel(Imageset layer, int level)
         {
             int maxY = 1;
 
@@ -322,7 +382,7 @@ namespace wwtlib
             return maxY;
         }
 
-        private static int GetTilesXForLevel(Imageset layer, int level)
+        public static int GetTilesXForLevel(Imageset layer, int level)
         {
             int maxX = 1;
             switch (layer.Projection)
@@ -339,7 +399,7 @@ namespace wwtlib
                     maxX = (int)Math.Pow(2, level) * (int)(360 / layer.BaseTileDegrees);
 
                     break;
-         
+
                 case ProjectionType.Tangent:
                     if (layer.WidthFactor == 1)
                     {
@@ -361,7 +421,7 @@ namespace wwtlib
                     maxX = (int)Math.Pow(2, level) * 2;
                     break;
             }
-            
+
 
             return maxX;
         }
@@ -384,13 +444,13 @@ namespace wwtlib
             }
         }
 
-        public double GetScaledAltitudeForLatLong(double viewLat, double viewLong)
+        private Tile GetTileAtLatLong(double viewLat, double viewLong)
         {
             Imageset layer = BackgroundImageset;
 
             if (layer == null)
             {
-                return 0;
+                return null;
             }
 
             int maxX = GetTilesXForLevel(layer, layer.BaseLevel);
@@ -405,13 +465,36 @@ namespace wwtlib
                     {
                         if (tile.IsPointInTile(viewLat, viewLong))
                         {
-                            return tile.GetSurfacePointAltitude(viewLat, viewLong, false);
+                            return tile;
                         }
                     }
                 }
             }
+            return null;
+        }
+
+        public double GetScaledAltitudeForLatLong(double viewLat, double viewLong)
+        {
+            Tile tile = GetTileAtLatLong(viewLat, viewLong);
+            if (tile != null)
+            {
+                return tile.GetSurfacePointAltitude(viewLat, viewLong, false);
+            }
+
             return 0;
         }
+
+        public double GetMetersAltitudeForLatLong(double viewLat, double viewLong)
+        {
+            Tile tile = GetTileAtLatLong(viewLat, viewLong);
+            if (tile != null)
+            {
+                return tile.GetSurfacePointAltitude(viewLat, viewLong, true);
+            }
+
+            return 0;
+        }
+
 
         double targetHeight = 1;
         public double targetAltitude = 0;
@@ -517,7 +600,7 @@ namespace wwtlib
                  .4559837762, -.8676661490, -.1980763734, 0,
                 0, 0, 0, 1);
         bool firstTimeInit = false;
-        
+
         public void SetupMatricesSpace3d(double canvasWidth, double canvasHeight)
         {
             Lighting = false;
@@ -525,9 +608,9 @@ namespace wwtlib
             {
                 galacticMatrix = Matrix3d.Identity;
                 // -28.9361739586894, 17.7603329867975
-                galacticMatrix.Multiply(Matrix3d.RotationY(-(270-(17.7603329867975*15 )) / 180.0 * Math.PI));
+                galacticMatrix.Multiply(Matrix3d.RotationY(-(270 - (17.7603329867975 * 15)) / 180.0 * Math.PI));
                 galacticMatrix.Multiply(Matrix3d.RotationX(-((-28.9361739586894)) / 180.0 * Math.PI));
-                galacticMatrix.Multiply(Matrix3d.RotationZ(((31.422052860102041270114993238783)-90) / 180.0 * Math.PI));
+                galacticMatrix.Multiply(Matrix3d.RotationZ(((31.422052860102041270114993238783) - 90) / 180.0 * Math.PI));
                 //galacticMatrix.Transpose();
                 //galacticMatrix.Invert();
                 firstTimeInit = true;
@@ -541,11 +624,11 @@ namespace wwtlib
             if (Settings.Active.GalacticMode)
             {
                 WorldMatrix.Multiply(galacticMatrix);
-                WorldMatrix.Multiply(Matrix3d.RotationY(((az )) / 180.0 * Math.PI));
+                WorldMatrix.Multiply(Matrix3d.RotationY(((az)) / 180.0 * Math.PI));
                 WorldMatrix.Multiply(Matrix3d.RotationX(-((alt)) / 180.0 * Math.PI));
                 double[] gPoint = Coordinates.GalactictoJ2000(az, alt);
 
-                viewPoint = Coordinates.RADecTo3dAu(gPoint[0]/15, gPoint[1], 1.0);
+                viewPoint = Coordinates.RADecTo3dAu(gPoint[0] / 15, gPoint[1], 1.0);
                 TargetCamera.Lng = this.RAtoViewLng(gPoint[0] / 15);
                 TargetCamera.Lat = gPoint[1];
                 ViewCamera.Lat = TargetCamera.Lat;
@@ -553,14 +636,14 @@ namespace wwtlib
             }
             else
             {
-                WorldMatrix.Multiply(Matrix3d.RotationY(-((ViewCamera.Lng -90 )) / 180.0 * Math.PI));
+                WorldMatrix.Multiply(Matrix3d.RotationY(-((ViewCamera.Lng - 90)) / 180.0 * Math.PI));
                 WorldMatrix.Multiply(Matrix3d.RotationX(-((ViewCamera.Lat)) / 180.0 * Math.PI));
                 viewPoint = Coordinates.RADecTo3dAu(RA, Dec, 1.0);
             }
 
 
 
-            
+
 
             double camLocal = ((ViewCamera.Rotation /*+ 90*/));
             fovAngle = ((this.ViewCamera.Zoom) / FOVMULT) / Math.PI * 180;
@@ -584,7 +667,7 @@ namespace wwtlib
                 double raPart = -((zenith.RA - 6) / 24.0 * (Math.PI * 2));
                 double decPart = -(((zenith.Dec)) / 360.0 * (Math.PI * 2));
                 string raText = Coordinates.FormatDMS(zenith.RA);
-                WorldMatrix = Matrix3d.RotationY(-raPart-Math.PI);
+                WorldMatrix = Matrix3d.RotationY(-raPart - Math.PI);
                 WorldMatrix.Multiply(Matrix3d.RotationX(decPart));
 
                 if (SpaceTimeController.Location.Lat < 0)
@@ -611,7 +694,7 @@ namespace wwtlib
             WorldBase = WorldMatrix.Clone();
             // altaz
 
-            
+
 
             double localZoomFactor = ViewCamera.Zoom;
 
@@ -697,15 +780,15 @@ namespace wwtlib
 
             Matrix3d lookAtAdjust = Matrix3d.Identity;
 
-            Vector3d lookFrom =  Vector3d.Create(0, 0, 0);
-            Vector3d lookAt =  Vector3d.Create(0, 0, 1);
-            Vector3d lookUp =  Vector3d.Create(0, 1, 0);
+            Vector3d lookFrom = Vector3d.Create(0, 0, 0);
+            Vector3d lookAt = Vector3d.Create(0, 0, 1);
+            Vector3d lookUp = Vector3d.Create(0, 1, 0);
 
             Matrix3d view;
             view = Matrix3d.LookAtLH(lookFrom, lookAt, lookUp);
-            view.Multiply( Matrix3d.Scaling(1, -1, 1));
+            view.Multiply(Matrix3d.Scaling(1, -1, 1));
 
- 
+
             View = view;
 
             double back = 10000;
@@ -781,10 +864,10 @@ namespace wwtlib
 
                     angle = angle * Math.Max(0, 1 - val);
                 }
-                
 
 
-                CameraPosition =  Vector3d.Create(
+
+                CameraPosition = Vector3d.Create(
                 (Math.Sin(-ViewCamera.Rotation) * Math.Sin(angle) * cameraDistance),
                 (Math.Cos(-ViewCamera.Rotation) * Math.Sin(angle) * cameraDistance),
                 ((Math.Cos(angle) * cameraDistance)));
@@ -816,12 +899,12 @@ namespace wwtlib
             WorldBaseNonRotating = Matrix3d.Identity;
 
             View = Matrix3d.MultiplyMatrix(Matrix3d.MultiplyMatrix(trackingMatrix, Matrix3d.LookAtLH(CameraPosition, lookAt, lookUp)), lookAtAdjust);
-                 
+
 
             ViewBase = View.Clone();
 
 
-            Vector3d temp = Vector3d.SubtractVectors(lookAt,CameraPosition);
+            Vector3d temp = Vector3d.SubtractVectors(lookAt, CameraPosition);
             temp.Normalize();
             temp = Vector3d.TransformCoordinate(temp, trackingMatrix);
             temp.Normalize();
@@ -873,8 +956,8 @@ namespace wwtlib
 
 
             double radius = Planets.GetAdjustedPlanetRadius((int)SolarSystemTrack);
-           
-           
+
+
             if (cameraDistance < radius * 2.0 && !forStars)
             {
                 nearPlane = cameraDistance * 0.03;
@@ -1112,7 +1195,7 @@ namespace wwtlib
                 }
             }
         }
-        
+
         public Vector3d CameraPosition = new Vector3d();
 
         public Matrix3d WVP;
@@ -1121,7 +1204,7 @@ namespace wwtlib
         {
             WV = Matrix3d.MultiplyMatrix(World, View);
 
-            Matrix3d viewProjection =  Matrix3d.MultiplyMatrix(WV, Projection);
+            Matrix3d viewProjection = Matrix3d.MultiplyMatrix(WV, Projection);
 
             WVP = viewProjection.Clone();
 
@@ -1171,9 +1254,9 @@ namespace wwtlib
 
             }
             frustumDirty = false;
-            
-            WVP.Scale( Vector3d.Create(Width/2, -Height/2, 1));
-            WVP.Translate(Vector3d.Create(Width/2, Height/2, 0));
+
+            WVP.Scale(Vector3d.Create(Width / 2, -Height / 2, 1));
+            WVP.Translate(Vector3d.Create(Width / 2, Height / 2, 0));
             SetMatrixes();
         }
 
@@ -1194,7 +1277,7 @@ namespace wwtlib
                 return;
             }
 
-            int uints_for_indices = gl.getExtension ("OES_element_index_uint");
+            int uints_for_indices = gl.getExtension("OES_element_index_uint");
 
             Tile.uvMultiple = 1;
             Tile.DemEnabled = true;

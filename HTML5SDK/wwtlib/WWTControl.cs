@@ -142,7 +142,7 @@ namespace wwtlib
                 {
                     if (crossFadeTexture != null)
                     {
-                       // crossFadeTexture.Dispose();
+                        // crossFadeTexture.Dispose();
                     }
                     crossFadeTexture = RenderContext.GetScreenTexture();
 
@@ -153,7 +153,7 @@ namespace wwtlib
                 {
                     if (crossFadeTexture != null)
                     {
-                       // crossFadeTexture.Dispose();
+                        // crossFadeTexture.Dispose();
                         crossFadeTexture = null;
                     }
                 }
@@ -196,29 +196,29 @@ namespace wwtlib
                     if (fadePoints == null)
                     {
                         fadePoints = new PositionColoredTextured[4];
-                        for(int i=0; i < 4; i++)
+                        for (int i = 0; i < 4; i++)
                         {
                             fadePoints[i] = new PositionColoredTextured();
                         }
                     }
 
 
-                    fadePoints[0].Position.X = -RenderContext.Width/2;
-                    fadePoints[0].Position.Y = RenderContext.Height/2;
+                    fadePoints[0].Position.X = -RenderContext.Width / 2;
+                    fadePoints[0].Position.Y = RenderContext.Height / 2;
                     fadePoints[0].Position.Z = 1347;
                     fadePoints[0].Tu = 0;
                     fadePoints[0].Tv = 1;
                     fadePoints[0].Color = color;
 
-                    fadePoints[1].Position.X = -RenderContext.Width/2;
+                    fadePoints[1].Position.X = -RenderContext.Width / 2;
                     fadePoints[1].Position.Y = -RenderContext.Height / 2;
                     fadePoints[1].Position.Z = 1347;
                     fadePoints[1].Tu = 0;
                     fadePoints[1].Tv = 0;
                     fadePoints[1].Color = color;
 
-                    fadePoints[2].Position.X = RenderContext.Width/2;
-                    fadePoints[2].Position.Y = RenderContext.Height/2;
+                    fadePoints[2].Position.X = RenderContext.Width / 2;
+                    fadePoints[2].Position.Y = RenderContext.Height / 2;
                     fadePoints[2].Position.Z = 1347;
                     fadePoints[2].Tu = 1;
                     fadePoints[2].Tv = 1;
@@ -718,39 +718,7 @@ namespace wwtlib
         }
 
 
-        public double GetEarthAltitude()
-        {
-            double ViewLat = RenderContext.ViewCamera.Lat;
-            double ViewLong = RenderContext.ViewCamera.Lat;
-            if (SolarSystemMode)
-            {
-                
 
-                Vector3d pnt = Coordinates.GeoTo3dDouble(ViewLat, ViewLong + 90);
-
-                Matrix3d EarthMat = Planets.EarthMatrixInv;
-
-                pnt = Vector3d.TransformCoordinate(pnt, EarthMat);
-                pnt.Normalize();
-
-                Vector2d point = Coordinates.CartesianToLatLng(pnt);
-
-                return MercatorTile.GetSurfacePointAltitude(point.Y, point.X, true);
-
-            }
-            else if (currentImageSetfield.DataSetType == ImageSetType.Earth)
-            {
-                return TargetAltitude;
-            }
-            else if (currentImageSetfield.DataSetType == ImageSetType.Planet)
-            {
-                return GetAltitudeForLatLong(ViewLat, ViewLong);
-            }
-            else
-            {
-                return 0;
-            }
-        }
 
         private string GetCurrentReferenceFrame()
         {
@@ -767,7 +735,7 @@ namespace wwtlib
             {
                 return "Earth";
             }
-            if (RenderContext.BackgroundImageset.Name == "Visible Imagery" && RenderContext.BackgroundImageset.Url.ToLowerCase().IndexOf("mars") > -1 )
+            if (RenderContext.BackgroundImageset.Name == "Visible Imagery" && RenderContext.BackgroundImageset.Url.ToLowerCase().IndexOf("mars") > -1)
             {
 
                 RenderContext.BackgroundImageset.ReferenceFrame = "Mars";
@@ -778,7 +746,7 @@ namespace wwtlib
             {
                 foreach (string name in SolarSystemObjectsNames)
                 {
-                    if (RenderContext.BackgroundImageset.Name.ToLowerCase().IndexOf(name.ToLowerCase()) > -1 )
+                    if (RenderContext.BackgroundImageset.Name.ToLowerCase().IndexOf(name.ToLowerCase()) > -1)
                     {
                         RenderContext.BackgroundImageset.ReferenceFrame = name;
                         return name;
@@ -957,7 +925,7 @@ namespace wwtlib
 
         private const double DragCoefficient = 0.8;
 
-       
+
         private void UpdateViewParameters()
         {
             if (RenderContext.Space && tracking && trackingObject != null)
@@ -1038,13 +1006,13 @@ namespace wwtlib
                 //    }
                 //}
                 //else
-                
-               
-                    //if (!Settings.Current.SmoothPan)
-                    //{
-                    //    this.viewCamera.Lat = this.targetCamera.Lat;
-                    //    this.viewCamera.Lng = this.targetCamera.Lng;
-                    //}
+
+
+                //if (!Settings.Current.SmoothPan)
+                //{
+                //    this.viewCamera.Lat = this.targetCamera.Lat;
+                //    this.viewCamera.Lng = this.targetCamera.Lng;
+                //}
                 if (RenderContext.Space && (Settings.Active.LocalHorizonMode || Settings.Active.GalacticMode))
                 {
                     if (((Math.Abs(RenderContext.targetAlt - RenderContext.alt) >= (minDelta)) |
@@ -1420,8 +1388,8 @@ namespace wwtlib
             canvas.AddEventListener("touchend", OnTouchEnd, false);
             canvas.AddEventListener("gesturechange", OnGestureChange, false);
             canvas.AddEventListener("gesturestart", OnGestureStart, false);
-            canvas.AddEventListener("gestureend", OnGestureEnd, false);  
-            Document.Body.AddEventListener("keydown", OnKeyDown, false); 
+            canvas.AddEventListener("gestureend", OnGestureEnd, false);
+            Document.Body.AddEventListener("keydown", OnKeyDown, false);
             //canvas.AddEventListener("MSGestureChange", OnGestureChange, false);  
             //canvas.AddEventListener("mouseout", OnMouseUp, false);
 
@@ -1519,7 +1487,7 @@ namespace wwtlib
         {
             GestureEvent g = (GestureEvent)e;
             mouseDown = false;
-         
+
         }
 
         private bool Annotationclicked(double ra, double dec, double x, double y)
@@ -1597,7 +1565,7 @@ namespace wwtlib
             ev.PreventDefault();
             ev.StopPropagation();
 
-          //  Document.Title = "touched by an event ";
+            //  Document.Title = "touched by an event ";
 
             lastX = ev.TargetTouches[0].PageX;
             lastY = ev.TargetTouches[0].PageY;
@@ -1622,7 +1590,7 @@ namespace wwtlib
 
 
             mouseDown = true;
-    
+
         }
 
         int[] pointerIds = new int[2];
@@ -1635,7 +1603,7 @@ namespace wwtlib
 
 
             Script.Literal("var evt = arguments[0], cnv = arguments[0].target; if (cnv.setPointerCapture) {cnv.setPointerCapture(evt.pointerId);} else if (cnv.msSetPointerCapture) { cnv.msSetPointerCapture(evt.pointerId); }");
-            if (pointerIds[0] == 0 )
+            if (pointerIds[0] == 0)
             {
                 pointerIds[0] = pe.PointerId;
                 index = 0;
@@ -1726,7 +1694,7 @@ namespace wwtlib
         bool dragging = false;
         public void OnTouchMove(ElementEvent e)
         {
-          //  Document.Title = "touched by an event ";
+            //  Document.Title = "touched by an event ";
             TouchEvent ev = (TouchEvent)e;
 
             if (isPintching)
@@ -1767,7 +1735,7 @@ namespace wwtlib
 
         public void OnTouchEnd(ElementEvent e)
         {
-      //      Document.Title = "touched by an event ";
+            //      Document.Title = "touched by an event ";
             TouchEvent ev = (TouchEvent)e;
             ev.PreventDefault();
             ev.StopPropagation();
@@ -1802,14 +1770,14 @@ namespace wwtlib
 
         Vector2d[] rect = new Vector2d[2];
         public void pinchStart(TouchEvent ev)
-        {        
+        {
             TouchInfo t0 = ev.Touches[0];
             TouchInfo t1 = ev.Touches[1];
-            rect[0] = Vector2d.Create( t0.PageX,  t0.PageY );
-            rect[1] = Vector2d.Create( t1.PageX,  t1.PageY );
+            rect[0] = Vector2d.Create(t0.PageX, t0.PageY);
+            rect[1] = Vector2d.Create(t1.PageX, t1.PageY);
             ev.StopPropagation();
             ev.PreventDefault();
-       //     Document.Title = "pinched by an event ";
+            //     Document.Title = "pinched by an event ";
         }
 
 
@@ -1836,7 +1804,7 @@ namespace wwtlib
 
         public double GetDistance(Vector2d a, Vector2d b)
         {
-            
+
             double x;
             double y;
             x = a.X - b.X;
@@ -1851,7 +1819,7 @@ namespace wwtlib
         public void OnMouseDown(ElementEvent e)
         {
             // Capture mouse
-            
+
 
             Document.AddEventListener("mousemove", OnMouseMove, false);
             Document.AddEventListener("mouseup", OnMouseUp, false);
@@ -1873,15 +1841,15 @@ namespace wwtlib
         {
             e.PreventDefault();
             e.StopPropagation();
-            
+
         }
 
 
         public void OnMouseMove(ElementEvent e)
         {
-           
+
             lastMouseMove = Date.Now;
-            hoverTextPoint = Vector2d.Create( Mouse.OffsetX(Canvas, e), Mouse.OffsetY(Canvas, e));
+            hoverTextPoint = Vector2d.Create(Mouse.OffsetX(Canvas, e), Mouse.OffsetY(Canvas, e));
             hoverText = "";
 
             if (mouseDown)
@@ -1932,7 +1900,7 @@ namespace wwtlib
             {
                 RenderContext.TargetCamera.Angle = 0;
             }
-         
+
         }
         bool moved = false;
         public void OnMouseUp(ElementEvent e)
@@ -1959,7 +1927,7 @@ namespace wwtlib
             mouseDown = false;
 
             moved = false;
-            
+
         }
 
         public Vector2d GetCoordinatesForScreenPoint(double x, double y)
@@ -1970,7 +1938,7 @@ namespace wwtlib
             Vector2d pt = Vector2d.Create(x, y);
             PickRayDir = TransformPickPointToWorldSpace(pt, RenderContext.Width, RenderContext.Height);
             result = Coordinates.CartesianToSphericalSky(PickRayDir);
-            
+
             return result;
         }
 
@@ -2070,7 +2038,7 @@ namespace wwtlib
 
 
                 //todo remove this line to turn WebGL on...
-                webGL = true; 
+                webGL = true;
 
                 if (webGL)
                 {
@@ -2094,7 +2062,7 @@ namespace wwtlib
                 {
                     Tile.PrepDevice = gl;
                     Singleton.RenderContext.gl = gl;
-                 
+
                     RenderContext.UseGl = true;
                 }
 
@@ -2138,7 +2106,7 @@ namespace wwtlib
                      "//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=earth",
                      true, false, 0, 0, 0, "", "", "", "", 6371000, "Earth");
                 }
-               
+
                 //if (StartMode == "bing")
                 //{
                 //    Singleton.RenderContext.BackgroundImageset =
@@ -2157,7 +2125,7 @@ namespace wwtlib
 
             Singleton.RenderContext.ViewCamera.Lng += 0;
 
-            
+
             Singleton.RenderContext.InitGL();
 
 
@@ -2186,7 +2154,7 @@ namespace wwtlib
                 Settings.GlobalSettings.LocationAltitude = pos.Coords.Altitude;
             }
         }
-        private static void GetLocationError (Position pos)
+        private static void GetLocationError(Position pos)
         {
             if (pos != null && pos.Coords != null)
             {
@@ -2416,7 +2384,7 @@ namespace wwtlib
                         CameraParameters fromParams = RenderContext.ViewCamera.Copy();
                         if (SolarSystemTrack == SolarSystemObjects.Custom && !string.IsNullOrEmpty(RenderContext.TrackingFrame))
                         {
-                            fromParams =  RenderContext.CustomTrackingParams;
+                            fromParams = RenderContext.CustomTrackingParams;
                             RenderContext.TrackingFrame = "";
                         }
                         camTo.Zoom = zoom;
@@ -2594,7 +2562,7 @@ namespace wwtlib
             RenderContext.ViewCamera = RenderContext.TargetCamera.Copy();
             Mover = null;
         }
-        
+
 
         internal IViewMover Mover
         {
@@ -2735,20 +2703,20 @@ namespace wwtlib
 
             tour = new TourDocument();
             tour.Title = name;
-          
+
             SetupTour();
             tour.EditMode = true;
-    
+
             return tour;
         }
 
         public void SetupTour()
         {
-           TourEdit = new TourEditTab();
-           TourEdit.Tour = tour;
-           tour.CurrentTourstopIndex = 0;
-           tour.EditMode = false;
-           uiController = TourEdit.TourEditorUI;
+            TourEdit = new TourEditTab();
+            TourEdit.Tour = tour;
+            tour.CurrentTourstopIndex = 0;
+            tour.EditMode = false;
+            uiController = TourEdit.TourEditorUI;
         }
 
         public void PlayTour(string url)
@@ -2762,19 +2730,19 @@ namespace wwtlib
             //LayerManager.TourLayers = true;
 
             tour = TourDocument.FromUrl(url, delegate
-                    {
-                        //TourPlayer player = new TourPlayer();
-                        //player.Tour = tour;
-                        //tour.CurrentTourstopIndex = -1;
-                        //uiController = player;
-                        //WWTControl.scriptInterface.FireTourReady();
-                        //player.Play();
-                        
-                        SetupTour();
-                        TourEdit.PlayNow(true);
-                        WWTControl.scriptInterface.FireTourReady();
-                    });
-            
+            {
+                //TourPlayer player = new TourPlayer();
+                //player.Tour = tour;
+                //tour.CurrentTourstopIndex = -1;
+                //uiController = player;
+                //WWTControl.scriptInterface.FireTourReady();
+                //player.Play();
+
+                SetupTour();
+                TourEdit.PlayNow(true);
+                WWTControl.scriptInterface.FireTourReady();
+            });
+
         }
 
         public void PlayCurrentTour()
@@ -2870,17 +2838,17 @@ namespace wwtlib
                     crossHarirs.DepthBuffered = false;
                     crossHarirs.Pure2D = true;
                     crossHarirs.AddLine(Vector3d.Create(-.02, .0, 0), Vector3d.Create(.02, 0, 0));
-                    crossHarirs.AddLine(Vector3d.Create(0,-.03, 0), Vector3d.Create(0, .03, 0));
+                    crossHarirs.AddLine(Vector3d.Create(0, -.03, 0), Vector3d.Create(0, .03, 0));
                 }
                 crossHarirs.DrawLines(context, 1.0f, Colors.White);
             }
         }
 
- 
+
         public void CaptureThumbnail(BlobReady blobReady)
         {
             Render();
-           
+
             ImageElement image = (ImageElement)Document.CreateElement("img");
             image.AddEventListener("load", delegate (ElementEvent e)
             {
@@ -2897,7 +2865,7 @@ namespace wwtlib
                 }
                 else
                 {
-                 cw = (int)((double)ch * imageAspect);
+                    cw = (int)((double)ch * imageAspect);
                 }
 
                 int cx = (96 - cw) / 2;
@@ -2913,7 +2881,7 @@ namespace wwtlib
                 Script.Literal("if ( typeof {0}.msToBlob == 'function') {{ var blob = {0}.msToBlob(); {1}(blob); }} else {{ {0}.toBlob({1}, 'image/jpeg'); }}", temp, blobReady);
 
 
-              //  thumb.Src = temp.GetDataUrl();
+                //  thumb.Src = temp.GetDataUrl();
             }, false);
 
             image.Src = Singleton.Canvas.GetDataUrl();

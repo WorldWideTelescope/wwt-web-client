@@ -88,6 +88,7 @@ module.exports = function (grunt) {
           'controllers/modals/GreatCircleController.js',
           'controllers/modals/DataVizController.js',
           'controllers/modals/EmbedController.js',
+          'controllers/modals/ObservingLocationController.js',
           'controllers/LoginController.js',
           'controls/move.js',
           'controls/util.js'
