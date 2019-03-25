@@ -564,9 +564,7 @@ namespace wwtlib
             Dictionary<string, bool> selectDomain = new Dictionary<string, bool>();
 
 
-            double mr = 0;
-
-        //    double mr = LayerManager.AllMaps[ReferenceFrame].Frame.MeanRadius;
+            double mr = LayerManager.AllMaps[ReferenceFrame].Frame.MeanRadius;
             if (mr != 0)
             {
                 meanRadius = mr;
