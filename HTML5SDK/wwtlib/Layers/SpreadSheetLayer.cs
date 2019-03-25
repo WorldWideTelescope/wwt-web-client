@@ -679,7 +679,16 @@ namespace wwtlib
                         }
                         else if (this.CoordinatesType == CoordinatesTypes.Rectangular)
                         {
-                            double xyzScale = GetScaleFactor(CartesianScale, CartesianCustomScale) / meanRadius;
+                            double xyzScale = GetScaleFactor(CartesianScale, CartesianCustomScale);
+
+                            if (astronomical)
+                            {
+                                factor /= (1000 * UiTools.KilometersPerAu);
+                            }
+                            else
+                            {
+                                factor /= meanRadius;
+                            }
 
                             if (ZAxisColumn > -1)
                             {
