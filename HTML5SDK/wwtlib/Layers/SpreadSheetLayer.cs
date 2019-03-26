@@ -683,11 +683,11 @@ namespace wwtlib
 
                             if (astronomical)
                             {
-                                factor /= (1000 * UiTools.KilometersPerAu);
+                                xyzScale /= (1000 * UiTools.KilometersPerAu);
                             }
                             else
                             {
-                                factor /= meanRadius;
+                                xyzScale /= meanRadius;
                             }
 
                             if (ZAxisColumn > -1)
