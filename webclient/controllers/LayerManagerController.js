@@ -3,7 +3,8 @@ wwt.controllers.controller('LayerManagerController',
     'AppState',
     '$timeout',
     'Util',
-    function ($scope, $rootScope, appState, $timeout, util) {
+    'UILibrary',
+    function ($scope, $rootScope, appState, $timeout, util,UILibrary) {
       var version = 12;
 
       function treeNode(args) {
@@ -145,7 +146,9 @@ wwt.controllers.controller('LayerManagerController',
               });
             });
             $scope.sunTree = sunTree;
-
+            if (appState.get('observingLocation')){
+              UILibrary.setObservingLocation(appState.get('observingLocation'));
+            }
           }, 123);
         });
         wwt.resize();

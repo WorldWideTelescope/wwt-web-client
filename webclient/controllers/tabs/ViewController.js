@@ -1,8 +1,8 @@
 ﻿wwt.controllers.controller('ViewController',
 	['$scope',
 	'AppState',
-	'$timeout','Util','$rootScope',
-	function ($scope, appState, $timeout, util,$rootScope) {
+	'$timeout','Util','$rootScope','UILibrary',
+	function ($scope, appState, $timeout, util,$rootScope,UILibrary) {
 		var stc = $scope.spaceTimeController = wwtlib.SpaceTimeController;
 		$scope.galaxyModeChange = function () {
 			if ($scope.galaxyMode && $scope.viewFromLocation) {
@@ -132,6 +132,17 @@
 			}
 			$rootScope.ctl.settings.set_localHorizonMode($scope.viewFromLocation);
 		};
+
+		$scope.showObservingLocationOptions = function(){
+		  UILibrary.showModal({
+        scope:$scope,
+        controller:'ObservingLocationController',
+        template:'observing-loc-options',
+        cssClass:'set-position observing-loc',
+        fixedPosition:true,
+        callback:console.log
+      });
+    };
 		setInterval(timeDateTimerTick, 300);
 		updateSpeed();
 

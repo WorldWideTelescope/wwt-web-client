@@ -74,7 +74,10 @@
 		return ([int2(hours), int2(minutes)]).join(join);
 	}
 	function int2(dec) {
-		return Math.floor(Math.abs(dec)) < 10 ? dec < 0 ?  '-0' + Math.floor(Math.abs(dec)) : '0' + Math.floor(dec) : Math.floor(dec);
+	  var sign = dec < 0 ? '-' : '';
+	  var int = Math.floor(Math.abs(dec));
+	  var pad = int < 10 ? '0' :'';
+		return sign + pad + int;
 	}
 
 	function truncate(n) {
@@ -116,10 +119,10 @@
       parts = input.split(' ');
     }
 		if (parts) {
-		  console.log(convertHmstoDec(parts[0], parts[1], parts[2]));
-			return convertHmstoDec(parts[0], parts[1], parts[2]);
+
+		  return convertHmstoDec(parts[0], parts[1], parts[2]);
 		} else {
-			return parseFloat(input);
+		  return parseFloat(input);
 		}
 	}
 

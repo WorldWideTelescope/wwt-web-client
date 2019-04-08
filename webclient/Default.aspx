@@ -210,6 +210,7 @@
     <script src="<%= ResourcesLocation %>/controllers/modals/GreatCircleController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/modals/DataVizController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/modals/EmbedController.js?v=<%= ResourcesVersion%>"></script>
+    <script src="<%= ResourcesLocation %>/controllers/modals/ObservingLocationController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/AdsController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/ExploreController.js?v=<%= ResourcesVersion%>"></script>
     <script src="<%= ResourcesLocation %>/controllers/tabs/SearchController.js?v=<%= ResourcesVersion%>"></script>
@@ -742,7 +743,9 @@
                 <div>
                     <div class="pull-right">
                         <label localize="Alt">Alt:</label>
-                        <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
+                        <label>{{hasSetupObservingLocation ?
+                                  ctl.settings.get_locationAltitude() :
+                                  UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
                     </div>
                     <label localize="Lat">Lat:</label>
                     <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
@@ -751,12 +754,13 @@
                     <label localize="Lng">Lng:</label>
                     <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
                 </div>
-                <div class="checkbox">
+                <div class="checkbox iblock">
                     <label data-ng-class="viewFromLocation ? 'checked' : ''">
                         <input type="checkbox" ng-model="viewFromLocation" ng-change="setViewFromLocation()" />
                         <span localize="View From This Location"></span>
                     </label>
                 </div>
+                <a class="btn" localize="Setup" ng-click="showObservingLocationOptions()"></a>
             </fieldset>
             <fieldset>
                 <a class="btn" bs-popover

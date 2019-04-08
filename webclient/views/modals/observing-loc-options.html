@@ -1,0 +1,119 @@
+<div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
+  <h5>
+    <i class="fa fa-close pull-right" ng-click="$hide()"></i>
+    <span localize="Observing Location Options"></span>
+  </h5>
+</div>
+<div class="modal-body">
+  <div class="ribbon">
+    <ul class="wwt-tabs">
+      <li ng-class="{active: p == page}" ng-repeat="p in pages">
+        <div class="outer" ng-click="setPage(p)">
+          <a href="javascript:void(0)">
+            <span class="label">{{p}}</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <table ng-if="page==pages[0]">
+    <col width="50%">
+    <col width="50%">
+    <tr>
+      <td>
+        <label localize="Data Set"></label>
+        <select ng-model="selectedDatasetIndex" ng-options="ds.index as ds.name for ds in datasets"
+                ng-change="datasetChange(selectedDatasetIndex)" style="width:100%;display:block"></select>
+      </td>
+      <td>
+        <label localize="Name"></label>
+        <input type="text" ng-model="selectedCity.name" ng-change="setName(locationName)">
+      <td>
+
+    </tr>
+    <tr>
+      <td>
+        <label localize="Region"></label>
+        <select ng-if="selectedDataset.regiondata && selectedDataset.regiondata.length"
+                ng-model="selectedRegionIndex" ng-options="r.index as r.name for r in selectedDataset.regiondata"
+                ng-change="regionChange(selectedRegionIndex)"
+                style="width:100%;display:block"
+        ></select>
+      </td>
+      <td>
+        <label localize="E. Longitude (Dec. deg.)"></label>
+        <input type="text" ng-model="selectedCity.lng" readonly>
+      <td>
+
+    </tr>
+    <tr>
+      <td rowspan="4">
+        <select multiple ng-model="cityIndex" ng-change="selectCity(cityIndex)"
+                style="height:180px;width:100%;display:block">
+          <option ng-repeat="c in cities" ng-value="c.index">{{c.name}}</option>
+        </select>
+      </td>
+      <td>
+        <label localize="Latitude (Dec. deg.)"></label>
+        <input type="text" ng-model="selectedCity.lat" readonly>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label localize="Elevation"></label>
+        <input type="text" ng-model="selectedCity.el" readonly>
+      </td>
+    </tr>
+    <tr>
+      <td style="visibility:hidden">
+        <label>&nbsp;</label>
+        <input type="text" readonly>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a class="btn" localize="OK"></a>&nbsp;
+        <a class="btn" localize="Cancel"></a>
+      </td>
+    </tr>
+  </table>
+  <div ng-if="page==pages[1]" style="padding:8px;font-size:14px" class="choose-globe">
+    <p>Center the crosshairs on the location you want to observe from. Zoom in to increase location and altitude
+      accuracy.</p>
+    <!--<h4 localize="Coordinates"></h4>-->
+    <table>
+      <col width="50%">
+      <col width="50%">
+      <tr>
+        <td>
+          <label localize="Latitude"></label>
+          <input type="text" ng-model="formatted.Lat" readonly/>
+        </td>
+        <td>
+          <label localize="Name"></label>
+          <input type="text" ng-model="locationName">
+        </td>
+
+
+      </tr>
+      <tr>
+        <td>
+          <label localize="Longitude"></label>
+          <input type="text" ng-model="formatted.Lng" readonly/>
+        </td>
+
+        <td>
+          <label localize="Altitude (meters)"></label>
+          <input type="text" ng-model="altitude" readonly/>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td style="position:relative;top:8px;"><a class="btn" localize="Set Location" ng-click="setLocation()"></a></td>
+      </tr>
+    </table>
+
+
+  </div>
+</div>
