@@ -58,7 +58,14 @@
     {type: 10, label: 'Custom'}
   ];
 
+  $rootScope.observingLocation = {name:'My Location'};
+
   var setObservingLocation = function(props){
+    $rootScope.$applyAsync(function(){
+    props.localHorizonMode = props.localHorizonMode === undefined ?
+      $rootScope.ctl.settings._localHorizonMode :
+      props.localHorizonMode;
+    $rootScope.observingLocation = Object.assign($rootScope.observingLocation,props);
     var earthMap = wwtlib.LayerManager.get_allMaps().Earth;
     wwtlib.LayerManager.layerSelectionChanged(earthMap);
     var rf = new wwtlib.ReferenceFrame();
@@ -72,10 +79,12 @@
     var newSettings = {
       _locationAltitude:props.altitude.toFixed(1) +'m',//0.00000690228892768605
       _locationLat:props.lat,//47.70409186039239
-      _locationLng:props.lng//-122.30266851233682
+      _locationLng:props.lng,//-122.30266851233682
+      _localHorizonMode:props.localHorizonMode
     };
     Object.assign(wwt.wc.settings,newSettings);
-  };
+  });
+};
 
 
 
@@ -193,7 +202,7 @@
 //scope,callback,cssClass,controller,template,backdrop - template=required
   var showModal = function (props) {
     //console.log({refFrame: refFrame});
-    var modalScope = props.scope || $rootScope.$new();
+    var modalScope = props.scope ? props.scope.$new() : $rootScope.$new();
 
     var modalConfig = {
       scope: modalScope,
@@ -290,7 +299,7 @@
       controller: 'EmbedController'
     });
   };
-
+  wwt.root = $rootScope;
 
   return {
     addDialogHooks: function () {

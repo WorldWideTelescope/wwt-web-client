@@ -73,8 +73,8 @@
     </tr>
     <tr>
       <td>
-        <a class="btn" localize="OK"></a>&nbsp;
-        <a class="btn" localize="Cancel"></a>
+        <a class="btn" localize="OK" ng-click="setLocation(selectedCity)"></a>&nbsp;
+        <a class="btn" localize="Cancel" ng-click="close();$hide()"></a>
       </td>
     </tr>
   </table>
@@ -92,7 +92,7 @@
         </td>
         <td>
           <label localize="Name"></label>
-          <input type="text" ng-model="locationName">
+          <input type="text" ng-model="observingLocation.name">
         </td>
 
 

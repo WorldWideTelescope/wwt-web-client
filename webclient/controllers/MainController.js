@@ -191,10 +191,10 @@ wwt.controllers.controller('MainController',
           if (!obj) {
             obj = hashManager.getHashObject();
           }
-          console.log('goto', parseFloat(obj['ra']) * 15,
+          /*console.log('goto', parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
             parseFloat(obj['fov']),
-            false);
+            false);*/
           ctl.gotoRaDecZoom(
             parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
