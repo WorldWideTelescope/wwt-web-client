@@ -11,8 +11,8 @@
 			}
 			wwt.wc.settings.set_galacticMode($scope.galaxyMode);
 		};
-		wwtlib.WWTControl.useUserLocation();
-		$scope.locationName = $scope.getFromEn('My Location');
+
+		//$scope.locationName = $rootScope.observingLocation ? $rootScope. : $scope.getFromEn('My Location');
 		$scope.now = new Date();
 		$scope.loc = {
 			view:'View',
@@ -130,7 +130,13 @@
 				$scope.galaxyMode = false;
 				$scope.galaxyModeChange();
 			}
-			$rootScope.ctl.settings.set_localHorizonMode($scope.viewFromLocation);
+			$scope.$applyAsync(function(){
+        $rootScope.observingLocation.localHorizonMode = $scope.viewFromLocation;
+        console.log({observingLocation:$rootScope.observingLocation});
+        appState.set('observingLocation',$rootScope.observingLocation);
+        console.log(appState.get('observingLocation'));
+        $rootScope.ctl.settings.set_localHorizonMode($scope.viewFromLocation);
+      });
 		};
 
 		$scope.showObservingLocationOptions = function(){
@@ -145,7 +151,9 @@
     };
 		setInterval(timeDateTimerTick, 300);
 		updateSpeed();
-
-
+    $scope.viewFromLocation = $rootScope.ctl.settings._localHorizonMode;
+    if ($rootScope.observingLocation.lat===undefined) {
+      wwtlib.WWTControl.useUserLocation();
+    }
 	}
 ]);

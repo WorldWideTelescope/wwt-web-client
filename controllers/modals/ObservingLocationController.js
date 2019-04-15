@@ -1,7 +1,10 @@
 wwt.controllers.controller('ObservingLocationController',
   ['$scope', 'AppState', '$http', '$rootScope', '$timeout','UILibrary',function ($scope, appState, $http,$rootScope,$timeout,UILibrary) {
     $scope.pages = ['Select city', 'Choose on globe'];
-    $scope.page = $scope.pages[0];
+
+    var ol = $rootScope.observingLocation
+    var pageIndex = ol && ol.type ? $scope.pages.indexOf(ol.type):0;
+
 
     $scope.setPage=function(p){
       $scope.page = p;
@@ -9,10 +12,21 @@ wwt.controllers.controller('ObservingLocationController',
         if ($scope.lookAt !== 'Earth') {
           $scope.setLookAt('Earth', 'Bing Maps Aerial');
           wwt.wc.settings._showCrosshairs = true;
+          if (ol.ra !== undefined && ol.dec !== undefined) {
+            setTimeout(function () {
+              wwt.wc.gotoRaDecZoom(
+                parseFloat(ol['ra']) * 15,
+                parseFloat(ol['dec']),
+                parseFloat(ol['fov']),
+                true
+              );
+            });
+          }
         }
         $timeout(viewportChange,500);
       }
     };
+    $scope.setPage($scope.pages[pageIndex]);
     var viewportChange = function(){
       if ($scope.page === $scope.pages[1]) {
           var lng = (((180 - (($scope.coords.get_RA()) / 24.0 * 360) - 180) + 540) % 360) - 180;
@@ -44,7 +58,7 @@ wwt.controllers.controller('ObservingLocationController',
     $scope.cities = [];
     $scope.cityIndex = 0;
     $scope.selectedDataset = $scope.datasets[0];
-    $scope.locationName = 'My location';
+    $scope.locationName = ol && ol.name ? ol.name : 'My location';
 
     $scope.datasetChange = function (index) {
       $scope.selectedDataset = $scope.datasets[index !== undefined ? index : $scope.selectedDatasetIndex];
@@ -69,7 +83,7 @@ wwt.controllers.controller('ObservingLocationController',
         });
         $scope.selectedCity = {};
         $scope.cityIndex = 0;
-        console.log({cities: $scope.cities})
+        //console.log({cities: $scope.cities})
       }
     };
     $scope.selectCity = function (index) {
@@ -121,43 +135,33 @@ wwt.controllers.controller('ObservingLocationController',
         return dataLoaded(dataset.regiondata);
       }
       $http.get(dataset.regions).success(function (data) {
-        console.log({data: data});
+        //console.log({data: data});
         dataLoaded(data);
       });
     };
     var hadCrosshairsOff = wwt.wc.settings._showCrosshairs == false;
-    $scope.locationName = 'My location';
-    $scope.setLocation = function(){
+
+    $scope.setLocation = function(city){
       if(hadCrosshairsOff){
         wwt.wc.settings.set_showCrosshairs = false;
       }
       var lng = (((180 - (($scope.coords.get_RA()) / 24.0 * 360) - 180) + 540) % 360) - 180;
       var lat = $scope.coords.get_lat();
       var altitude = $rootScope.singleton.renderContext.getEarthAltitude($scope.coords.get_lat(), lng, true) + 500;
+      console.log($scope.locationName);
       var observing = {
         lat:lat,
         lng:lng,
-        altitude:altitude
+        altitude:altitude,
+        name:$rootScope.observingLocation.name,
+        type:$scope.page,
+        ra:$scope.coords.get_RA(),
+        dec:$scope.coords.get_dec(),
+        fov:wwt.wc.get_fov()
       };
      UILibrary.setObservingLocation(observing);
       appState.set('observingLocation',observing);
-      /*var radiusElevation = $rootScope.singleton.renderContext.getEarthAltitude($scope.coords.get_lat(),lng, false);
-      var newSettings = {
-        _localHorizonMode:true,
-        _locationAltitude:radiusElevation,//0.00000690228892768605
-        _locationLat:lat,//47.70409186039239
-        _locationLng:lng//-122.30266851233682
-      };
-      Object.assign(wwt.wc.settings,newSettings);
-      var earthMap = wwtlib.LayerManager.get_allMaps().Earth;
-      wwtlib.LayerManager.layerSelectionChanged(earthMap);
-      var rf = new wwtlib.ReferenceFrame();
-      rf.name = 'Observing Location';
-      rf.lat = lat;
-      rf.lng = lng;
-      rf.;
-      wwtlib.LayerManager.referenceFrameWizardFinished(rf);
-      console.log(newSettings);*/
+
       if (hadCrosshairsOff){
         wwt.wc.settings._showCrosshairs=false;
       }

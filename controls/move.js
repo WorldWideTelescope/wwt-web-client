@@ -39,13 +39,18 @@
 				if ((event.target !== target[0] && !$(target).has(event.target).length) || isMoving) {
 					return;
 				}
-
+        else if (event.target.className.indexOf('fa-close') > -1){
+          return;
+        }
 				if (document.body.setPointerCapture) {
 					document.body.setPointerCapture(event.pointerId);
 				}
 				else if (document.body.msSetPointerCapture) {
 					document.body.msSetPointerCapture(event.pointerId);
 				}
+
+
+        console.log(event.target, event.target.className.indexOf('fa-close') > -1);
 				event.preventDefault();
 				event.stopPropagation();
 				if (event.pointerId !== undefined) {
