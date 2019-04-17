@@ -763,17 +763,13 @@ wwt.controllers.controller('MainController',
         });
       };
 
-      $scope.playTour = function (url) {
-
-        util.goFullscreen();
-        console.log(encodeURIComponent(url));
+      $scope.playTour = function (url, edit) {
+        console.log(edit,url);
+        if (!edit) {
+          util.goFullscreen();
+        }
+        //console.log(encodeURIComponent(url));
         $('.finder-scope').hide();
-        wwtlib.WWTControl.singleton.playTour(url);
-        $scope.$applyAsync(function () {
-          wwt.tourPlaying = $rootScope.tourPlaying = true;
-          $rootScope.tourPaused = false;
-        });
-        wwt.wc.add_tourEnded(tourChangeHandler);
         wwt.wc.add_tourReady(function () {
 
           $scope.$applyAsync(function () {
@@ -782,8 +778,17 @@ wwt.controllers.controller('MainController',
             $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
 
           });
-
+          if (edit){
+            $scope.editTour();
+          }
         });
+        wwtlib.WWTControl.singleton.playTour(url);
+        $scope.$applyAsync(function () {
+          wwt.tourPlaying = $rootScope.tourPlaying = true;
+          $rootScope.tourPaused = edit;
+        });
+        wwt.wc.add_tourEnded(tourChangeHandler);
+
         //wwt.wc.add_tourPaused(tourChangeHandler);
 
       };

@@ -14,11 +14,20 @@
           <input type="url" class="form-control" ng-model="openItemUrl" id="txtOpenItem"
                  placeholder="Enter {{openType}} url" ng-disabled="imageFail">
         </div>
+        <div ng-if="openType=='tour'" class="pull-right">
+          <div class="checkbox">
+            <label data-ng-class="tour.edit ? 'checked' : ''">
+              <input type="checkbox" ng-model="tour.edit"  />
+              <span localize="Open for edit"></span>
+            </label>
+          </div>
+        </div>
         <div ng-if="openType != 'image'">
           <p localize="Or"></p>
           <a class="btn" localize="Choose local file" href="#" onclick="$('#addFile')[0].click()"/>
           <input type="file" id="addFile" onchange="angular.element(this).scope().mediaFileChange(event)"/>
         </div>
+
         <div ng-show="imageFail">
 					<hr/>
 					<div ng-switch="importState">

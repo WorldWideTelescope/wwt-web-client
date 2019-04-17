@@ -13,6 +13,7 @@
           $('#txtOpenItem').focus();
         }, 100);
       });
+      $scope.tour={edit:false};
 
       $scope.openItem = function () {
         var itemType = $rootScope.openType;
@@ -24,7 +25,8 @@
             $('#openModal').modal('hide');
           });
         } else if (itemType === 'tour') {
-          $scope.playTour($scope.openItemUrl);
+          console.log({editTour:$scope.tour.edit});
+          $scope.playTour($scope.openItemUrl, !!$scope.tour.edit);
           $('#openModal').modal('hide');
         } else if (itemType === 'FITS image') {
           wwt.wc.loadFits($scope.openItemUrl);
@@ -63,7 +65,6 @@
           $scope.openItemUrl = mediaResult.url;
           $scope.openItem();
         });
-
       };
 
       $scope.astrometryStatusText = '';

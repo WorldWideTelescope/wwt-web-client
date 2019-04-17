@@ -5332,17 +5332,13 @@ wwt.controllers.controller('MainController',
         });
       };
 
-      $scope.playTour = function (url) {
-
-        util.goFullscreen();
-        console.log(encodeURIComponent(url));
+      $scope.playTour = function (url, edit) {
+        console.log(edit,url);
+        if (!edit) {
+          util.goFullscreen();
+        }
+        //console.log(encodeURIComponent(url));
         $('.finder-scope').hide();
-        wwtlib.WWTControl.singleton.playTour(url);
-        $scope.$applyAsync(function () {
-          wwt.tourPlaying = $rootScope.tourPlaying = true;
-          $rootScope.tourPaused = false;
-        });
-        wwt.wc.add_tourEnded(tourChangeHandler);
         wwt.wc.add_tourReady(function () {
 
           $scope.$applyAsync(function () {
@@ -5351,8 +5347,17 @@ wwt.controllers.controller('MainController',
             $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
 
           });
-
+          if (edit){
+            $scope.editTour();
+          }
         });
+        wwtlib.WWTControl.singleton.playTour(url);
+        $scope.$applyAsync(function () {
+          wwt.tourPlaying = $rootScope.tourPlaying = true;
+          $rootScope.tourPaused = edit;
+        });
+        wwt.wc.add_tourEnded(tourChangeHandler);
+
         //wwt.wc.add_tourPaused(tourChangeHandler);
 
       };
@@ -8537,6 +8542,7 @@ wwt.controllers.controller('OpenItemController',
           $('#txtOpenItem').focus();
         }, 100);
       });
+      $scope.tour={edit:false};
 
       $scope.openItem = function () {
         var itemType = $rootScope.openType;
@@ -8548,7 +8554,8 @@ wwt.controllers.controller('OpenItemController',
             $('#openModal').modal('hide');
           });
         } else if (itemType === 'tour') {
-          $scope.playTour($scope.openItemUrl);
+          console.log({editTour:$scope.tour.edit});
+          $scope.playTour($scope.openItemUrl, !!$scope.tour.edit);
           $('#openModal').modal('hide');
         } else if (itemType === 'FITS image') {
           wwt.wc.loadFits($scope.openItemUrl);
@@ -8587,7 +8594,6 @@ wwt.controllers.controller('OpenItemController',
           $scope.openItemUrl = mediaResult.url;
           $scope.openItem();
         });
-
       };
 
       $scope.astrometryStatusText = '';
