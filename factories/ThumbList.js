@@ -163,7 +163,10 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
       } else if (util.isMobile) {
         $('#explorerModal').modal('hide');
       }
-
+      setTimeout(function(){
+        $rootScope.$applyAsync(function(){
+          $rootScope.setLookAt(null);
+        })},111);
       if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
         if (item.guid && item.guid.toLowerCase().indexOf('mars.') == -1) {
           scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
