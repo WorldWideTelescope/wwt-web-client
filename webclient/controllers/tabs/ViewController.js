@@ -152,8 +152,11 @@
 		setInterval(timeDateTimerTick, 300);
 		updateSpeed();
     $scope.viewFromLocation = $rootScope.ctl.settings._localHorizonMode;
-    if ($rootScope.observingLocation.lat===undefined) {
-      wwtlib.WWTControl.useUserLocation();
-    }
+    setTimeout(function(){
+      if (!$rootScope.observingLocation || $rootScope.observingLocation.lat===undefined) {
+        wwtlib.WWTControl.useUserLocation();
+      }
+    }, 100);
+
 	}
 ]);

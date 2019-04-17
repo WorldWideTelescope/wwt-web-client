@@ -2110,7 +2110,10 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
       } else if (util.isMobile) {
         $('#explorerModal').modal('hide');
       }
-
+      setTimeout(function(){
+        $rootScope.$applyAsync(function(){
+          $rootScope.setLookAt(null);
+        })},111);
       if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
         if (item.guid && item.guid.toLowerCase().indexOf('mars.') == -1) {
           scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
@@ -4670,6 +4673,14 @@ wwt.controllers.controller('MainController',
         }, 100);
       };
       $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
+        if (!lookAt || !isNaN(parseInt(lookAt))){
+          lookAt = wwtlib.WWTControl.singleton.renderContext.get_backgroundImageset()._dataSetType;
+          lookAt = $scope.lookTypes[lookAt];
+          if ($scope.lookAt=== lookAt){
+            return;
+          }
+
+        }
         $scope.lookAt = lookAt;
         //if (lookAt === 'Planet' && !imageryName) {
         //    imageryName = 'Mars';
@@ -4677,6 +4688,7 @@ wwt.controllers.controller('MainController',
         $scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
         setTimeout(wwt.resize, 1200);
       };
+      $rootScope.setLookAt = $scope.setLookAt;
       //#endregion
 
       //#region initialization
@@ -7364,9 +7376,12 @@ wwt.controllers.controller('ViewController',
 		setInterval(timeDateTimerTick, 300);
 		updateSpeed();
     $scope.viewFromLocation = $rootScope.ctl.settings._localHorizonMode;
-    if ($rootScope.observingLocation.lat===undefined) {
-      wwtlib.WWTControl.useUserLocation();
-    }
+    setTimeout(function(){
+      if (!$rootScope.observingLocation || $rootScope.observingLocation.lat===undefined) {
+        wwtlib.WWTControl.useUserLocation();
+      }
+    }, 100);
+
 	}
 ]);
 

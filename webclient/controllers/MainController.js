@@ -104,6 +104,14 @@ wwt.controllers.controller('MainController',
         }, 100);
       };
       $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
+        if (!lookAt || !isNaN(parseInt(lookAt))){
+          lookAt = wwtlib.WWTControl.singleton.renderContext.get_backgroundImageset()._dataSetType;
+          lookAt = $scope.lookTypes[lookAt];
+          if ($scope.lookAt=== lookAt){
+            return;
+          }
+
+        }
         $scope.lookAt = lookAt;
         //if (lookAt === 'Planet' && !imageryName) {
         //    imageryName = 'Mars';
@@ -111,6 +119,7 @@ wwt.controllers.controller('MainController',
         $scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
         setTimeout(wwt.resize, 1200);
       };
+      $rootScope.setLookAt = $scope.setLookAt;
       //#endregion
 
       //#region initialization
