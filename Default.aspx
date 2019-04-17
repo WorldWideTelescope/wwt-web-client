@@ -672,6 +672,7 @@
                         <input type="text" ng-model="goto.Dec" />
                     </label>
                     <a class="btn" ng-click="gotoCoord()" localize="Go"></a>
+                    <label ng-if="goto.error"><em localize="Invalid coordinates"></em></label>
                 </div>
             </div>
             <div class="search-results">

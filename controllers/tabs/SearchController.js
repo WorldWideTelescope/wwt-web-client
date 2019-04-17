@@ -44,7 +44,14 @@
 
 	    
 	    $scope.gotoCoord = function () {
-	        var tempPlace = wwtlib.Place.create('tmp', util.parseHms($scope.goto.Dec), util.parseHms($scope.goto.RA), null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
+	        var ra =  util.parseHms($scope.goto.RA);
+	        var dec = util.parseHms($scope.goto.Dec);
+	        if (isNaN(ra)||isNaN(dec)){
+	          $scope.goto.error = true;
+	          return;
+          }
+	        $scope.goto.error = false;
+	        var tempPlace = wwtlib.Place.create('tmp', dec, ra, null, null, wwtlib.ImageSetType[$scope.lookAt.toLowerCase()], 60);
 	        $rootScope.singleton.gotoTarget(tempPlace, false, false, true);
 	    };
 
