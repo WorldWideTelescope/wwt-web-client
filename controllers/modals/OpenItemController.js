@@ -25,7 +25,7 @@
             $('#openModal').modal('hide');
           });
         } else if (itemType === 'tour') {
-          console.log({editTour:$scope.tour.edit});
+         // console.log({editTour:$scope.tour.edit});
           $scope.playTour($scope.openItemUrl, !!$scope.tour.edit);
           $('#openModal').modal('hide');
         } else if (itemType === 'FITS image') {

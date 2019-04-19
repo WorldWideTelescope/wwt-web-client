@@ -323,6 +323,17 @@
     embedVideo: embedVideo,
     annotationOpts: annotationOpts,
     showModal: showModal,
+    showErrorMessage:function(msg){
+      var scope = $rootScope.$new();
+      scope.message = msg;
+      scope.title = 'Error';
+      var props = {
+        scope:scope,
+        template:'message'
+      };
+
+      showModal(props);
+    },
     setObservingLocation:setObservingLocation
   };
 }]);
