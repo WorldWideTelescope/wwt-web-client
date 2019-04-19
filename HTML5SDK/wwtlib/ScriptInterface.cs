@@ -44,9 +44,9 @@ namespace wwtlib
         
         public event EventHandler<EventArgs> ImageryLoaded;
 
-		public event EventHandler<EventArgs> TourReady;
-
-		public event EventHandler<EventArgs> TourPaused;
+        public event EventHandler<EventArgs> TourReady;
+        public event EventHandler<EventArgs> TourError;
+        public event EventHandler<EventArgs> TourPaused;
 
 		public event EventHandler<EventArgs> TourResumed;
 
@@ -93,14 +93,21 @@ namespace wwtlib
                 RefreshLayerManager.Invoke(null, new EventArgs());
 			}
         }
-		internal void FireTourReady()
-		{
-			if (TourReady != null)
-			{
-				TourReady.Invoke(this, new EventArgs());
-			}
-		}
-		internal void FireTourPaused()
+        internal void FireTourReady()
+        {
+            if (TourReady != null)
+            {
+                TourReady.Invoke(this, new EventArgs());
+            }
+        }
+        internal void FireTourError(Exception ex)
+        {
+            if (TourError != null)
+            {
+                TourError.Invoke(ex, new EventArgs());
+            }
+        }
+        internal void FireTourPaused()
 		{
 			if (TourPaused != null)
 			{

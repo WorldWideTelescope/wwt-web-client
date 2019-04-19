@@ -90,18 +90,24 @@ namespace wwtlib
 
         private void LoadXmlDocument()
         {
-            string master = cabinet.MasterFile;
-
-            FileReader doc = new FileReader();
-            doc.OnLoadEnd = delegate (FileProgressEvent ee)
+            try
             {
-                string data = doc.Result as string;
-                XmlDocumentParser xParser = new XmlDocumentParser();
-                FromXml(xParser.ParseFromString(data, "text/xml"));
-                callMe();
-            };
-            doc.ReadAsText(cabinet.GetFileBlob(master));
-           
+                string master = cabinet.MasterFile;
+
+                FileReader doc = new FileReader();
+                doc.OnLoadEnd = delegate (FileProgressEvent ee)
+                {
+                    string data = doc.Result as string;
+                    XmlDocumentParser xParser = new XmlDocumentParser();
+                    FromXml(xParser.ParseFromString(data, "text/xml"));
+                    callMe();
+                };
+                doc.ReadAsText(cabinet.GetFileBlob(master));
+            }
+            catch (Exception ex)
+            {
+                WWTControl.scriptInterface.FireTourError(ex);
+            }
         }
 
         public string Url = "";

@@ -3017,6 +3017,17 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
     embedVideo: embedVideo,
     annotationOpts: annotationOpts,
     showModal: showModal,
+    showErrorMessage:function(msg){
+      var scope = $rootScope.$new();
+      scope.message = msg;
+      scope.title = 'Error';
+      var props = {
+        scope:scope,
+        template:'message'
+      };
+
+      showModal(props);
+    },
     setObservingLocation:setObservingLocation
   };
 }]);
@@ -5333,14 +5344,21 @@ wwt.controllers.controller('MainController',
       };
 
       $scope.playTour = function (url, edit) {
-        console.log(edit,url);
         if (!edit) {
           util.goFullscreen();
         }
-        //console.log(encodeURIComponent(url));
-        $('.finder-scope').hide();
-        wwt.wc.add_tourReady(function () {
 
+        $('.finder-scope').hide();
+        wwt.wc.add_tourError(function(e){
+          util.toggleFullScreen();
+          $scope.$applyAsync(function(){
+            wwt.tourPlaying =$rootScope.tourPlaying = false;
+          });
+          uiLibrary.showErrorMessage('There was an error loading this tour. The tour file may be damaged or inaccessible.');
+          console.warn('caught ya!',$scope,e);
+        });
+        wwt.wc.add_tourReady(function () {
+          console.log({ready:wwtlib.WWTControl.singleton.tourEdit});
           $scope.$applyAsync(function () {
             $scope.activeItem = {label: 'currentTour'};
             $scope.activePanel = 'currentTour';
@@ -5351,7 +5369,9 @@ wwt.controllers.controller('MainController',
             $scope.editTour();
           }
         });
+
         wwtlib.WWTControl.singleton.playTour(url);
+
         $scope.$applyAsync(function () {
           wwt.tourPlaying = $rootScope.tourPlaying = true;
           $rootScope.tourPaused = edit;
@@ -8554,7 +8574,7 @@ wwt.controllers.controller('OpenItemController',
             $('#openModal').modal('hide');
           });
         } else if (itemType === 'tour') {
-          console.log({editTour:$scope.tour.edit});
+         // console.log({editTour:$scope.tour.edit});
           $scope.playTour($scope.openItemUrl, !!$scope.tour.edit);
           $('#openModal').modal('hide');
         } else if (itemType === 'FITS image') {

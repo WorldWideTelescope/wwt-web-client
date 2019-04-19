@@ -16520,6 +16520,12 @@ window.wwtlib = function(){
     remove_tourReady: function(value) {
       this.__tourReady = ss.bindSub(this.__tourReady, value);
     },
+    add_tourError: function(value) {
+      this.__tourError = ss.bindAdd(this.__tourError, value);
+    },
+    remove_tourError: function(value) {
+      this.__tourError = ss.bindSub(this.__tourError, value);
+    },
     add_tourPaused: function(value) {
       this.__tourPaused = ss.bindAdd(this.__tourPaused, value);
     },
@@ -16574,6 +16580,11 @@ window.wwtlib = function(){
     _fireTourReady: function() {
       if (this.__tourReady != null) {
         this.__tourReady(this, new ss.EventArgs());
+      }
+    },
+    _fireTourError: function(ex) {
+      if (this.__tourError != null) {
+        this.__tourError(ex, new ss.EventArgs());
       }
     },
     _fireTourPaused: function() {
@@ -20188,15 +20199,20 @@ window.wwtlib = function(){
     _loadXmlDocument: function() {
       var $this = this;
 
-      var master = this._cabinet.get_masterFile();
-      var doc = new FileReader();
-      doc.onloadend = function(ee) {
-        var data = ss.safeCast(doc.result, String);
-        var xParser = new DOMParser();
-        $this.fromXml(xParser.parseFromString(data, 'text/xml'));
-        $this._callMe();
-      };
-      doc.readAsText(this._cabinet.getFileBlob(master));
+      try {
+        var master = this._cabinet.get_masterFile();
+        var doc = new FileReader();
+        doc.onloadend = function(ee) {
+          var data = ss.safeCast(doc.result, String);
+          var xParser = new DOMParser();
+          $this.fromXml(xParser.parseFromString(data, 'text/xml'));
+          $this._callMe();
+        };
+        doc.readAsText(this._cabinet.getFileBlob(master));
+      }
+      catch (ex) {
+        WWTControl.scriptInterface._fireTourError(ex);
+      }
     },
     fromXml: function(doc) {
       var root = Util.selectSingleNode(doc, 'Tour');
