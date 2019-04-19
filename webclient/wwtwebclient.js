@@ -2771,7 +2771,7 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
     wwtlib.LayerManager.referenceFrameWizardFinished(rf);
     $rootScope.hasSetupObservingLocation = true;
     var newSettings = {
-      _locationAltitude:props.altitude.toFixed(1) +'m',//0.00000690228892768605
+      _locationAltitude:props.altitude,//.toFixed(1) +'m',//0.00000690228892768605
       _locationLat:props.lat,//47.70409186039239
       _locationLng:props.lng,//-122.30266851233682
       _localHorizonMode:props.localHorizonMode
