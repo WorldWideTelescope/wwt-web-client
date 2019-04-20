@@ -744,9 +744,7 @@
                 <div>
                     <div class="pull-right">
                         <label localize="Alt">Alt:</label>
-                        <label>{{hasSetupObservingLocation ?
-                                  ctl.settings.get_locationAltitude().toFixed(1) + 'm' :
-                                  UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
+                        <label>{{ctl.settings.get_locationAltitude().toFixed(1) + 'm'}}</label>
                     </div>
                     <label localize="Lat">Lat:</label>
                     <label>{{formatHms(ctl.settings.get_locationLat())}}</label>

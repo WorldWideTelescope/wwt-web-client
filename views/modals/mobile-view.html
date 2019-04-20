@@ -9,7 +9,7 @@
 		<div>
 		    <div class="pull-right">
 		        
-		        <label localize="Alt"></label>: <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
+		        <label localize="Alt"></label>: <label>{{ctl.settings.get_locationAltitude().toFixed(1)}}m</label>
 		    </div>
 			<label localize="Lat"></label>: <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
 		</div>
