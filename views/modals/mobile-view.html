@@ -4,22 +4,22 @@
 	
 	<fieldset style="width:75%;padding:5px">
 		<div>
-			<label localize="Name">Name:</label> <label>{{locationName}}</label>
+			<label localize="Name">Name:</label>: <label>{{locationName}}</label>
 		</div>
 		<div>
 		    <div class="pull-right">
 		        
-		        <label localize="Alt">Alt:</label> <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
+		        <label localize="Alt"></label>: <label>{{UITools.formatDistance(ctl.settings.get_locationAltitude())}}</label>
 		    </div>
-			<label localize="Lat">Lat:</label> <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
+			<label localize="Lat"></label>: <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
 		</div>
 		<div class="clearfix">
-			<label localize="Lng">Lng:</label> <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
+			<label localize="Lng"></label>: <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
 		</div>
 		<div class="checkbox">
 			<label data-ng-class="viewFromLocation ? 'checked' : ''">
 				<input type="checkbox" ng-model="viewFromLocation" ng-change="setViewFromLocation()" />
-				<span localize="View From This Location"></span>
+				<span localize="View from this location"></span>
 			</label>
 		</div>
 	</fieldset>
