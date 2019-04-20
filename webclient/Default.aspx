@@ -314,7 +314,7 @@
           <h5 id="simpletitle"></h5>
         </div>
         <div class="modal-body">
-          <div id="inputlabel">Enter Text</div>
+          <div id="inputlabel" localize="Enter Text"></div>
           <input type="text" id="inputtext" />
 
         </div>
