@@ -1218,437 +1218,445 @@ namespace wwtlib
 
         internal static TourStop FromXml(TourDocument owner, XmlNode tourStop)
         {
-
-            TourStop newTourStop = new TourStop();
-            newTourStop.owner = owner;
-
-            newTourStop.Id = tourStop.Attributes.GetNamedItem("Id").Value.ToString();
-            newTourStop.Name = tourStop.Attributes.GetNamedItem("Name").Value.ToString();
-            newTourStop.Description = tourStop.Attributes.GetNamedItem("Description").Value.ToString();
-            newTourStop.thumbnailString = tourStop.Attributes.GetNamedItem("Thumbnail").Value.ToString();
-            newTourStop.duration = Util.ParseTimeSpan(tourStop.Attributes.GetNamedItem("Duration").Value.ToString());
-
-            if (tourStop.Attributes.GetNamedItem("Master") != null)
+            try
             {
-                newTourStop.masterSlide = bool.Parse(tourStop.Attributes.GetNamedItem("Master").Value);
-            }
+                TourStop newTourStop = new TourStop();
+                newTourStop.owner = owner;
 
-            if (tourStop.Attributes.GetNamedItem("NextSlide") != null)
-            {
-                newTourStop.nextSlide = tourStop.Attributes.GetNamedItem("NextSlide").Value;
-            }
+                newTourStop.Id = tourStop.Attributes.GetNamedItem("Id").Value.ToString();
+                newTourStop.Name = tourStop.Attributes.GetNamedItem("Name").Value.ToString();
+                newTourStop.Description = tourStop.Attributes.GetNamedItem("Description").Value.ToString();
+                newTourStop.thumbnailString = tourStop.Attributes.GetNamedItem("Thumbnail").Value.ToString();
+                newTourStop.duration = Util.ParseTimeSpan(tourStop.Attributes.GetNamedItem("Duration").Value.ToString());
 
-            if (tourStop.Attributes.GetNamedItem("InterpolationType") != null)
-            {
-                newTourStop.InterpolationType = (InterpolationType) Enums.Parse("InterpolationType", tourStop.Attributes.GetNamedItem("InterpolationType").Value);
-            }
-
-            newTourStop.fadeInOverlays = true;
-
-            if (tourStop.Attributes.GetNamedItem("FadeInOverlays") != null)
-            {
-                newTourStop.fadeInOverlays = bool.Parse(tourStop.Attributes.GetNamedItem("FadeInOverlays").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("Transition") != null)
-            {
-                newTourStop.transition = (TransitionType)Enums.Parse("TransitionType", tourStop.Attributes.GetNamedItem("Transition").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("HasLocation") != null)
-            {
-                newTourStop.hasLocation = bool.Parse(tourStop.Attributes.GetNamedItem("HasLocation").Value);
-            }
-
-            if (newTourStop.hasLocation)
-            {
-                if (tourStop.Attributes.GetNamedItem("LocationAltitude") != null)
+                if (tourStop.Attributes.GetNamedItem("Master") != null)
                 {
-                    newTourStop.locationAltitude = double.Parse(tourStop.Attributes.GetNamedItem("LocationAltitude").Value);
+                    newTourStop.masterSlide = bool.Parse(tourStop.Attributes.GetNamedItem("Master").Value);
                 }
-                if (tourStop.Attributes.GetNamedItem("LocationLat") != null)
-                {
-                    newTourStop.locationLat = double.Parse(tourStop.Attributes.GetNamedItem("LocationLat").Value );
-                }
-                if (tourStop.Attributes.GetNamedItem("LocationLng") != null)
-                {
-                    newTourStop.locationLng = double.Parse(tourStop.Attributes.GetNamedItem("LocationLng").Value );
-                }
-            }
 
-            if (tourStop.Attributes.GetNamedItem("HasTime") != null)
-            {
-                newTourStop.hasTime = bool.Parse(tourStop.Attributes.GetNamedItem("HasTime").Value);
+                if (tourStop.Attributes.GetNamedItem("NextSlide") != null)
+                {
+                    newTourStop.nextSlide = tourStop.Attributes.GetNamedItem("NextSlide").Value;
+                }
 
-                if (newTourStop.hasTime)
-                {                
-                    if (tourStop.Attributes.GetNamedItem("StartTime") != null)
+                if (tourStop.Attributes.GetNamedItem("InterpolationType") != null)
+                {
+                    newTourStop.InterpolationType = (InterpolationType)Enums.Parse("InterpolationType", tourStop.Attributes.GetNamedItem("InterpolationType").Value);
+                }
+
+                newTourStop.fadeInOverlays = true;
+
+                if (tourStop.Attributes.GetNamedItem("FadeInOverlays") != null)
+                {
+                    newTourStop.fadeInOverlays = bool.Parse(tourStop.Attributes.GetNamedItem("FadeInOverlays").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("Transition") != null)
+                {
+                    newTourStop.transition = (TransitionType)Enums.Parse("TransitionType", tourStop.Attributes.GetNamedItem("Transition").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("HasLocation") != null)
+                {
+                    newTourStop.hasLocation = bool.Parse(tourStop.Attributes.GetNamedItem("HasLocation").Value);
+                }
+
+                if (newTourStop.hasLocation)
+                {
+                    if (tourStop.Attributes.GetNamedItem("LocationAltitude") != null)
                     {
-                        newTourStop.startTime = Date.Parse(tourStop.Attributes.GetNamedItem("StartTime").Value + " UTC");
+                        newTourStop.locationAltitude = double.Parse(tourStop.Attributes.GetNamedItem("LocationAltitude").Value);
                     }
-                    if (tourStop.Attributes.GetNamedItem("EndTime") != null)
+                    if (tourStop.Attributes.GetNamedItem("LocationLat") != null)
                     {
-                        newTourStop.endTime = Date.Parse(tourStop.Attributes.GetNamedItem("EndTime").Value + " UTC");
+                        newTourStop.locationLat = double.Parse(tourStop.Attributes.GetNamedItem("LocationLat").Value);
+                    }
+                    if (tourStop.Attributes.GetNamedItem("LocationLng") != null)
+                    {
+                        newTourStop.locationLng = double.Parse(tourStop.Attributes.GetNamedItem("LocationLng").Value);
                     }
                 }
-            }
 
-            if (tourStop.Attributes.GetNamedItem("ActualPlanetScale") != null)
-            {
-                newTourStop.actualPlanetScale = bool.Parse(tourStop.Attributes.GetNamedItem("ActualPlanetScale").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowClouds") != null)
-            {
-                newTourStop.showClouds = bool.Parse(tourStop.Attributes.GetNamedItem("ShowClouds").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowConstellationBoundries") != null)
-            {
-                newTourStop.showConstellationBoundries = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationBoundries").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowConstellationFigures") != null)
-            {
-                newTourStop.showConstellationFigures = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationFigures").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowConstellationSelection") != null)
-            {
-                newTourStop.showConstellationSelection = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationSelection").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowEcliptic") != null)
-            {
-                newTourStop.showEcliptic = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEcliptic").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowElevationModel") != null)
-            {
-                newTourStop.showElevationModel = bool.Parse(tourStop.Attributes.GetNamedItem("ShowElevationModel").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowFieldOfView") != null)
-            {
-                newTourStop.showFieldOfView = bool.Parse(tourStop.Attributes.GetNamedItem("ShowFieldOfView").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowGrid") != null)
-            {
-                newTourStop.showGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowGrid").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowHorizon") != null)
-            {
-                newTourStop.showHorizon = bool.Parse(tourStop.Attributes.GetNamedItem("ShowHorizon").Value);
-            }
-
-
-            if (tourStop.Attributes.GetNamedItem("ShowHorizonPanorama") != null)
-            {
-                newTourStop.showHorizonPanorama = bool.Parse(tourStop.Attributes.GetNamedItem("ShowHorizonPanorama").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowMoonsAsPointSource") != null)
-            {
-                newTourStop.showMoonsAsPointSource = bool.Parse(tourStop.Attributes.GetNamedItem("ShowMoonsAsPointSource").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowSolarSystem") != null)
-            {
-                newTourStop.showSolarSystem = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSolarSystem").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("FovTelescope") != null)
-            {
-                newTourStop.fovTelescope = int.Parse(tourStop.Attributes.GetNamedItem("FovTelescope").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("FovEyepiece") != null)
-            {
-                newTourStop.fovEyepiece = int.Parse(tourStop.Attributes.GetNamedItem("FovEyepiece").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("FovCamera") != null)
-            {
-                newTourStop.fovCamera = int.Parse(tourStop.Attributes.GetNamedItem("FovCamera").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("LocalHorizonMode") != null)
-            {
-                newTourStop.localHorizonMode = bool.Parse(tourStop.Attributes.GetNamedItem("LocalHorizonMode").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("GalacticMode") != null)
-            {
-                newTourStop.galacticMode = bool.Parse(tourStop.Attributes.GetNamedItem("GalacticMode").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemStars") != null)
-            {
-                newTourStop.solarSystemStars = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemStars").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemMilkyWay") != null)
-            {
-                newTourStop.solarSystemMilkyWay = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMilkyWay").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemCosmos") != null)
-            {
-                newTourStop.solarSystemCosmos = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemCosmos").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemOrbits") != null)
-            {
-                newTourStop.solarSystemOrbits = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemOrbits").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemOverlays") != null)
-            {
-                newTourStop.solarSystemOverlays = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemOverlays").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemLighting") != null)
-            {
-                newTourStop.solarSystemLighting = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemLighting").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemScale") != null)
-            {
-                newTourStop.solarSystemScale = int.Parse(tourStop.Attributes.GetNamedItem("SolarSystemScale").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemMultiRes") != null)
-            {
-                newTourStop.solarSystemMultiRes = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMultiRes").Value);
-            }
-
-            //new 
-            if (tourStop.Attributes.GetNamedItem("ShowEquatorialGridText") != null)
-            {
-                newTourStop.showEquatorialGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEquatorialGridText").Value);
-            }
-            if (tourStop.Attributes.GetNamedItem("ShowGalacticGrid") != null)
-            {
-                newTourStop.showGalacticGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowGalacticGrid").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowGalacticGridText") != null)
-            {
-                newTourStop.showGalacticGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowGalacticGridText").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowEclipticGrid") != null)
-            {
-                newTourStop.showEclipticGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEclipticGrid").Value);
-            }
-            if (tourStop.Attributes.GetNamedItem("ShowEclipticGridText") != null)
-            {
-                newTourStop.showEclipticGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEclipticGridText").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowEclipticOverviewText") != null)
-            {
-                newTourStop.showEclipticOverviewText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEclipticOverviewText").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowAltAzGrid") != null)
-            {
-                newTourStop.showAltAzGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowAltAzGrid").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowAltAzGridText") != null)
-            {
-                newTourStop.showAltAzGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowAltAzGridText").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowPrecessionChart") != null)
-            {
-                newTourStop.showPrecessionChart = bool.Parse(tourStop.Attributes.GetNamedItem("ShowPrecessionChart").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowConstellationPictures") != null)
-            {
-                newTourStop.showConstellationPictures = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationPictures").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowConstellationLabels") != null)
-            {
-                newTourStop.showConstellationLabels = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationLabels").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemCMB") != null)
-            {
-                newTourStop.solarSystemCMB = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemCMB").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemMinorPlanets") != null)
-            {
-                newTourStop.solarSystemMinorPlanets = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMinorPlanets").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemPlanets") != null)
-            {
-                newTourStop.solarSystemPlanets = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemPlanets").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowEarthSky") != null)
-            {
-                newTourStop.showEarthSky = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEarthSky").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("SolarSystemMinorOrbits") != null)
-            {
-                newTourStop.solarSystemMinorOrbits = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMinorOrbits").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowSkyOverlays") != null)
-            {
-                newTourStop.showSkyOverlays = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyOverlays").Value);
-            }
-            else
-            {
-                newTourStop.showSkyOverlays = true;
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowConstellations") != null)
-            {
-                newTourStop.showConstellations = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellations").Value);
-            }
-            else
-            {
-                newTourStop.showConstellations = true;
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowSkyNode") != null)
-            {
-                newTourStop.showSkyNode = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyNode").Value);
-            }
-            else
-            {
-                newTourStop.showSkyNode = true;
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowSkyGrids") != null)
-            {
-                newTourStop.showSkyGrids = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyGrids").Value);
-            }
-            else
-            {
-                newTourStop.showSkyGrids = true;
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ShowSkyOverlaysIn3d") != null)
-            {
-                newTourStop.showSkyOverlaysIn3d = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyOverlaysIn3d").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("EarthCutawayView") != null)
-            {
-                newTourStop.earthCutawayView = bool.Parse(tourStop.Attributes.GetNamedItem("EarthCutawayView").Value);
-            }
-            if (tourStop.Attributes.GetNamedItem("ShowISSModel") != null)
-            {
-                newTourStop.showISSModel = bool.Parse(tourStop.Attributes.GetNamedItem("ShowISSModel").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("MilkyWayModel") != null)
-            {
-                newTourStop.milkyWayModel = bool.Parse(tourStop.Attributes.GetNamedItem("MilkyWayModel").Value);
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter") != null)
-            {
-                newTourStop.constellationBoundariesFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter").Value);
-            }
-            else
-            {
-                newTourStop.constellationBoundariesFilter = ConstellationFilter.AllConstellation;
-            }
-
-            if (tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter") != null)
-            {
-                newTourStop.constellationFiguresFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter").Value);
-            }
-            else
-            {
-                newTourStop.constellationFiguresFilter = new ConstellationFilter();
-            }
-
-            
-            if (tourStop.Attributes.GetNamedItem("ConstellationNamesFilter") != null)
-            {
-                newTourStop.constellationNamesFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationNamesFilter").Value);
-            }
-            else
-            {
-                newTourStop.constellationNamesFilter = new ConstellationFilter();
-            }
-             
-            if (tourStop.Attributes.GetNamedItem("ConstellationArtFilter") != null)
-            {
-                newTourStop.constellationArtFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationArtFilter").Value);
-            }
-            else
-            {
-                newTourStop.constellationArtFilter = new ConstellationFilter();
-            }
-
-            if (tourStop.Attributes.GetNamedItem("MinorPlanetsFilter") != null)
-            {
-                newTourStop.minorPlanetsFilter = int.Parse(tourStop.Attributes.GetNamedItem("MinorPlanetsFilter").Value);
-            }
-            if (tourStop.Attributes.GetNamedItem("PlanetOrbitsFilter") != null)
-            {
-                newTourStop.planetOrbitsFilter = int.Parse(tourStop.Attributes.GetNamedItem("PlanetOrbitsFilter").Value);
-            }
-
-            XmlNode place = Util.SelectSingleNode(tourStop, "Place");
-
-            newTourStop.target = Place.FromXml(place);
-
-            XmlNode endTarget = Util.SelectSingleNode(tourStop, "EndTarget");
-            if (endTarget != null)
-            {
-                newTourStop.endTarget = Place.FromXml(endTarget);
-            }
-
-            XmlNode overlays = Util.SelectSingleNode(tourStop, "Overlays");
-
-            foreach (XmlNode overlay in overlays.ChildNodes)
-            {
-                //todo this might have issuse if all the childeren are not good 
-                if (overlay.Name == "Overlay")
+                if (tourStop.Attributes.GetNamedItem("HasTime") != null)
                 {
-                    newTourStop.AddOverlay(Overlay.FromXml(newTourStop, overlay));
+                    newTourStop.hasTime = bool.Parse(tourStop.Attributes.GetNamedItem("HasTime").Value);
+
+                    if (newTourStop.hasTime)
+                    {
+                        if (tourStop.Attributes.GetNamedItem("StartTime") != null)
+                        {
+                            newTourStop.startTime = Date.Parse(tourStop.Attributes.GetNamedItem("StartTime").Value + " UTC");
+                        }
+                        if (tourStop.Attributes.GetNamedItem("EndTime") != null)
+                        {
+                            newTourStop.endTime = Date.Parse(tourStop.Attributes.GetNamedItem("EndTime").Value + " UTC");
+                        }
+                    }
                 }
+
+                if (tourStop.Attributes.GetNamedItem("ActualPlanetScale") != null)
+                {
+                    newTourStop.actualPlanetScale = bool.Parse(tourStop.Attributes.GetNamedItem("ActualPlanetScale").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowClouds") != null)
+                {
+                    newTourStop.showClouds = bool.Parse(tourStop.Attributes.GetNamedItem("ShowClouds").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowConstellationBoundries") != null)
+                {
+                    newTourStop.showConstellationBoundries = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationBoundries").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowConstellationFigures") != null)
+                {
+                    newTourStop.showConstellationFigures = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationFigures").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowConstellationSelection") != null)
+                {
+                    newTourStop.showConstellationSelection = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationSelection").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowEcliptic") != null)
+                {
+                    newTourStop.showEcliptic = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEcliptic").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowElevationModel") != null)
+                {
+                    newTourStop.showElevationModel = bool.Parse(tourStop.Attributes.GetNamedItem("ShowElevationModel").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowFieldOfView") != null)
+                {
+                    newTourStop.showFieldOfView = bool.Parse(tourStop.Attributes.GetNamedItem("ShowFieldOfView").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowGrid") != null)
+                {
+                    newTourStop.showGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowGrid").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowHorizon") != null)
+                {
+                    newTourStop.showHorizon = bool.Parse(tourStop.Attributes.GetNamedItem("ShowHorizon").Value);
+                }
+
+
+                if (tourStop.Attributes.GetNamedItem("ShowHorizonPanorama") != null)
+                {
+                    newTourStop.showHorizonPanorama = bool.Parse(tourStop.Attributes.GetNamedItem("ShowHorizonPanorama").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowMoonsAsPointSource") != null)
+                {
+                    newTourStop.showMoonsAsPointSource = bool.Parse(tourStop.Attributes.GetNamedItem("ShowMoonsAsPointSource").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowSolarSystem") != null)
+                {
+                    newTourStop.showSolarSystem = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSolarSystem").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("FovTelescope") != null)
+                {
+                    newTourStop.fovTelescope = int.Parse(tourStop.Attributes.GetNamedItem("FovTelescope").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("FovEyepiece") != null)
+                {
+                    newTourStop.fovEyepiece = int.Parse(tourStop.Attributes.GetNamedItem("FovEyepiece").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("FovCamera") != null)
+                {
+                    newTourStop.fovCamera = int.Parse(tourStop.Attributes.GetNamedItem("FovCamera").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("LocalHorizonMode") != null)
+                {
+                    newTourStop.localHorizonMode = bool.Parse(tourStop.Attributes.GetNamedItem("LocalHorizonMode").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("GalacticMode") != null)
+                {
+                    newTourStop.galacticMode = bool.Parse(tourStop.Attributes.GetNamedItem("GalacticMode").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemStars") != null)
+                {
+                    newTourStop.solarSystemStars = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemStars").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemMilkyWay") != null)
+                {
+                    newTourStop.solarSystemMilkyWay = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMilkyWay").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemCosmos") != null)
+                {
+                    newTourStop.solarSystemCosmos = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemCosmos").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemOrbits") != null)
+                {
+                    newTourStop.solarSystemOrbits = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemOrbits").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemOverlays") != null)
+                {
+                    newTourStop.solarSystemOverlays = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemOverlays").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemLighting") != null)
+                {
+                    newTourStop.solarSystemLighting = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemLighting").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemScale") != null)
+                {
+                    newTourStop.solarSystemScale = int.Parse(tourStop.Attributes.GetNamedItem("SolarSystemScale").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemMultiRes") != null)
+                {
+                    newTourStop.solarSystemMultiRes = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMultiRes").Value);
+                }
+
+                //new 
+                if (tourStop.Attributes.GetNamedItem("ShowEquatorialGridText") != null)
+                {
+                    newTourStop.showEquatorialGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEquatorialGridText").Value);
+                }
+                if (tourStop.Attributes.GetNamedItem("ShowGalacticGrid") != null)
+                {
+                    newTourStop.showGalacticGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowGalacticGrid").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowGalacticGridText") != null)
+                {
+                    newTourStop.showGalacticGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowGalacticGridText").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowEclipticGrid") != null)
+                {
+                    newTourStop.showEclipticGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEclipticGrid").Value);
+                }
+                if (tourStop.Attributes.GetNamedItem("ShowEclipticGridText") != null)
+                {
+                    newTourStop.showEclipticGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEclipticGridText").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowEclipticOverviewText") != null)
+                {
+                    newTourStop.showEclipticOverviewText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEclipticOverviewText").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowAltAzGrid") != null)
+                {
+                    newTourStop.showAltAzGrid = bool.Parse(tourStop.Attributes.GetNamedItem("ShowAltAzGrid").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowAltAzGridText") != null)
+                {
+                    newTourStop.showAltAzGridText = bool.Parse(tourStop.Attributes.GetNamedItem("ShowAltAzGridText").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowPrecessionChart") != null)
+                {
+                    newTourStop.showPrecessionChart = bool.Parse(tourStop.Attributes.GetNamedItem("ShowPrecessionChart").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowConstellationPictures") != null)
+                {
+                    newTourStop.showConstellationPictures = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationPictures").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowConstellationLabels") != null)
+                {
+                    newTourStop.showConstellationLabels = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellationLabels").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemCMB") != null)
+                {
+                    newTourStop.solarSystemCMB = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemCMB").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemMinorPlanets") != null)
+                {
+                    newTourStop.solarSystemMinorPlanets = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMinorPlanets").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemPlanets") != null)
+                {
+                    newTourStop.solarSystemPlanets = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemPlanets").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowEarthSky") != null)
+                {
+                    newTourStop.showEarthSky = bool.Parse(tourStop.Attributes.GetNamedItem("ShowEarthSky").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("SolarSystemMinorOrbits") != null)
+                {
+                    newTourStop.solarSystemMinorOrbits = bool.Parse(tourStop.Attributes.GetNamedItem("SolarSystemMinorOrbits").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowSkyOverlays") != null)
+                {
+                    newTourStop.showSkyOverlays = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyOverlays").Value);
+                }
+                else
+                {
+                    newTourStop.showSkyOverlays = true;
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowConstellations") != null)
+                {
+                    newTourStop.showConstellations = bool.Parse(tourStop.Attributes.GetNamedItem("ShowConstellations").Value);
+                }
+                else
+                {
+                    newTourStop.showConstellations = true;
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowSkyNode") != null)
+                {
+                    newTourStop.showSkyNode = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyNode").Value);
+                }
+                else
+                {
+                    newTourStop.showSkyNode = true;
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowSkyGrids") != null)
+                {
+                    newTourStop.showSkyGrids = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyGrids").Value);
+                }
+                else
+                {
+                    newTourStop.showSkyGrids = true;
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ShowSkyOverlaysIn3d") != null)
+                {
+                    newTourStop.showSkyOverlaysIn3d = bool.Parse(tourStop.Attributes.GetNamedItem("ShowSkyOverlaysIn3d").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("EarthCutawayView") != null)
+                {
+                    newTourStop.earthCutawayView = bool.Parse(tourStop.Attributes.GetNamedItem("EarthCutawayView").Value);
+                }
+                if (tourStop.Attributes.GetNamedItem("ShowISSModel") != null)
+                {
+                    newTourStop.showISSModel = bool.Parse(tourStop.Attributes.GetNamedItem("ShowISSModel").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("MilkyWayModel") != null)
+                {
+                    newTourStop.milkyWayModel = bool.Parse(tourStop.Attributes.GetNamedItem("MilkyWayModel").Value);
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter") != null)
+                {
+                    newTourStop.constellationBoundariesFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter").Value);
+                }
+                else
+                {
+                    newTourStop.constellationBoundariesFilter = ConstellationFilter.AllConstellation;
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter") != null)
+                {
+                    newTourStop.constellationFiguresFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationBoundariesFilter").Value);
+                }
+                else
+                {
+                    newTourStop.constellationFiguresFilter = new ConstellationFilter();
+                }
+
+
+                if (tourStop.Attributes.GetNamedItem("ConstellationNamesFilter") != null)
+                {
+                    newTourStop.constellationNamesFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationNamesFilter").Value);
+                }
+                else
+                {
+                    newTourStop.constellationNamesFilter = new ConstellationFilter();
+                }
+
+                if (tourStop.Attributes.GetNamedItem("ConstellationArtFilter") != null)
+                {
+                    newTourStop.constellationArtFilter = ConstellationFilter.Parse(tourStop.Attributes.GetNamedItem("ConstellationArtFilter").Value);
+                }
+                else
+                {
+                    newTourStop.constellationArtFilter = new ConstellationFilter();
+                }
+
+                if (tourStop.Attributes.GetNamedItem("MinorPlanetsFilter") != null)
+                {
+                    newTourStop.minorPlanetsFilter = int.Parse(tourStop.Attributes.GetNamedItem("MinorPlanetsFilter").Value);
+                }
+                if (tourStop.Attributes.GetNamedItem("PlanetOrbitsFilter") != null)
+                {
+                    newTourStop.planetOrbitsFilter = int.Parse(tourStop.Attributes.GetNamedItem("PlanetOrbitsFilter").Value);
+                }
+
+                XmlNode place = Util.SelectSingleNode(tourStop, "Place");
+
+                newTourStop.target = Place.FromXml(place);
+
+                XmlNode endTarget = Util.SelectSingleNode(tourStop, "EndTarget");
+                if (endTarget != null)
+                {
+                    newTourStop.endTarget = Place.FromXml(endTarget);
+                }
+
+                XmlNode overlays = Util.SelectSingleNode(tourStop, "Overlays");
+
+                foreach (XmlNode overlay in overlays.ChildNodes)
+                {
+                    //todo this might have issuse if all the childeren are not good 
+                    if (overlay.Name == "Overlay")
+                    {
+                        newTourStop.AddOverlay(Overlay.FromXml(newTourStop, overlay));
+                    }
+                }
+
+
+                XmlNode musicNode = Util.SelectSingleNode(tourStop, "MusicTrack");
+
+                if (musicNode != null)
+                {
+                    newTourStop.musicTrack = (AudioOverlay)Overlay.FromXml(newTourStop, Util.SelectSingleNode(musicNode, "Overlay"));
+                }
+
+                XmlNode voiceNode = Util.SelectSingleNode(tourStop, "VoiceTrack");
+
+                if (voiceNode != null)
+                {
+                    newTourStop.voiceTrack = (AudioOverlay)Overlay.FromXml(newTourStop, Util.SelectSingleNode(voiceNode, "Overlay"));
+                }
+
+                XmlNode layerNode = Util.SelectSingleNode(tourStop, "VisibleLayers");
+                if (layerNode != null)
+                {
+                    newTourStop.LoadLayerList(layerNode);
+                }
+
+                //todo fix load thumbnail
+                //newTourStop.thumbnail = UiTools.LoadBitmap(string.Format("{0}{1}.thumb.png", newTourStop.owner.WorkingDirectory, newTourStop.id));
+                newTourStop.thumbnail = owner.GetCachedTexture(string.Format("{0}.thumb.png", newTourStop.id), delegate { int c = 0; });
+                return newTourStop;
             }
-
-            XmlNode musicNode = Util.SelectSingleNode(tourStop, "MusicTrack");
-
-            if (musicNode != null)
+            catch (Exception ex)
             {
-                newTourStop.musicTrack = (AudioOverlay)Overlay.FromXml(newTourStop, Util.SelectSingleNode(musicNode, "Overlay"));
+                WWTControl.scriptInterface.FireTourError(ex);
+                return null;
             }
-
-            XmlNode voiceNode = Util.SelectSingleNode(tourStop, "VoiceTrack");
-
-            if (voiceNode != null)
-            {
-                newTourStop.voiceTrack = (AudioOverlay)Overlay.FromXml(newTourStop,  Util.SelectSingleNode(voiceNode, "Overlay"));
-            }
-
-            XmlNode layerNode = Util.SelectSingleNode(tourStop, "VisibleLayers");
-            if (layerNode != null)
-            {
-                newTourStop.LoadLayerList(layerNode);
-            }
-
-            //todo fix load thumbnail
-            //newTourStop.thumbnail = UiTools.LoadBitmap(string.Format("{0}{1}.thumb.png", newTourStop.owner.WorkingDirectory, newTourStop.id));
-            newTourStop.thumbnail = owner.GetCachedTexture(string.Format("{0}.thumb.png", newTourStop.id), delegate { int c=0; });
-            return newTourStop;
         }
 
         public string GetNextDefaultName(string baseName)
