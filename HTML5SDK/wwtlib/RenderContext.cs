@@ -278,7 +278,16 @@ namespace wwtlib
         public Imageset BackgroundImageset
         {
             get { return backgroundImageset; }
-            set { backgroundImageset = value; }
+            set
+            {
+                bool viewModeChanged = backgroundImageset != null && value != null && (backgroundImageset.DataSetType != value.DataSetType);
+                backgroundImageset = value;
+                if (viewModeChanged) //Prevent potential artifacts when going from 3D to Sky/Pan
+                {
+                    WWTControl.Singleton.ClampZooms(this);
+                    WWTControl.Singleton.Mover = null;
+                }
+            }
         }
 
         Imageset foregroundImageset;
@@ -1292,7 +1301,7 @@ namespace wwtlib
 
             TargetCamera = ViewCamera.Copy();
         }
-
+    
         internal void SetVertexBuffer(VertexBufferBase vertexBuffer)
         {
         }

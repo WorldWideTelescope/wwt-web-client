@@ -2885,6 +2885,13 @@ namespace wwtlib
             image.Src = Singleton.Canvas.GetDataUrl();
 
         }
+
+        public void ClampZooms(RenderContext rc)
+        {
+            rc.ViewCamera.Zoom = DoubleUtilities.Clamp(rc.ViewCamera.Zoom, ZoomMin, ZoomMax);
+            rc.TargetCamera.Zoom = DoubleUtilities.Clamp(rc.TargetCamera.Zoom, ZoomMin, ZoomMax);
+        }
+
     }
     public delegate void BlobReady(System.Html.Data.Files.Blob blob);
 
