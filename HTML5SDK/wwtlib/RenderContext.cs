@@ -284,8 +284,8 @@ namespace wwtlib
                 backgroundImageset = value;
                 if (viewModeChanged) //Prevent potential artifacts when going from 3D to Sky/Pan
                 {
+                    WWTControl.Singleton.FreezeView();
                     WWTControl.Singleton.ClampZooms(this);
-                    WWTControl.Singleton.Mover = null;
                 }
             }
         }
