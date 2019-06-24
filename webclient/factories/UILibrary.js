@@ -68,8 +68,6 @@
     $rootScope.observingLocation = Object.assign($rootScope.observingLocation,props);
     var earthMap = wwtlib.LayerManager.get_allMaps().Earth;
     
-    delete earthMap.childMaps['Observing Location'];
-
     var rf = new wwtlib.ReferenceFrame();
     rf.name = 'Observing Location';
     rf.lat = props.lat;
