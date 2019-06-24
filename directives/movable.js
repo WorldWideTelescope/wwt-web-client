@@ -5,14 +5,14 @@
             var el = $(element);
             var target = el;
             var stickyCoords;
-          var tSel = target.data('movable-target')
+          var tSel = target.data('movable-target');
             var oncomplete = function () { };
           if (tSel) {
             el = target.parentsUntil(tSel).parent();
             //find(target.data('movable-target'));
             }
             if (target.data('sticky')) {
-                var stickyCss = appState.get(target.data('sticky'))
+                var stickyCss = appState.get(target.data('sticky'));
                 if (stickyCss && stickyCss.top) {
                     el.css(stickyCss);
                     el.on('resize', function () {
