@@ -122,7 +122,7 @@ namespace wwtlib
 
 
 
-            while (!foundEnd)
+            while (!foundEnd && !br.EndOfStream)
             {
                 for (int i = 0; i < 36; i++)
                 {

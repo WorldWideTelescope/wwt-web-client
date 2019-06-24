@@ -31,6 +31,11 @@ namespace wwtlib
             get { return data.length; }
         }
 
+        public bool EndOfStream
+        {
+            get { return position >= Length; }
+        }
+
         public BinaryReader(Uint8Array arraybuf)
         {
             data = arraybuf;
