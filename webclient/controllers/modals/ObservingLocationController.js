@@ -2,7 +2,7 @@ wwt.controllers.controller('ObservingLocationController',
   ['$scope', 'AppState', '$http', '$rootScope', '$timeout','UILibrary',function ($scope, appState, $http,$rootScope,$timeout,UILibrary) {
     $scope.pages = ['Select city', 'Choose on globe'];
 
-    var ol = $rootScope.observingLocation
+    var ol = $rootScope.observingLocation;
     var pageIndex = ol && ol.type ? $scope.pages.indexOf(ol.type):0;
 
 
@@ -88,6 +88,7 @@ wwt.controllers.controller('ObservingLocationController',
     };
     $scope.selectCity = function (index) {
       var c = $scope.cities[index];
+      c.altMeters = Math.round(c.el * 10000) / 10;
       $scope.selectedCity = c;
     };
 
@@ -141,25 +142,40 @@ wwt.controllers.controller('ObservingLocationController',
     };
     var hadCrosshairsOff = wwt.wc.settings._showCrosshairs == false;
 
+    var correctLng = function(ra){
+      return (((180 - ((ra) / 24.0 * 360) - 180) + 540) % 360) - 180;
+    }
+
     $scope.setLocation = function(city){
       if(hadCrosshairsOff){
         wwt.wc.settings.set_showCrosshairs = false;
       }
-      var lng = (((180 - (($scope.coords.get_RA()) / 24.0 * 360) - 180) + 540) % 360) - 180;
-      var lat = $scope.coords.get_lat();
-      var altitude = $rootScope.singleton.renderContext.getEarthAltitude($scope.coords.get_lat(), lng, true) + 500;
-      console.log($scope.locationName);
+      var lat,lng,altitude,name;
+      if (city){        
+        lat = city.lat;
+        lng = city.lng;
+        $scope.coords = wwtlib.Coordinates.fromLatLng(lat,lng);
+        $scope.coords.set_lng($scope.coords.get_RA());
+        altitude = city.altMeters;
+        name = city.name;
+      }else{
+        lng = correctLng($scope.coords.get_RA());
+        lat = $scope.coords.get_lat();
+        altitude = $rootScope.singleton.renderContext.getEarthAltitude($scope.coords.get_lat(), lng, true) + 500;
+        name =  $rootScope.observingLocation.name
+
+      }
       var observing = {
         lat:lat,
         lng:lng,
         altitude:altitude,
-        name:$rootScope.observingLocation.name,
+        name:name,
         type:$scope.page,
         ra:$scope.coords.get_RA(),
         dec:$scope.coords.get_dec(),
         fov:wwt.wc.get_fov()
       };
-     UILibrary.setObservingLocation(observing);
+      UILibrary.setObservingLocation(observing);
       appState.set('observingLocation',observing);
 
       if (hadCrosshairsOff){

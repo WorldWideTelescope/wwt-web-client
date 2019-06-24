@@ -132,9 +132,9 @@
 			}
 			$scope.$applyAsync(function(){
         $rootScope.observingLocation.localHorizonMode = $scope.viewFromLocation;
-        console.log({observingLocation:$rootScope.observingLocation});
+        //console.log({observingLocation:$rootScope.observingLocation});
         appState.set('observingLocation',$rootScope.observingLocation);
-        console.log(appState.get('observingLocation'));
+        //console.log(appState.get('observingLocation'));
         $rootScope.ctl.settings.set_localHorizonMode($scope.viewFromLocation);
       });
 		};
@@ -145,8 +145,7 @@
         controller:'ObservingLocationController',
         template:'observing-loc-options',
         cssClass:'set-position observing-loc',
-        fixedPosition:true,
-        callback:console.log
+        fixedPosition:true
       });
     };
 		setInterval(timeDateTimerTick, 300);
