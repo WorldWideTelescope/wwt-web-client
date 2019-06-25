@@ -68,7 +68,7 @@ namespace wwtlib
             chunck.OnLoadEnd = delegate (System.Html.Data.Files.FileProgressEvent e)
             {
                 ReadFromBin(new BinaryReader(new Uint8Array(chunck.Result)));
-                if (callBack != null)
+                if (callBack != null && parseSuccessful)
                 {
                     callBack.Invoke(this);
                 }
@@ -100,6 +100,7 @@ namespace wwtlib
         public int lastMin = 0;
         public int lastMax = 255;
         bool color = false;
+        private bool parseSuccessful = false;
 
         public static bool IsGzip(BinaryReader br)
         {
@@ -116,10 +117,25 @@ namespace wwtlib
             }
         }
 
+        private bool ValidateFitsSimple (BinaryReader br)
+        {
+            int pos = br.Position;
+            br.Seek(0);
+            string data = br.ReadByteString(8);
+            string keyword = data.TrimEnd();
+            br.Seek(pos);
+            return keyword.ToUpperCase() == "SIMPLE";
+        }
+
         public void ParseHeader(BinaryReader br)
         {
-            bool foundEnd = false;
+            if (!ValidateFitsSimple(br))
+            {
+                Script.Literal("alert('The requested file is not a valid FITS file.')");
+                return;
+            }
 
+            bool foundEnd = false;
 
 
             while (!foundEnd && !br.EndOfStream)
@@ -165,6 +181,11 @@ namespace wwtlib
                 }
             }
 
+            if (!foundEnd)
+            {
+                Script.Literal("alert('Unable to parse requested FITS file.')");
+                return;
+            }
 
             NumAxis = Int32.Parse(header["NAXIS"]);
 
@@ -239,6 +260,7 @@ namespace wwtlib
                 Histogram = ComputeHistogram(256);
                 HistogramMaxCount = Histogram[256];
             }
+            parseSuccessful = true;
         }
 
         public string GetZDescription()
