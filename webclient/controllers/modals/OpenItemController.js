@@ -64,6 +64,7 @@
           console.timeEnd('openLocal: ' + type);
           $scope.openItemUrl = mediaResult.url;
           $scope.openItem();
+          $('#addFileReset')[0].reset();
         });
       };
 
