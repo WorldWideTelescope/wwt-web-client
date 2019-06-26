@@ -67,12 +67,13 @@
       props.localHorizonMode;
     $rootScope.observingLocation = Object.assign($rootScope.observingLocation,props);
     var earthMap = wwtlib.LayerManager.get_allMaps().Earth;
-    
+    wwtlib.LayerManager.layerSelectionChanged(earthMap);
     var rf = new wwtlib.ReferenceFrame();
     rf.name = 'Observing Location';
     rf.lat = props.lat;
     rf.lng = props.lng;
     rf.altitude = props.altitude;
+
     wwtlib.LayerManager.referenceFrameWizardFinished(rf);
     $rootScope.hasSetupObservingLocation = true;
     var newSettings = {
