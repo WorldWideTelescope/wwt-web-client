@@ -1443,14 +1443,14 @@ wwt.app.directive('movable', ['AppState',function (appState) {
             var el = $(element);
             var target = el;
             var stickyCoords;
-          var tSel = target.data('movable-target')
+          var tSel = target.data('movable-target');
             var oncomplete = function () { };
           if (tSel) {
             el = target.parentsUntil(tSel).parent();
             //find(target.data('movable-target'));
             }
             if (target.data('sticky')) {
-                var stickyCss = appState.get(target.data('sticky'))
+                var stickyCss = appState.get(target.data('sticky'));
                 if (stickyCss && stickyCss.top) {
                     el.css(stickyCss);
                     el.on('resize', function () {
@@ -2767,7 +2767,7 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
     rf.lat = props.lat;
     rf.lng = props.lng;
     rf.altitude = props.altitude;
-    rf.stationKeeping = true;
+
     wwtlib.LayerManager.referenceFrameWizardFinished(rf);
     $rootScope.hasSetupObservingLocation = true;
     var newSettings = {
@@ -2777,6 +2777,7 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
       _localHorizonMode:props.localHorizonMode
     };
     Object.assign(wwt.wc.settings,newSettings);
+    wwtlib.LayerManager.layerSelectionChanged(earthMap);
   });
 };
 
@@ -2865,7 +2866,7 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
   if (util.getQSParam('debug') === 'disable') {
     setTimeout(function () {
       wwtlib.WWTControl.singleton.render = function () {
-        console.log('fixed render loop :)');
+        //console.log('fixed render loop :)');
       };
       //testing only:
       $('#WorldWideTelescopeControlHost').html('');
@@ -2930,7 +2931,7 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
 
   var dataVizWiz = wwtlib.LayerManager.get_dataVizWizardDialog();
   var showDataVizWiz = function (layerMap) {
-    console.log(layerMap);
+    //console.log(layerMap);
     var modalScope = $rootScope.$new();
     var propertyMode = typeof layerMap !== 'string';
     modalScope.propertyMode = propertyMode;
@@ -7388,9 +7389,9 @@ wwt.controllers.controller('ViewController',
 			}
 			$scope.$applyAsync(function(){
         $rootScope.observingLocation.localHorizonMode = $scope.viewFromLocation;
-        console.log({observingLocation:$rootScope.observingLocation});
+        //console.log({observingLocation:$rootScope.observingLocation});
         appState.set('observingLocation',$rootScope.observingLocation);
-        console.log(appState.get('observingLocation'));
+        //console.log(appState.get('observingLocation'));
         $rootScope.ctl.settings.set_localHorizonMode($scope.viewFromLocation);
       });
 		};
@@ -7401,8 +7402,7 @@ wwt.controllers.controller('ViewController',
         controller:'ObservingLocationController',
         template:'observing-loc-options',
         cssClass:'set-position observing-loc',
-        fixedPosition:true,
-        callback:console.log
+        fixedPosition:true
       });
     };
 		setInterval(timeDateTimerTick, 300);
@@ -9284,7 +9284,7 @@ wwt.controllers.controller('ObservingLocationController',
   ['$scope', 'AppState', '$http', '$rootScope', '$timeout','UILibrary',function ($scope, appState, $http,$rootScope,$timeout,UILibrary) {
     $scope.pages = ['Select city', 'Choose on globe'];
 
-    var ol = $rootScope.observingLocation
+    var ol = $rootScope.observingLocation;
     var pageIndex = ol && ol.type ? $scope.pages.indexOf(ol.type):0;
 
 
@@ -9370,6 +9370,7 @@ wwt.controllers.controller('ObservingLocationController',
     };
     $scope.selectCity = function (index) {
       var c = $scope.cities[index];
+      c.altMeters = Math.round(c.el * 10000) / 10;
       $scope.selectedCity = c;
     };
 
@@ -9423,25 +9424,40 @@ wwt.controllers.controller('ObservingLocationController',
     };
     var hadCrosshairsOff = wwt.wc.settings._showCrosshairs == false;
 
+    var correctLng = function(ra){
+      return (((180 - ((ra) / 24.0 * 360) - 180) + 540) % 360) - 180;
+    }
+
     $scope.setLocation = function(city){
       if(hadCrosshairsOff){
         wwt.wc.settings.set_showCrosshairs = false;
       }
-      var lng = (((180 - (($scope.coords.get_RA()) / 24.0 * 360) - 180) + 540) % 360) - 180;
-      var lat = $scope.coords.get_lat();
-      var altitude = $rootScope.singleton.renderContext.getEarthAltitude($scope.coords.get_lat(), lng, true) + 500;
-      console.log($scope.locationName);
+      var lat,lng,altitude,name;
+      if (city){        
+        lat = city.lat;
+        lng = city.lng;
+        $scope.coords = wwtlib.Coordinates.fromLatLng(lat,lng);
+        $scope.coords.set_lng($scope.coords.get_RA());
+        altitude = city.altMeters;
+        name = city.name;
+      }else{
+        lng = correctLng($scope.coords.get_RA());
+        lat = $scope.coords.get_lat();
+        altitude = $rootScope.singleton.renderContext.getEarthAltitude($scope.coords.get_lat(), lng, true) + 500;
+        name =  $rootScope.observingLocation.name
+
+      }
       var observing = {
         lat:lat,
         lng:lng,
         altitude:altitude,
-        name:$rootScope.observingLocation.name,
+        name:name,
         type:$scope.page,
         ra:$scope.coords.get_RA(),
         dec:$scope.coords.get_dec(),
         fov:wwt.wc.get_fov()
       };
-     UILibrary.setObservingLocation(observing);
+      UILibrary.setObservingLocation(observing);
       appState.set('observingLocation',observing);
 
       if (hadCrosshairsOff){

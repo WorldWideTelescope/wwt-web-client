@@ -73,7 +73,7 @@
     rf.lat = props.lat;
     rf.lng = props.lng;
     rf.altitude = props.altitude;
-    rf.stationKeeping = true;
+
     wwtlib.LayerManager.referenceFrameWizardFinished(rf);
     $rootScope.hasSetupObservingLocation = true;
     var newSettings = {
@@ -83,6 +83,7 @@
       _localHorizonMode:props.localHorizonMode
     };
     Object.assign(wwt.wc.settings,newSettings);
+    wwtlib.LayerManager.layerSelectionChanged(earthMap);
   });
 };
 
@@ -171,7 +172,7 @@
   if (util.getQSParam('debug') === 'disable') {
     setTimeout(function () {
       wwtlib.WWTControl.singleton.render = function () {
-        console.log('fixed render loop :)');
+        //console.log('fixed render loop :)');
       };
       //testing only:
       $('#WorldWideTelescopeControlHost').html('');
@@ -236,7 +237,7 @@
 
   var dataVizWiz = wwtlib.LayerManager.get_dataVizWizardDialog();
   var showDataVizWiz = function (layerMap) {
-    console.log(layerMap);
+    //console.log(layerMap);
     var modalScope = $rootScope.$new();
     var propertyMode = typeof layerMap !== 'string';
     modalScope.propertyMode = propertyMode;

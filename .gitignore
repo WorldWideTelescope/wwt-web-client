@@ -232,3 +232,6 @@ COPYING.txt
 /HTML5SDK/.vs/Html5Sdk/v15/Server/sqlite3/storage.ide-shm
 /HTML5SDK/.vs/Html5Sdk/v15/Server/sqlite3/storage.ide-wal
 /webclient/allcities.json
+webclient/.vscode/launch.json
+webclient/.vscode/iis-e-settings.json
+webclient/.vscode/iisexpress.json
