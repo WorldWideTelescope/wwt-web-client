@@ -818,6 +818,22 @@ namespace System.Html
 
     [ScriptIgnoreNamespace]
     [ScriptImport]
+    public class Float64Array
+    {
+        public Float64Array(object data) { }
+        public Float64Array(object data, int a, int b) { }
+        [ScriptField]
+        public int length { get { return 0; } }
+
+        [ScriptField]
+        public double this[int key]
+        {
+            get { return 0; }
+        }
+    }
+
+    [ScriptIgnoreNamespace]
+    [ScriptImport]
     public class Uint8Array
     {
         public Uint8Array(object data) { }

@@ -673,30 +673,30 @@ namespace wwtlib
 
         private void InitDataDouble(BinaryReader br)
         {
-            //double[] buffer = new double[BufferSize];
-            //Uint8Array part = new Uint8Array(4);
-            //DataBuffer = buffer;
-            //for (int i = 0; i < BufferSize; i++)
-            //{
-            //    part[7] = br.ReadByte();
-            //    part[6] = br.ReadByte();
-            //    part[5] = br.ReadByte();
-            //    part[4] = br.ReadByte();
-            //    part[3] = br.ReadByte();
-            //    part[2] = br.ReadByte();
-            //    part[1] = br.ReadByte();
-            //    part[0] = br.ReadByte();
-            //    buffer[i] = buffer[i] = (new Float64Array(part.buffer, 0, 1))[0];
+            double[] buffer = new double[BufferSize];
+            Uint8Array part = new Uint8Array(8);
+            DataBuffer = buffer;
+            for (int i = 0; i < BufferSize; i++)
+            {
+                part[7] = br.ReadByte();
+                part[6] = br.ReadByte();
+                part[5] = br.ReadByte();
+                part[4] = br.ReadByte();
+                part[3] = br.ReadByte();
+                part[2] = br.ReadByte();
+                part[1] = br.ReadByte();
+                part[0] = br.ReadByte();
+                buffer[i] = (new Float64Array(part.buffer, 0, 1))[0];
 
-            //    if (MinVal > (double)buffer[i])
-            //    {
-            //        MinVal = (double)buffer[i];
-            //    }
-            //    if (MaxVal < (double)buffer[i])
-            //    {
-            //        MaxVal = (double)buffer[i];
-            //    }
-            //}
+                if (MinVal > (double)buffer[i])
+                {
+                    MinVal = (double)buffer[i];
+                }
+                if (MaxVal < (double)buffer[i])
+                {
+                    MaxVal = (double)buffer[i];
+                }
+            }
         }
         public ScaleTypes lastScale = ScaleTypes.Linear;
         public double lastBitmapMin = 0;
