@@ -336,9 +336,9 @@ namespace wwtlib
             return val;
 
         }
-        internal static void OpenUrl(string p, bool p_2)
+        internal static void OpenUrl(string url)
         {
-            //todo implement this by opening new window in HTML
+            Window.Open(url);
         }
 
 
