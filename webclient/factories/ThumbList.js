@@ -184,6 +184,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
       }
       else if (item.isPanorama) {
         scope.setLookAt('Panorama', item.get_name());
+		wwtlib.WWTControl.singleton.renderContext.set_backgroundImageset(item);
       } else if (item.isEarth) {
         scope.setLookAt('Earth', item.get_name());
       } else if (util.getIsPlanet(item)) {
