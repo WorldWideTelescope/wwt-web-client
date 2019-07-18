@@ -764,6 +764,7 @@ wwt.controllers.controller('MainController',
       };
 
       $scope.playTour = function (url, edit) {
+
         if (!edit) {
           util.goFullscreen();
         }
@@ -775,11 +776,12 @@ wwt.controllers.controller('MainController',
             wwt.tourPlaying =$rootScope.tourPlaying = false;
           });
           uiLibrary.showErrorMessage('There was an error loading this tour. The tour file may be damaged or inaccessible.');
-          console.warn('caught ya!',$scope,e);
+          console.warn('Tour error',$scope,e);
         });
         wwt.wc.add_tourReady(function () {
           console.log({ready:wwtlib.WWTControl.singleton.tourEdit});
           $scope.$applyAsync(function () {
+            $scope.isLoading = false;
             $scope.activeItem = {label: 'currentTour'};
             $scope.activePanel = 'currentTour';
             $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];

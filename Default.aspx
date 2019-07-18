@@ -50,7 +50,7 @@
         {
           DotMin = ".min.js" + DebugQs;
         }
-        
+
       }
       if (Request.QueryString["ads"] != null)
       {
@@ -368,6 +368,7 @@
         data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
         data-ng-class="searchModal ? 'hide':'btn share-button'"
         data-placement="bottom-left"
+        data-ng-if="!tourPlaying"
         data-ng-hide="showMobileTracking()"
         >
         <i class="fa fa-share-alt"></i>
