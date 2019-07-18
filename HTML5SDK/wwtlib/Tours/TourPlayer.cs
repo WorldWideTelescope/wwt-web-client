@@ -844,7 +844,7 @@ namespace wwtlib
                     if (!string.IsNullOrEmpty(tour.CurrentTourStop.Overlays[i].Url))
                     {
                         Overlay linkItem = tour.CurrentTourStop.Overlays[i];
-                        Util.OpenUrl(linkItem.Url, true);
+                        Util.OpenUrl(linkItem.Url);
                         return true;
                     }
                     if (!string.IsNullOrEmpty(tour.CurrentTourStop.Overlays[i].LinkID))
