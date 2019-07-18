@@ -452,7 +452,7 @@ wwt.controllers.controller('CurrentTourController', [
                 $scope.selectStop(0);
 
               $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
-                    console.log('tweenPos', e);
+                    //console.log('tweenPos', e);
                     if (e === 1) {
                         finishedPlaying();//hack - need tourfinished event
                     }

@@ -15706,7 +15706,12 @@ window.wwtlib = function(){
       return this._backgroundImageset;
     },
     set_backgroundImageset: function(value) {
+      var viewModeChanged = this._backgroundImageset != null && value != null && (this._backgroundImageset.get_dataSetType() !== value.get_dataSetType());
       this._backgroundImageset = value;
+      if (viewModeChanged) {
+        WWTControl.singleton._freezeView();
+        WWTControl.singleton.clampZooms(this);
+      }
       return value;
     },
     get_foregroundImageset: function() {
@@ -28721,6 +28726,10 @@ window.wwtlib = function(){
         if ( typeof temp.msToBlob == 'function') { var blob = temp.msToBlob(); blobReady(blob); } else { temp.toBlob(blobReady, 'image/jpeg'); };
       }, false);
       image.src = WWTControl.singleton.canvas.toDataURL();
+    },
+    clampZooms: function(rc) {
+      rc.viewCamera.zoom = DoubleUtilities.clamp(rc.viewCamera.zoom, this.get_zoomMin(), this.get__zoomMax());
+      rc.targetCamera.zoom = DoubleUtilities.clamp(rc.targetCamera.zoom, this.get_zoomMin(), this.get__zoomMax());
     }
   };
 
@@ -37468,7 +37477,7 @@ window.wwtlib = function(){
       var colorLocal = this.get_color();
       var ecliptic = Coordinates.meanObliquityOfEcliptic(SpaceTimeController.get_jNow()) / 180 * Math.PI;
       var selectDomain = {};
-      var mr = 0;
+      var mr = LayerManager.get_allMaps()[this.get_referenceFrame()].frame.meanRadius;
       if (!!mr) {
         this._meanRadius$1 = mr;
       }
@@ -37541,7 +37550,13 @@ window.wwtlib = function(){
               this.positions.push(position);
             }
             else if (this.get_coordinatesType() === 1) {
-              var xyzScale = this.getScaleFactor(this.get_cartesianScale(), this.get_cartesianCustomScale()) / this._meanRadius$1;
+              var xyzScale = this.getScaleFactor(this.get_cartesianScale(), this.get_cartesianCustomScale());
+              if (this.astronomical) {
+                xyzScale /= (1000 * 149598000);
+              }
+              else {
+                xyzScale /= this._meanRadius$1;
+              }
               if (this.get_zAxisColumn() > -1) {
                 Zcoord = parseFloat(row[this.get_zAxisColumn()]);
               }

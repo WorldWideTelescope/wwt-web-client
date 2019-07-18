@@ -4101,7 +4101,7 @@ wwt.app.factory('SearchData', [
         deferredInit.resolve(data);
 
 
-      } else {
+      } else { 
         setTimeout(init, 333);
       }
       return deferredInit.promise;
@@ -5345,6 +5345,7 @@ wwt.controllers.controller('MainController',
       };
 
       $scope.playTour = function (url, edit) {
+
         if (!edit) {
           util.goFullscreen();
         }
@@ -5356,11 +5357,12 @@ wwt.controllers.controller('MainController',
             wwt.tourPlaying =$rootScope.tourPlaying = false;
           });
           uiLibrary.showErrorMessage('There was an error loading this tour. The tour file may be damaged or inaccessible.');
-          console.warn('caught ya!',$scope,e);
+          console.warn('Tour error',$scope,e);
         });
         wwt.wc.add_tourReady(function () {
           console.log({ready:wwtlib.WWTControl.singleton.tourEdit});
           $scope.$applyAsync(function () {
+            $scope.isLoading = false;
             $scope.activeItem = {label: 'currentTour'};
             $scope.activePanel = 'currentTour';
             $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
@@ -8128,7 +8130,7 @@ wwt.controllers.controller('CurrentTourController', [
                 $scope.selectStop(0);
 
               $scope.$watch('activeSlide._tweenPosition', function (e) {//todo:investigate perf implications
-                    console.log('tweenPos', e);
+                    //console.log('tweenPos', e);
                     if (e === 1) {
                         finishedPlaying();//hack - need tourfinished event
                     }
