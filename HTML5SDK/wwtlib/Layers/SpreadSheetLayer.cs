@@ -784,6 +784,16 @@ namespace wwtlib
                                     pointColor = colorLocal;
                                 }
                                 break;
+                            case ColorMaps.Map_Column_to_Colormap:
+                                if (ColorMapColumn > -1)
+                                {
+                                    pointColor = DataColorMap.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn])));
+                                }
+                                else
+                                {
+                                    pointColor = colorLocal;
+                                }
+                                break;
                             //case ColorMaps.Group_by_Range:
                             //    break;
                             //case ColorMaps.Gradients_by_Range:
@@ -1916,20 +1926,55 @@ namespace wwtlib
             }
         }
 
-        private LinearColorMap linearColorMap = null;
+        protected ColorMapContainer dataColorMap = ColorMapContainer.Grayscale();
 
-
-        internal LinearColorMap LinearColorMap
+        public ColorMapContainer DataColorMap
         {
-            get { return linearColorMap; }
+            get { return dataColorMap; }
             set
             {
-                if (linearColorMap != value)
-                {
-                    version++;
-                    linearColorMap = value;
-                }
+                version++;
+                dataColorMap = value;
             }
+        }
+
+        protected float normalizeColorMapMin = 0;
+
+        public float NormalizeColorMapMin
+        {
+            get { return normalizeColorMapMin; }
+            set
+            {
+                version++;
+                normalizeColorMapMin = value;
+            }
+        }
+
+        protected float normalizeColorMapMax = 1;
+
+        public float NormalizeColorMapMax
+        {
+            get { return normalizeColorMapMax; }
+            set
+            {
+                version++;
+                normalizeColorMapMax = value;
+            }
+        }
+
+        public float NormalizeColorMapValue(float value)
+        {
+            float new_value;
+            new_value = (value - NormalizeColorMapMin) / (NormalizeColorMapMax - NormalizeColorMapMin);
+            if (new_value < 0)
+            {
+                new_value = 0;
+            }
+            else if (new_value > 1)
+            {
+                new_value = 1;
+            }
+            return new_value;
         }
 
         private int markerColumn = -1;

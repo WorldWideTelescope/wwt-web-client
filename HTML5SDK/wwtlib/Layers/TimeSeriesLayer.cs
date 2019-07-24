@@ -12,7 +12,7 @@ namespace wwtlib
     public enum AltTypes { Depth = 0, Altitude = 1, Distance = 2, SeaLevel = 3, Terrain = 4 };
 
     public enum MarkerMixes { Same_For_All = 0, /*Group_by_Range, Group_by_Values */};
-    public enum ColorMaps { Same_For_All = 0, /*Group_by_Range=1, */Group_by_Values = 2, Per_Column_Literal = 3/*, Gradients_by_Range=4*/ };
+    public enum ColorMaps { Same_For_All = 0, /*Group_by_Range=1, */Group_by_Values = 2, Per_Column_Literal = 3/*, Gradients_by_Range=4*/, Map_Column_to_Colormap = 5 };
 
     public enum PlotTypes { Gaussian = 0, Point = 1, Circle = 2, Square = 3, PushPin = 4, Custom=5 };
 
