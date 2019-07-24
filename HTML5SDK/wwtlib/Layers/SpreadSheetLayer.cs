@@ -479,8 +479,6 @@ namespace wwtlib
         }
         double barScaleFactor = 20;
 
-
-
         private double meanRadius = 6371000;
 
         protected bool PrepVertexBuffer(RenderContext renderContext, float opacity)
@@ -759,13 +757,14 @@ namespace wwtlib
                             {
                                 case PointScaleTypes.Linear:
                                     pointSize = Single.Parse(row[sizeColumn]);
+                                    pointSize = NormalizePointSize(pointSize);
                                     break;
                                 case PointScaleTypes.Log:
-                                    pointSize = (float)Math.Log(Single.Parse(row[sizeColumn]));
+                                    pointSize = Single.Parse(row[sizeColumn]);
+                                    pointSize = (float)Math.Log(pointSize);
                                     break;
                                 case PointScaleTypes.Power:
                                     {
-                                        double size = 0;
 
                                         try
                                         {
@@ -2018,7 +2017,6 @@ namespace wwtlib
 
         protected int sizeColumn = -1;
 
-
         public int SizeColumn
         {
             get { return sizeColumn; }
@@ -2031,6 +2029,108 @@ namespace wwtlib
                 }
             }
         }
+
+        // The following attributes control whether the point sizes should be normalized before
+        // being used. When NormalizeSize is true, the point sizes are scaled using
+        //
+        // new_size = (size - NormalizeSizeMin) / (NormalizeSizeMax - NormalizeSizeMin)
+        //
+        // The NormalizeSizeClip attribute can be used to determine whether the sizes should
+        // be clipped to the range [0:1]. At this time, normalization is only applied if
+        // PointScaleTypes is Linear.
+
+        protected bool normalizeSize = false;
+
+        public bool NormalizeSize
+        {
+            get { return normalizeSize; }
+            set
+            {
+                if (normalizeSize != value)
+                {
+                    version++;
+                    normalizeSize = value;
+                }
+            }
+        }
+
+        protected bool normalizeSizeClip = false;
+
+        public bool NormalizeSizeClip
+        {
+            get { return normalizeSizeClip; }
+            set
+            {
+                if (normalizeSizeClip != value)
+                {
+                    version++;
+                    normalizeSizeClip = value;
+                }
+            }
+        }
+
+        protected float normalizeSizeMin = 0;
+
+        public float NormalizeSizeMin
+        {
+            get { return normalizeSizeMin; }
+            set
+            {
+                if (normalizeSizeMin != value)
+                {
+                    version++;
+                    normalizeSizeMin = value;
+                }
+            }
+        }
+
+        protected float normalizeSizeMax = 1;
+
+        public float NormalizeSizeMax
+        {
+            get { return normalizeSizeMax; }
+            set
+            {
+                if (normalizeSizeMax != value)
+                {
+                    version++;
+                    normalizeSizeMax = value;
+                }
+            }
+        }
+
+        public float NormalizePointSize(float value)
+        {
+
+            float new_value;
+
+            if(NormalizeSize)
+            {
+                new_value = (value - NormalizeSizeMin) / (NormalizeSizeMax - NormalizeSizeMin);
+
+                if (NormalizeSizeClip)
+                {
+                    if (new_value < 0)
+                    {
+                        new_value = 0;
+                    }
+                    else if (new_value > 1)
+                    {
+                        new_value = 1;
+                    }
+                }
+
+            }
+            else
+            {
+                new_value = value;
+            }
+
+            return new_value;
+
+        }
+
+
         protected int nameColumn = 0;
 
 
