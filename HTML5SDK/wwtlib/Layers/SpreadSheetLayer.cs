@@ -768,7 +768,8 @@ namespace wwtlib
 
                                         try
                                         {
-                                            pointSize = (float)double.Parse(row[sizeColumn]);
+                                            pointSize = Single.Parse(row[sizeColumn]);
+                                            pointSize = NormalizePointSize(pointSize);
                                             pointSize = Math.Pow(2, pointSize);
                                         }
                                         catch
@@ -2037,7 +2038,7 @@ namespace wwtlib
         //
         // The NormalizeSizeClip attribute can be used to determine whether the sizes should
         // be clipped to the range [0:1]. At this time, normalization is only applied if
-        // PointScaleTypes is Linear.
+        // PointScaleTypes is Linear or Power.
 
         protected bool normalizeSize = false;
 
