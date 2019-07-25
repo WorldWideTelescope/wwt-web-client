@@ -134,7 +134,7 @@
         deferredInit.resolve(data);
 
 
-      } else { 
+      } else {
         setTimeout(init, 333);
       }
       return deferredInit.promise;
