@@ -2034,7 +2034,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
     }
 
     function clickThumb(item, scope, outParams, callback) {
-
+      //console.log(item)
       setTimeout(function(){
         $rootScope.instant = false;
       },2222);
@@ -2130,12 +2130,13 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
         return outParams;
       }
       else if (item.isPanorama) {
-        scope.setLookAt('Panorama', item.get_name());
+        //scope.setLookAt('Panorama', item.get_name());
+        scope.setBackgroundImage(item); 
       } else if (item.isEarth) {
         scope.setLookAt('Earth', item.get_name());
       } else if (util.getIsPlanet(item)) {
 
-        if (scope.lookAt === 'Sky') {
+        if (scope.lookAt === 'Sky') { 
           //var c = item.get_camParams();
           //c.zoom = 0.1;
 
@@ -3718,7 +3719,9 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     function openCollection(url) {
-      url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org");//.replace("http://", "//");
+      if (url.indexOf('blob:http')===-1) { 
+        url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org");//.replace("http://", "//");
+      }
       var deferred = $q.defer();
       if (!openCollectionsFolder) {
         openCollectionsFolder = wwt.wc.createFolder();
@@ -4101,7 +4104,7 @@ wwt.app.factory('SearchData', [
         deferredInit.resolve(data);
 
 
-      } else { 
+      } else {
         setTimeout(init, 333);
       }
       return deferredInit.promise;
@@ -5268,7 +5271,7 @@ wwt.controllers.controller('MainController',
         if (imageSet) {
           $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
         }
-        if (!item.isSurvey) {
+        if (!item.isSurvey && !item.isPanorama) {
           $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
         }
       };
