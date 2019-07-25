@@ -87,7 +87,7 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
     }
 
     function clickThumb(item, scope, outParams, callback) {
-
+      //console.log(item)
       setTimeout(function(){
         $rootScope.instant = false;
       },2222);
@@ -183,12 +183,13 @@ wwt.app.factory('ThumbList', ['$rootScope', 'Util', 'Places', '$timeout', '$temp
         return outParams;
       }
       else if (item.isPanorama) {
-        scope.setLookAt('Panorama', item.get_name());
+        //scope.setLookAt('Panorama', item.get_name());
+        scope.setBackgroundImage(item); 
       } else if (item.isEarth) {
         scope.setLookAt('Earth', item.get_name());
       } else if (util.getIsPlanet(item)) {
 
-        if (scope.lookAt === 'Sky') {
+        if (scope.lookAt === 'Sky') { 
           //var c = item.get_camParams();
           //c.zoom = 0.1;
 

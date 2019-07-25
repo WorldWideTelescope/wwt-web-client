@@ -687,7 +687,7 @@ wwt.controllers.controller('MainController',
         if (imageSet) {
           $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
         }
-        if (!item.isSurvey) {
+        if (!item.isSurvey && !item.isPanorama) {
           $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
         }
       };
