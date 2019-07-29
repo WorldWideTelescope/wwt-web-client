@@ -168,6 +168,12 @@ namespace wwtlib
 
         public void SetImageScale(ScaleTypes scaleType, double min, double max)
         {
+            Script.Literal("console.warn('SetImageScale is considered deprecated. Use setImageScaleRaw or setImageScalePhysical instead.')");
+            SetImageScaleRaw(scaleType, min, max);
+        }
+
+        public void SetImageScaleRaw(ScaleTypes scaleType, double min, double max)
+        {
             this.min = min;
             this.max = max;
             this.lastScale = scaleType;
@@ -176,6 +182,19 @@ namespace wwtlib
             {
                 Histogram.UpdateScale(this, scaleType, min, max);
             }
+        }
+
+        public void SetImageScalePhysical(ScaleTypes scaleType, double min, double max)
+        {
+            double newMin = min;
+            double newMax = max;
+            if (imageSet.WcsImage is FitsImage)
+            {
+                FitsImage img = imageSet.WcsImage as FitsImage;
+                newMin = (newMin - img.BZero) / img.BScale;
+                newMax = (newMax - img.BZero) / img.BScale;
+            }
+            SetImageScaleRaw(scaleType, newMin, newMax);
         }
 
         public void SetImageZ(double z)
