@@ -88,6 +88,7 @@ namespace wwtlib
         public int Height = 0;
         public int NumAxis = 0;
         public double BZero = 0;
+        public double BScale = 1;
         public int[] AxisSize;
         public object DataBuffer;
         public DataTypes DataType = DataTypes.None;
@@ -199,6 +200,11 @@ namespace wwtlib
             if (header.ContainsKey("BZERO"))
             {
                 BZero = Double.Parse(header["BZERO"]);
+            }
+
+            if (header.ContainsKey("BSCALE"))
+            {
+                BScale = Double.Parse(header["BSCALE"]);
             }
 
             AxisSize = new int[NumAxis];
