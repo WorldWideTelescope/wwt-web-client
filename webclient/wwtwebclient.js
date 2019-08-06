@@ -2723,11 +2723,13 @@ wwt.app.factory('UILibrary', ['$rootScope', 'AppState', 'Util', 'Localization', 
   $rootScope.resLocation = $('body').data('res-location');
   $rootScope.bottomControlsWidth = function () {
     return (angular.element('div.context-panel').width() - angular.element('body.desktop .fov-panel').width()) + 1;
-  }
+  };
   $rootScope.layerManagerHeight = function () {
     return $(window).height() - (168 + $('body.desktop .context-panel').height());
   };
-
+  $rootScope.hideFinderScope = function(){
+    $('.finder-scope').hide();
+  };
   $rootScope.copyLink = function (event, selector) {
     var src = $(event.currentTarget);
     var input = selector ? src.parent().find(selector) : src.prev();
@@ -3607,7 +3609,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 
     var cleanseUrl = function (fieldName, item) {
       if (item[fieldName])
-        item[fieldName] = item[fieldName].replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
+        item[fieldName] = item[fieldName].replace("http://", "//");
     }
     var fixThumb = function (item) {
       item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
@@ -3719,9 +3721,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     function openCollection(url) {
-      if (url.indexOf('blob:http')===-1) { 
-        url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org");//.replace("http://", "//");
-      }
+
       var deferred = $q.defer();
       if (!openCollectionsFolder) {
         openCollectionsFolder = wwt.wc.createFolder();
@@ -4686,6 +4686,7 @@ wwt.controllers.controller('MainController',
           $scope.setSurveyBg();
           $rootScope.lookAt = $scope.lookAt;
         }, 100);
+        $rootScope.hideFinderScope();
       };
       $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
         if (!lookAt || !isNaN(parseInt(lookAt))){
@@ -4697,11 +4698,9 @@ wwt.controllers.controller('MainController',
 
         }
         $scope.lookAt = lookAt;
-        //if (lookAt === 'Planet' && !imageryName) {
-        //    imageryName = 'Mars';
-        //}
         $scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
         setTimeout(wwt.resize, 1200);
+        $rootScope.hideFinderScope();
       };
       $rootScope.setLookAt = $scope.setLookAt;
       //#endregion
@@ -4773,7 +4772,6 @@ wwt.controllers.controller('MainController',
           }
         }, 100);
 
-        //hashChange(null, hashManager.getHashObject());
       };
 
       var hashChange = function (e, obj) {
@@ -4784,10 +4782,7 @@ wwt.controllers.controller('MainController',
           if (!obj) {
             obj = hashManager.getHashObject();
           }
-          /*console.log('goto', parseFloat(obj['ra']) * 15,
-            parseFloat(obj['dec']),
-            parseFloat(obj['fov']),
-            false);*/
+
           ctl.gotoRaDecZoom(
             parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
@@ -4834,7 +4829,6 @@ wwt.controllers.controller('MainController',
 
               }, delay || 3333);
             }
-
 
           };
           if (obj['lookAt'] && obj['lookAt'] == 'SolarSystem') {
@@ -8618,6 +8612,7 @@ wwt.controllers.controller('OpenItemController',
           console.timeEnd('openLocal: ' + type);
           $scope.openItemUrl = mediaResult.url;
           $scope.openItem();
+          $('#addFileReset')[0].reset();
         });
       };
 
@@ -9535,7 +9530,7 @@ wwt.controllers.controller('LoginController',
     }]);
 
 wwt.Move = function (createArgs) {
-	
+
 	//#region initialization
 	var el,
 		grid,
@@ -9562,8 +9557,8 @@ wwt.Move = function (createArgs) {
 		oncomplete = args.oncomplete;
 		setBounds();
 		//  IE (sigh)
-		if (window.PointerEvent || window.MSPointerEvent) { 
-		    
+		if (window.PointerEvent || window.MSPointerEvent) {
+
 			target.css('touch-action', 'none');
 			var pointerDownName = window.PointerEvent ? 'pointerdown' : 'MSPointerDown';
 			var pointerUpName = window.PointerEvent ? 'pointerup' : 'MSPointerUp';
@@ -9575,7 +9570,7 @@ wwt.Move = function (createArgs) {
 				if ((event.target !== target[0] && !$(target).has(event.target).length) || isMoving) {
 					return;
 				}
-        else if (event.target.className.indexOf('fa-close') > -1){
+        else if (event.target.className.indexOf('close') > -1){
           return;
         }
 				if (document.body.setPointerCapture) {
@@ -9586,25 +9581,24 @@ wwt.Move = function (createArgs) {
 				}
 
 
-        console.log(event.target, event.target.className.indexOf('fa-close') > -1);
 				event.preventDefault();
 				event.stopPropagation();
 				if (event.pointerId !== undefined) {
 					pointerId = event.pointerId;
 				}
-				
+
 				moveInit(event);
 
 				document.body.addEventListener(pointerUpName, unbind, false);
 				document.body.addEventListener(pointerMoveName, function (evt) {
 					if (pointerId !== undefined && evt.pointerId === pointerId) {
 						motionHandler(evt);
-					} 
+					}
 				}, false);
 			}, false);
-			
+
 		} else {
-		    
+
 		    target.on('mousedown touchstart', function (event) {
 		        if (target.hasClass('disabled')) {
 		            return;
@@ -9614,7 +9608,7 @@ wwt.Move = function (createArgs) {
 				moveInit(event);
 				$(document).on('mouseup touchend', unbind);
 				$(document).on('mousemove touchmove', motionHandler);
-				
+
 			});
 		}
 		el.css({ position: 'absolute' });
@@ -9680,25 +9674,25 @@ wwt.Move = function (createArgs) {
 			x: moveObj.totalDist.x + moveObj.moveDist.x,
 			y: moveObj.totalDist.y + moveObj.moveDist.y
 		};
-			
+
 		moveObj.gridCss = {
 			left: (Math.round(moveObj.totalDist.x / grid) * grid) + moveObj.startCoord.x,
 			top: (Math.round(moveObj.totalDist.y / grid) * grid) + moveObj.startCoord.y
 		};
 		moveObj.css = moveObj.gridCss;
-		
+
 
 		moveObj.css.top = Math.min(Math.max(actualBounds.top[0], moveObj.css.top), actualBounds.top[1]);
 		moveObj.css.left = Math.min(Math.max(actualBounds.left[0], moveObj.css.left), actualBounds.left[1]);
 		moveObj.pctX = Math.max(actualBounds.left[0], moveObj.css.left) / moveObj.maxX;
 		moveObj.pctY = Math.max(actualBounds.top[0], moveObj.css.top) / moveObj.maxY;
 		el.css(moveObj.css);
-			
+
 		if (onmove) {
 			//el.trigger('dragmove');
 			onmove.call(moveObj);
 		}
-		
+
 	};
 
 	var unbind = function (evt) {

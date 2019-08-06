@@ -31,7 +31,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
 
     var cleanseUrl = function (fieldName, item) {
       if (item[fieldName])
-        item[fieldName] = item[fieldName].replace("www.worldwidetelescope.org", "worldwidetelescope.org").replace("http://", "//");
+        item[fieldName] = item[fieldName].replace("http://", "//");
     }
     var fixThumb = function (item) {
       item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
@@ -143,9 +143,7 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
     };
 
     function openCollection(url) {
-      if (url.indexOf('blob:http')===-1) { 
-        url = url.replace("www.worldwidetelescope.org", "worldwidetelescope.org");//.replace("http://", "//");
-      }
+
       var deferred = $q.defer();
       if (!openCollectionsFolder) {
         openCollectionsFolder = wwt.wc.createFolder();

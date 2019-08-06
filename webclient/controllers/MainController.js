@@ -102,6 +102,7 @@ wwt.controllers.controller('MainController',
           $scope.setSurveyBg();
           $rootScope.lookAt = $scope.lookAt;
         }, 100);
+        $rootScope.hideFinderScope();
       };
       $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
         if (!lookAt || !isNaN(parseInt(lookAt))){
@@ -113,11 +114,9 @@ wwt.controllers.controller('MainController',
 
         }
         $scope.lookAt = lookAt;
-        //if (lookAt === 'Planet' && !imageryName) {
-        //    imageryName = 'Mars';
-        //}
         $scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
         setTimeout(wwt.resize, 1200);
+        $rootScope.hideFinderScope();
       };
       $rootScope.setLookAt = $scope.setLookAt;
       //#endregion
@@ -189,7 +188,6 @@ wwt.controllers.controller('MainController',
           }
         }, 100);
 
-        //hashChange(null, hashManager.getHashObject());
       };
 
       var hashChange = function (e, obj) {
@@ -200,10 +198,7 @@ wwt.controllers.controller('MainController',
           if (!obj) {
             obj = hashManager.getHashObject();
           }
-          /*console.log('goto', parseFloat(obj['ra']) * 15,
-            parseFloat(obj['dec']),
-            parseFloat(obj['fov']),
-            false);*/
+
           ctl.gotoRaDecZoom(
             parseFloat(obj['ra']) * 15,
             parseFloat(obj['dec']),
@@ -250,7 +245,6 @@ wwt.controllers.controller('MainController',
 
               }, delay || 3333);
             }
-
 
           };
           if (obj['lookAt'] && obj['lookAt'] == 'SolarSystem') {
