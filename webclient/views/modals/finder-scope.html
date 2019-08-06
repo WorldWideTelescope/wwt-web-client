@@ -30,11 +30,11 @@
 			<p style="max-height:35px;overflow:hidden" title="{{getCreditsText(scopePlace)}}">
 				<a href="{{getCreditsUrl(scopePlace)}}" target="_blank">{{getCreditsText(scopePlace)}}</a>
 			</p>
-			
+
 			<div class="buttons">
-				
+
 				<div class="dropup" style="display: inline-block">
-					
+
 					<a class="btn" data-toggle="dropdown" role="button">
 						<span localize="Research"></span>
 						<i class="fa fa-caret-down" style="font-size:12px"></i>
@@ -70,7 +70,7 @@
 						<li role="presentation" class="divider"></li>
 						<li><a ng-click="setBackgroundImage(scopePlace)" href="javascript:void(0)" localize="Set as Background Imagery"></a></li>
 						<li><a ng-click="setForegroundImage(scopePlace)" href="javascript:void(0)" localize="Set as Foreground Imagery"></a></li>
-						
+
 					</ul>
 				</div>
 				<a ng-if="!scopePlace.isSurvey && !scopePlace.isExploreTab" class="btn" ng-click="showObject(scopePlace)" localize="Show Object"></a>
