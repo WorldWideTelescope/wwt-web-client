@@ -28,11 +28,13 @@
   $rootScope.resLocation = $('body').data('res-location');
   $rootScope.bottomControlsWidth = function () {
     return (angular.element('div.context-panel').width() - angular.element('body.desktop .fov-panel').width()) + 1;
-  }
+  };
   $rootScope.layerManagerHeight = function () {
     return $(window).height() - (168 + $('body.desktop .context-panel').height());
   };
-
+  $rootScope.hideFinderScope = function(){
+    $('.finder-scope').hide();
+  };
   $rootScope.copyLink = function (event, selector) {
     var src = $(event.currentTarget);
     var input = selector ? src.parent().find(selector) : src.prev();
