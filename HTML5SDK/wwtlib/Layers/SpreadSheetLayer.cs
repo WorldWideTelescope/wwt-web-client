@@ -2103,28 +2103,21 @@ namespace wwtlib
         public float NormalizePointSize(float value)
         {
 
-            float new_value;
+            if (!NormalizeSize)
+                return value;
 
-            if(NormalizeSize)
+            float new_value = (value - NormalizeSizeMin) / (NormalizeSizeMax - NormalizeSizeMin);
+
+            if (NormalizeSizeClip)
             {
-                new_value = (value - NormalizeSizeMin) / (NormalizeSizeMax - NormalizeSizeMin);
-
-                if (NormalizeSizeClip)
+                if (new_value < 0)
                 {
-                    if (new_value < 0)
-                    {
-                        new_value = 0;
-                    }
-                    else if (new_value > 1)
-                    {
-                        new_value = 1;
-                    }
+                    new_value = 0;
                 }
-
-            }
-            else
-            {
-                new_value = value;
+                else if (new_value > 1)
+                {
+                    new_value = 1;
+                }
             }
 
             return new_value;
