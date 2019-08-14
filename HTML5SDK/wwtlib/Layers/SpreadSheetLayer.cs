@@ -787,7 +787,7 @@ namespace wwtlib
                             case ColorMaps.Map_Column_to_Colormap:
                                 if (ColorMapColumn > -1)
                                 {
-                                    pointColor = DataColorMap.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn])));
+                                    pointColor = ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn])));
                                 }
                                 else
                                 {
@@ -1926,15 +1926,15 @@ namespace wwtlib
             }
         }
 
-        protected ColorMapContainer dataColorMap = ColorMapContainer.Grayscale();
+        protected ColorMapContainer colorMapper = ColorMapContainer.Grayscale();
 
-        public ColorMapContainer DataColorMap
+        public ColorMapContainer ColorMapper
         {
-            get { return dataColorMap; }
+            get { return colorMapper; }
             set
             {
                 version++;
-                dataColorMap = value;
+                colorMapper = value;
             }
         }
 
