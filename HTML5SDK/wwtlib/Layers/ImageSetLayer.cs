@@ -15,6 +15,9 @@ namespace wwtlib
         ScaleTypes lastScale = ScaleTypes.Linear;
         double min = 0;
         double max = 0;
+        bool useColorMapper = false;
+        ColorMapContainer colorMapper = ColorMapContainer.Grayscale();
+        
 
         public Imageset ImageSet
         {
@@ -166,7 +169,7 @@ namespace wwtlib
             base.SetParams(paramList);
         }
 
-        public void SetImageScale(ScaleTypes scaleType, double min, double max)
+        public void SetImageScale(ScaleTypes scaleType, double min, double max, ColorMapContainer colorMapper)
         {
             Script.Literal("console.warn('SetImageScale is considered deprecated. Use setImageScaleRaw or setImageScalePhysical instead.')");
             SetImageScaleRaw(scaleType, min, max);
@@ -180,7 +183,7 @@ namespace wwtlib
 
             if (imageSet.WcsImage is FitsImage)
             {
-                Histogram.UpdateScale(this, scaleType, min, max);
+                Histogram.UpdateScale(this, scaleType, min, max, colorMapper);
             }
         }
 

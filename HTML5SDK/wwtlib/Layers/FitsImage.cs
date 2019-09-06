@@ -718,10 +718,10 @@ namespace wwtlib
             }
 
 
-            return GetScaledBitmap(lastBitmapMin, lastBitmapMax, lastScale, lastBitmapZ);
+            return GetScaledBitmap(lastBitmapMin, lastBitmapMax, lastScale, lastBitmapZ, null);
         }
 
-        public Bitmap GetScaledBitmap(double min, double max, ScaleTypes scaleType, int z)
+        public Bitmap GetScaledBitmap(double min, double max, ScaleTypes scaleType, int z, ColorMapContainer colorMapper)
         {
             z = Math.Min(z, sizeZ);
             ScaleMap scale;
@@ -755,15 +755,15 @@ namespace wwtlib
                 switch (DataType)
                 {
                     case DataTypes.ByteT:
-                        return GetBitmapByte(min, max, scale, lastBitmapZ);
+                        return GetBitmapByte(min, max, scale, lastBitmapZ, colorMapper);
                     case DataTypes.Int16T:
-                        return GetBitmapShort(min, max, scale, lastBitmapZ);
+                        return GetBitmapShort(min, max, scale, lastBitmapZ, colorMapper);
                     case DataTypes.Int32T:
-                        return GetBitmapInt(min, max, scale, lastBitmapZ);
+                        return GetBitmapInt(min, max, scale, lastBitmapZ, colorMapper);
                     case DataTypes.FloatT:
-                        return GetBitmapFloat(min, max, scale, lastBitmapZ);
+                        return GetBitmapFloat(min, max, scale, lastBitmapZ, colorMapper);
                     case DataTypes.DoubleT:
-                        return GetBitmapDouble(min, max, scale, lastBitmapZ);
+                        return GetBitmapDouble(min, max, scale, lastBitmapZ, colorMapper);
                     case DataTypes.None:
                     default:
                         return  Bitmap.Create(100, 100);
@@ -775,13 +775,15 @@ namespace wwtlib
             }
         }
 
-        private Bitmap GetBitmapByte(double min, double max, ScaleMap scale, int z)
+        private Bitmap GetBitmapByte(double min, double max, ScaleMap scale, int z, ColorMapContainer colorMapper)
         {
             byte[] buf = (byte[])DataBuffer;
             double factor = max - min;
             int stride = AxisSize[0];
             int page = AxisSize[0] * AxisSize[1] * z;
             Bitmap bmp = Bitmap.Create(AxisSize[0], AxisSize[1]);
+            Color pixel_color;
+            float pixel_value;
 
             for (int y = 0; y < AxisSize[1]; y++)
             {
@@ -816,8 +818,19 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
+                            if (colorMapper != null)
+                            {
+                                pixel_value = (float)val / 255;
+                                 if (pixel_value == pixel_value) {
+                                    pixel_color = colorMapper.FindClosestColor(pixel_value);
+                                    bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
+                                } else {
+                                    bmp.SetPixel(x, y, 0, 0, 0, 0);
+                                }
+                            } else {
+                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            }
 
-                            bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
                         }
                     }
                 }
@@ -825,13 +838,15 @@ namespace wwtlib
             return bmp;
         }
 
-        private Bitmap GetBitmapDouble(double min, double max, ScaleMap scale, int z)
+        private Bitmap GetBitmapDouble(double min, double max, ScaleMap scale, int z, ColorMapContainer colorMapper)
         {
             double[] buf = (double[])DataBuffer;
             double factor = max - min;
             int stride = AxisSize[0];
             int page = AxisSize[0] * AxisSize[1] * z ;
             Bitmap bmp = Bitmap.Create(AxisSize[0], AxisSize[1]);
+            Color pixel_color;
+            float pixel_value;
 
             for (int y = 0; y < AxisSize[1]; y++)
             {
@@ -865,7 +880,17 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            if (colorMapper != null)
+                            {
+                                pixel_value = (float)val / 255;
+                                 if (pixel_value == pixel_value) {
+                                    pixel_color = colorMapper.FindClosestColor(pixel_value);
+                                    bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
+                                } else {
+                                    bmp.SetPixel(x, y, 0, 0, 0, 0);
+                                }
+                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            }
                         }
                     }
                 }
@@ -873,13 +898,16 @@ namespace wwtlib
             return bmp;
         }
 
-        private Bitmap GetBitmapFloat(double min, double max, ScaleMap scale, int z)
+        private Bitmap GetBitmapFloat(double min, double max, ScaleMap scale, int z, ColorMapContainer colorMapper)
         {
             float[] buf = (float[])DataBuffer;
             double factor = max - min;
             int stride = AxisSize[0];
             int page = AxisSize[0] * AxisSize[1] * z;
             Bitmap bmp = Bitmap.Create(AxisSize[0], AxisSize[1]);
+            Color pixel_color;
+            float pixel_value;
+
             for (int y = 0; y < AxisSize[1]; y++)
             {
                 int indexY = ((AxisSize[1] - 1) - y);
@@ -912,7 +940,18 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            if (colorMapper != null)
+                            {
+                                pixel_value = (float)val / 255;
+                                 if (pixel_value == pixel_value) {
+                                    pixel_color = colorMapper.FindClosestColor(pixel_value);
+                                    bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
+                                } else {
+                                    bmp.SetPixel(x, y, 0, 0, 0, 0);
+                                }
+                            } else {
+                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            }
                         }
                     }
                 }
@@ -920,13 +959,15 @@ namespace wwtlib
             return bmp;
         }
 
-        private Bitmap GetBitmapInt(double min, double max, ScaleMap scale, int z)
+        private Bitmap GetBitmapInt(double min, double max, ScaleMap scale, int z, ColorMapContainer colorMapper)
         {
             int[] buf = (int[])DataBuffer;
             double factor = max - min;
             int stride = AxisSize[0];
             int page = AxisSize[0] * AxisSize[1] * z;
             Bitmap bmp = Bitmap.Create(AxisSize[0], AxisSize[1]);
+            Color pixel_color;
+            float pixel_value;
 
             for (int y = 0; y < AxisSize[1]; y++)
             {
@@ -960,7 +1001,18 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            if (colorMapper != null)
+                            {
+                                pixel_value = (float)val / 255;
+                                 if (pixel_value == pixel_value) {
+                                    pixel_color = colorMapper.FindClosestColor(pixel_value);
+                                    bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
+                                } else {
+                                    bmp.SetPixel(x, y, 0, 0, 0, 0);
+                                }
+                            } else {
+                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            }
                         }
                     }
                 }
@@ -968,13 +1020,15 @@ namespace wwtlib
 
             return bmp;
         }
-        public Bitmap GetBitmapShort(double min, double max, ScaleMap scale, int z)
+        public Bitmap GetBitmapShort(double min, double max, ScaleMap scale, int z, ColorMapContainer colorMapper)
         {
             short[] buf = (short[])DataBuffer;
             double factor = max - min;
             int stride = AxisSize[0];
             int page = AxisSize[0] * AxisSize[1] * z;
             Bitmap bmp = Bitmap.Create(AxisSize[0], AxisSize[1]);
+            Color pixel_color;
+            float pixel_value;
 
             for (int y = 0; y < AxisSize[1]; y++)
             {
@@ -1009,7 +1063,18 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            if (colorMapper != null)
+                            {
+                                pixel_value = (float)val / 255;
+                                 if (pixel_value == pixel_value) {
+                                    pixel_color = colorMapper.FindClosestColor(pixel_value);
+                                    bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
+                                } else {
+                                    bmp.SetPixel(x, y, 0, 0, 0, 0);
+                                }
+                            } else {
+                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                            }
                         }
                     }
 
