@@ -182,11 +182,14 @@ namespace wwtlib
 
         public override void LoadData(TourDocument tourDoc, string filename)
         {
-            table = new Table();
-            Blob blob = tourDoc.GetFileBlob(filename);
-            this.GetStringFromGzipBlob(blob, delegate (string data)
+            System.Html.Data.Files.Blob blob = tourDoc.GetFileBlob(filename);
+
+            FileReader doc = new FileReader();
+            doc.OnLoadEnd = delegate (FileProgressEvent ee)
             {
-                table.LoadFromString(data, false, true, true);
+                string data = doc.Result as string;
+                LoadFromString(data, false, false, true, true);
+
                 ComputeDateDomainRange(-1, -1);
 
                 if (DynamicData && AutoUpdate)
@@ -195,9 +198,9 @@ namespace wwtlib
                 }
                 dataDirty = true;
                 dirty = true;
-            });
+            };
+            doc.ReadAsText(blob);
         }
-
 
         string fileName;
 
