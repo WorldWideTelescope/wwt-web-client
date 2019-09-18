@@ -34,18 +34,19 @@ jobs:
       targets: sdk
       workingDirectory: 'webclient'
 
-  - script: npm install mocha chai mocha-headless-chrome mocha-junit-reporter --save-dev
+  - script: npm install mocha chai mocha-headless-chrome --save-dev
     workingDirectory: tests
     displayName: Installing mocha testing framework
 
-  - script: node_modules\.bin\mocha-headless-chrome -f tests.html -r mocha-junit-reporter
+  - script: node_modules/.bin/mocha-headless-chrome -f tests.html -r xunit > test_results.xml
     workingDirectory: tests
     displayName: Running tests against JS SDK
 
+  # NOTE: The file produced above is actually in JUnit format, not xUnit!
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
-      testResultsFiles: 'test-results.xml'
+      testResultsFiles: 'tests/test_results.xml'
 
   - task: CopyFiles@2
     displayName: Copying SDK file to staging directory
