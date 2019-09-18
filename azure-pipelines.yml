@@ -16,6 +16,8 @@ jobs:
       msbuildArchitecture: 'x64'
       clean: true
 
+  - task: VSTest@2
+
   - task: NodeTool@0
     displayName: Setting up node
 
