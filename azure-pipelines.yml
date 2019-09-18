@@ -34,14 +34,17 @@ jobs:
       targets: sdk
       workingDirectory: 'webclient'
 
-  - script: |
-      npm install mocha chai --save-dev
-      npm install -g mocha-headless-chrome
+  - script: npm install mocha chai mocha-headless-chrome mocha-junit-reporter --save-dev
     displayName: Installing mocha testing framework
 
-  - script: mocha-headless-chrome -f tests.html
+  - script: node_modules\.bin\mocha-headless-chrome -f tests.html -r mocha-junit-reporter
     workingDirectory: tests
     displayName: Running tests against JS SDK
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'test-results.xml'
 
   - task: CopyFiles@2
     displayName: Copying SDK file to staging directory
