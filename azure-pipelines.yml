@@ -35,6 +35,7 @@ jobs:
       workingDirectory: 'webclient'
 
   - script: npm install mocha chai mocha-headless-chrome mocha-junit-reporter --save-dev
+    workingDirectory: tests
     displayName: Installing mocha testing framework
 
   - script: node_modules\.bin\mocha-headless-chrome -f tests.html -r mocha-junit-reporter
