@@ -34,6 +34,13 @@ jobs:
       targets: sdk
       workingDirectory: 'webclient'
 
+  - script: npm install -g mocha chai mocha-headless-chrome
+    displayName: Installing mocha testing framework
+
+  - script: mocha-headless-chrome -f tests.html
+    workingDirectory: tests
+    displayName: Running tests against JS SDK
+
   - task: CopyFiles@2
     displayName: Copying SDK file to staging directory
     inputs:
