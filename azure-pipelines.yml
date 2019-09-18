@@ -34,7 +34,9 @@ jobs:
       targets: sdk
       workingDirectory: 'webclient'
 
-  - script: npm install -g mocha chai mocha-headless-chrome
+  - script: ¦
+      npm install mocha chai --save-dev
+      npm install -g mocha-headless-chrome
     displayName: Installing mocha testing framework
 
   - script: mocha-headless-chrome -f tests.html
