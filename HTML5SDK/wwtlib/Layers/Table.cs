@@ -311,10 +311,17 @@ namespace wwtlib
         public Table Clone()
         {
             Table cloned_table = new Table();
-            cloned_table.Header = new List<string>(Header);
-            for (int i = 0; i < Rows.Count; i++)
+            for (int i = 0; i < Header.Count; i++)
             {
-                cloned_table.Rows.Add(new List<string>(Rows[i]));
+                cloned_table.Header.Add(Header[i]);
+            }
+            for (int j = 0; j < Rows.Count; j++)
+            {
+                cloned_table.Rows.Add([]);
+                for (int i = 0; i < Rows[j].Count; i++)
+                {
+                    cloned_table.Rows[j].Add(Rows[j][i]);
+                }
             }
             return cloned_table;
         }

@@ -20,7 +20,7 @@ describe('Table', function() {
     assert.equal(table.save(), 'd\te\tf\r\n4\t6\tl\r\n2\t2\tk\r\n');
   });
 
-  it('should copy cleanly when using copy()', function() {
+  it('should copy cleanly when using clone()', function() {
     var table1 = new wwtlib.Table();
     table1.header = ['d', 'e', 'f'];
     table1.rows = [[4, 6, 'l'], [2, 2, 'k']];
