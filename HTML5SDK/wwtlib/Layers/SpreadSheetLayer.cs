@@ -190,8 +190,8 @@ namespace wwtlib
 
                 // The __normalized_size__ column is only present for backward-compatibility
                 // and should be removed in this version of SpreadSheetLayer
-                if (table.Header.IndexOf("__normalized_size__") > -1) {
-                    table.RemoveColumn("__normalized_size__");
+                if (table.Header.IndexOf(NormalizeSizeColumnName) > -1) {
+                    table.RemoveColumn(NormalizeSizeColumnName);
                 }
 
                 ComputeDateDomainRange(-1, -1);
@@ -229,7 +229,7 @@ namespace wwtlib
                 foreach (string[] row in table_copy.Rows) {
                     normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
                 }
-                table_copy.AddColumn("__normalized_size__", normalizedPointSize);
+                table_copy.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
                 data = table_copy.Save();
             } else {
                 data = table.Save();
@@ -1432,7 +1432,7 @@ namespace wwtlib
             // detect normalization arguments when reading in the XML, we switch
             // sizeColumn to the original one.
             if (sizeColumn > -1 && NormalizeSize) {
-                xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf("__normalized_size__").ToString());
+                xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf(NormalizeSizeColumnName).ToString());
                 xmlWriter.WriteAttributeString("NormalizeColumn", sizeColumn.ToString());
                 xmlWriter.WriteAttributeString("NormalizeSize", NormalizeSize.ToString());
                 xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
@@ -2098,6 +2098,10 @@ namespace wwtlib
         // The NormalizeSizeClip attribute can be used to determine whether the sizes should
         // be clipped to the range [0:1]. At this time, normalization is only applied if
         // PointScaleTypes is Linear or Power.
+
+        // Note that we use a hard-coded UUID since we need it to always be the same across
+        // all WWT sessions so that we can remove it when it isn't needed.
+        private string NormalizeSizeColumnName = "dfe78b4c-f972-4796-b04f-68c5efd4ecb0";
 
         protected bool normalizeSize = false;
 
