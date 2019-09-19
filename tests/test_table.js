@@ -24,7 +24,7 @@ describe('Table', function() {
     var table1 = new wwtlib.Table();
     table1.header = ['d', 'e', 'f'];
     table1.rows = [[4, 6, 'l'], [2, 2, 'k']];
-    var table2 = table1.Clone()
+    var table2 = table1.clone()
     table2.rows[0][1] = 9
     assert.equal(table1.save(), 'd\te\tf\r\n4\t6\tl\r\n2\t2\tk\r\n');
     assert.equal(table2.save(), 'd\te\tf\r\n4\t9\tl\r\n2\t2\tk\r\n');
