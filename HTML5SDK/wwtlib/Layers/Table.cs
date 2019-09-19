@@ -339,7 +339,7 @@ namespace wwtlib
             int remove_index = Header.IndexOf(name);
             if (remove_index > -1) {
                 Header.removeAt(remove_index);
-                for (string[] row in Rows) {
+                foreach (string[] row in Rows) {
                     row.removeAt(remove_index);
                 }
             }

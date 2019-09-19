@@ -190,8 +190,8 @@ namespace wwtlib
 
                 // The __normalized_size__ column is only present for backward-compatibility
                 // and should be removed in this version of SpreadSheetLayer
-                if (table.Headers.IndexOf('__normalized_size__') > -1) {
-                    table.RemoveColumn('__normalized_size__');
+                if (table.Headers.IndexOf("__normalized_size__") > -1) {
+                    table.RemoveColumn("__normalized_size__");
                 }
 
                 ComputeDateDomainRange(-1, -1);
@@ -225,10 +225,10 @@ namespace wwtlib
             if (sizeColumn > -1 && NormalizeSize) {
                 Table table_copy = table.Clone();
                 normalizedPointSize = new List<string>();
-                for (string[] row in table_copy.Rows) {
+                foreach (string[] row in table_copy.Rows) {
                     normalizedPointSize.Add(NormalizePointSize(row[sizeColumn]));
                 }
-                table_copy.AddColumn('__normalized_size__', normalizedPointSize);
+                table_copy.AddColumn("__normalized_size__", normalizedPointSize);
             } else {
                 string data = table.Save();
             }
@@ -1432,7 +1432,7 @@ namespace wwtlib
             // detect normalization arguments when reading in the XML, we switch
             // sizeColumn to the original one.
             if (sizeColumn > -1 && NormalizeSize) {
-                xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf('__normalized_size__').ToString());
+                xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf("__normalized_size__").ToString());
                 xmlWriter.WriteAttributeString("NormalizeColumn", sizeColumn.ToString());
                 xmlWriter.WriteAttributeString("NormalizeSize", NormalizeSize.ToString());
                 xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
@@ -1599,7 +1599,7 @@ namespace wwtlib
                 NormalizeSizeClip = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSizeClip").Value);
                 NormalizeSizeMin = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMin").Value);
                 NormalizeSizeMax = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMax").Value);
-x            } else {
+            } else {
                 SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
             }
 
