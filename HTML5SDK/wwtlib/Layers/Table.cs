@@ -309,15 +309,14 @@ namespace wwtlib
         {
             Table cloned_table = new Table();
             cloned_table.Header = new List<string>(Header);
-            Rows.ForEach((item) =>
-                {
-                    cloned_table.Rows.Add(new List<string>(item));
-                });
+            for (int i = 0; i < Rows.Count; i++)
+            {
+                cloned_table.Rows.Add(new List<string>(Rows[i]));
+            }
             return cloned_table;
-
         }
 
-        public void addColumn(string name, List<string> data))
+        public void addColumn(string name, List<string> data)
         {
             Header.Add(name)
             for (int i = 0; i < data.Count; i++)
