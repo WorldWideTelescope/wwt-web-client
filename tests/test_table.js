@@ -43,7 +43,7 @@ describe('Table', function() {
     table.header = ['d', 'e', 'f'];
     table.rows = [[4, 6, 'l'], [2, 2, 'k']];
     table.removeColumn('e');
-    assert.equal(table.save(), 'd\tf\tp\r\n4\tl\r\n2\tk\r\n');
+    assert.equal(table.save(), 'd\tf\r\n4\tl\r\n2\tk\r\n');
   });
 
 });
