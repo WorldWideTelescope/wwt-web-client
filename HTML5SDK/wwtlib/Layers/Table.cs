@@ -317,7 +317,7 @@ namespace wwtlib
             }
             for (int j = 0; j < Rows.Count; j++)
             {
-                cloned_table.Rows.Add([]);
+                cloned_table.Rows.Add(new List<string>());
                 for (int i = 0; i < Rows[j].Count; i++)
                 {
                     cloned_table.Rows[j].Add(Rows[j][i]);
