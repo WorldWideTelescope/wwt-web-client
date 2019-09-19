@@ -318,7 +318,7 @@ namespace wwtlib
 
         public void addColumn(string name, List<string> data)
         {
-            Header.Add(name)
+            Header.Add(name);
             for (int i = 0; i < data.Count; i++)
             {
                 Rows[i].Add(data[i]);
