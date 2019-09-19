@@ -188,8 +188,9 @@ namespace wwtlib
             {
                 table.LoadFromString(data, false, true, true);
 
-                // The __normalized_size__ column is only present for backward-compatibility
-                // and should be removed in this version of SpreadSheetLayer
+                // The NormalizeSizeColumnName column is only present for backward-compatibility
+                // and should be removed in this version of SpreadSheetLayer, otherwise we might
+                // keep adding it several times if exporting to XML again.
                 if (table.Header.IndexOf(NormalizeSizeColumnName) > -1) {
                     table.RemoveColumn(NormalizeSizeColumnName);
                 }
@@ -216,7 +217,7 @@ namespace wwtlib
 
             string dir = fileName.Substring(0, fileName.LastIndexOf("\\"));
 
-            // In this SpreadSheetLayer we implement dynamic normalization of the points
+            // In this this layer class we implement dynamic normalization of the points
             // based on one of the existing numerical columns. However, we need to produce
             // XML files that are backward-compatible with older versions of WWT, so the
             // approach we take is to add a column with the computed sizes for versions of
@@ -1424,7 +1425,7 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("StartDateColumn", StartDateColumn.ToString());
             xmlWriter.WriteAttributeString("EndDateColumn", EndDateColumn.ToString());
 
-            // In this SpreadSheetLayer we implement dynamic normalization of the points
+            // In this layer class we implement dynamic normalization of the points
             // based on one of the existing numerical columns. However, we need to produce
             // XML files that are backward-compatible with older versions of WWT. If
             // normalization is used, we therefore point sizeColumn to the hard-coded
@@ -1587,7 +1588,7 @@ namespace wwtlib
             StartDateColumn = int.Parse(node.Attributes.GetNamedItem("StartDateColumn").Value);
             EndDateColumn = int.Parse(node.Attributes.GetNamedItem("EndDateColumn").Value);
 
-            // In this SpreadSheetLayer we implement dynamic normalization of the points
+            // In this layer class we implement dynamic normalization of the points
             // based on one of the existing numerical columns. However, we need to produce
             // XML files that are backward-compatible with older versions of WWT.
             // Since we can deal with normalization here, we ignore SizeColumn and use
