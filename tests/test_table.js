@@ -1,12 +1,10 @@
 var assert = chai.assert;
 
-var CSV_TABLE = 'a,b,c\r\n1,2,3.5\r\n4,5,6.5\r\n'
-
 describe('Table', function() {
 
-    it('should load data from CSV strings', function() {
+  it('should load data from CSV strings', function() {
     var table = new wwtlib.Table();
-    table.loadFromString(CSV_TABLE, false, true, true);
+    table.loadFromString('a,b,c\r\n1,2,3.5\r\n4,5,6.5\r\n', false, true, true);
     assert.deepEqual(table.header, ['a', 'b', 'c']);
     assert.equal(table.rows.length, 2)
     assert.deepEqual(table.rows[0], ['1', '2', '3.5']);

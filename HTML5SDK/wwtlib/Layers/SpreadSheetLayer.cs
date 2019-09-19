@@ -1433,7 +1433,11 @@ namespace wwtlib
             // detect normalization arguments when reading in the XML, we switch
             // sizeColumn to the original one.
             if (sizeColumn > -1 && NormalizeSize) {
-                xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf(NormalizeSizeColumnName).ToString());
+                // Note that here we assume that the added column with the dynamic sizes is
+                // the next one along in the table - we don't actually modify the table
+                // in the layer hence why we have to assume this (we just make a copy when
+                // writing out).
+                xmlWriter.WriteAttributeString("SizeColumn", table.Header.Count.ToString());
                 xmlWriter.WriteAttributeString("NormalizeColumn", sizeColumn.ToString());
             } else {
                 xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
