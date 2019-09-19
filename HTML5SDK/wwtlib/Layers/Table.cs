@@ -284,7 +284,10 @@ namespace wwtlib
                 temp.Add(rowData);
                 count++;
             }
-            Rows = temp;
+            if (purge)
+            {
+                Rows = temp;
+            }
 
         }
 
