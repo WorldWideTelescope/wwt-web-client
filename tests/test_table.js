@@ -38,5 +38,12 @@ describe('Table', function() {
     assert.equal(table.save(), 'd\te\tf\tp\r\n4\t6\tl\t4.5\r\n2\t2\tk\t9\r\n');
   });
 
+  it('should remove a column when calling removeColumn', function() {
+    var table = new wwtlib.Table();
+    table.header = ['d', 'e', 'f'];
+    table.rows = [[4, 6, 'l'], [2, 2, 'k']];
+    table.removeColumn('e');
+    assert.equal(table.save(), 'd\tf\tp\r\n4\tl\r\n2\tk\r\n');
+  });
 
 });

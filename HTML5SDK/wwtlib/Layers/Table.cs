@@ -326,12 +326,22 @@ namespace wwtlib
             return cloned_table;
         }
 
-        public void addColumn(string name, List<string> data)
+        public void AddColumn(string name, List<string> data)
         {
             Header.Add(name);
             for (int i = 0; i < data.Count; i++)
             {
                 Rows[i].Add(data[i]);
+            }
+        }
+
+        public void RemoveColumn(string name) {
+            int remove_index = Header.IndexOf(name);
+            if (remove_index > -1) {
+                Header.removeAt(remove_index);
+                for (string[] row in Rows) {
+                    row.removeAt(remove_index);
+                }
             }
         }
     }

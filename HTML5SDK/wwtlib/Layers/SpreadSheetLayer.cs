@@ -187,6 +187,13 @@ namespace wwtlib
             this.GetStringFromGzipBlob(blob, delegate (string data)
             {
                 table.LoadFromString(data, false, true, true);
+
+                // The __normalized_size__ column is only present for backward-compatibility
+                // and should be removed in this version of SpreadSheetLayer
+                if (table.Headers.IndexOf('__normalized_size__') > -1) {
+                    table.RemoveColumn('__normalized_size__');
+                }
+
                 ComputeDateDomainRange(-1, -1);
 
                 if (DynamicData && AutoUpdate)
@@ -208,6 +215,23 @@ namespace wwtlib
             fileName = fc.TempDirectory + string.Format("{0}\\{1}.txt", fc.PackageID, this.ID.ToString());
 
             string dir = fileName.Substring(0, fileName.LastIndexOf("\\"));
+
+            // In this SpreadSheetLayer we implement dynamic normalization of the points
+            // based on one of the existing numerical columns. However, we need to produce
+            // XML files that are backward-compatible with older versions of WWT, so the
+            // approach we take is to add a column with the computed sizes for versions of
+            // WWT that can't do the dynamic scaling - while in newer versions we ignore
+            // this additional column and use the dynamic scaling.
+            if (sizeColumn > -1 && NormalizeSize) {
+                Table table_copy = table.Clone();
+                normalizedPointSize = new List<string>();
+                for (string[] row in table_copy.Rows) {
+                    normalizedPointSize.Add(NormalizePointSize(row[sizeColumn]));
+                }
+                table_copy.AddColumn('__normalized_size__', normalizedPointSize);
+            } else {
+                string data = table.Save();
+            }
 
             string data = table.Save();
 
@@ -1399,7 +1423,25 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("AltColumn", AltColumn.ToString());
             xmlWriter.WriteAttributeString("StartDateColumn", StartDateColumn.ToString());
             xmlWriter.WriteAttributeString("EndDateColumn", EndDateColumn.ToString());
-            xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
+
+            // In this SpreadSheetLayer we implement dynamic normalization of the points
+            // based on one of the existing numerical columns. However, we need to produce
+            // XML files that are backward-compatible with older versions of WWT. If
+            // normalization is used, we therefore point sizeColumn to the hard-coded
+            // normalized sizes that we compute in AddFilesToCabinet, and then if we
+            // detect normalization arguments when reading in the XML, we switch
+            // sizeColumn to the original one.
+            if (sizeColumn > -1 && NormalizeSize) {
+                xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf('__normalized_size__').ToString());
+                xmlWriter.WriteAttributeString("NormalizeColumn", sizeColumn.ToString());
+                xmlWriter.WriteAttributeString("NormalizeSize", NormalizeSize.ToString());
+                xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
+                xmlWriter.WriteAttributeString("NormalizeSizeMin", NormalizeSizeMin.ToString());
+                xmlWriter.WriteAttributeString("NormalizeSizeMax", NormalizeSizeMax.ToString());
+            } else {
+                xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
+            }
+
             xmlWriter.WriteAttributeString("HyperlinkFormat", HyperlinkFormat.ToString());
             xmlWriter.WriteAttributeString("HyperlinkColumn", HyperlinkColumn.ToString());
             xmlWriter.WriteAttributeString("ScaleFactor", ScaleFactor.ToString());
@@ -1543,7 +1585,24 @@ namespace wwtlib
             AltColumn = int.Parse(node.Attributes.GetNamedItem("AltColumn").Value);
             StartDateColumn = int.Parse(node.Attributes.GetNamedItem("StartDateColumn").Value);
             EndDateColumn = int.Parse(node.Attributes.GetNamedItem("EndDateColumn").Value);
-            SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
+
+            // In this SpreadSheetLayer we implement dynamic normalization of the points
+            // based on one of the existing numerical columns. However, we need to produce
+            // XML files that are backward-compatible with older versions of WWT. 
+            // Since we can deal with normalization here, we ignore SizeColumn and use
+            // NormalizeColumn instead, if it is present.
+
+            if (node.Attributes.GetNamedItem("NormalizeColumn") != null)
+            {
+                SizeColumn = int.Parse(node.Attributes.GetNamedItem("NormalizeColumn").Value);
+                NormalizeSize = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSize").Value);
+                NormalizeSizeClip = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSizeClip").Value);
+                NormalizeSizeMin = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMin").Value);
+                NormalizeSizeMax = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMax").Value);
+x            } else {
+                SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
+            }
+
             HyperlinkFormat = node.Attributes.GetNamedItem("HyperlinkFormat").Value;
             HyperlinkColumn = int.Parse(node.Attributes.GetNamedItem("HyperlinkColumn").Value);
             ScaleFactor = Single.Parse(node.Attributes.GetNamedItem("ScaleFactor").Value);
