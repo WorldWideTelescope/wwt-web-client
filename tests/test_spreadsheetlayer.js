@@ -42,6 +42,14 @@ describe('SpreadSheetLayer', function() {
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeMax')), 10.);
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeClip')), false);
 
+    // Now check that when loading back we get the same as the initial values
+    var new_layer = new wwtlib.Layer.fromXml(layer_xml);
+    assert.equal(new_layer.sizeColumn, 1);
+    assert.equal(new_layer.normalizeSize, true);
+    assert.equal(new_layer.normalizeSizeMin, 2.);
+    assert.equal(new_layer.normalizeSizeMax, 10.);
+    assert.equal(new_layer.normalizeSizeClip, false);
+
   });
 
 });
