@@ -8,7 +8,7 @@ using System.Html.Media.Graphics;
 
 namespace wwtlib
 {
-    class Table
+    public class Table
     {
         public Table()
         {
@@ -284,10 +284,7 @@ namespace wwtlib
                 temp.Add(rowData);
                 count++;
             }
-            if (purge)
-            {
-                Rows = temp;
-            }
+            Rows = temp;
 
         }
 
@@ -307,5 +304,26 @@ namespace wwtlib
         //        count++;
         //    }
         //}
+
+        public Table Clone()
+        {
+            Table cloned_table = new Table();
+            cloned_table.Header = new List<string>(Header);
+            Rows.ForEach((item) =>
+                {
+                    cloned_table.Rows.Add(new List<string>(item));
+                });
+            return cloned_table;
+
+        }
+
+        public void addColumn(string name, List<string> data))
+        {
+            Header.Add(name)
+            for (int i = 0; i < data.Count; i++)
+            {
+                Rows[i].Add(data[i]);
+            }
+        }
     }
 }
