@@ -17,8 +17,9 @@ describe('SpreadSheetLayer', function() {
 
     // Make sure we add the table to a file cabinet, as this triggers the addition
     // of the normalized size column
-    var fc = new wwtlib.FileCabinet()
-    layer.addFilesToCabinet(fc)
+    var fc = new wwtlib.FileCabinet();
+    layer.addFilesToCabinet(fc);
+    assert.equal(fc.fileList.length, 1);
 
     // Export to XML
     var xmlWriter = new wwtlib.XmlTextWriter();
