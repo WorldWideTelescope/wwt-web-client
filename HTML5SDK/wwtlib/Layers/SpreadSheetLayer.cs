@@ -222,16 +222,17 @@ namespace wwtlib
             // approach we take is to add a column with the computed sizes for versions of
             // WWT that can't do the dynamic scaling - while in newer versions we ignore
             // this additional column and use the dynamic scaling.
+            string data = "";
             if (sizeColumn > -1 && NormalizeSize) {
                 Table table_copy = table.Clone();
                 List<string> normalizedPointSize = new List<string>();
                 foreach (string[] row in table_copy.Rows) {
-                    normalizedPointSize.Add(NormalizePointSize(row[sizeColumn]).ToString());
+                    normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
                 }
                 table_copy.AddColumn("__normalized_size__", normalizedPointSize);
-                string data = table_copy.Save();
+                data = table_copy.Save();
             } else {
-                string data = table.Save();
+                data = table.Save();
             }
 
             Blob blob = new Blob(new object[] { data });

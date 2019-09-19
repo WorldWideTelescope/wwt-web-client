@@ -339,8 +339,8 @@ namespace wwtlib
             int remove_index = Header.IndexOf(name);
             if (remove_index > -1) {
                 Header.RemoveAt(remove_index);
-                foreach (string[] row in Rows) {
-                    row.RemoveAt(remove_index);
+                for (int i = 0; i < Rows.Count; i++)
+                    Rows[i].RemoveAt(remove_index);
                 }
             }
         }
