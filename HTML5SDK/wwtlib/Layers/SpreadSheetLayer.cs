@@ -1589,7 +1589,7 @@ namespace wwtlib
 
             // In this SpreadSheetLayer we implement dynamic normalization of the points
             // based on one of the existing numerical columns. However, we need to produce
-            // XML files that are backward-compatible with older versions of WWT. 
+            // XML files that are backward-compatible with older versions of WWT.
             // Since we can deal with normalization here, we ignore SizeColumn and use
             // NormalizeColumn instead, if it is present.
 
@@ -1599,6 +1599,8 @@ namespace wwtlib
             } else {
                 SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
             }
+
+            // Only recent files have normalization parameters
 
             if (node.Attributes.GetNamedItem("NormalizeSize") != null)
             {
