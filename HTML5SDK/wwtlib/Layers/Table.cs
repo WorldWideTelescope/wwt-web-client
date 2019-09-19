@@ -338,9 +338,9 @@ namespace wwtlib
         public void RemoveColumn(string name) {
             int remove_index = Header.IndexOf(name);
             if (remove_index > -1) {
-                Header.removeAt(remove_index);
+                Header.RemoveAt(remove_index);
                 foreach (string[] row in Rows) {
-                    row.removeAt(remove_index);
+                    row.RemoveAt(remove_index);
                 }
             }
         }

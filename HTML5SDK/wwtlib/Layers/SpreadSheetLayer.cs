@@ -190,7 +190,7 @@ namespace wwtlib
 
                 // The __normalized_size__ column is only present for backward-compatibility
                 // and should be removed in this version of SpreadSheetLayer
-                if (table.Headers.IndexOf("__normalized_size__") > -1) {
+                if (table.Header.IndexOf("__normalized_size__") > -1) {
                     table.RemoveColumn("__normalized_size__");
                 }
 
@@ -224,16 +224,15 @@ namespace wwtlib
             // this additional column and use the dynamic scaling.
             if (sizeColumn > -1 && NormalizeSize) {
                 Table table_copy = table.Clone();
-                normalizedPointSize = new List<string>();
+                List<string> normalizedPointSize = new List<string>();
                 foreach (string[] row in table_copy.Rows) {
-                    normalizedPointSize.Add(NormalizePointSize(row[sizeColumn]));
+                    normalizedPointSize.Add(NormalizePointSize(row[sizeColumn]).ToString());
                 }
                 table_copy.AddColumn("__normalized_size__", normalizedPointSize);
+                string data = table_copy.Save();
             } else {
                 string data = table.Save();
             }
-
-            string data = table.Save();
 
             Blob blob = new Blob(new object[] { data });
 
