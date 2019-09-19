@@ -34,20 +34,6 @@ jobs:
       targets: sdk
       workingDirectory: 'webclient'
 
-  - script: npm install mocha chai mocha-headless-chrome --save-dev
-    workingDirectory: tests
-    displayName: Installing mocha testing framework
-
-  - script: node_modules/.bin/mocha-headless-chrome -f tests.html -r xunit > test_results.xml
-    workingDirectory: tests
-    displayName: Running tests against JS SDK
-
-  # NOTE: The file produced above is actually in JUnit format, not xUnit!
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: 'tests/test_results.xml'
-
   - task: CopyFiles@2
     displayName: Copying SDK file to staging directory
     inputs:
@@ -61,3 +47,19 @@ jobs:
     inputs:
       artifactName: wwtsdk.js
       targetPath: $(Build.ArtifactStagingDirectory)
+
+  - script: npm install mocha chai mocha-headless-chrome --save-dev
+    workingDirectory: tests
+    displayName: Installing mocha testing framework
+
+  - script: node_modules/.bin/mocha-headless-chrome -f tests.html -r xunit > test_results.xml
+    workingDirectory: tests
+    displayName: Running tests against JS SDK
+
+  # NOTE: The file produced above is actually in JUnit format, not xUnit!
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'tests/test_results.xml'
+
