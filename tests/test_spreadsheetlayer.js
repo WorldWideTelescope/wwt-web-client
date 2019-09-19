@@ -3,7 +3,7 @@ var assert = chai.assert;
 
 describe('SpreadSheetLayer', function() {
 
-  it('should export XML with backward-compatibility for size normalization', function() {
+  it('should export XML with backward-compatibility for size normalization', function(done) {
 
     // Set up a SpreadSheetLayer and make use of the size normalization functionality
     var csv = 'a,b,c\r\n266,-29,1\r\n267,-29,3\r\n267,-30,5\r\n266,-30,10\r\n';    
@@ -11,8 +11,8 @@ describe('SpreadSheetLayer', function() {
     layer.updateData(csv, true, true, true)
     layer.set_sizeColumn(1);
     layer.set_normalizeSize(true);
-    layer.set_normalizeSizeMin(2);
-    layer.set_normalizeSizeMax(10);
+    layer.set_normalizeSizeMin(-31);
+    layer.set_normalizeSizeMax(-27);
     layer.set_normalizeSizeClip(false);
 
     // Make sure we add the table to a file cabinet, as this triggers the addition
@@ -39,17 +39,29 @@ describe('SpreadSheetLayer', function() {
 
     // Check that the normalization attributes are set correctly
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSize')), true);
-    assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeMin')), 2.);
-    assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeMax')), 10.);
+    assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeMin')), -31);
+    assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeMax')), -27);
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeSizeClip')), false);
 
     // Now check that when loading back we get the same as the initial values
     var new_layer = new wwtlib.Layer.fromXml(layer_xml);
     assert.equal(new_layer.sizeColumn, 1);
     assert.equal(new_layer.normalizeSize, true);
-    assert.equal(new_layer.normalizeSizeMin, 2.);
-    assert.equal(new_layer.normalizeSizeMax, 10.);
+    assert.equal(new_layer.normalizeSizeMin, -31);
+    assert.equal(new_layer.normalizeSizeMax, -27);
     assert.equal(new_layer.normalizeSizeClip, false);
+
+    // Finally check content of table as serialized in the FileCabinet, and
+    // make sure it has the extra column with the normalized sizes. We need
+    // to do this last since we need to pass the done() function down into
+    // the callback.
+    const reader = new FileReader();
+    reader.addEventListener('loadend', (e) => {
+        const text = e.srcElement.result;
+        assert.equal(text, "a\tb\tc\tdfe78b4c-f972-4796-b04f-68c5efd4ecb0\r\n266\t-29\t1\t0.5\r\n267\t-29\t3\t0.5\r\n267\t-30\t5\t0.25\r\n266\t-30\t10\t0.25\r\n");
+        done()
+    });
+    reader.readAsText(fc.fileList[0].blob);
 
   });
 
