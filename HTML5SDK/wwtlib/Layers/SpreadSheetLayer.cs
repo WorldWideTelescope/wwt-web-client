@@ -1434,13 +1434,14 @@ namespace wwtlib
             if (sizeColumn > -1 && NormalizeSize) {
                 xmlWriter.WriteAttributeString("SizeColumn", table.Header.IndexOf(NormalizeSizeColumnName).ToString());
                 xmlWriter.WriteAttributeString("NormalizeColumn", sizeColumn.ToString());
-                xmlWriter.WriteAttributeString("NormalizeSize", NormalizeSize.ToString());
-                xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
-                xmlWriter.WriteAttributeString("NormalizeSizeMin", NormalizeSizeMin.ToString());
-                xmlWriter.WriteAttributeString("NormalizeSizeMax", NormalizeSizeMax.ToString());
             } else {
                 xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
             }
+
+            xmlWriter.WriteAttributeString("NormalizeSize", NormalizeSize.ToString());
+            xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
+            xmlWriter.WriteAttributeString("NormalizeSizeMin", NormalizeSizeMin.ToString());
+            xmlWriter.WriteAttributeString("NormalizeSizeMax", NormalizeSizeMax.ToString());
 
             xmlWriter.WriteAttributeString("HyperlinkFormat", HyperlinkFormat.ToString());
             xmlWriter.WriteAttributeString("HyperlinkColumn", HyperlinkColumn.ToString());
@@ -1595,12 +1596,16 @@ namespace wwtlib
             if (node.Attributes.GetNamedItem("NormalizeColumn") != null)
             {
                 SizeColumn = int.Parse(node.Attributes.GetNamedItem("NormalizeColumn").Value);
+            } else {
+                SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
+            }
+
+            if (node.Attributes.GetNamedItem("NormalizeSize") != null)
+            {
                 NormalizeSize = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSize").Value);
                 NormalizeSizeClip = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSizeClip").Value);
                 NormalizeSizeMin = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMin").Value);
                 NormalizeSizeMax = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMax").Value);
-            } else {
-                SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
             }
 
             HyperlinkFormat = node.Attributes.GetNamedItem("HyperlinkFormat").Value;
