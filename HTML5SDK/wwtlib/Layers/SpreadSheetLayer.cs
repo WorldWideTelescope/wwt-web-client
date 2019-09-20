@@ -233,7 +233,7 @@ namespace wwtlib
                 }
                 table_copy.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
                 data = table_copy.Save();
-                lastNormalizeSizeColumnIndex = table_copy.Headers.Count - 1;
+                lastNormalizeSizeColumnIndex = table_copy.Header.Count - 1;
             } else {
                 data = table.Save();
                 lastNormalizeSizeColumnIndex = -1;
