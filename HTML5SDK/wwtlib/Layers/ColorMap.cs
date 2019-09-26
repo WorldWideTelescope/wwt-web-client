@@ -71,6 +71,40 @@ namespace wwtlib
 
         }
 
+        public ColorMapContainer FromNamedColormap(string name)
+        {
+
+            switch (name.ToLowerCase())
+            {
+                case "viridis":
+                    return NamedColorMapContainers.Viridis;
+                case "plasma":
+                    return NamedColorMapContainers.Plasma;
+                case "inferno":
+                    return NamedColorMapContainers.Inferno;
+                case "magma":
+                    return NamedColorMapContainers.Magma;
+                case "cividis":
+                    return NamedColorMapContainers.Cividis;
+                case "Greys":
+                    return NamedColorMapContainers.Greys;
+                case "Purples":
+                    return NamedColorMapContainers.Purples;
+                case "Blues":
+                    return NamedColorMapContainers.Blues;
+                case "Greens":
+                    return NamedColorMapContainers.Greens;
+                case "Oranges":
+                    return NamedColorMapContainers.Oranges;
+                case "Reds":
+                    return NamedColorMapContainers.Reds;
+                case "RdYlBu":
+                    return NamedColorMapContainers.RdYlBu;
+                return null;
+            }
+            return null;
+        }
+
     }
 
 }
