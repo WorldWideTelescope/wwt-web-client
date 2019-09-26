@@ -1496,6 +1496,7 @@ namespace wwtlib
             }
 
             xmlWriter.WriteAttributeString("DynamicColor", DynamicColor.ToString());
+            xmlWriter.WriteAttributeString("ColorMapperName", ColorMapperName);
             xmlWriter.WriteAttributeString("NormalizeColorMapMin", NormalizeColorMapMin.ToString());
             xmlWriter.WriteAttributeString("NormalizeColorMapMax", NormalizeColorMapMax.ToString());
 
@@ -1678,6 +1679,7 @@ namespace wwtlib
             if (node.Attributes.GetNamedItem("DynamicColor") != null)
             {
                 DynamicColor = Boolean.Parse(node.Attributes.GetNamedItem("DynamicColor").Value);
+                ColorMapperName = node.Attributes.GetNamedItem("ColorMapperName").Value;
                 NormalizeColorMapMin = float.Parse(node.Attributes.GetNamedItem("NormalizeColorMapMin").Value);
                 NormalizeColorMapMax = float.Parse(node.Attributes.GetNamedItem("NormalizeColorMapMax").Value);
             }
@@ -1961,16 +1963,21 @@ namespace wwtlib
             }
         }
 
-        protected ColorMapContainer colorMapper = ColorMapContainer.Greys;
+        protected string colorMapperName = "Greys";
 
-        public ColorMapContainer ColorMapper
+        public string ColorMapperName
         {
-            get { return colorMapper; }
+            get { return colorMapperName; }
             set
             {
                 version++;
-                colorMapper = value;
+                colorMapperName = value;
             }
+        }
+
+        public ColorMapContainer ColorMapper
+        {
+            get { return ColorMapContainer.FromNamedColormap(colorMapperName); }
         }
 
         private string DynamicColorColumnName = "2efc32e3-b9d9-47ff-8036-8cc344c585bd";

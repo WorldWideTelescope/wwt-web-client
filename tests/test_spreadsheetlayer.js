@@ -72,6 +72,7 @@ describe('SpreadSheetLayer', function() {
     var layer = new wwtlib.SpreadSheetLayer()
     layer.updateData(csv, true, true, true)
     layer.set_colorMapColumn(1);
+    layer.set_colorMapperName("Viridis");
     layer.set_dynamicColor(true);
     layer.set_normalizeColorMapMin(-31);
     layer.set_normalizeColorMapMax(-27);
@@ -90,6 +91,7 @@ describe('SpreadSheetLayer', function() {
 
     // Now use a standard XML parser to load and check for attributes
     parser = new DOMParser();
+    console.log(xmlWriter.body);
     xmlDoc = parser.parseFromString(xmlWriter.body, "text/xml");
     layer_xml = xmlDoc.getElementsByTagName('Layer')[0]
 
@@ -100,6 +102,7 @@ describe('SpreadSheetLayer', function() {
 
     // Check that the normalization attributes are set correctly
     assert.equal(JSON.parse(layer_xml.getAttribute('DynamicColor')), true);
+    assert.equal(layer_xml.getAttribute('ColorMapperName'), "Viridis");
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapMin')), -31);
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapMax')), -27);
 
@@ -107,6 +110,7 @@ describe('SpreadSheetLayer', function() {
     var new_layer = new wwtlib.Layer.fromXml(layer_xml);
     assert.equal(new_layer.colorMapColumn, 1);
     assert.equal(new_layer.dynamicColor, true);
+    assert.equal(new_layer.colorMapperName, "Viridis");
     assert.equal(new_layer.normalizeColorMapMin, -31);
     assert.equal(new_layer.normalizeColorMapMax, -27);
 
@@ -117,7 +121,7 @@ describe('SpreadSheetLayer', function() {
     const reader = new FileReader();
     reader.addEventListener('loadend', (e) => {
         const text = e.srcElement.result;
-        assert.equal(text, "a\tb\tc\t2efc32e3-b9d9-47ff-8036-8cc344c585bd\r\n266\t-29\t1\t#808080\r\n267\t-29\t3\t#808080\r\n267\t-30\t5\t#404040\r\n266\t-30\t10\t#404040\r\n");
+        assert.equal(text, "a\tb\tc\t2efc32e3-b9d9-47ff-8036-8cc344c585bd\r\n266\t-29\t1\t#228C8D\r\n267\t-29\t3\t#228C8D\r\n267\t-30\t5\t#3C4F8A\r\n266\t-30\t10\t#3C4F8A\r\n");
         done()
     });
     reader.readAsText(fc.fileList[0].blob);

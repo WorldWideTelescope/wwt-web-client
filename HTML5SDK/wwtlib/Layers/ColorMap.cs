@@ -58,7 +58,7 @@ namespace wwtlib
 
         }
 
-        public ColorMapContainer FromNamedColormap(string name)
+        public static ColorMapContainer FromNamedColormap(string name)
         {
 
             switch (name.ToLowerCase())
