@@ -1961,7 +1961,7 @@ namespace wwtlib
             }
         }
 
-        protected ColorMapContainer colorMapper = ColorMapContainer.Grayscale();
+        protected ColorMapContainer colorMapper = ColorMapContainer.Greys;
 
         public ColorMapContainer ColorMapper
         {

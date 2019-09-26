@@ -99,7 +99,6 @@
     <Compile Include="KeplerVertex.cs" />
     <Compile Include="Layers\FitsImage.cs" />
     <Compile Include="Layers\ColorMap.cs" />
-    <Compile Include="Layers\NamedColorMaps.cs" />
     <Compile Include="Layers\GreatCircleRouteLayer.cs">
       <SubType>Code</SubType>
     </Compile>
