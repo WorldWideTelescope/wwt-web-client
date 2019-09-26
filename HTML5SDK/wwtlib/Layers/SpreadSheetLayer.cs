@@ -1495,6 +1495,7 @@ namespace wwtlib
                 xmlWriter.WriteAttributeString("ColorMapColumn", ColorMapColumn.ToString());
             }
 
+            xmlWriter.WriteAttributeString("DynamicColor", DynamicColor.ToString());
             xmlWriter.WriteAttributeString("NormalizeColorMapMin", NormalizeColorMapMin.ToString());
             xmlWriter.WriteAttributeString("NormalizeColorMapMax", NormalizeColorMapMax.ToString());
 
@@ -2041,7 +2042,7 @@ namespace wwtlib
             }
         }
 
-        private int colorMapColumn = -1;
+        protected int colorMapColumn = -1;
 
 
         public int ColorMapColumn
