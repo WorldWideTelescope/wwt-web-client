@@ -234,6 +234,7 @@ namespace wwtlib
         }
 
         private int lastNormalizeSizeColumnIndex = -1;
+        private int lastDynamicColorColumnIndex = -1;
 
         private Table table_backcompat = null;
 
@@ -257,10 +258,21 @@ namespace wwtlib
 
           List<string> normalizedPointSize = new List<string>();
           foreach (string[] row in table_backcompat.Rows) {
-              normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
+            normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
           }
           table_backcompat.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
           lastNormalizeSizeColumnIndex = table_backcompat.Header.Count - 1;
+
+          if (colorMapColumn > -1 && DynamicColor) {
+            List<string> pointColors = new List<string>();
+            foreach (string[] row in table_copy.Rows) {
+              pointColors.Add(ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn]))).ToString());
+            }
+            table_copy.AddColumn(DynamicColorColumnName, pointColors);
+            lastDynamicColorColumnIndex = table_copy.Header.Count - 1;
+          } else {
+            lastDynamicColorColumnIndex = -1;
+          }
 
         }
 
@@ -777,7 +789,7 @@ namespace wwtlib
                             case ColorMaps.Per_Column_Literal:
                                 if (ColorMapColumn > -1)
                                 {
-                                    if (normalizeColorMap)
+                                    if (DynamicColor)
                                     {
                                         pointColor = ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn])));
                                     }
@@ -1444,7 +1456,6 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("MarkerMix", Enums.ToXml("MarkerMixes", (int)MarkerMix));
             xmlWriter.WriteAttributeString("ColorMap", Enums.ToXml("ColorMaps", (int)ColorMap));
             xmlWriter.WriteAttributeString("MarkerColumn", MarkerColumn.ToString());
-            xmlWriter.WriteAttributeString("ColorMapColumn", ColorMapColumn.ToString());
             xmlWriter.WriteAttributeString("PlotType", Enums.ToXml("PlotTypes", (int)PlotType));
             xmlWriter.WriteAttributeString("MarkerIndex", MarkerIndex.ToString());
             xmlWriter.WriteAttributeString("MarkerScale", Enums.ToXml("MarkerScales",(int)MarkerScale));
@@ -1453,13 +1464,13 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("StartDateColumn", StartDateColumn.ToString());
             xmlWriter.WriteAttributeString("EndDateColumn", EndDateColumn.ToString());
 
-            // In this layer class we implement dynamic normalization of the points
+            // In this layer class we implement dynamic scaling and coloring of the points
             // based on one of the existing numerical columns. However, we need to produce
             // XML files that are backward-compatible with older versions of WWT. If
-            // normalization is used, we therefore point sizeColumn to the hard-coded
-            // normalized sizes that we compute in AddFilesToCabinet, and then if we
-            // detect normalization arguments when reading in the XML, we switch
-            // sizeColumn to the original one.
+            // dynamic scaling/coloring is used, we therefore point sizeColumn and/or
+            // colorMapColumn to the hard-coded sizes/colors, and then if we detect
+            // normalization arguments when reading in the XML, we switch sizeColumn
+            // and/or colorMapColumn to the original one.
 
             // Note that we need to call this here since WriteLayerProperties
             // gets called before AddFilesToCabinet.
@@ -1476,6 +1487,16 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
             xmlWriter.WriteAttributeString("NormalizeSizeMin", NormalizeSizeMin.ToString());
             xmlWriter.WriteAttributeString("NormalizeSizeMax", NormalizeSizeMax.ToString());
+
+            if (lastDynamicColorColumnIndex > -1) {
+                xmlWriter.WriteAttributeString("ColorMapColumn", lastDynamicColorColumnIndex);
+                xmlWriter.WriteAttributeString("DynamicColorColumn", ColorMapColumn.ToString());
+            } else {
+                xmlWriter.WriteAttributeString("ColorMapColumn", ColorMapColumn.ToString());
+            }
+
+            xmlWriter.WriteAttributeString("NormalizeColorMapMin", NormalizeColorMapMin.ToString());
+            xmlWriter.WriteAttributeString("NormalizeColorMapMax", NormalizeColorMapMax.ToString());
 
             xmlWriter.WriteAttributeString("HyperlinkFormat", HyperlinkFormat.ToString());
             xmlWriter.WriteAttributeString("HyperlinkColumn", HyperlinkColumn.ToString());
@@ -1621,11 +1642,11 @@ namespace wwtlib
             StartDateColumn = int.Parse(node.Attributes.GetNamedItem("StartDateColumn").Value);
             EndDateColumn = int.Parse(node.Attributes.GetNamedItem("EndDateColumn").Value);
 
-            // In this layer class we implement dynamic normalization of the points
+            // In this layer class we implement dynamic scaling and coloring of the points
             // based on one of the existing numerical columns. However, we need to produce
-            // XML files that are backward-compatible with older versions of WWT.
-            // Since we can deal with normalization here, we ignore SizeColumn and use
-            // NormalizeSizeColumn instead, if it is present.
+            // XML files that are backward-compatible with older versions of WWT. Since we
+            // can deal with size/color scaling here, we ignore SizeColumn and ColorMapColumn
+            // and use NormalizeSizeColumn and DynamicColorColumn instead, if present.
 
             if (node.Attributes.GetNamedItem("NormalizeSizeColumn") != null)
             {
@@ -1642,6 +1663,22 @@ namespace wwtlib
                 NormalizeSizeClip = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSizeClip").Value);
                 NormalizeSizeMin = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMin").Value);
                 NormalizeSizeMax = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMax").Value);
+            }
+
+            if (node.Attributes.GetNamedItem("DynamicColorColumn") != null)
+            {
+                ColorMapColumn = int.Parse(node.Attributes.GetNamedItem("DynamicColorColumn").Value);
+            } else {
+                ColorMapColumn = int.Parse(node.Attributes.GetNamedItem("ColorMapColumn").Value);
+            }
+
+            // Only recent files have normalization parameters
+
+            if (node.Attributes.GetNamedItem("DynamicColor") != null)
+            {
+                DynamicColor = Boolean.Parse(node.Attributes.GetNamedItem("DynamicColor").Value);
+                NormalizeColorMapMin = float.Parse(node.Attributes.GetNamedItem("NormalizeColorMapMin").Value);
+                NormalizeColorMapMax = float.Parse(node.Attributes.GetNamedItem("NormalizeColorMapMax").Value);
             }
 
             HyperlinkFormat = node.Attributes.GetNamedItem("HyperlinkFormat").Value;
@@ -1935,15 +1972,17 @@ namespace wwtlib
             }
         }
 
-        protected bool normalizeColorMap = false;
+        private string DynamicColorColumnName = "2efc32e3-b9d9-47ff-8036-8cc344c585bd";
 
-        public bool NormalizeColorMap
+        protected bool dynamicColor = false;
+
+        public bool DynamicColor
         {
-            get { return normalizeColorMap; }
+            get { return dynamicColor; }
             set
             {
                 version++;
-                normalizeColorMap = value;
+                dynamicColor = value;
             }
         }
 
