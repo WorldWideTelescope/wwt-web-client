@@ -92,6 +92,41 @@ namespace wwtlib
             return null;
         }
 
+        // The colormaps below were produced using the following Python code:
+        //
+        // import numpy as np
+        // from matplotlib import cm
+        // from matplotlib.colors import to_hex
+        // from textwrap import wrap, indent
+        //
+        // TEMPLATE = """
+        // public static ColorMapContainer {name} = ColorMapContainer.FromStringList(new List<string>(
+        // {colors}
+        // ));
+        // """
+        //
+        // TEMPLATE_CASE = """
+        // case "{name_lower}":
+        //     return {name};"""
+        // COLORMAPS = ["viridis", "plasma", "inferno", "magma", "cividis",
+        //             "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds", "RdYlBu"]
+        //
+        // named_code = ""
+        // case_code = ""
+        //
+        // for name in COLORMAPS:
+        //     cmap = cm.get_cmap(name)
+        //     x = np.linspace(0.5 / 256, 245.5/256, 256)
+        //     colors = ", ".join(['"{0}"'.format(to_hex(c)) for c in cmap(x)])
+        //     pretty_name = name[0].upper() + name[1:]
+        //     named_code += TEMPLATE.format(name=pretty_name, colors=indent('\n'.join(wrap(colors, 90)), " " *  10))
+        //     case_code += TEMPLATE_CASE.format(name=pretty_name, name_lower=name)
+        //
+        // named_code = indent(named_code, " " * 8)
+        //
+        // print(named_code)    
+        // print('-' * 72)
+        // print(case_code)
 
         public static ColorMapContainer Viridis = ColorMapContainer.FromStringList(new List<string>(
                 "#440154", "#440256", "#450457", "#450559", "#46075a", "#46085c", "#460a5d", "#460b5e",
