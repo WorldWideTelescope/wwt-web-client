@@ -71,6 +71,7 @@ describe('SpreadSheetLayer', function() {
     var csv = 'a,b,c\r\n266,-29,1\r\n267,-29,3\r\n267,-30,5\r\n266,-30,10\r\n';
     var layer = new wwtlib.SpreadSheetLayer()
     layer.updateData(csv, true, true, true)
+    layer.set_colorMap(wwtlib.ColorMaps.per_Column_Literal);
     layer.set_colorMapColumn(1);
     layer.set_colorMapperName("Viridis");
     layer.set_dynamicColor(true);
@@ -91,7 +92,6 @@ describe('SpreadSheetLayer', function() {
 
     // Now use a standard XML parser to load and check for attributes
     parser = new DOMParser();
-    console.log(xmlWriter.body);
     xmlDoc = parser.parseFromString(xmlWriter.body, "text/xml");
     layer_xml = xmlDoc.getElementsByTagName('Layer')[0]
 
@@ -102,12 +102,14 @@ describe('SpreadSheetLayer', function() {
 
     // Check that the normalization attributes are set correctly
     assert.equal(JSON.parse(layer_xml.getAttribute('DynamicColor')), true);
+    assert.equal(layer_xml.getAttribute('ColorMap'), "Per_Column_Literal");
     assert.equal(layer_xml.getAttribute('ColorMapperName'), "Viridis");
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapMin')), -31);
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapMax')), -27);
 
     // Now check that when loading back we get the same as the initial values
     var new_layer = new wwtlib.Layer.fromXml(layer_xml);
+    assert.equal(new_layer.colorMap, wwtlib.ColorMaps.per_Column_Literal);
     assert.equal(new_layer.colorMapColumn, 1);
     assert.equal(new_layer.dynamicColor, true);
     assert.equal(new_layer.colorMapperName, "Viridis");
