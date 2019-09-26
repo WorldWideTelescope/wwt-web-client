@@ -777,17 +777,14 @@ namespace wwtlib
                             case ColorMaps.Per_Column_Literal:
                                 if (ColorMapColumn > -1)
                                 {
-                                    pointColor = ParseColor(row[ColorMapColumn], colorLocal);
-                                }
-                                else
-                                {
-                                    pointColor = colorLocal;
-                                }
-                                break;
-                            case ColorMaps.Map_Column_to_Colormap:
-                                if (ColorMapColumn > -1)
-                                {
-                                    pointColor = ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn])));
+                                    if (normalizeColorMap)
+                                    {
+                                        pointColor = ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn])));
+                                    }
+                                    else
+                                    {
+                                        pointColor = ParseColor(row[ColorMapColumn], colorLocal);
+                                    }
                                 }
                                 else
                                 {
@@ -1935,6 +1932,18 @@ namespace wwtlib
             {
                 version++;
                 colorMapper = value;
+            }
+        }
+
+        protected bool normalizeColorMap = false;
+
+        public bool NormalizeColorMap
+        {
+            get { return normalizeColorMap; }
+            set
+            {
+                version++;
+                normalizeColorMap = value;
             }
         }
 
