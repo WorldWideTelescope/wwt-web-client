@@ -1947,10 +1947,10 @@ namespace wwtlib
             }
         }
 
-        private ColorMaps colorMap = ColorMaps.Per_Column_Literal;
+        protected ColorMaps colorMap = ColorMaps.Per_Column_Literal;
 
 
-        internal ColorMaps ColorMap
+        public ColorMaps ColorMap
         {
             get { return colorMap; }
             set
