@@ -249,27 +249,33 @@ namespace wwtlib
           // scaling - while in newer versions we ignore this additional column
           // and use the dynamic scaling.
 
-          if (sizeColumn == -1 || !NormalizeSize) {
+          // Take a shortcut to avoid copying the table if possible
+          if ((sizeColumn == -1 || !NormalizeSize) && (colorMapColumn == -1 || !DynamicColor)) {
             lastNormalizeSizeColumnIndex = -1;
+            lastDynamicColorColumnIndex = -1;
             return;
           }
 
           table_backcompat = table.Clone();
 
-          List<string> normalizedPointSize = new List<string>();
-          foreach (string[] row in table_backcompat.Rows) {
-            normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
+          if (sizeColumn > -1 && NormalizeSize) {
+            List<string> normalizedPointSize = new List<string>();
+            foreach (string[] row in table_backcompat.Rows) {
+                normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
+            }
+            table_backcompat.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
+            lastNormalizeSizeColumnIndex = table_backcompat.Header.Count - 1;
+          } else {
+            lastNormalizeSizeColumnIndex = -1;
           }
-          table_backcompat.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
-          lastNormalizeSizeColumnIndex = table_backcompat.Header.Count - 1;
 
           if (colorMapColumn > -1 && DynamicColor) {
             List<string> pointColors = new List<string>();
-            foreach (string[] row in table_copy.Rows) {
+            foreach (string[] row in table_backcompat.Rows) {
               pointColors.Add(ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn]))).ToString());
             }
-            table_copy.AddColumn(DynamicColorColumnName, pointColors);
-            lastDynamicColorColumnIndex = table_copy.Header.Count - 1;
+            table_backcompat.AddColumn(DynamicColorColumnName, pointColors);
+            lastDynamicColorColumnIndex = table_backcompat.Header.Count - 1;
           } else {
             lastDynamicColorColumnIndex = -1;
           }
