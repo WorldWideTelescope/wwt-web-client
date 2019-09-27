@@ -14,15 +14,15 @@ namespace wwtlib
 
         public List<Color> colors = new List<Color>();
 
-        public static ColorMapContainer FromNestedLists(List<List<float>> color_list)
+        public static ColorMapContainer FromArgbList(List<List<float>> color_list)
         {
-              
-            // Class method to create a new colormap from a list of [r, g, b, a] lists.
+
+            // Class method to create a new colormap from a list of [a, r, g, b] lists.
 
             ColorMapContainer temp = new ColorMapContainer();
             foreach (List<float> color in color_list)
             {
-                temp.colors.Add(Color.FromArgb(color[3], color[0], color[1], color[2]));
+                temp.colors.Add(Color.FromArgb(color[0], color[1], color[2], color[3]));
             }
             return temp;
         }
@@ -73,19 +73,19 @@ namespace wwtlib
                     return Magma;
                 case "cividis":
                     return Cividis;
-                case "Greys":
+                case "geys":
                     return Greys;
-                case "Purples":
+                case "purples":
                     return Purples;
-                case "Blues":
+                case "blues":
                     return Blues;
-                case "Greens":
+                case "greens":
                     return Greens;
-                case "Oranges":
+                case "oranges":
                     return Oranges;
-                case "Reds":
+                case "reds":
                     return Reds;
-                case "RdYlBu":
+                case "rdylbu":
                     return RdYlBu;
                 return null;
             }
@@ -120,11 +120,11 @@ namespace wwtlib
         //     colors = ", ".join(['"{0}"'.format(to_hex(c)) for c in cmap(x)])
         //     pretty_name = name[0].upper() + name[1:]
         //     named_code += TEMPLATE.format(name=pretty_name, colors=indent('\n'.join(wrap(colors, 90)), " " *  10))
-        //     case_code += TEMPLATE_CASE.format(name=pretty_name, name_lower=name)
+        //     case_code += TEMPLATE_CASE.format(name=pretty_name, name_lower=name.lower())
         //
         // named_code = indent(named_code, " " * 8)
         //
-        // print(named_code)    
+        // print(named_code)
         // print('-' * 72)
         // print(case_code)
 
