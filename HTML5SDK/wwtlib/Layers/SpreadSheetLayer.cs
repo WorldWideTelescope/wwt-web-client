@@ -272,7 +272,7 @@ namespace wwtlib
           if (colorMapColumn > -1 && DynamicColor) {
             List<string> pointColors = new List<string>();
             foreach (string[] row in table_backcompat.Rows) {
-              pointColors.Add(ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn]))).ToString());
+              pointColors.Add(ColorMapper.FindClosestColor(NormalizeColorMapValue(Single.Parse(row[ColorMapColumn]))).Save());
             }
             table_backcompat.AddColumn(DynamicColorColumnName, pointColors);
             lastDynamicColorColumnIndex = table_backcompat.Header.Count - 1;
