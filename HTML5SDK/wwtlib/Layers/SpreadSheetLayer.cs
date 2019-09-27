@@ -1503,6 +1503,8 @@ namespace wwtlib
 
             xmlWriter.WriteAttributeString("DynamicColor", DynamicColor.ToString());
             xmlWriter.WriteAttributeString("ColorMapperName", ColorMapperName);
+            xmlWriter.WriteAttributeString("NormalizeColorMap", NormalizeColorMap.ToString());
+            xmlWriter.WriteAttributeString("NormalizeColorMapClip", NormalizeColorMapClip.ToString());
             xmlWriter.WriteAttributeString("NormalizeColorMapMin", NormalizeColorMapMin.ToString());
             xmlWriter.WriteAttributeString("NormalizeColorMapMax", NormalizeColorMapMax.ToString());
 
@@ -1686,6 +1688,8 @@ namespace wwtlib
             {
                 DynamicColor = Boolean.Parse(node.Attributes.GetNamedItem("DynamicColor").Value);
                 ColorMapperName = node.Attributes.GetNamedItem("ColorMapperName").Value;
+                NormalizeColorMap = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeColorMap").Value);
+                NormalizeColorMapClip = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeColorMapClip").Value);
                 NormalizeColorMapMin = float.Parse(node.Attributes.GetNamedItem("NormalizeColorMapMin").Value);
                 NormalizeColorMapMax = float.Parse(node.Attributes.GetNamedItem("NormalizeColorMapMax").Value);
             }
@@ -1986,6 +1990,21 @@ namespace wwtlib
             get { return ColorMapContainer.FromNamedColormap(colorMapperName); }
         }
 
+        // The following attributes control whether and how to map values from
+        // the ColorMapColumn to colors. The overall option DynamicColor
+        // determines whether colors should be determined on-the-fly from column
+        // values. In this case, first, if NormalizeColorMap is true, the values
+        // are normalized to the range [0:1] using:
+        //
+        // new_value = (value - NormalizeColorMapMin) / (NormalizeColorMapMax - NormalizeColorMapMin)
+        //
+        // The NormalizeColorMapClip attribute can be used to determine whether
+        // the values should be clipped to the range [0:1]. Whether or not the
+        // values are normalized, they are then mapped to colors using the color
+        // map with the name given by ColorMapName.
+
+        // Note that we use a hard-coded UUID since we need it to always be the same across
+        // all WWT sessions so that we can remove it when it isn't needed.
         private string DynamicColorColumnName = "2efc32e3-b9d9-47ff-8036-8cc344c585bd";
 
         protected bool dynamicColor = false;
@@ -1997,6 +2016,30 @@ namespace wwtlib
             {
                 version++;
                 dynamicColor = value;
+            }
+        }
+
+        protected float normalizeColorMap = false;
+
+        public float NormalizeColorMap
+        {
+            get { return normalizeColorMap; }
+            set
+            {
+                version++;
+                normalizeColorMap = value;
+            }
+        }
+
+        protected float normalizeColorMapClip = false;
+
+        public float NormalizeColorMapClip
+        {
+            get { return normalizeColorMapClip; }
+            set
+            {
+                version++;
+                normalizeColorMapClip = value;
             }
         }
 
@@ -2026,15 +2069,22 @@ namespace wwtlib
 
         public float NormalizeColorMapValue(float value)
         {
-            float new_value;
-            new_value = (value - NormalizeColorMapMin) / (NormalizeColorMapMax - NormalizeColorMapMin);
-            if (new_value < 0)
+
+            if (!NormalizeColorMap)
+                return value;
+
+            float new_value = (value - NormalizeColorMapMin) / (NormalizeColorMapMax - NormalizeColorMapMin);
+
+            if (NormalizeColorMapClip)
             {
-                new_value = 0;
-            }
-            else if (new_value > 1)
-            {
-                new_value = 1;
+                if (new_value < 0)
+                {
+                    new_value = 0;
+                }
+                else if (new_value > 1)
+                {
+                    new_value = 1;
+                }
             }
             return new_value;
         }
