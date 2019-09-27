@@ -209,8 +209,6 @@ namespace wwtlib
 
         string fileName;
 
-        private int lastNormalizeSizeColumnIndex = -1;
-
         public override void AddFilesToCabinet(FileCabinet fc)
         {
 
@@ -218,25 +216,14 @@ namespace wwtlib
 
             string dir = fileName.Substring(0, fileName.LastIndexOf("\\"));
 
-            // In this this layer class we implement dynamic normalization of the points
-            // based on one of the existing numerical columns. However, we need to produce
-            // XML files that are backward-compatible with older versions of WWT, so the
-            // approach we take is to add a column with the computed sizes for versions of
-            // WWT that can't do the dynamic scaling - while in newer versions we ignore
-            // this additional column and use the dynamic scaling.
             string data = "";
-            if (sizeColumn > -1 && NormalizeSize) {
-                Table table_copy = table.Clone();
-                List<string> normalizedPointSize = new List<string>();
-                foreach (string[] row in table_copy.Rows) {
-                    normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
-                }
-                table_copy.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
-                data = table_copy.Save();
-                lastNormalizeSizeColumnIndex = table_copy.Header.Count - 1;
+
+            // See PrepareBackCompatTable for an explanation of the
+            // circumstances under which table_backcompat is used.
+            if (table_backcompat == null) {
+              data = table.Save();
             } else {
-                data = table.Save();
-                lastNormalizeSizeColumnIndex = -1;
+              data = table_backcompat.Save();
             }
 
             Blob blob = new Blob(new object[] { data });
@@ -244,6 +231,37 @@ namespace wwtlib
             fc.AddFile(fileName, blob);
 
             base.AddFilesToCabinet(fc);
+        }
+
+        private int lastNormalizeSizeColumnIndex = -1;
+
+        private Table table_backcompat = null;
+
+        private void PrepareBackCompatTable()
+        {
+
+          // In this this layer class we implement dynamic normalization of the
+          // points based on one of the existing numerical columns. However, we
+          // need to produce XML files that are backward-compatible with older
+          // versions of WWT, so the approach we take is to add a column with
+          // the computed sizes for versions of WWT that can't do the dynamic
+          // scaling - while in newer versions we ignore this additional column
+          // and use the dynamic scaling.
+
+          if (sizeColumn == -1 || !NormalizeSize) {
+            lastNormalizeSizeColumnIndex = -1;
+            return;
+          }
+
+          table_backcompat = table.Clone();
+
+          List<string> normalizedPointSize = new List<string>();
+          foreach (string[] row in table_backcompat.Rows) {
+              normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
+          }
+          table_backcompat.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
+          lastNormalizeSizeColumnIndex = table_backcompat.Header.Count - 1;
+
         }
 
         public void GuessHeaderAssignments()
@@ -1435,13 +1453,14 @@ namespace wwtlib
             // normalized sizes that we compute in AddFilesToCabinet, and then if we
             // detect normalization arguments when reading in the XML, we switch
             // sizeColumn to the original one.
+
+            // Note that we need to call this here since WriteLayerProperties
+            // gets called before AddFilesToCabinet.
+            PrepareBackCompatTable();
+
             if (lastNormalizeSizeColumnIndex > -1) {
-                // Note that here we assume that the added column with the dynamic sizes is
-                // the next one along in the table - we don't actually modify the table
-                // in the layer hence why we have to assume this (we just make a copy when
-                // writing out).
                 xmlWriter.WriteAttributeString("SizeColumn", lastNormalizeSizeColumnIndex);
-                xmlWriter.WriteAttributeString("NormalizeColumn", sizeColumn.ToString());
+                xmlWriter.WriteAttributeString("NormalizeSizeColumn", sizeColumn.ToString());
             } else {
                 xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
             }
@@ -1599,11 +1618,11 @@ namespace wwtlib
             // based on one of the existing numerical columns. However, we need to produce
             // XML files that are backward-compatible with older versions of WWT.
             // Since we can deal with normalization here, we ignore SizeColumn and use
-            // NormalizeColumn instead, if it is present.
+            // NormalizeSizeColumn instead, if it is present.
 
-            if (node.Attributes.GetNamedItem("NormalizeColumn") != null)
+            if (node.Attributes.GetNamedItem("NormalizeSizeColumn") != null)
             {
-                SizeColumn = int.Parse(node.Attributes.GetNamedItem("NormalizeColumn").Value);
+                SizeColumn = int.Parse(node.Attributes.GetNamedItem("NormalizeSizeColumn").Value);
             } else {
                 SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
             }
