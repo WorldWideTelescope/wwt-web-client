@@ -187,6 +187,14 @@ namespace wwtlib
             this.GetStringFromGzipBlob(blob, delegate (string data)
             {
                 table.LoadFromString(data, false, true, true);
+
+                // The NormalizeSizeColumnName column is only present for backward-compatibility
+                // and should be removed in this version of SpreadSheetLayer, otherwise we might
+                // keep adding it several times if exporting to XML again.
+                if (table.Header.IndexOf(NormalizeSizeColumnName) > -1) {
+                    table.RemoveColumn(NormalizeSizeColumnName);
+                }
+
                 ComputeDateDomainRange(-1, -1);
 
                 if (DynamicData && AutoUpdate)
@@ -201,7 +209,6 @@ namespace wwtlib
 
         string fileName;
 
-
         public override void AddFilesToCabinet(FileCabinet fc)
         {
 
@@ -209,13 +216,52 @@ namespace wwtlib
 
             string dir = fileName.Substring(0, fileName.LastIndexOf("\\"));
 
-            string data = table.Save();
+            string data = "";
+
+            // See PrepareBackCompatTable for an explanation of the
+            // circumstances under which table_backcompat is used.
+            if (table_backcompat == null) {
+              data = table.Save();
+            } else {
+              data = table_backcompat.Save();
+            }
 
             Blob blob = new Blob(new object[] { data });
 
             fc.AddFile(fileName, blob);
 
             base.AddFilesToCabinet(fc);
+        }
+
+        private int lastNormalizeSizeColumnIndex = -1;
+
+        private Table table_backcompat = null;
+
+        private void PrepareBackCompatTable()
+        {
+
+          // In this this layer class we implement dynamic normalization of the
+          // points based on one of the existing numerical columns. However, we
+          // need to produce XML files that are backward-compatible with older
+          // versions of WWT, so the approach we take is to add a column with
+          // the computed sizes for versions of WWT that can't do the dynamic
+          // scaling - while in newer versions we ignore this additional column
+          // and use the dynamic scaling.
+
+          if (sizeColumn == -1 || !NormalizeSize) {
+            lastNormalizeSizeColumnIndex = -1;
+            return;
+          }
+
+          table_backcompat = table.Clone();
+
+          List<string> normalizedPointSize = new List<string>();
+          foreach (string[] row in table_backcompat.Rows) {
+              normalizedPointSize.Add(NormalizePointSize(Single.Parse(row[sizeColumn])).ToString());
+          }
+          table_backcompat.AddColumn(NormalizeSizeColumnName, normalizedPointSize);
+          lastNormalizeSizeColumnIndex = table_backcompat.Header.Count - 1;
+
         }
 
         public void GuessHeaderAssignments()
@@ -478,8 +524,6 @@ namespace wwtlib
             set { barChartBitmask = value; }
         }
         double barScaleFactor = 20;
-
-
 
         private double meanRadius = 6371000;
 
@@ -759,17 +803,19 @@ namespace wwtlib
                             {
                                 case PointScaleTypes.Linear:
                                     pointSize = Single.Parse(row[sizeColumn]);
+                                    pointSize = NormalizePointSize(pointSize);
                                     break;
                                 case PointScaleTypes.Log:
-                                    pointSize = (float)Math.Log(Single.Parse(row[sizeColumn]));
+                                    pointSize = Single.Parse(row[sizeColumn]);
+                                    pointSize = (float)Math.Log(pointSize);
                                     break;
                                 case PointScaleTypes.Power:
                                     {
-                                        double size = 0;
 
                                         try
                                         {
-                                            pointSize = (float)double.Parse(row[sizeColumn]);
+                                            pointSize = Single.Parse(row[sizeColumn]);
+                                            pointSize = NormalizePointSize(pointSize);
                                             pointSize = Math.Pow(2, pointSize);
                                         }
                                         catch
@@ -1399,7 +1445,31 @@ namespace wwtlib
             xmlWriter.WriteAttributeString("AltColumn", AltColumn.ToString());
             xmlWriter.WriteAttributeString("StartDateColumn", StartDateColumn.ToString());
             xmlWriter.WriteAttributeString("EndDateColumn", EndDateColumn.ToString());
-            xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
+
+            // In this layer class we implement dynamic normalization of the points
+            // based on one of the existing numerical columns. However, we need to produce
+            // XML files that are backward-compatible with older versions of WWT. If
+            // normalization is used, we therefore point sizeColumn to the hard-coded
+            // normalized sizes that we compute in AddFilesToCabinet, and then if we
+            // detect normalization arguments when reading in the XML, we switch
+            // sizeColumn to the original one.
+
+            // Note that we need to call this here since WriteLayerProperties
+            // gets called before AddFilesToCabinet.
+            PrepareBackCompatTable();
+
+            if (lastNormalizeSizeColumnIndex > -1) {
+                xmlWriter.WriteAttributeString("SizeColumn", lastNormalizeSizeColumnIndex);
+                xmlWriter.WriteAttributeString("NormalizeSizeColumn", sizeColumn.ToString());
+            } else {
+                xmlWriter.WriteAttributeString("SizeColumn", SizeColumn.ToString());
+            }
+
+            xmlWriter.WriteAttributeString("NormalizeSize", NormalizeSize.ToString());
+            xmlWriter.WriteAttributeString("NormalizeSizeClip", NormalizeSizeClip.ToString());
+            xmlWriter.WriteAttributeString("NormalizeSizeMin", NormalizeSizeMin.ToString());
+            xmlWriter.WriteAttributeString("NormalizeSizeMax", NormalizeSizeMax.ToString());
+
             xmlWriter.WriteAttributeString("HyperlinkFormat", HyperlinkFormat.ToString());
             xmlWriter.WriteAttributeString("HyperlinkColumn", HyperlinkColumn.ToString());
             xmlWriter.WriteAttributeString("ScaleFactor", ScaleFactor.ToString());
@@ -1543,7 +1613,30 @@ namespace wwtlib
             AltColumn = int.Parse(node.Attributes.GetNamedItem("AltColumn").Value);
             StartDateColumn = int.Parse(node.Attributes.GetNamedItem("StartDateColumn").Value);
             EndDateColumn = int.Parse(node.Attributes.GetNamedItem("EndDateColumn").Value);
-            SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
+
+            // In this layer class we implement dynamic normalization of the points
+            // based on one of the existing numerical columns. However, we need to produce
+            // XML files that are backward-compatible with older versions of WWT.
+            // Since we can deal with normalization here, we ignore SizeColumn and use
+            // NormalizeSizeColumn instead, if it is present.
+
+            if (node.Attributes.GetNamedItem("NormalizeSizeColumn") != null)
+            {
+                SizeColumn = int.Parse(node.Attributes.GetNamedItem("NormalizeSizeColumn").Value);
+            } else {
+                SizeColumn = int.Parse(node.Attributes.GetNamedItem("SizeColumn").Value);
+            }
+
+            // Only recent files have normalization parameters
+
+            if (node.Attributes.GetNamedItem("NormalizeSize") != null)
+            {
+                NormalizeSize = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSize").Value);
+                NormalizeSizeClip = Boolean.Parse(node.Attributes.GetNamedItem("NormalizeSizeClip").Value);
+                NormalizeSizeMin = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMin").Value);
+                NormalizeSizeMax = float.Parse(node.Attributes.GetNamedItem("NormalizeSizeMax").Value);
+            }
+
             HyperlinkFormat = node.Attributes.GetNamedItem("HyperlinkFormat").Value;
             HyperlinkColumn = int.Parse(node.Attributes.GetNamedItem("HyperlinkColumn").Value);
             ScaleFactor = Single.Parse(node.Attributes.GetNamedItem("ScaleFactor").Value);
@@ -2018,7 +2111,6 @@ namespace wwtlib
 
         protected int sizeColumn = -1;
 
-
         public int SizeColumn
         {
             get { return sizeColumn; }
@@ -2031,6 +2123,105 @@ namespace wwtlib
                 }
             }
         }
+
+        // The following attributes control whether the point sizes should be normalized before
+        // being used. When NormalizeSize is true, the point sizes are scaled using
+        //
+        // new_size = (size - NormalizeSizeMin) / (NormalizeSizeMax - NormalizeSizeMin)
+        //
+        // The NormalizeSizeClip attribute can be used to determine whether the sizes should
+        // be clipped to the range [0:1]. At this time, normalization is only applied if
+        // PointScaleTypes is Linear or Power.
+
+        // Note that we use a hard-coded UUID since we need it to always be the same across
+        // all WWT sessions so that we can remove it when it isn't needed.
+        private string NormalizeSizeColumnName = "dfe78b4c-f972-4796-b04f-68c5efd4ecb0";
+
+        protected bool normalizeSize = false;
+
+        public bool NormalizeSize
+        {
+            get { return normalizeSize; }
+            set
+            {
+                if (normalizeSize != value)
+                {
+                    version++;
+                    normalizeSize = value;
+                }
+            }
+        }
+
+        protected bool normalizeSizeClip = false;
+
+        public bool NormalizeSizeClip
+        {
+            get { return normalizeSizeClip; }
+            set
+            {
+                if (normalizeSizeClip != value)
+                {
+                    version++;
+                    normalizeSizeClip = value;
+                }
+            }
+        }
+
+        protected float normalizeSizeMin = 0;
+
+        public float NormalizeSizeMin
+        {
+            get { return normalizeSizeMin; }
+            set
+            {
+                if (normalizeSizeMin != value)
+                {
+                    version++;
+                    normalizeSizeMin = value;
+                }
+            }
+        }
+
+        protected float normalizeSizeMax = 1;
+
+        public float NormalizeSizeMax
+        {
+            get { return normalizeSizeMax; }
+            set
+            {
+                if (normalizeSizeMax != value)
+                {
+                    version++;
+                    normalizeSizeMax = value;
+                }
+            }
+        }
+
+        public float NormalizePointSize(float value)
+        {
+
+            if (!NormalizeSize)
+                return value;
+
+            float new_value = (value - NormalizeSizeMin) / (NormalizeSizeMax - NormalizeSizeMin);
+
+            if (NormalizeSizeClip)
+            {
+                if (new_value < 0)
+                {
+                    new_value = 0;
+                }
+                else if (new_value > 1)
+                {
+                    new_value = 1;
+                }
+            }
+
+            return new_value;
+
+        }
+
+
         protected int nameColumn = 0;
 
 
