@@ -2019,9 +2019,9 @@ namespace wwtlib
             }
         }
 
-        protected float normalizeColorMap = false;
+        protected bool normalizeColorMap = false;
 
-        public float NormalizeColorMap
+        public bool NormalizeColorMap
         {
             get { return normalizeColorMap; }
             set
@@ -2031,9 +2031,9 @@ namespace wwtlib
             }
         }
 
-        protected float normalizeColorMapClip = false;
+        protected bool normalizeColorMapClip = false;
 
-        public float NormalizeColorMapClip
+        public bool NormalizeColorMapClip
         {
             get { return normalizeColorMapClip; }
             set
