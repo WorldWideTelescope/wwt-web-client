@@ -73,7 +73,7 @@ namespace wwtlib
                     return Magma;
                 case "cividis":
                     return Cividis;
-                case "geys":
+                case "greys":
                     return Greys;
                 case "purples":
                     return Purples;
