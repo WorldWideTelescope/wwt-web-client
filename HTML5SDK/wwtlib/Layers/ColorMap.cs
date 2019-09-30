@@ -87,7 +87,6 @@ namespace wwtlib
                     return Reds;
                 case "rdylbu":
                     return RdYlBu;
-                return null;
             }
             return null;
         }
