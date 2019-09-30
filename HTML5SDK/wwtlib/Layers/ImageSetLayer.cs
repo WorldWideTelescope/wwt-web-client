@@ -73,6 +73,11 @@ namespace wwtlib
                 max = double.Parse(node.Attributes.GetNamedItem("MaxValue").Value);
             }
 
+            if (node.Attributes.GetNamedItem("ColorMapperName") != null)
+            {
+                ColorMapperName = node.Attributes.GetNamedItem("ColorMapperName").Value;
+            }
+
             if (node.Attributes.GetNamedItem("OverrideDefault") != null)
             {
                 overrideDefaultLayer = bool.Parse(node.Attributes.GetNamedItem("OverrideDefault").Value);
@@ -120,6 +125,9 @@ namespace wwtlib
                 xmlWriter.WriteAttributeString("ScaleType", fi.lastScale.ToString());
                 xmlWriter.WriteAttributeString("MinValue", fi.lastBitmapMin.ToString());
                 xmlWriter.WriteAttributeString("MaxValue", fi.lastBitmapMax.ToString());
+                if (fi.lastBitmapColorMapperName != null) {
+                    xmlWriter.WriteAttributeString("ColorMapperName", fi.lastBitmapColorMapperName);
+                }
 
             }
 
@@ -214,7 +222,7 @@ namespace wwtlib
             {
                 version++;
                 colorMapperName = value;
-                Histogram.UpdateColorMapper(this, ColorMapper);
+                Histogram.UpdateColorMapper(this, colorMapperName);
             }
         }
 

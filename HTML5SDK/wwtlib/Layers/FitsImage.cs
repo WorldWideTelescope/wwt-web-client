@@ -708,7 +708,7 @@ namespace wwtlib
         public double lastBitmapMin = 0;
         public double lastBitmapMax = 0;
         public int lastBitmapZ = 0;
-        public ColorMapContainer lastBitmapColorMapper = null;
+        public string lastBitmapColorMapperName = null;
 
         override public Bitmap GetBitmap()
         {
@@ -718,10 +718,10 @@ namespace wwtlib
                 lastBitmapMax = MaxVal;
             }
 
-            return GetScaledBitmap(lastBitmapMin, lastBitmapMax, lastScale, lastBitmapZ, lastBitmapColorMapper);
+            return GetScaledBitmap(lastBitmapMin, lastBitmapMax, lastScale, lastBitmapZ, lastBitmapColorMapperName);
         }
 
-        public Bitmap GetScaledBitmap(double min, double max, ScaleTypes scaleType, int z, ColorMapContainer colorMapper)
+        public Bitmap GetScaledBitmap(double min, double max, ScaleTypes scaleType, int z, string colorMapperName)
         {
             z = Math.Min(z, sizeZ);
             ScaleMap scale;
@@ -729,7 +729,9 @@ namespace wwtlib
             lastBitmapMin = min;
             lastBitmapMax = max;
             lastBitmapZ = z;
-            lastBitmapColorMapper = colorMapper;
+            lastBitmapColorMapperName = colorMapperName;
+
+            ColorMapContainer colorMapper = ColorMapContainer.FromNamedColormap(colorMapperName);
 
             switch (scaleType)
             {

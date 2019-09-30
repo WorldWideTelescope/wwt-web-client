@@ -82,11 +82,11 @@ namespace wwtlib
             FitsImage image = isl.ImageSet.WcsImage as FitsImage;
             SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
             int z = image.lastBitmapZ;
-            ColorMapContainer colorMapper = image.lastBitmapColorMapper;
-            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z, colorMapper).GetTexture();
+            string colorMapperName = image.lastBitmapColorMapperName;
+            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z, colorMapperName).GetTexture();
         }
 
-        public static void UpdateColorMapper(ImageSetLayer isl, ColorMapContainer colorMapper)
+        public static void UpdateColorMapper(ImageSetLayer isl, string colorMapperName)
         {
             FitsImage image = isl.ImageSet.WcsImage as FitsImage;
             SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
@@ -94,7 +94,7 @@ namespace wwtlib
             double hi = image.lastBitmapMax;
             ScaleTypes scale = image.lastScale;
             int z = image.lastBitmapZ;
-            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z, colorMapper).GetTexture();
+            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z, colorMapperName).GetTexture();
         }
 
         public void IgnoreMe(ElementEvent e)
