@@ -125,7 +125,7 @@ describe('SpreadSheetLayer', function() {
     const reader = new FileReader();
     reader.addEventListener('loadend', (e) => {
         const text = e.srcElement.result;
-        assert.equal(text, "a\tb\tc\t2efc32e3-b9d9-47ff-8036-8cc344c585bd\r\n266\t-29\t1\t1:255:34:140:141\r\n267\t-29\t3\t1:255:34:140:141\r\n267\t-30\t5\t1:255:60:79:138\r\n266\t-30\t10\t1:255:60:79:138\r\n");
+        assert.equal(text, "a\tb\tc\t2efc32e3-b9d9-47ff-8036-8cc344c585bd\r\n266\t-29\t1\tFF228C8D\r\n267\t-29\t3\tFF228C8D\r\n267\t-30\t5\tFF3C4F8A\r\n266\t-30\t10\tFF3C4F8A\r\n");
         done()
     });
     reader.readAsText(fc.fileList[0].blob);
