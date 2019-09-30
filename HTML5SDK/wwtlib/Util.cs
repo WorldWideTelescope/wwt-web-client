@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace wwtlib
 {
-    class Util
+    public class Util
     {
         public static string[] SplitString(string target, char[] split)
         {
