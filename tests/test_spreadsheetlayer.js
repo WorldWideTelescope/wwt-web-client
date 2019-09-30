@@ -74,7 +74,6 @@ describe('SpreadSheetLayer', function() {
     layer.set_colorMapperName("Viridis");
     layer.set_dynamicColor(true);
     layer.set_normalizeColorMap(true);
-    layer.set_normalizeColorMapClip(true);
     layer.set_normalizeColorMapMin(-31);
     layer.set_normalizeColorMapMax(-27);
 
@@ -103,7 +102,6 @@ describe('SpreadSheetLayer', function() {
     assert.equal(layer_xml.getAttribute('ColorMap'), "Per_Column_Literal");
     assert.equal(layer_xml.getAttribute('ColorMapperName'), "Viridis");
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMap')), true);
-    assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapClip')), true);
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapMin')), -31);
     assert.equal(JSON.parse(layer_xml.getAttribute('NormalizeColorMapMax')), -27);
 
@@ -114,7 +112,6 @@ describe('SpreadSheetLayer', function() {
     assert.equal(new_layer.dynamicColor, true);
     assert.equal(new_layer.colorMapperName, "Viridis");
     assert.equal(new_layer.normalizeColorMap, true);
-    assert.equal(new_layer.normalizeColorMapClip, true);
     assert.equal(new_layer.normalizeColorMapMin, -31);
     assert.equal(new_layer.normalizeColorMapMax, -27);
 
