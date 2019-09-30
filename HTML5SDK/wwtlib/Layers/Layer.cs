@@ -618,10 +618,26 @@ namespace wwtlib
 
         public void GetStringFromGzipBlob(System.Html.Data.Files.Blob blob, GzipStringReady dataReady)
         {
+
+            // This method decompresses a blob into a string, and if the string cannot be decompressed
+            // due to an invalid header, we assume the blob is not compressed and return the string
+            // as-is.
+
             FileReader reader = new FileReader();
             reader.OnLoadEnd = delegate (System.Html.Data.Files.FileProgressEvent e)
             {
-                string result = (string)Script.Literal("pako.inflate(e.target.result, { to: 'string' })");
+                string result = "";
+                try {
+                    result = (string)Script.Literal("pako.inflate(e.target.result, { to: 'string' })");
+                }
+                catch (Exception err)
+                {
+                    if (err.ToString() == "incorrect header check") {
+                        result = (string)Script.Literal("String.fromCharCode.apply(null, new Uint8Array(e.target.result))");
+                    } else {
+                        throw err;
+                    }
+                };
                 dataReady(result);
             };
             reader. ReadAsArrayBuffer(blob);
