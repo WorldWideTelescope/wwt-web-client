@@ -83,6 +83,18 @@ namespace wwtlib
             }
         }
 
+        public string ToSimpleHex()
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+
+                return String.Format("{0}{1}{2}{3}", Util.ToHex(A), Util.ToHex(R), Util.ToHex(G), Util.ToHex(B));
+            }
+            else
+            {
+                return Name;
+            }
+        }
         public static Color Load(string color)
         {
             int a=255, r=255, g=255, b=255;
