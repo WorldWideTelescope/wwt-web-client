@@ -18,8 +18,6 @@ describe('SpreadSheetLayer', function() {
     // Export to XML
     var xmlWriter = new wwtlib.XmlTextWriter();
     layer.saveToXml(xmlWriter);
-    xmlWriter._pending = true;
-    xmlWriter._writePending(true);
 
     // We call addFilesToCabinet after getting the XML of the layer since this
     // is the order in which things happen when saving a tour.
@@ -83,8 +81,6 @@ describe('SpreadSheetLayer', function() {
     // Export to XML
     var xmlWriter = new wwtlib.XmlTextWriter();
     layer.saveToXml(xmlWriter);
-    xmlWriter._pending = true;
-    xmlWriter._writePending(true);
 
     // We call addFilesToCabinet after getting the XML of the layer since this
     // is the order in which things happen when saving a tour.
