@@ -75,7 +75,7 @@ namespace wwtlib
 
             if (node.Attributes.GetNamedItem("ColorMapperName") != null)
             {
-                ColorMapperName = node.Attributes.GetNamedItem("ColorMapperName").Value;
+                colorMapperName = node.Attributes.GetNamedItem("ColorMapperName").Value;
             }
 
             if (node.Attributes.GetNamedItem("OverrideDefault") != null)
