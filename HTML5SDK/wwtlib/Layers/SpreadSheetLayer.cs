@@ -821,6 +821,9 @@ namespace wwtlib
                                 break;
                         }
 
+                        if (pointColor == null) {
+                            pointColor = Colors.Transparent;
+                        }
 
                         if (sizeColumn > -1)
                         {
