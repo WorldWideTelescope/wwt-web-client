@@ -129,13 +129,14 @@ describe('SpreadSheetLayer', function() {
 
   });
 
-
-  it('should error when specifying an incorrect colormap name', function() {
+  it('should error when specifying an incorrect colormap name', function(done) {
     var layer = new wwtlib.SpreadSheetLayer();
     try {
       layer.set_colorMapperName("bananaaaa");
+      throw "Should not get here";
     } catch (err) {
-      assert.equal(err.message, 'Invalid colormap name')
+      assert.equal(err.message, 'Invalid colormap name');
+      done();
     }
   });
 
