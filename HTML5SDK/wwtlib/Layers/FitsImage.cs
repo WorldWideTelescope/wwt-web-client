@@ -785,6 +785,16 @@ namespace wwtlib
             }
 
             float pixel_value = (float)val / 255;
+            if (pixel_value != pixel_value) {
+                // The above test is an unpleasant way of checking if
+                // pixel_value is NaN, since ScriptSharp seems not to support
+                // Float.IsNaN(). This case "can't happen" in C#, but due to
+                // JavaScript's numerical model, it *can* in the transpiled
+                // SDK.
+                bmp.SetPixel(x, y, 0, 0, 0, 0);
+                return;
+            }
+
             Color pixel_color = colorMapper.FindClosestColor(pixel_value);
             bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
         }
