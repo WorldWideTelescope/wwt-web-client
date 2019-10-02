@@ -30,7 +30,7 @@ describe('FitsImage', function() {
       layer.set_imageSet(imageset);
 
       // Set the colormap
-      
+
       layer.set_colorMapperName('viridis')
 
       // Export to XML
@@ -55,4 +55,53 @@ describe('FitsImage', function() {
 
   });
 
+  it('should error when specifying an incorrect colormap name', function(done) {
+    var fits_blob = new Blob([atob(FITS_FILE_BASE64)])
+    var layer = new wwtlib.ImageSetLayer();
+    var img = new wwtlib.FitsImage(null, fits_blob, function(wcsImage) {
+      var width = ss.truncate(wcsImage.get_sizeX());
+      var height = ss.truncate(wcsImage.get_sizeY());
+      var imageset = wwtlib.Imageset.create(
+        wcsImage.get_description(), // name
+        wwtlib.Util.getHashCode('test.fits').toString(), // url
+        2, // dataSetType => Sky
+        3, // bandpass => Visible
+        5, // projection =>  SkyImage
+        wwtlib.Util.getHashCode('test.fits'), // imageSetId
+        0, // baselevel
+        0, // levels
+        256, // tileSize
+        wcsImage.get_scaleY(), // baseTileDegrees
+        '.tif', // extension
+        wcsImage.get_scaleX() > 0, // bottomsUp
+        '', // quadTreeMap
+        wcsImage.get_centerX(),
+        wcsImage.get_centerY(),
+        wcsImage.get_rotation(),
+        false, // sparse
+        '', // thumbnailUrl
+        false, // defaultSet
+        false, // elevationModel
+        1, // "wf"
+        wcsImage.get_referenceX(),
+        wcsImage.get_referenceY(),
+        wcsImage.get_copyright(),
+        wcsImage.get_creditsUrl(),
+        '', // demUrlIn
+        '', // altUrl
+        0, // meanRadius
+        '' // referenceFrame
+      );
+      imageset.set_wcsImage(wcsImage);
+      layer.set_imageSet(imageset);
+
+      try {
+        layer.set_colorMapperName("nopenope");
+        throw "Should not reach this";
+      } catch (err) {
+        assert.equal(err.message, 'Invalid colormap name');
+        done();
+      }
+    });
+  });
 });

@@ -220,6 +220,8 @@ namespace wwtlib
             get { return colorMapperName; }
             set
             {
+                if (ColorMapContainer.FromNamedColormap(value) == null)
+                    throw new Exception("Invalid colormap name");
                 version++;
                 colorMapperName = value;
                 Histogram.UpdateColorMapper(this, colorMapperName);
