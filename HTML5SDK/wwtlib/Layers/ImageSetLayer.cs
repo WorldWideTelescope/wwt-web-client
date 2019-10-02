@@ -14,7 +14,7 @@ namespace wwtlib
 
         ScaleTypes lastScale = ScaleTypes.Linear;
         double min = 0;
-        double max = 0;        
+        double max = 0;
 
         public Imageset ImageSet
         {
