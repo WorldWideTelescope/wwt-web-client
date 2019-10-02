@@ -779,13 +779,14 @@ namespace wwtlib
         }
 
         private void SetPixelWithColorMap(Bitmap bmp, int x, int y, Byte val, ColorMapContainer colorMapper) {
-            float pixel_value = (float)val / 255;
-            if (pixel_value == pixel_value) {
-                Color pixel_color = colorMapper.FindClosestColor(pixel_value);
-                bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
-            } else {
-                bmp.SetPixel(x, y, 0, 0, 0, 0);
+            if (colorMapper == null) {
+                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
+                return;
             }
+
+            float pixel_value = (float)val / 255;
+            Color pixel_color = colorMapper.FindClosestColor(pixel_value);
+            bmp.SetPixel(x, y, (int)pixel_color.R, (int)pixel_color.G, (int)pixel_color.B, (TransparentBlack && val == 0) ? 0 : 255);
         }
 
         private Bitmap GetBitmapByte(double min, double max, ScaleMap scale, int z, ColorMapContainer colorMapper)
@@ -829,11 +830,7 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            if (colorMapper != null) {
-                                SetPixelWithColorMap(bmp, x, y, val, colorMapper);
-                            } else {
-                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
-                            }
+                            SetPixelWithColorMap(bmp, x, y, val, colorMapper);
                         }
                     }
                 }
@@ -881,11 +878,7 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            if (colorMapper != null) {
-                                SetPixelWithColorMap(bmp, x, y, val, colorMapper);
-                            } else {
-                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
-                            }
+                            SetPixelWithColorMap(bmp, x, y, val, colorMapper);
                         }
                     }
                 }
@@ -933,11 +926,7 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            if (colorMapper != null) {
-                                SetPixelWithColorMap(bmp, x, y, val, colorMapper);
-                            } else {
-                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
-                            }
+                            SetPixelWithColorMap(bmp, x, y, val, colorMapper);
                         }
                     }
                 }
@@ -985,11 +974,7 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            if (colorMapper != null) {
-                                SetPixelWithColorMap(bmp, x, y, val, colorMapper);
-                            } else {
-                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
-                            }
+                            SetPixelWithColorMap(bmp, x, y, val, colorMapper);
                         }
                     }
                 }
@@ -1038,11 +1023,7 @@ namespace wwtlib
                         else
                         {
                             Byte val = scale.Map(dataValue);
-                            if (colorMapper != null) {
-                                SetPixelWithColorMap(bmp, x, y, val, colorMapper);
-                            } else {
-                                bmp.SetPixel(x, y, val, val, val, (TransparentBlack && val == 0) ? 0 : 255);
-                            }
+                            SetPixelWithColorMap(bmp, x, y, val, colorMapper);
                         }
                     }
 
