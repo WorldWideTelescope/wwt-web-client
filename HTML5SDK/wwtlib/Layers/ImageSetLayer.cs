@@ -73,6 +73,11 @@ namespace wwtlib
                 max = double.Parse(node.Attributes.GetNamedItem("MaxValue").Value);
             }
 
+            if (node.Attributes.GetNamedItem("ColorMapperName") != null)
+            {
+                colorMapperName = node.Attributes.GetNamedItem("ColorMapperName").Value;
+            }
+
             if (node.Attributes.GetNamedItem("OverrideDefault") != null)
             {
                 overrideDefaultLayer = bool.Parse(node.Attributes.GetNamedItem("OverrideDefault").Value);
@@ -120,6 +125,9 @@ namespace wwtlib
                 xmlWriter.WriteAttributeString("ScaleType", fi.lastScale.ToString());
                 xmlWriter.WriteAttributeString("MinValue", fi.lastBitmapMin.ToString());
                 xmlWriter.WriteAttributeString("MaxValue", fi.lastBitmapMax.ToString());
+                if (fi.lastBitmapColorMapperName != null) {
+                    xmlWriter.WriteAttributeString("ColorMapperName", fi.lastBitmapColorMapperName);
+                }
 
             }
 
@@ -202,6 +210,33 @@ namespace wwtlib
             if (imageSet.WcsImage is FitsImage)
             {
                 Histogram.UpdateImage(this, z);
+            }
+        }
+
+        protected string colorMapperName = null;
+
+        public string ColorMapperName
+        {
+            get { return colorMapperName; }
+            set
+            {
+                if (ColorMapContainer.FromNamedColormap(value) == null)
+                    throw new Exception("Invalid colormap name");
+                version++;
+                colorMapperName = value;
+                Histogram.UpdateColorMapper(this, colorMapperName);
+            }
+        }
+
+        public ColorMapContainer ColorMapper
+        {
+            get
+            {
+                if (colorMapperName == null) {
+                    return null;
+                } else {
+                    return ColorMapContainer.FromNamedColormap(colorMapperName);
+                }
             }
         }
 

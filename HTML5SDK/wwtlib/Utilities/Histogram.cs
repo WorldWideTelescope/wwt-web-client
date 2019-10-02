@@ -74,7 +74,7 @@ namespace wwtlib
             SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
             double low = image.lastBitmapMin;
             double hi = image.lastBitmapMax;
-            Tile.texture2d = image.GetScaledBitmap(low, hi, image.lastScale, Math.Floor(z* (image.Depth-1))).GetTexture();
+            Tile.texture2d = image.GetScaledBitmap(low, hi, image.lastScale, Math.Floor(z* (image.Depth-1)), null).GetTexture();
         }
 
         public static void UpdateScale(ImageSetLayer isl, ScaleTypes scale, double low, double hi)
@@ -82,7 +82,19 @@ namespace wwtlib
             FitsImage image = isl.ImageSet.WcsImage as FitsImage;
             SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
             int z = image.lastBitmapZ;
-            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z).GetTexture();
+            string colorMapperName = image.lastBitmapColorMapperName;
+            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z, colorMapperName).GetTexture();
+        }
+
+        public static void UpdateColorMapper(ImageSetLayer isl, string colorMapperName)
+        {
+            FitsImage image = isl.ImageSet.WcsImage as FitsImage;
+            SkyImageTile Tile = (SkyImageTile)TileCache.GetTile(0, 0, 0, isl.ImageSet, null);
+            double low = image.lastBitmapMin;
+            double hi = image.lastBitmapMax;
+            ScaleTypes scale = image.lastScale;
+            int z = image.lastBitmapZ;
+            Tile.texture2d = image.GetScaledBitmap(low, hi, scale, z, colorMapperName).GetTexture();
         }
 
         public void IgnoreMe(ElementEvent e)
@@ -207,7 +219,7 @@ namespace wwtlib
                 double low = image.MinVal + (lowPosition * factor);
                 double hi = image.MinVal + (highPosition * factor);
                 int z = image.lastBitmapZ;
-                tile.texture2d = image.GetScaledBitmap(low, hi, (ScaleTypes)SelectedCurveStyle, z).GetTexture();
+                tile.texture2d = image.GetScaledBitmap(low, hi, (ScaleTypes)SelectedCurveStyle, z, null).GetTexture();
             }
             updated = true;
         }
