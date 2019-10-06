@@ -60,6 +60,10 @@ namespace wwtlib
 
         public static ColorMapContainer FromNamedColormap(string name)
         {
+            if (name == null) {
+                return null;
+            }
+
             // Names are chosen to match matplotlib (which explains why some
             // are less-than-ideal).
             switch (name.ToLowerCase())
