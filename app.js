@@ -32,8 +32,11 @@ var wwt = {
     'ngCookies',
     'angular-intro'
   ]),
+
   controllers: angular.module('wwtControllers', []),
+
   triggerResize: function () { },
+
   resize: function () {
     $('body.mobile #WWTCanvas')
       .height($('#WorldWideTelescopeControlHost').height())
@@ -44,7 +47,8 @@ var wwt = {
     wwt.smallVP = ($(window).height() < 600 || $(window).width() < 700);
     wwt.definitelyMobile = wwt.smallVP && ($(window).height() < 900 && $(window).width() < 600);
   },
-  smallVP:false
+
+  smallVP: false
 };
 
 $(window).on('load', function() {
