@@ -438,10 +438,6 @@
               <div class="select">
                 <select ng-model="SearchType">
                   <option value="J2000" localize="J2000"></option>
-                  <%--<!--
-                          <option localize="Alt/Az"></option>
-                                <option localize="Galactic"></option>
-                                <option localize="Ecliptic"></option>-->--%>
                         </select>
                     </div>
                     &nbsp;
@@ -519,8 +515,6 @@
             </div>
             <fieldset>
                 <div>
-                    <%-- Text intentionally left in elements so localization directive will keep the colon
-                        and no need to wrap an additional span inside. Directive will replace with regexp. --%>
                     <label localize="Name">Name:</label>
                     <label>{{observingLocation.name}}</label>
                 </div>
@@ -633,15 +627,6 @@
                 <label localize="Preferred Client"></label><br />
                 <select ng-change="setClientPref()" ng-model="preferredClient" ng-options="c.code as c.label for c in availableClients"></select>
 
-                <% if (Debug)
-                { %>
-                <div class="checkbox">
-                    <label data-ng-class="WebGl ? 'checked' : ''">
-                        <input type="checkbox" ng-model="WebGl" data-ng-change="setWebGl()" />
-                        <span localize="Use WebGL (if available)"></span>
-                    </label>
-                </div>
-                <%  } %>
                 <div ng-if="redirecting">
                     <span localize="Redirecting to Silverlight Client in"></span>
                     {{redirectingSeconds}}
@@ -658,109 +643,6 @@
                 <select ng-change="setLanguageCode(selectedLanguage)" ng-model="selectedLanguage" ng-options="l.code as l.label for l in availableLanguages"></select>
             </fieldset>
         </div>
-        <% if (ADS)
-           {%>
-        <div ng-init="initAds()"
-            ng-switch-when="ADS"
-            ng-controller="ADSController"
-            >
-            <fieldset class="radio-buttons">
-                <div class="iblock">
-                    <h5 localize="Heatmap Options - Objects"></h5>
-                    <div class="iblock">
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'All' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="All" ng-change="adsChange()" />
-                                <span localize="All"></span>
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Star' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Star" ng-change="adsChange()" />
-                                <span localize="Stars"></span>
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Galaxy' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Galaxy" ng-change="adsChange()" />
-                                <span localize="Galaxies"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="iblock">
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'HII regions' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="HII regions" ng-change="adsChange()" />
-                                <span localize="HII regions"></span>
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Nebula' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Nebula" ng-change="adsChange()" />
-                                <span localize="Nebulae"></span>
-
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Other' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Other" ng-change="adsChange()" />
-                                <span localize="Other"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="iblock rel">
-
-                    <h5  style="margin-left:24px;" localize="Bands"></h5>
-                    <div class="iblock" style="margin-left:12px;padding-left:12px;border-left:solid 1px #728f9a">
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Radio' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Radio" ng-change="adsChange()" />
-                                <span localize="Radio"></span>
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Infrared' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Infrared" ng-change="adsChange()" />
-                                <span localize="Infrared"></span>
-                            </label>
-                        </div><div class="checkbox">
-                            <label data-ng-class="fgImagery == 'year' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="year" ng-change="adsChange()" />
-                                <span localize="Year (use slider)"></span>
-                            </label>
-                        </div>
-
-                    </div>
-                    <div class="iblock" style="vertical-align: top">
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'X-ray' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="X-ray" ng-change="adsChange()" />
-                                <span localize="X-ray"></span>
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label data-ng-class="fgImagery == 'Ultraviolet' ? 'checked' : ''">
-                                <input type="radio" name="fgImagery" ng-model="fgImagery" value="Ultraviolet" ng-change="adsChange()" />
-                                <span localize="Ultraviolet"></span>
-                            </label>
-                        </div>
-                        <div class="control" style="width:200px">
-                            <div class="year-slider">
-                                <a class="btn" style="left:55px">&nbsp;</a>
-                            </div>
-                            &nbsp;&nbsp;{{year}}
-                        </div>
-
-                    </div>
-                </div>
-            </fieldset>
-
-
-
-        </div>
-           <%  } %>
         <div
             ng-show="!loadingUrlPlace"
             ng-switch-when="currentTour"
@@ -803,28 +685,28 @@
                                         trigger="click" placement="bottom-left" data-content="{1}"
                                         title="Transition" data-container="body" data-auto-close="true"
                                         data-on-show="testfn()" data-on-hide="testfn()">
-                                        <%-- slew --%>
+                                        <!-- slew -->
                                         <div class="right-arrow choice" ng-if="stop.transitionType==0">
                                             <i class="arrow-line"></i><i class="arrow-head"></i>
                                         </div>
-                                        <%-- xfade --%>
+                                        <!-- xfade -->
                                         <div class="crossfade choice" ng-if="stop.transitionType==1">
                                             <span class="shape"></span>
                                         </div>
-                                        <%-- xcut --%>
+                                        <!-- xcut -->
                                         <div class="abrupt choice" ng-if="stop.transitionType==2">
                                             <span class="shape"></span>
                                         </div>
-                                        <%-- fadeoutin --%>
+                                        <!-- fadeoutin -->
                                         <div class="fadeout-in choice" ng-if="stop.transitionType==3">
                                             <span class="shape left"></span>
                                             <span class="shape right"></span>
                                         </div>
-                                        <%-- fadein --%>
+                                        <!-- fadein -->
                                         <div class="fadein choice" ng-if="stop.transitionType==4">
                                             <span class="shape"></span>
                                         </div>
-                                        <%-- fadeout --%>
+                                        <!-- fadeout -->
                                         <div class="fadeout choice" ng-if="stop.transitionType==5">
                                             <span class="shape"></span>
                                         </div>
