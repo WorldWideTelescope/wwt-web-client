@@ -1,15 +1,17 @@
 /*
-This controller is the hub of the web client - with all the shared functionality
-that needs to live at the top of the scope chain residing here.
+  This controller is the hub of the web client - with all the shared functionality
+  that needs to live at the top of the scope chain residing here.
 
-UIManager was created to add some functions to the rootScope that could be removed
-from the main controller to reduce its weight.
+  UIManager was created to add some functions to the rootScope that could be removed
+  from the main controller to reduce its weight.
 
-This file is too large and needs to be componentized a bit more. This is an ongoing
-cleanup process.
+  This file is too large and needs to be componentized a bit more. This is an ongoing
+  cleanup process.
 */
-wwt.controllers.controller('MainController',
-  ['$scope',
+wwt.controllers.controller(
+  'MainController',
+  [
+    '$scope',
     '$rootScope',
     'UILibrary',
     '$q',
@@ -27,7 +29,10 @@ wwt.controllers.controller('MainController',
     '$element',
     '$cookies',
     'AutohidePanels',
-    function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope, searchDataService, places, util, hashManager, skyball, searchUtil, $modal, $element, $cookies, AutohidePanels) {
+    function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope,
+              searchDataService, places, util, hashManager, skyball, searchUtil, $modal,
+              $element, $cookies, AutohidePanels)
+    {
       //TODO - figure out how to clean up lame long list of dependencies injected
       var ctl;
 
@@ -1029,9 +1034,9 @@ wwt.controllers.controller('MainController',
       $scope.displayXFader = function () {
         return (
           $scope.lookAt === 'Sky' &&
-          $scope.trackingObj &&
-          !$scope.tourPlaying &&
-          ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null));
+            $scope.trackingObj &&
+            !$scope.tourPlaying &&
+            ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null));
       }
 
       $scope.gotoConstellation = function (c) {
@@ -1088,7 +1093,7 @@ wwt.controllers.controller('MainController',
       $scope.fovClass = function () {
         return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'hide' :
           $scope.lookAt === 'SolarSystem' ? 'solar-system-mode fov-panel' :
-            'fov-panel';
+          'fov-panel';
       }
       $scope.contextPanelClass = function () {
         var cls = $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'context-panel compressed' : 'context-panel';
@@ -1116,4 +1121,5 @@ wwt.controllers.controller('MainController',
       }
       $scope.mobileLink = util.mobileLink();
     }
-  ]);
+  ]
+);
