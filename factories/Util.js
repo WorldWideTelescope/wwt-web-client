@@ -264,28 +264,6 @@
 	}
 	
 	var accelDevice = false; 
-	
-	function redirectClient(val) {
-		return;
-		var qs = location.search.substr(1);
-		var newQs = '?';
-
-		$.each(qs.split('&'), function (i, s) {
-			if (i > 0) {
-				newQs += '&';
-			}
-			if (s.indexOf('client') !== 0) {
-				newQs += s;
-
-			}
-		});
-		if (newQs.length > 1) {
-			newQs += '&';
-		}
-		newQs += 'client=' + val;
-		location.href = '/webclient' + newQs + location.hash;
-		
-	}
 
 	function isAccelDevice() {
 		return accelDevice;
