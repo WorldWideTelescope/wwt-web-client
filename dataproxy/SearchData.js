@@ -116,15 +116,15 @@
         var end = new Date();
         util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
 
-        importWtml('Wise.wtml').then(function () {
+        importWtml('http://worldwidetelescope.org/webclient/Wise.wtml').then(function () {
           //console.log('wise loaded');
-          importWtml('Hubble.wtml').then(function () {
+          importWtml('http://worldwidetelescope.org/webclient/Hubble.wtml').then(function () {
             //console.log('hubble loaded');
-            importWtml('ESO.wtml').then(function () {
+            importWtml('http://worldwidetelescope.org/webclient/ESO.wtml').then(function () {
               //console.log('eso loaded');
-              importWtml('Chandra.wtml').then(function () {
+              importWtml('http://worldwidetelescope.org/webclient/Chandra.wtml').then(function () {
                 //console.log('chandra loaded');
-                importWtml('Spitzer.wtml').then(function () {
+                importWtml('http://worldwidetelescope.org/webclient/Spitzer.wtml').then(function () {
                   allDataDeferred.resolve(true);
                 });
               });
