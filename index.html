@@ -52,8 +52,7 @@
     data-version="1"
     data-res-version="QQRV"
     data-standalone-mode="0">
-    <% if (Client == Clients.Html5 || Client == Clients.Mobile)
-       { %>
+
     <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
 
       <div id="WorldWideTelescopeControlHost">
@@ -1232,29 +1231,5 @@
     </div>
     <%  } %>
 </div>
-    <% }
-       else if (Client == Clients.Silverlight)
-       { %>
-
-    <div id="silverlightControlHost">
-        <object id = "_wwt_application" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
-            <param name="source" value="clientbin/WWTSL.xap"/>
-            <param name="onerror" value="onSilverlightError" />
-            <param name="background" value="gray" />
-            <param name="minRuntimeVersion" value="4.0.41108.0" />
-            <param name="autoUpgrade" value="true" />
-            <param name="initParams" value="wtml=<% Page.Response.Output.Write(Request.Params["wtml"]); %>,tour=<% Page.Response.Output.Write(Request.Params["tour"]); %>,webkey=<% Page.Response.Output.Write(ConfigurationManager.AppSettings["webkey"]); %>" />
-            <div style="text-align:center;font-family:Arial;margin-top:50px;">
-            This page requires Silverlight 4.<br />
-            <br />
-            <a href="//go.microsoft.com/fwlink/?LinkID=149156&v=4.0.41108.0" style="text-decoration:none">
-              <img src="//go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
-            </a>
-            </div>
-        </object>
-        <iframe style='visibility:hidden;height:0;width:0;border:0'></iframe>
-    </div>
-    <% } %>
-
 </body>
 </html>
