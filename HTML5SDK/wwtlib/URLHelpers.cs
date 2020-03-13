@@ -10,10 +10,6 @@ namespace wwtlib
 {
     public class URLHelpers
     {
-        public float A = 255.0f;
-        public float B = 255.0f;
-        public float G = 255.0f;
-        public float R = 255.0f;
         public static string DEFAULT_HTTP_CDN = "cdn.worldwidetelescope.org";
         public static string DEFAULT_HTTPS_CDN = "beta.worldwidetelescope.org";
 
@@ -26,10 +22,10 @@ namespace wwtlib
             protocol = (string)Script.Literal("window.location.protocol");
 
             switch (protocol) {
-                case "http":
+                case "http:":
                     domain = DEFAULT_HTTP_CDN;
                     break;
-                case "https":
+                case "https:":
                     domain = DEFAULT_HTTPS_CDN;
                     break;
                 default:
