@@ -17,7 +17,7 @@ namespace wwtlib
         public string DEFAULT_HTTP_CDN = "cdn.worldwidetelescope.org";
         public string DEFAULT_HTTPS_CDN = "beta.worldwidetelescope.org";
 
-        public static Color FromCDN(string path)
+        public static string FromCDN(string path)
         {
 
             string protocol;
