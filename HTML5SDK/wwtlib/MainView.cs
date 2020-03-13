@@ -10,10 +10,10 @@ using System.Net;
 using System.Serialization;
 namespace wwtlib
 {
-    
+
     internal static class MainView
     {
-        
+
 
         static MainView()
         {
@@ -56,10 +56,10 @@ namespace wwtlib
 
         }
 
-       
 
 
 
-       
+
+
     }
 }

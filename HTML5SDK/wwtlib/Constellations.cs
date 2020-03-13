@@ -86,7 +86,7 @@ namespace wwtlib
 
 
 
-            Lineset lineSet = null; 
+            Lineset lineSet = null;
 
 
             try
@@ -176,8 +176,8 @@ namespace wwtlib
                         type = PointType.Line;
 
                     }
-                    
-                
+
+
             }
             catch
             {
@@ -448,7 +448,7 @@ namespace wwtlib
         {
             if (NamesBatch == null)
             {
-            
+
                 InitializeConstellationNames();
                 if (NamesBatch == null)
                 {
@@ -472,7 +472,7 @@ namespace wwtlib
             foreach (string key in ConstellationCentroids.Keys)
             {
                 IPlace centroid = ConstellationCentroids[key];
-            
+
                 Vector3d center = Coordinates.RADecTo3dAu(centroid.RA, centroid.Dec, 1);
                 Vector3d up = Vector3d.Create(0, 1, 0);
                 string name = centroid.Name;
@@ -576,7 +576,7 @@ namespace wwtlib
             Abbreviations = new Dictionary<string, string>();
             BitIDs = new Dictionary<string, int>();
             string[] rows = file.Split("\r\n");
-            int id = 0;        
+            int id = 0;
             string line;
             foreach (string row in rows)
             {

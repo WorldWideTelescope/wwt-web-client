@@ -132,7 +132,7 @@ namespace wwtlib
             {
                 thumbnailUrlField = node.Attributes.GetNamedItem("Thumbnail").Value;
             }
-           
+
             // load Children
 
             foreach (XmlNode child in node.ChildNodes)
@@ -160,7 +160,7 @@ namespace wwtlib
                         break;
                 }
             }
-     
+
 
         //bool Browseable { get; set; }
         //System.Collections.Generic.List<Folder> Folders { get; set; }
@@ -293,7 +293,7 @@ namespace wwtlib
             {
                 callback();
             }
-            
+
 
         }
         List<IThumbnail> childList = new List<IThumbnail>();
@@ -383,8 +383,8 @@ namespace wwtlib
         private List<Tour> tours = new List<Tour>();
         private List<Folder> folders = new List<Folder>();
         private List<Place> places = new List<Place>();
-      
-        
+
+
         private string nameField;
 
         private FolderGroup groupField;
@@ -411,7 +411,7 @@ namespace wwtlib
 
 
         /// <remarks/>
-        /// 
+        ///
 
         long communityIdField = 0;
 

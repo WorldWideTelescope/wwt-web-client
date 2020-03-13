@@ -69,7 +69,7 @@ namespace wwtlib
             get { return projection; }
             set { projection = value; }
         }
-    
+
         private string referenceFrame;
 
         public string ReferenceFrame
@@ -120,7 +120,7 @@ namespace wwtlib
 
         public int GetHashCode()
         {
-            
+
             return Util.GetHashCode(Url);
         }
 
@@ -286,8 +286,8 @@ namespace wwtlib
                              node.Attributes.GetNamedItem("").Value,
                             Convert.ToDouble(node.Attributes.GetNamedItem("").Value),
                             Convert.ToInt32(node.Attributes.GetNamedItem("").Value),
- 
- 
+
+
          * */
         string altUrl = "";
 
@@ -321,7 +321,7 @@ namespace wwtlib
                 BandPass bandPass = BandPass.Visible;
 
                 bandPass = (BandPass)Enums.Parse("BandPass",node.Attributes.GetNamedItem("BandPass").Value);
-                
+
                 int wf = 1;
                 if (node.Attributes.GetNamedItem("WidthFactor") != null)
                 {
@@ -331,7 +331,7 @@ namespace wwtlib
                 if (node.Attributes.GetNamedItem("Generic") == null || !bool.Parse(node.Attributes.GetNamedItem("Generic").Value.ToString()))
                 {
                     projection = (ProjectionType)Enums.Parse("ProjectionType", node.Attributes.GetNamedItem("Projection").Value);
-                    
+
                     string fileType = node.Attributes.GetNamedItem("FileType").Value.ToString();
                     if (!fileType.StartsWith("."))
                     {
@@ -609,8 +609,8 @@ namespace wwtlib
         //    if (left == null ^ right == null)
         //    {
         //        return false;
-        //    }      
-        //    return (left.Url.GetHashCode() == right.Url.GetHashCode());   
+        //    }
+        //    return (left.Url.GetHashCode() == right.Url.GetHashCode());
         //}
 
         //public static bool operator !=(ImageSet left, ImageSet right)
@@ -618,7 +618,7 @@ namespace wwtlib
         //    if (left == right )
         //    {
         //        return false;
-        //    }       
+        //    }
         //    if ( left == null ^ right == null)
         //    {
         //        return true;
@@ -651,7 +651,7 @@ namespace wwtlib
             Imageset b = (Imageset)obj;
 
             return (Util.GetHashCode(b.Url) == Util.GetHashCode(this.Url) && b.DataSetType == this.DataSetType && b.BandPass == this.BandPass && b.Generic == this.Generic);
-            
+
         }
 
         private Matrix3d matrix;
@@ -734,7 +734,7 @@ namespace wwtlib
             temp.rotation = 0;
             //todo add scale
             temp.thumbnailUrl = "";
-      
+
             temp.matrix = Matrix3d.Identity;
             temp.matrix.Multiply(Matrix3d.RotationX((((temp.Rotation)) / 180f * Math.PI)));
             temp.matrix.Multiply(Matrix3d.RotationZ(((temp.CenterY) / 180f * Math.PI)));

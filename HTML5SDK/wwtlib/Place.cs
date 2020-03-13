@@ -244,7 +244,7 @@ namespace wwtlib
                     if (backgroundImageSet != null && !string.IsNullOrEmpty(backgroundImageSet.ThumbnailUrl))
                     {
                         return backgroundImageSet.ThumbnailUrl;
-                    }       
+                    }
                     string name = this.Name;
 
                     if (name.IndexOf(";") > -1)
@@ -452,7 +452,7 @@ namespace wwtlib
             {
                 xmlWriter.WriteStartElement("BackgroundImageSet");
                 Imageset.SaveToXml(xmlWriter, backgroundImageSet, "");
-                
+
                 xmlWriter.WriteEndElement();
             }
 
@@ -497,11 +497,11 @@ namespace wwtlib
             {
                 newPlace.constellation = place.Attributes.GetNamedItem("Constellation").Value;
             }
-        
+
             if (place.Attributes.GetNamedItem("Classification") != null)
             {
                 newPlace.classification = (Classification)Enums.Parse("Classification", place.Attributes.GetNamedItem("Classification").Value);
-          
+
             }
 
             if (place.Attributes.GetNamedItem("Magnitude") != null)

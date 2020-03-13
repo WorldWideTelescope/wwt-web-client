@@ -103,19 +103,19 @@ namespace wwtlib
 
 
             //    return RegularExpression.Parse(name + "=" + "(.+?)(&|$)").Exec(Document.URL.Search)||[,null])[1]
-            //           function getURLParameter(name) { 
-            //    return decodeURI( 
-            //        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1] 
-            //    ); 
-            //} 
+            //           function getURLParameter(name) {
+            //    return decodeURI(
+            //        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+            //    );
+            //}
 
             //            RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
 
-            //                "[?&]"+name+"=([^&]*)" 
+            //                "[?&]"+name+"=([^&]*)"
 
             return "";
         }
-                
+
 
         public static string GetProxiedUrl(string url)
         {
@@ -438,7 +438,7 @@ namespace wwtlib
 
     public class Guid
     {
-  
+
         string guid = Create();
 
         public Guid()
@@ -1744,7 +1744,7 @@ namespace wwtlib
                 this.Next = true;
             }
         }
-        
+
         private bool _return = false;
         public bool ReturnCaller
         {
@@ -1765,7 +1765,7 @@ namespace wwtlib
             {
                 if (value)
                 {
-                    _slide = "Next";                    
+                    _slide = "Next";
                 }
                 _next = value;
             }
