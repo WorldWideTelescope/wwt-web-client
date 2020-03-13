@@ -154,7 +154,7 @@ namespace wwtlib
             {
                 if (string.IsNullOrEmpty(tourUrl))
                 {
-                    return string.Format("//cdn.worldwidetelescope.org/wwtweb/GetTour.aspx?GUID={0}", this.Id);
+                    return URL.FromCDN(string.Format("wwtweb/GetTour.aspx?GUID={0}", this.Id));
                 }
                 else
                 {

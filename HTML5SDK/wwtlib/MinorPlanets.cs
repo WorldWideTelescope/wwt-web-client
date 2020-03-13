@@ -85,7 +85,7 @@ namespace wwtlib
             {
                 if (starTexture == null)
                 {
-                    starTexture = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/starProfileAlpha.png");
+                    starTexture = Planets.LoadPlanetTexture(URL.FromCDN("webclient/images/starProfileAlpha.png"));
                 }
                 for (int i = 0; i < 7; i++)
                 {
@@ -132,7 +132,7 @@ namespace wwtlib
     
         private static void StartInit()
         {
-            GetMpcFile("//cdn.worldwidetelescope.org/wwtweb/catalog.aspx?Q=mpcbin");
+            GetMpcFile(URL.FromCDN("wwtweb/catalog.aspx?Q=mpcbin"));
         }
 
         public static void InitMPCVertexBuffer()

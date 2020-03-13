@@ -238,9 +238,9 @@ namespace wwtlib
                     }
                     if (Classification == Classification.Star)
                     {
-                        return "http://cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=star";
+                        return URL.FromCDN("wwtweb/thumbnail.aspx?name=star");
                     }
-                    return "http://cdn.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=" + name.ToLowerCase();
+                    return URL.FromCDN("wwtweb/thumbnail.aspx?name=" + name.ToLowerCase());
                 }
                 return this.thumbnailField;
             }

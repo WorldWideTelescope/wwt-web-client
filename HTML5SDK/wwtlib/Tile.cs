@@ -222,7 +222,7 @@ namespace wwtlib
                 }, false);
 
                 xdomimg.crossOrigin = "anonymous";
-                texture.Src = this.URL.Replace("cdn.","www.");
+                texture.Src = this.URL;
                 //texture.Src = "dss.png";
                 
                 // TODO add event listener for failed!
@@ -1059,7 +1059,7 @@ namespace wwtlib
             {
                 if (dataset.Projection == ProjectionType.Mercator)
                 {
-                    string baseUrl = "//cdn.worldwidetelescope.org/wwtweb/demtile.aspx?q={0},{1},{2},M";
+                    string baseUrl = URL.FromCDN("wwtweb/demtile.aspx?q={0},{1},{2},M");
                     if (!String.IsNullOrEmpty(dataset.DemUrl))
                     {
                         baseUrl = dataset.DemUrl;

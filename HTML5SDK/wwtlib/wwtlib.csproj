@@ -169,6 +169,7 @@
     <Compile Include="Tours\Undo.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="UiTools.cs" />
+    <Compile Include="URLHelpers.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Utilities\BinaryReader.cs" />
     <Compile Include="Utilities\Bitmap.cs" />

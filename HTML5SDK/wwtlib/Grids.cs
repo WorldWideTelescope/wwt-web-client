@@ -21,7 +21,7 @@ namespace wwtlib
         {
             if (milkyWayImage == null)
             {
-                milkyWayImage = Planets.LoadPlanetTexture("//cdn.worldwidetelescope.org/webclient/images/milkywaybar.jpg");
+                milkyWayImage = Planets.LoadPlanetTexture(URL.FromCDN("webclient/images/milkywaybar.jpg"));
             }
 
 
@@ -329,7 +329,7 @@ namespace wwtlib
                         }
 
 
-                        string name = string.Format("//cdn.worldwidetelescope.org/webclient/images/gal_{0}.jpg", num);
+                        string name = URL.FromCDN(string.Format("webclient/images/gal_{0}.jpg", num));
 
                         galaxyTextures[i] = Planets.LoadPlanetTexture(name);
 
