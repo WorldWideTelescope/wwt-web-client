@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace wwtlib
 {
-    public class URL
+    public class URLHelpers
     {
         public float A = 255.0f;
         public float B = 255.0f;

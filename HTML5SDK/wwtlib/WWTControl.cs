@@ -2073,7 +2073,7 @@ namespace wwtlib
                 Singleton.RenderContext.BackgroundImageset =
                     Imageset.Create(
                     "DSS",
-                    URL.FromCDN("wwtweb/dss.aspx?q={1},{2},{3}"),
+                    URLHelpers.FromCDN("wwtweb/dss.aspx?q={1},{2},{3}"),
                     ImageSetType.Sky, BandPass.Visible, ProjectionType.Toast, 100,
                     0, 12, 256, 180, ".png", false, "", 0, 0, 0, false,
                     "//worldwidetelescope.org/thumbnails/DSS.png",

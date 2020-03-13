@@ -329,9 +329,9 @@ namespace wwtlib
         private GlyphCache(int height)
         {
             cellHeight = height;
-            texture = Planets.LoadPlanetTexture(URL.FromCDN("webclient/images/glyphs1.png"));
+            texture = Planets.LoadPlanetTexture(URLHelpers.FromCDN("webclient/images/glyphs1.png"));
 
-            webFile = new WebFile(URL.FromCDN("webclient/images/glyphs1.xml"));
+            webFile = new WebFile(URLHelpers.FromCDN("webclient/images/glyphs1.xml"));
             webFile.OnStateChange = GlyphXmlReady;
             webFile.Send();
         }

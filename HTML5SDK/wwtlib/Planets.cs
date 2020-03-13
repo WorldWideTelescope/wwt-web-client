@@ -2103,7 +2103,7 @@ namespace wwtlib
             {
                 return;
             }
-            ringsTexture = Planets.LoadPlanetTexture(URL.FromCDN("webclient/images/SaturnRingsStrip.png"));
+            ringsTexture = Planets.LoadPlanetTexture(URLHelpers.FromCDN("webclient/images/SaturnRingsStrip.png"));
             double inner = 1.113;
             double outer = 2.25;
 

@@ -238,9 +238,9 @@ namespace wwtlib
                     }
                     if (Classification == Classification.Star)
                     {
-                        return URL.FromCDN("wwtweb/thumbnail.aspx?name=star");
+                        return URLHelpers.FromCDN("wwtweb/thumbnail.aspx?name=star");
                     }
-                    return URL.FromCDN("wwtweb/thumbnail.aspx?name=" + name.ToLowerCase());
+                    return URLHelpers.FromCDN("wwtweb/thumbnail.aspx?name=" + name.ToLowerCase());
                 }
                 return this.thumbnailField;
             }

@@ -154,7 +154,7 @@ namespace wwtlib
             {
                 if (string.IsNullOrEmpty(tourUrl))
                 {
-                    return URL.FromCDN(string.Format("wwtweb/GetTour.aspx?GUID={0}", this.Id));
+                    return URLHelpers.FromCDN(string.Format("wwtweb/GetTour.aspx?GUID={0}", this.Id));
                 }
                 else
                 {
