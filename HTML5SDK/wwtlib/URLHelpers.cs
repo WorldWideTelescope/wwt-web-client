@@ -90,8 +90,9 @@ namespace wwtlib
 
             if (url.StartsWith("http://")) {
                 url = url.Replace("http://", "https://");
-                return url;
             }
+
+            return url;
 
         }
 
