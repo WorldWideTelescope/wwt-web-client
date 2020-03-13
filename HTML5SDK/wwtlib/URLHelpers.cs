@@ -27,13 +27,13 @@ namespace wwtlib
 
             switch (protocol) {
                 case "http":
-                    domain = DEFAULT_HTTP_CDN;
+                    domain = URL.DEFAULT_HTTP_CDN;
                     break;
                 case "https":
-                    domain = DEFAULT_HTTPS_CDN;
+                    domain = URL.DEFAULT_HTTPS_CDN;
                     break;
                 default:
-                    domain = DEFAULT_HTTP_CDN;
+                    domain = URL.DEFAULT_HTTP_CDN;
                     break;
             }
 
