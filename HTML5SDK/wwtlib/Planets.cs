@@ -913,7 +913,7 @@ namespace wwtlib
 
         private static void LoadPlanetTextures()
         {
-            string baseUrl = URLHelpers.FromWWW("webclient/Images/")
+            string baseUrl = URLHelpers.FromWWW("webclient/Images/");
 
             planetTextures = new Texture[20];
             planetTextures[0] = LoadPlanetTexture(baseUrl + @"sun.png");
