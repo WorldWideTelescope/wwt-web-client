@@ -69,7 +69,7 @@ namespace wwtlib
             string protocol;
             protocol = (string)Script.Literal("window.location.protocol");
 
-            if (protocol == 'http:') {
+            if (protocol == "http:") {
                 return url;
             }
 
