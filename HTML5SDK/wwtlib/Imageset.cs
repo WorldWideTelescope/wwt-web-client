@@ -144,7 +144,7 @@ namespace wwtlib
             {
                 if (String.IsNullOrEmpty(demUrl) && projection == ProjectionType.Mercator)
                 {
-                    return "//worldwidetelescope.org/wwtweb/BingDemTile.aspx?Q={0},{1},{2}";      
+                    return URLHelpers.FromWWW("wwtweb/BingDemTile.aspx?Q={0},{1},{2}");
                    // return "//ecn.t{S}.tiles.virtualearth.net/tiles/d{Q}.elv?g=1&n=z";
                 }
                 return demUrl;

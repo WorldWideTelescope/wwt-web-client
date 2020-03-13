@@ -388,7 +388,7 @@ namespace wwtlib
         }
 
 
-        public static Constellations Containment = Constellations.Create("Constellations", "//worldwidetelescope.org/data/constellations.txt", true, true, true);
+        public static Constellations Containment = Constellations.Create("Constellations", URLHelpers.FromWWW("data/constellations.txt"), true, true, true);
         //public static Constellations Containment = Constellations.Create("Constellations", "//localhost/data/constellations.txt", true, true, true);
 
         static string constToDraw = "";
@@ -496,8 +496,8 @@ namespace wwtlib
                 if (artFile == null)
                 {
                     artFile = new Folder();
-                    artFile.LoadFromUrl("//worldwidetelescope.org/wwtweb/catalog.aspx?W=hevelius", OnArtReady);
-                    //artFile.LoadFromUrl("//worldwidetelescope.org/wwtweb/catalog.aspx?W=and", OnArtReady);
+                    artFile.LoadFromUrl(URLHelpers.FromWWW("wwtweb/catalog.aspx?W=hevelius"), OnArtReady);
+                    //artFile.LoadFromUrl(URLHelpers.FromWWW("wwtweb/catalog.aspx?W=and"), OnArtReady);
                 }
 
                 return;
@@ -550,7 +550,7 @@ namespace wwtlib
         {
             //string url = "//worldwidetelescope.org/data/constellationNames_RADEC_EN.txt";
             //string url = "//localhost/data/constellationNames_RADEC_EN.txt";
-            string url = "//worldwidetelescope.org/wwtweb/catalog.aspx?q=ConstellationNamePositions_EN";
+            string url = URLHelpers.FromWWW("wwtweb/catalog.aspx?q=ConstellationNamePositions_EN");
             webFileConstNames = new WebFile(url);
             webFileConstNames.OnStateChange = LoadNames;
             webFileConstNames.Send();

@@ -142,7 +142,7 @@ namespace wwtlib
 
             if (url.ToLowerCase().StartsWith("http"))
             {
-                return "//worldwidetelescope.org/webserviceproxy.aspx?targeturl=" + url.EncodeUriComponent();
+                return URLHelpers.FromWWW("webserviceproxy.aspx?targeturl=" + url.EncodeUriComponent());
             }
             return url;
         }
@@ -176,7 +176,7 @@ namespace wwtlib
 
         public static string GetTourComponent(string url, string name)
         {
-            return "//worldwidetelescope.org/GetTourFile.aspx?targeturl=" + url.EncodeUriComponent() + "&filename=" + name;
+            return URLHelpers.FromWWW("GetTourFile.aspx?targeturl=" + url.EncodeUriComponent() + "&filename=" + name);
         }
 
         public static string XMLDate(Date d)

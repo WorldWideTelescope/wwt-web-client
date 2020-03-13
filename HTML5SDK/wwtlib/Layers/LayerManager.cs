@@ -173,7 +173,7 @@ namespace wwtlib
         //static List<Layer> layers = new List<Layer>();
         static LayerManager()
         {
-            GetMoonFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=moons");
+            GetMoonFile(URLHelpers.FromWWW("wwtweb/catalog.aspx?Q=moons"));
             //InitLayers();
         }
         static string moonfile = "";
@@ -204,7 +204,7 @@ namespace wwtlib
                 string[] isstle = new string[0];
 
                 //This is downloaded now on startup
-                string url = "http://worldwidetelescope.org/wwtweb/isstle.aspx";
+                string url = URLHelpers.FromWWW("wwtweb/isstle.aspx");
 
                 WebFile webFile;
 

@@ -183,7 +183,7 @@ namespace wwtlib
         {
             if (!starsDownloading)
             {
-                GetStarFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=hipparcos");
+                GetStarFile(URLHelpers.FromWWW("wwtweb/catalog.aspx?Q=hipparcos"));
                 starsDownloading = true;
             }
 
@@ -448,7 +448,7 @@ namespace wwtlib
         {
             if (!downloadingGalaxy)
             {
-                GetGalaxyFile("//worldwidetelescope.org/wwtweb/catalog.aspx?Q=cosmosnewbin");
+                GetGalaxyFile(URLHelpers.FromWWW("wwtweb/catalog.aspx?Q=cosmosnewbin"));
                 downloadingGalaxy = true;
             }
             return false;

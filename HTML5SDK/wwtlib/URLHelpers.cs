@@ -12,6 +12,8 @@ namespace wwtlib
     {
         public static string DEFAULT_HTTP_CDN = "cdn.worldwidetelescope.org";
         public static string DEFAULT_HTTPS_CDN = "beta.worldwidetelescope.org";
+        public static string DEFAULT_HTTP_WWW = "www.worldwidetelescope.org";
+        public static string DEFAULT_HTTPS_WWW = "beta.worldwidetelescope.org";
 
         public static string FromCDN(string path)
         {
@@ -30,6 +32,30 @@ namespace wwtlib
                     break;
                 default:
                     domain = DEFAULT_HTTP_CDN;
+                    break;
+            }
+
+            return "//" + domain + "/" + path;
+
+        }
+
+        public static string FromWWW(string path)
+        {
+
+            string protocol;
+            string domain;
+
+            protocol = (string)Script.Literal("window.location.protocol");
+
+            switch (protocol) {
+                case "http:":
+                    domain = DEFAULT_HTTP_WWW;
+                    break;
+                case "https:":
+                    domain = DEFAULT_HTTPS_WWW;
+                    break;
+                default:
+                    domain = DEFAULT_HTTP_WWW;
                     break;
             }
 

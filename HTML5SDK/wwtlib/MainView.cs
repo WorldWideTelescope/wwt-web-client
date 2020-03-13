@@ -37,7 +37,7 @@ namespace wwtlib
             //};
             //xhr.Send();
 
-            //Wtml.GetWtmlFile("//worldwidetelescope.org/wwtweb/catalog.aspx?W=ExploreRoot");
+            //Wtml.GetWtmlFile(URLHelpers.FromWWW("wwtweb/catalog.aspx?W=ExploreRoot"));
             //Wtml.GetWtmlFile("imagesets.xml");
 
         }
