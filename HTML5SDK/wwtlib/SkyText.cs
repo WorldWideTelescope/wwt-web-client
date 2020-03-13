@@ -38,7 +38,7 @@ namespace wwtlib
 
         public void Draw(RenderContext renderContext, float opacity, Color color)
         {
-          
+
 
             if (renderContext.gl == null)
             {
@@ -94,14 +94,14 @@ namespace wwtlib
 
 
                 TextShader.Use(renderContext, vertexBuffer.VertexBuffer, glyphCache.Texture.Texture2d);
- 
+
                 renderContext.gl.drawArrays(GL.TRIANGLES, 0, vertexBuffer.Count);
 
 
 
             }
         }
-       
+
         GlyphCache glyphCache;
 
         TextObject TextObject = new TextObject();
@@ -161,8 +161,8 @@ namespace wwtlib
                     }
                 }
 
-                Vector2d size = Vector2d.Create(width, height); 
- 
+                Vector2d size = Vector2d.Create(width, height);
+
                 t3d.width = size.X * (float)t3d.scale * factor * fntAdjust;
                 t3d.height = size.Y * (float)t3d.scale * factor * fntAdjust;
 
@@ -372,7 +372,7 @@ namespace wwtlib
         {
             get
             {
-              
+
 
                 return texture;
             }

@@ -84,12 +84,12 @@ namespace wwtlib
             if (renderContext.gl == null)
             {
                 Vector3d viewPoint = Vector3d.TransformCoordinate(renderContext.ViewPoint, ViewTransform);
-                
+
 
 
                 CanvasContext2D ctx = renderContext.Device;
                 ctx.Save();
-                
+
                 ctx.StrokeStyle = color.ToString();
                 ctx.LineWidth = 2;
                 ctx.Alpha = .25;
@@ -107,9 +107,9 @@ namespace wwtlib
 
 
                         ctx.Stroke();
-                       
+
                     }
-                } 
+                }
                 ctx.Restore();
             }
             else
@@ -128,8 +128,8 @@ namespace wwtlib
                 }
             }
         }
-           
-    
+
+
 
         //List<SharpDX.Direct3D11.VertexBufferBinding> lineBufferBindings = new List<SharpDX.Direct3D11.VertexBufferBinding>();
 
@@ -213,7 +213,7 @@ namespace wwtlib
 
         void EmptyLineBuffer()
         {
-           
+
 
         }
 
@@ -747,7 +747,7 @@ namespace wwtlib
 
         }
 
-       
+
 
         public void Draw(RenderContext renderContext, float opacity, CullMode cull)
         {
@@ -756,7 +756,7 @@ namespace wwtlib
                 return;
             }
 
-            
+
 
             //renderContext.DepthStencilMode = DepthBuffered ? (WriteZbuffer ? DepthStencilMode.ZReadWrite : DepthStencilMode.ZReadOnly) : DepthStencilMode.Off;
 
@@ -1078,7 +1078,7 @@ namespace wwtlib
                     );
 
                 renderContext.gl.drawArrays(GL.POINTS, 0, pointBuffer.Count);
-            }     
+            }
         }
     }
 

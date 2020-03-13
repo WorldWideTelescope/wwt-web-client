@@ -229,7 +229,7 @@ namespace wwtlib
                     if (backgroundImageSet != null && !string.IsNullOrEmpty(backgroundImageSet.ThumbnailUrl))
                     {
                         return backgroundImageSet.ThumbnailUrl;
-                    }       
+                    }
                     string name = this.Name;
 
                     if (name.IndexOf(";") > -1)

@@ -35,7 +35,7 @@ namespace wwtlib
             double lngMin = -64;
             double lngMax = 64;
 
-            //// Create a vertex buffer 
+            //// Create a vertex buffer
             galaxyImageVertexBuffer = new PositionTextureVertexBuffer((subdivs + 1) * (subdivs + 1));
             PositionTexture[] verts = (PositionTexture[])galaxyImageVertexBuffer.Lock();
 

@@ -26,7 +26,7 @@ namespace wwtlib
         public static int TileTargetLevel = -1;
 
         public int Level;
-       
+
         public int tileX;
 
         public int tileY;
@@ -48,7 +48,7 @@ namespace wwtlib
         protected Vector3d BottomLeft;
 
         public static double uvMultiple = 256;
-  
+
         public static List<Tile> GetFrustumList()
         {
             try
@@ -78,7 +78,7 @@ namespace wwtlib
 
         public Vector3d localCenter = new Vector3d();
         public int RenderedAtOrBelowGeneration = 0;
- 
+
         public void MakeTexture()
         {
             if (PrepDevice != null)
@@ -218,13 +218,13 @@ namespace wwtlib
                         RequestPending = false;
                         TileCache.RemoveFromQueue(this.Key, true);
                     }
-                    
+
                 }, false);
 
                 xdomimg.crossOrigin = "anonymous";
                 texture.Src = this.URL;
                 //texture.Src = "dss.png";
-                
+
                 // TODO add event listener for failed!
             }
         }
@@ -293,7 +293,7 @@ namespace wwtlib
                     catch
                     {
                     }
-                    
+
                     TileCache.RemoveFromQueue(this.Key, true);
                 }, false);
 
@@ -318,19 +318,19 @@ namespace wwtlib
         {
    //         CanvasContext2D device = renderContext.Device;
 
-            
+
 
             RenderedGeneration = CurrentRenderGeneration;
             TilesTouched++;
             AccessCount = TileCache.AccessID++;
- 
+
             if (errored)
             {
                 return false;
             }
- 
+
             int xMax = 2;
- 
+
             InViewFrustum = true;
 
             if (!ReadyToRender)
@@ -362,7 +362,7 @@ namespace wwtlib
                         //  if (level < (demEnabled ? 12 : dataset.Levels))
                         if (Level < dataset.Levels)
                         {
-                            // make children 
+                            // make children
                             if (children[childIndex] == null)
                             {
                                 children[childIndex] = TileCache.GetTile(Level + 1, tileX * 2 + ((x1 + xOffset) % 2), tileY * 2 + ((y1 + yOffset) % 2), dataset, this);
@@ -495,7 +495,7 @@ namespace wwtlib
         }
         public virtual void RenderPart(RenderContext renderContext, int part, double opacity, bool combine)
         {
-            
+
             if (PrepDevice == null)
             {
                 bool lighting = renderContext.Lighting && renderContext.SunPosition != null;
@@ -541,10 +541,10 @@ namespace wwtlib
                 renderContext.gl.drawElements(GL.TRIANGLES, TriangleCount * 3 , GL.UNSIGNED_SHORT, 0);
             }
         }
- 
+
         public virtual void CleanUp(bool removeFromParent)
         {
-            
+
             ReadyToRender = false;
             DemData = null;
             demFile = null;
@@ -583,12 +583,12 @@ namespace wwtlib
                 if (texture2d != null)
                 {
                     PrepDevice.deleteTexture(texture2d);
-      
+
                     texture2d = null;
                 }
             }
         }
-  
+
         public void RemoveChild(Tile child)
         {
             for (int i = 0; i < 4; i++)
@@ -603,7 +603,7 @@ namespace wwtlib
 
 //        bool blendMode = false;
 
-        
+
         public int AccessCount = 0;
         public bool Downloading = false;
         public bool GeometryCreated = false;
@@ -652,12 +652,12 @@ namespace wwtlib
 
         internal bool isHdTile = false;
         protected int demSize = 33 * 33;
-     
+
 
 
  //       public static Viewport Viewport;
         public static int maxLevel = 20;
-       
+
 
 
         Vector3d topLeftScreen = new Vector3d();
@@ -730,7 +730,7 @@ namespace wwtlib
 
             return true;
         }
-        
+
  //virtual public bool IsTileBigEnough(Device device)
  //       {
  //           //if (!IsTileInFrustum(frustum))
@@ -743,7 +743,7 @@ namespace wwtlib
  //           {
  //               if (this.Level < 25)
  //               {
- //                   deepestLevel = level > deepestLevel ? level : deepestLevel; 
+ //                   deepestLevel = level > deepestLevel ? level : deepestLevel;
  //                   return true;
  //                   bool a = true;
  //               }
@@ -829,7 +829,7 @@ namespace wwtlib
         //    }
         //    InViewFrustum = true;
 
-        //    return true;  
+        //    return true;
         //}
         virtual public bool IsTileInFrustum(PlaneD[] frustum)
         {
@@ -852,7 +852,7 @@ namespace wwtlib
             InViewFrustum = true;
 
             return true;
-        } 
+        }
 
 
         protected double sphereRadius;
@@ -870,7 +870,7 @@ namespace wwtlib
         {
             get { return sphereCenter; }
         }
- 
+
         protected const double RC = (3.1415927 / 180.0);
         protected float radius = 1;
         protected Vector3d GeoTo3d(double lat, double lng, bool useLocalCenter)
@@ -892,7 +892,7 @@ namespace wwtlib
             }
 
         }
-     
+
         static protected int SubDivisions
         {
             get { return 32; /*DemEnabled ? 32 : 16; */ }
@@ -907,7 +907,7 @@ namespace wwtlib
 
         public virtual void OnCreateVertexBuffer(object sender, EventArgs e)
         {
- 
+
         }
 
         public int RequestHits;
@@ -926,7 +926,7 @@ namespace wwtlib
             }
         }
 
-   
+
         public String Key
         {
             get
@@ -935,8 +935,8 @@ namespace wwtlib
             }
 
         }
-  
-    
+
+
         // URL parameters
         //{0} ImageSetID
         //{1} level
@@ -963,8 +963,8 @@ namespace wwtlib
         {
             get
             {
-            string returnUrl = dataset.Url;  
-                
+            string returnUrl = dataset.Url;
+
                 if (dataset.Url.IndexOf("{1}") > -1)
                 {
                     // Old style URL
@@ -1023,7 +1023,7 @@ namespace wwtlib
                     returnUrl = returnUrl.Replace("//r{S}.ortho.tiles.virtualearth.net", "//ecn.t{S}.tiles.virtualearth.net");
                 }
 
-                
+
                 string id = this.GetTileID();
                 string server = "";
 
@@ -1043,7 +1043,7 @@ namespace wwtlib
 
 
                 returnUrl = returnUrl.Replace("{Q}", id);
-                
+
                 returnUrl = returnUrl.Replace("{S}", server);
                 if (returnUrl.IndexOf("virtualearth.net") > -1)
                 {
@@ -1183,7 +1183,7 @@ namespace wwtlib
 
         protected int VertexCount
         {
-            get 
+            get
             {
 
                 return vertexCount;
@@ -1194,7 +1194,7 @@ namespace wwtlib
             }
         }
         BlendState[] renderChildPart = null;
-      
+
         public Tile()
         {
             renderChildPart = new BlendState[4];
@@ -1271,8 +1271,8 @@ namespace wwtlib
 //                PointInQuad(new PointF(rect.Left, rect.Bottom)))
 //            {
 //                return true;
-//            }   
-            
+//            }
+
 //            return false;
 //        }
 
@@ -1319,8 +1319,8 @@ namespace wwtlib
 //            return false;
 //        }
 //        /* (x1,y1),(x2,y2) defines a line.
-//* If the points (ax,ay) and (bx,by) are on 
-//* the same side of the line as each other, the 
+//* If the points (ax,ay) and (bx,by) are on
+//* the same side of the line as each other, the
 //* function returns 1. Otherwise it returns 0.
 //*/
 
@@ -1347,5 +1347,5 @@ namespace wwtlib
 //        }
 //    }
 
-    
+
 }
