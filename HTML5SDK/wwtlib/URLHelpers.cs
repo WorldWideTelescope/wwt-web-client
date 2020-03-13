@@ -63,5 +63,37 @@ namespace wwtlib
 
         }
 
+        public static string Patch(string url)
+        {
+
+            string protocol;
+            protocol = (string)Script.Literal("window.location.protocol");
+
+            if (protocol == 'http:') {
+                return url;
+            }
+
+            if (url.StartsWith("http://worldwidetelescope.org")) {
+                url = url.Replace("http://worldwidetelescope.org/", "");
+                return FromWWW(url);
+            }
+
+            if (url.StartsWith("http://www.worldwidetelescope.org")) {
+                url = url.Replace("http://www.worldwidetelescope.org/", "");
+                return FromWWW(url);
+            }
+
+            if (url.StartsWith("http://cdn.worldwidetelescope.org")) {
+                url = url.Replace("http://cdn.worldwidetelescope.org/", "");
+                return FromCDN(url);
+            }
+
+            if (url.StartsWith("http://")) {
+                url = url.Replace("http://", "https://");
+                return url;
+            }
+
+        }
+
     }
 }
