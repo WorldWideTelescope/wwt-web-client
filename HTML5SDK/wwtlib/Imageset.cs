@@ -436,7 +436,7 @@ namespace wwtlib
                     string url = "";
                     if (node.Attributes.GetNamedItem("Url") != null)
                     {
-                        url = URLhelpers.Patch(node.Attributes.GetNamedItem("Url").Value.ToString());
+                        url = URLHelpers.Patch(node.Attributes.GetNamedItem("Url").Value.ToString());
                     }
 
                     int baseTileLevel = 0;
