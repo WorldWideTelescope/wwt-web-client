@@ -1059,7 +1059,8 @@ namespace wwtlib
             {
                 if (dataset.Projection == ProjectionType.Mercator)
                 {
-                    string baseUrl = URL.FromCDN("wwtweb/demtile.aspx?q={0},{1},{2},M");
+                    string baseUrl;
+                    baseUrl = URL.FromCDN("wwtweb/demtile.aspx?q={0},{1},{2},M");
                     if (!String.IsNullOrEmpty(dataset.DemUrl))
                     {
                         baseUrl = dataset.DemUrl;
