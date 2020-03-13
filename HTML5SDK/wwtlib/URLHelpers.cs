@@ -32,7 +32,7 @@ namespace wwtlib
                 case "https":
                     domain = DEFAULT_HTTPS_CDN;
                     break;
-                case default:
+                default:
                     domain = DEFAULT_HTTP_CDN;
                     break;
             }
