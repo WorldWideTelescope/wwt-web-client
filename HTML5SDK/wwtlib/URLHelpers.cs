@@ -10,10 +10,10 @@ namespace wwtlib
 {
     public class URLHelpers
     {
-        public static string DEFAULT_HTTP_CDN = "cdn.worldwidetelescope.org";
-        public static string DEFAULT_HTTPS_CDN = "beta.worldwidetelescope.org";
-        public static string DEFAULT_HTTP_WWW = "www.worldwidetelescope.org";
-        public static string DEFAULT_HTTPS_WWW = "beta.worldwidetelescope.org";
+
+        // NOTE: we deliberately don't define the default URLs as static
+        // properties here since they end up not being set in time for some
+        // calls to FromCDN and FromWWT
 
         public static string FromCDN(string path)
         {
@@ -25,13 +25,13 @@ namespace wwtlib
 
             switch (protocol) {
                 case "http:":
-                    domain = DEFAULT_HTTP_CDN;
+                    domain = "cdn.worldwidetelescope.org";
                     break;
                 case "https:":
-                    domain = DEFAULT_HTTPS_CDN;
+                    domain = "beta.worldwidetelescope.org";
                     break;
                 default:
-                    domain = DEFAULT_HTTP_CDN;
+                    domain = "cdn.worldwidetelescope.org";
                     break;
             }
 
@@ -49,13 +49,13 @@ namespace wwtlib
 
             switch (protocol) {
                 case "http:":
-                    domain = DEFAULT_HTTP_WWW;
+                    domain = "www.worldwidetelescope.org";
                     break;
                 case "https:":
-                    domain = DEFAULT_HTTPS_WWW;
+                    domain = "beta.worldwidetelescope.org";
                     break;
                 default:
-                    domain = DEFAULT_HTTP_WWW;
+                    domain = "www.worldwidetelescope.org";
                     break;
             }
 
