@@ -1,6 +1,16 @@
 # This is the configuration for Azure pipelines. It currently runs a build of
 # the web client SDK and publishes the wwtsdk.js file as a build artifact.
 
+trigger:
+  branches:
+    include:
+    - '*'
+
+pr:
+  branches:
+    include:
+    - '*'
+
 jobs:
 - job: BuildSDK
   pool:
