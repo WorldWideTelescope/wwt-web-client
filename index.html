@@ -1,123 +1,6 @@
-<%@ Page Language="C#" %>
-<%@ Import Namespace="System.Globalization" %>
-<%@ Import Namespace="System.Security.Cryptography.X509Certificates" %>
-
-<script runat="server">
-
-    public bool Debug = false;
-    public bool DebugChrome = false;
-    public bool ADS = false;
-    public string DotMin = ".min.js";
-    // This enables the webclient to load in both the worldwidetelescope.org site
-    // with js/css/imagery on the cdn and in standalone mode without a cdn
-    public string ResourcesLocation;
-    public string ResourcesVersion = ConfigurationManager.AppSettings["ResourcesVersion"];
-    public string DebugQs = "?v=" + ConfigurationManager.AppSettings["ResourcesVersion"];
-    public string BodyClass;
-    public string ImgDir = "https://wwtweb.blob.core.windows.net/webclient/";
-    public enum Clients
-    {
-      Html5 = 0,
-      Silverlight = 1,
-      WWT = 2,
-      Mobile = 3
-    };
-    public Clients Client = Clients.Html5;
-
-    protected void Page_Load(object sender, EventArgs e)
-    {
-
-      ResourcesLocation = ConfigurationManager.AppSettings["WebClientResourcesLocation"] ?? ConfigurationManager.AppSettings["ResourcesLocation"] + "/webclient";
-      bool isMobile = Request.QueryString["mobile"] != null && Request.QueryString["mobile"] != "0";
-
-      BodyClass = string.Format("fs-player wwt-webclient-wrapper {0}", isMobile ? "mobile" : "desktop");
-
-      if (Request.QueryString["debug"] != null)
-      {
-        Random rnd = new Random();
-        //ResourcesVersion = rnd.Next(1, 999999).ToString();
-        //DebugQs = "?debug=true&v=" + ResourcesVersion;
-        Debug = true;
-        DotMin = ".js";
-        if (Request.QueryString["debug"] == "chrome")
-        {
-          Debug = false;
-          DebugChrome = true;
-          DebugQs = "";
-        }
-        else if (Request.QueryString["debug"] == "local")
-        {
-          DotMin = ".min.js" + DebugQs;
-        }
-
-      }
-      if (Request.QueryString["ads"] != null)
-      {
-        ADS = true;
-      }
-      if (Request.Cookies["preferredClient"] != null)
-      {
-        switch (Request.Cookies["preferredClient"].Value)
-        {
-          case "SL":
-            Client = Clients.Silverlight;
-            break;
-          case "WWT":
-            Client = Clients.WWT;
-            break;
-          case "Mobile":
-            Client = Clients.Mobile;
-            break;
-          default:
-            Client = Clients.Html5;
-            break;
-        }
-      }
-      if (Request.QueryString["client"] != null && !isMobile)
-      {
-        HttpCookie cookie = Request.Cookies["preferredClient"] ?? new HttpCookie("preferredClient");
-        char c = Request.QueryString["client"].ToString(CultureInfo.InvariantCulture).ToLower().ToCharArray()[0];
-        if (c == 'h')
-        {
-          Client = Clients.Html5;
-          cookie.Value = "HTML5";
-        }
-        else if (c == 's')
-        {
-          Client = Clients.Silverlight;
-          cookie.Value = "SL";
-        }
-        else if (c == 'm')
-        {
-          Client = Clients.Mobile;
-          cookie.Value = "Mobile";
-        }
-        else if (c == 'w')
-        {
-          Client = Clients.WWT;
-          cookie.Value = "WWT";
-        }
-
-        HttpContext.Current.Response.Cookies.Add(cookie);
-
-      }
-      else if (isMobile) {
-        Client = Clients.Mobile;
-      }
-      //if (Client == Clients.Html5 && isMobile)
-      //{
-      //    Response.Redirect(string.Format("/webclient/?client=mobile{0}", Debug ? "&debug=true" : ""));
-      //}
-      //else if (Client == Clients.Mobile && !isMobile)
-      //{
-      //    Response.Redirect(string.Format("/webclient/?client=html5{0}", Debug ? "&debug=true" : ""));
-      //}
-
-    }
-</script>
 <!DOCTYPE html>
 <html>
-<head runat="server">
+<head>
     <title>WorldWide Telescope Web Client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -128,9 +11,9 @@
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." />
     <meta property="og:image" content="https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png" />
     <link rel="icon" href="favicon.ico"/>
-    <link href="css/webclient.min.css?v=<%= ResourcesVersion%>" rel="stylesheet" />
-    <link href="css/angular-motion.css?v=<%= ResourcesVersion%>" rel="stylesheet" />
-    <link href="css/introjs.css?v=<%= ResourcesVersion%>" rel="stylesheet" />
+    <link href="css/webclient.min.css?v=QQRV" rel="stylesheet" />
+    <link href="css/angular-motion.css?v=QQRV" rel="stylesheet" />
+    <link href="css/introjs.css?v=QQRV" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/style/jquery.jscrollpane.css" rel="stylesheet"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
   <!-- Global Site Tag (gtag.js) - Google Analytics -->
@@ -143,11 +26,11 @@
 </script>
     <style>
       body .finder-scope {
-            background: url(Images/finder-scope.png?v=<%= ResourcesVersion %>) no-repeat;
+            background: url(Images/finder-scope.png?v=QQRV) no-repeat;
       }
     </style>
     <script src="//js.live.net/v5.0/wl.js"></script>
-    <script src="//cdn.worldwidetelescope.org/webclient/sdk/wwtsdk<%=DotMin %>?v=<%= ResourcesVersion%>"></script>
+    <script src="//cdn.worldwidetelescope.org/webclient/sdk/wwtsdk<%=DotMin %>?v=QQRV"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap<%=DotMin %>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular<%=DotMin %>"></script>
@@ -160,14 +43,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel<%=DotMin %>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
-    <script src="wwtwebclient<%=DotMin%>?v=<%= ResourcesVersion%>"></script>
+    <script src="wwtwebclient<%=DotMin%>?v=QQRV"></script>
 </head>
 <body
     class="<%= BodyClass %>"
     data-ng-app="wwtApp"
     data-res-location="<%= ResourcesLocation%>"
     data-version="1"
-    data-res-version="<%= ResourcesVersion%>"
+    data-res-version="QQRV"
     data-liveId="<%=ConfigurationManager.AppSettings["LiveClientId"]%>"
     data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
@@ -266,7 +149,7 @@
     <a  data-bs-popover="popover" tabindex="0"
         localize="Share this place"
         localize-only="title"
-        data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
+        data-content-template="views/popovers/shareplace.html?v=QQRV"
         data-ng-class="searchModal ? 'hide':'btn share-button'"
         data-placement="bottom-left"
         data-ng-if="!tourPlaying"
@@ -282,7 +165,7 @@
         <a class="btn" data-bs-popover="popover" tabindex="0"
             localize="Share this place"
             localize-only="title"
-            data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
+            data-content-template="views/popovers/shareplace.html?v=QQRV"
             data-container="body"
             data-placement="bottom-left"
             >
@@ -290,7 +173,7 @@
             <span localize="Share"></span>
         </a>
     </div>
-    <ng-include src="'views/modals/mobile-explore.html?v=<%=ResourcesVersion%>'"></ng-include>
+    <ng-include src="'views/modals/mobile-explore.html?v=QQRV'"></ng-include>
 
     <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
         <div class="container">
@@ -376,7 +259,7 @@
                     localize-only="alt" style="width:60px;height:60px;"/>
         </a>
         <a class="pull-left" href="/home" style="margin-left: -11px;">
-            <img src='<%=ImgDir %>wwtlogo.png?v=<%= ResourcesVersion%>'
+            <img src='<%=ImgDir %>wwtlogo.png?v=QQRV'
                 localize="WorldWide Telescope Logo"
                 localize-only="alt"
                 style="height:60px;width:60px"
@@ -407,7 +290,7 @@
             </label>
         </div>
     </div>
-    <ng-include src="'views/modals/mobile-nearby-objects.html?v=<%=ResourcesVersion%>'"></ng-include>
+    <ng-include src="'views/modals/mobile-nearby-objects.html?v=QQRV'"></ng-include>
     <div class="context-panel">
         <div class="nearby-objects" ng-if="nbo.length && (lookAt == 'Sky' || lookAt=='SolarSystem')" ng-show="!tourPlaying">
             <a ng-click="showNbo()" title="{{nbo[0].get_name()}}" class="thumbnail">
@@ -440,8 +323,8 @@
     <% } %>
     <%if (Client == Clients.Html5)
    { %>
-    <ng-include src="'views/research-menu.html?v=<%=ResourcesVersion%>'"></ng-include>
-    <ng-include src="'views/modals/finder-scope.html?v=<%=ResourcesVersion%>'" onload="initFinder()"></ng-include>
+    <ng-include src="'views/research-menu.html?v=QQRV'"></ng-include>
+    <ng-include src="'views/modals/finder-scope.html?v=QQRV'" onload="initFinder()"></ng-include>
 
 
     <div data-ng-controller="ViewController"></div>
@@ -501,7 +384,7 @@
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
             <div class="explore-thumbs">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-                    <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
+                    <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
                 </div>
 
             </div>
@@ -579,7 +462,7 @@
             </div>
             <div class="search-results">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-                    <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
+                    <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
                 </div>
             </div>
             <label class="wwt-pager" ng-show="collection.length > 0">
@@ -607,7 +490,7 @@
             <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
             <div class="explore-thumbs">
                 <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-                    <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
+                    <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
                 </div>
 
             </div>
@@ -667,7 +550,7 @@
                 <a class="btn" bs-popover
                    localize="Observing Time"
                    localize-only="title"
-                   data-content-template="views/popovers/observing-time.html?v=<%=ResourcesVersion%>"
+                   data-content-template="views/popovers/observing-time.html?v=QQRV"
                    ng-controller="ObservingTimeController"
                    data-animation="am-flip-x"
                    data-placement="bottom-right">
@@ -913,12 +796,12 @@
                             <div class="stops-container">
                                 <a class="btn" bs-popover
                                     style="position:absolute;top:110px;left:190px;visibility:hidden"
-                                    template-url="views/popovers/tour-properties.html?v=<%=ResourcesVersion%>"
+                                    template-url="views/popovers/tour-properties.html?v=QQRV"
                                     trigger="click" placement="bottom-left" data-content="{tour}"
                                     data-container="body" id="newTourProps"></a>
                                 <div class="stop-arrow" ng-repeat="stop in tourStops">
                                     <div class="transition-choice {{stop.transHover ? 'active' : ''}}"
-                                        bs-popover template-url="views/popovers/transition-type.html?v=<%=ResourcesVersion%>"
+                                        bs-popover template-url="views/popovers/transition-type.html?v=QQRV"
                                         trigger="click" placement="bottom-left" data-content="{1}"
                                         title="Transition" data-container="body" data-auto-close="true"
                                         data-on-show="testfn()" data-on-hide="testfn()">
@@ -993,13 +876,13 @@
                             <div class="left">
                                 <a class="btn" bs-popover
                                     localize="Tour Properties" style="width:98px;"
-                                    template-url="views/popovers/tour-properties.html?v=<%=ResourcesVersion%>"
+                                    template-url="views/popovers/tour-properties.html?v=QQRV"
                                     trigger="click" placement="bottom-left" data-content="{tour}"
                                     title="Tour Properties" data-container="body"></a>
                                 <a class="btn" localize="Save" style="width:48px;" ng-click="saveTour()"></a>
 
                                 <div>
-                                    <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html?v=<%=ResourcesVersion%>"
+                                    <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html?v=QQRV"
                                     trigger="click" data-content="{tour}" id="editTourText" placement="center"
                                     title="Enter Text" data-container="body">
                                         <div class="icon">
@@ -1075,7 +958,7 @@
                 </tr>
             </table>
 
-            <ng-include src="'views/popovers/slide-overlays.html?v=<%=ResourcesVersion%>'"></ng-include>
+            <ng-include src="'views/popovers/slide-overlays.html?v=QQRV'"></ng-include>
 
         </div>
     </div>
@@ -1170,7 +1053,7 @@
                 style="position:absolute; top:6px;left:-33px;z-index:3"
                 localize="Share this view"
                 localize-only="title"
-                data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
+                data-content-template="views/popovers/shareplace.html?v=QQRV"
                 data-container="body"
                 data-placement="top-right"
                 >
@@ -1254,7 +1137,7 @@
         </div>
         <div class="thumbnails nearby-objects rel" ng-if="!compressed" data-ng-controller="ContextPanelController" ng-style="{width: bottomControlsWidth()}">
             <div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
-                <ng-include src="'views/thumbnail.html?v=<%=ResourcesVersion%>'"></ng-include>
+                <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
             </div>
             <label class="wwt-pager">
                 <a class="btn"
@@ -1263,7 +1146,7 @@
                     style="position:absolute; top:0;right:-204px"
                     localize="Share this view"
                     localize-only="title"
-                    data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
+                    data-content-template="views/popovers/shareplace.html?v=QQRV"
                     data-container="body"
                     data-placement="top-right"
                     >
@@ -1276,7 +1159,7 @@
                         style="position:absolute; top:0;left:-40px"
                         localize="Share this place"
                         localize-only="title"
-                        data-content-template="views/popovers/shareplace.html?v=<%=ResourcesVersion%>"
+                        data-content-template="views/popovers/shareplace.html?v=QQRV"
                         data-container="body"
                         data-placement="top-right"
                         >
@@ -1297,13 +1180,13 @@
 
     </div>
 
-<ng-include src="'views/modals/intro.html?v=<%=ResourcesVersion%>'"></ng-include>
+<ng-include src="'views/modals/intro.html?v=QQRV'"></ng-include>
 <div class="modal" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-body">
-                <img src='<%=ImgDir %>wwtlogo.png?v=<%= ResourcesVersion%>'
+                <img src='<%=ImgDir %>wwtlogo.png?v=QQRV'
                     style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;"
                     class="pull-left"
                     localize="WorldWide Telescope Logo"
@@ -1337,7 +1220,7 @@
 </div>
 
 <a href="javascript:void(0)" data-toggle="modal" data-target="#loadingModal" id="loadingModalLink">&nbsp;</a>
-    <ng-include src="'views/modals/open-item.html?v=<%=ResourcesVersion%>'"></ng-include>
+    <ng-include src="'views/modals/open-item.html?v=QQRV'"></ng-include>
     <div ng-intro-autostart="false"
         ng-intro-onbeforechange="beforeChange"
         ng-intro-onafterchange="afterChange"

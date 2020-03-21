@@ -68,7 +68,6 @@ module.exports = function (grunt) {
           'controllers/ContextPanelController.js',
           'controllers/MainController.js',
           'controllers/IntroController.js',
-          'controllers/LoginController.js',
           'controllers/MobileNavController.js',
           'controllers/LayerManagerController.js',
           'controllers/tabs/AdsController.js',
