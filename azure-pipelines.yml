@@ -40,7 +40,7 @@ steps:
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '$(build.artifactStagingDirectory)'
-    azureSubscription: 'azure-subscription'
+    azureSubscription: 'aas@wwtadmindotnetfoundation'
     Destination: 'AzureBlob'
     storage: 'wwtwebstatic'
     ContainerName: '$web'
