@@ -1,0 +1,46 @@
+# Azure Pipelines: build the Webclient
+
+trigger:
+  # Note that this pipeline will still run on pull requests. However,
+  # operations that require service connections -- namely the AzureFileCopy --
+  # will be skipped on PR builds, so randos can't just update our website by
+  # submitting a PR.
+  branches:
+    include:
+      - master
+
+pool:
+  # We need to run on Windows to take advantage of the AzureFileCopy@3 task.
+  vmImage: 'windows-latest'
+
+steps:
+- task: Npm@1
+  inputs:
+    command: 'install'
+  displayName: NPM install
+
+- task: Grunt@0
+  inputs:
+    gruntFile: 'Gruntfile.js'
+    targets: 'dist-all'
+  displayName: Build distribution directory with Grunt
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(build.sourcesDirectory)/dist'
+    targetFolder: '$(build.artifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(build.artifactStagingDirectory)'
+    publishLocation: 'pipeline'
+    artifactName: wwt-webclient-deployment
+  displayName: Publish web deployment artifacts
+
+- task: AzureFileCopy@3
+  inputs:
+    SourcePath: '$(build.artifactStagingDirectory)'
+    azureSubscription: 'azure-subscription'
+    Destination: 'AzureBlob'
+    storage: 'wwtwebstatic'
+    ContainerName: '$web'
