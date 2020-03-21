@@ -53,6 +53,39 @@ All participation in WWT communities is conditioned on your adherence to the
 [WWT Code of Conduct]: https://worldwidetelescope.github.io/code-of-conduct/
 
 
+## Building and Testing
+
+In order to build and test the website, you need:
+
+1. [Node.js](https://nodejs.org/), specifically the `npm` command. If you need
+   to install Node.js, use your operating system’s package manager or visit
+   [nodejs.org](https://nodejs.org/) for installation instructions.
+2. The [Grunt](https://gruntjs.com/) task runner, specifically the `grunt`
+   command. Once again, install it using your operating system’s package
+   manager or [see the Grunt website](https://gruntjs.com/getting-started).
+
+The first time you check out these files, run:
+
+```
+npm install
+```
+
+Once that has been done, you can build the website with:
+
+```
+grunt dist-all
+```
+
+Then, we recommend running:
+
+```
+npx http-server dist/
+```
+
+You can then visit the URL <http://localhost:8888/> to test out the web
+app in your browser.
+
+
 ## Acknowledgments
 
 The AAS WorldWide Telescope system is a [.NET Foundation] project. Work on WWT
