@@ -82,8 +82,8 @@ Then, we recommend running:
 npx http-server dist/
 ```
 
-You can then visit the URL <http://localhost:8888/> to test out the web
-app in your browser.
+This server (and most other static-file servers) will print out a URL that you
+can visit to test out the web client locally.
 
 
 ## Acknowledgments
