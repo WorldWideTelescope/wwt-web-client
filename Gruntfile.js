@@ -63,8 +63,6 @@ module.exports = function (grunt) {
           'dataproxy/SearchData.js',
           'dataproxy/Astrometry.js',
           'dataproxy/Community.js',
-          'controls/util.js',
-          'controls/move.js',
           'controllers/ContextPanelController.js',
           'controllers/MainController.js',
           'controllers/IntroController.js',
