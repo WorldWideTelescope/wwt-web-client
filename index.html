@@ -53,10 +53,10 @@
     data-res-version="QQRV"
     data-standalone-mode="0">
 
-    <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
+    <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="desktop">
 
       <div id="WorldWideTelescopeControlHost">
-        <div id="WWTCanvas" ng-context-menu="<%=Client == Clients.Mobile? "" : "showFinderScope"%>"></div>
+        <div id="WWTCanvas" ng-context-menu="showFinderScope"></div>
       </div>
 
       <div id="contextmenu" class="contextmenu">
@@ -141,186 +141,6 @@
 
       </script>
 
-      <% if (Client == Clients.Mobile)
-         { %>
-
-      <a  data-bs-popover="popover" tabindex="0"
-          localize="Share this place"
-          localize-only="title"
-          data-content-template="views/popovers/shareplace.html?v=QQRV"
-          data-ng-class="searchModal ? 'hide':'btn share-button'"
-          data-placement="bottom-left"
-          data-ng-if="!tourPlaying"
-          data-ng-hide="showMobileTracking()"
-          >
-        <i class="fa fa-share-alt"></i>
-        <span localize="Share"></span>
-      </a>
-
-      <div ng-show="showMobileTracking()" class="tracking-container">
-        <div title="{{trackingObj.get_name()}}" class="small"><strong localize="Tracking"></strong> <br/>{{trackingObj.get_name()}}</div>
-        <br />
-        <a class="btn" data-bs-popover="popover" tabindex="0"
-           localize="Share this place"
-           localize-only="title"
-           data-content-template="views/popovers/shareplace.html?v=QQRV"
-           data-container="body"
-           data-placement="bottom-left"
-           >
-          <i class="fa fa-share-alt"></i>
-          <span localize="Share"></span>
-        </a>
-      </div>
-      <ng-include src="'views/modals/mobile-explore.html?v=QQRV'"></ng-include>
-
-      <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
-        <div class="container">
-          <div class="navbar-header">
-            <button class="btn navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
-              <i class="fa fa-bars"></i>
-            </button>
-
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="javascript:void(0)" localize="Look At" localize-only="title" class="dropdown-toggle" data-toggle="dropdown">
-                  <span localize="Look At"></span>
-                  <span class="small">({{lookAt}})</span><i class="fa fa-angle-down"></i>
-                </a>
-                <ul class="dropdown-menu" >
-                  <li ng-repeat="type in lookTypes" ng-click="hideMenu()">
-                    <a href="javascript:void(0)" ng-click="lookAtDropdownChanged(type);">
-                      {{type}}
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="javascript:void(0)" localize="Imagery" localize-only="title" class="dropdown-toggle" data-toggle="dropdown">
-                  <span localize="Imagery"></span>
-                  <span class="small">({{backgroundImagery.get_name()}})</span><i class="fa fa-angle-down"></i>
-                </a>
-                <ul class="dropdown-menu" >
-                  <li ng-repeat="s in surveys" ng-click="hideMenu()">
-                    <a href="javascript:void(0)" ng-click="setSurveyBg(s.name);">
-                      {{::s.name}}
-                    </a>
-                  </li>
-                </ul>
-
-              </li>
-              <li>
-                <hr/>
-              </li>
-
-              <li class="modal-buttons">
-                <a class="btn" ng-repeat="m in modalButtons" ng-click="showModal(m)">
-                  <i class="fa {{::m.icon}}"></i>
-                  {{::m.text}}
-                </a>
-              </li>
-              <li>
-                <hr class="clearfix"/>
-              </li>
-              <li>
-                <a ng-click="resetCamera()" localize="Reset Camera"></a>
-              </li>
-              <li>
-                <hr class="clearfix"/>
-              </li>
-              <li>
-                <a ng-click="gotoPage('/home')" target="_blank" localize="WorldWide Telescope Home"></a>
-              </li>
-              <li>
-                <a ng-click="gotoPage('/Learn')" target="_blank" localize="Getting Started (Help)"></a>
-              </li>
-              <li>
-                <a ng-click="gotoPage('/Terms')" target="_blank" localize="WorldWide Telescope Terms of Use"></a>
-              </li>
-              <li>
-                <a ng-click="gotoPage('/About')" localize="About WorldWide Telescope"></a>
-              </li>
-              <li>
-                <a ng-click="gotoPage('/Support/IssuesAndBugs')" localize="Product Support"></a>
-              </li>
-            </ul>
-
-          </div>
-        </div>
-      </div>
-      <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
-        <a href="//aas.org" target="_blank" style="position:relative;left:3px;z-index:5"
-           class="pull-right">
-          <img ng-src="https://wwtweb.blob.core.windows.net/images/aas-white110.png"
-               localize="American Astronomical Society (AAS) Logo"
-               localize-only="alt" style="width:60px;height:60px;"/>
-        </a>
-        <a class="pull-left" href="/home" style="margin-left: -11px;">
-          <img src='https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png?v=QQRV'
-               localize="WorldWide Telescope Logo"
-               localize-only="alt"
-               style="height:60px;width:60px"
-               />
-        </a>
-        <h3>
-          <div class="small text-white">American Astronomical Society</div>
-          World<span class="brand-blue">Wide Telescope</span>
-        </h3>
-        <br />
-        <h4 localize="Welcome to the WorldWide Telescope Web Client"></h4>
-        <br />
-        <p style="text-align:center">
-          <i class="fa fa-spin fa-spinner"></i>
-          <span localize="WorldWide Telescope is loading."></span><br />
-          <span localize="Please wait."></span>
-
-        </p>
-        <br />
-        <p class="small" localize="Please ensure you have a strong connection to the internet for the best experience.">
-          Please ensure you have a strong connection to the internet for the best experience.
-        </p>
-
-        <div class="checkbox pull-left">
-          <label data-ng-class="iswebclientHome ? 'checked' : ''">
-            <input type="checkbox" ng-model="iswebclientHome" ng-change="homePrefChange(iswebclientHome)" />
-            <span localize="Show the web client as WWT landing page"></span>
-          </label>
-        </div>
-      </div>
-      <ng-include src="'views/modals/mobile-nearby-objects.html?v=QQRV'"></ng-include>
-      <div class="context-panel">
-        <div class="nearby-objects" ng-if="nbo.length && (lookAt == 'Sky' || lookAt=='SolarSystem')" ng-show="!tourPlaying">
-          <a ng-click="showNbo()" title="{{nbo[0].get_name()}}" class="thumbnail">
-            <img ng-src="{{nbo[0].get_thumbnailUrl()}}" alt="Thumbnail of {{nbo[0].get_name()}}" />
-            <label localize="Nearby"></label>
-          </a>
-          <div class="nbo-count">{{nboCount}}</div>
-        </div>
-
-
-        <div class="control x-fader-mobile" ng-show="displayXFader()">
-          <label localize="Image Crossfade"></label>
-          <div class="cross-fader">
-            <a class="btn">&nbsp;</a>
-          </div>
-
-        </div>
-        <div class="fov-panel mobile" ng-show="lookAt=='Sky' && !tourPlaying">
-          <div class="left">
-            <p localize="N"></p>
-            <div class="sphere mobile" id="skyball">
-              <div class="v-ellipse"></div>
-              <div class="h-ellipse"></div>
-              <div class="x-axis"></div>
-              <div class="y-axis"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <% } %>
-      <%if (Client == Clients.Html5)
-           { %>
       <ng-include src="'views/research-menu.html?v=QQRV'"></ng-include>
       <ng-include src="'views/modals/finder-scope.html?v=QQRV'" onload="initFinder()"></ng-include>
 
@@ -1111,7 +931,6 @@
            ng-controller="IntroController" class="hide">
         <a ng-click="startIntro()" id="introStartButton"></a>
       </div>
-      <%  } %>
     </div>
   </body>
 </html>
