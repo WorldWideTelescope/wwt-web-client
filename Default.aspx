@@ -128,13 +128,9 @@
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." />
     <meta property="og:image" content="https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png" />
     <link rel="icon" href="favicon.ico"/>
-    <% if (Client == Clients.Html5 || Client == Clients.Mobile)
-       {
-        string css = "<link href=\"css/webclient.min.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
-        css+="<link href=\"css/angular-motion.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
-        css+="<link href=\"ext/introjs.css?v="+ResourcesVersion+"\" rel=\"stylesheet\" />";
-        %>
-    <%=css%>
+    <link href="css/webclient.min.css?v=<%= ResourcesVersion%>" rel="stylesheet" />
+    <link href="css/angular-motion.css?v=<%= ResourcesVersion%>" rel="stylesheet" />
+    <link href="css/introjs.css?v=<%= ResourcesVersion%>" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/style/jquery.jscrollpane.css" rel="stylesheet"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
   <!-- Global Site Tag (gtag.js) - Google Analytics -->
@@ -164,101 +160,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel<%=DotMin %>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
-    <% if (Debug || DebugChrome)
-       { %>
-
-    <script src="<%= ResourcesLocation %>/ext/intro.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/ext/angular-intro.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/app.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/dataproxy/Places.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/dataproxy/Tours.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/dataproxy/SearchData.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/dataproxy/Astrometry.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/dataproxy/Community.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/directives/Scroll.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/directives/Localize.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/directives/EditSlideValues.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/directives/ContextMenu.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/directives/Movable.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/directives/CopyToClipboard.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/appstate.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/autohidepanels.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/localization.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/FinderScope.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/ThumbList.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/Util.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/UILibrary.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/SearchUtil.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/Skyball.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/HashManager.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/factories/MediaFile.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/ContextPanelController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/IntroController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/LayerManagerController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/MainController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/MobileNavController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/ObservingTimeController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/ShareController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/OpenItemController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/TourSlideText.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/SlideSelectionController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/VoConeSearchController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/VOTableViewerController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/colorpickerController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/refFrameController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/GreatCircleController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/DataVizController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/EmbedController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/modals/ObservingLocationController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/AdsController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/ExploreController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/SearchController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/SettingsController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/ToursController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/ViewController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/CommunityController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/tabs/CurrentTourController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controllers/LoginController.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controls/move.js?v=<%= ResourcesVersion%>"></script>
-    <script src="<%= ResourcesLocation %>/controls/util.js?v=<%= ResourcesVersion%>"></script>
-    <% }
-       else
-       { %>
     <script src="wwtwebclient<%=DotMin%>?v=<%= ResourcesVersion%>"></script>
-    <% } %>
-
-    <% }
-       else if (Client == Clients.Silverlight)
-       { %>
-
-
-        <style type="text/css">
-            html, body {
-                height: 100%;
-                overflow: hidden;
-            }
-            body {
-                padding: 0;
-                margin: 0;
-            }
-            #silverlightControlHost {
-                height: 100%;
-            }
-        </style>
-     <script src="fblogin.js" type="text/javascript"></script>
-      <script
-           src="//static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"
-           type="text/javascript">
-      </script>
-
-    <script type="text/javascript">
-        function onSilverlightError(sender, args) {
-            return;
-        }
-    </script>
-    <% } %>
-
-
 </head>
 <body
     class="<%= BodyClass %>"
