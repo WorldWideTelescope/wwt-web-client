@@ -44,3 +44,4 @@ steps:
     Destination: 'AzureBlob'
     storage: 'wwtwebstatic'
     ContainerName: '$web'
+    blobPrefix: 'webclient'
