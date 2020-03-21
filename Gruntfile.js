@@ -1,15 +1,3 @@
-/// <binding ProjectOpened='watch' />
-/**!
- Gruntfile to perform wwt webclient less compilation,
- script concatenation/minification, and component updates
- (using grunt bower:install)
-
- Once you have run npm install and npm update
- and bower is installed (npm install -g bower)
- run grunt watch
-
- **/
-
 module.exports = function (grunt) {
   'use strict';
 
@@ -22,20 +10,32 @@ module.exports = function (grunt) {
 
   // Project configuration.
   grunt.initConfig({
-
     pkg: grunt.file.readJSON('package.json'),
     banner: '/**\n' +
-    '* WorldWide Telescope Web Client\n' +
-    '* Copyright 2014-2015 WorldWide Telescope\n' +
-    '* Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
-    '**/\n',
+      '* WorldWide Telescope Web Client\n' +
+      '* Copyright 2014-2020 .NET Foundation\n' +
+      '* Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
+      '* Git hash <%= gitinfo.local.branch.current.SHA %>\n' +
+      '**/\n',
+
+    // Triger the loading of the Git version info
+    gitinfo: {},
 
     // Task configuration.
 
     concat: {
       options: {
-        banner: '<%= banner %>'
+        banner: '<%= banner %>',
+
+        process: function(src, filepath) {
+          if (filepath == 'app.js' || filepath == 'index.html') {
+            return grunt.template.process(src);
+          } else {
+            return src;
+          }
+        },
       },
+
       webclient: {
         src: [
           'ext/intro.js',
@@ -44,12 +44,12 @@ module.exports = function (grunt) {
           'directives/Scroll.js',
           'directives/Localize.js',
           'directives/ContextMenu.js',
-          'directives/EditSlideValues.js',
-          'directives/Movable.js',
+          'directives/editslidevalues.js',
+          'directives/movable.js',
           'directives/CopyToClipboard.js',
-          'factories/appstate.js',
+          'factories/AppState.js',
           'factories/autohidepanels.js',
-          'factories/localization.js',
+          'factories/Localization.js',
           'factories/FinderScope.js',
           'factories/ThumbList.js',
           'factories/Util.js',
@@ -57,15 +57,18 @@ module.exports = function (grunt) {
           'factories/SearchUtil.js',
           'factories/Skyball.js',
           'factories/HashManager.js',
-          'factories/MediaFile.js',
+          'factories/mediafile.js',
           'dataproxy/Places.js',
           'dataproxy/Tours.js',
           'dataproxy/SearchData.js',
           'dataproxy/Astrometry.js',
           'dataproxy/Community.js',
+          'controls/util.js',
+          'controls/move.js',
           'controllers/ContextPanelController.js',
           'controllers/MainController.js',
           'controllers/IntroController.js',
+          'controllers/LoginController.js',
           'controllers/MobileNavController.js',
           'controllers/LayerManagerController.js',
           'controllers/tabs/AdsController.js',
@@ -84,46 +87,16 @@ module.exports = function (grunt) {
           'controllers/modals/VoConeSearchController.js',
           'controllers/modals/VOTableViewerController.js',
           'controllers/modals/colorpickerController.js',
-          'controllers/modals/refframeController.js',
+          'controllers/modals/refFrameController.js',
           'controllers/modals/GreatCircleController.js',
           'controllers/modals/DataVizController.js',
           'controllers/modals/EmbedController.js',
           'controllers/modals/ObservingLocationController.js',
-          'controllers/LoginController.js',
-          'controls/move.js',
-          'controls/util.js'
+          'misc/move.js',
+          'misc/util.js'
         ],
-        dest: 'wwtwebclient.js'
-      },
-      sdk: {
-        src: [
-          'sdk/ss.js',
-          'sdk/wwtlib.js'
-        ],
-        dest: 'sdk/wwtsdk.js'
-      },
-      oldsdk: {
-        src: [
-          'sdk/old/mscorlib.debug.js',
-          'sdk/old/wwtlib.debug.js'
-        ],
-        dest: 'sdk/old/wwtlib_full.js'
-      }
-    },
-    //remove the AMD dependancy from scriptsharp output
-    replace: {
-      wwtlib: {
-        src: ['sdk/wwtlib.js'],
-        dest: 'sdk/wwtlib.js',
-        replacements: [
-          {
-            from: "define('wwtlib', ['ss'], function(ss) {",
-            to: 'window.wwtlib = function(){'
-          }, {
-            from: 'return $exports;\n});',
-            to: 'return $exports;\n}();'
-          }
-        ]
+        dest: 'dist/wwtwebclient.js',
+        nonull: true,
       }
     },
 
@@ -134,21 +107,10 @@ module.exports = function (grunt) {
       },
       webclient: {
         src: '<%= concat.webclient.dest %>',
-        dest: 'wwtwebclient.min.js'
+        dest: 'dist/wwtwebclient.min.js'
       },
-      searchData: {
-        src: 'searchdataraw.js',
-        dest: 'searchdata.min.js'
-      },
-      sdk: {
-        src: '<%= concat.sdk.dest %>',
-        dest: 'sdk/wwtsdk.min.js'
-      },
-      oldsdk: {
-        src: '<%= concat.oldsdk.dest %>',
-        dest: 'sdk/old/wwtlib_full.min.js'
-      }
     },
+
     less: {
       compileCore: {
         options: {
@@ -156,12 +118,13 @@ module.exports = function (grunt) {
           sourceMap: true,
           outputSourceFiles: true,
           sourceMapURL: 'webclient.css.map',
-          sourceMapFilename: 'css/webclient.css.map'
+          sourceMapFilename: 'dist/css/webclient.css.map'
         },
         src: 'css/webclient.less',
-        dest: 'css/webclient.css'
+        dest: 'dist/css/webclient.css'
       }
     },
+
     autoprefixer: {
       options: {
         browsers: [
@@ -179,9 +142,10 @@ module.exports = function (grunt) {
         options: {
           map: true
         },
-        src: 'css/webclient.css'
+        src: '<%= less.compileCore.dest %>'
       }
     },
+
     cssmin: {
       options: {
         compatibility: 'ie10',
@@ -189,64 +153,57 @@ module.exports = function (grunt) {
         noAdvanced: true
       },
       minifyCore: {
-        src: 'css/webclient.css',
-        dest: 'css/webclient.min.css'
+        src: '<%= autoprefixer.core.src %>',
+        dest: 'dist/css/webclient.min.css'
       }
     },
-    csscomb: {
+
+    template: {
       options: {
-        config: 'bootstrap/less/.csscomb.json'
+        data: function() {
+          return {
+            shortSHA: grunt.config.get('gitinfo.local.branch.current.shortSHA')
+          }
+        }
       },
-      dist: {
-        expand: true,
-        cwd: 'css/',
-        src: ['*.css', '!*.min.css'],
-        dest: 'css/'
+
+      indexhtml: {
+        files: {
+          'dist/index.html': 'index.html'
+        }
       }
     },
 
-    watch: {
-      sdk: {
-        files: 'sdk/wwtlib.js',
-        tasks: ['sdk']
-      },
-
-      // call out only the directories to watch prevents
-      // watch from watching recursive node_modules folders e.g.: '../**/*.js'
-      scripts: {
+    copy: {
+      dist: {
         files: [
-          'controllers/**/*.js',
-          'controllers/*.js',
-          'controls/*.js',
-          'directives/*.js',
-          'dataproxy/*.js',
-          'factories/*.js',
-          'app.js'],
-        tasks: ['dist-js']
-      },
-
-
-      less: {
-        files: 'css/*.less',
-        tasks: ['dist-css']
+          {
+            expand: false,
+            src: [
+              'css/introjs.css',
+              'css/angular-motion.css',
+              'css/skin.min.css',
+              'favicon.ico'
+            ],
+            dest: 'dist/'
+          }, {
+            expand: true,
+            src: [
+              'fonts/*',
+              'Images/*',
+              'views/**'
+            ],
+            dest: 'dist/',
+            filter: 'isFile'
+          }
+        ]
       }
     }
   });
 
-
-  // Dependencies
   require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
 
-  // JS concatenation and minification
-  grunt.registerTask('dist-js', ['concat:webclient', 'uglify:webclient']);
-
-  // Takes HTML5SDK generated script and packages into single usable lib. (scriptsharp v0.8).
-  grunt.registerTask('sdk', ['replace:wwtlib', 'concat:sdk', 'uglify:sdk', 'concat:webclient', 'uglify:webclient']);
-
-  // Minify the generated search data (rare - internal only)
-  grunt.registerTask('dist-searchdata', ['uglify:searchData']);
-
-  // CSS  (csscomb seems like too much, so commented out for now)
-  grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', /*'csscomb:dist',*/'cssmin:minifyCore']);
-
+  grunt.registerTask('dist-js', ['gitinfo', 'concat:webclient', 'uglify:webclient']);
+  grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', 'cssmin:minifyCore']);
+  grunt.registerTask('dist-all', ['dist-js', 'dist-css', 'template:indexhtml', 'copy:dist']);
 };
