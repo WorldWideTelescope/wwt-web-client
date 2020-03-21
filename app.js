@@ -22,7 +22,13 @@
  * SOFTWARE.
  **/
 
+// Note that, unlike the other source files, this file is processed through
+// Grunt's templating system. This is done so that we can insert the current
+// Git hash for provenance tracking and cachebusting.
+
 var wwt = {
+  gitShortSha: '<%= gitinfo.local.branch.current.shortSHA %>',
+
   app: angular.module('wwtApp', [
     'mgcrea.ngStrap',
     'ngTouch',

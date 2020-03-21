@@ -11,9 +11,9 @@
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." />
     <meta property="og:image" content="https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png" />
     <link rel="icon" href="favicon.ico"/>
-    <link href="css/webclient.min.css?v=QQRV" rel="stylesheet" />
-    <link href="css/angular-motion.css?v=QQRV" rel="stylesheet" />
-    <link href="css/introjs.css?v=QQRV" rel="stylesheet" />
+    <link href="css/webclient.min.css?v=<%= shortSHA %>" rel="stylesheet" />
+    <link href="css/angular-motion.css?v=<%= shortSHA %>" rel="stylesheet" />
+    <link href="css/introjs.css?v=<%= shortSHA %>" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/style/jquery.jscrollpane.css" rel="stylesheet"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
@@ -26,11 +26,11 @@
     </script>
     <style>
       body .finder-scope {
-        background: url(Images/finder-scope.png?v=QQRV) no-repeat;
+        background: url(Images/finder-scope.png?v=<%= shortSHA %>) no-repeat;
       }
     </style>
     <script src="//js.live.net/v5.0/wl.js"></script>
-    <script src="//cdn.worldwidetelescope.org/webclient/sdk/wwtsdk.js?v=QQRV"></script>
+    <script src="//cdn.worldwidetelescope.org/webclient/sdk/wwtsdk.js?v=<%= shortSHA %>"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
@@ -43,14 +43,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/script/jquery.jscrollpane.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
-    <script src="wwtwebclient.js?v=QQRV"></script>
+    <script src="wwtwebclient.js?v=<%= shortSHA %>"></script>
   </head>
   <body
     class="fs-player wwt-webclient-wrapper desktop"
     data-ng-app="wwtApp"
     data-res-location=""
     data-version="1"
-    data-res-version="QQRV"
+    data-res-version="<%= shortSHA %>"
     data-standalone-mode="true">
 
     <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="desktop">
@@ -141,8 +141,8 @@
 
       </script>
 
-      <ng-include src="'views/research-menu.html?v=QQRV'"></ng-include>
-      <ng-include src="'views/modals/finder-scope.html?v=QQRV'" onload="initFinder()"></ng-include>
+      <ng-include src="'views/research-menu.html?v=<%= shortSHA %>'"></ng-include>
+      <ng-include src="'views/modals/finder-scope.html?v=<%= shortSHA %>'" onload="initFinder()"></ng-include>
 
 
       <div data-ng-controller="ViewController"></div>
@@ -202,7 +202,7 @@
           <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
           <div class="explore-thumbs">
             <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-              <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
+              <ng-include src="'views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
             </div>
 
           </div>
@@ -276,7 +276,7 @@
           </div>
           <div class="search-results">
             <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-              <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
+              <ng-include src="'views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
             </div>
           </div>
           <label class="wwt-pager" ng-show="collection.length > 0">
@@ -304,7 +304,7 @@
           <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
           <div class="explore-thumbs">
             <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
-              <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
+              <ng-include src="'views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
             </div>
 
           </div>
@@ -362,7 +362,7 @@
             <a class="btn" bs-popover
                localize="Observing Time"
                localize-only="title"
-               data-content-template="views/popovers/observing-time.html?v=QQRV"
+               data-content-template="views/popovers/observing-time.html?v=<%= shortSHA %>"
                ng-controller="ObservingTimeController"
                data-animation="am-flip-x"
                data-placement="bottom-right">
@@ -496,12 +496,12 @@
                   <div class="stops-container">
                     <a class="btn" bs-popover
                        style="position:absolute;top:110px;left:190px;visibility:hidden"
-                       template-url="views/popovers/tour-properties.html?v=QQRV"
+                       template-url="views/popovers/tour-properties.html?v=<%= shortSHA %>"
                        trigger="click" placement="bottom-left" data-content="{tour}"
                        data-container="body" id="newTourProps"></a>
                     <div class="stop-arrow" ng-repeat="stop in tourStops">
                       <div class="transition-choice {{stop.transHover ? 'active' : ''}}"
-                           bs-popover template-url="views/popovers/transition-type.html?v=QQRV"
+                           bs-popover template-url="views/popovers/transition-type.html?v=<%= shortSHA %>"
                            trigger="click" placement="bottom-left" data-content="{1}"
                            title="Transition" data-container="body" data-auto-close="true"
                            data-on-show="testfn()" data-on-hide="testfn()">
@@ -576,13 +576,13 @@
                   <div class="left">
                     <a class="btn" bs-popover
                        localize="Tour Properties" style="width:98px;"
-                       template-url="views/popovers/tour-properties.html?v=QQRV"
+                       template-url="views/popovers/tour-properties.html?v=<%= shortSHA %>"
                        trigger="click" placement="bottom-left" data-content="{tour}"
                        title="Tour Properties" data-container="body"></a>
                     <a class="btn" localize="Save" style="width:48px;" ng-click="saveTour()"></a>
 
                     <div>
-                      <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html?v=QQRV"
+                      <a class="btn menu-button text" bs-modal template-url="views/popovers/tour-text.html?v=<%= shortSHA %>"
                          trigger="click" data-content="{tour}" id="editTourText" placement="center"
                          title="Enter Text" data-container="body">
                         <div class="icon">
@@ -658,7 +658,7 @@
             </tr>
           </table>
 
-          <ng-include src="'views/popovers/slide-overlays.html?v=QQRV'"></ng-include>
+          <ng-include src="'views/popovers/slide-overlays.html?v=<%= shortSHA %>'"></ng-include>
 
         </div>
       </div>
@@ -753,7 +753,7 @@
             style="position:absolute; top:6px;left:-33px;z-index:3"
             localize="Share this view"
             localize-only="title"
-            data-content-template="views/popovers/shareplace.html?v=QQRV"
+            data-content-template="views/popovers/shareplace.html?v=<%= shortSHA %>"
             data-container="body"
             data-placement="top-right"
             >
@@ -837,7 +837,7 @@
         </div>
         <div class="thumbnails nearby-objects rel" ng-if="!compressed" data-ng-controller="ContextPanelController" ng-style="{width: bottomControlsWidth()}">
           <div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
-            <ng-include src="'views/thumbnail.html?v=QQRV'"></ng-include>
+            <ng-include src="'views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
           </div>
           <label class="wwt-pager">
             <a class="btn"
@@ -846,7 +846,7 @@
                style="position:absolute; top:0;right:-204px"
                localize="Share this view"
                localize-only="title"
-               data-content-template="views/popovers/shareplace.html?v=QQRV"
+               data-content-template="views/popovers/shareplace.html?v=<%= shortSHA %>"
                data-container="body"
                data-placement="top-right"
                >
@@ -859,7 +859,7 @@
                  style="position:absolute; top:0;left:-40px"
                  localize="Share this place"
                  localize-only="title"
-                 data-content-template="views/popovers/shareplace.html?v=QQRV"
+                 data-content-template="views/popovers/shareplace.html?v=<%= shortSHA %>"
                  data-container="body"
                  data-placement="top-right"
                  >
@@ -880,13 +880,13 @@
 
       </div>
 
-      <ng-include src="'views/modals/intro.html?v=QQRV'"></ng-include>
+      <ng-include src="'views/modals/intro.html?v=<%= shortSHA %>'"></ng-include>
       <div class="modal" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
 
             <div class="modal-body">
-              <img src='https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png?v=QQRV'
+              <img src='https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png?v=<%= shortSHA %>'
                    style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;"
                    class="pull-left"
                    localize="WorldWide Telescope Logo"
@@ -920,7 +920,7 @@
       </div>
 
       <a href="javascript:void(0)" data-toggle="modal" data-target="#loadingModal" id="loadingModalLink">&nbsp;</a>
-      <ng-include src="'views/modals/open-item.html?v=QQRV'"></ng-include>
+      <ng-include src="'views/modals/open-item.html?v=<%= shortSHA %>'"></ng-include>
       <div ng-intro-autostart="false"
            ng-intro-onbeforechange="beforeChange"
            ng-intro-onafterchange="afterChange"
