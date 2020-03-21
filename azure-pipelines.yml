@@ -7,7 +7,7 @@ trigger:
   # submitting a PR.
   branches:
     include:
-      - master
+      - rebuild  # temporary!!! (?)
 
 pool:
   # We need to run on Windows to take advantage of the AzureFileCopy@3 task.
