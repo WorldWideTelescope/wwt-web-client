@@ -51,8 +51,7 @@
     data-res-location=""
     data-version="1"
     data-res-version="QQRV"
-    data-liveId="<%=ConfigurationManager.AppSettings["LiveClientId"]%>"
-    data-standalone-mode="<%=ConfigurationManager.AppSettings["Standalone"]%>">
+    data-standalone-mode="0">
     <% if (Client == Clients.Html5 || Client == Clients.Mobile)
        { %>
     <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="<%=Client == Clients.Mobile?"mobile":"desktop" %>">
