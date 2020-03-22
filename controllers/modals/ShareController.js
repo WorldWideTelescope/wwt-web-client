@@ -42,9 +42,20 @@ wwt.controllers.controller('ShareController',
 				hashManager.removeHashVal('dec', true);
 				$scope.shareUrlReadOnly = $scope.shareUrl = hashManager.removeHashVal('fov', true);
 			}
+            
+            var title, image;
+            
+            if ($scope.trackingObj) {
+                title = $scope.trackingObj.get_name() + ' - WorldWide Telescope';
+                image = $scope.trackingObj.get_thumbnailUrl();
+            } else {
+                title = $scope.getFromEn('WorldWide Telescope Web Client');
+                image = new URL("Images/wwtlogo.png", window.location).toString();
+            }
+
 			$('meta[property="og:url"]').attr('content', $scope.shareUrlReadOnly);
-			$('meta[property="og:title"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_name() + ' - WorldWide Telescope' : $scope.getFromEn('WorldWide Telescope Web Client'));
-          $('meta[property="og:image"]').attr('content', $scope.trackingObj ? $scope.trackingObj.get_thumbnailUrl() : 'https://wwtweb.blob.core.windows.net/webclient/wwtlogo.png');
+			$('meta[property="og:title"]').attr('content', title);
+            $('meta[property="og:image"]').attr('content', image);
 			selectUrl(222);
 		};
 
