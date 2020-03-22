@@ -59,8 +59,13 @@ var wwt = {
 
 $(window).on('load', function() {
   wwt.resize();
-  //load search data after everything else
+
+  // Load search data after everything else.
+  //
+  // Historically the search data were managed in the webclient repository,
+  // but they're really a "core" asset, since they index the core WWT
+  // datasets.
   var scr = document.createElement('script');
-  scr.setAttribute("src", 'http://worldwidetelescope.org/webclient/searchdata.min.js');
+  scr.setAttribute("src", wwtlib.URLHelpers.singleton.coreStaticUrl('data/searchdata.min.js'));
   document.getElementsByTagName("head")[0].appendChild(scr);
 });
