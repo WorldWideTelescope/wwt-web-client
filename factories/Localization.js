@@ -92,7 +92,7 @@
 	var deferred = $q.defer();
 
 	$q.all([
-	  $http.get('//worldwidetelescope.org/wwtweb/catalog.aspx?X=Languages')
+	  $http.get(wwtlib.URLHelpers.singleton.coreStaticUrl('/wwtweb/catalog.aspx?X=Languages'))
 	    .success(function(data) {
 	      lpacks = $(data);
 	    })
@@ -100,7 +100,7 @@
 	      util.log(data, status, headers, config);
 	    }),
 
-	  $http.get('//worldwidetelescope.org/wwtweb/catalog.aspx?Q=lang_en')
+	  $http.get(wwtlib.URLHelpers.singleton.coreStaticUrl('/wwtweb/catalog.aspx?Q=lang_en'))
 	    .success(function(data) {
 	      data = transformLanguagePack(data);
 	      englishData = data;
