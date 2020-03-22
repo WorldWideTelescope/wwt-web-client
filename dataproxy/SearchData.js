@@ -48,7 +48,7 @@
         return deferred.promise;
       };
 
-      var isId = 100;
+      var imageset_id = 100;
 
       var init = function () {
         if (wwt.searchData) {
@@ -68,7 +68,7 @@
                   imgSet;
 
               if (fgi) {
-                isId++;
+                imageset_id++;
 
                 imgSet = wwtlib.Imageset.create(
                   fgi.n,//name
@@ -76,7 +76,7 @@
                   fgi.dt || 2,//datasettype -default to sky
                   fgi.bp,//bandPass
                   fgi.pr,//projection
-                  isId,//imagesetid
+                  imageset_id,//imagesetid
                   fgi.bl,//baseLevel
                   fgi.lv,//levels
                   null,//tilesize
@@ -98,7 +98,10 @@
                   fgi.cu,//creditsUrl
                   '', '',
                   0,//meanRadius
-                  null);
+                  null
+                );
+
+                util.rewritePlaceUrls(imgSet);
               }
 
               var pl = wwtlib.Place.create(
@@ -124,7 +127,7 @@
               }
 
               pl.guid = i + "." + j;
-              //re-place js data with place obj
+              util.rewritePlaceUrls(pl);
               item.places[j] = pl;
               indexPlaceNames(pl);
             });
@@ -220,38 +223,41 @@
               );
 
               if (fgi != null) {
-                isId++;
-                wwtPlace.set_studyImageset(
-                  wwtlib.Imageset.create(
-                    fgi.attr('Name'),
-                    fgi.attr('Url'),
-                    util.getImageSetType(fgi.attr('DataSetType')),
-                    fgi.attr('BandPass'),
-                    wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-                    isId, //imagesetid
-                    parseInt(fgi.attr('BaseTileLevel')),
-                    parseInt(fgi.attr('TileLevels')),
-                    null, //tilesize
-                    parseFloat(fgi.attr('BaseDegreesPerTile')),
-                    fgi.attr('FileType'),
-                    fgi.attr('BottomsUp') === 'True',
-                    '', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
-                    parseFloat(fgi.attr('CenterX')),
-                    parseFloat(fgi.attr('CenterY')),
-                    parseFloat(fgi.attr('Rotation')),
-                    true, //sparse
-                    fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
-                    false, //defaultSet,
-                    false, //elevationModel
-                    parseFloat(fgi.attr('WidthFactor')), //widthFactor,
-                    parseFloat(fgi.attr('OffsetX')),
-                    parseFloat(fgi.attr('OffsetY')),
-                    fgi.find('Credits').text(),
-                    fgi.find('CreditsUrl').text(),
-                    '', '',
-                    0, //meanRadius
-                    null)
+                imageset_id++;
+
+                var imgset = wwtlib.Imageset.create(
+                  fgi.attr('Name'),
+                  fgi.attr('Url'),
+                  util.getImageSetType(fgi.attr('DataSetType')),
+                  fgi.attr('BandPass'),
+                  wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
+                  imageset_id, //imagesetid
+                  parseInt(fgi.attr('BaseTileLevel')),
+                  parseInt(fgi.attr('TileLevels')),
+                  null, //tilesize
+                  parseFloat(fgi.attr('BaseDegreesPerTile')),
+                  fgi.attr('FileType'),
+                  fgi.attr('BottomsUp') === 'True',
+                  '', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
+                  parseFloat(fgi.attr('CenterX')),
+                  parseFloat(fgi.attr('CenterY')),
+                  parseFloat(fgi.attr('Rotation')),
+                  true, //sparse
+                  fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
+                  false, //defaultSet,
+                  false, //elevationModel
+                  parseFloat(fgi.attr('WidthFactor')), //widthFactor,
+                  parseFloat(fgi.attr('OffsetX')),
+                  parseFloat(fgi.attr('OffsetY')),
+                  fgi.find('Credits').text(),
+                  fgi.find('CreditsUrl').text(),
+                  '', '',
+                  0, //meanRadius
+                  null
                 );
+
+                util.rewritePlaceUrls(imgset);
+                wwtPlace.set_studyImageset(imgset);
               }
 
               indexPlaceNames(wwtPlace);
@@ -259,6 +265,7 @@
               var cIndex = constellations.indexOf(constellation);
               var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
               wwtPlace.guid = cIndex + '.' + constellationPlaces.length;
+              util.rewritePlaceUrls(wwtPlace);
               constellationPlaces.push(wwtPlace);
             }
           });
