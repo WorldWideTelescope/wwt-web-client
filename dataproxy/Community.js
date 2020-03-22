@@ -22,9 +22,7 @@
 	initPromise.then(function (folders) {
 	  rootFolders = folders;
 	  $.each(folders, function(i,item) {
-	    if (item.get_thumbnailUrl) {
-	      item.thumb = item.get_thumbnailUrl();
-	    }
+            util.rewritePlaceUrls(item);
 	  });
 
 	  deferred.resolve(folders);
@@ -38,9 +36,12 @@
 
 	obj.childLoadCallback(function () {
 	  var children = obj.get_children();
+
 	  $.each(children, function (i, item) {
 	    item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
+            util.rewritePlaceUrls(item);
 	  });
+
 	  deferred.resolve(transformData(children));
 	});
 
