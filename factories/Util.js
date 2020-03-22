@@ -39,7 +39,9 @@
         firstCharLower:firstCharLower,
         firstCharUpper:firstCharUpper
       };
+
       var fullscreen = false;
+
       function getClassificationText(clsid) {
 	if (clsid && !isNaN(parseInt(clsid))) {
 	  var str;
@@ -57,7 +59,9 @@
 	    }
 	  });
 	  return (out);
-	} else return null;
+	} else {
+          return null;
+        }
       };
 
       function formatDecimalHours(dayFraction, spaced) {
@@ -78,6 +82,7 @@
 
 	return ([int2(hours), int2(minutes)]).join(join);
       }
+
       function int2(dec) {
 	var sign = dec < 0 ? '-' : '';
 	var int = Math.floor(Math.abs(dec));
@@ -107,24 +112,24 @@
 
       function parseHms(input) {
 	var parts;
-	function convertHmstoDec(hours, minutes, seconds) {
 
+	function convertHmstoDec(hours, minutes, seconds) {
 	  var c = Math.abs(parseInt(hours)) + Math.abs(parseInt(minutes)) / 60 + Math.abs(parseFloat(seconds)) / (60 * 60);
 	  if (hours.charAt(0) === '-'){
             c = 0 - c;
           }
 	  return c;
 	}
+
 	if (input.indexOf(':') != -1) {
 	  parts = input.split(':');
-	}
-	else if (input.indexOf('h') != -1) {
+	} else if (input.indexOf('h') != -1) {
 	  parts = input.replace(/h/, ',').replace(/m/, ',').replace(/s/, '').split(',');
-	}else if ($.trim(input).split(' ').length===3){
+	} else if ($.trim(input).split(' ').length===3){
           parts = input.split(' ');
         }
-	if (parts) {
 
+	if (parts) {
 	  return convertHmstoDec(parts[0], parts[1], parts[2]);
 	} else {
 	  return parseFloat(input);
@@ -138,8 +143,8 @@
 	place.altAz = altAz;
 	var classificationText = getClassificationText(place.get_classification());
 	var riseSet;
-	if (classificationText == 'Solar System') {
 
+	if (classificationText == 'Solar System') {
 	  var jNow = stc.get_jNow() + .5;
 	  var p1 = wwtlib.Planets.getPlanetLocation(place.get_name(), jNow - 1);
 	  var p2 = wwtlib.Planets.getPlanetLocation(place.get_name(), jNow);
@@ -158,44 +163,65 @@
 	    break;
 	  }
 
-	  riseSet = wwtlib.AstroCalc.getRiseTrinsitSet(jNow, stc.get_location().get_lat(), -stc.get_location().get_lng(), p1.RA, p1.dec, p2.RA, p2.dec, p3.RA, p3.dec, type);
+	  riseSet = wwtlib.AstroCalc.getRiseTrinsitSet(
+            jNow,
+            stc.get_location().get_lat(),
+            -stc.get_location().get_lng(),
+            p1.RA, p1.dec,
+            p2.RA, p2.dec,
+            p3.RA, p3.dec,
+            type
+          );
+	} else {
+	  riseSet = wwtlib.AstroCalc.getRiseTrinsitSet(
+            stc.get_jNow() + .5,
+            stc.get_location().get_lat(),
+            -stc.get_location().get_lng(),
+            place.get_RA(), place.get_dec(),
+            place.get_RA(), place.get_dec(),
+            place.get_RA(), place.get_dec(),
+            0
+          );
 	}
-	else {
-	  riseSet = wwtlib.AstroCalc.getRiseTrinsitSet(stc.get_jNow() + .5, stc.get_location().get_lat(), -stc.get_location().get_lng(), place.get_RA(), place.get_dec(), place.get_RA(), place.get_dec(), place.get_RA(), place.get_dec(), 0);
-	}
+
 	if (!riseSet.bValid && !riseSet.bNeverRises) {
 	  riseSet.bNeverSets = true;
 	}
+
 	place.riseSet = riseSet;
       }
+
       var circ = null;
+
       function drawCircleOverPlace(place) {
         removeHoverCircle();
+
 	if ($('#lstLookAt option:selected').prop('index') === 2) {
 	  var circle = wwt.wc.createCircle();
 	  circle.set_id('focused');
-	  circle.setCenter(place.get_RA() * 15, place.get_dec());//setCenter(place.get_location3d());
+	  circle.setCenter(place.get_RA() * 15, place.get_dec());
 	  circle.set_skyRelative(false);
 	  circle.set_radius(.22);
 	  circle.set_lineWidth(3);
 	  wwt.wc.addAnnotation(circle);
 	  circ = circle;
-	  //console.log(circle);
 	}
       }
 
-      function removeHoverCircle(){
-	if (circ){
+      function removeHoverCircle() {
+	if (circ) {
           wwt.wc.removeAnnotation(circ);
         }
       }
 
       function getIsPlanet(place) {
-	var cls,isPlanet;
+	var cls, isPlanet;
+
 	if (typeof place.get_classification === 'function') {
 	  cls = place.get_classification();
 	  isPlanet = getClassificationText(cls) === 'Solar System';
 	}
+
 	return isPlanet || typeof place.get_rotation ==='function';
       }
 
@@ -259,6 +285,7 @@
 	  return '';
 	}
       }
+
       function getCreditsUrl(pl) {
 	var imageSet = getImageset(pl);
 	if (imageSet) {
@@ -290,6 +317,7 @@
         }
 	window.open(url);
       }
+
       function resetCamera(leaveHash) {
         if (!leaveHash) {
           location.hash = '/';
@@ -297,12 +325,14 @@
         wwt.wc.gotoRaDecZoom(0, 0, 60, true);
 
       };
+
       function exitFullscreen() {
         if (fullscreen) {
           wwt.exitFullScreen();
           fullscreen = false;
         }
       }
+
       function goFullscreen() {
         if (!fullscreen) {
           wwt.requestFullScreen(document.body);
@@ -321,6 +351,7 @@
       };
 
       var imageSetTypes = [];
+
       function getImageSetType(sType) {
 	if (!imageSetTypes.length) {
 	  $.each(wwtlib.ImageSetType, function(k, v) {
@@ -329,8 +360,8 @@
 	    }
 	  });
 	}
-	return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
 
+	return imageSetTypes.indexOf(sType.toLowerCase()) == -1 ? 2 : imageSetTypes.indexOf(sType.toLowerCase());
       }
 
       var keyHandler = function (e) {
@@ -351,6 +382,7 @@
 	    Dec: 0,
 	    Fov: 60
 	  };
+
       function trackViewportChanges() {
 	viewport = {
 	  isDirty: false,
@@ -384,27 +416,32 @@
 	  var h = cbyte.toString(16);
 	  return h.length == 2 ? h : '0'+h;
         };
+
         return '#'+
           convChannel(argb.r) +
           convChannel(argb.g) +
-          convChannel(argb.b)
-
+          convChannel(argb.b);
       }
+
       function hex2argb(hex,argb){
         var rgb = hex.match(/[A-Za-z0-9]{2}/g).map(function (v) {
           return parseInt(v, 16)
         });
+
         argb.r = rgb[0];
         argb.g = rgb[1];
         argb.b = rgb[2];
         return argb;
       }
-      function firstCharLower(s){
-        return s.charAt(0).toLowerCase()+s.substr(1)
+
+      function firstCharLower(s) {
+        return s.charAt(0).toLowerCase() + s.substr(1)
       }
-      function firstCharUpper(s){
-        return s.charAt(0).toUpperCase()+s.substr(1)
+
+      function firstCharUpper(s) {
+        return s.charAt(0).toUpperCase() + s.substr(1)
       }
+
       var dirtyViewport = function () {
 	var wasDirty = viewport.isDirty;
 	viewport.isDirty = wwt.wc.getRA() !== viewport.RA || wwt.wc.getDec() !== viewport.Dec || wwt.wc.get_fov() !== viewport.Fov;
@@ -416,10 +453,13 @@
 	  $rootScope.$broadcast('viewportchange', viewport);
 	}
       }
+
       var browsers = {};
+
       var has = function (src, search) {
 	return src.indexOf(search) >= 0;
       }
+
       var ua = navigator.userAgent.toLowerCase();
 
       browsers.isEdge = has(ua, 'edge/') > 0;
