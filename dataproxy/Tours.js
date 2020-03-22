@@ -65,29 +65,11 @@
 
       var transformData = function (items) {
         $.each(items, function (i, item) {
-          try {
-            item.name = item.get_name();
-            item.thumb = item.get_thumbnailUrl();
-            //console.log(item.thumb);
-            item.isFolder = item.get_isFolder();
-            /*item.isImage = item.get_isImage();
-              if (typeof item.get_type == 'function') {
-              item.isPlanet = item.get_type() === 1;
-              item.isFolder = item.get_type() === 0;
-              item.isFGImage = item.get_type() === 2 && typeof item.get_camParams == 'function';
-              }
-              if (typeof item.get_dataSetType == 'function') {
-              item.isEarth = item.get_dataSetType() === 0;
-              item.isPanorama = item.get_dataSetType() === 3;
-              item.isSurvey = item.get_dataSetType() === 2;
-              }
-
-            */
-
-          } catch (er) {
-            util.log(item, er);
-          }
+          item.name = item.get_name();
+          item.isFolder = item.get_isFolder();
+          util.rewritePlaceUrls(item);
         });
+
         return items;
       };
 
