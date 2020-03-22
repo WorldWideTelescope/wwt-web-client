@@ -450,11 +450,15 @@
       // rewriting applied.
       function rewritePlaceUrls(item) {
         if (item.get_thumbnailUrl) {
-          item.thumb = wwtlib.URLHelpers.singleton.rewrite(item.get_thumbnailUrl());
+          var u = item.get_thumbnailUrl();
+          if (u)
+            item.thumb = wwtlib.URLHelpers.singleton.rewrite(u);
         }
 
         if (item.get_url) {
-          item.url = wwtlib.URLHelpers.singleton.rewrite(item.get_url());
+          var u = item.get_url();
+          if (u)
+            item.url = wwtlib.URLHelpers.singleton.rewrite(u);
         }
       }
 
