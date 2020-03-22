@@ -32,12 +32,13 @@
 	getImageSetType: getImageSetType,
 	trackViewportChanges: trackViewportChanges,
         parseHms: parseHms,
-        mobileLink:mobileLink,
-        resVersion:getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999),
-        argb2Hex:argb2Hex,
-        hex2argb:hex2argb,
-        firstCharLower:firstCharLower,
-        firstCharUpper:firstCharUpper
+        mobileLink: mobileLink,
+        resVersion: getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999),
+        argb2Hex: argb2Hex,
+        hex2argb: hex2argb,
+        firstCharLower: firstCharLower,
+        firstCharUpper: firstCharUpper,
+        rewritePlaceUrls: rewritePlaceUrls
       };
 
       var fullscreen = false;
@@ -440,6 +441,21 @@
 
       function firstCharUpper(s) {
         return s.charAt(0).toUpperCase() + s.substr(1)
+      }
+
+      // WWT data files contain absolute URLs that we may need or want to rewrite:
+      // for CORS proxying, for HTTPS proxying, or because we are obtaining core,
+      // engine, or webclient assets from a non-standard location. This function
+      // sets some standard properties on Place-like items that have this
+      // rewriting applied.
+      function rewritePlaceUrls(item) {
+        if (item.get_thumbnailUrl) {
+          item.thumb = wwtlib.URLHelpers.singleton.rewrite(item.get_thumbnailUrl());
+        }
+
+        if (item.get_url) {
+          item.url = wwtlib.URLHelpers.singleton.rewrite(item.get_url());
+        }
       }
 
       var dirtyViewport = function () {

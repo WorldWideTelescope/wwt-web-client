@@ -20,16 +20,6 @@ wwt.app.factory(
           rootFolders,
           openCollectionsFolder;
 
-      function rewrite_urls(item) {
-        if (item.get_thumbnailUrl) {
-          item.thumb = wwtlib.URLHelpers.singleton.rewrite(item.get_thumbnailUrl());
-        }
-
-        if (item.get_url) {
-          item.url = wwtlib.URLHelpers.singleton.rewrite(item.get_url());
-        }
-      }
-
       function getRoot() {
         var deferred = $q.defer();
 
@@ -37,7 +27,7 @@ wwt.app.factory(
           rootFolders = folders;
           $.each(folders, function (i, item) {
             item.guid = item.get_name();
-            rewrite_urls(item);
+            util.rewritePlaceUrls(item);
           });
 
           transformData(folders);
@@ -55,7 +45,7 @@ wwt.app.factory(
 
           $.each(children, function (i, item) {
             item.guid = obj.guid + '.' + (item.get_isFolder() ? item.get_name() : i);
-            rewrite_urls(item);
+            util.rewritePlaceUrls(item);
           });
 
           deferred.resolve(transformData(children));
@@ -89,7 +79,7 @@ wwt.app.factory(
             item.isPlanet = item.get_dataSetType() === 1;
           }
 
-          rewrite_urls(item);
+          util.rewritePlaceUrls(item);
         });
 
         return items;
