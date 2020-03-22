@@ -109,9 +109,12 @@ wwt.app.factory('Places', ['$http', '$q', '$timeout', 'Util',
           setTimeout(tryInit, 333);
           return;
         }
+
         root = wwt.wc.createFolder();
 
-        root.loadFromUrl('//worldwidetelescope.org/wwtweb/catalog.aspx?W=WCExploreRoot', function () {
+        var url = new URL('assets/webclient-explore-root.wtml', window.location).toString();
+
+        root.loadFromUrl(url, function () {
           var collection;
           if (util.getQSParam('wtml') != null) {
             openCollectionsFolder = wwt.wc.createFolder();

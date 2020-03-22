@@ -177,6 +177,7 @@ module.exports = function (grunt) {
           {
             expand: false,
             src: [
+              'assets/*',
               'css/introjs.css',
               'css/angular-motion.css',
               'css/skin.min.css',
