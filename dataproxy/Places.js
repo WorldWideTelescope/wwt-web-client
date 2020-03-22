@@ -40,11 +40,10 @@ wwt.app.factory(
         if (item[fieldName])
           item[fieldName] = item[fieldName].replace("http://", "//");
       }
+
       var fixThumb = function (item) {
-        item.thumb = item.get_thumbnailUrl().replace("wwtstaging.azurewebsites.net/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-          .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-          .replace("worldwidetelescope.org/Content/Images/", "wwtweb.blob.core.windows.net/images/")
-          .replace("cdn.worldwidetelescope.org/wwtweb", "worldwidetelescope.org/wwtweb");
+        item.thumb = item.get_thumbnailUrl();
+
         Object.keys(item).forEach(function (key) {
           var lk = key.toLowerCase();
           if (lk.indexOf('url') > -1 || lk.indexOf('thumb') > -1) {

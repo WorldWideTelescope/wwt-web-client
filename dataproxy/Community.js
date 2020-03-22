@@ -23,11 +23,13 @@
 	  rootFolders = folders;
 	  $.each(folders, function(i,item) {
 	    if (item.get_thumbnailUrl) {
-	      item.thumb = item.get_thumbnailUrl().replace("//wwtstaging.azurewebsites.net/Content/Images/", "https://wwtweb.blob.core.windows.net/images/");
+	      item.thumb = item.get_thumbnailUrl();
 	    }
 	  });
+
 	  deferred.resolve(folders);
 	});
+
 	return deferred.promise;
       }
 
