@@ -188,6 +188,7 @@ module.exports = function (grunt) {
               'css/introjs.css',
               'css/angular-motion.css',
               'css/skin.min.css',
+              'default.aspx',
               'favicon.ico'
             ],
             dest: 'dist/'
