@@ -1,0 +1,10 @@
+# Copyright 2020 the .NET Foundation
+# Licensed under the MIT License
+
+# See `profile-prod.yml` for documentation of the uses of these parameters.
+# This files gives parameters suitable for development.
+
+webclient_static_assets_url_prefix: ''
+userweb_url_prefix: https://beta.worldwidetelescope.org
+webgl_engine_url_prefix: https://beta-cdn.worldwidetelescope.org/engine/latest
+maybe_min: ''

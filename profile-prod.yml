@@ -1,0 +1,29 @@
+# Copyright 2020 the .NET Foundation
+# Licensed under the MIT License
+
+# A prefix to prepend to paths for static assets (i.e. virtually everything!)
+# associated with this webclient instantiation. On the production server, we
+# want to make it Go Faster by routing requests to such assets through the
+# CDN. On development servers, we want references to these items to be
+# relative URLs for testing flexibility.
+webclient_static_assets_url_prefix: https://beta-cdn.worldwidetelescope.org/webclient/
+
+# A prefix to prepend to paths for links to the "user website", which will look
+# like "/Download" before prefixing. On the production server, we're being
+# served from /webclient/ and they're in the root, so:
+userweb_url_prefix: ..
+
+# The URL prefix for finding the Web engine. In production, we want to route
+# this through the CDN. In development we want to use the testing version or
+# perhaps even a local hacked version.
+#
+# XXX TEMPORARY: we should point at a fixed version in production, but for now
+# we're pointing at the "latest" version since we're iterating quickly.
+webgl_engine_url_prefix: https://beta-cdn.worldwidetelescope.org/engine/latest
+
+# This string gets munged into CSS and JS references to potentially referenced
+# minified versions ("foo.min.js") instead of un-minified ("foo.js")
+#
+# XXX TEMPORARY: during beta-testing of the new web framework, we're not
+# using minified versions to help debugging.
+maybe_min: ''
