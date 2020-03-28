@@ -1,12 +1,15 @@
-﻿<div ng-controller="SearchController" data-scroll-buffer="3">
+﻿<!-- note: we are intentionally not using {{staticAssetsPrefix}} here, because for some reason
+     in this context AngularJS deems it a security risk ($interpolate:noconcat error) -->
+
+<div ng-controller="SearchController" data-scroll-buffer="3">
 	<div style="width:88%;position:fixed;top:4px;left:4px" class="input-group iblock">
 		<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:94%;height:25px" />
 		<span class="fa fa-search form-control-feedback rel" style="top: 4px;right: 14px;position: absolute;"></span>
 	</div>
-    <ng-include src="'{{staticAssetsPrefix}}views/research-menu.html'"></ng-include>
+    <ng-include src="'views/research-menu.html'"></ng-include>
     <div class="search-results" ng-if="collectionPage.length" id="searchContainer">
         <div class="iblock tn" style="vertical-align:top;" ng-repeat="item in collectionPage" ng-if="scrollDepth > $index">
-            <ng-include src="'{{staticAssetsPrefix}}views/thumbnail.html'"></ng-include>
+            <ng-include src="'views/thumbnail.html'"></ng-include>
         </div>
     </div>
 </div>
