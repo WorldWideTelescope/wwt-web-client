@@ -3,12 +3,10 @@ wwt.controllers.controller(
   [
     '$scope',
     '$rootScope',
-    '$http',
     'Util',
     '$cookies',
-    '$timeout',
 
-    function ($scope, $rootScope, $http, util, $cookies, $timeout) {
+    function ($scope, $rootScope, util, $cookies) {
       $rootScope.loggedIn = false;
 
       function init() {
