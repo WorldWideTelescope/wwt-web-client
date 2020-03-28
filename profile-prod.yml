@@ -13,6 +13,12 @@ webclient_static_assets_url_prefix: https://beta-cdn.worldwidetelescope.org/webc
 # served from /webclient/ and they're in the root, so:
 userweb_url_prefix: ..
 
+# A prefix to prepend to paths for links to the WWT Communities, which will look
+# like "/Resource" before prefixing. On the production server, the Communities
+# and "user website" are both in the same place, but in testing we might split
+# them out.
+communities_url_prefix: ..
+
 # The URL prefix for finding the Web engine. In production, we want to route
 # this through the CDN. In development we want to use the testing version or
 # perhaps even a local hacked version.

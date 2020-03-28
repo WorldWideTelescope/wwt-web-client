@@ -58,7 +58,7 @@
 	  }
 	  root = wwt.wc.createFolder();
 
-	  root.loadFromUrl('//worldwidetelescope.org/Resource/Service/Payload', function () {
+	  root.loadFromUrl(wwt.communitiesUrlPrefix + '/Resource/Service/Payload', function () {
 	    deferred.resolve(root.get_children());
 	  });
 	}
