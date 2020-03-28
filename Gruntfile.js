@@ -200,6 +200,7 @@ module.exports = function (grunt) {
               'assets/*',
               'css/introjs.css',
               'css/angular-motion.css',
+              'css/mcecontent.css',
               'css/skin.min.css',
               'default.aspx',
               'favicon.ico'
