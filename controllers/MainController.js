@@ -339,17 +339,17 @@ wwt.controllers.controller(
                 'Tour WWT Features': [$scope.tourFeatures],
                 'Show Welcome Tips': [showTips],
                 'Show Finder (right click)': [$scope.showFinderScope],
-                'WorldWide Telescope Home': [util.nav, '/home'],
-                'Getting Started (Help)': [util.nav, '/Learn/'],
-                'WorldWide Telescope Terms of Use': [util.nav, '/Terms'],
-                'About WorldWide Telescope': [util.nav, '/About']
+                'WorldWide Telescope Home': [util.nav_user, '/home'],
+                'Getting Started (Help)': [util.nav_user, '/Learn/'],
+                'WorldWide Telescope Terms of Use': [util.nav_user, '/Terms'],
+                'About WorldWide Telescope': [util.nav_user, '/About']
               }
             }, {
               label: 'Guided Tours',
               button: 'rbnTours',
               menu: {
-                'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
-                'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
+                'Tour Home Page': [util.nav_user, '/Learn/Exploring#guidedtours'],
+                'Music and other Tour Resources': [util.nav_user, '/Download/TourAssets'],
                 sep2: null,
                 'Create a New Tour...': [$scope.createNewTour],
               }
@@ -380,7 +380,7 @@ wwt.controllers.controller(
               label: 'Communities',
               button: 'rbnCommunities',
               menu: {
-                'Search Communities': [util.nav, '/Community']
+                'Search Communities': [util.nav_communities, '/Community']
               }
             }, {
               label: 'View',
@@ -396,7 +396,7 @@ wwt.controllers.controller(
               button: 'rbnSettings',
               menu: {
                 'Restore Defaults': [$scope.restoreDefaultSettings],
-                'Product Support': [util.nav, '/Support/IssuesAndBugs']
+                'Product Support': [util.nav_user, '/Support/IssuesAndBugs']
               }
             }]
         };
