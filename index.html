@@ -150,7 +150,7 @@
            tabindex="0"
            localize="Share this place"
            localize-only="title"
-           data-content-template="views/popovers/shareplace.html?v=<%= shortSHA %>"
+           data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
            data-ng-class="searchModal ? 'hide':'btn share-button'"
            data-placement="bottom-left"
            data-ng-if="!tourPlaying"
@@ -173,7 +173,7 @@
              tabindex="0"
              localize="Share this place"
              localize-only="title"
-             data-content-template="views/popovers/shareplace.html?v=<%= shortSHA %>"
+             data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
              data-container="body"
              data-placement="bottom-left">
             <i class="fa fa-share-alt"></i>
@@ -181,7 +181,7 @@
           </a>
         </div>
 
-        <ng-include src="'views/modals/mobile-explore.html?v=<%= shortSHA %>'"></ng-include>
+        <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/mobile-explore.html?v=<%= shortSHA %>'"></ng-include>
 
         <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
           <div class="container">
@@ -316,7 +316,7 @@
           </div>
         </div>
 
-        <ng-include src="'views/modals/mobile-nearby-objects.html?v=<%= shortSHA %>'"></ng-include>
+        <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/mobile-nearby-objects.html?v=<%= shortSHA %>'"></ng-include>
 
         <div class="context-panel">
           <div class="nearby-objects"
