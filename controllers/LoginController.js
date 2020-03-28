@@ -20,17 +20,6 @@ wwt.controllers.controller('LoginController',
             } 
         }
 
-        function log(response) {
-            if (response.refresh_token) {
-                $cookies.put('refresh_token', response.refresh_token, { expires: new Date(2050, 1, 1) });
-                $cookies.put('access_token', response.access_token, { expires: new Date(2050, 1, 1) });
-                $timeout(function () {
-                    $rootScope.loggedIn = true;
-                });
-            } 
-            console.log(response, arguments);
-        }
-
         $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
 
