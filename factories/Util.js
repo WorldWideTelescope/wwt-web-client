@@ -42,6 +42,14 @@
         rewritePlaceUrls: rewritePlaceUrls
       };
 
+      // Provide our profile-dependent variables in $rootScope so that they
+      // can be used in the AngularJS templates. See app.js.
+
+      $rootScope.gitShortSha = wwt.gitShortSha;
+      $rootScope.staticAssetsPrefix = wwt.staticAssetsPrefix;
+      $rootScope.userwebUrlPrefix = wwt.userwebUrlPrefix;
+      $rootScope.communitiesUrlPrefix = wwt.communitiesUrlPrefix;
+
       var fullscreen = false;
 
       function getClassificationText(clsid) {

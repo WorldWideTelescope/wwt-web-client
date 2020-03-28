@@ -75,7 +75,7 @@
 				</div>
 				<a ng-if="!scopePlace.isSurvey && !scopePlace.isExploreTab" class="btn" ng-click="showObject(scopePlace)" localize="Show Object"></a>
 				<a class="btn" href="//www.bing.com/search?q={{scopePlace.get_name().split(' ').join('+')}}" target="bing">
-					<img ng-src="Images/bing-search-button.png" style="margin-top: -2px" /> <!-- TODO: webclient_static_assets_url_prefix -->
+					<img ng-src="{{staticAssetsPrefix}}Images/bing-search-button.png" style="margin-top: -2px" />
 					<i class="fa fa-search"></i>
 				</a>
 			</div>

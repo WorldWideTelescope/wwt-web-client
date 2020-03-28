@@ -29,6 +29,7 @@
 // variables.
 
 var wwt = {
+  // If adding new items, also add them to the AngularJS $rootScope in factories/Util.js.
   gitShortSha: '<%= gitinfo.local.branch.current.shortSHA %>',
   staticAssetsPrefix: '<%= profile_data.webclient_static_assets_url_prefix %>',
   userwebUrlPrefix: '<%= profile_data.userweb_url_prefix %>',
