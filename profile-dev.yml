@@ -6,5 +6,5 @@
 
 webclient_static_assets_url_prefix: ''
 userweb_url_prefix: https://beta.worldwidetelescope.org
-webgl_engine_url_prefix: https://beta-cdn.worldwidetelescope.org/engine/latest
+webgl_engine_url_prefix: https://beta.worldwidetelescope.org/engine/latest  # no CDN to avoid staleness issues
 maybe_min: ''
