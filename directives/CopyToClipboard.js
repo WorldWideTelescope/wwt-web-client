@@ -1,7 +1,7 @@
 ﻿wwt.app.directive('copyable', ['$timeout',function ($timeout) {
     return {
         restrict: 'E',
-        templateUrl:'views/copy-to-clipboard.html',
+        templateUrl: wwt.staticAssetsPrefix + 'views/copy-to-clipboard.html',
         scope: { copy: '=' },
         link:function(scope,el,attrs){
             var input = el.find('input')[0];

@@ -102,8 +102,8 @@ wwt.controllers.controller('CurrentTourController', [
 
           $modal({
             scope: loginModalData,
-            templateUrl: 'views/modals/centered-modal-template.html',
-            contentTemplate:'views/modals/login-before-edit.html',
+            templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html',
+            contentTemplate: wwt.staticAssetsPrefix + 'views/modals/login-before-edit.html',
             show: true,
             placement: 'center',
             backdrop: 'static'
@@ -267,7 +267,7 @@ wwt.controllers.controller('CurrentTourController', [
 
           var saveTourAsModal = $modal({
                 scope: $scope,
-                templateUrl: 'views/modals/tour-uploader.html',
+                templateUrl: wwt.staticAssetsPrefix + 'views/modals/tour-uploader.html',
                 show: true,
                 content: '',
                 placement:'center'
@@ -534,8 +534,8 @@ wwt.controllers.controller('CurrentTourController', [
         }
         var nsModal = $modal({
           scope: nextSlideModal,
-          templateUrl: 'views/modals/centered-modal-template.html',
-          contentTemplate:'views/modals/set-next-slide.html',
+          templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html',
+          contentTemplate: wwt.staticAssetsPrefix + 'views/modals/set-next-slide.html',
           show: true,
           content:'',
           placement: 'center'

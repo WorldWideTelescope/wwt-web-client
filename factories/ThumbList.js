@@ -44,7 +44,7 @@ wwt.app.factory(
 
         scope.showMenu = function (i) {
           if (!$('#researchMenu').length) {
-            return $templateRequest('views/research-menu.html').then(function (tplContent) {
+            return $templateRequest(wwt.staticAssetsPrefix + 'views/research-menu.html').then(function (tplContent) {
               var template = $compile(tplContent)(scope);
               $('body').append(template);
               scope.showMenu(i);
