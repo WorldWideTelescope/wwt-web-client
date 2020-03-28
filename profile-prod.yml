@@ -38,3 +38,16 @@ webgl_engine_url_prefix: //beta-cdn.worldwidetelescope.org/engine/latest
 # XXX TEMPORARY: during beta-testing of the new web framework, we're not
 # using minified versions to help debugging.
 maybe_min: ''
+
+# The client id of the Microsoft Live OAuth application client associated with
+# this web client. Note that this is *not* a secret.
+microsoft_live_oauth_app_id: '000000004015657B'
+
+# The "redirection URL" of the OAuth client -- this is the location that the
+# OAuth provider will send the user's browser to after successful auth.
+# When registering an OAuth app, you specify a list of specific allowed
+# redirection URLs.
+#
+# XXX TEMPORARY: this won't work during beta-testing since we can't change the
+# redirection URL, but we can at least get as far as we can.
+microsoft_live_oauth_redir_url: 'http://www.worldwidetelescope.org/webclient'

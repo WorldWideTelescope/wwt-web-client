@@ -29,7 +29,6 @@
         background: url(<%= webclient_static_assets_url_prefix %>images/finder-scope.png?v=<%= shortSHA %>) no-repeat;
       }
     </style>
-    <script src="//js.live.net/v5.0/wl.js"></script>
     <script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="<%= webgl_engine_url_prefix %>/wwtsdk<%= maybe_min %>.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -152,10 +151,10 @@
 
       <div id="ribbon">
         <span class="pull-right" ng-controller="LoginController">
-          <a class="btn pull-right" ng-click="login()" ng-show="liveAppId && liveAppId.length && !loggedIn">
+          <a class="btn pull-right" ng-click="login()" ng-show="msLiveOAuthAppId && msLiveOAuthAppId.length && !loggedIn">
             <span localize="Sign In"></span>
           </a>
-          <a class="btn pull-right" ng-click="logout()" ng-show="liveAppId && liveAppId.length && loggedIn">
+          <a class="btn pull-right" ng-click="logout()" ng-show="msLiveOAuthAppId && msLiveOAuthAppId.length && loggedIn">
             <span localize="Sign Out"></span>
           </a>
         </span>

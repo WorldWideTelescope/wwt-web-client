@@ -35,6 +35,8 @@ var wwt = {
   userwebUrlPrefix: '<%= profile_data.userweb_url_prefix %>',
   coreStaticUrlPrefix: '<%= profile_data.core_static_url_prefix %>',
   communitiesUrlPrefix: '<%= profile_data.communities_url_prefix %>',
+  msLiveOAuthAppId: '<%= profile_data.microsoft_live_oauth_app_id %>',
+  msLiveOAuthRedirUrl: '<%= profile_data.microsoft_live_oauth_redir_url %>',
 
   app: angular.module('wwtApp', [
     'mgcrea.ngStrap',

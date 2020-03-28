@@ -50,6 +50,8 @@
       $rootScope.userwebUrlPrefix = wwt.userwebUrlPrefix;
       $rootScope.communitiesUrlPrefix = wwt.communitiesUrlPrefix;
       $rootScope.coreStaticUrlPrefix = wwt.coreStaticUrlPrefix;
+      $rootScope.msLiveOAuthAppId = wwt.msLiveOAuthAppId;
+      $rootScope.msLiveOAuthRedirUrl = wwt.msLiveOAuthRedirUrl;
 
       var fullscreen = false;
 

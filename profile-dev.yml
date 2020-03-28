@@ -10,3 +10,5 @@ communities_url_prefix: //beta.worldwidetelescope.org
 core_static_url_prefix: //beta.worldwidetelescope.org/
 webgl_engine_url_prefix: //beta.worldwidetelescope.org/engine/latest  # no CDN to avoid staleness issues
 maybe_min: ''
+microsoft_live_oauth_app_id: ''
+microsoft_live_oauth_redir_url: ''
