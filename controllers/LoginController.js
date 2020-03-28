@@ -12,7 +12,7 @@ wwt.controllers.controller(
       function init() {
         if (util.getQSParam('code') != null) {
           var returnUrl = location.href.split('?')[0];
-          location.href = $rootscope.communitiesUrlPrefix + '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
+          location.href = $rootScope.communitiesUrlPrefix + '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
             '?returnUrl=' + encodeURIComponent(returnUrl);
         } else if ($cookies.get('access_token')) {
           $rootScope.loggedIn = true;
@@ -36,7 +36,7 @@ wwt.controllers.controller(
         var data = storedData ? JSON.parse(storedData) : {};
         data['rememberMe'] = false;
         localStorage.setItem('userSettings', JSON.stringify(data));
-        location.href = $rootscope.communitiesUrlPrefix + '/Logout';
+        location.href = $rootScope.communitiesUrlPrefix + '/Logout';
       }
 
       init();

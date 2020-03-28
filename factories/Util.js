@@ -19,9 +19,6 @@
 	getCreditsUrl: getCreditsUrl,
 	isAccelDevice: isAccelDevice,
 	isMobile:  $('body').hasClass('mobile'),
-	isStaging: function() {
-	  return location.href.indexOf('worldwidetelescope') === -1;
-	},
         isDebug:getQSParam('debug')!=null,
 	nav_user: nav_user,
 	nav_communities: nav_communities,
@@ -333,7 +330,17 @@
       // This function is only called with arguments that are paths to
       // WWT Communities website pages, e.g. url = `/Community`.
       function nav_communities(url) {
-	window.open(wwt.communitiesUrlPrefix + url);
+        // XXX TEMPORARY DURING BETA-TESTING:
+        // https://beta.worldwidetelescope.org/Community has to be busted,
+        // because the underlying HTML references JavaScript URLs like
+        // `//cdn.worldwidetelescope.org/....`, and the old CDN doesn't do
+        // HTTPS. When we switch to production, the CDN will start supporting
+        // HTTPS and this should start working.        
+        //
+        // This function is only ever called with one argument, so we just
+        // hack this temporarily.
+	window.open('http://beta.worldwidetelescope.org' + url);
+	//window.open(wwt.communitiesUrlPrefix + url); *** temporary beta hack
       }
 
       function resetCamera(leaveHash) {
