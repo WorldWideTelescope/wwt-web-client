@@ -64,7 +64,7 @@
 	    return;
 	  }
 
-	  var url = lpacks.find('languagepack[code=' + code + ']').attr('url');
+	  var url = wwtlib.URLHelpers.singleton.rewrite(lpacks.find('languagepack[code=' + code + ']').attr('url'));
 	  util.log(url);
 
 	  $http.get(url).

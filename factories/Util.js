@@ -23,7 +23,8 @@
 	  return location.href.indexOf('worldwidetelescope') === -1;
 	},
         isDebug:getQSParam('debug')!=null,
-	nav: nav,
+	nav_user: nav_user,
+	nav_communities: nav_communities,
 	log: log,
 	resetCamera: resetCamera,
 	goFullscreen: goFullscreen,
@@ -40,6 +41,15 @@
         firstCharUpper: firstCharUpper,
         rewritePlaceUrls: rewritePlaceUrls
       };
+
+      // Provide our profile-dependent variables in $rootScope so that they
+      // can be used in the AngularJS templates. See app.js.
+
+      $rootScope.gitShortSha = wwt.gitShortSha;
+      $rootScope.staticAssetsPrefix = wwt.staticAssetsPrefix;
+      $rootScope.userwebUrlPrefix = wwt.userwebUrlPrefix;
+      $rootScope.communitiesUrlPrefix = wwt.communitiesUrlPrefix;
+      $rootScope.coreStaticUrlPrefix = wwt.coreStaticUrlPrefix;
 
       var fullscreen = false;
 
@@ -312,11 +322,16 @@
         return $('body').data('standalone-mode') == true;
       }
 
-      function nav(url) {
-        if (isStandalone() && url.indexOf('http') !== 0) {
-          url = '//worldwidetelescope.org' + url;
-        }
-	window.open(url);
+      // This function is only called with arguments that are paths to
+      // WWT user website pages, e.g. url = `/About`.
+      function nav_user(url) {
+	window.open(wwt.userwebUrlPrefix + url);
+      }
+
+      // This function is only called with arguments that are paths to
+      // WWT Communities website pages, e.g. url = `/Community`.
+      function nav_communities(url) {
+	window.open(wwt.communitiesUrlPrefix + url);
       }
 
       function resetCamera(leaveHash) {

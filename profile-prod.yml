@@ -6,12 +6,23 @@
 # want to make it Go Faster by routing requests to such assets through the
 # CDN. On development servers, we want references to these items to be
 # relative URLs for testing flexibility.
-webclient_static_assets_url_prefix: https://beta-cdn.worldwidetelescope.org/webclient/
+webclient_static_assets_url_prefix: //beta-cdn.worldwidetelescope.org/webclient/
 
 # A prefix to prepend to paths for links to the "user website", which will look
 # like "/Download" before prefixing. On the production server, we're being
 # served from /webclient/ and they're in the root, so:
 userweb_url_prefix: ..
+
+# A prefix to prepend to paths for links to the WWT Communities, which will look
+# like "/Resource" before prefixing. On the production server, the Communities
+# and "user website" are both in the same place, but in testing we might split
+# them out.
+communities_url_prefix: ..
+
+# A URL prefix for "core static" data files, which are unchanging data served
+# up by the classic flagship website. These should be routed through the CDN
+# in production.
+core_static_url_prefix: //beta-cdn.worldwidetelescope.org/
 
 # The URL prefix for finding the Web engine. In production, we want to route
 # this through the CDN. In development we want to use the testing version or
@@ -19,7 +30,7 @@ userweb_url_prefix: ..
 #
 # XXX TEMPORARY: we should point at a fixed version in production, but for now
 # we're pointing at the "latest" version since we're iterating quickly.
-webgl_engine_url_prefix: https://beta-cdn.worldwidetelescope.org/engine/latest
+webgl_engine_url_prefix: //beta-cdn.worldwidetelescope.org/engine/latest
 
 # This string gets munged into CSS and JS references to potentially referenced
 # minified versions ("foo.min.js") instead of un-minified ("foo.js")
