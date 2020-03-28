@@ -10,15 +10,11 @@ wwt.controllers.controller('LoginController',
         $rootScope.loggedIn = false;
 
         function init() {
-
-            $rootScope.liveAppId = $('body').data('liveid');
             if (util.getQSParam('code') != null) {
-
                 var returnUrl = location.href.split('?')[0];
                 location.href = '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
                     '?returnUrl=' + encodeURIComponent(returnUrl);
             } else if ($cookies.get('access_token')) {
-
                 $rootScope.loggedIn = true;
                 $rootScope.token = $cookies.get('access_token');
             } 
@@ -37,10 +33,10 @@ wwt.controllers.controller('LoginController',
 
         $scope.login = $rootScope.login = function () {
             localStorage.setItem('login', new Date().valueOf())
-            var redir = 'http://' + location.host + '/webclient';
+
             var wlUrl = 'https://login.live.com/oauth20_authorize.srf?client_id=' +
-                $rootScope.liveAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
-                encodeURIComponent(redir) + '&display=popup';
+                $rootScope.msLiveOAuthAppId + '&scope=wl.offline_access%20wl.emails&response_type=code&redirect_uri=' +
+                encodeURIComponent($rootScope.msLiveOAuthRedirUrl) + '&display=popup';
             location.href = wlUrl;
             return;
         }
