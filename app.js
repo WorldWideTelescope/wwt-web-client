@@ -23,11 +23,14 @@
  **/
 
 // Note that, unlike the other source files, this file is processed through
-// Grunt's templating system. This is done so that we can insert the current
-// Git hash for provenance tracking and cachebusting.
+// Grunt's templating system. This is done so that we can insert various
+// build-time parameters. Note also that the variables here must references to
+// the Grunt config object; the templating in index.html uses different
+// variables.
 
 var wwt = {
   gitShortSha: '<%= gitinfo.local.branch.current.shortSHA %>',
+  staticAssetsPrefix: '<%= profile_data.webclient_static_assets_url_prefix %>',
 
   app: angular.module('wwtApp', [
     'mgcrea.ngStrap',

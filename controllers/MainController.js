@@ -372,8 +372,8 @@ wwt.controllers.controller(
                   modalScope.customClass = 'vo-cone-modal';
                   var coneSearchModal = $modal({
                     scope: modalScope,
-                    templateUrl: 'views/modals/centered-modal-template.html',
-                    contentTemplate: 'views/modals/vo-cone-search.html',
+                    templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html',
+                    contentTemplate: wwt.staticAssetsPrefix + 'views/modals/vo-cone-search.html',
                     show: true,
                     placement: 'center',
                     backdrop: false
@@ -908,7 +908,7 @@ wwt.controllers.controller(
       }
 
       var shareModal = $modal({
-        contentTemplate: 'views/popovers/shareplace.html',
+        contentTemplate: wwt.staticAssetsPrefix + 'views/popovers/shareplace.html',
         show: false,
         scope: $scope
       });

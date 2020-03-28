@@ -132,8 +132,8 @@
 
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/vo-table-viewer.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/vo-table-viewer.html?v=' + util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false
@@ -147,8 +147,8 @@
     modalScope.customClass = 'colorpicker-modal';
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/colorpicker.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/colorpicker.html?v=' + util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
@@ -164,7 +164,7 @@
     }
     if (flag) {
       loadingModal = $modal({
-        templateUrl: 'views/modals/loading-content.html?v=' + util.resVersion,
+        templateUrl: wwt.staticAssetsPrefix + 'views/modals/loading-content.html?v=' + util.resVersion,
         show: true,
         content: content || 'Content Loading. Please Wait...',
         placement: 'center'
@@ -193,8 +193,8 @@
     modalScope.customClass = 'wizard';
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/ref-frame-wiz.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/ref-frame-wiz.html?v=' + util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
@@ -209,8 +209,8 @@
 
     var modalConfig = {
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/' + props.template + '.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/' + props.template + '.html?v=' + util.resVersion,
       show: true,
       //placement: 'center',
       backdrop: props.backdrop !== undefined ? props.backdrop : false,
@@ -252,8 +252,8 @@
     modalScope.dialog = dataVizWiz;
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/data-viz-wiz.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/data-viz-wiz.html?v=' + util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
@@ -276,8 +276,8 @@
     modalScope.customClass = 'great-circle';
     $modal({
       scope: modalScope,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/great-circle.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/great-circle.html?v=' + util.resVersion,
       show: true,
       placement: 'center',
       backdrop: false,
@@ -294,8 +294,8 @@
       scope: modalScope,
       animation: false,
       backdropAnimation: false,
-      templateUrl: 'views/modals/centered-modal-template.html?v=' + util.resVersion,
-      contentTemplate: 'views/modals/embed-video.html?v=' + util.resVersion,
+      templateUrl: wwt.staticAssetsPrefix + 'views/modals/centered-modal-template.html?v=' + util.resVersion,
+      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/embed-video.html?v=' + util.resVersion,
       show: true,
       //placement: 'center',
       backdrop: false,

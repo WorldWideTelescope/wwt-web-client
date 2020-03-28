@@ -3,10 +3,10 @@
 		<input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" style="width:94%;height:25px" />
 		<span class="fa fa-search form-control-feedback rel" style="top: 4px;right: 14px;position: absolute;"></span>
 	</div>
-    <ng-include src="'views/research-menu.html'"></ng-include>
+    <ng-include src="'views/research-menu.html'"></ng-include> <!-- TODO: webclient_static_assets_url_prefix -->
     <div class="search-results" ng-if="collectionPage.length" id="searchContainer">
         <div class="iblock tn" style="vertical-align:top;" ng-repeat="item in collectionPage" ng-if="scrollDepth > $index">
-            <ng-include src="'views/thumbnail.html'"></ng-include>
+            <ng-include src="'views/thumbnail.html'"></ng-include> <!-- TODO: webclient_static_assets_url_prefix -->
         </div>
     </div>
 </div>

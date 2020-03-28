@@ -229,7 +229,7 @@
                 }
                 hideEditor();
             },
-            content_css: "css/mcecontent.css"
+            content_css: wwt.staticAssetsPrefix + "css/mcecontent.css"
         });
         readyTimer();
     }, 10);

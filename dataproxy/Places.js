@@ -96,7 +96,7 @@ wwt.app.factory(
 
           root = wwt.wc.createFolder();
 
-          var url = new URL('assets/webclient-explore-root.wtml', window.location).toString();
+          var url = new URL(wwt.staticAssetsPrefix + 'assets/webclient-explore-root.wtml', window.location).toString();
 
           root.loadFromUrl(url, function () {
             var collection;

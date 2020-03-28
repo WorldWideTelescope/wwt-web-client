@@ -108,8 +108,8 @@
 		        title: item.get_name(),
 		        target: $(event.currentTarget),
 		        id: 'tourpop',
-		        templateUrl:'views/popovers/tour-template.html',
-		        contentTemplate: 'views/popovers/tour-info.html',
+		        templateUrl: wwt.staticAssetsPrefix + 'views/popovers/tour-template.html',
+		        contentTemplate: wwt.staticAssetsPrefix + 'views/popovers/tour-info.html',
 		        placement: 'bottom-left',
 		        scope: $scope,
 		        trigger:'manual'

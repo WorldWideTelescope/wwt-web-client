@@ -27,7 +27,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Tours'),
 					icon: 'fa-play',
 					modal: $modal({
-						contentTemplate: 'views/modals/mobile-tours.html' + v,
+						contentTemplate: wwt.staticAssetsPrefix + 'views/modals/mobile-tours.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -36,7 +36,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Search'),
 					icon: 'fa-search',
 					modal: $modal({
-                      contentTemplate: 'views/modals/mobile-search.html' + v,
+                      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/mobile-search.html' + v,
 						show: false,
 						scope: $scope,
 						prefixEvent: 'searchModal'
@@ -46,7 +46,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('View'),
 					icon: 'fa-eye',
 					modal: $modal({
-                      contentTemplate: 'views/modals/mobile-view.html' + v,
+                      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/mobile-view.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -55,7 +55,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Settings'),
 					icon: 'fa-gears',
 					modal: $modal({
-                      contentTemplate: 'views/modals/mobile-settings.html' + v,
+                      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/mobile-settings.html' + v,
 						show: false,
 						scope: $scope
 					})
@@ -64,7 +64,7 @@ wwt.controllers.controller('MobileNavController',
 					text: loc.getFromEn('Layers'),
 					icon: 'fa-align-left',
 					modal: $modal({
-                      contentTemplate: 'views/modals/mobile-layer-manager.html' + v,
+                      contentTemplate: wwt.staticAssetsPrefix + 'views/modals/mobile-layer-manager.html' + v,
 						show: false,
 						scope: $scope
 					})
