@@ -22,7 +22,7 @@ steps:
 - task: Grunt@0
   inputs:
     gruntFile: 'Gruntfile.js'
-    targets: 'dist-all'
+    targets: 'dist-prod'  # TEMPORARY: should differ depending on dev/prod
   displayName: Build distribution directory with Grunt
 
 - task: CopyFiles@2

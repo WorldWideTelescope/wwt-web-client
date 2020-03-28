@@ -73,17 +73,22 @@ npm install
 Once that has been done, you can build the website with:
 
 ```
-grunt dist-all
+grunt dist-dev
 ```
 
 Then, we recommend running:
 
 ```
-npx http-server dist/
+npx http-server dist
 ```
 
 This server (and most other static-file servers) will print out a URL that you
 can visit to test out the web client locally.
+
+There are also `dist-prod` and `dist-localtest` tasks that configure the build
+slightly differently. In particular, by creating a `profile-localtest.yml`
+file derived from `profile-dev.yml`, you can monkey with some low-level
+settings if you need to do so for testing purposes.
 
 
 ## Acknowledgments

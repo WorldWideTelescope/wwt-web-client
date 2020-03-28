@@ -1,3 +1,6 @@
+// Copyright 2020 the .NET Foundation
+// Licensed under the MIT License
+
 module.exports = function (grunt) {
   'use strict';
 
@@ -11,6 +14,7 @@ module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     banner: '/**\n' +
       '* WorldWide Telescope Web Client\n' +
       '* Copyright 2014-2020 .NET Foundation\n' +
@@ -20,6 +24,15 @@ module.exports = function (grunt) {
 
     // Triger the loading of the Git version info
     gitinfo: {},
+
+    // Different build profiles. The "localtest" file is in .gitignore and is
+    // intended to be used for temporary local testing. The other profiles are
+    // in Git for reproducibility.
+    profile: {
+      dev: 'profile-dev.yml',
+      prod: 'profile-prod.yml',
+      localtest: 'profile-localtest.yml'
+    },
 
     // Task configuration.
 
@@ -165,9 +178,9 @@ module.exports = function (grunt) {
     template: {
       options: {
         data: function() {
-          return {
-            shortSHA: grunt.config.get('gitinfo.local.branch.current.shortSHA')
-          }
+          var d = require('lodash').clone(grunt.config.get('profile_data'));
+          d.shortSHA = grunt.config.get('gitinfo.local.branch.current.shortSHA');
+          return d;
         }
       },
 
@@ -209,7 +222,23 @@ module.exports = function (grunt) {
 
   require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
 
-  grunt.registerTask('dist-js', ['gitinfo', 'concat:webclient', 'uglify:webclient']);
-  grunt.registerTask('dist-css', ['less:compileCore', 'autoprefixer:core', 'cssmin:minifyCore']);
-  grunt.registerTask('dist-all', ['dist-js', 'dist-css', 'template:indexhtml', 'copy:dist']);
+  grunt.registerMultiTask('profile', 'Specify the build profile', function() {
+    var data = grunt.file.readYAML(this.data);
+    grunt.config.set('profile_data', data);
+  });
+
+  var all_tasks = [
+    'gitinfo',
+    'concat:webclient',
+    'uglify:webclient',
+    'less:compileCore',
+    'autoprefixer:core',
+    'cssmin:minifyCore',
+    'template:indexhtml',
+    'copy:dist'
+  ];
+
+  for (let profname of ['dev', 'localtest', 'prod']) {
+    grunt.registerTask('dist-' + profname, ['profile:' + profname].concat(all_tasks));
+  }
 };
