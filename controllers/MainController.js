@@ -209,9 +209,6 @@ wwt.controllers.controller(
           var hash = hashManager.getHashObject();
           $rootScope.$broadcast('hashChange', hash);
           $scope.smallVP = wwt.smallVP;
-          if (wwt.definitelyMobile && !util.isMobile) {
-            location.href = util.mobileLink();
-          }
         }, 100);
       };
 
@@ -1188,8 +1185,6 @@ wwt.controllers.controller(
       if (util.getQSParam('playTour')) {
         $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
       }
-
-      $scope.mobileLink = util.mobileLink();
     }
   ]
 );

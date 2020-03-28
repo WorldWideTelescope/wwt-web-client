@@ -30,7 +30,6 @@
 	getImageSetType: getImageSetType,
 	trackViewportChanges: trackViewportChanges,
         parseHms: parseHms,
-        mobileLink: mobileLink,
         resVersion: getQSParam('debug') != null ? $('body').data('resVersion') : Math.floor(Math.random()*99999),
         argb2Hex: argb2Hex,
         hex2argb: hex2argb,
@@ -257,20 +256,6 @@
 	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 	    results = regex.exec(location.search);
 	return results == null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
-      }
-
-      function mobileLink() {
-        var delim='?'
-        if (location.search.split('=').length > 1) {
-          delim = '&';
-        }
-        var url = location.href;
-
-        var bit = api.isMobile ? 0 : 1;
-        if (getQSParam('mobile')) {
-          return url.replace('mobile=' + getQSParam('mobile'), 'mobile=' + bit);
-        }
-        return location.href + delim + 'mobile=' + bit;
       }
 
       function getImageset(place) {
