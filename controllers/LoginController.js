@@ -38,7 +38,7 @@ wwt.controllers.controller(
         var data = storedData ? JSON.parse(storedData) : {};
         data['rememberMe'] = false;
         localStorage.setItem('userSettings', JSON.stringify(data));
-        location.href = '/Logout';
+        location.href = $rootscope.communitiesUrlPrefix + '/Logout';
       }
 
       init();
