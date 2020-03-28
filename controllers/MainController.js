@@ -342,21 +342,16 @@ wwt.controllers.controller(
                 'WorldWide Telescope Home': [util.nav, '/home'],
                 'Getting Started (Help)': [util.nav, '/Learn/'],
                 'WorldWide Telescope Terms of Use': [util.nav, '/Terms'],
-                'About WorldWide Telescope': [util.nav, '/About']/*,
-          sep2: null,
-          'Exit': [util.nav, 'Exit'],*/
+                'About WorldWide Telescope': [util.nav, '/About']
               }
             }, {
               label: 'Guided Tours',
               button: 'rbnTours',
               menu: {
-
                 'Tour Home Page': [util.nav, '/Learn/Exploring#guidedtours'],
                 'Music and other Tour Resources': [util.nav, '/Download/TourAssets'],
                 sep2: null,
-
                 'Create a New Tour...': [$scope.createNewTour],
-
               }
             }, {
               label: 'Search',
