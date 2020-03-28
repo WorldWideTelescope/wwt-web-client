@@ -210,7 +210,7 @@ module.exports = function (grunt) {
             expand: true,
             src: [
               'fonts/*',
-              'Images/*',
+              'images/*',
               'views/**'
             ],
             dest: 'dist/',
