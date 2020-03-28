@@ -23,8 +23,6 @@
     return util.secondsToTime(secs);
   };
 
-  $rootScope.isMobile = util.isMobile;
-
   $rootScope.resLocation = $('body').data('res-location');
   $rootScope.bottomControlsWidth = function () {
     return (angular.element('div.context-panel').width() - angular.element('body.desktop .fov-panel').width()) + 1;

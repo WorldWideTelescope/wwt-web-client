@@ -67,12 +67,11 @@
       return;
     }
 
-    var mobile = skyball.hasClass('mobile');
     canvas = $('<canvas></canvas>')
       .css({
         position: 'absolute',
-        top: mobile ? -5 : -9,
-        left: mobile ? -9 : -14,
+        top: $rootScope.is_mobile ? -5 : -9,
+        left: $rootScope.is_mobile ? -9 : -14,
         height: 137,
         width: 307
       });

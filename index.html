@@ -52,7 +52,11 @@
     data-res-version="<%= shortSHA %>"
     data-standalone-mode="true">
 
-    <div data-ng-controller="MainController" ng-cloak ng-init="initUI()" class="desktop">
+    <div
+      data-ng-controller="MainController"
+      ng-cloak
+      ng-init="initUI()"
+      ng-class="is_mobile ? 'mobile' : 'desktop'">
 
       <div id="WorldWideTelescopeControlHost">
         <div id="WWTCanvas" ng-context-menu="showFinderScope"></div>

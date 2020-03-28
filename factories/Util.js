@@ -18,7 +18,6 @@
 	getCreditsText: getCreditsText,
 	getCreditsUrl: getCreditsUrl,
 	isAccelDevice: isAccelDevice,
-	isMobile:  $('body').hasClass('mobile'),
         isDebug:getQSParam('debug')!=null,
 	nav_user: nav_user,
 	nav_communities: nav_communities,

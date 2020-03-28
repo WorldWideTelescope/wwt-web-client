@@ -29,9 +29,11 @@ wwt.controllers.controller(
     '$element',
     '$cookies',
     'AutohidePanels',
+    '$window',
+
     function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope,
               searchDataService, places, util, hashManager, skyball, searchUtil, $modal,
-              $element, $cookies, AutohidePanels)
+              $element, $cookies, AutohidePanels, $window)
     {
       //TODO - figure out how to clean up lame long list of dependencies injected
       var ctl;
@@ -56,8 +58,6 @@ wwt.controllers.controller(
       };
 
       $scope.lookAtChanged = function (imageryName, dropdownInvoked, noUpdate, keepCamera) {
-        setTimeout(wwt.resize, 120);
-
         if (!keepCamera) {
           util.resetCamera(true);
         }
@@ -130,7 +130,6 @@ wwt.controllers.controller(
 
         $scope.lookAt = lookAt;
         $scope.lookAtChanged(imageryName, false, noUpdate, keepCamera);
-        setTimeout(wwt.resize, 1200);
         $rootScope.hideFinderScope();
       };
 
@@ -138,8 +137,49 @@ wwt.controllers.controller(
 
       //#endregion
 
+      //#region window size management
+
+      $rootScope.is_mobile = false;
+
+      function update_window_size() {
+        var w = $window.innerWidth;
+        var h = $window.innerHeight;
+
+        // I'm not at all confident in the robustness of this logic, but it's what we've been using.
+        $rootScope.is_mobile = (h < 600 || w < 700) && (h < 900 && w < 600);
+
+        var body = $('body');
+        var wwt_div = $('#WWTCanvas');
+
+        if ($rootScope.is_mobile) {
+          body
+            .removeClass('desktop')
+            .addClass('mobile')
+          wwt_div
+            .height($('#WorldWideTelescopeControlHost').height())
+            .width($('#WorldWideTelescopeControlHost').width());
+        } else {
+          body
+            .removeClass('mobile')
+            .addClass('desktop')
+          wwt_div
+            .height(h)
+            .width(w);
+        }
+      }
+
+      angular.element($window).bind('resize', function() {
+        $rootScope.$apply(update_window_size);
+      });
+
+      //#endregion window size management
+
       //#region initialization
       var initCanvas = function () {
+        // If the wrapper div doesn't have a good size before we call
+        // initControlParam(), the renderer can freak out.
+        update_window_size();
+
         ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
 
         // The .8 release of scriptsharp changed the location of the canCast function
@@ -154,7 +194,6 @@ wwt.controllers.controller(
         }
 
         wwt.wc = ctl;
-        wwt.resize();
 
         ctl.add_ready(function () {
           var imageSets = wwtlib.WWTControl.imageSets;
@@ -191,13 +230,6 @@ wwt.controllers.controller(
         ctl.settings.set_showConstellationBoundries(false);
 
         util.resetCamera(true);
-
-        $(window).on('resize', function () {
-          wwt.resize();
-          $scope.$applyAsync(function () {
-            $scope.smallVP = wwt.smallVP;
-          });
-        });
 
         ctl.endInit();
 
@@ -453,8 +485,6 @@ wwt.controllers.controller(
           }
         });
 
-        wwt.resize();
-
         if (util.getQSParam('tourUrl')) {
           $scope.playTour(decodeURIComponent(util.getQSParam('tourUrl')));
         }
@@ -678,7 +708,7 @@ wwt.controllers.controller(
           $scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
         }
 
-        if (util.isMobile) {
+        if ($rootScope.is_mobile) {
           $('#explorerModal').modal('hide');
           $('#nboModal').modal('hide');
         }
@@ -1034,7 +1064,7 @@ wwt.controllers.controller(
 
         try {
           if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
-            if ($(window).width() > 800 || util.isMobile) {
+            if ($(window).width() > 800 || $rootScope.is_mobile) {
               show = true;
             }
           }
@@ -1185,6 +1215,7 @@ wwt.controllers.controller(
       if (util.getQSParam('playTour')) {
         $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
       }
+      //#endregion view helpers
     }
   ]
 );

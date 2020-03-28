@@ -11,7 +11,7 @@
 
 	    var init = function () {
 	        thumbList.init($scope, 'search');
-	        if (util.isMobile) {
+	        if ($rootScope.is_mobile) {
 	            $scope.scrollDepth = 40;
 	        }
 	        $timeout(function () {

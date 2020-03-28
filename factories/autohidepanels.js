@@ -14,7 +14,7 @@
     hideTimeout = 1200;
 
     function init() {
-      if (util.isMobile){
+      if ($rootScope.is_mobile){
         return;
       }
         panels = {

@@ -151,7 +151,6 @@ wwt.controllers.controller('LayerManagerController',
             }
           }, 123);
         });
-        wwt.resize();
       };
       $scope.getChildren = function (node) {
         if (!node) return {};

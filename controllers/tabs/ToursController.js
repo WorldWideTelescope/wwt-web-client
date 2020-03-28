@@ -49,7 +49,7 @@
 			
 			if (ss.canCast(item, wwtlib.Tour)) {
 				$scope.playTour(item.get_tourUrl());
-				if (util.isMobile) {
+				if ($rootScope.is_mobile) {
 					$rootScope.landscapeMessage = true;
 					setTimeout(function() {
 						$scope.$hide();

@@ -79,7 +79,7 @@
 	    $scope.currentPage = 0;
 	    $('body').append($('#researchMenu'));
 	    $scope.collection = result;
-	    if (util.isMobile) {
+	    if ($rootScope.is_mobile) {
 	      $scope.setNBO($scope.collection);
 	    }
 	    calcPageSize($scope.collection);
