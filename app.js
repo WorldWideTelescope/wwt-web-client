@@ -37,7 +37,17 @@ var wwt = {
     'wwtControllers',
     'ngCookies',
     'angular-intro'
-  ]),
+  ]).config(function($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      // same origin
+      'self',
+
+      // In production, we get assets through the CDN. We'll be a little
+      // sloppy and unconditionally allow both HTTP and HTTPS.
+      'https://beta-cdn.worldwidetelescope.org/**',
+      'http://beta-cdn.worldwidetelescope.org/**'
+    ]);
+  }),
 
   controllers: angular.module('wwtControllers', []),
 
