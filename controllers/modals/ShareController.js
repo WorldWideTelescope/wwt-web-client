@@ -50,7 +50,7 @@ wwt.controllers.controller('ShareController',
                 image = $scope.trackingObj.get_thumbnailUrl();
             } else {
                 title = $scope.getFromEn('WorldWide Telescope Web Client');
-                image = new URL(wwt.staticAssetsPrefix + "Images/wwtlogo.png", window.location).toString();
+                image = new URL(wwt.staticAssetsPrefix + "images/wwtlogo.png", window.location).toString();
             }
 
 			$('meta[property="og:url"]').attr('content', $scope.shareUrlReadOnly);
