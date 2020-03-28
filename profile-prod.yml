@@ -41,7 +41,10 @@ maybe_min: ''
 
 # The client id of the Microsoft Live OAuth application client associated with
 # this web client. Note that this is *not* a secret.
-microsoft_live_oauth_app_id: '000000004015657B'
+#
+# XXX TEMPORARY: during beta-testing, we don't want people to be confused about
+# the signin, which can't work (see below), so we disable this functionality.
+microsoft_live_oauth_app_id: ''  # '000000004015657B'
 
 # The "redirection URL" of the OAuth client -- this is the location that the
 # OAuth provider will send the user's browser to after successful auth.
