@@ -19,6 +19,11 @@ userweb_url_prefix: ..
 # them out.
 communities_url_prefix: ..
 
+# A URL prefix for "core static" data files, which are unchanging data served
+# up by the classic flagship website. These should be routed through the CDN
+# in production.
+core_static_url_prefix: https://beta-cdn.worldwidetelescope.org/
+
 # The URL prefix for finding the Web engine. In production, we want to route
 # this through the CDN. In development we want to use the testing version or
 # perhaps even a local hacked version.

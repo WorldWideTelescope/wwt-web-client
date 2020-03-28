@@ -49,6 +49,7 @@
       $rootScope.staticAssetsPrefix = wwt.staticAssetsPrefix;
       $rootScope.userwebUrlPrefix = wwt.userwebUrlPrefix;
       $rootScope.communitiesUrlPrefix = wwt.communitiesUrlPrefix;
+      $rootScope.coreStaticUrlPrefix = wwt.coreStaticUrlPrefix;
 
       var fullscreen = false;
 

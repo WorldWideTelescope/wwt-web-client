@@ -33,6 +33,7 @@ var wwt = {
   gitShortSha: '<%= gitinfo.local.branch.current.shortSHA %>',
   staticAssetsPrefix: '<%= profile_data.webclient_static_assets_url_prefix %>',
   userwebUrlPrefix: '<%= profile_data.userweb_url_prefix %>',
+  coreStaticUrlPrefix: '<%= profile_data.core_static_url_prefix %>',
   communitiesUrlPrefix: '<%= profile_data.communities_url_prefix %>',
 
   app: angular.module('wwtApp', [
