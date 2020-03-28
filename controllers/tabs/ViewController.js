@@ -34,7 +34,7 @@
       });
 
       function timeDateTimerTick() {
-	if ($scope.activePanel === $scope.loc.view || util.isMobile) {
+	if ($scope.activePanel === $scope.loc.view || $rootScope.is_mobile) {
 	  $timeout(function() {
 	    //var offset = stc.$1 === undefined ? stc._offset : stc.$1;
 	    //var now = $scope.now = new Date(new Date().valueOf() + offset);

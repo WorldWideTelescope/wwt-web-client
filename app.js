@@ -58,27 +58,10 @@ var wwt = {
     ]);
   }),
 
-  controllers: angular.module('wwtControllers', []),
-
-  triggerResize: function () { },
-
-  resize: function () {
-    $('body.mobile #WWTCanvas')
-      .height($('#WorldWideTelescopeControlHost').height())
-      .width($('#WorldWideTelescopeControlHost').width());
-    $('body.desktop #WWTCanvas')
-      .height($(window).height())
-      .width($(window).width());
-    wwt.smallVP = ($(window).height() < 600 || $(window).width() < 700);
-    wwt.definitelyMobile = wwt.smallVP && ($(window).height() < 900 && $(window).width() < 600);
-  },
-
-  smallVP: false
+  controllers: angular.module('wwtControllers', [])
 };
 
 $(window).on('load', function() {
-  wwt.resize();
-
   // Load search data after everything else.
   //
   // Historically the search data were managed in the webclient repository,

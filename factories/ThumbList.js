@@ -56,7 +56,7 @@ wwt.app.factory(
           $('.popover-content .close-btn').click();
           if (!item.get_isFolder() && item.get_name() !== 'Up Level') {
             var menuContainer = $((name === 'context' ? '.nearby-objects ' : '.top-panel ') + '#menuContainer' + i);
-            if (util.isMobile) {
+            if ($rootScope.is_mobile) {
               menuContainer = $('#' + name + 'Container #menuContainer' + i);
             }
             menuContainer.append($('#researchMenu'));
@@ -70,7 +70,7 @@ wwt.app.factory(
                 });
               menuContainer.find('.drop-toggle').click();
               $timeout(function () {
-                if (!util.isMobile) {
+                if (!$rootScope.is_mobile) {
                   $('.dropdown-backdrop').off('contextmenu');
                   $('.dropdown-backdrop').on('contextmenu', function (event) {
                     $(this).click();
@@ -94,8 +94,8 @@ wwt.app.factory(
           calcPageSize(scope, name === 'context');
         };
 
-        scope.dropdownClass = (name === 'context' && !util.isMobile ? 'dropup menu-container' : 'dropdown menu-container');
-        scope.popupPosition = (name === 'context' && !util.isMobile ? 'top' : 'bottom');
+        scope.dropdownClass = (name === 'context' && !$rootScope.is_mobile ? 'dropup menu-container' : 'dropdown menu-container');
+        scope.popupPosition = (name === 'context' && !$rootScope.is_mobile ? 'top' : 'bottom');
       }
 
       function clickThumb(item, scope, outParams, callback) {
@@ -183,7 +183,7 @@ wwt.app.factory(
         } else if (scope.$hide) {
           scope.$hide();
           $rootScope.searchModal = false;
-        } else if (util.isMobile) {
+        } else if ($rootScope.is_mobile) {
           $('#explorerModal').modal('hide');
         }
 
@@ -245,7 +245,7 @@ wwt.app.factory(
           winWid = winWid - 216; //angular.element('body.desktop .fov-panel').width();
         }
 
-        scope.pageSize = util.isMobile ? 99999 : Math.floor(winWid / tnWid);
+        scope.pageSize = $rootScope.is_mobile ? 99999 : Math.floor(winWid / tnWid);
 
         if (scope.expanded) {
           scope.pageSize *= 5;

@@ -1,14 +1,22 @@
-﻿<div class="modal fade" id="explorerModal" tabindex="-1" role="dialog"  aria-hidden="true">
-	<div class="modal-dialog">
-	    <div class="modal-content">
-            <ng-include src="'{{staticAssetsPrefix}}views/research-menu.html'"></ng-include>
-	        <div ng-controller="ExploreController" id="exploreContainer">
-	            <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br/>
-	            <div style="display: inline-block; vertical-align: top;" ng-repeat="item in collectionPage" id="exploreList">
-	                <ng-include src="'{{staticAssetsPrefix}}views/thumbnail.html'"></ng-include>
-	            </div>
+﻿<!-- note: we are intentionally not using {{staticAssetsPrefix}} here, because for some reason
+     in this context AngularJS deems it a security risk ($interpolate:noconcat error) -->
 
-	        </div>
-	    </div>
+<div class="modal fade" id="explorerModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <ng-include src="'views/research-menu.html'"></ng-include>
+
+      <div ng-controller="ExploreController" id="exploreContainer">
+	<span ng-repeat="bc in breadCrumb" class="bc">
+          <a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;&gt;&nbsp;
+        </span>
+
+        <br/>
+
+	<div style="display: inline-block; vertical-align: top;" ng-repeat="item in collectionPage" id="exploreList">
+	  <ng-include src="'views/thumbnail.html'"></ng-include>
 	</div>
+      </div>
+    </div>
+  </div>
 </div>
