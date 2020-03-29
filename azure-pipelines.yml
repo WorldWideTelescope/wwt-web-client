@@ -15,29 +15,31 @@ pool:
 
 steps:
 - task: Npm@1
+  displayName: NPM install
   inputs:
     command: 'install'
-  displayName: NPM install
 
 - task: Grunt@0
+  displayName: Build distribution directory with Grunt
   inputs:
     gruntFile: 'Gruntfile.js'
     targets: 'dist-prod'  # TEMPORARY: should differ depending on dev/prod
-  displayName: Build distribution directory with Grunt
 
 - task: CopyFiles@2
+  displayName: Copy dist directory to artifact staging
   inputs:
     sourceFolder: '$(build.sourcesDirectory)/dist'
     targetFolder: '$(build.artifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
+  displayName: Publish web deployment artifacts
   inputs:
     targetPath: '$(build.artifactStagingDirectory)'
     publishLocation: 'pipeline'
     artifactName: wwt-webclient-deployment
-  displayName: Publish web deployment artifacts
 
 - task: AzureFileCopy@3
+  displayName: Publish artifacts to Azure Blob storage
   inputs:
     SourcePath: '$(build.artifactStagingDirectory)'
     azureSubscription: 'aas@wwtadmindotnetfoundation'
@@ -45,3 +47,14 @@ steps:
     storage: 'wwtwebstatic'
     ContainerName: '$web'
     blobPrefix: 'webclient'
+
+- task: AzurePowerShell@4
+  displayName: Update Azure Blob storage content types
+  inputs:
+    azureSubscription: 'aas@wwtadmindotnetfoundation'
+    scriptType: 'inlineScript'
+    inline: |
+      $cont = Get-AzureRmStorageContainer -ResourceGroupName "wwt-web01" -AccountName "wwtwebstatic" -ContainerName "$web"
+      $blob = Get-AzureStorageBlob -Context $cont -Blob "webclient/default.aspx"
+      $blob.Properties.ContentType = "text/html"
+      $blob.SetProperties()
