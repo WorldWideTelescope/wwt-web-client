@@ -365,7 +365,8 @@ wwt.controllers.controller(
               '@WWTelescope on Facebook': [function () { window.open('https://www.facebook.com/wwtelescope'); }],
               sep2: null,
               'Download Windows App': [util.nav_user, '/Download#v60'],
-              'About AAS WorldWide Telescope': [util.nav_user, '/About']
+              'About AAS WorldWide Telescope': [util.nav_user, '/About'],
+              'About American Astronomical Society': [function () { window.open('https://aas.org/about-aas'); }]
             }
           },
 

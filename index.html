@@ -888,7 +888,7 @@
                 <td class="edit-panel">
                   <div ng-if="editingTour" class="edit-panel">
                     <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.1/tinymce.min.js"></script>
-                    <link href="<%= webclient_static_assets_url_prefix %>css/skin.min.css" rel="stylesheet" />
+                    <link href="<%= webclient_static_assets_url_prefix %>css/skin.min.css?v=<%= shortSHA %>" rel="stylesheet" />
                     <div class="left">
                       <a class="btn" bs-popover
                          localize="Tour Properties" style="width:98px;"
@@ -1207,7 +1207,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-body">
-                <img src='<%= webclient_static_assets_url_prefix %>images/wwtlogo.png'
+                <img src='<%= webclient_static_assets_url_prefix %>images/wwtlogo.png?v=<%= shortSHA %>'
                      style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;"
                      class="pull-left"
                      localize="WorldWide Telescope Logo"
