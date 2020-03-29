@@ -423,11 +423,24 @@
             <span localize="Install Windows Client"></span>
           </a>
 
-          <a class="home-icon" href="<%= userweb_url_prefix %>/home">
-            <i class="fa fa-home"></i>
-          </a>
-
           <ul class="wwt-tabs">
+            <li>
+              <div class="outer">
+                <a href="javascript:void(0)">
+                  <span class="label"
+                        data-ng-click="menuClick(ribbon.home_tab.menu, '#tabMenuHome')"
+                        id="{{ribbon.home_tab.button}}"
+                        localize="{{ribbon.home_tab.label}}"></span>
+                  <div class="menu"
+                       data-ng-click="menuClick(ribbon.home_tab.menu, '#tabMenuHome')"
+                       id="tabMenuHome"
+                       data-target="#menuHome">
+                    <i class="fa fa-caret-down"></i>
+                  </div>
+                </a>
+              </div>
+            </li>
+
             <li data-ng-repeat="tab in ribbon.tabs" data-ng-class="activePanel == tab.label ? 'active' : ''">
               <div class="outer">
                 <a href="javascript:void(0)">
