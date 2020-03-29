@@ -55,7 +55,8 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     scriptType: 'inlineScript'
     inline: |
-      $cont = Get-AzureRmStorageContainer -ResourceGroupName "wwt-web01" -AccountName "wwtwebstatic" -ContainerName "$web"
-      $blob = Get-AzureStorageBlob -Context $cont -Blob "webclient/default.aspx"
+      $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
+      $cont = Get-AzStorageContainer -Context $ctxt -Name "$web"
+      $blob = Get-AzStorageBlob -Context $cont -Blob "webclient/default.aspx"
       $blob.Properties.ContentType = "text/html"
       $blob.SetProperties()
