@@ -52,6 +52,7 @@ steps:
   displayName: Update Azure Blob storage content types
   inputs:
     azureSubscription: 'aas@wwtadmindotnetfoundation'
+    azurePowerShellVersion: 'LatestVersion'
     scriptType: 'inlineScript'
     inline: |
       $cont = Get-AzureRmStorageContainer -ResourceGroupName "wwt-web01" -AccountName "wwtwebstatic" -ContainerName "$web"
