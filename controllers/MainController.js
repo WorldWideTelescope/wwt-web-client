@@ -445,19 +445,7 @@ wwt.controllers.controller(
             }]
         };
 
-        if (util.getQSParam('ads')) {
-          $scope.ribbon.tabs.push({
-            label: 'ADS',
-            button: 'rbnADS',
-            menu: {
-              'ADS Home Page': [function () {
-                window.open('//www.adsass.org/wwt');
-              }]
-            }
-          });
-        }
-
-        $scope.activePanel = util.getQSParam('ads') ? 'ADS' : 'Explore';
+        $scope.activePanel = 'Explore';
         $scope.UITools = wwtlib.UiTools;
         $scope.Planets = wwtlib.Planets;
         $rootScope.$on('viewportchange', viewportChange);
@@ -480,13 +468,12 @@ wwt.controllers.controller(
       }
 
       var initContext = function () {
-        var isAds = util.getQSParam('ads') != null;
-        var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
+        var bar = $('.cross-fader a.btn').css('left', 100);
 
         var xf = new wwt.Move({
           el: bar,
           bounds: {
-            x: [isAds ? -50 : -100, isAds ? 50 : 0],
+            x: [-100, 0],
             y: [0, 0]
           },
           onstart: function () {
@@ -1075,10 +1062,6 @@ wwt.controllers.controller(
 
       $rootScope.showCrossfader = function () {
         var show = false;
-
-        if ($scope.activePanel === 'ADS') {
-          return true;
-        }
 
         try {
           if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {
