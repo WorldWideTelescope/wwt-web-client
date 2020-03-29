@@ -100,7 +100,6 @@ module.exports = function (grunt) {
           'controllers/modals/VoConeSearchController.js',
           'controllers/modals/colorpickerController.js',
           'controllers/modals/refFrameController.js',
-          'controllers/tabs/AdsController.js',
           'controllers/tabs/CommunityController.js',
           'controllers/tabs/CurrentTourController.js',
           'controllers/tabs/ExploreController.js',

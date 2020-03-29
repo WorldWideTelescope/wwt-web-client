@@ -349,6 +349,21 @@ wwt.controllers.controller(
 
       $scope.initUI = function () {
         $scope.ribbon = {
+          // The "home" tab is special-cased since it has no associated panel.
+          home_tab: {
+            label: 'AAS WorldWide Telescope',
+            button: 'rbnHome',
+            menu: {
+              'Main Website': [util.nav_user, '/home'],
+              'User Forums': [function () { window.open('https://wwt-forum.org/'); }],
+              'Contributor Hub': [function () { window.open('https://worldwidetelescope.github.io/'); }],
+              'GitHub Home': [function () { window.open('https://github.com/WorldWideTelescope'); }],
+              'Sign up for Newsletter': [function () { window.open('https://bit.ly/wwt-signup'); }],
+              'Download Windows App': [util.nav_user, '/Download#v60'],
+              'About AAS WorldWide Telescope': [util.nav_user, '/About']
+            }
+          },
+
           tabs: [
             {
               label: 'Explore',
@@ -430,19 +445,7 @@ wwt.controllers.controller(
             }]
         };
 
-        if (util.getQSParam('ads')) {
-          $scope.ribbon.tabs.push({
-            label: 'ADS',
-            button: 'rbnADS',
-            menu: {
-              'ADS Home Page': [function () {
-                window.open('//www.adsass.org/wwt');
-              }]
-            }
-          });
-        }
-
-        $scope.activePanel = util.getQSParam('ads') ? 'ADS' : 'Explore';
+        $scope.activePanel = 'Explore';
         $scope.UITools = wwtlib.UiTools;
         $scope.Planets = wwtlib.Planets;
         $rootScope.$on('viewportchange', viewportChange);
@@ -465,13 +468,12 @@ wwt.controllers.controller(
       }
 
       var initContext = function () {
-        var isAds = util.getQSParam('ads') != null;
-        var bar = $('.cross-fader a.btn').css('left', isAds ? 50 : 100);
+        var bar = $('.cross-fader a.btn').css('left', 100);
 
         var xf = new wwt.Move({
           el: bar,
           bounds: {
-            x: [isAds ? -50 : -100, isAds ? 50 : 0],
+            x: [-100, 0],
             y: [0, 0]
           },
           onstart: function () {
@@ -742,7 +744,7 @@ wwt.controllers.controller(
       //#endregion set fg/bg
 
       //#region menu actions
-      $scope.menuClick = function (menu) {
+      $scope.menuClick = function (menu, caret_override) {
         $scope.keepMenu = true;
 
         var m = $('#topMenu');
@@ -781,7 +783,10 @@ wwt.controllers.controller(
           m.append(item);
         });
 
-        var caret = $('#tabMenu' + this.$index);
+        if (caret_override !== undefined)
+          var caret = $(caret_override);
+        else
+          var caret = $('#tabMenu' + this.$index);
 
         m.css({
           top: caret.offset().top + caret.height(),
@@ -1057,10 +1062,6 @@ wwt.controllers.controller(
 
       $rootScope.showCrossfader = function () {
         var show = false;
-
-        if ($scope.activePanel === 'ADS') {
-          return true;
-        }
 
         try {
           if ($scope.lookAt === 'Sky' && $scope.trackingObj && (util.getImageset($scope.trackingObj) != null)) {

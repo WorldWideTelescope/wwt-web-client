@@ -11,11 +11,13 @@
     <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." />
     <meta property="og:image" content="<%= webclient_static_assets_url_prefix %>images/wwtlogo.png" />
     <link rel="icon" href="favicon.ico"/>
+
     <link href="<%= webclient_static_assets_url_prefix %>css/webclient<%= maybe_min %>.css?v=<%= shortSHA %>" rel="stylesheet" />
     <link href="<%= webclient_static_assets_url_prefix %>css/angular-motion.css?v=<%= shortSHA %>" rel="stylesheet" />
     <link href="<%= webclient_static_assets_url_prefix %>css/introjs.css?v=<%= shortSHA %>" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.0.23/style/jquery.jscrollpane.css" rel="stylesheet"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107473046-1"></script>
     <script>
@@ -24,11 +26,13 @@
       gtag('js', new Date());
       gtag('config', 'UA-107473046-1');
     </script>
+
     <style>
       body .finder-scope {
         background: url(<%= webclient_static_assets_url_prefix %>images/finder-scope.png?v=<%= shortSHA %>) no-repeat;
       }
     </style>
+
     <script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="<%= webgl_engine_url_prefix %>/wwtsdk<%= maybe_min %>.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -44,6 +48,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.3/pako_inflate.min.js"></script>
     <script src="<%= webclient_static_assets_url_prefix %>wwtwebclient<%= maybe_min %>.js?v=<%= shortSHA %>"></script>
   </head>
+
+  <!-- note: the "desktop" class of <body> may be modified by JS -->
+
   <body
     class="fs-player wwt-webclient-wrapper desktop"
     data-ng-app="wwtApp"
@@ -62,12 +69,11 @@
         <div id="WWTCanvas" ng-context-menu="showFinderScope"></div>
       </div>
 
-      <div id="contextmenu" class="contextmenu">
+      <!-- Various modal UI elements -->
 
-      </div>
-      <div id="popoutmenu" class="contextmenu">
+      <div id="contextmenu" class="contextmenu"></div>
 
-      </div>
+      <div id="popoutmenu" class="contextmenu"></div>
 
       <div id="histogram" class="histogram">
         <div class="header">
@@ -75,11 +81,12 @@
             <a><i class="fa fa-close"></i></a>
           </div>
           <span localize="Histogram"></span>
-
         </div>
+
         <div style="margin: 0px;">
           <canvas id="graph" src="" width="256" height="150" style="margin: 0px;" />
         </div>
+
         <div class="select">
           <select id="ScaleTypePicker" >
             <option localize="Linear"></option>
@@ -98,11 +105,12 @@
               <i class="fa fa-close pull-right" id="simpleinputcancel"></i>
               <h5 id="simpletitle"></h5>
             </div>
+
             <div class="modal-body">
               <div id="inputlabel" localize="Enter Text"></div>
               <input type="text" id="inputtext" />
-
             </div>
+
             <div class="modal-footer">
               <a class="btn" id="simpleinputok" localize="OK"></a>
               <a class="btn" id="simpleinputcancel" localize="Cancel"></a>
@@ -111,41 +119,61 @@
         </div>
       </div>
 
-
       <!--Layer Manager Recursive Tree Template (shared)-->
+
       <script type="text/ng-template" id="tree-toggle">
-  <i class="fa" ng-if="hasChildren(node)"
-        ng-class="collapsed(node) ? 'fa-plus-square-o' : 'fa-minus-square-o'"
-        ng-click="collapse(node)"></i>
-  <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
+        <i class="fa"
+           ng-if="hasChildren(node)"
+           ng-class="collapsed(node) ? 'fa-plus-square-o' : 'fa-minus-square-o'"
+           ng-click="collapse(node)"></i>
+        <i ng-if="!hasChildren(node)" class="fa">&nbsp;&nbsp;&nbsp;</i>
       </script>
+
       <script type="text/ng-template" id="tree-node">
-  <div ng-show="name || node.name">
-  <ng-include src="'tree-toggle'"></ng-include>
-  <div ng-if="isObjectNode(node)" class="checkbox" ng-right-click="showMenu(node,$event)" ng-class="{activelayer:node.active}">
-  <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}" localize="{{name}}" ng-click="selectionChanged(node,$event)"
-        localize-only="title">
-  <input type="checkbox" ng-model="node.enabled"/>
-  <span localize="{{name}}"></span>
-  </label>
-  </div>
-  <div class="checkbox" ng-if="!isObjectNode(node)" ng-class="{activelayer:node.active}">
-  <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}" localize="{{node.name}}" localize-only="title" ng-click="selectionChanged(node,$event)">
-  <input type="checkbox" ng-model="node.checked" ng-disabled="node.disabled"  ng-change="nodeChange(node)" />
-  <span localize="{{node.name}}"></span>
-  </label>
-  </div>
-  <div class="indent"
-        ng-class="collapsed(node) ? ' collapsed' : ''"
-        ng-repeat="(name,node) in getChildren(node)"
-        ng-include="'tree-node'">
-  </div>
-  </div>
+        <div ng-show="name || node.name">
+          <ng-include src="'tree-toggle'"></ng-include>
+
+          <div ng-if="isObjectNode(node)"
+               class="checkbox"
+               ng-right-click="showMenu(node,$event)"
+               ng-class="{activelayer:node.active}">
+            <label data-ng-class="{checked:node.enabled, disabledChild:!node.enabled}"
+                   localize="{{name}}"
+                   ng-click="selectionChanged(node,$event)"
+                   localize-only="title">
+              <input type="checkbox" ng-model="node.enabled"/>
+              <span localize="{{name}}"></span>
+            </label>
+          </div>
+
+          <div class="checkbox"
+               ng-if="!isObjectNode(node)"
+               ng-class="{activelayer:node.active}">
+            <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}"
+                   localize="{{node.name}}"
+                   localize-only="title"
+                   ng-click="selectionChanged(node,$event)">
+              <input type="checkbox"
+                     ng-model="node.checked"
+                     ng-disabled="node.disabled"
+                     ng-change="nodeChange(node)" />
+              <span localize="{{node.name}}"></span>
+            </label>
+          </div>
+
+          <div class="indent"
+                ng-class="collapsed(node) ? ' collapsed' : ''"
+                ng-repeat="(name,node) in getChildren(node)"
+                ng-include="'tree-node'">
+          </div>
+        </div>
       </script>
 
       <!-- Mobile UI -->
 
       <div ng-if="is_mobile">
+        <!-- Sharing button -->
+
         <a data-bs-popover="popover"
            tabindex="0"
            localize="Share this place"
@@ -158,6 +186,8 @@
           <i class="fa fa-share-alt"></i>
           <span localize="Share"></span>
         </a>
+
+        <!-- Tracking status readout -->
 
         <div ng-show="showMobileTracking()" class="tracking-container">
           <div title="{{trackingObj.get_name()}}" class="small">
@@ -181,7 +211,11 @@
           </a>
         </div>
 
+        <!-- mobile Explore modal -->
+
         <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/mobile-explore.html?v=<%= shortSHA %>'"></ng-include>
+
+        <!-- Navbar popup -->
 
         <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
           <div class="container">
@@ -247,28 +281,30 @@
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('/home')" target="_blank" localize="WorldWide Telescope Home"></a>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/home')" target="_blank" localize="WorldWide Telescope Home"></a>
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('/Learn')" target="_blank" localize="Getting Started (Help)"></a>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/Learn')" target="_blank" localize="Getting Started (Help)"></a>
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('/Terms')" target="_blank" localize="WorldWide Telescope Terms of Use"></a>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/Terms')" target="_blank" localize="WorldWide Telescope Terms of Use"></a>
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('/About')" localize="About WorldWide Telescope"></a>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/About')" localize="About WorldWide Telescope"></a>
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('/Support/IssuesAndBugs')" localize="Product Support"></a>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/Support/IssuesAndBugs')" localize="Product Support"></a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
+
+        <!-- mobile Loading popup -->
 
         <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
           <a href="//aas.org" target="_blank" style="position:relative;left:3px;z-index:5" class="pull-right">
@@ -316,6 +352,8 @@
           </div>
         </div>
 
+        <!-- Mobile screen bottom: nearby objects / context popup, cross-fader, skyball -->
+
         <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/mobile-nearby-objects.html?v=<%= shortSHA %>'"></ng-include>
 
         <div class="context-panel">
@@ -330,12 +368,16 @@
             <div class="nbo-count">{{nboCount}}</div>
           </div>
 
+          <!-- Bottom-center cross-fader -->
+
           <div class="control x-fader-mobile" ng-show="displayXFader()">
             <label localize="Image Crossfade"></label>
             <div class="cross-fader">
               <a class="btn">&nbsp;</a>
             </div>
           </div>
+
+          <!-- Mobile skyball -->
 
           <div class="fov-panel mobile" ng-show="lookAt=='Sky' && !tourPlaying">
             <div class="left">
@@ -354,14 +396,17 @@
       <!-- Desktop (non-mobile) UI -->
 
       <div ng-if="!is_mobile">
-        <ng-include src="'<%= webclient_static_assets_url_prefix %>views/research-menu.html?v=<%= shortSHA %>'"></ng-include>
-        <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/finder-scope.html?v=<%= shortSHA %>'" onload="initFinder()"></ng-include>
+        <!-- Popups -->
 
+        <ng-include src="'<%= webclient_static_assets_url_prefix %>views/research-menu.html?v=<%= shortSHA %>'"></ng-include>
+
+        <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/finder-scope.html?v=<%= shortSHA %>'" onload="initFinder()"></ng-include>
 
         <div data-ng-controller="ViewController"></div>
 
         <ul class="dropdown-menu" role="menu" id="topMenu"></ul>
 
+        <!-- Very top ribbon -->
 
         <div id="ribbon">
           <span class="pull-right" ng-controller="LoginController">
@@ -373,14 +418,23 @@
             </a>
           </span>
 
-          <a class="btn pull-right" href="<%= userweb_url_prefix %>/Download/" target="wwt">
-            <i class="fa fa-download"></i>
-            <span localize="Install Windows Client"></span>
-          </a>
-          <a class="home-icon" href="<%= userweb_url_prefix %>/home">
-            <i class="fa fa-home"></i>
-          </a>
           <ul class="wwt-tabs">
+            <li>
+              <div class="outer">
+                <a href="javascript:void(0)">
+                  <span class="label"
+                        data-ng-click="menuClick(ribbon.home_tab.menu, '#tabMenuHome')"
+                        id="{{ribbon.home_tab.button}}"
+                        localize="{{ribbon.home_tab.label}}"></span>
+                  <div class="menu"
+                       data-ng-click="menuClick(ribbon.home_tab.menu, '#tabMenuHome')"
+                       id="tabMenuHome"
+                       data-target="#menuHome">
+                    <i class="fa fa-caret-down"></i>
+                  </div>
+                </a>
+              </div>
+            </li>
 
             <li data-ng-repeat="tab in ribbon.tabs" data-ng-class="activePanel == tab.label ? 'active' : ''">
               <div class="outer">
@@ -392,33 +446,43 @@
                 </a>
               </div>
             </li>
+
             <li data-ng-class="activePanel == 'currentTour'  ? 'active' : currentTour && currentTour._title ? '' :'hide'">
               <div class="outer">
                 <a href="javascript:void(0)" ng-click="activePanel = 'currentTour';initSlides()">
                   <span class="label" style="padding-right:22px">{{currentTour._title}}</span>
                   <span ng-click="closeTour($event)" class="close-tour"><i class="fa fa-close"></i></span>
                 </a>
-
               </div>
             </li>
           </ul>
-
         </div>
 
-        <div class="{{topExpanded && activePanel.toLowerCase() == expandedPanel ? 'top-panel top-expanded' : 'top-panel'}}" id="topPanel" ng-switch="activePanel">
+        <!-- Top panel -->
+
+        <div class="{{topExpanded && activePanel.toLowerCase() == expandedPanel ? 'top-panel top-expanded' : 'top-panel'}}"
+             id="topPanel"
+             ng-switch="activePanel">
+
+          <!-- Explore panel -->
+
           <div
             ng-show="!loadingUrlPlace"
             ng-switch-when="Explore"
             class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}"
-            ng-controller="ExploreController"
-            >
-            <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+            ng-controller="ExploreController">
+            <span ng-repeat="bc in breadCrumb" class="bc">
+              <a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;&gt;&nbsp;
+            </span>
+
+            <br />
+
             <div class="explore-thumbs">
               <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
                 <ng-include src="'<%= webclient_static_assets_url_prefix %>views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
               </div>
-
             </div>
+
             <label class="wwt-pager">
               <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
                 <i class="fa fa-play reverse"></i>
@@ -428,40 +492,61 @@
                 <i class="fa fa-play"></i>
               </a>
             </label>
+
             <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
               <i class="fa fa-caret-down" ng-if="!expanded"></i>
               <i class="fa fa-caret-up" ng-if="expanded"></i>
             </a>
           </div>
+
+          <!-- Tours panel -->
+
           <div ng-switch-when="Guided Tours" id="toursPanel" ng-controller="ToursController">
-            <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+            <span ng-repeat="bc in breadCrumb" class="bc">
+              <a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;&gt;&nbsp;
+            </span>
+
+            <br />
 
             <div class="ribbon-thumbs" ng-repeat="item in tourList">
-
-              <span class="tour-thumb" id="tourthumb{{$index}}" ng-if="item.thumb.length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
-                <a ng-click="clickThumb(item)" ng-mouseenter="tourPreview($event, item)"
+              <span class="tour-thumb"
+                    id="tourthumb{{$index}}"
+                    ng-if="item.thumb.length > 15 && $index >= currentPage * pageSize && $index < (currentPage+1) * pageSize">
+                <a ng-click="clickThumb(item)"
+                   ng-mouseenter="tourPreview($event, item)"
                    title="{{item.get_name()}}"
                    ng-class="item.thumb + item.get_name() == activeItem ? 'thumbnail active' : 'thumbnail'" >
                   <img ng-src="{{item.thumb}}" alt="Thumbnail of {{item.get_name()}}" />
                   <label>{{item.get_name()}}</label>
                 </a>
-
               </span>
+
               <span ng-if="item.thumb.length > 15 && !($index >= currentPage * pageSize && $index < (currentPage+1) * pageSize)">
                 <img ng-src="{{item.thumb}}" class="offscreen" />
               </span>
             </div>
+
             <label class="wwt-pager">
-              <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="currentPage = currentPage == 0 ? currentPage : currentPage - 1">
+              <a href="javascript:void(0)"
+                 data-ng-disabled="currentPage == 0"
+                 ng-click="currentPage = currentPage == 0 ? currentPage : currentPage - 1">
                 <i class="fa fa-play reverse"></i>
               </a>
               {{(currentPage + 1)}} <span localize="of"></span> {{pageCount}}
-              <a href="javascript:void(0)" ng-disabled="currentPage == pageCount - 1" ng-click="currentPage = currentPage == pageCount - 1 ? currentPage : currentPage + 1">
+              <a href="javascript:void(0)"
+                 ng-disabled="currentPage == pageCount - 1"
+                 ng-click="currentPage = currentPage == pageCount - 1 ? currentPage : currentPage + 1">
                 <i class="fa fa-play"></i>
               </a>
             </label>
           </div>
-          <div ng-switch-when="Search" ng-controller="SearchController" id="searchPanel" class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}">
+
+          <!-- Search panel -->
+
+          <div ng-switch-when="Search"
+               ng-controller="SearchController"
+               id="searchPanel"
+               class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}">
             <div class="search-controls">
               <div class="iblock input-group">
                 <input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()" localize="Object Search" localize-only="placeholder" />
@@ -507,20 +592,26 @@
             </a>
           </div>
 
+          <!-- Communities panel -->
+
           <div
             ng-show="!loadingUrlPlace"
             ng-switch-when="Communities"
             id="communityPanel"
             class="{{expanded ? 'explore-panel rel expanded' : 'explore-panel rel'}}"
-            ng-controller="CommunityController"
-            >
-            <span ng-repeat="bc in breadCrumb" class="bc"><a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;>&nbsp;</span><br />
+            ng-controller="CommunityController">
+            <span ng-repeat="bc in breadCrumb" class="bc">
+              <a href="javascript:void(0)" ng-click="breadCrumbClick($index)">{{bc}}</a>&nbsp;&gt;&nbsp;
+            </span>
+
+            <br />
+
             <div class="explore-thumbs">
               <div class="ribbon-thumbs" ng-repeat="item in collectionPage">
                 <ng-include src="'<%= webclient_static_assets_url_prefix %>views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
               </div>
-
             </div>
+
             <label class="wwt-pager">
               <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
                 <i class="fa fa-play reverse"></i>
@@ -530,11 +621,15 @@
                 <i class="fa fa-play"></i>
               </a>
             </label>
+
             <a class="{{expanded ? 'expanded btn tn-expander' : 'btn tn-expander'}}" ng-click="expandThumbnails()">
               <i class="fa fa-caret-down" ng-if="!expanded"></i>
               <i class="fa fa-caret-up" ng-if="expanded"></i>
             </a>
           </div>
+
+          <!-- View panel -->
+
           <div ng-switch-when="View" data-ng-controller="ViewController">
             <div class="layer-manager-toggle">
               <label localize="Use Layer Manager to Control User Settings"></label>
@@ -542,15 +637,15 @@
                  class="layer-manager-icon"
                  localize="Show/Hide Layer Manager"
                  localize-only="title"
-                 ng-click="toggleLayerManager()">
-                &nbsp;
-              </a>
+                 ng-click="toggleLayerManager()">&nbsp;</a>
             </div>
+
             <fieldset>
               <div>
                 <label localize="Name">Name:</label>
                 <label>{{observingLocation.name}}</label>
               </div>
+
               <div>
                 <div class="pull-right">
                   <label localize="Alt">Alt:</label>
@@ -559,10 +654,12 @@
                 <label localize="Lat">Lat:</label>
                 <label>{{formatHms(ctl.settings.get_locationLat())}}</label>
               </div>
+
               <div class="clearfix">
                 <label localize="Lng">Lng:</label>
                 <label>{{formatHms(ctl.settings.get_locationLng())}}</label>
               </div>
+
               <div class="checkbox iblock">
                 <label data-ng-class="viewFromLocation ? 'checked' : ''">
                   <input type="checkbox" ng-model="viewFromLocation" ng-change="setViewFromLocation()" />
@@ -571,6 +668,7 @@
               </div>
               <a class="btn" localize="Setup" ng-click="showObservingLocationOptions()"></a>
             </fieldset>
+
             <fieldset>
               <a class="btn" bs-popover
                  localize="Observing Time"
@@ -581,33 +679,34 @@
                  data-placement="bottom-right">
                 {{now | date:'yyyy/MM/dd HH:mm:ss'}} &nbsp; <i class="fa fa-caret-down"></i>
               </a>
+
               <div><label>{{TimeMode}}</label></div>
+
               <div class="time-buttons">
                 <a class="btn" ng-click="fastBack_Click()">
                   <i class="fa fa-fast-backward"></i>
-
                 </a>
+
                 <a class="btn" ng-click="back_Click()">
                   <i class="fa fa-backward"></i>
-
                 </a>
                 <a class="btn" ng-click="pause_Click()">
-
                   <i class="fa fa-pause"></i>
                 </a>
-                <a class="btn" ng-click="play_Click()">
 
+                <a class="btn" ng-click="play_Click()">
                   <i class="fa fa-play"></i>
                 </a>
+
                 <a class="btn" ng-click="fastForward_Click()" id="btnFastFwd">
                   <i class="fa fa-fast-forward"></i>
-
                 </a>
+
                 &nbsp;
                 <a class="btn" ng-click="timeNow_Click()" id="btnTimeNow">Now</a>
               </div>
-
             </fieldset>
+
             <fieldset>
               <div class="checkbox">
                 <label data-ng-class="galaxyMode ? 'checked' : ''">
@@ -615,6 +714,7 @@
                   <span data-localize="Galactic Plane Mode">Galactic Plane Mode</span>
                 </label>
               </div>
+
               <div style="margin:8px 0 8px 0">
                 <label localize="View in ESASky"></label><br/>
                 <a class="btn" bs-tooltip="'See current view in ESASky'"
@@ -624,6 +724,9 @@
               </div>
             </fieldset>
           </div>
+
+          <!-- Settings panel -->
+
           <div ng-switch-when="Settings" ng-controller="SettingsController">
             <fieldset>
               <div class="iblock">
@@ -652,11 +755,9 @@
                   </label>
                 </div>
               </div>
-
             </fieldset>
 
             <fieldset class="bottom-padded">
-
               <label localize="Preferred Client"></label><br />
               <select ng-change="setClientPref()" ng-model="preferredClient" ng-options="c.code as c.label for c in availableClients"></select>
 
@@ -671,20 +772,23 @@
                 </a>
               </div>
             </fieldset>
+
             <fieldset class="bottom-padded">
               <label localize="Select Your Language"></label><br />
-              <select ng-change="setLanguageCode(selectedLanguage)" ng-model="selectedLanguage" ng-options="l.code as l.label for l in availableLanguages"></select>
+              <select ng-change="setLanguageCode(selectedLanguage)"
+                      ng-model="selectedLanguage"
+                      ng-options="l.code as l.label for l in availableLanguages"></select>
             </fieldset>
           </div>
-          <div
-            ng-show="!loadingUrlPlace"
-            ng-switch-when="currentTour"
-            id="currentTourPanel"
-            class="explore-panel rel curtour-panel"
-            ng-controller="CurrentTourController"
-            ng-init="init(tour)"
-            >
 
+          <!-- current tour panel -->
+
+          <div ng-show="!loadingUrlPlace"
+               ng-switch-when="currentTour"
+               id="currentTourPanel"
+               class="explore-panel rel curtour-panel"
+               ng-controller="CurrentTourController"
+               ng-init="init(tour)">
             <table>
               <colgroup>
                 <col style="width:80px"/>
@@ -702,8 +806,8 @@
                   </a><br/>
                   <div class="small" localize="Run Time"></div>
                   <div class="small">{{ !tour.minuteDuration ? '00' : tour.minuteDuration > 9 ? tour.minuteDuration : '0' + tour.minuteDuration}}:{{ !tour.secDuration ? '00' : tour.secDuration > 9 ? tour.secDuration : '0' + tour.secDuration}}</div>
-
                 </td>
+
                 <td class="tour-stops">
                   <div class="scroller" data-jquery-scrollbar>
                     <div class="stops-container">
@@ -743,8 +847,8 @@
                           <div class="fadeout choice" ng-if="stop.transitionType==5">
                             <span class="shape"></span>
                           </div>
-
                         </div>
+
                         <div class="thumbwrap">
                           <span class="master-slide" ng-if="stop.isMaster">M</span>
                           <span class="slide-number" ng-if="slideNumbering">{{$index}}</span>
@@ -766,8 +870,8 @@
                             </a>
                           </div>
                         </div>
-
                       </div>
+
                       <div class="stop-arrow" ng-if="editingTour">
                         <div class="transition-choice invisible"></div>
                         <div class="thumbwrap">
@@ -776,12 +880,11 @@
                             <label class="slide-label" localize="Add New Slide" style="position:relative;top:20px;width:90px;text-align:center"></label>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
-
                 </td>
+
                 <td class="edit-panel">
                   <div ng-if="editingTour" class="edit-panel">
                     <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.1/tinymce.min.js"></script>
@@ -827,6 +930,7 @@
                         <input type="file" id="addPicture" onchange="angular.element(this).scope().mediaFileChange(event,'image',true)" style="position:absolute"/>
                       </div>
                     </div>
+
                     <div class="right">
                       <div class="sound-container">
                         <label localize="Music:"></label><label style="width:160px;overflow:hidden;white-space:nowrap;position:relative;top:4px" title="{{activeSlide.music ? activeSlide.music.name : ''}}">&nbsp;
@@ -844,6 +948,7 @@
                           </div>
                         </div>
                       </div>
+
                       <div class="sound-container">
                         <label localize="Voiceover:"></label><label style="width:143px;overflow:hidden;white-space:nowrap;position:relative;top:4px" title="{{activeSlide.voice ? activeSlide.voice.name : ''}}">&nbsp;
                           {{activeSlide.voice ? activeSlide.voice.name : ''}}</label>
@@ -862,9 +967,7 @@
                                ng-style="{left: activeSlide.voice ? activeSlide.voice.vol : 50, position: 'absolute'}" id="voiceVol">&nbsp;</a>
                           </div>
                         </div>
-
                       </div>
-
                     </div>
                   </div>
                 </td>
@@ -872,23 +975,30 @@
             </table>
 
             <ng-include src="'<%= webclient_static_assets_url_prefix %>views/popovers/slide-overlays.html?v=<%= shortSHA %>'"></ng-include>
-
           </div>
         </div>
-        <div class="layer-manager desktop"
-             ng-controller="LayerManagerController" ng-style="{display: layerManagerHidden ? 'none' : 'block',height:  layerManagerHeight() + 28}" ng-init="initLayerManager()">
 
-          <button
-            aria-hidden="true"
-            class="close pull-right" type="button" ng-click="toggleLayerManager()"
-            style="font-weight: 100;font-size: 16px">x</button>
+        <!-- The Layer Manager side panel -->
+
+        <div class="layer-manager desktop"
+             ng-controller="LayerManagerController"
+             ng-style="{display: layerManagerHidden ? 'none' : 'block',height:  layerManagerHeight() + 28}"
+             ng-init="initLayerManager()">
+          <button aria-hidden="true"
+                  class="close pull-right"
+                  type="button"
+                  ng-click="toggleLayerManager()"
+                  style="font-weight: 100;font-size: 16px">x</button>
+
           <h5 localize="Layers"></h5>
+
           <div class="tree" ng-style="{ height: layerManagerHeight()-90 }">
             <div
               ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
               ng-repeat="(name,node) in sunTree"
               ng-include="'tree-node'">
             </div>
+
             <i class="fa"
                ng-class="collapsed(tree) ? 'fa-plus-square-o' : 'fa-minus-square-o'"
                ng-click="collapse(tree)"></i>
@@ -899,36 +1009,16 @@
                 <input type="checkbox" ng-model="tree.checked"/>
                 <span localize="Sky"></span>
               </label>
-
             </div>
+
             <div class="indent"
                  ng-class="collapsed(tree) ? ' collapsed' : ''"
                  ng-repeat="(name,node) in getChildren(tree)"
                  ng-include="'tree-node'">
             </div>
           </div>
+
           <div class="time-scrubber">
-            <!--<table class="table">
-                <colgroup>
-                  <col width="30%"/>
-                  <col width="55%"/>
-                  <col width="25%"/>
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th localize="Name"></th>
-                    <th localize="Value"></th>
-                    <th>&nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="i in scrubber.table">
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                </tbody>
-            </table>-->
             <h5 localize="Time Scrubber" id="timeScrubberLabel" ng-if="!scrubber.title"></h5>
             <h5 ng-if="scrubber.title">{{scrubber.title}}</h5>
 
@@ -953,25 +1043,25 @@
               </div>
             </div>
           </div>
-
         </div>
 
+        <!-- The lower Context panel -->
 
         <div ng-class="contextPanelClass()">
           <div ng-class="fovClass()">
-            <a
-              class="btn" tabindex="0"
-              data-bs-popover="popover"
-              ng-if="!showTrackingString()"
-              style="position:absolute; top:6px;left:-33px;z-index:3"
-              localize="Share this view"
-              localize-only="title"
-              data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
-              data-container="body"
-              data-placement="top-right"
-              >
+            <a class="btn"
+               tabindex="0"
+               data-bs-popover="popover"
+               ng-if="!showTrackingString()"
+               style="position:absolute; top:6px;left:-33px;z-index:3"
+               localize="Share this view"
+               localize-only="title"
+               data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
+               data-container="body"
+               data-placement="top-right">
               <i class="fa fa-share-alt"></i>
             </a>
+
             <div class="left" ng-if="lookAt != 'SolarSystem'">
               <p localize="N"></p>
               <div class="sphere" id="skyball">
@@ -983,21 +1073,24 @@
               <p><span localize="RA"></span>: {{formatted.RA}}</p>
               <p><span localize="Dec"></span>: {{formatted.Dec}}</p>
             </div>
+
             <div class="left" ng-if="lookAt == 'SolarSystem'">
               <div class="control">
                 <label localize="Planet Size"></label>
                 <div class="planetary-scale">
                   <a class="btn"></a>
                 </div>
-
               </div>
+
               <label class="pull-right" localize="Large"></label>
               <label class="pull-left" localize="Actual"></label>
+
               <div class="location">
                 <p><span localize="Lat"></span>: {{formatted.Lat}}</p>
                 <p><span localize="Lng"></span>: {{formatted.Lng}}</p>
               </div>
             </div>
+
             <div class="right">
               <p style="position: relative;top:3px;">
                 {{formatted.Constellation}}
@@ -1009,17 +1102,16 @@
               <div class="bar"></div>
             </div>
           </div>
+
           <div class="controls" ng-style="{ width: bottomControlsWidth() + 'px'}">
             <div class="layer-manager-toggle iblock" id="btnToggleLayerMgr">
-
               <a href="javascript:void(0)"
                  class="layer-manager-icon"
                  localize="Show/Hide Layer Manager"
                  localize-only="title"
-                 ng-click="toggleLayerManager()">
-                &nbsp;
-              </a>
+                 ng-click="toggleLayerManager()">&nbsp;</a>
             </div>
+
             <div class="control">
               <label localize="Look At"></label>
               <select id="lstLookAt"
@@ -1028,6 +1120,7 @@
                       ng-change="lookAtDropdownChanged()"
                       ng-options="type for type in lookTypes"></select>
             </div>
+
             <div class="control">
               <label localize="Imagery"></label>
               <select id="lstImagery"
@@ -1044,27 +1137,36 @@
               <div class="cross-fader">
                 <a class="btn">&nbsp;</a>
               </div>
-
             </div>
-
           </div>
-          <div class="thumbnails nearby-objects rel" ng-if="!compressed" data-ng-controller="ContextPanelController" ng-style="{width: bottomControlsWidth()}">
-            <div class="rel" style="display: inline-block;vertical-align:top;" ng-repeat="item in collectionPage" ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
+
+          <!-- Nearby objects thumbnail row inside the lower Context panel -->
+
+          <div class="thumbnails nearby-objects rel"
+               ng-if="!compressed"
+               data-ng-controller="ContextPanelController"
+               ng-style="{width: bottomControlsWidth()}">
+            <div class="rel"
+                 style="display: inline-block;vertical-align:top;"
+                 ng-repeat="item in collectionPage"
+                 ng-if="lookAt != 'Planet' && lookAt != 'Panorama'">
               <ng-include src="'<%= webclient_static_assets_url_prefix %>views/thumbnail.html?v=<%= shortSHA %>'"></ng-include>
             </div>
+
             <label class="wwt-pager">
               <a class="btn"
                  ng-if="(lookAt == 'Planet' || lookAt == 'Panorama' || lookAt == 'Earth' ) && !trackingObj"
-                 data-bs-popover="popover" tabindex="0"
+                 data-bs-popover="popover"
+                 tabindex="0"
                  style="position:absolute; top:0;right:-204px"
                  localize="Share this view"
                  localize-only="title"
                  data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
                  data-container="body"
-                 data-placement="top-right"
-                 >
+                 data-placement="top-right">
                 <i class="fa fa-share-alt"></i>
               </a>
+
               <div class="iblock tracking rel" ng-if="showTrackingString()" style="vertical-align: top;">
                 <div localize="Tracking"></div>
                 <div title="{{trackingObj.get_name()}}">{{trackingObj.get_name()}}</div>
@@ -1074,11 +1176,11 @@
                    localize-only="title"
                    data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
                    data-container="body"
-                   data-placement="top-right"
-                   >
+                   data-placement="top-right">
                   <i class="fa fa-share-alt"></i>
                 </a>
               </div>
+
               <div class="iblock rel vtop" ng-style="{right:contextPagerRight() + 'px'}" ng-if="lookAt != 'Planet' && lookAt != 'Panorama' && pageCount > 1">
                 <a href="javascript:void(0)" data-ng-disabled="currentPage == 0" ng-click="goBack()">
                   <i class="fa fa-play reverse"></i>
@@ -1090,14 +1192,20 @@
               </div>
             </label>
           </div>
-
         </div>
 
+        <!-- More modals -->
+
         <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/intro.html?v=<%= shortSHA %>'"></ng-include>
-        <div class="modal" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+
+        <div class="modal"
+             id="loadingModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="loadingModalLabel"
+             aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-
               <div class="modal-body">
                 <img src='<%= webclient_static_assets_url_prefix %>images/wwtlogo.png'
                      style="width:19%;height:19%;position:relative;left:-3px;margin-right:12px;"
@@ -1107,18 +1215,23 @@
                 <h1 style="position:relative;top:-2px">
                   World<span style="color:#6ba9e6">Wide Telescope</span>
                 </h1>
+
                 <p>
                   <i class="fa fa-spin fa-spinner"></i>
                   <span localize="Content Loading. Please Wait..."></span>
                 </p>
-
-
               </div>
-
             </div>
           </div>
         </div>
-        <div class="modal" id="folderLoadingModal" tabindex="-1" role="dialog" aria-labelledby="folderLoadingLabel" aria-hidden="true" data-backdrop="static"
+
+        <div class="modal"
+             id="folderLoadingModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="folderLoadingLabel"
+             aria-hidden="true"
+             data-backdrop="static"
              data-keyboard="false" >
           <div class="modal-dialog">
             <div class="modal-content">
@@ -1133,7 +1246,9 @@
         </div>
 
         <a href="javascript:void(0)" data-toggle="modal" data-target="#loadingModal" id="loadingModalLink">&nbsp;</a>
+
         <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/open-item.html?v=<%= shortSHA %>'"></ng-include>
+
         <div ng-intro-autostart="false"
              ng-intro-onbeforechange="beforeChange"
              ng-intro-onafterchange="afterChange"
@@ -1141,7 +1256,8 @@
              ng-intro-oncomplete="completed"
              ng-intro-method="startIntro"
              ng-intro-options="options"
-             ng-controller="IntroController" class="hide">
+             ng-controller="IntroController"
+             class="hide">
           <a ng-click="startIntro()" id="introStartButton"></a>
         </div>
       </div> <!-- end desktop (non-mobile) block -->
