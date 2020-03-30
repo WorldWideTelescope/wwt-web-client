@@ -234,7 +234,6 @@ wwt.controllers.controller(
         ctl.endInit();
 
         $rootScope.singleton = wwtlib.WWTControl.singleton;
-        initContext();
         $rootScope.$on('hashChange', hashChange);
 
         $timeout(function () {
@@ -1223,6 +1222,19 @@ wwt.controllers.controller(
         $scope.playTour(decodeURIComponent(util.getQSParam('editTour')));
       }
       //#endregion view helpers
+
+      // When this code is being invoked, both the `is_mobile` and
+      // `!is_mobile` chunks of the DOM are disabled by AngularJS, because we
+      // only decide on a value for that setting farther up in this function.
+      // This is mostly OK but the image crossfader element does not exist
+      // when this function is being run: yes, it appears in both the
+      // `is_mobile` and `!is_mobile` branches, but *neither* of them is
+      // active at the moment! Once AngularJS gets control back and syncs up
+      // the DOM to the app state, one of them will appear. Anyway,
+      // `initContext()` does a DOM query for the cross-fader and so must be
+      // scheduled to be called later, because if we ran it now it wouldn't
+      // find anything:
+      $timeout(initContext, 0);
     }
   ]
 );
