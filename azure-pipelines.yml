@@ -67,5 +67,5 @@ steps:
       $ctxt
       $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "webclient/default.aspx"
       $blob
-      $blob.ICloudBlob.properties.ContentType = "text/html"
+      $blob.ICloudBlob.Properties.ContentType = "text/html"
       $blob.ICloudBlob.SetProperties()
