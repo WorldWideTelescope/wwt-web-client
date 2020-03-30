@@ -52,15 +52,25 @@ body.wwt-webclient-wrapper.mobile {
     }
 
     .navbar {
-      .navbar-collapse .dropdown {
-	a span.small {
-	  font-weight: normal;
-	  font-size: @font-size-small;
-	  color: @link-color;
-	  .iblock();
-	  margin: 0 10px;
+      .navbar-collapse .dropdown a {
+	span.highlight {
+	  font-weight: bold;
+	  color: white;
+	  margin: 0 8px;
 	  .pull-right();
+
+          // This span might contain the name of an imagery set in our mobile
+          // nav dropdown, and we don't want it to overflow in ugly fashion.
+          // To avoid that we need all of these:
+          max-width: 70%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
 	}
+
+        i {
+	  .pull-right();
+        }
       }
 
       li a {
