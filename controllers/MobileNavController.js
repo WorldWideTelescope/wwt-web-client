@@ -91,10 +91,6 @@ wwt.controllers.controller(
 	$('.navbar-collapse.in').removeClass('in').addClass('collapse');
       }
 
-      $scope.menuAction = function (action) {
-	util.log(action);
-      }
-
       $scope.$on('searchModal.show.before', function () {
 	$rootScope.searchModal = true;
       });
