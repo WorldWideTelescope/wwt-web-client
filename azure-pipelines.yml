@@ -51,9 +51,9 @@ steps:
 # For annoying reasons, we have to include a default.aspx file that does a
 # JavaScript redirection. In order for that to work, we have to tell the web
 # server to serve up the file with a non-default "text/html" Content-Type.
-# This task does the setting. Note that the azureSubscription account needs
-# to be set up with the "Storage Blob Data Contribtor" role on the storage
-# account in order for this to work.
+# This task does the setting. Note that the service principal associated with
+# the azureSubscription account needs to be set up with the "Storage Blob Data
+# Contribtor" role on the storage account in order for this to work.
 
 - task: AzurePowerShell@4
   displayName: Update Azure Blob storage content types
@@ -62,10 +62,7 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     scriptType: 'inlineScript'
     inline: |
-      Set-PSDebug -Trace 2
       $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
-      $ctxt
       $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "webclient/default.aspx"
-      $blob
       $blob.ICloudBlob.Properties.ContentType = "text/html"
       $blob.ICloudBlob.SetProperties()
