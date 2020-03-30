@@ -8,7 +8,7 @@ wwt.controllers.controller(
     'Localization',
 
     function ($rootScope, $scope, util, $modal, loc) {
-      var v = '?v=' + $(document.body).data('resourcesVersion');
+      var v = '?v=' + wwt.gitShortSha;
 
       $scope.showModal = function (modalButton) {
 	$scope.hideMenu();
