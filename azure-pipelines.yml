@@ -55,7 +55,10 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     scriptType: 'inlineScript'
     inline: |
+      Set-PSDebug -Trace 2
       $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
+      $ctxt
       $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "webclient/default.aspx"
+      $blob
       $blob.ICloudBlob.properties.ContentType = "text/html"
       $blob.ICloudBlob.SetProperties()
