@@ -57,5 +57,5 @@ steps:
     inline: |
       $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
       $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "webclient/default.aspx"
-      $blob.Properties.ContentType = "text/html"
+      $blob.ContentType = "text/html"
       $blob.SetProperties()
