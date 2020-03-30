@@ -799,19 +799,19 @@ wwt.controllers.controller(
         }).show();
 
         setTimeout(function () {
-          $(document).on('click', hideMenu);
+          $(document).on('click', hideTopMenu);
           $scope.keepMenu = false;
         }, 123);
 
       };
 
-      var hideMenu = function () {
+      var hideTopMenu = function () {
         if ($scope.keepMenu) {
           return;
         }
 
         $('#topMenu').hide();
-        $(document).off('click', hideMenu);
+        $(document).off('click', hideTopMenu);
       };
 
       $scope.tabClick = function (tab) {

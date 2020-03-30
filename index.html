@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WorldWide Telescope Web Client</title>
+    <title>AAS WorldWide Telescope — Web Client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best telescopes in the world." />
     <meta name="ROBOTS" content="INDEX, FOLLOW">
-    <meta property="og:url" content="//worldwidetelescope.org/webclient" />
-    <meta property="og:title" content="WorldWide Telescope Web Client" />
-    <meta property="og:description" content="Worldwide Telescope enables your computer to function as a virtual telescope, bringing together imagery from the best earth and space-based telescopes." />
+
+    <meta property="og:site_name" content="AAS WorldWide Telescope" />
+    <meta property="og:url" content="http://www.worldwidetelescope.org/" />
+    <meta property="og:title" content="AAS WorldWide Telescope" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="AAS Worldwide Telescope is a tool for showcasing astronomical data and knowledge." />
     <meta property="og:image" content="<%= webclient_static_assets_url_prefix %>images/wwtlogo.png" />
+    <meta property="og:image:width" content="256" />
+    <meta property="og:image:height" content="256" />
+    <meta name="title" content="AAS WorldWide Telescope" />
+    <meta name="description" content="AAS Worldwide Telescope is a tool for showcasing astronomical data and knowledge." />
+
     <link rel="icon" href="favicon.ico"/>
 
     <link href="<%= webclient_static_assets_url_prefix %>css/webclient<%= maybe_min %>.css?v=<%= shortSHA %>" rel="stylesheet" />
@@ -172,20 +179,6 @@
       <!-- Mobile UI -->
 
       <div ng-if="is_mobile">
-        <!-- Sharing button -->
-
-        <a data-bs-popover="popover"
-           tabindex="0"
-           localize="Share this place"
-           localize-only="title"
-           data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
-           data-ng-class="searchModal ? 'hide':'btn share-button'"
-           data-placement="bottom-left"
-           data-ng-if="!tourPlaying"
-           data-ng-hide="showMobileTracking()">
-          <i class="fa fa-share-alt"></i>
-          <span localize="Share"></span>
-        </a>
 
         <!-- Tracking status readout -->
 
@@ -195,42 +188,86 @@
             <br/>
             {{trackingObj.get_name()}}
           </div>
-
-          <br />
-
-          <a class="btn"
-             data-bs-popover="popover"
-             tabindex="0"
-             localize="Share this place"
-             localize-only="title"
-             data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
-             data-container="body"
-             data-placement="bottom-left">
-            <i class="fa fa-share-alt"></i>
-            <span localize="Share"></span>
-          </a>
         </div>
 
         <!-- mobile Explore modal -->
 
         <ng-include src="'<%= webclient_static_assets_url_prefix %>views/modals/mobile-explore.html?v=<%= shortSHA %>'"></ng-include>
 
-        <!-- Navbar popup -->
+        <!-- Top Navbar -->
 
         <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="MobileNavController"  ng-show="!tourPlaying">
           <div class="container">
+            <!-- The three buttons: menu, share, settings -->
+
             <div class="navbar-header">
-              <button class="btn navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+              <button class="btn navbar-toggle pull-right"
+                      ng-click="hideMenu('#mobile-menu-nav')"
+                      data-target="#mobile-settings-nav"
+                      data-toggle="collapse"
+                      type="button">
+                <i class="fa fa-cog"></i>
+              </button>
+
+              <button class="btn navbar-toggle pull-left"
+                      ng-click="hideMenu('#mobile-settings-nav')"
+                      data-target="#mobile-menu-nav"
+                      data-toggle="collapse"
+                      type="button">
                 <i class="fa fa-bars"></i>
+              </button>
+
+              <button class="btn navbar-toggle pull-left"
+                      data-bs-popover="popover"
+                      tabindex="0"
+                      localize="Share this place"
+                      localize-only="title"
+                      data-content-template="<%= webclient_static_assets_url_prefix %>views/popovers/shareplace.html?v=<%= shortSHA %>"
+                      data-container="body"
+                      data-placement="bottom-left">
+                <i class="fa fa-share-alt-square"></i>
               </button>
             </div>
 
-            <div class="navbar-collapse collapse">
+            <!-- Mobile navbar menu -->
+
+            <div id="mobile-menu-nav" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/home')" target="_blank" localize="Main WWT Website"></a>
+                </li>
+
+                <li>
+                  <a ng-click="gotoPage('https://wwt-forum.org/')" target="_blank" localize="WWT User Forums"></a>
+                </li>
+
+                <li>
+                  <a ng-click="gotoPage('https://worldwidetelescope.github.io')" target="_blank" localize="Contributor Hub"></a>
+                </li>
+
+                <li>
+                  <a ng-click="gotoPage('https://bit.ly/wwt-signup')" localize="Sign Up for Newsletter"></a>
+                </li>
+
+                <li>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/About')" localize="About AAS WorldWide Telescope"></a>
+                </li>
+
+                <li>
+                  <a ng-click="gotoPage('https://aas.org/about-aas')" localize="About American Astronomical Society"></a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Mobile settings -->
+
+            <div id="mobile-settings-nav" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
                 <li class="dropdown">
                   <a href="javascript:void(0)" localize="Look At" localize-only="title" class="dropdown-toggle" data-toggle="dropdown">
                     <span localize="Look At"></span>
-                    <span class="small">({{lookAt}})</span><i class="fa fa-angle-down"></i>
+                    <i class="fa fa-angle-down"></i>
+                    <span class="highlight">{{lookAt}}</span>
                   </a>
 
                   <ul class="dropdown-menu" >
@@ -245,7 +282,8 @@
                 <li class="dropdown">
                   <a href="javascript:void(0)" localize="Imagery" localize-only="title" class="dropdown-toggle" data-toggle="dropdown">
                     <span localize="Imagery"></span>
-                    <span class="small">({{backgroundImagery.get_name()}})</span><i class="fa fa-angle-down"></i>
+                    <i class="fa fa-angle-down"></i>
+                    <span class="highlight">{{backgroundImagery.get_name()}}</span>
                   </a>
 
                   <ul class="dropdown-menu" >
@@ -274,30 +312,6 @@
 
                 <li>
                   <a ng-click="resetCamera()" localize="Reset Camera"></a>
-                </li>
-
-                <li>
-                  <hr class="clearfix"/>
-                </li>
-
-                <li>
-                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/home')" target="_blank" localize="WorldWide Telescope Home"></a>
-                </li>
-
-                <li>
-                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/Learn')" target="_blank" localize="Getting Started (Help)"></a>
-                </li>
-
-                <li>
-                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/Terms')" target="_blank" localize="WorldWide Telescope Terms of Use"></a>
-                </li>
-
-                <li>
-                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/About')" localize="About WorldWide Telescope"></a>
-                </li>
-
-                <li>
-                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/Support/IssuesAndBugs')" localize="Product Support"></a>
                 </li>
               </ul>
             </div>

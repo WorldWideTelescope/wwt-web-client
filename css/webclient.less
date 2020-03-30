@@ -41,8 +41,8 @@ body.wwt-webclient-wrapper.mobile {
 
     .tracking-container {
       position: absolute;
-      top: 3px;
-      left: 3px;
+      top: 4px;
+      left: 86px;
     }
 
     .x-fader-mobile {
@@ -52,15 +52,25 @@ body.wwt-webclient-wrapper.mobile {
     }
 
     .navbar {
-      .navbar-collapse .dropdown {
-	a span.small {
-	  font-weight: normal;
-	  font-size: @font-size-small;
-	  color: @link-color;
-	  .iblock();
-	  margin: 0 10px;
+      .navbar-collapse .dropdown a {
+	span.highlight {
+	  font-weight: bold;
+	  color: white;
+	  margin: 0 8px;
 	  .pull-right();
+
+          // This span might contain the name of an imagery set in our mobile
+          // nav dropdown, and we don't want it to overflow in ugly fashion.
+          // To avoid that we need all of these:
+          max-width: 70%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
 	}
+
+        i {
+	  .pull-right();
+        }
       }
 
       li a {
@@ -197,7 +207,7 @@ body.wwt-webclient-wrapper.mobile {
     overflow: hidden;
 
     .modal-dialog {
-      margin: 32px 0 0 0;
+      margin: 40px 0 0 0;
       padding: 0;
       max-height: 66%;
       overflow: auto;
@@ -244,12 +254,19 @@ body.wwt-webclient-wrapper.mobile {
     border: none;
 
     .navbar-toggle {
-      float: right;
       margin: 4px;
 
       i.fa {
-        font-size: @font-size-large;
+        font-size: @font-size-h3;
       }
+    }
+
+    .navbar-toggle.pull-left {
+      float: left;
+    }
+
+    .navbar-toggle.pull-right {
+      float: right;
     }
 
     .navbar-collapse {
@@ -263,7 +280,6 @@ body.wwt-webclient-wrapper.mobile {
         }
 
         a.btn {
-          width: 85px;
           float: none;
           display: inline-block;
           box-sizing: border-box;
@@ -274,6 +290,11 @@ body.wwt-webclient-wrapper.mobile {
           padding-bottom: 8px;
           margin-bottom: 5px;
           margin-right: 4px;
+        }
+
+        hr {
+          margin-top: 10px;
+          margin-bottom: 10px;
         }
       }
     }
@@ -1643,7 +1664,7 @@ body.wwt-webclient-wrapper.mobile {
 .wwt-webclient-wrapper.mobile {
   .modal {
     .modal-dialog {
-      margin: 32px 0 0 0;
+      margin: 40px 0 0 0;
       padding: 0;
       max-height: 66%;
       overflow: auto;
