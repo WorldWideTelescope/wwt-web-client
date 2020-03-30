@@ -1112,11 +1112,16 @@
                  ng-click="toggleLayerManager()">&nbsp;</a>
             </div>
 
+            <!-- the "$parent"s below are needed to wire these elements up to
+                 the MainController scope, because the ng-if="desktop" adds
+                 another level of scope that we would otherwise be modifying.
+                 -->
+
             <div class="control">
               <label localize="Look At"></label>
               <select id="lstLookAt"
-                      ng-init="lookAt = 'Sky'"
-                      ng-model="lookAt"
+                      ng-init="$parent.lookAt = 'Sky'"
+                      ng-model="$parent.lookAt"
                       ng-change="lookAtDropdownChanged()"
                       ng-options="type for type in lookTypes"></select>
             </div>
@@ -1124,8 +1129,8 @@
             <div class="control">
               <label localize="Imagery"></label>
               <select id="lstImagery"
-                      ng-init="backgroundImagery.name = 'Digitized Sky Survey (Color)'"
-                      ng-model="backgroundImagery"
+                      ng-init="$parent.backgroundImagery.name = 'Digitized Sky Survey (Color)'"
+                      ng-model="$parent.backgroundImagery"
                       ng-change="setSurveyBg()"
                       ng-options="s.name for s in surveys">
                 <option value="?">&nbsp;</option>
