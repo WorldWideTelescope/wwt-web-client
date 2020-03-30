@@ -2,10 +2,10 @@
      in this context AngularJS deems it a security risk ($interpolate:noconcat error) -->
 
 <div ng-controller="SearchController" data-scroll-buffer="3">
-  <div style="width:88%;position:fixed;top:4px;left:4px" class="input-group iblock">
+  <div style="width: 88%; padding: 4px;" class="input-group iblock">
     <input type="search" id="txtSearch" ng-model="q" ng-keydown="searchKeyPress()"
            localize="Object Search" localize-only="placeholder" style="width: 94%; height: 25px" />
-    <span class="fa fa-search form-control-feedback rel" style="top: 4px; right: 14px; position: absolute;"></span>
+    <span class="fa fa-search form-control-feedback rel" style="top: 8px; right: 18px; position: absolute;"></span>
   </div>
 
   <ng-include src="'views/research-menu.html'"></ng-include>

@@ -87,8 +87,12 @@ wwt.controllers.controller(
 	tab.action();
       }
 
-      $scope.hideMenu = function() {
-	$('.navbar-collapse.in').removeClass('in').addClass('collapse');
+      $scope.hideMenu = function(selector) {
+        if (typeof selector !== 'string') {
+          selector = '.navbar-collapse';
+        }
+
+	$(selector + '.in').removeClass('in').addClass('collapse');
       }
 
       $scope.$on('searchModal.show.before', function () {
