@@ -53,6 +53,8 @@ var wwt = {
 
       // In production, we get assets through the CDN. We'll be a little
       // sloppy and unconditionally allow both HTTP and HTTPS.
+      'https://web.wwtassets.org/**',
+      'http://web.wwtassets.org/**',
       'https://beta-cdn.worldwidetelescope.org/**',
       'http://beta-cdn.worldwidetelescope.org/**'
     ]);
