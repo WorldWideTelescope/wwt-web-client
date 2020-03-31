@@ -322,7 +322,7 @@
 
         <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
           <a href="//aas.org" target="_blank" style="position:relative;left:3px;z-index:5" class="pull-right">
-            <img ng-src="https://wwtweb.blob.core.windows.net/images/aas-white110.png"
+            <img ng-src="<%= webclient_static_assets_url_prefix %>images/aas-white110.png?v=<%= shortSHA %>"
                  localize="American Astronomical Society (AAS) Logo"
                  localize-only="alt"
                  style="width:60px;height:60px;"/>
