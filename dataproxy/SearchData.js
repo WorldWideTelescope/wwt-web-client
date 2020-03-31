@@ -10,8 +10,7 @@
     function ($http, $q, $timeout, places, util) {
       var api = {
         getData: getData,
-        getIndex: getIndex,
-        importWtml: importWtml
+        getIndex: getIndex
       };
 
       var data,
