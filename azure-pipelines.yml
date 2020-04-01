@@ -7,13 +7,25 @@ trigger:
   # submitting a PR.
   branches:
     include:
-      - rebuild  # temporary!!! (?)
+      - master
+      - "refs/tags/v*"
 
 pool:
   # We need to run on Windows to take advantage of the AzureFileCopy@3 task.
   vmImage: 'windows-latest'
 
 steps:
+- powershell: |
+    $branch = "$(Build.SourceBranch)"
+    if($branch.StartsWith("refs/tags/v")) {
+      $version = $branch.Substring(11)
+      Write-Host "##vso[task.setvariable variable=pub_prefix;]webclient"
+    } else {
+      # Won't actually get published on PRs, etc.
+      Write-Host "##vso[task.setvariable variable=pub_prefix;]testing_webclient"
+    }
+  displayName: Set deployment parameters
+
 - task: Npm@1
   displayName: NPM install
   inputs:
@@ -23,7 +35,7 @@ steps:
   displayName: Build distribution directory with Grunt
   inputs:
     gruntFile: 'Gruntfile.js'
-    targets: 'dist-prod'  # TEMPORARY: should differ depending on dev/prod
+    targets: 'dist-prod'  # NOTE: due to our setup, we want this even for merges to `master`
 
 - task: CopyFiles@2
   displayName: Copy dist directory to artifact staging
@@ -46,7 +58,7 @@ steps:
     Destination: 'AzureBlob'
     storage: 'wwtwebstatic'
     ContainerName: '$web'
-    blobPrefix: 'webclient'
+    blobPrefix: '$(pub_prefix)'
 
 # For annoying reasons, we have to include a default.aspx file that does a
 # JavaScript redirection. In order for that to work, we have to tell the web
@@ -63,6 +75,6 @@ steps:
     scriptType: 'inlineScript'
     inline: |
       $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
-      $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "webclient/default.aspx"
+      $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(pub_prefix)/default.aspx"
       $blob.ICloudBlob.Properties.ContentType = "text/html"
       $blob.ICloudBlob.SetProperties()
