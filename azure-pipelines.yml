@@ -88,13 +88,13 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     scriptType: 'inlineScript'
     inline: |
-      Unpublish-AzCdnEndpointContent ^
-        -ProfileName wwt-cdn-01 ^
-        -ResourceGroupName wwt-web01 ^
-        -EndpointName wwtweb-prod ^
-        -PurgeContent /$(pub_prefix)/*
-      Publish-AzCdnEndpointContent ^
-        -ProfileName wwt-cdn-01 ^
-        -ResourceGroupName wwt-web01 ^
-        -EndpointName wwtweb-prod ^
-        -LoadContent /$(pub_prefix)/*
+      Unpublish-AzCdnEndpointContent `
+        -ProfileName wwt-cdn-01 `
+        -ResourceGroupName wwt-web01 `
+        -EndpointName wwtweb-prod `
+        -PurgeContent '/$(pub_prefix)/*'
+      Publish-AzCdnEndpointContent `
+        -ProfileName wwt-cdn-01 `
+        -ResourceGroupName wwt-web01 `
+        -EndpointName wwtweb-prod `
+        -LoadContent '/$(pub_prefix)/*'
