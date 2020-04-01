@@ -33,11 +33,8 @@ core_static_url_prefix: //cdn.worldwidetelescope.org/
 webgl_engine_url_prefix: //web.wwtassets.org/engine/latest
 
 # This string gets munged into CSS and JS references to potentially referenced
-# minified versions ("foo.min.js") instead of un-minified ("foo.js")
-#
-# XXX TEMPORARY: during beta-testing of the new web framework, we're not
-# using minified versions to help debugging.
-maybe_min: ''
+# minified versions ("foo.min.js") instead of un-minified ("foo.js").
+maybe_min: '.min'
 
 # The client id of the Microsoft Live OAuth application client associated with
 # this web client. Note that this is *not* a secret.
