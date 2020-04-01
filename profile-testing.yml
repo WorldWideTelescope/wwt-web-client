@@ -1,0 +1,15 @@
+# Copyright 2020 the .NET Foundation
+# Licensed under the MIT License
+
+# See `profile-prod.yml` for documentation of the uses of these parameters.
+# This files gives parameters used for continuous deployment of the repository's
+# `master` branch, which is made available at worldwidetelescope.org/testing_webclient/
+
+webclient_static_assets_url_prefix: //wwtwebstatic.z22.web.core.windows.net/testing_webclient/
+userweb_url_prefix: ..
+communities_url_prefix: ..
+core_static_url_prefix: //cdn.worldwidetelescope.org/
+webgl_engine_url_prefix: //wwtwebstatic.z22.web.core.windows.net/engine/6.0
+maybe_min: '.min'
+microsoft_live_oauth_app_id: ''  # '000000004015657B'
+microsoft_live_oauth_redir_url: 'http://www.worldwidetelescope.org/webclient'

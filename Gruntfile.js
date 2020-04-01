@@ -30,8 +30,9 @@ module.exports = function (grunt) {
     // in Git for reproducibility.
     profile: {
       dev: 'profile-dev.yml',
+      localtest: 'profile-localtest.yml',
       prod: 'profile-prod.yml',
-      localtest: 'profile-localtest.yml'
+      testing: 'profile-testing.yml',
     },
 
     // Task configuration.
@@ -239,7 +240,7 @@ module.exports = function (grunt) {
     'copy:dist'
   ];
 
-  for (let profname of ['dev', 'localtest', 'prod']) {
+  for (let profname of ['dev', 'localtest', 'prod', 'testing']) {
     grunt.registerTask('dist-' + profname, ['profile:' + profname].concat(all_tasks));
   }
 };
