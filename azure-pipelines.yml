@@ -20,9 +20,11 @@ steps:
     if($branch.StartsWith("refs/tags/v")) {
       $version = $branch.Substring(11)
       Write-Host "##vso[task.setvariable variable=pub_prefix;]webclient"
+      Write-Host "##vso[task.setvariable variable=profile;]prod"
     } else {
       # Won't actually get published on PRs, etc.
       Write-Host "##vso[task.setvariable variable=pub_prefix;]testing_webclient"
+      Write-Host "##vso[task.setvariable variable=profile;]testing"
     }
   displayName: Set deployment parameters
 
@@ -35,7 +37,7 @@ steps:
   displayName: Build distribution directory with Grunt
   inputs:
     gruntFile: 'Gruntfile.js'
-    targets: 'dist-prod'  # NOTE: due to our setup, we want this even for merges to `master`
+    targets: 'dist-$(profile)'
 
 - task: CopyFiles@2
   displayName: Copy dist directory to artifact staging
