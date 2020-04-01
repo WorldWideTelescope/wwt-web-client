@@ -22,22 +22,16 @@ communities_url_prefix: ..
 # A URL prefix for "core static" data files, which are unchanging data served
 # up by the classic flagship website. These should be routed through the CDN
 # in production.
-core_static_url_prefix: //beta-cdn.worldwidetelescope.org/
+core_static_url_prefix: //cdn.worldwidetelescope.org/
 
 # The URL prefix for finding the Web engine. In production, we want to route
 # this through the CDN. In development we want to use the testing version or
 # perhaps even a local hacked version.
-#
-# XXX TEMPORARY: we should point at a fixed version in production, but for now
-# we're pointing at the "latest" version since we're iterating quickly.
-webgl_engine_url_prefix: //web.wwtassets.org/engine/latest
+webgl_engine_url_prefix: //web.wwtassets.org/engine/6.0
 
 # This string gets munged into CSS and JS references to potentially referenced
-# minified versions ("foo.min.js") instead of un-minified ("foo.js")
-#
-# XXX TEMPORARY: during beta-testing of the new web framework, we're not
-# using minified versions to help debugging.
-maybe_min: ''
+# minified versions ("foo.min.js") instead of un-minified ("foo.js").
+maybe_min: '.min'
 
 # The client id of the Microsoft Live OAuth application client associated with
 # this web client. Note that this is *not* a secret.

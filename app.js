@@ -55,6 +55,8 @@ var wwt = {
       // sloppy and unconditionally allow both HTTP and HTTPS.
       'https://web.wwtassets.org/**',
       'http://web.wwtassets.org/**',
+      'https://cdn.worldwidetelescope.org/**',
+      'http://cdn.worldwidetelescope.org/**',
       'https://beta-cdn.worldwidetelescope.org/**',
       'http://beta-cdn.worldwidetelescope.org/**'
     ]);

@@ -1,7 +1,7 @@
 {
     "name": "aas-worldwide-telescope-webclient",
     "description": "AAS WorldWide Telescope web client",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "keywords": [
         "AAS WorldWide Telescope"
     ],
@@ -14,10 +14,7 @@
     "bugs": {
         "url": "https://github.com/WorldWideTelescope/wwt-web-client/issues"
     },
-    "license": {
-        "type": "MIT",
-        "url": "https://github.com/WorldWideTelescope/wwt-web-client/blob/master/LICENSE"
-    },
+    "license": "MIT",
     "devDependencies": {
         "grunt": "^1.0",
         "grunt-autoprefixer": "^3.0",
