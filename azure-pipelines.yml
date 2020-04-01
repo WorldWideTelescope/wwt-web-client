@@ -80,3 +80,21 @@ steps:
       $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(pub_prefix)/default.aspx"
       $blob.ICloudBlob.Properties.ContentType = "text/html"
       $blob.ICloudBlob.SetProperties()
+
+- task: AzurePowerShell@4
+  displayName: Purge and preload CDN
+  inputs:
+    azureSubscription: 'aas@wwtadmindotnetfoundation'
+    azurePowerShellVersion: 'LatestVersion'
+    scriptType: 'inlineScript'
+    inline: |
+      Unpublish-AzCdnEndpointContent ^
+        -ProfileName wwt-cdn-01 ^
+        -ResourceGroupName wwt-web01 ^
+        -EndpointName wwtweb-prod ^
+        -PurgeContent /$(pub_prefix)/*
+      Publish-AzCdnEndpointContent ^
+        -ProfileName wwt-cdn-01 ^
+        -ResourceGroupName wwt-web01 ^
+        -EndpointName wwtweb-prod ^
+        -LoadContent /$(pub_prefix)/*
