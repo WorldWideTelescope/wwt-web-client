@@ -16,9 +16,9 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     banner: '/**\n' +
-      '* WorldWide Telescope Web Client\n' +
+      '* AAS WorldWide Telescope Web Client\n' +
       '* Copyright 2014-2020 .NET Foundation\n' +
-      '* Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
+      '* Licensed under the MIT License\n' +
       '* Git hash <%= gitinfo.local.branch.current.SHA %>\n' +
       '**/\n',
 
