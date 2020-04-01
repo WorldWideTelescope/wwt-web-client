@@ -14,10 +14,7 @@
     "bugs": {
         "url": "https://github.com/WorldWideTelescope/wwt-web-client/issues"
     },
-    "license": {
-        "type": "MIT",
-        "url": "https://github.com/WorldWideTelescope/wwt-web-client/blob/master/LICENSE"
-    },
+    "license": "MIT",
     "devDependencies": {
         "grunt": "^1.0",
         "grunt-autoprefixer": "^3.0",
