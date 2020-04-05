@@ -5,9 +5,9 @@
 # This files gives parameters suitable for development.
 
 webclient_static_assets_url_prefix: ''
-userweb_url_prefix: //beta.worldwidetelescope.org
-communities_url_prefix: //beta.worldwidetelescope.org
-core_static_url_prefix: //beta.worldwidetelescope.org/
+userweb_url_prefix: //worldwidetelescope.org
+communities_url_prefix: //worldwidetelescope.org
+core_static_url_prefix: //worldwidetelescope.org/  # no CDN to avoid caching issues
 webgl_engine_url_prefix: //web.wwtassets.org/engine/latest
 maybe_min: ''
 microsoft_live_oauth_app_id: ''

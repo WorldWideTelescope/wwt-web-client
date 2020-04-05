@@ -1076,7 +1076,7 @@
               <i class="fa fa-share-alt"></i>
             </a>
 
-            <div class="left" ng-if="lookAt != 'SolarSystem'">
+            <div class="left" ng-show="lookAt != 'SolarSystem'">
               <p localize="N"></p>
               <div class="sphere" id="skyball">
                 <div class="v-ellipse"></div>
@@ -1088,7 +1088,7 @@
               <p><span localize="Dec"></span>: {{formatted.Dec}}</p>
             </div>
 
-            <div class="left" ng-if="lookAt == 'SolarSystem'">
+            <div class="left" ng-show="lookAt == 'SolarSystem'">
               <div class="control">
                 <label localize="Planet Size"></label>
                 <div class="planetary-scale">
