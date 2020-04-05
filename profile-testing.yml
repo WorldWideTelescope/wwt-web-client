@@ -11,5 +11,5 @@ communities_url_prefix: ..
 core_static_url_prefix: //cdn.worldwidetelescope.org/
 webgl_engine_url_prefix: //web.wwtassets.org/engine/6.0
 maybe_min: '.min'
-microsoft_live_oauth_app_id: ''  # '000000004015657B'
-microsoft_live_oauth_redir_url: 'http://www.worldwidetelescope.org/webclient'
+microsoft_live_oauth_app_id: '000000004015657B'
+microsoft_live_oauth_redir_url: 'http://worldwidetelescope.org/webclient'
