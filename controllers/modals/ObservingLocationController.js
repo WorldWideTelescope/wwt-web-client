@@ -50,17 +50,17 @@ wwt.controllers.controller(
 
       $scope.datasets = [{
         name: 'World Cities',
-        regions: wwt.staticAssetsPrefix + 'assets/worldregions.txt',
+        regions: wwt.staticAssetsPrefix + 'assets/worldregions.json',
         regiondata: [],
         index: 0
       }, {
         name: 'US Cities',
-        regions: wwt.staticAssetsPrefix + 'assets/usaregions.txt',
+        regions: wwt.staticAssetsPrefix + 'assets/usaregions.json',
         regiondata: [],
         index: 1
       }, {
         name: 'Canadian Cities',
-        regions: wwt.staticAssetsPrefix + 'assets/canadaregions.txt',
+        regions: wwt.staticAssetsPrefix + 'assets/canadaregions.json',
         regiondata: [],
         index: 2
       }];
