@@ -40,5 +40,6 @@ microsoft_live_oauth_app_id: '000000004015657B'
 # The "redirection URL" of the OAuth client -- this is the location that the
 # OAuth provider will send the user's browser to after successful auth.
 # When registering an OAuth app, you specify a list of specific allowed
-# redirection URLs.
-microsoft_live_oauth_redir_url: 'http://www.worldwidetelescope.org/webclient'
+# redirection URLs. It is important to use the domain without the `www.`
+# prefix to make sure that the cookie gets set for the root.
+microsoft_live_oauth_redir_url: 'http://worldwidetelescope.org/webclient'
