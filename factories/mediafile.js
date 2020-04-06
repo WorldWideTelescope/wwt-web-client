@@ -22,7 +22,7 @@
         }
       }
 
-      function addLocalMedia(mediaKey, file, db) {
+      function addLocalMedia(mediaKey, file) {
         var deferred = $q.defer();
         var keys = ['collection', 'tour', 'image'];
         var req = indexedDB.open('tempblob');
