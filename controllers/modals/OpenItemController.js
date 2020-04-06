@@ -30,7 +30,6 @@
             $('#openModal').modal('hide');
           });
         } else if (itemType === 'tour') {
-          // console.log({editTour:$scope.tour.edit});
           $scope.playTour($scope.openItemUrl, !!$scope.tour.edit);
           $('#openModal').modal('hide');
         } else if (itemType === 'FITS image') {
@@ -54,7 +53,6 @@
 
       $scope.mediaFileChange = function (e) {
         var type = $rootScope.openType;
-        console.time('openLocal: ' + type);
         var file = e.target.files[0];
 
         if (!file.name) {
@@ -64,7 +62,6 @@
         $scope[type + 'FileName'] = file.name;
 
         media.addLocalMedia(type, file).then(function (mediaResult) {
-          console.timeEnd('openLocal: ' + type);
           $scope.openItemUrl = mediaResult.url;
           $scope.openItem();
           $('#addFileReset')[0].reset();
