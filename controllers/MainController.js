@@ -78,6 +78,15 @@ wwt.controllers.controller(
           if (imageryName == '')
             imageryName = '-';
 
+          if (!imageryName && $scope.lookAt == "Planet") {
+            // If/when we switch to a new Look At mode, the default behavior
+            // is to switch to the first item on its new Imagery list (see the
+            // dropdownInvoked bit below, and see how above we set the 0th
+            // item in the list to be a "-" placeholder. For Planet mode,
+            // though, we want to default to Mars, because it's cool.
+            imageryName = "Mars";
+          }
+
           $scope.surveys = collection;
           var foundName = false;
 
