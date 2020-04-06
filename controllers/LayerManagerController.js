@@ -328,7 +328,7 @@ wwt.controllers.controller(
               ]
             }),
             new treeNode({
-              name: $scope.getFromEn('2d Sky'),
+              name: $scope.getFromEn('2D Sky'),
               checked: true,
               action: 'showSkyNode',
               children: [
@@ -345,7 +345,7 @@ wwt.controllers.controller(
               ]
             }),
             new treeNode({
-              name: $scope.getFromEn('3d Solar System'),
+              name: $scope.getFromEn('3D Universe'),
               checked: true,
               action: 'showSolarSystem',
               children: [
