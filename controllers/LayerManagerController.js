@@ -350,6 +350,10 @@ wwt.controllers.controller(
               action: 'showSolarSystem',
               children: [
                 new treeNode({
+                  name: $scope.getFromEn('Cosmos (SDSS Galaxies)'),
+                  checked: true,
+                  action: 'solarSystemCosmos'
+                }), new treeNode({
                   name: $scope.getFromEn('Milky Way (Dr. R. Hurt)'),
                   checked: true,
                   action: 'solarSystemMilkyWay'
