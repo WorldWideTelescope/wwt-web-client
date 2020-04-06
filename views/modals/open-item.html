@@ -12,11 +12,15 @@
           {{openType}}</h5>
       </div>
       <div class="modal-body">
-        <p>Enter the Url for the {{openType}} you want to open in WorldWide Telescope</p>
+        <p>Enter the URL of the {{openType}} you want to open in WorldWide Telescope</p>
+
         <div class="form-group">
-          <!--<label for="txtOpenItem">Enter {{openType}} url</label>-->
-          <input type="url" class="form-control" ng-model="openItemUrl" id="txtOpenItem"
-                 placeholder="Enter {{openType}} url" ng-disabled="imageFail">
+          <input type="url"
+                 class="form-control"
+                 ng-model="openItemUrl"
+                 id="txtOpenItem"
+                 placeholder="http://..."
+                 ng-disabled="imageFail">
         </div>
 
         <div ng-if="openType=='tour'" class="pull-right">
