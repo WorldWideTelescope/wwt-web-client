@@ -65,16 +65,16 @@ module.exports = function (grunt) {
           'directives/movable.js',
 
           'factories/AppState.js',
+          'factories/AutohidePanels.js',
           'factories/FinderScope.js',
           'factories/HashManager.js',
           'factories/Localization.js',
+          'factories/MediaFile.js',
           'factories/SearchUtil.js',
           'factories/Skyball.js',
           'factories/ThumbList.js',
           'factories/UILibrary.js',
           'factories/Util.js',
-          'factories/autohidepanels.js',
-          'factories/mediafile.js',
 
           'dataproxy/Astrometry.js',
           'dataproxy/Community.js',

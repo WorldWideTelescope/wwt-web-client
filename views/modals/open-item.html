@@ -1,19 +1,28 @@
-﻿<div class="modal wwt-modal" id="openModal" tabindex="-1" role="dialog" aria-labelledby="openModalLabel" aria-hidden="true" ng-controller="OpenItemController">
-	<div class="modal-dialog">
-		<div class="modal-content">
+﻿<div class="modal wwt-modal"
+     id="openModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="openModalLabel"
+     aria-hidden="true"
+     ng-controller="OpenItemController">
+  <div class="modal-dialog">
+    <div class="modal-content">
       <div class="modal-header" data-movable="1" data-movable-target=".modal-dialog">
         <h5><span localize="Open"></span>
-        {{openType}}</h5>
+          {{openType}}</h5>
       </div>
-			<div class="modal-body">
+      <div class="modal-body">
+        <p>Enter the URL of the {{openType}} you want to open in WorldWide Telescope</p>
 
-
-        <p>Enter the Url for the {{openType}} you want to open in WorldWide Telescope</p>
         <div class="form-group">
-          <!--<label for="txtOpenItem">Enter {{openType}} url</label>-->
-          <input type="url" class="form-control" ng-model="openItemUrl" id="txtOpenItem"
-                 placeholder="Enter {{openType}} url" ng-disabled="imageFail">
+          <input type="url"
+                 class="form-control"
+                 ng-model="openItemUrl"
+                 id="txtOpenItem"
+                 placeholder="http://..."
+                 ng-disabled="imageFail">
         </div>
+
         <div ng-if="openType=='tour'" class="pull-right">
           <div class="checkbox">
             <label data-ng-class="tour.edit ? 'checked' : ''">
@@ -22,6 +31,7 @@
             </label>
           </div>
         </div>
+
         <div ng-if="openType != 'image'">
           <p localize="Or"></p>
           <a class="btn" localize="Choose local file" href="#" onclick="$('#addFile')[0].click()"/>
@@ -31,36 +41,41 @@
         </div>
 
         <div ng-show="imageFail">
-					<hr/>
-					<div ng-switch="importState">
-						<div ng-switch-when="astrometrysuccess">
-							<p localize="Astrometry.net has resolved your image. Click Save and Import to view in the Web control."></p>
-						</div>
-						<div ng-switch-when="astrometryFail">
-							<p><span localize="Astrometry.net could not resolve your image."></span> <a ng-click="solveAstrometry()" href="javascript:void(0)" localize="Retry"></a>.</p>
-						</div>
-						<div ng-switch-when="notAVMTagged">
-							<p>
-								<button type="button" style="margin-left:16px" class="btn btn-info pull-right" ng-click="solveAstrometry()">
-									<span localize="Solve with Astrometry.net"></span>
-									<i class=" fa fa-arrow-right"></i></button>
-								<span localize="AVM position data not found. You may try to resolve the image position using the"></span> <a href="//astrometry.net/" target="astrometry" localize="astrometry.net">astrometry.net</a>  <span localize="service"></span>
-							</p>
-						</div>
-						<div ng-switch-when="astrometryProgress">
-							<p localize="Resolving image position using astrometry.net. This may take a few minutes."></p>
-							<p><strong localize="Status">Status:</strong> <span>{{astrometryStatusText}}</span></p>
-							<div class="progress progress-striped active" style="margin:8px 0;">
-								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer" style="border: none" ng-show="!imageFail">
-				<a class="btn" style="width:80px" ng-click="openItem(openType)" localize="Open"></a>
-				<a class="btn" data-dismiss="modal" style="width:80px" localize="Close"></a>
-			</div>
-		</div>
+	  <hr/>
+	  <div ng-switch="importState">
+	    <div ng-switch-when="astrometrysuccess">
+	      <p localize="Astrometry.net has resolved your image. Click Save and Import to view in the Web control."></p>
+	    </div>
+
+	    <div ng-switch-when="astrometryFail">
+	      <p><span localize="Astrometry.net could not resolve your image."></span>
+                <a ng-click="solveAstrometry()" href="javascript:void(0)" localize="Retry"></a>.</p>
+	    </div>
+
+	    <div ng-switch-when="notAVMTagged">
+	      <p>
+		<button type="button" style="margin-left:16px" class="btn btn-info pull-right" ng-click="solveAstrometry()">
+		  <span localize="Solve with Astrometry.net"></span>
+		  <i class=" fa fa-arrow-right"></i></button>
+		<span localize="AVM position data not found. You may try to resolve the image position using the"></span> <a href="//astrometry.net/" target="astrometry" localize="astrometry.net">astrometry.net</a>  <span localize="service"></span>
+	      </p>
+	    </div>
+
+	    <div ng-switch-when="astrometryProgress">
+	      <p localize="Resolving image position using astrometry.net. This may take a few minutes."></p>
+	      <p><strong localize="Status">Status:</strong> <span>{{astrometryStatusText}}</span></p>
+	      <div class="progress progress-striped active" style="margin:8px 0;">
+		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+	      </div>
+	    </div>
+	  </div>
 	</div>
+      </div>
+
+      <div class="modal-footer" style="border: none" ng-show="!imageFail">
+	<a class="btn" style="width:80px" ng-click="openItem(openType)" localize="Open"></a>
+	<a class="btn" data-dismiss="modal" style="width:80px" localize="Close"></a>
+      </div>
+    </div>
+  </div>
 </div>

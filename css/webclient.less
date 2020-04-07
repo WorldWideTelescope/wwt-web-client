@@ -1217,6 +1217,10 @@ body.wwt-webclient-wrapper.mobile {
         font-size: 11px;
         margin-top: 1px;
         margin-left: 1px;
+
+        // Both of these settings are needed to get overlong labels to ellipsize.
+        white-space: nowrap;
+        text-overflow: ellipsis;       
       }
 
       div.menu-container {
