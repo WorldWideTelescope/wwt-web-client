@@ -40,6 +40,28 @@
 
         bindEvents();
         settingChange();
+
+        // This is a hack to make it so that the other settings defined by the
+        // SettingsController (beyond autohide settings) are applied on
+        // startup. The SettingsController can't do that itself since it's
+        // only initialized when the user navigates to the Settings tab in the
+        // UI. The real solution is to turn the settings into something like a
+        // Factory rather than a Controller, since they should have their own
+        // existence separate from any UI elements, but that's a bit bigger
+        // undertaking and there are only a couple of items. Inspired by
+        // GitHub issue #287.
+
+        var settings = appState.get('settings');
+
+        if (settings) {
+          if (settings.crosshairs !== undefined) {
+            wwt.wc.settings.set_showCrosshairs(settings.crosshairs);
+          }
+
+          if (settings.smoothPanning !== undefined) {
+            wwt.wc.settings.set_smoothPan(settings.smoothPanning);
+          }
+        }
       };
 
       var bindEvents = function () {

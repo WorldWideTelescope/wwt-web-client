@@ -320,10 +320,6 @@ wwt.controllers.controller(
                       action: 'showPrecessionChart'
                     })
                   ]
-                }), new treeNode({
-                  name: $scope.getFromEn('Crosshairs'),
-                  checked: true,
-                  action: 'showCrosshairs'
                 })
               ]
             }),

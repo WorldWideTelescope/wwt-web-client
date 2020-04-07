@@ -10,6 +10,9 @@ wwt.controllers.controller(
     '$q',
 
     function ($scope, $rootScope, appState, $timeout, $cookies, util, $q) {
+      // See also factories/AutohidePanels.js, which implements a hack to
+      // restore settings upon app startup.
+
       $scope.defaults = {
 	autoHideTabs: false,
 	autoHideContext: false,
