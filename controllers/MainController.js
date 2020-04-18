@@ -287,7 +287,14 @@ wwt.controllers.controller(
 
           var goPlace = function (place, delay) {
             if (obj['ra']) {
-              wwt.wc.add_arrived(goto);
+              // Immediately after the WWTControl calls the "arrived"
+              // callback, it clears its mover, so if we call `goto` directly
+              // in the callback it effect gets nullified. That's why the
+              // callback schedules `goto` in a timeout instead. This leads to
+              // a two-step goto effect, but if we schedule the goto
+              // separately it clears the foregroundimageset associated with
+              // this place.
+              wwt.wc.add_arrived(function () { setTimeout(goto, 0); });
             }
 
             $scope.setForegroundImage(place);
