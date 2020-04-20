@@ -1,44 +1,67 @@
-﻿<div class="property-panel" ng-if="propertyItem">
-	<a class="thumbnail pull-left">
-		<img ng-src="{{propertyItem.get_thumbnailUrl()||propertyItem.imageSet.get_thumbnailUrl()}}" />
-	</a>
-	<h4><strong localize="Classification"></strong>: <span>{{getClassificationText(propertyItem.get_classification())}}</span></h4>
-	<h4 ng-if="!propertyItem.isSurvey"><strong localize="Constellation"></strong>: <span>{{constellations.fullNames[propertyItem.get_constellation()]}}</span></h4>
-	<h4><strong localize="Names"></strong>: <span>{{propertyItem.get_names()?propertyItem.get_names().join(', '): propertyItem.get_name()}}</span></h4>
-	<hr />
-	<div style="width:48%;display:inline-block" ng-if="!propertyItem.isSurvey">
-		<p><label localize="RA"></label>: <span>{{formatHms(propertyItem.get_RA(), true)}}</span></p>
-		<p><label localize="Dec"></label>: <span>{{formatHms(propertyItem.get_dec(), false, true, true)}}</span></p>
-		<p><label localize="Alt"></label>: <span>{{formatHms(propertyItem.altAz.get_alt(), false, false, true)}}</span></p>
-		<p><label localize="Az"></label>: <span>{{formatHms(propertyItem.altAz.get_az(), false, false, true)}}</span></p>
-	</div>
-	<div style="width:48%;display:inline-block;margin-left:7px;">
-		<p>
-			<label localize="Rise"></label>: <span>
-				{{propertyItem.riseSet ? propertyItem.riseSet.bNeverRises ? loc.neverRises : formatDecimalHours(propertyItem.riseSet.rise, false, false, true) : loc.na}}
-			</span>
-		</p>
-		<p><label localize="Transit"></label>:  <span>{{propertyItem.riseSet ? formatDecimalHours(propertyItem.riseSet.transit, false, false, true) : loc.na }}</span></p>
-		<p><label localize="Set"></label>: <span>{{propertyItem.riseSet ? propertyItem.riseSet.bNeverSets? loc.neverSets : formatDecimalHours(propertyItem.riseSet.set, false, false, true) : loc.na}}</span></p>
-	</div>
-	<div style="margin-bottom:8px;">
-		<h5 style="margin-bottom:5px;" localize="Image Credit">Image Credit:</h5>
-		<p style="max-height:35px;overflow:hidden">
-			<a href="{{getCreditsUrl(propertyItem)}}" target="_blank" title="{{getCreditsText(propertyItem)}}">{{getCreditsText(propertyItem)}}</a>
-		</p>
-		
-	</div>
-	<div style="height:30px;">
-		<div class="buttons pull-right">
+﻿<div class="property-panel">
+  <a class="thumbnail pull-left">
+    <img ng-src="{{propertyItem.get_thumbnailUrl()||propertyItem.imageSet.get_thumbnailUrl()}}" />
+  </a>
 
-			<div ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="dropup" style="display: inline-block">
-				<a class="btn" data-toggle="dropdown" role="button">
-					<span localize="Research"></span>
-					<i class="fa fa-caret-down" style="font-size:12px"></i>
-				</a>
-			</div>
-			<a ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="btn" localize="Show Object"></a>
-			<a class="btn close-btn pull-right" ng-click="$hide()" localize="Close"></a>
-		</div>
-	</div>
+  <h4>
+    <strong localize="Classification"></strong>: <span>{{getClassificationText(propertyItem.get_classification())}}</span>
+  </h4>
+
+  <h4 ng-if="!propertyItem.isSurvey">
+    <strong localize="Constellation"></strong>: <span>{{constellations.fullNames[propertyItem.get_constellation()]}}</span>
+  </h4>
+
+  <h4>
+    <strong localize="Names"></strong>: <span>{{propertyItem.get_names()?propertyItem.get_names().join(', '): propertyItem.get_name()}}</span>
+  </h4>
+
+  <hr />
+
+  <div style="width:48%;display:inline-block" ng-if="!propertyItem.isSurvey">
+    <p><label localize="RA"></label>: <span>{{formatHms(propertyItem.get_RA(), true)}}</span></p>
+    <p><label localize="Dec"></label>: <span>{{formatHms(propertyItem.get_dec(), false, true, true)}}</span></p>
+    <p><label localize="Alt"></label>: <span>{{formatHms(propertyItem.altAz.get_alt(), false, false, true)}}</span></p>
+    <p><label localize="Az"></label>: <span>{{formatHms(propertyItem.altAz.get_az(), false, false, true)}}</span></p>
+  </div>
+
+  <div style="width:48%;display:inline-block;margin-left:7px;">
+    <p>
+      <label localize="Rise"></label>: <span>
+	{{propertyItem.riseSet ? propertyItem.riseSet.bNeverRises ? loc.neverRises : formatDecimalHours(propertyItem.riseSet.rise, false, false, true) : loc.na}}
+      </span>
+    </p>
+
+    <p>
+      <label localize="Transit"></label>:
+      <span>{{propertyItem.riseSet ? formatDecimalHours(propertyItem.riseSet.transit, false, false, true) : loc.na }}</span>
+    </p>
+
+    <p>
+      <label localize="Set"></label>:
+      <span>{{propertyItem.riseSet ? propertyItem.riseSet.bNeverSets? loc.neverSets : formatDecimalHours(propertyItem.riseSet.set, false, false, true) : loc.na}}</span>
+    </p>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <h5 style="margin-bottom:5px;" localize="Image Credit">Image Credit:</h5>
+
+    <p style="max-height:35px;overflow:hidden">
+      <a href="{{getCreditsUrl(propertyItem)}}" target="_blank" title="{{getCreditsText(propertyItem)}}">{{getCreditsText(propertyItem)}}</a>
+    </p>
+  </div>
+
+  <div style="height:30px;">
+    <div class="buttons pull-right">
+      <div ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="dropup" style="display: inline-block">
+	<a class="btn" data-toggle="dropdown" role="button">
+	  <span localize="Research"></span>
+	  <i class="fa fa-caret-down" style="font-size:12px"></i>
+	</a>
+      </div>
+
+      <a ng-if="!propertyItem.isSurvey && !propertyItem.isExploreTab" class="btn" localize="Show Object"></a>
+
+      <a class="btn close-btn pull-right" ng-click="$hide()" localize="Close"></a>
+    </div>
+  </div>
 </div>
