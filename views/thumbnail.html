@@ -9,10 +9,7 @@
         <div ng-if="!item.get_isFolder() && item.get_name() != 'Up Level'"
              id="menuContainer{{$index}}"
              class="{{dropdownClass}}">
-            <div bs-popover="popover" class="thumb-popover" tabindex="0"
-                 data-placement="{{popupPosition}}{{$index == 0 || (is_mobile && $index % 3 == 0) ? '-left' : $index == collectionPage.length - 1 || (is_mobile && $index % 3 == 2) ? '-right' : ''}}"
-                 data-content-template="{{staticAssetsPrefix}}views/popovers/property-panel.html"
-                 data-container="body">&nbsp;</div>
+            <div bs-popover="popover" class="thumb-popover" tabindex="0">&nbsp;</div>
             <a data-toggle="dropdown" role="button" class="drop-toggle">&nbsp;</a>
         </div>
         <i class="fa fa-image"

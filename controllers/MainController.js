@@ -30,10 +30,11 @@ wwt.controllers.controller(
     '$cookies',
     'AutohidePanels',
     '$window',
+    '$popover',
 
     function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope,
               searchDataService, places, util, hashManager, skyball, searchUtil, $modal,
-              $element, $cookies, AutohidePanels, $window)
+              $element, $cookies, AutohidePanels, $window, $popover)
     {
       //TODO - figure out how to clean up lame long list of dependencies injected
       var ctl;
@@ -1119,7 +1120,18 @@ wwt.controllers.controller(
 
       $scope.showProperties = function () {
         $('.popover-content .close-btn').click();
-        $('.dropdown.open #researchMenu, .dropup.open #researchMenu').closest('.thumbwrap').find('.thumb-popover').click();
+
+        var tp = $('.dropdown.open #researchMenu, .dropup.open #researchMenu').closest('.thumbwrap').find('.thumb-popover');
+        var pop = $popover(tp, {
+          container: 'body',
+          contentTemplate: wwt.staticAssetsPrefix + 'views/popovers/property-panel.html',
+          placement: 'auto bottom',
+          scope: $scope,
+        });
+
+        pop.$promise.then(function () {
+          pop.show();
+        });
       };
 
       $scope.setTrackingObj = function (item) {
