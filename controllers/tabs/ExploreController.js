@@ -134,13 +134,20 @@
           newCollectionUrl: newCollectionUrl
         };
 
-        var newParams = thumbList.clickThumb(item, $scope, outParams, checkAnnotations);
+        function callback() {
+          if (typeof folderCallback === 'function') {
+            folderCallback();
+          }
+
+          checkAnnotations();
+        }
+
+        var newParams = thumbList.clickThumb(item, $scope, outParams, callback);
         bc = newParams.breadCrumb;
         cache = newParams.cache;
         openCollection = newParams.openCollection;
         newCollectionUrl = newParams.newCollectionUrl;
         depth = newParams.depth;
-        //checkAnnotations();
       };
 
       $scope.expanded = false;
