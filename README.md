@@ -6,33 +6,20 @@ The “web client” of the [AAS](https://aas.org/)
 [WorldWide Telescope](http://worldwidetelescope.org/home) (WWT) is a web
 application that lets you explore the universe from the comfort of your chair.
 
-### <http://worldwidetelescope.org/webclient>
+### <https://worldwidetelescope.org/webclient/>
 
-WWT is a free, open-source tool for visually exploring humanity’s scientific
-understanding of the Universe. The web client is the primary portal by which
-people interact with WWT — allowing interactive exploration of terabytes of
-astronomical data in a seamlessly integrated 4D simulation of the known
-universe. However, the WWT software ecosystem also includes a Windows
-application that can power planetariums (see [wwt-windows-client]), a reusable
-JavaScript library for building custom web apps ([wwt-webgl-engine]), and
-[pywwt], a Python package for research data visualization.
+Learn more about WWT [here](https://worldwidetelescope.org/home).
 
-[wwt-windows-client]: https://github.com/WorldWideTelescope/wwt-windows-client
-[wwt-webgl-engine]: https://github.com/WorldWideTelescope/wwt-webgl-engine
-[pywwt]: https://pywwt.readthedocs.io/
+The webclient is an [AngularJS] web app powered by the [WWT WebGL Engine]
+JavaScript library.
 
-WWT is brought to you by the non-profit [American Astronomical Society] (AAS)
-and the [.NET Foundation]. Established in 1899 and based in Washington, DC,
-the AAS is the major organization of professional astronomers in North
-America.
-
-[American Astronomical Society]: https://aas.org/
-[.NET Foundation]: https://dotnetfoundation.org/
+[AngularJS]: https://angularjs.org/
+[WWT WebGL Engine]: https://github.com/WorldWideTelescope/wwt-webgl-engine
 
 
 ## Building and Testing
 
-In order to build and test the website, you need:
+In order to build and test the app, you need:
 
 1. [Node.js](https://nodejs.org/), specifically the `npm` command. If you need
    to install Node.js, use your operating system’s package manager or visit
@@ -53,7 +40,9 @@ Once that has been done, you can build the website with:
 grunt dist-dev
 ```
 
-Then, we recommend running:
+This will create the app files in the `dist` subdirectory of your repository
+checkout. To test, all you need is a local HTTP file server pointing at that
+subdirectory. We recommend:
 
 ```
 npx http-server dist
@@ -63,9 +52,22 @@ This server (and most other static-file servers) will print out a URL that you
 can visit to test out the web client locally.
 
 There are also `dist-prod` and `dist-localtest` tasks that configure the build
-slightly differently. In particular, by creating a `profile-localtest.yml`
-file derived from `profile-dev.yml`, you can monkey with some low-level
-settings if you need to do so for testing purposes.
+slightly differently — consult the `profile-*.yml` files, especially
+`profile-prod.yml`, to see the parameters that change. By creating a
+`profile-localtest.yml` file derived from `profile-dev.yml`, you can monkey
+with some low-level settings if you need to do so for testing purposes.
+
+
+## Deployment
+
+Merges to the `master` branch of this repository will be built and
+automatically deployed to the testing version of the webclient:
+
+### <https://worldwidetelescope.org/testing_webclient/>
+
+The production webclient is updated by creating a new release, which is done
+by pushing to this repository a Git tag whose name has the form `vX.Y.Z`. The
+version in the `package.json` file should also be updated when doing this.
 
 
 ## Getting involved
@@ -97,6 +99,7 @@ has been supported by the [American Astronomical Society] (AAS), the US
 [National Science Foundation] (grants [1550701] and [1642446]), the [Gordon
 and Betty Moore Foundation], and [Microsoft].
 
+[American Astronomical Society]: https://aas.org/
 [.NET Foundation]: https://dotnetfoundation.org/
 [National Science Foundation]: https://www.nsf.gov/
 [1550701]: https://www.nsf.gov/awardsearch/showAward?AWD_ID=1550701
