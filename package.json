@@ -1,7 +1,7 @@
 {
     "name": "aas-worldwide-telescope-webclient",
     "description": "AAS WorldWide Telescope web client",
-    "version": "6.0.6",
+    "version": "6.0.7",
     "keywords": [
         "AAS WorldWide Telescope"
     ],
