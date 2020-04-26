@@ -124,7 +124,7 @@
 
 	    var searchPlaces = ssPlaces.concat(constellationPlaces);
 	    var results = [];
-            var ss = [];
+            var solsys = [];
             var imgsets = [];
 
 	    $.each(searchPlaces, function(i, place) {
@@ -136,7 +136,7 @@
 		    place.fromCenter = placeDist.length();
 
 		    if (place.get_constellation() === 'SolarSystem') {
-		      ss.push(place)
+		      solsys.push(place)
                     } else if (place.get_studyImageset()) {
 		      imgsets.push(place);
                     } else {
@@ -149,8 +149,8 @@
 	      }
 	    });
 
-	    ss = ss.sort(sortByImagery);
-	    deferred.resolve(ss.concat(imgsets.sort(sortByImagery), results.sort(sortByImagery)));
+	    solsys = solsys.sort(sortByImagery);
+	    deferred.resolve(solsys.concat(imgsets.sort(sortByImagery), results.sort(sortByImagery)));
 	  } else {
 	    deferred.resolve([]);
 	  }

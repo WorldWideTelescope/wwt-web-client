@@ -167,7 +167,7 @@
 
         col.forEach(function(place) {
 
-          if (ss.canCast(place, wwtlib.Place) &&
+          if (wwtlib.ss.canCast(place, wwtlib.Place) &&
               place.annotation && place.annotation.length) {
             hasAnnotations = true;
             var opts = uiLib.annotationOpts(place.annotation);

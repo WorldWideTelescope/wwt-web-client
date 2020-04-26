@@ -191,18 +191,6 @@ wwt.controllers.controller(
         update_window_size();
 
         ctl = $rootScope.ctl = wwtlib.WWTControl.initControlParam("WWTCanvas", appState.get('WebGl'));
-
-        // The .8 release of scriptsharp changed the location of the canCast function
-        // This logic exists to ensure backwards compatibility when testing an older version
-        // of the framework.
-        if (window.Type && Type.canCast) {
-          if (window.ss) {
-            window.ss.canCast = Type.canCast;
-          } else {
-            window.ss = {canCast: Type.canCast};
-          }
-        }
-
         wwt.wc = ctl;
 
         ctl.add_ready(function () {
@@ -743,7 +731,7 @@ wwt.controllers.controller(
         }
         $scope.setTrackingObj(item);
 
-        if (!item.isSurvey && ss.canCast(item, wwtlib.Place)) {
+        if (!item.isSurvey && wwtlib.ss.canCast(item, wwtlib.Place)) {
           $('.finder-scope').hide();
           //$('.cross-fader').parent().toggle(imageSet!=null);
           $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);

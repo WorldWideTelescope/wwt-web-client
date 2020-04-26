@@ -502,7 +502,7 @@ wwt.controllers.controller(
       };
 
       var formatDateTime = function(d) {
-        return ss.format('{0:yyyy/MM/dd}', d) + ss.format(' {0:HH:mm:ss}',d);
+        return wwtlib.ss.format('{0:yyyy/MM/dd}', d) + wwtlib.ss.format(' {0:HH:mm:ss}',d);
       }
 
       $scope.setTimeSeries = function(layer,enable) {

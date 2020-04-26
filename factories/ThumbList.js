@@ -225,11 +225,11 @@ wwt.app.factory(
           }
         }
 
-        if ((ss.canCast(item, wwtlib.Place) || item.isEarth) && !item.isSurvey) {
+        if ((wwtlib.ss.canCast(item, wwtlib.Place) || item.isEarth) && !item.isSurvey) {
           scope.setForegroundImage(item);
         }
 
-        if (ss.canCast(item, wwtlib.Tour)) {
+        if (wwtlib.ss.canCast(item, wwtlib.Tour)) {
           scope.playTour(item.get_tourUrl());
         }
 
