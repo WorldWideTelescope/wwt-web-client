@@ -47,7 +47,7 @@
 			}
 			
 			
-			if (ss.canCast(item, wwtlib.Tour)) {
+			if (wwtlib.ss.canCast(item, wwtlib.Tour)) {
 				$scope.playTour(item.get_tourUrl());
 				if ($rootScope.is_mobile) {
 					$rootScope.landscapeMessage = true;

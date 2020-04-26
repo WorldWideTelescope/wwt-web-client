@@ -27,7 +27,7 @@ core_static_url_prefix: //cdn.worldwidetelescope.org/
 # The URL prefix for finding the Web engine. In production, we want to route
 # this through the CDN. In development we want to use the testing version or
 # perhaps even a local hacked version.
-webgl_engine_url_prefix: //web.wwtassets.org/engine/6.0
+webgl_engine_url_prefix: //web.wwtassets.org/engine/7.0
 
 # This string gets munged into CSS and JS references to potentially referenced
 # minified versions ("foo.min.js") instead of un-minified ("foo.js").
