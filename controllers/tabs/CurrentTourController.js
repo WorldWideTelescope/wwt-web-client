@@ -80,10 +80,6 @@ wwt.controllers.controller(
       };
 
       var initEditMode = function () {
-        if (!util.isWindows && !util.isChrome) {
-          alert('Editing Tours requires advanced browser features. For the best experience, please use Chrome. There are known incompatibilities in other browsers.');
-        }
-
         if ($rootScope.editingTour !== true)
           return;
 
