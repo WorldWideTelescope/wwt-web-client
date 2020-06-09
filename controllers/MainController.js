@@ -842,16 +842,12 @@ wwt.controllers.controller(
       };
 
       $scope.playTour = function (url, edit) {
-        if (!edit) {
-          util.goFullscreen();
-        }
-
         $('.finder-scope').hide();
 
         wwt.wc.add_tourError(function(e) {
-          util.toggleFullScreen();
+          util.exitFullscreen();
           $scope.$applyAsync(function() {
-            wwt.tourPlaying =$rootScope.tourPlaying = false;
+            wwt.tourPlaying = $rootScope.tourPlaying = false;
           });
           uiLibrary.showErrorMessage('There was an error loading this tour. The tour file may be damaged or inaccessible.');
           console.warn('Tour error',$scope,e);
