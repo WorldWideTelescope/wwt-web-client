@@ -183,8 +183,7 @@
 	      intro: loc('If you have a foreground and background image showing, you can adjust the opacity of the foreground image with the “Image Crossfade” slider.'),
 	      position: 'top',
 	      before: function () {
-	        $('.finder-scope').prop('hidden', true).fadeOut();
-
+	        $('.finder-scope').fadeOut();
 	      }
             }, {
 	      element: $('#topPanel')[0],
@@ -269,8 +268,7 @@
 	      intro: loc('Near the bottom is a menu that controls what you are looking at.  You can look at the Sky, which is what you are looking at now.'),
 	      position: 'top',
 	      before: function () {
-	        $('.finder-scope').prop('hidden', true).fadeOut();
-
+	        $('.finder-scope').fadeOut();
 	      }
             }, {
 	      element: $('#lstLookAt')[0],
