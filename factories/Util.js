@@ -322,6 +322,9 @@
           location.hash = '/';
         }
 
+        wwtlib.WWTControl.singleton.renderContext.viewCamera.rotation = 0;
+        wwtlib.WWTControl.singleton.renderContext.viewCamera.angle = 0;
+        wwtlib.WWTControl.singleton.renderContext.viewCamera.opacity = 100;
         wwt.wc.gotoRaDecZoom(0, 0, 60, true);
       };
 
