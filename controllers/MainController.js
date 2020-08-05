@@ -578,6 +578,21 @@ wwt.controllers.controller(
           finderMoved = true;
 
       $scope.showFinderScope = function (event) {
+        // On Windows, right-click brings up the finder scope and control-click
+        // rolls the view. On Macs, control-click brings up the context menu --
+        // i.e., the same action as a right-click. This function is triggered by
+        // contextmenu events, so it gets called for either action. Without
+        // special handling, this means that an attempt to roll the view also
+        // pulls up the finder scope, which is annoying. Here we ignore events
+        // triggered when the control key is held down. Note this means that Mac
+        // users with a single-button mouse won't be able to pull up the finder
+        // scope. That feels like an OK price to pay.
+        if (event.originalEvent && event.originalEvent.ctrlKey) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
         if ($scope.lookAt === 'Sky' && !$scope.editingTour) {
           var finder = $('.finder-scope');
           var wasHidden = (finder.prop('display') == 'none');
