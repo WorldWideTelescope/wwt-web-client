@@ -1,6 +1,7 @@
 {
-  "author": "The AAS WorldWide Telescope Developers",
+  "author": "The AAS WorldWide Telescope Team <wwt@aas.org>",
   "bugs": {
+    "email": "wwt@aas.org",
     "url": "https://github.com/WorldWideTelescope/wwt-web-client/issues"
   },
   "buildConfig": {
@@ -24,12 +25,15 @@
   "engines": {
     "node": "~0.10.1"
   },
-  "homepage": "https://worldwidetelescope.org/",
+  "homepage": "https://worldwidetelescope.org/webclient/",
   "keywords": [
     "AAS WorldWide Telescope"
   ],
   "license": "MIT",
   "name": "@wwtelescope/webclient",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/WorldWideTelescope/wwt-web-client.git"
