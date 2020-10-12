@@ -102,20 +102,53 @@
         return (n >= 0) ? Math.floor(n) : Math.ceil(n);
       }
 
-      function formatHms(angle, isHmsFormat, signed, spaced) {
-        var minutes = (angle - truncate(angle)) * 60;
-        var seconds = (minutes - truncate(minutes)) * 60;
-        minutes = Math.abs(minutes);
-        seconds = Math.abs(seconds);
+      function formatHms(angle, isHmsFormat, signed, spaced, extraPrecision) {
+        var sign = '';
 
-        var join = spaced ? ' : ' : ':';
-        if (isNaN(angle)) {
-          angle = minutes = seconds = 0;
+        if (angle < 0) {
+          sign = '-';
+          angle = -angle;
+        } else if (signed) {
+          sign = '+';
         }
-        return isHmsFormat ? int2(angle) + 'h'
-          + int2(minutes) + 'm'
-          + int2(seconds) + 's' :
-          ([signed && angle > 0 ? '+' + int2(angle) : int2(angle), int2(minutes), int2(seconds)]).join(join);
+
+        var seps = [':', ':', ''];
+
+        if (isHmsFormat) {
+          seps = ['h', 'm', 's'];
+        } else if (spaced) {
+          seps = [' : ', ' : ', ''];
+        }
+
+        var values = ['??', '??', '??'];
+
+        if (!isNaN(angle)) {
+          var hourlike = Math.floor(angle);
+          var remainder = (angle - hourlike) * 60;
+          var minutes = Math.floor(remainder);
+          var seconds = (remainder - minutes) * 60;
+
+          values[0] = hourlike.toFixed(0);
+          if (hourlike < 10) {
+            values[0] = '0' + values[0];
+          }
+
+          values[1] = minutes.toFixed(0);
+          if (minutes < 10) {
+            values[1] = '0' + values[1];
+          }
+
+          if (isNaN(extraPrecision)) {
+            extraPrecision = 0;
+          }
+
+          values[2] = seconds.toFixed(extraPrecision);
+          if (seconds < 10) {
+            values[2] = '0' + values[2];
+          }
+        }
+
+        return sign.concat(values[0], seps[0], values[1], seps[1], values[2], seps[2]);
       };
 
       function parseHms(input) {

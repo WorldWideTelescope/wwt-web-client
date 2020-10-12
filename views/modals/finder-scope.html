@@ -10,7 +10,7 @@
 			<h4><strong localize="Names"></strong>: <span>{{scopePlace.get_names()?scopePlace.get_names().join(', '): scopePlace.get_name()}}</span></h4>
 			<hr />
 			<div style="width:48%;display:inline-block" ng-if="!scopePlace.isSurvey">
-				<p><label localize="RA"></label>: <span>{{formatHms(scopePlace.get_RA(), true)}}</span></p>
+				<p><label localize="RA"></label>: <span>{{formatHms(scopePlace.get_RA(), true, false, false, 1)}}</span></p>
 				<p><label localize="Dec"></label>: <span>{{formatHms(scopePlace.get_dec(), false, true, true)}}</span></p>
 				<p><label localize="Alt"></label>: <span>{{formatHms(scopePlace.altAz.get_alt(), false, false, true)}}</span></p>
 				<p><label localize="Az"></label>: <span>{{formatHms(scopePlace.altAz.get_az(), false, false, true)}}</span></p>

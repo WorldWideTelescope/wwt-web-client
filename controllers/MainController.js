@@ -527,7 +527,7 @@ wwt.controllers.controller(
           }
 
           $scope.formatted = {
-            RA: util.formatHms(viewport.RA, true),
+            RA: util.formatHms(viewport.RA, true, false, false, 1),
             Dec: util.formatHms(viewport.Dec, false, true),
             Lat: util.formatHms($scope.coords.get_lat(), false, false),
             Lng: util.formatHms(lng/*$scope.coords.get_lng()*/, false, false),
@@ -1061,8 +1061,8 @@ wwt.controllers.controller(
       //#endregion
 
       //#region view helpers
-      $scope.formatHms = function (angle, isHmsFormat, signed, spaced) {
-        return util.formatHms(angle, isHmsFormat, signed, spaced);
+      $scope.formatHms = function (angle, isHmsFormat, signed, spaced, extraPrecision) {
+        return util.formatHms(angle, isHmsFormat, signed, spaced, extraPrecision);
       };
 
       $scope.formatDecimalHours = function (dayFraction, spaced) {
