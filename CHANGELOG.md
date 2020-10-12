@@ -1,3 +1,7 @@
+# @wwtelescope/webclient 6.2.1 (2020-10-12)
+
+- Increase precision of RA readouts (#328, #326)
+
 # @wwtelescope/webclient 6.2.0 (2020-10-12)
 
 - Update the URL for the hosted engine JavaScript: `engine/7` as opposed to
