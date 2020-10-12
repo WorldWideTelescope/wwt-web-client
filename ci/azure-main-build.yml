@@ -40,6 +40,15 @@ jobs:
 
   # Main build:
 
+  - pwsh: |
+      $branch = "$(Build.SourceBranchName)"
+      if($branch = "rc") {
+        Write-Host "##vso[task.setvariable variable=profile;]prod"
+      } else {
+        Write-Host "##vso[task.setvariable variable=profile;]testing"
+      }
+    displayName: Set build parameters
+
   - task: Npm@1
     displayName: NPM install
     inputs:
