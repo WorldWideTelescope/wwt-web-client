@@ -18,7 +18,7 @@
   <hr />
 
   <div style="width:48%;display:inline-block" ng-if="!propertyItem.isSurvey">
-    <p><label localize="RA"></label>: <span>{{formatHms(propertyItem.get_RA(), true)}}</span></p>
+    <p><label localize="RA"></label>: <span>{{formatHms(propertyItem.get_RA(), true, false, false, 1)}}</span></p>
     <p><label localize="Dec"></label>: <span>{{formatHms(propertyItem.get_dec(), false, true, true)}}</span></p>
     <p><label localize="Alt"></label>: <span>{{formatHms(propertyItem.altAz.get_alt(), false, false, true)}}</span></p>
     <p><label localize="Az"></label>: <span>{{formatHms(propertyItem.altAz.get_az(), false, false, true)}}</span></p>
