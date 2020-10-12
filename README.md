@@ -1,4 +1,5 @@
 [![Build Status](https://dev.azure.com/aasworldwidetelescope/WWT/_apis/build/status/WorldWideTelescope.wwt-web-client?branchName=master)](https://dev.azure.com/aasworldwidetelescope/WWT/_build/latest?definitionId=4&branchName=master)
+[![npm](https://img.shields.io/npm/v/@wwtelescope/astro?label=@wwtelescope/astro)](https://www.npmjs.com/package/@wwtelescope/astro)
 
 # The AAS WorldWide Telescope Web Client
 
@@ -66,8 +67,9 @@ automatically deployed to the testing version of the webclient:
 ### <https://worldwidetelescope.org/testing_webclient/>
 
 The production webclient is updated by creating a new release, which is done
-by pushing to this repository a Git tag whose name has the form `vX.Y.Z`. The
-version in the `package.json` file should also be updated when doing this.
+using [Cranko] workflows.
+
+[Cranko]: https://pkgw.github.io/cranko/
 
 
 ## Getting involved

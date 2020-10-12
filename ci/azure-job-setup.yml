@@ -1,0 +1,75 @@
+# Copyright 2020 the .NET Foundation
+# Licensed under the MIT License
+
+# Setup steps for the deployment processes.
+
+parameters:
+- name: setupGit
+  type: boolean
+  default: false
+
+- name: setupNpm
+  type: boolean
+  default: false
+
+steps:
+- download: current
+
+- checkout: self
+  submodules: recursive
+
+- bash: |
+    set -euo pipefail
+    d="$(mktemp -d /tmp/cranko.XXXXXX)"
+    cd "$d"
+    curl --proto '=https' --tlsv1.2 -sSf https://pkgw.github.io/cranko/fetch-latest.sh | sh
+    echo "##vso[task.prependpath]$d"
+  displayName: Install latest Cranko (not Windows)
+  condition: and(succeeded(), ne(variables['Agent.OS'], 'Windows_NT'))
+
+- pwsh: |
+    $d = Join-Path $Env:Temp cranko-$(New-Guid)
+    [void][System.IO.Directory]::CreateDirectory($d)
+    cd $d
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+    iex ((New-Object System.Net.WebClient).DownloadString('https://pkgw.github.io/cranko/fetch-latest.ps1'))
+    echo "##vso[task.prependpath]$d"
+  displayName: Install latest Cranko (Windows)
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
+
+# work around https://github.com/microsoft/azure-pipelines-tasks/issues/10653
+# also note that `set -x` messes up `task.setvariable`
+- bash: |
+    set -euo pipefail
+
+    PIPELINE_WORKSPACE="$(Pipeline.Workspace)"
+    ARTIFACT_STAGING="$(Build.ArtifactStagingDirectory)"
+
+    if [[ $AGENT_OS == Windows_NT ]] ; then
+      PIPELINE_WORKSPACE=$(echo "$PIPELINE_WORKSPACE" | sed -e 's|\\|\/|g' -e 's|^\([A-Za-z]\)\:/\(.*\)|/\L\1\E/\2|')
+      ARTIFACT_STAGING=$(echo "$ARTIFACT_STAGING" | sed -e 's|\\|\/|g' -e 's|^\([A-Za-z]\)\:/\(.*\)|/\L\1\E/\2|')
+    fi
+
+    echo "##vso[task.setvariable variable=PIPELINE_WORKSPACE;]$PIPELINE_WORKSPACE"
+    echo "##vso[task.setvariable variable=ARTIFACT_STAGING;]$ARTIFACT_STAGING"
+  displayName: Ensure bash-friendly variable names
+
+- bash: |
+    set -xeuo pipefail
+    git switch -c release
+    git pull --ff-only $PIPELINE_WORKSPACE/git-release/release.bundle
+  displayName: Restore release commit
+
+- ${{ if parameters.setupGit }}:
+  - bash: |
+      cranko github install-credential-helper
+    displayName: Set up Git pushes
+    env:
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+- ${{ if parameters.setupNpm }}:
+  - bash: |
+      cranko npm install-token
+    displayName: Set up NPM authentication
+    env:
+      NPM_TOKEN: $(NPM_TOKEN)

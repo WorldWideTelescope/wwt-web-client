@@ -1,0 +1,68 @@
+# Copyright 2020 the .NET Foundation
+# Licensed under the MIT License
+
+jobs:
+- job: build_linux
+  pool:
+    vmImage: ubuntu-20.04
+
+  # Cranko: make and publish release commit
+
+  steps:
+  - bash: |
+      set -euo pipefail
+      d="$(mktemp -d /tmp/cranko.XXXXXX)"
+      cd "$d"
+      curl --proto '=https' --tlsv1.2 -sSf https://pkgw.github.io/cranko/fetch-latest.sh | sh
+      echo "##vso[task.prependpath]$d"
+    displayName: Install latest Cranko (not Windows)
+    condition: and(succeeded(), ne(variables['Agent.OS'], 'Windows_NT'))
+
+  - bash: |
+      set -xeuo pipefail
+      cranko release-workflow apply-versions
+      git add .
+      cranko release-workflow commit
+      git show HEAD
+    displayName: Make release commit
+
+  - bash: |
+      artifact_dir="$(Build.ArtifactStagingDirectory)/git-release"
+      mkdir -p "$artifact_dir"
+      git bundle create "$artifact_dir/release.bundle" origin/master..HEAD
+    displayName: Bundle release commit
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish release git bundle artifact
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/git-release'
+      artifactName: git-release
+
+  # Main build:
+
+  - pwsh: |
+      $branch = "$(Build.SourceBranchName)"
+      if($branch = "rc") {
+        Write-Host "##vso[task.setvariable variable=profile;]prod"
+      } else {
+        Write-Host "##vso[task.setvariable variable=profile;]testing"
+      }
+    displayName: Set build parameters
+
+  - task: Npm@1
+    displayName: NPM install
+    inputs:
+      command: 'install'
+
+  - task: Grunt@0
+    displayName: Build distribution directory with Grunt
+    inputs:
+      gruntFile: 'Gruntfile.js'
+      targets: 'dist-$(profile)'
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish web deployment artifacts
+    inputs:
+      targetPath: 'dist'
+      publishLocation: 'pipeline'
+      artifactName: webclient-dist

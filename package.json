@@ -1,38 +1,38 @@
 {
-    "name": "aas-worldwide-telescope-webclient",
-    "description": "AAS WorldWide Telescope web client",
-    "version": "6.1.3-beta.0",
-    "keywords": [
-        "AAS WorldWide Telescope"
-    ],
-    "homepage": "https://worldwidetelescope.org/",
-    "author": "The AAS WorldWide Telescope Developers",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/WorldWideTelescope/wwt-web-client.git"
-    },
-    "bugs": {
-        "url": "https://github.com/WorldWideTelescope/wwt-web-client/issues"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "grunt": "^1.0",
-        "grunt-autoprefixer": "^3.0",
-        "grunt-banner": "^0.6",
-        "grunt-contrib-concat": "^1.0",
-        "grunt-contrib-copy": "^1.0",
-        "grunt-contrib-cssmin": "^3.0",
-        "grunt-contrib-less": "^2.0",
-        "grunt-contrib-uglify": "^4.0",
-        "grunt-gitinfo": "^0.1",
-        "grunt-template": "^1.0",
-        "load-grunt-tasks": "^5.0",
-        "tslib": "^1.10.0"
-    },
-    "engines": {
-        "node": "~0.10.1"
-    },
-    "buildConfig": {
-        "uglify": true
-    }
+  "author": "The AAS WorldWide Telescope Developers",
+  "bugs": {
+    "url": "https://github.com/WorldWideTelescope/wwt-web-client/issues"
+  },
+  "buildConfig": {
+    "uglify": true
+  },
+  "description": "AAS WorldWide Telescope web client",
+  "devDependencies": {
+    "grunt": "^1.0",
+    "grunt-autoprefixer": "^3.0",
+    "grunt-banner": "^0.6",
+    "grunt-contrib-concat": "^1.0",
+    "grunt-contrib-copy": "^1.0",
+    "grunt-contrib-cssmin": "^3.0",
+    "grunt-contrib-less": "^2.0",
+    "grunt-contrib-uglify": "^4.0",
+    "grunt-gitinfo": "^0.1",
+    "grunt-template": "^1.0",
+    "load-grunt-tasks": "^5.0",
+    "tslib": "^1.10.0"
+  },
+  "engines": {
+    "node": "~0.10.1"
+  },
+  "homepage": "https://worldwidetelescope.org/",
+  "keywords": [
+    "AAS WorldWide Telescope"
+  ],
+  "license": "MIT",
+  "name": "@wwtelescope/webclient",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WorldWideTelescope/wwt-web-client.git"
+  },
+  "version": "0.0.0-dev.0"
 }
