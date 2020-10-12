@@ -1,0 +1,146 @@
+# Copyright 2020 the .NET Foundation
+# Licensed under the MIT License
+
+parameters:
+- name: isMainDev
+  type: boolean
+  default: false
+- name: isRelease
+  type: boolean
+  default: false
+
+jobs:
+
+# Deployment jobs that might happen on updates to either `master` *or* `rc`.
+# On updates to master, we deploy everything under the "latest" name. On
+# updates to `rc`, we deploy some subset of the projects that can only be
+# determined at runtime.
+
+- job: deploy
+  pool:
+    vmImage: windows-latest
+  variables:
+  - group: Deployment Credentials
+  steps:
+  - template: azure-job-setup.yml
+
+  - bash: |
+      set -euo pipefail
+      if [[ ${isMainDev} == True ]] ; then
+        tag=testing_webclient
+      elif cranko show if-released --exit-code @wwtelescope/webclient ; then
+        tag=webclient
+      else
+        # This should never happen in the current setup, but doesn't hurt
+        # to future-proof.
+        tag=skip
+      fi
+      echo "webclient deployment tag: $isMainDev, $isRelease => $tag"
+      echo "##vso[task.setvariable variable=WEBCLIENT_DEPLOYMENT_TAG;]$tag"
+    displayName: Determine deployment tag
+    env:
+      isMainDev: ${{ parameters.isMainDev }}
+      isRelease: ${{ parameters.isRelease }}
+
+  - task: AzureFileCopy@3
+    condition: and(succeeded(), ne(variables['WEBCLIENT_DEPLOYMENT_TAG'], 'skip'))
+    displayName: Deploy webclient artifacts
+    inputs:
+      SourcePath: '$(Pipeline.Workspace)/webclient-dist'
+      azureSubscription: 'aas@wwtadmindotnetfoundation'
+      Destination: 'AzureBlob'
+      storage: 'wwtwebstatic'
+      ContainerName: '$web'
+      blobPrefix: '$(WEBCLIENT_DEPLOYMENT_TAG)'
+
+  # For annoying reasons, we have to include a default.aspx file that does a
+  # JavaScript redirection. In order for that to work, we have to tell the web
+  # server to serve up the file with a non-default "text/html" Content-Type.
+  # This task does the setting. Note that the service principal associated with
+  # the azureSubscription account needs to be set up with the "Storage Blob Data
+  # Contribtor" role on the storage account in order for this to work.
+
+  - task: AzurePowerShell@4
+    condition: and(succeeded(), ne(variables['WEBCLIENT_DEPLOYMENT_TAG'], 'skip'))
+    displayName: Update Azure Blob storage content types
+    inputs:
+      azureSubscription: 'aas@wwtadmindotnetfoundation'
+      azurePowerShellVersion: 'LatestVersion'
+      scriptType: 'inlineScript'
+      inline: |
+        $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
+        $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(WEBCLIENT_DEPLOYMENT_TAG)/default.aspx"
+        $blob.ICloudBlob.Properties.ContentType = "text/html"
+        $blob.ICloudBlob.SetProperties()
+
+  - task: AzurePowerShell@4
+    condition: and(succeeded(), ne(variables['WEBCLIENT_DEPLOYMENT_TAG'], 'skip'))
+    displayName: CDN purge - webclient artifacts
+    inputs:
+      azureSubscription: 'aas@wwtadmindotnetfoundation'
+      azurePowerShellVersion: 'LatestVersion'
+      scriptType: 'inlineScript'
+      inline: |
+        Unpublish-AzCdnEndpointContent `
+          -ProfileName wwt-cdn-01 `
+          -ResourceGroupName wwt-web01 `
+          -EndpointName wwtweb-prod `
+          -PurgeContent '/$(WEBCLIENT_DEPLOYMENT_TAG)/*'
+
+
+# Deployment jobs that should only happen on updates to `rc`, i.e.
+# primary releases.
+
+- ${{ if parameters.isRelease }}:
+  - job: branch_and_tag
+    pool:
+      vmImage: ubuntu-20.04
+    variables:
+    - group: Deployment Credentials
+    steps:
+    - template: azure-job-setup.yml
+      parameters:
+        setupGit: true
+    - bash: |
+        set -xeou pipefail
+        cranko release-workflow tag
+        git push --tags origin release:release
+      displayName: Tag and push
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+  - job: github_releases
+    dependsOn: branch_and_tag # otherwise, GitHub creates the tags itself!
+    pool:
+      vmImage: ubuntu-20.04
+    variables:
+    - group: Deployment Credentials
+    steps:
+    - template: azure-job-setup.yml
+      parameters:
+        setupGit: true
+    - bash: |
+        set -xeou pipefail
+        cranko github create-releases
+      displayName: Create GitHub releases
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+  - job: npm_publish
+    pool:
+      vmImage: ubuntu-20.04
+    variables:
+    - group: Deployment Credentials
+    steps:
+    - template: azure-job-setup.yml
+      parameters:
+        setupBuild: true
+        setupNpm: true
+    - bash: npm run build
+      displayName: NPM build
+    - bash: |
+        set -xeou pipefail
+        cranko npm foreach-released npm publish
+      displayName: Publish to NPM
+    - bash: shred ~/.npmrc
+      displayName: Clean up credentials
