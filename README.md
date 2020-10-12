@@ -1,5 +1,5 @@
 [![Build Status](https://dev.azure.com/aasworldwidetelescope/WWT/_apis/build/status/WorldWideTelescope.wwt-web-client?branchName=master)](https://dev.azure.com/aasworldwidetelescope/WWT/_build/latest?definitionId=4&branchName=master)
-[![npm](https://img.shields.io/npm/v/@wwtelescope/astro?label=@wwtelescope/astro)](https://www.npmjs.com/package/@wwtelescope/astro)
+[![npm](https://img.shields.io/npm/v/@wwtelescope/webclient?label=@wwtelescope/webclient)](https://www.npmjs.com/package/@wwtelescope/webclient)
 
 # The AAS WorldWide Telescope Web Client
 
