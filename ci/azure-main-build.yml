@@ -44,11 +44,13 @@ jobs:
       branch="$(Build.SourceBranchName)"
 
       if [[ $branch == rc ]] ; then
-        echo "##vso[task.setvariable variable=profile;]prod"
+        profile=prod
       else
-        echo "##vso[task.setvariable variable=profile;]testing"
+        profile=testing
       fi
+
       echo "Webclient build profile: $profile"
+      echo "##vso[task.setvariable variable=profile;]$profile"
     displayName: Set build parameters
 
   - task: Npm@1
