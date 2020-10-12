@@ -1,0 +1,6 @@
+[[project]]
+qnames = [
+    '@wwtelescope/webclient',
+    'npm',
+]
+version = '6.1.2'

@@ -1,0 +1,5 @@
+[repo]
+upstream_urls = [
+  'git@github.com:WorldWideTelescope/wwt-web-client.git',
+  'https://github.com/WorldWideTelescope/wwt-web-client.git',
+]
