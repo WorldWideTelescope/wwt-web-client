@@ -40,13 +40,15 @@ jobs:
 
   # Main build:
 
-  - pwsh: |
-      $branch = "$(Build.SourceBranchName)"
-      if($branch = "rc") {
-        Write-Host "##vso[task.setvariable variable=profile;]prod"
-      } else {
-        Write-Host "##vso[task.setvariable variable=profile;]testing"
-      }
+  - bash: |
+      branch="$(Build.SourceBranchName)"
+
+      if [[ $branch == rc ]] ; then
+        echo "##vso[task.setvariable variable=profile;]prod"
+      else
+        echo "##vso[task.setvariable variable=profile;]testing"
+      fi
+      echo "Webclient build profile: $profile"
     displayName: Set build parameters
 
   - task: Npm@1
