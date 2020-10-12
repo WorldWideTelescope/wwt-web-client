@@ -134,10 +134,7 @@ jobs:
     steps:
     - template: azure-job-setup.yml
       parameters:
-        setupBuild: true
         setupNpm: true
-    - bash: npm run build
-      displayName: NPM build
     - bash: |
         set -xeou pipefail
         cranko npm foreach-released npm publish
