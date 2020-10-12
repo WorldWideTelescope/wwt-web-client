@@ -1,8 +1,6 @@
-# See elsewhere for changelog
+# rc: minor bump
 
-This project’s release notes are curated from the Git history of its main
-branch. You can find them by looking at [the version of this file on the
-`release` branch][branch] or the [GitHub release history][gh-releases].
-
-[branch]: https://github.com/WorldWideTelescope/wwt-web-client/blob/release/CHANGELOG.md
-[gh-releases]: https://github.com/WorldWideTelescope/wwt-web-client/releases
+- Update the URL for the hosted engine JavaScript: `engine/7` as opposed to
+  `engine/7.4`. So we will now pick up engine updates more regularly.
+- Start using Cranko for release automation.
+- Attempt to fix #316
