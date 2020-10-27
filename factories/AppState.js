@@ -9,7 +9,7 @@ wwt.app.factory(
     };
 
     var data;
-    
+
     function setKey(key, val) {
       try {
         if (val === null && data[key]) {
@@ -18,11 +18,11 @@ wwt.app.factory(
           data[key] = val;
         }
 
-	if (localStorage) {
-	  localStorage.setItem('appState', JSON.stringify(data));
-	}
+        if (localStorage) {
+          localStorage.setItem('appState', JSON.stringify(data));
+        }
       } catch (er) {
-	console.log('Error using localstorage. Is it turned off?');
+        console.log('Error using localstorage. Is it turned off?');
       }
     }
 
@@ -34,12 +34,28 @@ wwt.app.factory(
       return data;
     }
 
+    var initialState = {
+      layerManagerHidden: true,
+    };
+
     var init = function () {
-      var storedData = localStorage ? localStorage.getItem('appState') : {};
-      data = storedData && localStorage ? JSON.parse(storedData) : {};
+      try {
+        var storedString = localStorage.getItem('appState');
+        var storedObj = JSON.parse(storedString);
+
+        // This seems like the most robust way to make sure that we got a
+        // dictlike (N.B., JSON.parse(null) => null).
+        if (Object.prototype.toString.call(storedObj) != '[object Object]') {
+          throw new Error('stored object not dict');
+        }
+
+        data = storedObj;
+      } catch {
+        data = initialState;
+      }
     };
 
     init();
     return api;
   }
-);  
+);
