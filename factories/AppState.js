@@ -9,7 +9,7 @@ wwt.app.factory(
     };
 
     var data;
-    
+
     function setKey(key, val) {
       try {
         if (val === null && data[key]) {
@@ -18,11 +18,11 @@ wwt.app.factory(
           data[key] = val;
         }
 
-	if (localStorage) {
-	  localStorage.setItem('appState', JSON.stringify(data));
-	}
+        if (localStorage) {
+          localStorage.setItem('appState', JSON.stringify(data));
+        }
       } catch (er) {
-	console.log('Error using localstorage. Is it turned off?');
+        console.log('Error using localstorage. Is it turned off?');
       }
     }
 
@@ -42,4 +42,4 @@ wwt.app.factory(
     init();
     return api;
   }
-);  
+);
