@@ -5,14 +5,11 @@
 
   <li class="dropdown-submenu">
     <a href="javascript:void(0)" localize="Information"></a>
-    <ul class="dropdown-menu" style="height:208px">
-      <li><a href="//www.bing.com/search?q={{menuContext.get_name().split(' ').join('+')}}" target="bing" localize="Look up on Bing"></a></li>
-      <li><a href="//simbad.u-strasbg.fr/simbad/sim-id?Ident={{menuContext.get_name().split(' ').join('+')}}" target="simbad" localize="Look up on SIMBAD"></a></li>
-      <li><a href="//seds.org/~spider/ngc/ngc.cgi?{{menuContext.get_name()}}" target="seds" localize="Look up on SEDS"></a></li>
-      <li><a href="//en.wikipedia.org/wiki/{{menuContext.get_name().split(' ').join('_')}}" target="wiki" localize="Look up on Wikipedia"></a></li>
-      <li><a href="//adsabs.harvard.edu/cgi-bin/abs_connect?db_key=AST&sim_query=YES&object={{menuContext.get_name().split(' ').split(';')[0]}}" target="wiki" localize="Look up publication on ADS"></a></li>
-      <li><a href="//ned.ipac.caltech.edu/cgi-bin/nph-imgdata?objname={{menuContext.get_name()}}" target="ned" localize="Look up on NED"></a></li>
-      <li><a href="//cas.sdss.org/dr7/en/tools/quicklook/quickobj.asp?id={{menuContext.get_name()}}" target="sdss" localize="Look up on SDSS"></a></li>
+    <ul class="dropdown-menu" style="height:126px"> <!-- 28px per item + 2*7px top/bottom padding -->
+      <li><a href="//wikipedia.org/wiki/Special:Search?search={{menuContextNameForQueryString}}" target="wikipedia" localize="Look up on Wikipedia"></a></li>
+      <li><a href="//ui.adsabs.harvard.edu/search/q=object:%22{{menuContextNameForQueryString}}%22" target="ads" localize="Look up on SAO/NASA ADS"></a></li>
+      <li><a href="//simbad.u-strasbg.fr/simbad/sim-id?Ident={{menuContextNameForQueryString}}" target="simbad" localize="Look up on SIMBAD"></a></li>
+      <li><a href="//ned.ipac.caltech.edu/cgi-bin/nph-imgdata?objname={{menuContextNameForQueryString}}" target="ned" localize="Look up on NED"></a></li>
     </ul>
   </li>
 

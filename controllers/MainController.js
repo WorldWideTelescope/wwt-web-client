@@ -546,9 +546,23 @@ wwt.controllers.controller(
             $timeout(function () {
               $scope.scopePlace = found;
               $scope.drawCircleOverPlace($scope.scopePlace);
+              $scope.scopePlaceNameForQueryString = placeNameForQueryString(found);
             });
           }
         }
+      }
+
+      var placeNameForQueryString = function(item) {
+        // Various "research" menus like to put an item's name into URL query
+        // strings. Compute the proper (well, good-enough) representation. When
+        // the name has multiple semicolon-separated identifiers, usually the
+        // first one is a description of a particular image, and the subsequent
+        // ones (if any) are names for the object.
+
+        var name_segments = item.get_name().split(';');
+        var name_to_use = (name_segments.length > 1) ? name_segments[1] : name_segments[0];
+        name_to_use = encodeURIComponent(name_to_use);
+        return name_to_use.replace(/%20/g, '+');
       }
 
       var trackConstellation = function () {
@@ -1114,6 +1128,7 @@ wwt.controllers.controller(
         $scope.menuContext = item;
         $scope.propertyItem = item;
         $scope.propertyItem.isExploreTab = isExploreTab;
+        $scope.menuContextNameForQueryString = placeNameForQueryString(item);
       };
 
       $scope.showProperties = function () {

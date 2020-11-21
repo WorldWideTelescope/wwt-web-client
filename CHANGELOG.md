@@ -1,5 +1,11 @@
 # rc: micro bump
 
+- Attempt to fix the OAuth login flow (#332)
+- Hide the Layer Manager by default (#331)
+- Construct better URLs for "research" queries (#330)
+
+# @wwtelescope/webclient 6.2.1 (2020-10-12)
+
 - Increase precision of RA readouts (#328, #326)
 
 # @wwtelescope/webclient 6.2.0 (2020-10-12)
