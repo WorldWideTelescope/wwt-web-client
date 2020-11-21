@@ -16,7 +16,7 @@
            ng-if="item.get_backgroundImageset() != null || item.get_studyImageset() != null"></i>
         <i class="fa fa-folder-open-o"
            ng-if="item.get_isFolder() && item.get_name() != 'Up Level' && (item.thumb && item.thumb.indexOf('wwtweb.blob.core.windows.net') == -1)"></i>
-        <img ng-src="{{item.thumb || item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}"/>
+        <img class="thumbnail-image" ng-src="{{item.thumb || item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}"/>
         <label>{{item.get_name()}}</label>
     </div>
 </div>
