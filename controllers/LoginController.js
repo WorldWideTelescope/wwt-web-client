@@ -13,7 +13,7 @@ wwt.controllers.controller(
         if (util.getQSParam('code') != null) {
           var returnUrl = location.href.split('?')[0];
           location.href = $rootScope.communitiesUrlPrefix + '/LiveId/AuthenticateFromCode/' + util.getQSParam('code') +
-            '?returnUrl=' + encodeURIComponent(returnUrl);
+            '/?returnUrl=' + encodeURIComponent(returnUrl);
         } else if ($cookies.get('access_token')) {
           $rootScope.loggedIn = true;
           $rootScope.token = $cookies.get('access_token');
