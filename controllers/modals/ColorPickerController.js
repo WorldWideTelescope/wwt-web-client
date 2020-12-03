@@ -74,12 +74,11 @@ wwt.controllers.controller(
         cp.color.r = rgb[0];
         cp.color.g = rgb[1];
         cp.color.b = rgb[2];
-        cp.color.name = 'custom';
         cp.pickColor({});
         $scope.$hide();
       }
 
-      setTimeout($scope.init,800);
+      setTimeout($scope.init, 800);
     }
   ]
 );
