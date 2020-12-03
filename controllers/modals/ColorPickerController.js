@@ -1,4 +1,4 @@
-wwt.controllers.controller('colorpickerController', ['$scope', function ($scope) {
+wwt.controllers.controller('ColorPickerController', ['$scope', function ($scope) {
   var cp = $scope.colorpicker;
   var setMouse = function(e){
     if (!$scope.mouse){

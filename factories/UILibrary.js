@@ -150,7 +150,7 @@
       show: true,
       placement: 'center',
       backdrop: false,
-      controller: 'colorpickerController'
+      controller: 'ColorPickerController'
     });
   };
 
