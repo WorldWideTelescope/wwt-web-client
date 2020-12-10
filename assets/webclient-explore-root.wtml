@@ -4,6 +4,7 @@
  <Folder Name="Constellations" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=constellations" Group="Explorer" Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=constellations" />
  <Folder Name="Solar System (Sky)" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=solarsystemsky" Group="Explorer" Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=solarsystem" />
  <Folder Name="All-Sky Surveys" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=surveys" Group="Explorer" Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=aitoff" />
+ <Folder Name="HIPS Surverys" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=hips"  Group="Explorer"   Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=aitoff" />
  <Folder Name="Spitzer Studies" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=studiesspitzer" Group="Explorer" Searchable="True" Type="Sky" Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=spitzer" />
  <Folder Name="Chandra Studies" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=studieschandra" Group="Explorer" Searchable="True" Type="Sky" Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=chandra" />
  <Folder Name="Hubble Studies" Url="http://www.worldwidetelescope.org/wwtweb/catalog.aspx?W=studieshubble" Group="Explorer" Searchable="True" Type="Sky" Thumbnail="http://www.worldwidetelescope.org/wwtweb/thumbnail.aspx?name=hubble" />
