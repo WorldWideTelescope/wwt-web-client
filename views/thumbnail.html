@@ -17,7 +17,7 @@
         <i class="fa fa-folder-open-o"
            ng-if="item.get_isFolder() && item.get_name() != 'Up Level' && (item.thumb && item.thumb.indexOf('wwtweb.blob.core.windows.net') == -1)"></i>
         <img class="thumbnail-image" ng-src="{{item.thumb || item.get_thumbnailUrl()}}" alt="Thumbnail of {{item.get_name()}}"
-           onerror="this.src='images/Unidentified.jpg'"/>
+           onerror="this.src='//worldwidetelescope.org/wwtweb/thumbnail.aspx?name=star'"/>
         <label>{{item.get_name()}}</label>
     </div>
 </div>
