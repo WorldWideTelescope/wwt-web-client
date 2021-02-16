@@ -10,7 +10,7 @@
     'ThumbList',
     'UILibrary',
 
-    function ($scope, $rootScope, appState, places, $timeout, util,  thumbList, uiLib) {
+    function ($scope, $rootScope, appState, places, $timeout, util, thumbList, uiLib) {
       var exploreRoot;
       var depth = 1;
       var bc;

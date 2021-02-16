@@ -41,11 +41,11 @@ wwt.controllers.controller(
 
       //#region LookAt/Imagery
       var initialPass = true;
+      var lookAtFoundImagery = false;
 
       $scope.lookTypes = ['Earth', 'Planet', 'Sky', 'Panorama', 'SolarSystem'];
       $scope.lookAt = 'Sky';
       $scope.imagery = [[], [], [], [], []];
-
 
       $scope.lookAtDropdownChanged = function (lookAtType) {
         if (lookAtType) {
@@ -79,7 +79,7 @@ wwt.controllers.controller(
           if (imageryName == '')
             imageryName = '-';
 
-          if (!imageryName && $scope.lookAt == "Planet") {
+          if (!imageryName && $scope.lookAt == "Planet" && dropdownInvoked) {
             // If/when we switch to a new Look At mode, the default behavior
             // is to switch to the first item on its new Imagery list (see the
             // dropdownInvoked bit below, and see how above we set the 0th
@@ -101,6 +101,7 @@ wwt.controllers.controller(
               if (item !== '' && item.get_name && (item.get_name().indexOf(imageryName) === 0 || imageryName.indexOf(item.get_name()) === 0)) {
                 $scope.backgroundImagery = item;
                 foundName = true;
+                lookAtFoundImagery = true;
               }
             });
           }
@@ -111,12 +112,17 @@ wwt.controllers.controller(
                 initialPass = false;
               }, 500);
 
+              lookAtFoundImagery = false;
+
               $timeout(function () {
-                $scope.backgroundImagery = collection[1];
-                $scope.setSurveyBg();
+                if (!lookAtFoundImagery) {
+                  $scope.backgroundImagery = collection[1];
+                  $scope.setSurveyBg();
+                }
               }, 123);
             } else if (!noUpdate) {
               $scope.backgroundImagery = collection[0];
+              lookAtFoundImagery = true;
             }
 
             return;
@@ -774,8 +780,36 @@ wwt.controllers.controller(
         var imageSet = util.getImageset(item);
         if (imageSet) {
           $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);
+
+          // Make sure that this imageset is in the "Imagery" list, because
+          // otherwise lookAtChanged can override our setting. However, this
+          // item may not be functional there, because changes to the dropdown
+          // end up using getImagesetByName to look up the new background
+          // setting, and this item may not be registered with the engine's
+          // table of known-by-name imagesets.
+
+          var typeIndex = imageSet.get_dataSetType();
+          var imageryName = imageSet.get_name();
+          var bgImages = $scope.imagery[typeIndex];
+          var foundIt = false;
+
+          $.each(bgImages, function (i, item) {
+            // This is the same prefix-match logic used by lookAtChanged:
+            if (item.get_name) {
+              var iname = item.get_name();
+              if (iname.indexOf(imageryName) === 0 || imageryName.indexOf(iname) === 0) {
+                foundIt = true;
+              }
+            }
+          });
+
+          if (!foundIt) {
+            imageSet.name = imageSet.get_name(); // needed by the UI dropdown
+            bgImages.push(imageSet);
+          }
         }
-        if (!item.isSurvey && !item.isPanorama) {
+
+        if (!item.isSurvey && !item.isPanorama && wwtlib.ss.canCast(item, wwtlib.Place)) {
           $rootScope.singleton.gotoTarget(item, false, !!$rootScope.instant, true);
         }
       };
