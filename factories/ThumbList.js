@@ -215,17 +215,22 @@ wwt.app.factory(
         } else if (item.isEarth) {
           scope.setLookAt('Earth', item.get_name());
         } else if (util.getIsPlanet(item)) {
-          if (scope.lookAt === 'Sky') {
+          if (scope.lookAt === 'Sky' && wwtlib.ss.canCast(item, wwtlib.Place)) {
             wwtlib.WWTControl.singleton.gotoTarget3(item.get_camParams());
             return outParams;
           }
 
           if (scope.lookAt !== 'SolarSystem') {
-            scope.setLookAt('Planet', item._name || '');
+            scope.setLookAt('Planet', item._name || '', true, item.isSurvey);
           }
+
+          // Planetary imagesets have to be handled specially. We have to set
+          // them as the *background* as well as the foreground to render
+          // properly.
+          scope.setBackgroundImage(item);
         }
 
-        if ((wwtlib.ss.canCast(item, wwtlib.Place) || item.isEarth) && !item.isSurvey) {
+        if ((wwtlib.ss.canCast(item, wwtlib.Place) || wwtlib.ss.canCast(item, wwtlib.Imageset) || item.isEarth) && !item.isSurvey) {
           scope.setForegroundImage(item);
         }
 
