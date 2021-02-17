@@ -50,7 +50,7 @@ wwt.app.factory(
         }
 
         data = storedObj;
-      } catch {
+      } catch (e){
         data = initialState;
       }
     };

@@ -1,3 +1,11 @@
+# @wwtelescope/webclient 6.2.3 (2021-02-17)
+
+- Work on display of planetary imagery: more reliable loading from WTML
+  and Explore ribbon thumbnail clicks, hopefully (#338, @pkgw)
+- Fix the saving of colors picked from the color picker; should enable
+  people to create transparent overlays in the tour editor (#333, @pkgw)
+- UI updates to support HiPS menu items! (#334, @imbasimba)
+
 # @wwtelescope/webclient 6.2.2 (2020-11-21)
 
 - Attempt to fix the OAuth login flow (#332)
