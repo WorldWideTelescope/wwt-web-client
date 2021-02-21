@@ -77,6 +77,7 @@ wwt.app.factory(
             item.isPanorama = item.get_dataSetType() === 3;
             item.isSurvey = item.get_dataSetType() === 2;
             item.isPlanet = item.get_dataSetType() === 1;
+            item.isCatalogHips = item.get_dataSetType() === 6;
           }
 
           util.rewritePlaceUrls(item);

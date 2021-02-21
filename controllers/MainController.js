@@ -748,6 +748,19 @@ wwt.controllers.controller(
           $scope.activeItem.imageSet = item.get_studyImageset();
         }
       };
+      
+      $scope.addCatalogHiPS = function (item) {
+        if (item.guid) {
+          $scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
+        }
+
+        if ($rootScope.is_mobile) {
+          $('#explorerModal').modal('hide');
+          $('#nboModal').modal('hide');
+        }
+
+        wwtlib.WWTControl.singleton.addCatalogHipsByName(item.guid);
+      };
 
       $scope.setForegroundImage = function (item) {
         if (item.guid) {
