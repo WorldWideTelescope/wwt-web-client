@@ -759,7 +759,7 @@ wwt.controllers.controller(
           $('#nboModal').modal('hide');
         }
 
-        wwtlib.WWTControl.singleton.addCatalogHipsByName(item.guid);
+        wwtlib.WWTControl.singleton.addCatalogHipsByName(item.get_name());
       };
 
       $scope.setForegroundImage = function (item) {
