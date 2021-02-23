@@ -58,7 +58,7 @@ jobs:
   # server to serve up the file with a non-default "text/html" Content-Type.
   # This task does the setting. Note that the service principal associated with
   # the azureSubscription account needs to be set up with the "Storage Blob Data
-  # Contribtor" role on the storage account in order for this to work.
+  # Contributor" role on the storage account in order for this to work.
 
   - task: AzurePowerShell@4
     condition: and(succeeded(), ne(variables['WEBCLIENT_DEPLOYMENT_TAG'], 'skip'))
@@ -70,7 +70,11 @@ jobs:
       inline: |
         $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
         $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(WEBCLIENT_DEPLOYMENT_TAG)/default.aspx"
+        Write-Host "temp debugging before"
+        $blob.ICloudBlob.Properties # TEMPORARY DEBUGGING PRINT
+        Write-Host "temp debugging after"
         $blob.ICloudBlob.Properties.ContentType = "text/html"
+        Write-Host "temp debugging set type"
         $blob.ICloudBlob.SetProperties()
 
   - task: AzurePowerShell@4
