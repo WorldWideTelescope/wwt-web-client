@@ -71,7 +71,7 @@ jobs:
         $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
         $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(WEBCLIENT_DEPLOYMENT_TAG)/default.aspx"
         Write-Host "temp debugging before"
-        $blob.ICloudBlob.Properties # TEMPORARY DEBUGGING PRINT
+        echo $blob.ICloudBlob.Properties # TEMPORARY DEBUGGING PRINT
         Write-Host "temp debugging after"
         $blob.ICloudBlob.Properties.ContentType = "text/html"
         Write-Host "temp debugging set type"
