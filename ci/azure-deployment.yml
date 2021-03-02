@@ -1,4 +1,4 @@
-# Copyright 2020 the .NET Foundation
+# Copyright 2020-2021 the .NET Foundation
 # Licensed under the MIT License
 
 parameters:
@@ -69,6 +69,7 @@ jobs:
       scriptType: 'inlineScript'
       inline: |
         $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
+        echo $ctxt # TEMPORARY DEBUGGING PRINT
         $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(WEBCLIENT_DEPLOYMENT_TAG)/default.aspx"
         Write-Host "temp debugging before"
         echo $blob.ICloudBlob.Properties # TEMPORARY DEBUGGING PRINT
