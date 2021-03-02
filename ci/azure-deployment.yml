@@ -59,6 +59,10 @@ jobs:
   # This task does the setting. Note that the service principal associated with
   # the azureSubscription account needs to be set up with the "Storage Blob Data
   # Contributor" role on the storage account in order for this to work.
+  # Furthermore, those service principals expire every two years, so if this
+  # tasks stops working, you may need to re-add that role on the rotated
+  # principal. The principal doesn't autocomplete in the Azure Portal UI but if
+  # you paste its name into the Add Role interface, it should come up.
 
   - task: AzurePowerShell@4
     condition: and(succeeded(), ne(variables['WEBCLIENT_DEPLOYMENT_TAG'], 'skip'))
@@ -69,13 +73,8 @@ jobs:
       scriptType: 'inlineScript'
       inline: |
         $ctxt = New-AzStorageContext -UseConnectedAccount -StorageAccountName "wwtwebstatic"
-        echo $ctxt # TEMPORARY DEBUGGING PRINT
         $blob = Get-AzStorageBlob -Context $ctxt -Container '$web' -Blob "$(WEBCLIENT_DEPLOYMENT_TAG)/default.aspx"
-        Write-Host "temp debugging before"
-        echo $blob.ICloudBlob.Properties # TEMPORARY DEBUGGING PRINT
-        Write-Host "temp debugging after"
         $blob.ICloudBlob.Properties.ContentType = "text/html"
-        Write-Host "temp debugging set type"
         $blob.ICloudBlob.SetProperties()
 
   - task: AzurePowerShell@4
