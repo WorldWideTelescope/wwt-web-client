@@ -77,7 +77,10 @@ wwt.app.factory(
             item.isPanorama = item.get_dataSetType() === 3;
             item.isSurvey = item.get_dataSetType() === 2;
             item.isPlanet = item.get_dataSetType() === 1;
-            item.isCatalogHips = item.get_dataSetType() === 6;
+          }
+          if (typeof item.get_projection == 'function'
+          && typeof item.get_extension == 'function') {
+              item.isCatalogHips = item.get_projection() === 7 && item.get_extension() === ".tsv";
           }
 
           util.rewritePlaceUrls(item);

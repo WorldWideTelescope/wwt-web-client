@@ -759,6 +759,10 @@ wwt.controllers.controller(
           $('#nboModal').modal('hide');
         }
 
+        //Catalog HiPS are controlled through the layer manager
+        // & multiple items can be selected at the same time.
+        // So it does not make sense to highlight single items in the folder menu 
+        $scope.setActiveItem({});
         wwtlib.WWTControl.singleton.addCatalogHipsByName(item.get_name());
       };
 
