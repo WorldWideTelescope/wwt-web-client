@@ -193,12 +193,13 @@ wwt.app.factory(
           })
         }, 111);
 
-        if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey) {
-          if (item.guid && item.guid.toLowerCase().indexOf('mars.') == -1) {
+        if ((item.isFGImage && item.imageSet && scope.lookAt !== 'Sky') || item.isSurvey || item.isCatalogHips) {
+          if (item.guid && item.guid.toLowerCase().indexOf('mars.') == -1 && !item.isCatalogHips) {
             scope.setLookAt('Sky', item.get_name(), true, item.isSurvey);
           }
-
-          if (item.isSurvey) {
+          if (item.isCatalogHips){
+            scope.addCatalogHiPS(item);
+          } else if (item.isSurvey) {
             scope.setSurveyBg(item.get_name(), item);
           } else {
             scope.setForegroundImage(item);

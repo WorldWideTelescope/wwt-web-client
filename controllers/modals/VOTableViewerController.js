@@ -2,11 +2,12 @@ wwt.controllers.controller('voTableViewer',
   ['$rootScope', '$scope', 'AppState', 'Util',
     function ($rootScope, $scope, appState, util) {
       var layer = $scope.voTableLayer;
-      $scope.plotTypes = [{lbl: 'Gaussian', type: 0}, {lbl: 'Point', type: 1}, {
-        lbl: 'Circle',
-        type: 2
-      }, {lbl: 'Push Pin', type: 3}];
-      $scope.plotType = layer.plotType;
+      $scope.plotTypes = [{lbl: 'Gaussian', type: 0}, {lbl: 'Point', type: 1},
+        {lbl: 'Circle', type: 2},
+        {lbl: 'Square', type: 3},
+        {lbl: 'Push Pin', type: 4}];
+
+      $scope.plotType = layer.get_plotType();
       var init = function () {
 
         //$('.wwt-modal .modal-dialog, .wwt-modal .modal-content').width(1120);
@@ -17,17 +18,19 @@ wwt.controllers.controller('voTableViewer',
             var col = $scope.votable.columns[c];
             col.id = col.id || c;
             colArray.push(col);
-            if (c.toUpperCase() === 'RA') {
+            if (c.toUpperCase() === 'RA' || col.ucd === "pos.eq.ra;meta.main") {
               $scope.RASource = col.id;
               $scope.RAIndex = col.index;
 
             }
-            if (c.toUpperCase() === 'DEC') {
+            if (c.toUpperCase() === 'DEC' || col.ucd === "pos.eq.dec;meta.main") {
               $scope.DecSource = col.id;
               $scope.DecIndex = col.index;
             }
           });
 
+          $scope.SizeSource = $scope.votable.column[layer.get_sizeColumn()].id;
+          $scope.SizeIndex = $scope.votable.column[layer.get_sizeColumn()].index;
 
           $('.modal-content div.results').on('scroll',function(e){
             var div = e.currentTarget;
@@ -52,7 +55,7 @@ wwt.controllers.controller('voTableViewer',
         layer.cleanUp();
       }
       $scope.updatePlot = function () {
-        layer.plotType = $scope.plotType;
+        layer.set_plotType($scope.plotType);
         console.log($scope.plotType);
         layer.cleanUp();
       }
