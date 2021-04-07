@@ -1,3 +1,9 @@
+# @wwtelescope/webclient 6.3.0 (2021-04-07)
+
+- Add SOFIA Studies to the default webclient data collection
+- Make it possible to explore Catalog HiPS data, although the UX is unpolished —
+  you basically need to be a developer to know what to do
+
 # @wwtelescope/webclient 6.2.3 (2021-02-17)
 
 - Work on display of planetary imagery: more reliable loading from WTML

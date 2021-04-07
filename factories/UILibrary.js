@@ -121,11 +121,12 @@
     });
     return obj;
   };
-  $rootScope.loadVOTableModal = wwt.loadVOTableModal = function (votable) {
+  $rootScope.loadVOTableModal = wwt.loadVOTableModal = function (voTableLayer, title) {
+    voTableLayer.get_table().pagedRows = voTableLayer.get_table().rows.slice(0, 100);
 
     var modalScope = $rootScope.$new();
     modalScope.customClass = 'vo-tbl-modal';
-    modalScope.voTableLayer = votable.get_table ? votable : wwtlib.VoTableLayer.create(votable);
+    modalScope.voTableLayer = voTableLayer;
     modalScope.votable = modalScope.voTableLayer.get_table();
 
     $modal({
