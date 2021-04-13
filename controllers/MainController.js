@@ -763,10 +763,15 @@ wwt.controllers.controller(
         // & multiple items can be selected at the same time.
         // So it does not make sense to highlight single items in the folder menu 
         $scope.setActiveItem({});
-        wwtlib.WWTControl.singleton.addCatalogHipsByName(item.get_name());
+        var imageSet = util.getImageset(item);
+        wwtlib.WWTControl.singleton.addCatalogHips(imageSet);
       };
 
       $scope.setForegroundImage = function (item) {
+        if(item.isCatalogHips){
+          $scope.addCatalogHiPS(item);
+          return;
+        }
         if (item.guid) {
           $scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
         }
@@ -794,6 +799,10 @@ wwt.controllers.controller(
       };
 
       $scope.setBackgroundImage = function (item) {
+        if(item.isCatalogHips){
+          $scope.addCatalogHiPS(item);
+          return;
+        }
         var imageSet = util.getImageset(item);
         if (imageSet) {
           $rootScope.singleton.renderContext.set_backgroundImageset(imageSet);

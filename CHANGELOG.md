@@ -1,4 +1,8 @@
-# rc: minor bump
+# rc: micro bump
+
+- Improve catalog HiPS UX: it now ought to work just to click on the thumbnails.
+
+# @wwtelescope/webclient 6.3.0 (2021-04-07)
 
 - Add SOFIA Studies to the default webclient data collection
 - Make it possible to explore Catalog HiPS data, although the UX is unpolished —
