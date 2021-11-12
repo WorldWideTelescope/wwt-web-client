@@ -22,9 +22,6 @@
     "load-grunt-tasks": "^5.0",
     "tslib": "^1.10.0"
   },
-  "engines": {
-    "node": "~0.10.1"
-  },
   "homepage": "https://worldwidetelescope.org/webclient/",
   "keywords": [
     "AAS WorldWide Telescope"
@@ -38,5 +35,5 @@
     "type": "git",
     "url": "https://github.com/WorldWideTelescope/wwt-web-client.git"
   },
-  "version": "6.3.1"
+  "version": "6.3.2"
 }
