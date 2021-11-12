@@ -1,5 +1,9 @@
 # rc: micro bump
 
+- Add donation links in a few places (#346, @pkgw).
+
+# @wwtelescope/webclient 6.3.1 (2021-04-13)
+
 - Improve catalog HiPS UX: it now ought to work just to click on the thumbnails.
 
 # @wwtelescope/webclient 6.3.0 (2021-04-07)

@@ -254,6 +254,10 @@
                 </li>
 
                 <li>
+                  <a ng-click="gotoPage('https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx')" localize="Support WWT ❤️"></a>
+                </li>
+
+                <li>
                   <a ng-click="gotoPage('https://aas.org/about-aas')" localize="About American Astronomical Society"></a>
                 </li>
               </ul>
@@ -429,6 +433,9 @@
             </a>
             <a class="btn pull-right" ng-click="logout()" ng-show="msLiveOAuthAppId && msLiveOAuthAppId.length && loggedIn">
               <span localize="Sign Out"></span>
+            </a>
+            <a class="btn pull-right" href="https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx" target="_blank">
+              <span>Support WWT ❤️</span>
             </a>
           </span>
 
