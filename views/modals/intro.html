@@ -4,48 +4,45 @@
       <div class="modal-body">
         <a href="//aas.org"
            target="_blank"
-           style="width:110px;height:110px;position:relative;left:3px;z-index:5"
+           style="width:110px; height:110px; position:relative; left:3px; z-index:5"
            class="pull-right">
           <img ng-src="{{staticAssetsPrefix}}images/aas-white110.png"
                localize="American Astronomical Society (AAS) Logo"
                localize-only="alt" />
         </a>
 
-        <a href="{{userwebUrlPrefix}}/home" target="_blank"
-           style="display:inline-block;position:relative;left:-3px;margin-right:7px;z-index:5" class="pull-left">
+        <a href="{{userwebUrlPrefix}}/home"
+           target="_blank"
+           style="display:inline-block; position:relative; left:-3px; margin-right:7px; z-index:5" class="pull-left">
           <img ng-src='{{staticAssetsPrefix}}images/wwtlogo.png'
-               style="width:110px;height:110px;"
-               localize="Microsoft WorldWide Telescope Logo"
+               style="width:110px; height:110px;"
+               localize="AAS WorldWide Telescope Logo"
                localize-only="alt" />
         </a>
 
-        <h1 style="position:relative;top:-2px;white-space:nowrap">
+        <h1 style="position:relative; top:-2px; white-space:nowrap">
           <small style="color:white">American Astronomical Society</small><br />
           World<span style="color:#6ba9e6">Wide Telescope</span>
         </h1>
 
-        <h3 localize="Welcome to the WorldWide Telescope Web Client"></h3>
-
-        <p>
-          {{tipsIntro}}
-        </p>
+        <h3 localize="Welcome to AAS WorldWide Telescope"></h3>
 
         <ul>
-          <li localize="Move around the sky by clicking and dragging the Field of View."></li>
-          <li localize="Zoom in/out by scrolling the mouse wheel, pressing -/+ or Page Up/Page Down."></li>
-          <li localize="Drag with center mouse button or hold Ctrl while dragging to rotate and tilt view."></li>
-          <li localize="Right-click an object to display the contextual Finder Scope for more information."></li>
-          <li localize="Menu Tabs have two parts: click the tab’s top to open a pane, click the tab’s bottom to open submenus with additional functionality."></li>
+          <li localize="Move around the sky by clicking and dragging."></li>
+          <li localize="Zoom in/out by scrolling the mouse wheel or pressing +/-."></li>
+          <li localize="Right-click in the view to display the Finder Scope for more information."></li>
+          <li localize="Menu Tabs (“Explore”, “Guided Tours”, etc.) have two parts. Click the tab’s top to open a pane; click the tab’s bottom to open a submenu."></li>
         </ul>
 
-        <h3 localize="Home Page Update"></h3>
+        <h3 localize="Help Support WWT!"></h3>
 
-        <p>
-          <span localize="We have moved "></span>
-          <a href="{{userwebUrlPrefix}}/home" localize="our home page" target="_blank"></a>
-          <span localize=". The web client (this page) is now the default landing page for WWT on the web. You can open the home page by clicking the home"></span>
-          (<i class="fa fa-home"></i>)
-          <span localize="icon in the top-left corner."></span>
+        <p>The non-profit <a href="https://aas.org/" target="_blank">American Astronomical
+        Society</a> needs your support so that WWT’s servers can keep on
+        providing terabytes of astronomical imagery to users around the world
+        for free!</p>
+
+        <p class="text-center">
+          <a class="btn" href="https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx" target="_blank">Support WWT ❤️</a>
         </p>
 
         <p localize="To return to this screen, click the Explore menu and choose Show Welcome Tips."></p>

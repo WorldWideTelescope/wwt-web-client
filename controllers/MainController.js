@@ -369,6 +369,7 @@ wwt.controllers.controller(
               'Contributor Hub': [function () { window.open('https://worldwidetelescope.github.io/'); }],
               'GitHub Home': [function () { window.open('https://github.com/WorldWideTelescope'); }],
               'Sign up for Newsletter': [function () { window.open('https://bit.ly/wwt-signup'); }],
+              'Support WWT ❤️': [function () { window.open('https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx'); }],
               sep1: null,
               '@WWTelescope on Twitter': [function () { window.open('https://twitter.com/WWTelescope'); }],
               '@AASWorldWideTelescope on YouTube': [function () { window.open('https://www.youtube.com/c/AASWorldWideTelescope'); }],
