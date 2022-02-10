@@ -1,5 +1,9 @@
 # rc: micro bump
 
+- Tease the WWT 2022 launch.
+
+# @wwtelescope/webclient 6.3.2 (2021-11-12)
+
 - Add donation links in a few places (#346, @pkgw).
 
 # @wwtelescope/webclient 6.3.1 (2021-04-13)
