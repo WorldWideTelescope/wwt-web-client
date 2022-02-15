@@ -1,5 +1,9 @@
 # rc: micro bump
 
+- WWT 2022 is officially launched!
+
+# @wwtelescope/webclient 6.3.3 (2022-02-10)
+
 - Tease the WWT 2022 launch.
 
 # @wwtelescope/webclient 6.3.2 (2021-11-12)
