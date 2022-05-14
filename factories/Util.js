@@ -128,6 +128,22 @@
           var minutes = Math.floor(remainder);
           var seconds = (remainder - minutes) * 60;
 
+          if (isNaN(extraPrecision)) {
+            extraPrecision = 0;
+          }
+          var secondsStr = seconds.toFixed(extraPrecision);
+
+          if (secondsStr.startsWith('60')) {
+            seconds = 0;
+            secondsStr = '0';
+            minutes += 1;
+
+            if (minutes == 60) {
+              minutes = 0;
+              hourlike += 1;
+            }
+          }
+
           values[0] = hourlike.toFixed(0);
           if (hourlike < 10) {
             values[0] = '0' + values[0];
@@ -138,11 +154,7 @@
             values[1] = '0' + values[1];
           }
 
-          if (isNaN(extraPrecision)) {
-            extraPrecision = 0;
-          }
-
-          values[2] = seconds.toFixed(extraPrecision);
+          values[2] = secondsStr;
           if (seconds < 10) {
             values[2] = '0' + values[2];
           }
