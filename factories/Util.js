@@ -135,7 +135,7 @@
 
           if (secondsStr.startsWith('60')) {
             seconds = 0;
-            secondsStr = '0';
+            secondsStr = seconds.toFixed(extraPrecision);
             minutes += 1;
 
             if (minutes == 60) {
