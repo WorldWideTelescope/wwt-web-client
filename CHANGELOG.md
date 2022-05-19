@@ -1,3 +1,7 @@
+# @wwtelescope/webclient 6.3.5 (2022-05-19)
+
+- index.html: load pako and uuid early for updated webgl-engine
+
 # @wwtelescope/webclient 6.3.4 (2022-02-15)
 
 - WWT 2022 is officially launched!
