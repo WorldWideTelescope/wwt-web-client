@@ -24,7 +24,7 @@
 
 // Note that, unlike the other source files, this file is processed through
 // Grunt's templating system. This is done so that we can insert various
-// build-time parameters. Note also that the variables here must references to
+// build-time parameters. Note also that the variables here must be references to
 // the Grunt config object; the templating in index.html uses different
 // variables.
 
@@ -72,6 +72,6 @@ $(window).on('load', function () {
   // The JS file here sets a global `wwt.searchData` variable, which is
   // processed in the `init()` function defined in `dataproxy/SearchData.js`.
   var scr = document.createElement('script');
-  scr.setAttribute("src", wwtlib.URLHelpers.singleton.coreStaticUrl('data/searchdata.min.js'));
+  scr.setAttribute("src", wwtlib.URLHelpers.singleton.coreStaticUrl('data/searchdata_v2.min.js'));
   document.getElementsByTagName("head")[0].appendChild(scr);
 });
