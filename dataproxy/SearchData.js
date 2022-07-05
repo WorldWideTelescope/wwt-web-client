@@ -15,21 +15,13 @@
         initPromise,
         constellations = [];
       var deferredInit = $q.defer();
-      var allDataDeferred = $q.defer();
-      var allDataPromise = (function () { return allDataDeferred.promise; })();
 
-      function getData(all) {
+      function getData() {
         var deferred = $q.defer();
 
-        if (all) {
-          allDataPromise.then(function () {
-            deferred.resolve(data);
-          });
-        } else {
-          initPromise.then(function () {
-            deferred.resolve(data);
-          });
-        }
+        initPromise.then(function () {
+          deferred.resolve(data);
+        });
 
         return deferred.promise;
       };
@@ -47,8 +39,14 @@
       var imageset_id = 100;
 
       var init = function () {
-        if (wwt.searchData) {
+        // The special `wwt.searchData` global is assigned in the JS file that
+        // the main webclient HTML loads asynchronously.
+        if (!wwt.searchData) {
+          setTimeout(init, 333);
+        } else {
+          // searchDataIndexed is used in `factories/SearchUtil.js`.
           wwt.searchDataIndexed = [];
+
           data = wwt.searchData;
           var start = new Date();
 
@@ -128,24 +126,7 @@
 
           var end = new Date();
           util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-
-          var urlbase = wwtlib.URLHelpers.singleton.coreStaticUrl('data/client_v6/');
-
-          importWtml(urlbase + 'Wise.wtml').then(function () {
-            importWtml(urlbase + 'Hubble.wtml').then(function () {
-              importWtml(urlbase + 'ESO.wtml').then(function () {
-                importWtml(urlbase + 'Chandra.wtml').then(function () {
-                  importWtml(urlbase + 'Spitzer.wtml').then(function () {
-                    allDataDeferred.resolve(true);
-                  });
-                });
-              });
-            });
-          });
-
           deferredInit.resolve(data);
-        } else {
-          setTimeout(init, 333);
         }
 
         return deferredInit.promise;
@@ -183,88 +164,6 @@
           }
         });
       };
-
-      function importWtml(wtmlPath) {
-        var deferred = $q.defer();
-
-        $.ajax({
-          url: wtmlPath + '?v=' + $('body').data('resVersion')
-        }).done(function () {
-          var wtml = $($.parseXML(arguments[0]));
-
-          wtml.find('Place').each(function (i, place) {
-            place = $(place);
-            var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
-
-            if (ra !== 0 || dec !== 0) {
-              constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec);
-
-              var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
-
-              var wwtPlace = wwtlib.Place.create(
-                place.attr('Name'),
-                dec,
-                ra,
-                place.attr('DataSetType'),
-                constellation,
-                fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
-                parseFloat(place.find('ZoomLevel')) //zoomfactor
-              );
-
-              if (fgi != null) {
-                imageset_id++;
-
-                var imgset = wwtlib.Imageset.create(
-                  fgi.attr('Name'),
-                  fgi.attr('Url'),
-                  util.getImageSetType(fgi.attr('DataSetType')),
-                  fgi.attr('BandPass'),
-                  wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-                  imageset_id, // imagesetid
-                  parseInt(fgi.attr('BaseTileLevel')),
-                  parseInt(fgi.attr('TileLevels')),
-                  null, // tilesize
-                  parseFloat(fgi.attr('BaseDegreesPerTile')),
-                  fgi.attr('FileType'),
-                  fgi.attr('BottomsUp') === 'True',
-                  '', // quadTreeTileMap
-                  parseFloat(fgi.attr('CenterX')),
-                  parseFloat(fgi.attr('CenterY')),
-                  parseFloat(fgi.attr('Rotation')),
-                  true, // sparse
-                  fgi.find('ThumbnailUrl').text(), // thumbnailUrl,
-                  false, // defaultSet,
-                  false, // elevationModel
-                  parseFloat(fgi.attr('WidthFactor')), // widthFactor,
-                  parseFloat(fgi.attr('OffsetX')),
-                  parseFloat(fgi.attr('OffsetY')),
-                  fgi.find('Credits').text(),
-                  fgi.find('CreditsUrl').text(),
-                  '',
-                  '',
-                  0, // meanRadius
-                  null
-                );
-
-                util.rewritePlaceUrls(imgset);
-                wwtPlace.set_studyImageset(imgset);
-              }
-
-              indexPlaceNames(wwtPlace);
-
-              var cIndex = constellations.indexOf(constellation);
-              var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
-              wwtPlace.guid = cIndex + '.' + constellationPlaces.length;
-              util.rewritePlaceUrls(wwtPlace);
-              constellationPlaces.push(wwtPlace);
-            }
-          });
-
-          deferred.resolve(true);
-        });
-
-        return deferred.promise;
-      }
 
       initPromise = init();
 

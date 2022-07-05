@@ -1,4 +1,4 @@
-﻿wwt.app.factory(
+wwt.app.factory(
   'SearchUtil',
   [
     'SearchData',
@@ -57,40 +57,18 @@
         return p1.fromCenter - p2.fromCenter;
       }
 
+      // This interface has serious issues -- the mechanism for constructing
+      // place IDs is based on indices into the search data, which are *not*
+      // things that ought to be required to stay stable over time. A different
+      // approach should be used.
       function getPlaceById(id) {
         var deferred = $q.defer();
 
-        var tryFind = function (all) {
-          var deferred2 = $q.defer();
-
-          searchDataService.getData(all).then(function (d) {
-            var constellationIndex = parseInt(id.split('.')[0]);
-            var placeIndex = parseInt(id.split('.')[1]);
-            var p = d.Constellations[constellationIndex].places[placeIndex];
-            if (p) {
-              deferred2.resolve(p);
-            } else {
-              deferred2.resolve(null);
-            }
-          });
-
-          return deferred2.promise;
-        };
-
-        tryFind().then(function (p) {
-          if (p) {
-            deferred.resolve(p);
-          } else {
-            console.log('wait for full');
-
-            tryFind(true).then(function (p) {
-              if (p) {
-                deferred.resolve(p);
-              } else {
-                deferred.reject()
-              }
-            });
-          }
+        searchDataService.getData(all).then(function (d) {
+          var constellationIndex = parseInt(id.split('.')[0]);
+          var placeIndex = parseInt(id.split('.')[1]);
+          var p = d.Constellations[constellationIndex].places[placeIndex];
+          deferred.resolve(p || null);
         });
 
         return deferred.promise;
