@@ -95,9 +95,10 @@
                   fgi.oY,//offsetY
                   fgi.ct,//creditsText
                   fgi.cu,//creditsUrl
-                  '', '',
-                  0,//meanRadius
-                  null
+                  '', // demUrl
+                  '', // altUrl
+                  0, //meanRadius
+                  null // referenceFrame
                 );
 
                 util.rewritePlaceUrls(imgSet);

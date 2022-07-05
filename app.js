@@ -46,7 +46,7 @@ var wwt = {
     'wwtControllers',
     'ngCookies',
     'angular-intro'
-  ]).config(function($sceDelegateProvider) {
+  ]).config(function ($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
       // same origin
       'self',
@@ -63,12 +63,14 @@ var wwt = {
   controllers: angular.module('wwtControllers', [])
 };
 
-$(window).on('load', function() {
+$(window).on('load', function () {
   // Load search data after everything else.
   //
-  // Historically the search data were managed in the webclient repository,
-  // but they're really a "core" asset, since they index the core WWT
-  // datasets.
+  // Historically the search data were managed in the webclient repository, but
+  // they're really a "core" asset, since they index the core WWT datasets.
+  //
+  // The JS file here sets a global `wwt.searchData` variable, which is
+  // processed in the `init()` function defined in `dataproxy/SearchData.js`.
   var scr = document.createElement('script');
   scr.setAttribute("src", wwtlib.URLHelpers.singleton.coreStaticUrl('data/searchdata.min.js'));
   document.getElementsByTagName("head")[0].appendChild(scr);
