@@ -1,25 +1,22 @@
 ﻿wwt.app.factory(
   'SearchData',
   [
-    '$http',
     '$q',
-    '$timeout',
-    'Places',
     'Util',
 
-    function ($http, $q, $timeout, places, util) {
+    function ($q, util) {
       var api = {
         getData: getData,
         getIndex: getIndex
       };
 
       var data,
-          searchIndex = {},
-          initPromise,
-          constellations = [];
+        searchIndex = {},
+        initPromise,
+        constellations = [];
       var deferredInit = $q.defer();
       var allDataDeferred = $q.defer();
-      var allDataPromise = (function(){return allDataDeferred.promise;})();
+      var allDataPromise = (function () { return allDataDeferred.promise; })();
 
       function getData(all) {
         var deferred = $q.defer();
@@ -56,45 +53,41 @@
           var start = new Date();
 
           $.each(data.Constellations, function (i, item) {
-            /*if (item.name === 'SolarSystem') {
-              item.places = ssData;
-              return;
-              }*/
             constellations[i] = item.name;
 
             $.each(item.places, function (j, place) {
               var fgi = place.fgi,
-                  imgSet;
+                imgSet;
 
               if (fgi) {
                 imageset_id++;
 
                 imgSet = wwtlib.Imageset.create(
-                  fgi.n,//name
-                  fgi.u,//url
-                  fgi.dt || 2,//datasettype -default to sky
-                  fgi.bp,//bandPass
-                  fgi.pr,//projection
-                  imageset_id,//imagesetid
-                  fgi.bl,//baseLevel
-                  fgi.lv,//levels
-                  null,//tilesize
-                  fgi.bd,//baseTileDegrees
-                  '',//extension
-                  fgi.bu,//bottomsUp
-                  fgi.q,//quadTreeTileMap,
-                  fgi.cX,//centerX
-                  fgi.cY,//centerY
-                  fgi.r,//rotation
-                  true,//sparse
-                  fgi.tu,//thumbnailUrl,
-                  fgi.ds,//defaultSet,
-                  false,//elevationModel
-                  fgi.wf,//widthFactor,
-                  fgi.oX,//offsetX
-                  fgi.oY,//offsetY
-                  fgi.ct,//creditsText
-                  fgi.cu,//creditsUrl
+                  fgi.n, // name
+                  fgi.u, // url
+                  fgi.dt || 2, // data_set_type - default to sky
+                  fgi.bp, // bandPass
+                  fgi.pr, // projection
+                  imageset_id, // imageset id
+                  fgi.bl, // base_tile_level
+                  fgi.lv, // tile_levels
+                  null, // tile_size
+                  fgi.bd, // baseTileDegrees
+                  '', // extension
+                  fgi.bu, // bottomsUp
+                  fgi.q, // quadTreeTileMap,
+                  fgi.cX, // centerX
+                  fgi.cY,  // centerY
+                  fgi.r, // rotation
+                  true, // sparse
+                  fgi.tu, // thumbnailUrl,
+                  fgi.ds, // defaultSet,
+                  false, // elevationModel
+                  fgi.wf, // widthFactor,
+                  fgi.oX, // offsetX
+                  fgi.oY, // offsetY
+                  fgi.ct, // creditsText
+                  fgi.cu, // creditsUrl
                   '', // demUrl
                   '', // altUrl
                   0, //meanRadius
@@ -105,13 +98,13 @@
               }
 
               var pl = wwtlib.Place.create(
-                place.n,//name
-                place.d,//dec
-                place.r,//ra
-                place.c,//classification
-                item.name,//constellation
-                fgi ? fgi.dt : 2,//type
-                place.z//zoomfactor
+                place.n, // name
+                place.d, // dec
+                place.r, // ra
+                place.c, // classification
+                item.name, // constellation
+                fgi ? fgi.dt : 2, // type
+                place.z // zoomfactor
               );
 
               if (imgSet) {
@@ -139,13 +132,9 @@
           var urlbase = wwtlib.URLHelpers.singleton.coreStaticUrl('data/client_v6/');
 
           importWtml(urlbase + 'Wise.wtml').then(function () {
-            //console.log('wise loaded');
             importWtml(urlbase + 'Hubble.wtml').then(function () {
-              //console.log('hubble loaded');
               importWtml(urlbase + 'ESO.wtml').then(function () {
-                //console.log('eso loaded');
                 importWtml(urlbase + 'Chandra.wtml').then(function () {
-                  //console.log('chandra loaded');
                   importWtml(urlbase + 'Spitzer.wtml').then(function () {
                     allDataDeferred.resolve(true);
                   });
@@ -231,28 +220,29 @@
                   util.getImageSetType(fgi.attr('DataSetType')),
                   fgi.attr('BandPass'),
                   wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-                  imageset_id, //imagesetid
+                  imageset_id, // imagesetid
                   parseInt(fgi.attr('BaseTileLevel')),
                   parseInt(fgi.attr('TileLevels')),
-                  null, //tilesize
+                  null, // tilesize
                   parseFloat(fgi.attr('BaseDegreesPerTile')),
                   fgi.attr('FileType'),
                   fgi.attr('BottomsUp') === 'True',
-                  '', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
+                  '', // quadTreeTileMap
                   parseFloat(fgi.attr('CenterX')),
                   parseFloat(fgi.attr('CenterY')),
                   parseFloat(fgi.attr('Rotation')),
-                  true, //sparse
-                  fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
-                  false, //defaultSet,
-                  false, //elevationModel
-                  parseFloat(fgi.attr('WidthFactor')), //widthFactor,
+                  true, // sparse
+                  fgi.find('ThumbnailUrl').text(), // thumbnailUrl,
+                  false, // defaultSet,
+                  false, // elevationModel
+                  parseFloat(fgi.attr('WidthFactor')), // widthFactor,
                   parseFloat(fgi.attr('OffsetX')),
                   parseFloat(fgi.attr('OffsetY')),
                   fgi.find('Credits').text(),
                   fgi.find('CreditsUrl').text(),
-                  '', '',
-                  0, //meanRadius
+                  '',
+                  '',
+                  0, // meanRadius
                   null
                 );
 
