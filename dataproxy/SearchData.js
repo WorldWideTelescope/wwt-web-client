@@ -40,7 +40,7 @@
 
       var init = function () {
         // The special `wwt.searchData` global is assigned in the JS file that
-        // the main webclient HTML loads asynchronously.
+        // the main webclient app loads asynchronously (see `app.js`).
         if (!wwt.searchData) {
           setTimeout(init, 333);
         } else {
@@ -60,49 +60,65 @@
               if (fgi) {
                 imageset_id++;
 
+                var band_pass = (fgi.bp !== undefined) ? fgi.bp : wwtlib.BandPass.visible;
+                var projection = (fgi.pr !== undefined) ? fgi.pr : wwtlib.ProjectionType.tan;
+                var base_tile_level = (fgi.bl !== undefined) ? fgi.bl : 0;
+                var file_type = (fgi.ft !== undefined) ? fgi.ft : ".png";
+                var tile_levels = (fgi.lv !== undefined) ? fgi.lv : 4;
+                var bottoms_up = (fgi.bu !== undefined) ? fgi.bu : false;
+                var quad_tree_map = (fgi.q !== undefined) ? fgi.q : "";
+                var offset_x = (fgi.oX !== undefined) ? fgi.oX : 0;
+                var offset_y = (fgi.oY !== undefined) ? fgi.oY : 0;
+                var default_set = (fgi.ds !== undefined) ? fgi.ds : false; // "StockSet" in XML
+                var rotation = (fgi.r !== undefined) ? fgi.r : 0;
+                var width_factor = (fgi.wf !== undefined) ? fgi.wf : 2;
+
                 imgSet = wwtlib.Imageset.create(
                   fgi.n, // name
                   fgi.u, // url
-                  fgi.dt || 2, // data_set_type - default to sky
-                  fgi.bp, // bandPass
-                  fgi.pr, // projection
+                  wwtlib.ImageSetType.sky, // data_set_type -- never changes (for now?)
+                  band_pass,
+                  projection,
                   imageset_id, // imageset id
-                  fgi.bl, // base_tile_level
-                  fgi.lv, // tile_levels
+                  base_tile_level,
+                  tile_levels,
                   null, // tile_size
                   fgi.bd, // baseTileDegrees
-                  '', // extension
-                  fgi.bu, // bottomsUp
-                  fgi.q, // quadTreeTileMap,
+                  file_type,
+                  bottoms_up,
+                  quad_tree_map,
                   fgi.cX, // centerX
                   fgi.cY,  // centerY
-                  fgi.r, // rotation
+                  rotation,
                   true, // sparse
                   fgi.tu, // thumbnailUrl,
-                  fgi.ds, // defaultSet,
+                  default_set,
                   false, // elevationModel
-                  fgi.wf, // widthFactor,
-                  fgi.oX, // offsetX
-                  fgi.oY, // offsetY
+                  width_factor,
+                  offset_x,
+                  offset_y,
                   fgi.ct, // creditsText
                   fgi.cu, // creditsUrl
                   '', // demUrl
                   '', // altUrl
-                  0, //meanRadius
+                  0, // meanRadius
                   null // referenceFrame
                 );
 
                 util.rewritePlaceUrls(imgSet);
               }
 
+              var classification = (place.c !== undefined) ? place.c : wwtlib.Classification.unidentified;
+              var zoom_factor = (place.z !== undefined) ? place.z : -1;
+
               var pl = wwtlib.Place.create(
                 place.n, // name
                 place.d, // dec
                 place.r, // ra
-                place.c, // classification
+                classification,
                 item.name, // constellation
-                fgi ? fgi.dt : 2, // type
-                place.z // zoomfactor
+                wwtlib.ImageSetType.sky, // type -- never changes (for now?)
+                zoom_factor,
               );
 
               if (imgSet) {
