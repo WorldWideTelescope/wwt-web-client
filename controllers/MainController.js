@@ -33,9 +33,8 @@ wwt.controllers.controller(
     '$popover',
 
     function ($scope, $rootScope, uiLibrary, $q, appState, loc, $timeout, finderScope,
-              searchDataService, places, util, hashManager, skyball, searchUtil, $modal,
-              $element, $cookies, AutohidePanels, $window, $popover)
-    {
+      searchDataService, places, util, hashManager, skyball, searchUtil, $modal,
+      $element, $cookies, AutohidePanels, $window, $popover) {
       //TODO - figure out how to clean up lame long list of dependencies injected
       var ctl;
 
@@ -136,7 +135,7 @@ wwt.controllers.controller(
       };
 
       $scope.setLookAt = function (lookAt, imageryName, noUpdate, keepCamera) {
-        if (!lookAt || !isNaN(parseInt(lookAt))){
+        if (!lookAt || !isNaN(parseInt(lookAt))) {
           lookAt = wwtlib.WWTControl.singleton.renderContext.get_backgroundImageset()._dataSetType;
           lookAt = $scope.lookTypes[lookAt];
           if ($scope.lookAt === lookAt) {
@@ -184,7 +183,7 @@ wwt.controllers.controller(
         }
       }
 
-      angular.element($window).bind('resize', function() {
+      angular.element($window).bind('resize', function () {
         $rootScope.$apply(update_window_size);
       });
 
@@ -559,7 +558,7 @@ wwt.controllers.controller(
         }
       }
 
-      var placeNameForQueryString = function(item) {
+      var placeNameForQueryString = function (item) {
         // Various "research" menus like to put an item's name into URL query
         // strings. Compute the proper (well, good-enough) representation. When
         // the name has multiple semicolon-separated identifiers, usually the
@@ -595,8 +594,8 @@ wwt.controllers.controller(
       });
 
       var finderTimer,
-          finderActive = false,
-          finderMoved = true;
+        finderActive = false,
+        finderMoved = true;
 
       $scope.showFinderScope = function (event) {
         // On Windows, right-click brings up the finder scope and control-click
@@ -646,14 +645,14 @@ wwt.controllers.controller(
           }
 
           finderTimer = setInterval(pollFinder, 400);
-          viewportChange(null, {finderMove: true});
+          viewportChange(null, { finderMove: true });
         }
       };
 
       var pollFinder = function () {
         if (checkVisibleFinderScope()) {
           if (finderMoved) {
-            viewportChange(null, {finderMove: true});
+            viewportChange(null, { finderMove: true });
             finderMoved = false;
           }
         }
@@ -749,7 +748,7 @@ wwt.controllers.controller(
           $scope.activeItem.imageSet = item.get_studyImageset();
         }
       };
-      
+
       $scope.addCatalogHiPS = function (item) {
         if (item.guid) {
           $scope.shareUrl = hashManager.setHashVal('place', item.guid, true, true);
@@ -769,7 +768,7 @@ wwt.controllers.controller(
       };
 
       $scope.setForegroundImage = function (item) {
-        if(item.isCatalogHips){
+        if (item.isCatalogHips) {
           $scope.addCatalogHiPS(item);
           return;
         }
@@ -800,7 +799,7 @@ wwt.controllers.controller(
       };
 
       $scope.setBackgroundImage = function (item) {
-        if(item.isCatalogHips){
+        if (item.isCatalogHips) {
           $scope.addCatalogHiPS(item);
           return;
         }
@@ -933,21 +932,21 @@ wwt.controllers.controller(
       $scope.playTour = function (url, edit) {
         $('.finder-scope').hide();
 
-        wwt.wc.add_tourError(function(e) {
+        wwt.wc.add_tourError(function (e) {
           util.exitFullscreen();
-          $scope.$applyAsync(function() {
+          $scope.$applyAsync(function () {
             wwt.tourPlaying = $rootScope.tourPlaying = false;
           });
           uiLibrary.showErrorMessage('There was an error loading this tour. The tour file may be damaged or inaccessible.');
-          console.warn('Tour error',$scope,e);
+          console.warn('Tour error', $scope, e);
         });
 
         wwt.wc.add_tourReady(function () {
-          console.log({ready:wwtlib.WWTControl.singleton.tourEdit});
+          console.log({ ready: wwtlib.WWTControl.singleton.tourEdit });
 
           $scope.$applyAsync(function () {
             $scope.isLoading = false;
-            $scope.activeItem = {label: 'currentTour'};
+            $scope.activeItem = { label: 'currentTour' };
             $scope.activePanel = 'currentTour';
             $scope.ribbon.tabs[1].menu['Edit Tour'] = [$scope.editTour];
           });
@@ -1009,7 +1008,7 @@ wwt.controllers.controller(
           //todo show dialog for tour properties
           $rootScope.currentTour = wwtlib.WWTControl.singleton.createTour("New Tour");
 
-          $scope.activeItem = {label: 'currentTour'};
+          $scope.activeItem = { label: 'currentTour' };
           $scope.activePanel = 'currentTour';
           $rootScope.$applyAsync(function () {
             $rootScope.editingTour = true;
@@ -1179,9 +1178,9 @@ wwt.controllers.controller(
       $scope.homePrefChange = function (isWebclient) {
         $cookies.remove('homepage');
         if (!isWebclient) {
-          $cookies.put('homepage', 'home', {expires: new Date(2050, 1, 1), path: "/"});
+          $cookies.put('homepage', 'home', { expires: new Date(2050, 1, 1), path: "/" });
         } else {
-          $cookies.put('homepage', 'webclient', {expires: new Date(2050, 1, 1), path: "/"});
+          $cookies.put('homepage', 'webclient', { expires: new Date(2050, 1, 1), path: "/" });
         }
       };
 
@@ -1227,9 +1226,9 @@ wwt.controllers.controller(
       $scope.displayXFader = function () {
         return (
           $scope.lookAt === 'Sky' &&
-            $scope.trackingObj &&
-            !$scope.tourPlaying &&
-            ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null)
+          $scope.trackingObj &&
+          !$scope.tourPlaying &&
+          ($scope.trackingObj.get_backgroundImageset() != null || $scope.trackingObj.get_studyImageset() != null)
         );
       }
 
@@ -1294,7 +1293,7 @@ wwt.controllers.controller(
       $scope.fovClass = function () {
         return $scope.lookAt === 'Planet' || $scope.lookAt === 'Panorama' || $scope.lookAt === 'Earth' ? 'hide' :
           $scope.lookAt === 'SolarSystem' ? 'solar-system-mode fov-panel' :
-          'fov-panel';
+            'fov-panel';
       }
 
       $scope.contextPanelClass = function () {
@@ -1303,7 +1302,7 @@ wwt.controllers.controller(
           cls += ' hide';
         }
 
-        $rootScope.compressed = $scope.compressed = cls.indexOf('compressed')>0;
+        $rootScope.compressed = $scope.compressed = cls.indexOf('compressed') > 0;
         return cls;
       }
 
