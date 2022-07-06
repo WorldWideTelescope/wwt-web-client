@@ -733,11 +733,6 @@ wwt.controllers.controller(
         }
       };
 
-      $scope.setSurveyProperties = function () {
-        $scope.propertyItem = $scope.backgroundImagery;
-        $scope.propertyItem.isSurvey = true;
-      };
-
       $scope.setActiveItem = function (item) {
         $scope.activeItem = item;
         if (item.guid) {
