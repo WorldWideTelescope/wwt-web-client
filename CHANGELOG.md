@@ -1,3 +1,15 @@
+# @wwtelescope/webclient 6.4.0 (2022-07-12)
+
+- Finally update this to expose all of our new datasets (@pkgw, #353)! These
+  have been managed in the [wwt-core-catalogs][wcc] repository, but not actually
+  exposed in the production webclient until now. The update required us to
+  rebuild the webclient’s precompiled search index, which took a lot of
+  infrastructural work. That is now working.
+- Fix a formatting bug that could lead to the seconds value being 60 (@Carifio24, #351).
+
+[wcc]: https://github.com/WorldWideTelescope/wwt-core-catalogs/
+
+
 # @wwtelescope/webclient 6.3.5 (2022-05-19)
 
 - index.html: load pako and uuid early for updated webgl-engine
