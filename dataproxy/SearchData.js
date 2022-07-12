@@ -1,38 +1,27 @@
 ﻿wwt.app.factory(
   'SearchData',
   [
-    '$http',
     '$q',
-    '$timeout',
-    'Places',
     'Util',
 
-    function ($http, $q, $timeout, places, util) {
+    function ($q, util) {
       var api = {
         getData: getData,
         getIndex: getIndex
       };
 
       var data,
-          searchIndex = {},
-          initPromise,
-          constellations = [];
+        searchIndex = {},
+        initPromise,
+        constellations = [];
       var deferredInit = $q.defer();
-      var allDataDeferred = $q.defer();
-      var allDataPromise = (function(){return allDataDeferred.promise;})();
 
-      function getData(all) {
+      function getData() {
         var deferred = $q.defer();
 
-        if (all) {
-          allDataPromise.then(function () {
-            deferred.resolve(data);
-          });
-        } else {
-          initPromise.then(function () {
-            deferred.resolve(data);
-          });
-        }
+        initPromise.then(function () {
+          deferred.resolve(data);
+        });
 
         return deferred.promise;
       };
@@ -50,67 +39,86 @@
       var imageset_id = 100;
 
       var init = function () {
-        if (wwt.searchData) {
+        // The special `wwt.searchData` global is assigned in the JS file that
+        // the main webclient app loads asynchronously (see `app.js`).
+        if (!wwt.searchData) {
+          setTimeout(init, 333);
+        } else {
+          // searchDataIndexed is used in `factories/SearchUtil.js`.
           wwt.searchDataIndexed = [];
+
           data = wwt.searchData;
           var start = new Date();
 
           $.each(data.Constellations, function (i, item) {
-            /*if (item.name === 'SolarSystem') {
-              item.places = ssData;
-              return;
-              }*/
             constellations[i] = item.name;
 
             $.each(item.places, function (j, place) {
               var fgi = place.fgi,
-                  imgSet;
+                imgSet;
 
               if (fgi) {
                 imageset_id++;
 
+                var band_pass = (fgi.bp !== undefined) ? fgi.bp : wwtlib.BandPass.visible;
+                var projection = (fgi.pr !== undefined) ? fgi.pr : wwtlib.ProjectionType.tan;
+                var base_tile_level = (fgi.bl !== undefined) ? fgi.bl : 0;
+                var file_type = (fgi.ft !== undefined) ? fgi.ft : ".png";
+                var tile_levels = (fgi.lv !== undefined) ? fgi.lv : 4;
+                var bottoms_up = (fgi.bu !== undefined) ? fgi.bu : false;
+                var quad_tree_map = (fgi.q !== undefined) ? fgi.q : "";
+                var offset_x = (fgi.oX !== undefined) ? fgi.oX : 0;
+                var offset_y = (fgi.oY !== undefined) ? fgi.oY : 0;
+                var default_set = (fgi.ds !== undefined) ? fgi.ds : false; // "StockSet" in XML
+                var rotation = (fgi.r !== undefined) ? fgi.r : 0;
+                var width_factor = (fgi.wf !== undefined) ? fgi.wf : 2;
+
                 imgSet = wwtlib.Imageset.create(
-                  fgi.n,//name
-                  fgi.u,//url
-                  fgi.dt || 2,//datasettype -default to sky
-                  fgi.bp,//bandPass
-                  fgi.pr,//projection
-                  imageset_id,//imagesetid
-                  fgi.bl,//baseLevel
-                  fgi.lv,//levels
-                  null,//tilesize
-                  fgi.bd,//baseTileDegrees
-                  '',//extension
-                  fgi.bu,//bottomsUp
-                  fgi.q,//quadTreeTileMap,
-                  fgi.cX,//centerX
-                  fgi.cY,//centerY
-                  fgi.r,//rotation
-                  true,//sparse
-                  fgi.tu,//thumbnailUrl,
-                  fgi.ds,//defaultSet,
-                  false,//elevationModel
-                  fgi.wf,//widthFactor,
-                  fgi.oX,//offsetX
-                  fgi.oY,//offsetY
-                  fgi.ct,//creditsText
-                  fgi.cu,//creditsUrl
-                  '', '',
-                  0,//meanRadius
-                  null
+                  fgi.n, // name
+                  fgi.u, // url
+                  wwtlib.ImageSetType.sky, // data_set_type -- never changes (for now?)
+                  band_pass,
+                  projection,
+                  imageset_id, // imageset id
+                  base_tile_level,
+                  tile_levels,
+                  null, // tile_size
+                  fgi.bd, // baseTileDegrees
+                  file_type,
+                  bottoms_up,
+                  quad_tree_map,
+                  fgi.cX, // centerX
+                  fgi.cY,  // centerY
+                  rotation,
+                  true, // sparse
+                  fgi.tu, // thumbnailUrl,
+                  default_set,
+                  false, // elevationModel
+                  width_factor,
+                  offset_x,
+                  offset_y,
+                  fgi.ct, // creditsText
+                  fgi.cu, // creditsUrl
+                  '', // demUrl
+                  '', // altUrl
+                  0, // meanRadius
+                  null // referenceFrame
                 );
 
                 util.rewritePlaceUrls(imgSet);
               }
 
+              var classification = (place.c !== undefined) ? place.c : wwtlib.Classification.unidentified;
+              var zoom_factor = (place.z !== undefined) ? place.z : -1;
+
               var pl = wwtlib.Place.create(
-                place.n,//name
-                place.d,//dec
-                place.r,//ra
-                place.c,//classification
-                item.name,//constellation
-                fgi ? fgi.dt : 2,//type
-                place.z//zoomfactor
+                place.n, // name
+                place.d, // dec
+                place.r, // ra
+                classification,
+                item.name, // constellation
+                wwtlib.ImageSetType.sky, // type -- never changes (for now?)
+                zoom_factor,
               );
 
               if (imgSet) {
@@ -134,28 +142,7 @@
 
           var end = new Date();
           util.log('parsed places in ' + (end.valueOf() - start.valueOf()) + 'ms', data);
-
-          var urlbase = wwtlib.URLHelpers.singleton.coreStaticUrl('data/client_v6/');
-
-          importWtml(urlbase + 'Wise.wtml').then(function () {
-            //console.log('wise loaded');
-            importWtml(urlbase + 'Hubble.wtml').then(function () {
-              //console.log('hubble loaded');
-              importWtml(urlbase + 'ESO.wtml').then(function () {
-                //console.log('eso loaded');
-                importWtml(urlbase + 'Chandra.wtml').then(function () {
-                  //console.log('chandra loaded');
-                  importWtml(urlbase + 'Spitzer.wtml').then(function () {
-                    allDataDeferred.resolve(true);
-                  });
-                });
-              });
-            });
-          });
-
           deferredInit.resolve(data);
-        } else {
-          setTimeout(init, 333);
         }
 
         return deferredInit.promise;
@@ -193,87 +180,6 @@
           }
         });
       };
-
-      function importWtml(wtmlPath) {
-        var deferred = $q.defer();
-
-        $.ajax({
-          url: wtmlPath + '?v=' + $('body').data('resVersion')
-        }).done(function () {
-          var wtml = $($.parseXML(arguments[0]));
-
-          wtml.find('Place').each(function (i, place) {
-            place = $(place);
-            var constellation, ra = parseFloat(place.attr('RA')), dec = parseFloat(place.attr('Dec'));
-
-            if (ra !== 0 || dec !== 0) {
-              constellation = wwtlib.Constellations.containment.findConstellationForPoint(ra, dec);
-
-              var fgi = place.find('ImageSet').length ? place.find('ImageSet') : null;
-
-              var wwtPlace = wwtlib.Place.create(
-                place.attr('Name'),
-                dec,
-                ra,
-                place.attr('DataSetType'),
-                constellation,
-                fgi ? util.getImageSetType(fgi.attr('DataSetType')) : 2, //type
-                parseFloat(place.find('ZoomLevel')) //zoomfactor
-              );
-
-              if (fgi != null) {
-                imageset_id++;
-
-                var imgset = wwtlib.Imageset.create(
-                  fgi.attr('Name'),
-                  fgi.attr('Url'),
-                  util.getImageSetType(fgi.attr('DataSetType')),
-                  fgi.attr('BandPass'),
-                  wwtlib.ProjectionType[fgi.attr('Projection').toLowerCase()],
-                  imageset_id, //imagesetid
-                  parseInt(fgi.attr('BaseTileLevel')),
-                  parseInt(fgi.attr('TileLevels')),
-                  null, //tilesize
-                  parseFloat(fgi.attr('BaseDegreesPerTile')),
-                  fgi.attr('FileType'),
-                  fgi.attr('BottomsUp') === 'True',
-                  '', //quadTreeTileMap (I need to find a wtml file that has this and check spelling of the attr)
-                  parseFloat(fgi.attr('CenterX')),
-                  parseFloat(fgi.attr('CenterY')),
-                  parseFloat(fgi.attr('Rotation')),
-                  true, //sparse
-                  fgi.find('ThumbnailUrl').text(), //thumbnailUrl,
-                  false, //defaultSet,
-                  false, //elevationModel
-                  parseFloat(fgi.attr('WidthFactor')), //widthFactor,
-                  parseFloat(fgi.attr('OffsetX')),
-                  parseFloat(fgi.attr('OffsetY')),
-                  fgi.find('Credits').text(),
-                  fgi.find('CreditsUrl').text(),
-                  '', '',
-                  0, //meanRadius
-                  null
-                );
-
-                util.rewritePlaceUrls(imgset);
-                wwtPlace.set_studyImageset(imgset);
-              }
-
-              indexPlaceNames(wwtPlace);
-
-              var cIndex = constellations.indexOf(constellation);
-              var constellationPlaces = wwt.searchData.Constellations[cIndex].places;
-              wwtPlace.guid = cIndex + '.' + constellationPlaces.length;
-              util.rewritePlaceUrls(wwtPlace);
-              constellationPlaces.push(wwtPlace);
-            }
-          });
-
-          deferred.resolve(true);
-        });
-
-        return deferred.promise;
-      }
 
       initPromise = init();
 

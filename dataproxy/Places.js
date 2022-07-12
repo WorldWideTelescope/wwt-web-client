@@ -17,8 +17,8 @@ wwt.app.factory(
       };
 
       var root,
-          rootFolders,
-          openCollectionsFolder;
+        rootFolders,
+        openCollectionsFolder;
 
       function getRoot() {
         var deferred = $q.defer();
@@ -79,8 +79,8 @@ wwt.app.factory(
             item.isPlanet = item.get_dataSetType() === 1;
           }
           if (typeof item.get_projection == 'function'
-          && typeof item.get_extension == 'function') {
-              item.isCatalogHips = item.get_projection() === 7 && item.get_extension() === ".tsv";
+            && typeof item.get_extension == 'function') {
+            item.isCatalogHips = item.get_projection() === 7 && item.get_extension() === ".tsv";
           }
 
           util.rewritePlaceUrls(item);
@@ -100,7 +100,9 @@ wwt.app.factory(
 
           root = wwt.wc.createFolder();
 
-          var url = new URL(wwt.staticAssetsPrefix + 'assets/webclient-explore-root.wtml', window.location).toString();
+          // Resolving relative to window.location helps us deal with http/https
+          // here:
+          var url = new URL(wwt.coreStaticUrlPrefix + 'wwtweb/catalog.aspx?W=explorerootweb', window.location).toString();
 
           root.loadFromUrl(url, function () {
             var collection;
