@@ -52,7 +52,6 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
       return {label: c, type: i};
     });
     l.computeDateDomainRange(0,-1);
-    console.log('compute');
     var none = {label: 'None', index: -1};
     $scope.columns.splice(0, 0, none);
     l.psType = l.get_pointScaleType();
@@ -61,12 +60,21 @@ wwt.controllers.controller('DataVizController', ['$scope', '$rootScope', 'Util',
 
   var sliders = {};
   var initExpSlider = function (sel, prop, initVal) {
-    $scope[prop] = initVal;
+    var value = $scope[prop];
+    if (value == null) {
+      value = l['get_' + prop]();
+      if (value == null) {
+        value = initVal;
+      }
+      $scope[prop] = value;
+    }
     if (sliders[prop]) {
       return;
     }
     setTimeout(function () {
       var bar = $(sel);
+      var pxValue = 4 * Math.round(Math.log2(value)) + 50;
+      bar[0].style.left = pxValue.toString() + 'px';
       var off = parseInt(bar.css('left').replace('px', ''));
       sliders[prop] = new wwt.Move({
         el: bar,
