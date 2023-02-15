@@ -20,14 +20,10 @@ JavaScript library.
 
 ## Building and Testing
 
-In order to build and test the app, you need:
-
-1. [Node.js](https://nodejs.org/), specifically the `npm` command. If you need
-   to install Node.js, use your operating system’s package manager or visit
-   [nodejs.org](https://nodejs.org/) for installation instructions.
-2. The [Grunt](https://gruntjs.com/) task runner, specifically the `grunt`
-   command. Once again, install it using your operating system’s package
-   manager or [see the Grunt website](https://gruntjs.com/getting-started).
+In order to build and test the app, you need: [Node.js](https://nodejs.org/),
+specifically the `npm` command. If you need to install Node.js, use your
+operating system’s package manager or visit [nodejs.org](https://nodejs.org/)
+for installation instructions.
 
 The first time you check out these files, run:
 
@@ -38,7 +34,7 @@ npm install
 Once that has been done, you can build the website with:
 
 ```
-grunt dist-dev
+npx grunt dist-dev
 ```
 
 This will create the app files in the `dist` subdirectory of your repository
