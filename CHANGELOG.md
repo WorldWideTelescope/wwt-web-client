@@ -1,4 +1,10 @@
-# rc: minor bump
+# rc: micro bump
+
+- Make sliders in layer properties window be initialized with the correct value
+  (#354, @Carifio24).
+
+
+# @wwtelescope/webclient 6.4.0 (2022-07-12)
 
 - Finally update this to expose all of our new datasets (@pkgw, #353)! These
   have been managed in the [wwt-core-catalogs][wcc] repository, but not actually
