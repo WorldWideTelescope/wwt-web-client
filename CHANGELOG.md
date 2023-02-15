@@ -1,3 +1,9 @@
+# @wwtelescope/webclient 6.4.1 (2023-02-15)
+
+- Make sliders in layer properties window be initialized with the correct value
+  (#354, @Carifio24).
+
+
 # @wwtelescope/webclient 6.4.0 (2022-07-12)
 
 - Finally update this to expose all of our new datasets (@pkgw, #353)! These
