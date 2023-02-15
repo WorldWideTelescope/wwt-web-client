@@ -1,4 +1,4 @@
-# Copyright 2020-2021 the .NET Foundation
+# Copyright 2020-2023 the .NET Foundation
 # Licensed under the MIT License
 
 parameters:
@@ -85,11 +85,11 @@ jobs:
       azurePowerShellVersion: 'LatestVersion'
       scriptType: 'inlineScript'
       inline: |
-        Unpublish-AzCdnEndpointContent `
+        Clear-AzCdnEndpointContent `
           -ProfileName wwt-cdn-01 `
           -ResourceGroupName wwt-web01 `
           -EndpointName wwtweb-prod `
-          -PurgeContent '/$(WEBCLIENT_DEPLOYMENT_TAG)/*'
+          -ContentPath @('/$(WEBCLIENT_DEPLOYMENT_TAG)/*')
 
 
 # Deployment jobs that should only happen on updates to `rc`, i.e.
