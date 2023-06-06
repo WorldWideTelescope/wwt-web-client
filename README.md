@@ -2,11 +2,11 @@
 [![npm](https://img.shields.io/npm/v/@wwtelescope/webclient?label=@wwtelescope/webclient)](https://www.npmjs.com/package/@wwtelescope/webclient)
 [![Powered by NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](http://numfocus.org)
 
-# The AAS WorldWide Telescope Web Client
+# The WorldWide Telescope Web Client
 
-The “web client” of the [AAS](https://aas.org/)
-[WorldWide Telescope](http://worldwidetelescope.org/home) (WWT) is a web
-application that lets you explore the universe from the comfort of your chair.
+The “web client” of [WorldWide Telescope](http://worldwidetelescope.org/home)
+(WWT) is a web application that lets you explore the universe from the comfort
+of your chair.
 
 ### <https://worldwidetelescope.org/webclient/>
 
@@ -109,18 +109,13 @@ All participation in WWT communities is conditioned on your adherence to the
 
 ## Acknowledgments
 
-The AAS WorldWide Telescope system is a [.NET Foundation] project. Work on WWT
-has been supported by the [American Astronomical Society] (AAS), the US
-[National Science Foundation] (grants [1550701] and [1642446]), the [Gordon
-and Betty Moore Foundation], and [Microsoft].
+Work on the WorldWide Telescope system has been supported by the [American
+Astronomical Society] (AAS), the [.NET Foundation], and other partners. See [the
+WWT user website][acks] for details.
 
 [American Astronomical Society]: https://aas.org/
 [.NET Foundation]: https://dotnetfoundation.org/
-[National Science Foundation]: https://www.nsf.gov/
-[1550701]: https://www.nsf.gov/awardsearch/showAward?AWD_ID=1550701
-[1642446]: https://www.nsf.gov/awardsearch/showAward?AWD_ID=1642446
-[Gordon and Betty Moore Foundation]: https://www.moore.org/
-[Microsoft]: https://www.microsoft.com/
+[acks]: https://worldwidetelescope.org/about/acknowledgments/
 
 
 ## Legalities
