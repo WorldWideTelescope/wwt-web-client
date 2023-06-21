@@ -360,7 +360,7 @@ wwt.controllers.controller(
         $scope.ribbon = {
           // The "home" tab is special-cased since it has no associated panel.
           home_tab: {
-            label: 'AAS WorldWide Telescope',
+            label: 'WorldWide Telescope',
             button: 'rbnHome',
             menu: {
               'Main Website': [util.nav_user, '/home'],
@@ -368,15 +368,14 @@ wwt.controllers.controller(
               'Contributor Hub': [function () { window.open('https://worldwidetelescope.github.io/'); }],
               'GitHub Home': [function () { window.open('https://github.com/WorldWideTelescope'); }],
               'Sign up for Newsletter': [function () { window.open('https://bit.ly/wwt-signup'); }],
-              'Support WWT ❤️': [function () { window.open('https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx'); }],
+              'Support WWT ❤️': [function () { window.open('https://numfocus.org/donate-for-worldwide-telescope'); }],
               sep1: null,
               '@WWTelescope on Twitter': [function () { window.open('https://twitter.com/WWTelescope'); }],
               '@AASWorldWideTelescope on YouTube': [function () { window.open('https://www.youtube.com/c/AASWorldWideTelescope'); }],
               '@WWTelescope on Facebook': [function () { window.open('https://www.facebook.com/wwtelescope'); }],
               sep2: null,
-              'Download Windows App': [util.nav_user, '/Download#v60'],
-              'About AAS WorldWide Telescope': [util.nav_user, '/About'],
-              'About American Astronomical Society': [function () { window.open('https://aas.org/about-aas'); }]
+              'Download Windows App': [util.nav_user, '/Download#windows-client'],
+              'About WorldWide Telescope': [util.nav_user, '/About'],
             }
           },
 
@@ -756,7 +755,7 @@ wwt.controllers.controller(
 
         //Catalog HiPS are controlled through the layer manager
         // & multiple items can be selected at the same time.
-        // So it does not make sense to highlight single items in the folder menu 
+        // So it does not make sense to highlight single items in the folder menu
         $scope.setActiveItem({});
         var imageSet = util.getImageset(item);
         wwtlib.WWTControl.singleton.addCatalogHips(imageSet);

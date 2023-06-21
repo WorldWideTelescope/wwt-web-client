@@ -7,7 +7,7 @@
   "buildConfig": {
     "uglify": true
   },
-  "description": "AAS WorldWide Telescope web client",
+  "description": "WorldWide Telescope web client",
   "devDependencies": {
     "grunt": "^1.0",
     "grunt-autoprefixer": "^3.0",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://worldwidetelescope.org/webclient/",
   "keywords": [
-    "AAS WorldWide Telescope"
+    "WorldWide Telescope"
   ],
   "license": "MIT",
   "name": "@wwtelescope/webclient",

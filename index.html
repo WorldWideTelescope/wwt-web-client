@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AAS WorldWide Telescope — Web Client</title>
+    <title>WorldWide Telescope — Web Client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="ROBOTS" content="INDEX, FOLLOW">
 
-    <meta property="og:site_name" content="AAS WorldWide Telescope" />
-    <meta property="og:url" content="http://www.worldwidetelescope.org/" />
-    <meta property="og:title" content="AAS WorldWide Telescope" />
+    <meta property="og:site_name" content="WorldWide Telescope" />
+    <meta property="og:url" content="https://worldwidetelescope.org/" />
+    <meta property="og:title" content="WorldWide Telescope" />
     <meta property="og:type" content="website" />
-    <meta property="og:description" content="AAS Worldwide Telescope is a tool for showcasing astronomical data and knowledge." />
+    <meta property="og:description" content="Worldwide Telescope is a tool for showcasing astronomical data and knowledge." />
     <meta property="og:image" content="<%= webclient_static_assets_url_prefix %>images/wwtlogo.png" />
     <meta property="og:image:width" content="256" />
     <meta property="og:image:height" content="256" />
-    <meta name="title" content="AAS WorldWide Telescope" />
-    <meta name="description" content="AAS Worldwide Telescope is a tool for showcasing astronomical data and knowledge." />
+    <meta name="title" content="WorldWide Telescope" />
+    <meta name="description" content="Worldwide Telescope is a tool for showcasing astronomical data and knowledge." />
 
     <link rel="icon" href="favicon.ico"/>
 
@@ -251,15 +251,11 @@
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/About')" localize="About AAS WorldWide Telescope"></a>
+                  <a ng-click="gotoPage('<%= userweb_url_prefix %>/About')" localize="About WorldWide Telescope"></a>
                 </li>
 
                 <li>
-                  <a ng-click="gotoPage('https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx')" localize="Support WWT ❤️"></a>
-                </li>
-
-                <li>
-                  <a ng-click="gotoPage('https://aas.org/about-aas')" localize="About American Astronomical Society"></a>
+                  <a ng-click="gotoPage('https://numfocus.org/donate-for-worldwide-telescope')" localize="Support WWT ❤️"></a>
                 </li>
               </ul>
             </div>
@@ -326,13 +322,6 @@
         <!-- mobile Loading popup -->
 
         <div ng-class="isLoading ?  'mobile-loading' : 'hide'">
-          <a href="//aas.org" target="_blank" style="position:relative;left:3px;z-index:5" class="pull-right">
-            <img ng-src="<%= webclient_static_assets_url_prefix %>images/aas-white110.png?v=<%= shortSHA %>"
-                 localize="American Astronomical Society (AAS) Logo"
-                 localize-only="alt"
-                 style="width:60px;height:60px;"/>
-          </a>
-
           <a class="pull-left" href="/home" style="margin-left: -11px;">
             <img ng-src='<%= webclient_static_assets_url_prefix %>images/wwtlogo.png?v=<%= shortSHA %>'
                  localize="WorldWide Telescope Logo"
@@ -341,7 +330,6 @@
           </a>
 
           <h3>
-            <div class="small text-white">American Astronomical Society</div>
             World<span class="brand-blue">Wide Telescope</span>
           </h3>
 
@@ -435,7 +423,7 @@
             <a class="btn pull-right" ng-click="logout()" ng-show="msLiveOAuthAppId && msLiveOAuthAppId.length && loggedIn">
               <span localize="Sign Out"></span>
             </a>
-            <a class="btn pull-right" href="https://my.aas.org/services/AAS_Member/Fundraising/WWT/Donate_Now.aspx" target="_blank">
+            <a class="btn pull-right" href="https://numfocus.org/donate-for-worldwide-telescope" target="_blank">
               <span>Support WWT ❤️</span>
             </a>
           </span>

@@ -1,5 +1,10 @@
 # rc: micro bump
 
+- Update sponsorship branding
+
+
+# @wwtelescope/webclient 6.4.1 (2023-02-15)
+
 - Make sliders in layer properties window be initialized with the correct value
   (#354, @Carifio24).
 
