@@ -1,3 +1,8 @@
+# @wwtelescope/webclient 6.4.2 (2023-06-21)
+
+- Update sponsorship branding
+
+
 # @wwtelescope/webclient 6.4.1 (2023-02-15)
 
 - Make sliders in layer properties window be initialized with the correct value
