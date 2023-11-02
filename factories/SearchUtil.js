@@ -64,7 +64,7 @@ wwt.app.factory(
       function getPlaceById(id) {
         var deferred = $q.defer();
 
-        searchDataService.getData(all).then(function (d) {
+        searchDataService.getData().then(function (d) {
           var constellationIndex = parseInt(id.split('.')[0]);
           var placeIndex = parseInt(id.split('.')[1]);
           var p = d.Constellations[constellationIndex].places[placeIndex];
