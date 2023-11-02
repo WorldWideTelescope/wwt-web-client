@@ -1,7 +1,7 @@
 {
-  "author": "The AAS WorldWide Telescope Team <wwt@aas.org>",
+  "author": "The WorldWide Telescope Team <hello@worldwidetelescope.org>",
   "bugs": {
-    "email": "wwt@aas.org",
+    "email": "hello@worldwidetelescope.org",
     "url": "https://github.com/WorldWideTelescope/wwt-web-client/issues"
   },
   "buildConfig": {
@@ -35,5 +35,5 @@
     "type": "git",
     "url": "https://github.com/WorldWideTelescope/wwt-web-client.git"
   },
-  "version": "6.4.2"
+  "version": "6.4.3"
 }
