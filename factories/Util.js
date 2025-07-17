@@ -1,4 +1,4 @@
-﻿wwt.app.factory(
+wwt.app.factory(
   'Util',
   [
     '$rootScope',
@@ -436,7 +436,8 @@
           init: true,
           RA: wwt.wc.getRA(),
           Dec: wwt.wc.getDec(),
-          Fov: wwt.wc.get_fov()
+          Fov: wwt.wc.get_fov(),
+          Roll: wwt.wc.get_roll(),
         };
 
         $rootScope.$broadcast('viewportchange', viewport);
@@ -447,7 +448,8 @@
             init: true,
             RA: wwt.wc.getRA(),
             Dec: wwt.wc.getDec(),
-            Fov: wwt.wc.get_fov()
+            Fov: wwt.wc.get_fov(),
+            Roll: wwt.wc.get_roll(),
           };
 
           $rootScope.$broadcast('viewportchange', viewport);
@@ -510,10 +512,15 @@
 
       var dirtyViewport = function () {
         var wasDirty = viewport.isDirty;
-        viewport.isDirty = wwt.wc.getRA() !== viewport.RA || wwt.wc.getDec() !== viewport.Dec || wwt.wc.get_fov() !== viewport.Fov;
+        viewport.isDirty =
+          wwt.wc.getRA() !== viewport.RA ||
+          wwt.wc.getDec() !== viewport.Dec ||
+          wwt.wc.get_fov() !== viewport.Fov ||
+          wwt.wc.get_roll() !== viewport.Roll;
         viewport.RA = wwt.wc.getRA();
         viewport.Dec = wwt.wc.getDec();
         viewport.Fov = wwt.wc.get_fov();
+        viewport.Roll = wwt.wc.get_roll();
         if (viewport.isDirty || wasDirty) {
           $rootScope.viewport = viewport;
           $rootScope.$broadcast('viewportchange', viewport);
