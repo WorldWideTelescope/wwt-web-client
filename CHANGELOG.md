@@ -1,3 +1,8 @@
+# @wwtelescope/webclient 6.4.4 (2025-07-23)
+
+- Update viewport-dependent items on a roll-only motion (#367, @Carifio24).
+
+
 # @wwtelescope/webclient 6.4.3 (2023-11-02)
 
 - Fix recovery of share links based on constellation indices (#363, @Carifio24).
