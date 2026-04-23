@@ -98,7 +98,7 @@ jobs:
 - ${{ if parameters.isRelease }}:
   - job: branch_and_tag
     pool:
-      vmImage: ubuntu-22.04
+      vmImage: ubuntu-24.04
     variables:
     - group: Deployment Credentials
     steps:
@@ -116,7 +116,7 @@ jobs:
   - job: github_releases
     dependsOn: branch_and_tag # otherwise, GitHub creates the tags itself!
     pool:
-      vmImage: ubuntu-22.04
+      vmImage: ubuntu-24.04
     variables:
     - group: Deployment Credentials
     steps:
@@ -132,7 +132,7 @@ jobs:
 
   - job: npm_publish
     pool:
-      vmImage: ubuntu-22.04
+      vmImage: ubuntu-24.04
     variables:
     - group: Deployment Credentials
     steps:
