@@ -85,7 +85,7 @@ jobs:
       azurePowerShellVersion: 'LatestVersion'
       scriptType: 'inlineScript'
       inline: |
-        Clear-AzCdnEndpointContent `
+        Clear-AzFrontDoorCdnEndpointContent `
           -ProfileName wwt-cdn-01 `
           -ResourceGroupName wwt-web01 `
           -EndpointName wwtweb-prod `
