@@ -21,10 +21,10 @@
 				var exp = new RegExp(attrs.localize, 'g');
 				var localized = useEn ? attrs.localize : loc.getFromEn(attrs.localize);
 				if (!attrs.locAttrOnly && !attrs.localizeOnly) {
-					if (el.html().indexOf(attrs.localize) != -1 && !useEn) {
-						el.html(el.html().replace(exp, localized));
+					if (el.text().indexOf(attrs.localize) != -1 && !useEn) {
+						el.text(el.text().replace(exp, localized));
 					} else {
-						el.html(localized);
+						el.text(localized);
 					}
 				}
 				if (attrs.localizeAttr || attrs.localizeOnly) {
