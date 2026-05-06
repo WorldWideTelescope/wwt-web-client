@@ -412,6 +412,13 @@ wwt.controllers.controller(
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       };
 
+      $scope.showObjectMenu = function (node, event) {
+        // TODO: Is there a more robust way to check this
+        var gridOption = node.name && node.name != "Grids" && node.name.toLowerCase().includes("grid");
+        if (gridOption) {
+        }
+      };
+
       $scope.selectionChanged = function (layerMap, event) {
         if (event.currentTarget.tagName === 'LABEL' && event.offsetX > 17) {
           //console.log(event);
