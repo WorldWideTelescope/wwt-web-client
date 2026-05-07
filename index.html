@@ -1004,7 +1004,7 @@
 
           <div class="tree" ng-style="{ height: layerManagerHeight()-90 }">
             <div
-              ng-class="sunTree.Sun.collapsed ? 'collapsed' : ''"
+              ng-class="collapsed(node) ? ' collapsed' : ''"
               ng-repeat="(name,node) in sunTree"
               ng-include="'tree-node'">
             </div>
