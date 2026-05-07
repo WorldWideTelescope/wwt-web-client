@@ -1,5 +1,13 @@
 # rc: micro bump
 
+- Fix broken collapsing of top-level trees in the layer manager (@Carifio24, #382)
+  and top-level child trees within the Sky tree (@Carifio24, #380).
+- Fix broken "Cancel" button on simple input dialogs and add hover pointer
+  to close button (@Carifio24, #372).
+
+
+# @wwtelescope/webclient 6.4.4 (2025-07-23)
+
 - Update viewport-dependent items on a roll-only motion (#367, @Carifio24).
 
 
