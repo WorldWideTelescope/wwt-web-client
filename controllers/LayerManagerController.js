@@ -412,6 +412,18 @@ wwt.controllers.controller(
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       };
 
+      $scope.showObjectMenu = function (node, event) {
+        // TODO: Is there a more robust way to check this?
+        var gridOption = node.name && node.name != "Grids" && node.name.toLowerCase().includes("grid");
+        if (gridOption) {
+          let gridName = node.action.charAt(4).toLowerCase() + node.action.substr(5);
+          if (gridName == "grid") {
+            gridName = "equatorialGrid";
+          }
+          wwtlib.LayerManager.showGridMenu(gridName, event.pageX, event.pageY);
+        }
+      };
+
       $scope.selectionChanged = function (layerMap, event) {
         if (event.currentTarget.tagName === 'LABEL' && event.offsetX > 17) {
           //console.log(event);
