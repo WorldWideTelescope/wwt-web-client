@@ -505,7 +505,7 @@ wwt.controllers.controller(
       };
 
       // enable/disable all child settings based on parent
-      var setChildState = function (node, setChildStates) {
+      var setChildState = function (node, setChildStates=true) {
         if (node.children) {
           $.each(node.children, function (i, child) {
             child.disabled = !node.checked || node.disabled;
@@ -514,7 +514,7 @@ wwt.controllers.controller(
               wwt.wc.settings['set_' + child.action](settingFlag);
             }
 
-            setChildState(child);
+            setChildState(child, setChildStates);
           });
         }
       };
