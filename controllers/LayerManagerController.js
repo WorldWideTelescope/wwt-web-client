@@ -231,6 +231,7 @@ wwt.controllers.controller(
                 new treeNode({
                   name: $scope.getFromEn('Constellations'),
                   action: 'constellationsEnabled',
+                  setChildStates: false,
                   children: [
                     new treeNode({
                       name: $scope.getFromEn('Constellation Pictures'),
