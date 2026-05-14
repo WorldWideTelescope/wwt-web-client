@@ -18,6 +18,11 @@ wwt.controllers.controller(
         this.action = args.action;
         this.collapsed = args.collapsed || false;
         this.disabled = false;
+        if (args.setChildStates != undefined) {
+          this.setChildStates = !!args.setChildStates;
+        } else {
+          this.setChildStates = true;
+        }
 
         if (args.mergeWith) {
           this.mergeWith = args.mergeWith;
@@ -242,7 +247,8 @@ wwt.controllers.controller(
                       children: [
                         new treeNode({name: $scope.getFromEn('Focused Only'), action: 'showConstellationSelection'})
                       ],
-                      action: 'showConstellationBoundries'
+                      action: 'showConstellationBoundries',
+                      setChildStates: false,
                     }), new treeNode({
                       name: $scope.getFromEn('Constellation Names'),
                       checked: false,
@@ -495,15 +501,15 @@ wwt.controllers.controller(
           setSticky(node.name, node.action, settingFlag);
         }
 
-        setChildState(node);
+        setChildState(node, node.setChildStates);
       };
 
       // enable/disable all child settings based on parent
-      var setChildState = function (node) {
+      var setChildState = function (node, setChildStates) {
         if (node.children) {
           $.each(node.children, function (i, child) {
             child.disabled = !node.checked || node.disabled;
-            if (child.action && wwt.wc.settings['set_' + child.action]) {
+            if (setChildStates && child.action && wwt.wc.settings['set_' + child.action]) {
               var settingFlag = child.checked && !child.disabled;
               wwt.wc.settings['set_' + child.action](settingFlag);
             }
