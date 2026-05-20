@@ -421,6 +421,21 @@ wwt.controllers.controller(
             gridName = "equatorialGrid";
           }
           wwtlib.LayerManager.showGridMenu(gridName, event.pageX, event.pageY);
+          return;
+        }
+
+        var constellationOptions = {
+          "Constellation Pictures": "showConstellationPictures",
+          "Constellation Figures": "showConstellationFigures",
+          "Constellation Boundaries": "showConstellationBoundries",  // NB: Typo is intentional
+          "Focused Only": "showConstellationSelection",
+          "Constellation Names": "showConstellationLabels"
+        };
+        var isConstellationOption = node.name in constellationOptions;
+        if (isConstellationOption) {
+          var optionName = node.action.charAt(4).toLowerCase() + node.action.substr(5);
+          wwtlib.LayerManager.showConstellationSettingMenu(optionName, event.pageX, event.pageY);
+          return;
         }
       };
 
