@@ -425,7 +425,6 @@ wwt.controllers.controller(
         }
 
         var constellationOptions = {
-          "Constellation Pictures": "showConstellationPictures",
           "Constellation Figures": "showConstellationFigures",
           "Constellation Boundaries": "showConstellationBoundries",  // NB: Typo is intentional
           "Focused Only": "showConstellationSelection",
