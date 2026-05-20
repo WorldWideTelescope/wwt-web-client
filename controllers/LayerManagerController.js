@@ -414,8 +414,8 @@ wwt.controllers.controller(
 
       $scope.showObjectMenu = function (node, event) {
         // TODO: Is there a more robust way to check this?
-        var gridOption = node.name && node.name != "Grids" && node.name.toLowerCase().includes("grid");
-        if (gridOption) {
+        var isGridOption = node.name && node.name != "Grids" && node.name.toLowerCase().includes("grid");
+        if (isGridOption) {
           let gridName = node.action.charAt(4).toLowerCase() + node.action.substr(5);
           if (gridName == "grid") {
             gridName = "equatorialGrid";
