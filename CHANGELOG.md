@@ -1,4 +1,14 @@
-# rc: micro bump
+# rc: minor bump
+
+- Allow changing the colors of constellation figures, boundaries, and names in the
+  layer manager using a context menu (#386, @Carifio24).
+- Allow controlling whether or not a tree node invokes the actions of its children when
+  changing its status. This setting is true by default to match existing behavior. Turn
+  this setting off for the constellation boundaries and focused only subtree (#385, @Carifio24).
+- Allow changing grid colors in the layer manager using a context menu (#381, @Carifio24).
+
+
+# @wwtelescope/webclient 6.4.5 (2026-05-07)
 
 - Fix broken collapsing of top-level trees in the layer manager (@Carifio24, #382)
   and top-level child trees within the Sky tree (@Carifio24, #380).
