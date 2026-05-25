@@ -18,6 +18,11 @@ wwt.controllers.controller(
         this.action = args.action;
         this.collapsed = args.collapsed || false;
         this.disabled = false;
+        if (args.setChildStates != undefined) {
+          this.setChildStates = !!args.setChildStates;
+        } else {
+          this.setChildStates = true;
+        }
 
         if (args.mergeWith) {
           this.mergeWith = args.mergeWith;
@@ -226,6 +231,7 @@ wwt.controllers.controller(
                 new treeNode({
                   name: $scope.getFromEn('Constellations'),
                   action: 'constellationsEnabled',
+                  setChildStates: false,
                   children: [
                     new treeNode({
                       name: $scope.getFromEn('Constellation Pictures'),
@@ -242,7 +248,8 @@ wwt.controllers.controller(
                       children: [
                         new treeNode({name: $scope.getFromEn('Focused Only'), action: 'showConstellationSelection'})
                       ],
-                      action: 'showConstellationBoundries'
+                      action: 'showConstellationBoundries',
+                      setChildStates: false,
                     }), new treeNode({
                       name: $scope.getFromEn('Constellation Names'),
                       checked: false,
@@ -412,6 +419,32 @@ wwt.controllers.controller(
         wwtlib.LayerManager.showLayerMenu(layerMap, event.pageX, event.pageY);
       };
 
+      $scope.showObjectMenu = function (node, event) {
+        // TODO: Is there a more robust way to check this?
+        var isGridOption = node.name && node.name != "Grids" && node.name.toLowerCase().includes("grid");
+        if (isGridOption) {
+          let gridName = node.action.charAt(4).toLowerCase() + node.action.substr(5);
+          if (gridName == "grid") {
+            gridName = "equatorialGrid";
+          }
+          wwtlib.LayerManager.showGridMenu(gridName, event.pageX, event.pageY);
+          return;
+        }
+
+        var constellationOptions = {
+          "Constellation Figures": "showConstellationFigures",
+          "Constellation Boundaries": "showConstellationBoundries",  // NB: Typo is intentional
+          "Focused Only": "showConstellationSelection",
+          "Constellation Names": "showConstellationLabels"
+        };
+        var isConstellationOption = node.name in constellationOptions;
+        if (isConstellationOption) {
+          var optionName = node.action.charAt(4).toLowerCase() + node.action.substr(5);
+          wwtlib.LayerManager.showConstellationSettingMenu(optionName, event.pageX, event.pageY);
+          return;
+        }
+      };
+
       $scope.selectionChanged = function (layerMap, event) {
         if (event.currentTarget.tagName === 'LABEL' && event.offsetX > 17) {
           //console.log(event);
@@ -483,20 +516,20 @@ wwt.controllers.controller(
           setSticky(node.name, node.action, settingFlag);
         }
 
-        setChildState(node);
+        setChildState(node, node.setChildStates);
       };
 
       // enable/disable all child settings based on parent
-      var setChildState = function (node) {
+      var setChildState = function (node, setChildStates=true) {
         if (node.children) {
           $.each(node.children, function (i, child) {
             child.disabled = !node.checked || node.disabled;
-            if (child.action && wwt.wc.settings['set_' + child.action]) {
+            if (setChildStates && child.action && wwt.wc.settings['set_' + child.action]) {
               var settingFlag = child.checked && !child.disabled;
               wwt.wc.settings['set_' + child.action](settingFlag);
             }
 
-            setChildState(child);
+            setChildState(child, setChildStates);
           });
         }
       };

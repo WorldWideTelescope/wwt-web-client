@@ -156,6 +156,7 @@
 
           <div class="checkbox"
                ng-if="!isObjectNode(node)"
+               ng-right-click="showObjectMenu(node, $event)"
                ng-class="{activelayer:node.active}">
             <label data-ng-class="{checked:node.checked, disabledChild:node.disabled}"
                    localize="{{node.name}}"
