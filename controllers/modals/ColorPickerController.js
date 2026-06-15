@@ -16,6 +16,7 @@ wwt.controllers.controller(
       $(window).on('mousemove', setMouse);
 
       var opacity;
+      var changed = false;
 
       $scope.init = function () {
         var e = $scope.mouse || wwt.lastmouseContext;
@@ -38,6 +39,7 @@ wwt.controllers.controller(
           },
           onmove: function (args) {
             opacity = this.css.left / 100;
+            changed = true;
             $scope.setColor();
           },
           oncomplete: function () {
@@ -53,6 +55,7 @@ wwt.controllers.controller(
 
         if (event) {
           c = cp.getColorFromClick(event);
+          changed = true;
         } else {
           c = cp.color;
           opacity = cp.color.a / 255;
@@ -69,12 +72,14 @@ wwt.controllers.controller(
       };
 
       $scope.commitColor = function() {
-        cp.color.a = Math.min(255, Math.max(0, Math.round(opacity * 255)));
-        var rgb = $scope.rgb;
-        cp.color.r = rgb[0];
-        cp.color.g = rgb[1];
-        cp.color.b = rgb[2];
-        cp.pickColor({});
+        if (changed) {
+          cp.color.a = Math.min(255, Math.max(0, Math.round(opacity * 255)));
+          var rgb = $scope.rgb;
+          cp.color.r = rgb[0];
+          cp.color.g = rgb[1];
+          cp.color.b = rgb[2];
+          cp.pickColor({});
+        }
         $scope.$hide();
       }
 

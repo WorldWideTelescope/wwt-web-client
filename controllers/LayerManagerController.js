@@ -20,8 +20,6 @@ wwt.controllers.controller(
         this.disabled = false;
         if (args.setChildStates != undefined) {
           this.setChildStates = !!args.setChildStates;
-        } else {
-          this.setChildStates = true;
         }
 
         if (args.mergeWith) {
@@ -231,7 +229,6 @@ wwt.controllers.controller(
                 new treeNode({
                   name: $scope.getFromEn('Constellations'),
                   action: 'constellationsEnabled',
-                  setChildStates: false,
                   children: [
                     new treeNode({
                       name: $scope.getFromEn('Constellation Pictures'),
@@ -516,10 +513,10 @@ wwt.controllers.controller(
           setSticky(node.name, node.action, settingFlag);
         }
 
-        setChildState(node, node.setChildStates);
+        var setStates = ("setChildStates" in node) ? node.setChildStates : true;
+        setChildState(node, setStates);
       };
 
-      // enable/disable all child settings based on parent
       var setChildState = function (node, setChildStates=true) {
         if (node.children) {
           $.each(node.children, function (i, child) {
@@ -529,7 +526,8 @@ wwt.controllers.controller(
               wwt.wc.settings['set_' + child.action](settingFlag);
             }
 
-            setChildState(child, setChildStates);
+            var setStates = ("setChildStates" in child) ? child.setChildStates : setChildStates;
+            setChildState(child, setStates);
           });
         }
       };

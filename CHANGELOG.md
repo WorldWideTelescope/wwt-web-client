@@ -1,5 +1,13 @@
 # rc: minor bump
 
+- Improve behavior of whether a layer manager tree node invokes the actions of its children
+  by respecting the settings of each individual child when walking the tree (#388, @Carifio24).
+- Fix an issue where the opacity of table layers would not respond to slider changes if the
+  color was not also changed (#387, @Carifio24).
+
+
+# @wwtelescope/webclient 6.5.0 (2026-05-25)
+
 - Allow changing the colors of constellation figures, boundaries, and names in the
   layer manager using a context menu (#386, @Carifio24).
 - Allow controlling whether or not a tree node invokes the actions of its children when
