@@ -1,4 +1,12 @@
-# rc: minor bump
+# rc: micro bump
+
+- Remove broken Communities sign-in/sign-out buttons from the UI (#392, @Carifio24).
+- Fix a persistent console error in Planet/Earth modes caused by trying to update
+  the skyball outside of Sky mode. Update the skyball on each frame rather than on an
+  interval, which leads to smoother updates (#390, @Carifio24).
+
+
+# @wwtelescope/webclient 6.6.0 (2026-06-15)
 
 - Improve behavior of whether a layer manager tree node invokes the actions of its children
   by respecting the settings of each individual child when walking the tree (#388, @Carifio24).

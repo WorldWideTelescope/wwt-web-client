@@ -422,13 +422,12 @@ wwt.app.factory(
 
       $(document).on('keyup', keyHandler);
 
-      var dirtyInterval,
-          viewport = {
-            isDirty: false,
-            RA: 0,
-            Dec: 0,
-            Fov: 60
-          };
+      var viewport = {
+        isDirty: false,
+        RA: 0,
+        Dec: 0,
+        Fov: 60
+      };
 
       function trackViewportChanges() {
         viewport = {
@@ -456,7 +455,7 @@ wwt.app.factory(
           viewport.init = false;
 
 
-          dirtyInterval = setInterval(dirtyViewport, 250);
+          wwtlib.WWTControl.scriptInterface.add_on_frame(dirtyViewport);
         });
       }
 
