@@ -1,16 +1,10 @@
-﻿wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
+wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
   var api = {
     init: init
   };
-  var canvas, ctx; 
+  var canvas, ctx;
 
   function draw() {
-    var viewport = arguments[1];
-    //console.log({ viewport: viewport, event: event });
-    if (!viewport.isDirty) {
-      return;
-    }
-
     ctx.clearRect(0, 0, 100, 100);
     var sphereSize = $('#skyball').height();
     var radius = sphereSize / 2;
@@ -42,7 +36,6 @@
       ctx.closePath();
       ctx.stroke();
     });
-    //console.log({coordx: coords[0].x, coordy: coords[0].y});
 
     ctx.beginPath();
     ctx.lineWidth = '1';
@@ -77,9 +70,13 @@
       });
     skyball.append(canvas);
     ctx = canvas.get(0).getContext('2d');
-    $rootScope.$on('viewportchange', draw);
+    $rootScope.$on('viewportchange', function (_event, viewport) {
+      if (viewport.isDirty && wwtlib.WWTControl.singleton.renderType == wwtlib.ImageSetType.sky) {
+        draw();
+      }
+    });
 
-    draw(null, {isDirty: true});
+    draw();
 
   }
 

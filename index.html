@@ -417,13 +417,7 @@
         <!-- Very top ribbon -->
 
         <div id="ribbon">
-          <span class="pull-right" ng-controller="LoginController">
-            <a class="btn pull-right" ng-click="login()" ng-show="msLiveOAuthAppId && msLiveOAuthAppId.length && !loggedIn">
-              <span localize="Sign In"></span>
-            </a>
-            <a class="btn pull-right" ng-click="logout()" ng-show="msLiveOAuthAppId && msLiveOAuthAppId.length && loggedIn">
-              <span localize="Sign Out"></span>
-            </a>
+          <span class="pull-right">
             <a class="btn pull-right" href="https://numfocus.org/donate-for-worldwide-telescope" target="_blank">
               <span>Support WWT ❤️</span>
             </a>
@@ -1077,7 +1071,7 @@
               <i class="fa fa-share-alt"></i>
             </a>
 
-            <div class="left" ng-show="lookAt != 'SolarSystem'">
+            <div class="left" ng-show="lookAt == 'Sky'">
               <p localize="N"></p>
               <div class="sphere" id="skyball">
                 <div class="v-ellipse"></div>
