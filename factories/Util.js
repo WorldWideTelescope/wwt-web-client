@@ -20,7 +20,6 @@ wwt.app.factory(
         isAccelDevice: isAccelDevice,
         isDebug:getQSParam('debug')!=null,
         nav_user: nav_user,
-        nav_communities: nav_communities,
         log: log,
         resetCamera: resetCamera,
         goFullscreen: goFullscreen,
@@ -43,7 +42,6 @@ wwt.app.factory(
       $rootScope.gitShortSha = wwt.gitShortSha;
       $rootScope.staticAssetsPrefix = wwt.staticAssetsPrefix;
       $rootScope.userwebUrlPrefix = wwt.userwebUrlPrefix;
-      $rootScope.communitiesUrlPrefix = wwt.communitiesUrlPrefix;
       $rootScope.coreStaticUrlPrefix = wwt.coreStaticUrlPrefix;
       $rootScope.msLiveOAuthAppId = wwt.msLiveOAuthAppId;
       $rootScope.msLiveOAuthRedirUrl = wwt.msLiveOAuthRedirUrl;
@@ -354,12 +352,6 @@ wwt.app.factory(
       // WWT user website pages, e.g. url = `/About`.
       function nav_user(url) {
         window.open(wwt.userwebUrlPrefix + url);
-      }
-
-      // This function is only called with arguments that are paths to
-      // WWT Communities website pages, e.g. url = `/Community`.
-      function nav_communities(url) {
-        window.open(wwt.communitiesUrlPrefix + url);
       }
 
       function resetCamera(leaveHash) {

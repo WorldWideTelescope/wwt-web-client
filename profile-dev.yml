@@ -6,7 +6,6 @@
 
 webclient_static_assets_url_prefix: ''
 userweb_url_prefix: //worldwidetelescope.org
-communities_url_prefix: //worldwidetelescope.org
 core_static_url_prefix: //worldwidetelescope.org/  # no CDN to avoid caching issues
 webgl_engine_url_prefix: //web.wwtassets.org/engine/latest
 maybe_min: ''

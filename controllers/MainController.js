@@ -436,12 +436,6 @@ wwt.controllers.controller(
               }
             },
             {
-              label: 'Communities',
-              button: 'rbnCommunities',
-              menu: {
-                'Search Communities': [util.nav_communities, '/Community']
-              }
-            }, {
               label: 'View',
               button: 'rbnView',
               menu: {
