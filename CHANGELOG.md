@@ -1,5 +1,14 @@
 # rc: micro bump
 
+- We are planning on winding down the WWT forum, so remove the forum link in the main
+  menu (#396, @Carifio24).
+- Fix bugs where the skyball would not update after a window resize until the viewport
+  moved, and where changing between mobile and desktop screen sizes would break the skyball (#395, @Carifio24).
+- Remove Communities content tab from the top bar, as it is now largely non-functional (#393, @Carifio24).
+
+
+# @wwtelescope/webclient 6.6.1 (2026-06-18)
+
 - Remove broken Communities sign-in/sign-out buttons from the UI (#392, @Carifio24).
 - Fix a persistent console error in Planet/Earth modes caused by trying to update
   the skyball outside of Sky mode. Update the skyball on each frame rather than on an

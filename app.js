@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright 2014, 2015  Microsoft Research
  *
  * Permission is hereby granted, free of charge, to any person
@@ -34,7 +34,6 @@ var wwt = {
   staticAssetsPrefix: '<%= profile_data.webclient_static_assets_url_prefix %>',
   userwebUrlPrefix: '<%= profile_data.userweb_url_prefix %>',
   coreStaticUrlPrefix: '<%= profile_data.core_static_url_prefix %>',
-  communitiesUrlPrefix: '<%= profile_data.communities_url_prefix %>',
   msLiveOAuthAppId: '<%= profile_data.microsoft_live_oauth_app_id %>',
   msLiveOAuthRedirUrl: '<%= profile_data.microsoft_live_oauth_redir_url %>',
 

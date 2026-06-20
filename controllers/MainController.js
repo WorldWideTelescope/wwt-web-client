@@ -160,6 +160,8 @@ wwt.controllers.controller(
         var w = $window.innerWidth;
         var h = $window.innerHeight;
 
+        var was_mobile = $rootScope.is_mobile;
+
         // I'm not at all confident in the robustness of this logic, but it's what we've been using.
         $rootScope.is_mobile = (h < 600 || w < 700) && (h < 900 && w < 600);
 
@@ -180,6 +182,10 @@ wwt.controllers.controller(
           wwt_div
             .height(h)
             .width(w);
+        }
+
+        if ($rootScope.is_mobile != was_mobile) {
+          $rootScope.$broadcast('mobilechange', $rootScope.is_mobile);
         }
       }
 
@@ -364,7 +370,6 @@ wwt.controllers.controller(
             button: 'rbnHome',
             menu: {
               'Main Website': [util.nav_user, '/home'],
-              'User Forums': [function () { window.open('https://wwt-forum.org/'); }],
               'Contributor Hub': [function () { window.open('https://worldwidetelescope.github.io/'); }],
               'GitHub Home': [function () { window.open('https://github.com/WorldWideTelescope'); }],
               'Sign up for Newsletter': [function () { window.open('https://bit.ly/wwt-signup'); }],
@@ -436,12 +441,6 @@ wwt.controllers.controller(
               }
             },
             {
-              label: 'Communities',
-              button: 'rbnCommunities',
-              menu: {
-                'Search Communities': [util.nav_communities, '/Community']
-              }
-            }, {
               label: 'View',
               button: 'rbnView',
               menu: {
