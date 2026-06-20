@@ -13,12 +13,6 @@ webclient_static_assets_url_prefix: //web.wwtassets.org/webclient/
 # served from /webclient/ and they're in the root, so:
 userweb_url_prefix: ..
 
-# A prefix to prepend to paths for links to the WWT Communities, which will look
-# like "/Resource" before prefixing. On the production server, the Communities
-# and "user website" are both in the same place, but in testing we might split
-# them out.
-communities_url_prefix: ..
-
 # A URL prefix for "core static" data files, which are unchanging data served
 # up by the classic flagship website. These should be routed through the CDN
 # in production.
