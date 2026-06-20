@@ -77,7 +77,6 @@ module.exports = function (grunt) {
           'factories/Util.js',
 
           'dataproxy/Astrometry.js',
-          'dataproxy/Community.js',
           'dataproxy/Places.js',
           'dataproxy/SearchData.js',
           'dataproxy/Tours.js',
@@ -85,7 +84,6 @@ module.exports = function (grunt) {
           'controllers/ContextPanelController.js',
           'controllers/IntroController.js',
           'controllers/LayerManagerController.js',
-          'controllers/LoginController.js',
           'controllers/MainController.js',
           'controllers/MobileNavController.js',
           'controllers/modals/ColorPickerController.js',
@@ -101,7 +99,6 @@ module.exports = function (grunt) {
           'controllers/modals/VOTableViewerController.js',
           'controllers/modals/VoConeSearchController.js',
           'controllers/modals/refFrameController.js',
-          'controllers/tabs/CommunityController.js',
           'controllers/tabs/CurrentTourController.js',
           'controllers/tabs/ExploreController.js',
           'controllers/tabs/SearchController.js',

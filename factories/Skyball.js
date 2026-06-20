@@ -60,6 +60,11 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
       return;
     }
 
+    if (canvas) {
+      skyball.remove(canvas);
+      canvas.remove();
+      canvas = null;
+    }
     canvas = $('<canvas></canvas>')
       .css({
         position: 'absolute',
@@ -75,6 +80,12 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
         draw();
       }
     });
+    $rootScope.$on('mobilechange', function (_event) {
+      requestAnimationFrame(() => requestAnimationFrame(() => init()));
+    });
+    $(window).on('resize', function () {
+      draw();
+    });
 
     draw();
 
@@ -84,8 +95,6 @@ wwt.app.factory('Skyball', ['$rootScope', function ($rootScope) {
     this.x = x;
     this.y = y;
   }
-
-  //console.log('skyball');
 
   return api;
 }]);
