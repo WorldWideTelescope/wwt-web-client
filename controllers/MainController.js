@@ -370,7 +370,6 @@ wwt.controllers.controller(
             button: 'rbnHome',
             menu: {
               'Main Website': [util.nav_user, '/home'],
-              'User Forums': [function () { window.open('https://wwt-forum.org/'); }],
               'Contributor Hub': [function () { window.open('https://worldwidetelescope.github.io/'); }],
               'GitHub Home': [function () { window.open('https://github.com/WorldWideTelescope'); }],
               'Sign up for Newsletter': [function () { window.open('https://bit.ly/wwt-signup'); }],
